@@ -1,70 +1,61 @@
 import { StyleSheet } from 'react-native';
 
 export const colors = {
-    black: '#1a1917',
-    gray: '#888888',
-    background1: '#B721FF',
-    background2: '#21D4FD'
+    white: '#ffffff',
+    purple: '#231f61',
+    lightPurple: 'rgba(35,31,97,0.8)',
+    borderGrey: '#c1c1c1',
+    backgroundGrey: '#f0f0f0'
+};
+
+export const spacing = {
+    extraLarge: 50,
+    large: 20,
+    normal: 15,
+    small: 10,
+    tiny: 5
+};
+
+export const altStyles = {
+    buttonIcon:{
+        size: 24,
+        color: colors.white,
+        style:{marginRight: 0}
+    }
 };
 
 export default StyleSheet.create({
-    safeArea: {
-        flex: 1,
-        backgroundColor: colors.black
+    purpleButton: {
+        backgroundColor: colors.lightPurple,
+        height: 50,
+        borderColor: colors.purple,
+        borderWidth: 2,
+        borderRadius: 5,
+        marginTop: spacing.normal,
+        marginLeft: 0,
+        marginRight: 0
     },
-    container: {
-        flex: 1,
-        backgroundColor: colors.background1
+    cardHeader:{
+        height: 50, 
+        paddingLeft: spacing.normal, 
+        borderColor: colors.purple, 
+        borderWidth: 2, 
+        flexDirection:'row', 
+        alignItems:'center', 
+        backgroundColor: colors.lightPurple    
     },
-    gradient: {
-        ...StyleSheet.absoluteFillObject
-    },
-    scrollview: {
-        flex: 1
-    },
-    exampleContainer: {
-        paddingVertical: 30
-    },
-    exampleContainerDark: {
-        backgroundColor: colors.black
-    },
-    exampleContainerLight: {
-        backgroundColor: 'white'
-    },
-    title: {
-        paddingHorizontal: 30,
-        backgroundColor: 'transparent',
-        color: 'rgba(255, 255, 255, 0.9)',
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center'
-    },
-    titleDark: {
-        color: colors.black
-    },
-    subtitle: {
-        marginTop: 5,
-        paddingHorizontal: 30,
-        backgroundColor: 'transparent',
-        color: 'rgba(255, 255, 255, 0.75)',
-        fontSize: 13,
-        fontStyle: 'italic',
-        textAlign: 'center'
-    },
-    slider: {
-        marginTop: 15,
-        overflow: 'visible' // for custom animations
-    },
-    sliderContentContainer: {
-        paddingVertical: 10 // for custom animation
-    },
-    paginationContainer: {
-        paddingVertical: 8
-    },
-    paginationDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        marginHorizontal: 8
+    cardRow:{
+        height: 50, 
+        paddingLeft: spacing.normal, 
+        paddingRight: spacing.normal,
+        flexDirection: 'row', 
+        alignItems: 'center',
+        // justifyContent: 'space-between',
+        borderColor: colors.borderGrey, 
+        borderWidth:1, 
+        borderTopWidth: 0,
+        alignItems: 'center', 
+        backgroundColor: colors.white
     }
+
 });
