@@ -4,17 +4,25 @@ export const colors = {
     white: '#ffffff',
     purple: '#231f61',
     lightPurple: 'rgba(35,31,97,0.8)',
+    veryLightPurple: 'rgba(35,31,97,0.6)',
     borderGrey: '#c1c1c1',
-    backgroundGrey: '#f0f0f0'
+    backgroundGrey: '#f0f0f0',
+    red: '#ff3333',
+    transparent: 'transparent'
 };
 
 export const spacing = {
-    extraLarge: 50,
+    extraLarge: 30,
     large: 20,
     normal: 15,
     small: 10,
     tiny: 5
 };
+
+export const sizes = {
+    normal: 50,
+    small: 15
+}
 
 export const altStyles = {
     buttonIcon:{
@@ -25,9 +33,14 @@ export const altStyles = {
 };
 
 export default StyleSheet.create({
+    buttonContainer:{
+        width: '100%', 
+        flex: 0, 
+        marginLeft: 0
+    },
     purpleButton: {
         backgroundColor: colors.lightPurple,
-        height: 50,
+        height: sizes.normal,
         borderColor: colors.purple,
         borderWidth: 2,
         borderRadius: 5,
@@ -35,8 +48,23 @@ export default StyleSheet.create({
         marginLeft: 0,
         marginRight: 0
     },
+    linkButton: {
+        backgroundColor: colors.transparent,
+        alignSelf: 'center',
+        marginLeft: 0,
+        marginRight: 0,
+        padding: 0
+    },
+    disabledButton:{
+        backgroundColor: colors.lightPurple,
+        opacity: 0.5
+    },
+    disabledButtonAlt:{
+        backgroundColor: colors.backgroundGrey,
+        // opacity: 0.5
+    },
     cardHeader:{
-        height: 50, 
+        height: sizes.normal, 
         paddingLeft: spacing.normal, 
         borderColor: colors.purple, 
         borderWidth: 2, 
@@ -45,7 +73,7 @@ export default StyleSheet.create({
         backgroundColor: colors.lightPurple    
     },
     cardRow:{
-        height: 50, 
+        height: sizes.normal, 
         paddingLeft: spacing.normal, 
         paddingRight: spacing.normal,
         flexDirection: 'row', 
@@ -56,6 +84,50 @@ export default StyleSheet.create({
         borderTopWidth: 0,
         alignItems: 'center', 
         backgroundColor: colors.white
+    },
+    formLabelContainer:{
+        // padding: 0, 
+        // margin: 0, 
+        height: sizes.small
+    },
+    formLabel:{
+        width: '100%', 
+        height:'100%', 
+        color:colors.purple, 
+        marginLeft:0, 
+        marginTop: 0
+    },
+    formInputContainer:{
+        backgroundColor: 'blue',
+        height: sizes.normal,
+        width: '100%',
+        marginLeft: 0
+    },
+    formInput:{
+        width: '100%',
+        height: '100%',
+        paddingLeft: spacing.normal,
+        paddingRight: spacing.normal,
+        color: colors.purple,
+        backgroundColor: colors.white,
+        borderColor: colors.borderGrey,
+        borderWidth: 1,
+        marginLeft: 0
+    },
+    formValidationContainer:{
+        width: '100%',
+        marginLeft: 0,
+        padding: 0,
+        paddingTop: 0,
+        marginTop: spacing.extraLarge
+    },
+    formValidation:{
+        width: '100%',
+        marginLeft: 0,
+        marginTop: 0,
+        padding: spacing.normal,
+        backgroundColor: colors.red,
+        color: colors.white
     }
 
 });

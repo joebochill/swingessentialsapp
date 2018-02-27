@@ -12,7 +12,10 @@ import CardRow from '../Card/CardRow';
 
 function mapStateToProps(state){
     return {
-        // username: state.userData.username
+        token: state.login.token,
+        username: state.userData.username,
+        lessons: state.lessons,
+        credits: state.credits
     };
 }
 function mapDispatchToProps(dispatch){
@@ -22,6 +25,16 @@ function mapDispatchToProps(dispatch){
 }
 
 class Home extends React.Component{
+    componentDidMount(){
+        if(!this.props.token){
+            this.props.navigation.navigate('Login');
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        if(!nextProps.token){
+            this.props.navigation.navigate('Login');
+        }
+    }
     render(){
         return(
             <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
@@ -41,17 +54,17 @@ class Home extends React.Component{
                             </View>
                         }
                         data={[
-                            {key: 'Individual Lessons', sub: '5 Left', action: ()=>alert('redeem individual')}, 
-                            {key: 'Activate Unlimited', sub: '1 Left', action: ()=>alert('activate unlimited')}, 
-                            {key: 'Order More', action: ()=>alert('order more')}]}
+                            {primary: 'Individual Lessons', secondary: this.props.credits?this.props.credits.count+' Left':'', action: ()=>alert('redeem individual')}, 
+                            {primary: 'Activate Unlimited', secondary: this.props.credits?this.props.credits.unlimited+' Left':'', action: ()=>alert('activate unlimited')}, 
+                            {primary: 'Order More', action: ()=>alert('order more')}]}
                         renderItem={({item}) => 
                             <CardRow 
-                                primary={item.key} 
-                                secondary={item.sub}
+                                primary={item.primary} 
+                                secondary={item.secondary}
                                 action={item.action}
-                                keyExtractor={(item, index) => item.key}
                             />
                         }
+                        keyExtractor={(item, index) => item.primary}
                     />
                     <FlatList
                         style={{marginTop: spacing.normal}}
@@ -61,13 +74,14 @@ class Home extends React.Component{
                                 <Text style={{color: colors.white}}>In Progress</Text>
                             </View>
                         }
-                        data={[]}
+                        data={this.props.lessons.pending}
                         ListEmptyComponent={
                             <CardRow primary={'No Lessons In Progress'}/>
                         }
                         renderItem={({item}) => 
-                            <CardRow primary={item.key} action={() => alert('lesson')} />
+                            <CardRow primary={item.request_date} action={() => alert('lesson')} />
                         }
+                        keyExtractor={(item, index) => item.request_id}
                     />
                     <FlatList
                         style={{marginTop: spacing.normal}}
@@ -77,13 +91,14 @@ class Home extends React.Component{
                                 <Text style={{color: colors.white}}>Completed</Text>
                             </View>
                         }
-                        data={[{key: '2018-02-12', new: true}, {key: '2018-01-30', new: false}]}
+                        data={this.props.lessons.closed}
                         ListEmptyComponent={
                             <CardRow primary={'No Completed Lessons'}/>
                         }
                         renderItem={({item}) => 
-                            <CardRow primary={item.key} secondary={item.new ? "NEW" : null} action={() => alert('lesson')} />
+                            <CardRow primary={item.request_date} secondary={item.new ? "NEW" : null} action={() => alert('lesson')} />
                         }
+                        keyExtractor={(item, index) => item.request_id}
                     />
                     
                     {/* <Button

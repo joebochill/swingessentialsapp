@@ -46,8 +46,7 @@ export const AppNavigator2 = StackNavigator(
                         onPress={ () => alert('settings')}/>
       }
     }
-  },
-  {initialRouteName: 'Main'}
+  }
 );
 
 export const AppNavigator = DrawerNavigator(

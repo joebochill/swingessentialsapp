@@ -3,6 +3,9 @@ import { Text, View, Image } from 'react-native'
 import { DrawerItems } from 'react-navigation'
 import {connect} from 'react-redux';
 
+import {requestLogout} from '../actions/LoginActions';
+
+
 import {colors, spacing} from '../styles/index';
 import logo from '../images/logo-big.png';
 
@@ -12,7 +15,14 @@ import CardRow from './Card/CardRow';
 function mapStateToProps(state){
     return {
         // username: state.userData.username
+        token: state.login.token
     };
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+        requestLogout: (token) => dispatch(requestLogout(token))
+    }
 }
 
 class CustomDrawer extends React.Component {
@@ -34,10 +44,11 @@ class CustomDrawer extends React.Component {
                     <CardRow menuItem primary="Submit Your Swing" action={() => alert('menu navigation')}/>
                     <CardRow menuItem primary="Order Lessons" action={() => alert('menu navigation')}/>
                     <CardRow menuItem primary="Settings" action={() => alert('menu navigation')}/>
+                    <CardRow menuItem primary="Sign Out" action={() => this.props.requestLogout(this.props.token)}/>
                 </View>
                 <View style={{marginBottom: spacing.normal}}>
+                    <CardRow menuItem primary="Help" action={() => alert('menu navigation')}/>
                     <CardRow menuItem primary="About" secondary="v1.0.1" action={() => alert('menu navigation')}/>
-                    <CardRow menuItem primary="Contact Us" action={() => alert('menu navigation')}/>
                     <CardRow menuItem primary="View Website" action={() => alert('menu navigation')}/>
                 </View>
             </View>
@@ -46,4 +57,4 @@ class CustomDrawer extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(CustomDrawer);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomDrawer);
