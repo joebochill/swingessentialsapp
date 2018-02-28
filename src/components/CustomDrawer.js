@@ -1,7 +1,9 @@
 import React from 'react'
-import { Text, View, Image } from 'react-native'
+import { Text, View, Image, Linking } from 'react-native'
 import { DrawerItems } from 'react-navigation'
 import {connect} from 'react-redux';
+import {NavigationActions} from 'react-navigation';
+
 
 import {requestLogout} from '../actions/LoginActions';
 
@@ -26,7 +28,8 @@ function mapDispatchToProps(dispatch){
 }
 
 class CustomDrawer extends React.Component {
-  render() {
+    
+  render() {console.log(this.props.navigation);
     return (
         <View style={{flex: 1, backgroundColor: colors.backgroundGrey}}>
             <View style={{height:80, padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.lightPurple}}>
@@ -43,18 +46,26 @@ class CustomDrawer extends React.Component {
             <View style={{flex: 1, justifyContent:'space-between'}}>
                 {this.props.token && 
                     <View style={{marginTop: spacing.normal}}>
-                        <CardRow menuItem primary="Your Lessons" action={() => alert('menu navigation')}/>
-                        <CardRow menuItem primary="Submit Your Swing" action={() => alert('menu navigation')}/>
-                        <CardRow menuItem primary="Order Lessons" action={() => alert('menu navigation')}/>
-                        <CardRow menuItem primary="Settings" action={() => alert('menu navigation')}/>
-                        <CardRow menuItem primary="Sign Out" action={() => this.props.requestLogout(this.props.token)}/>
+                        <CardRow menuItem primary="Your Lessons" 
+                            action={() => this.props.navigation.navigate('Lessons')}/>
+                        <CardRow menuItem primary="Submit Your Swing" 
+                            action={() => this.props.navigation.navigate('Redeem')}/>
+                        <CardRow menuItem primary="Order Lessons" 
+                            action={() => this.props.navigation.navigate('OrderDetails')}/>
+                        <CardRow menuItem primary="Settings" 
+                            action={() => this.props.navigation.navigate('Settings')}/>
+                        <CardRow menuItem primary="Sign Out" 
+                            action={() => this.props.requestLogout(this.props.token)}/>
                     </View>
                 }
                 {!this.props.token && <View></View>}
                 <View style={{marginBottom: spacing.normal}}>
-                    <CardRow menuItem primary="Help" action={() => alert('menu navigation')}/>
-                    <CardRow menuItem primary="About" secondary="v1.0.1" action={() => alert('menu navigation')}/>
-                    <CardRow menuItem primary="View Website" action={() => alert('menu navigation')}/>
+                    <CardRow menuItem primary="Help" 
+                        action={() => this.props.navigation.navigate('Help')}/>
+                    <CardRow menuItem primary="About" secondary="v1.0.1" 
+                        action={() => this.props.navigation.navigate('About')}/>
+                    <CardRow menuItem primary="View Website" 
+                        action={() =>Linking.openURL('https://www.swingessentials.com')}/>
                 </View>
             </View>
         </View>

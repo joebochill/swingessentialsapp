@@ -58,12 +58,9 @@ export const AppNavigator = DrawerNavigator(
                 drawerLabel: () => null //prevents this element from showing in the drawer if we are logged in
             } : {}
       },
-      Lessons: {
-        screen: Lessons
-      },
       // Each page that has several pages that you can step through is rendered as a StackNavigator
       // Stack Navigator gives you a header component for free, we inject an icon there to open the drawer
-      LessonTop: {
+      Main: {
           screen: StackNavigator({
               Lessons: {
                   screen: Lessons,
@@ -82,6 +79,14 @@ export const AppNavigator = DrawerNavigator(
             //   },
               Lesson: {
                   screen: Lesson,
+                  navigationOptions: ({ navigation }) => ({
+                    header: () => null
+                        //title: '11-07-2017',
+                      //headerLeft: <MaterialIcons name="arrow-back" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.pop()}/>
+                  })
+              },
+              Settings: {
+                  screen: Settings,
                   navigationOptions: ({ navigation }) => ({
                     header: () => null
                         //title: '11-07-2017',
@@ -131,13 +136,6 @@ export const AppNavigator = DrawerNavigator(
           screen: About,
           navigationOptions: {
               drawerLabel: 'About',
-              drawerIcon: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }}/>
-          }
-      },
-      Settings: {
-          screen: Settings,
-          navigationOptions: {
-              drawerLabel: 'Settings',
               drawerIcon: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }}/>
           }
       },

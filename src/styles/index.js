@@ -33,6 +33,12 @@ export const altStyles = {
 };
 
 export default StyleSheet.create({
+    headerIcon:{
+        padding: 15,
+        marginLeft: -15,
+        marginRight: -15,
+        marginBottom: -15
+    },
     buttonContainer:{
         width: '100%', 
         flex: 0, 

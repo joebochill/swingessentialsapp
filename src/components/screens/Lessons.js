@@ -8,6 +8,7 @@ import styles, {colors, spacing, altStyles} from '../../styles/index';
 import {getLessons, getCredits} from '../../actions/LessonActions';
 
 import CardRow from '../Card/CardRow';
+import {NavigationActions} from 'react-navigation';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -48,7 +49,6 @@ class Lessons extends React.Component{
     }
 
     _onRefresh(){
-        console.log('onrefresh');
         this.setState({refreshing: true});
         this.props.getCredits(this.props.token);
         this.props.getLessons(this.props.token);
@@ -60,9 +60,10 @@ class Lessons extends React.Component{
                 <Header
                     style={{flex: 0}}
                     outerContainerStyles={{ backgroundColor: colors.lightPurple}}
-                    leftComponent={{ icon: 'menu',underlayColor:'transparent', color: colors.white, onPress: () => this.props.navigation.navigate('DrawerOpen') }}
+                    leftComponent={{ icon: 'menu',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, onPress: () => this.props.navigation.navigate('DrawerOpen') }}
                     centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: 18 } }}
-                    rightComponent={{ icon: 'settings', color: colors.white }}
+                    rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
+                        onPress: () => {this.props.navigation.push('Settings')}}}
                 />
                 <ScrollView 
                     contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}

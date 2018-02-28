@@ -12,6 +12,7 @@ import {
 import {FormInput, FormLabel, FormValidationMessage, Button, Header} from 'react-native-elements';
 import YouTube from 'react-native-youtube'
 import styles, {colors, spacing, altStyles} from '../../styles/index';
+import {NavigationActions} from 'react-navigation';
 
 
 
@@ -58,14 +59,16 @@ class Lesson extends React.Component{
         <Header
             style={{flex: 0}}
             outerContainerStyles={{ backgroundColor: colors.lightPurple}}
-            leftComponent={{ icon: 'arrow-back',underlayColor:'transparent', color: colors.white, onPress: () => this.props.navigation.pop() }}
+            leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
+              onPress: () => this.props.navigation.pop() }}
             // leftComponent={
             //   <TouchableOpacity style={{backgroundColor: colors.red}} onPress={()=>this.props.navigation.pop()}>
             //     <Text style={{color: colors.white, fontSize: 18}}>Backwards Oy</Text>
             //   </TouchableOpacity>
             // }
             centerComponent={{ text: 'Swing Analysis', style: { color: colors.white, fontSize: 18 } }}
-            rightComponent={{ icon: 'settings', color: colors.white }}
+            // rightComponent={{ icon: 'settings', underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
+            //   onPress: () => this.props.navigation.push('Settings')}}
         />
         <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
           <Text style={styles.headline}>{lesson.request_date}</Text>
