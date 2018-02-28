@@ -8,7 +8,7 @@ import MainScreen from '../components/screens/MainScreen';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import CustomDrawer from '../components/CustomDrawer'; //This is our custom drawer component
 import Login from '../components/screens/Login';
-import Home from '../components/screens/Home';
+import Lessons from '../components/screens/Lessons';
 import Logout from '../components/screens/Logout';
 import YourLessons from '../components/screens/YourLessons';
 import Packages from '../components/screens/Packages';
@@ -21,72 +21,75 @@ import OrderDetails from '../components/screens/OrderDetails';
 
 import { addListener } from '../utils/redux';
 
-export const AppNavigator2 = StackNavigator(
-  {
-    Main: { 
-      screen: MainScreen,
-      // path: 'Main',
-      navigationOptions: {
-        title: 'SquaTracK',
-        headerStyle:{
-          backgroundColor: '#333333'
-        },
-        headerTitleStyle:{
-          //color: 'rgba(255,51,51,1)',
-          color: 'rgba(255,255,255,0.7)',
-          fontSize: 22
-        },
-        headerLeft: <MaterialIcons name="menu" 
-                        size={28} 
-                        style={{ color: 'rgba(255,255,255,0.7)', paddingLeft: 15 }} 
-                        onPress={ () => alert('menu')}/>,
-        headerRight: <MaterialIcons name="settings" 
-                        size={28} 
-                        style={{ color: 'rgba(255,255,255,0.7)', paddingRight: 15 }} 
-                        onPress={ () => alert('settings')}/>
-      }
-    }
-  }
-);
+// export const AppNavigator2 = StackNavigator(
+    //   {
+    //     Main: { 
+    //       screen: MainScreen,
+    //       // path: 'Main',
+    //       navigationOptions: {
+    //         title: 'SquaTracK',
+    //         headerStyle:{
+    //           backgroundColor: '#333333'
+    //         },
+    //         headerTitleStyle:{
+    //           //color: 'rgba(255,51,51,1)',
+    //           color: 'rgba(255,255,255,0.7)',
+    //           fontSize: 22
+    //         },
+    //         headerLeft: <MaterialIcons name="menu" 
+    //                         size={28} 
+    //                         style={{ color: 'rgba(255,255,255,0.7)', paddingLeft: 15 }} 
+    //                         onPress={ () => alert('menu')}/>,
+    //         headerRight: <MaterialIcons name="settings" 
+    //                         size={28} 
+    //                         style={{ color: 'rgba(255,255,255,0.7)', paddingRight: 15 }} 
+    //                         onPress={ () => alert('settings')}/>
+    //       }
+    //     }
+    //   }
+    // );
 
 export const AppNavigator = DrawerNavigator(
   {
       Login: {
-          screen: Login,
-          navigationOptions: true ? {
-              drawerLabel: () => null //prevents this element from showing in the drawer if we are logged in
-          } : {}
+            screen: Login,
+            navigationOptions: true ? {
+                drawerLockMode: 'locked-closed',
+                drawerLabel: () => null //prevents this element from showing in the drawer if we are logged in
+            } : {}
       },
-      Home: {
-        screen: Home
+      Lessons: {
+        screen: Lessons
       },
       // Each page that has several pages that you can step through is rendered as a StackNavigator
       // Stack Navigator gives you a header component for free, we inject an icon there to open the drawer
-      Lessons: {
+      LessonTop: {
           screen: StackNavigator({
-              YourLessons: {
-                  screen: YourLessons,
+              Lessons: {
+                  screen: Lessons,
                   navigationOptions:({ navigation }) => ({
-                      title: 'Your Lessons',
-                      headerLeft: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.navigate('DrawerOpen')}/>
+                    //   title: 'Your Lessons',
+                      header: () => null
+                    //   headerLeft: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.navigate('DrawerOpen')}/>
                   })
               },
-              Redeem: {
-                  screen: Redeem,
-                  navigationOptions: ({ navigation }) => ({
-                      title: 'New Lesson',
-                      headerLeft: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.navigate('DrawerOpen')}/>
-                  })
-              },
+            //   Redeem: {
+            //       screen: Redeem,
+            //       navigationOptions: ({ navigation }) => ({
+            //           title: 'New Lesson',
+            //           headerLeft: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.navigate('DrawerOpen')}/>
+            //       })
+            //   },
               Lesson: {
                   screen: Lesson,
                   navigationOptions: ({ navigation }) => ({
-                      title: '11-07-2017',
-                      headerLeft: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.navigate('DrawerOpen')}/>
+                    header: () => null
+                        //title: '11-07-2017',
+                      //headerLeft: <MaterialIcons name="arrow-back" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.pop()}/>
                   })
               }
           },{
-              initialRouteName: 'YourLessons',
+              initialRouteName: 'Lessons',
               contentOptions:{activeTintColor: '#e91e63'}
           }),
           navigationOptions:{

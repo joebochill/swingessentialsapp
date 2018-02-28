@@ -21,18 +21,6 @@ const initialNavState = AppNavigator.router.getStateForAction(AppNavigator.route
 function nav(state = initialNavState, action) {
   let nextState;
   switch (action.type) {
-    // case 'Login':
-    //   nextState = AppNavigator.router.getStateForAction(
-    //     NavigationActions.navigate({ routeName: 'Home' }),
-    //     state
-    //   );
-    //   break;
-    // case 'Logout':
-    //   nextState = AppNavigator.router.getStateForAction(
-    //     NavigationActions.navigate({ routeName: 'Login' }),
-    //     state
-    //   );
-    //   break;
     default:
       nextState = AppNavigator.router.getStateForAction(action, state);
       break;
@@ -94,14 +82,19 @@ const initialCreditsState = {
   count: 0,
   unlimited: false,
   unlimitedExpires: 0,
-  inProgress: false,
+  inProgress: true,
   success: false,
   fail: false
 };
 const credits = (state = initialCreditsState, action) => {
   switch(action.type){
+    case GET_CREDITS.REQUEST:
+      return {...state,
+        inProgress: true
+      };
     case GET_CREDITS.SUCCESS:
       return {...state,
+        inProgress: false,
         count: parseInt(action.data.count, 10) || 0,
         unlimited: action.data.unlimited_count,
         unlimitedExpires: parseInt(action.data.unlimited_expires, 10) || 0
@@ -109,6 +102,7 @@ const credits = (state = initialCreditsState, action) => {
     case GET_CREDITS.FAIL:
     case LOGOUT.SUCCESS:
       return {...state,
+        inProgress: false,
         count: 0,
         unlimited: 0,
         unlimitedExpires: 0
@@ -120,17 +114,22 @@ const credits = (state = initialCreditsState, action) => {
 
 
 const initialLessonsState = {
-  loading: false,
+  loading: true,
   pending:[],
   closed:[],
   redeemPending: false,
   redeemFinished: false,
   redeemSuccess: false,
   newURL: null,
+  selected: null,
   coupon: {type: '', value: 0}
 }
 const lessons = (state = initialLessonsState, action) => {
   switch(action.type){
+    case GET_LESSONS.REQUEST:
+      return {...state,
+        loading: true
+      };
     case GET_LESSONS.SUCCESS:
       return {...state,
         loading: false,
@@ -139,13 +138,19 @@ const lessons = (state = initialLessonsState, action) => {
       };
     case GET_LESSONS.FAIL:
       return {...state,
-        loading: false
+        loading: false,
+        selected: null
       };
     case LOGOUT.SUCCESS:
       return {...state,
         loading: false,
         pending: [],
-        closed: []
+        closed: [],
+        selected: null
+      };
+    case 'SELECT_LESSON':
+      return {...state,
+        selected: action.data.id
       };
     default:
       return state;

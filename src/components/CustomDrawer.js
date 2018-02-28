@@ -14,7 +14,7 @@ import CardRow from './Card/CardRow';
 
 function mapStateToProps(state){
     return {
-        // username: state.userData.username
+        username: state.userData.username,
         token: state.login.token
     };
 }
@@ -29,7 +29,7 @@ class CustomDrawer extends React.Component {
   render() {
     return (
         <View style={{flex: 1, backgroundColor: colors.backgroundGrey}}>
-            <View style={{height:80, padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.purple}}>
+            <View style={{height:80, padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.lightPurple}}>
                 <Image
                     //resizeMode='contain'
                     resizeMethod='resize'
@@ -37,15 +37,20 @@ class CustomDrawer extends React.Component {
                     source={logo}
                 />
             </View>
-            <View style={{height: spacing.large, alignItems: 'center', justifyContent:'center', backgroundColor: colors.purple}}><Text style={{color:colors.white}}>{'Welcome, joebochill!'}</Text></View>
+            <View style={{height: spacing.large, alignItems: 'center', justifyContent:'center', backgroundColor: colors.lightPurple}}>
+                <Text style={{color:colors.white}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
+            </View>
             <View style={{flex: 1, justifyContent:'space-between'}}>
-                <View style={{marginTop: spacing.normal}}>
-                    <CardRow menuItem primary="Your Lessons" action={() => alert('menu navigation')}/>
-                    <CardRow menuItem primary="Submit Your Swing" action={() => alert('menu navigation')}/>
-                    <CardRow menuItem primary="Order Lessons" action={() => alert('menu navigation')}/>
-                    <CardRow menuItem primary="Settings" action={() => alert('menu navigation')}/>
-                    <CardRow menuItem primary="Sign Out" action={() => this.props.requestLogout(this.props.token)}/>
-                </View>
+                {this.props.token && 
+                    <View style={{marginTop: spacing.normal}}>
+                        <CardRow menuItem primary="Your Lessons" action={() => alert('menu navigation')}/>
+                        <CardRow menuItem primary="Submit Your Swing" action={() => alert('menu navigation')}/>
+                        <CardRow menuItem primary="Order Lessons" action={() => alert('menu navigation')}/>
+                        <CardRow menuItem primary="Settings" action={() => alert('menu navigation')}/>
+                        <CardRow menuItem primary="Sign Out" action={() => this.props.requestLogout(this.props.token)}/>
+                    </View>
+                }
+                {!this.props.token && <View></View>}
                 <View style={{marginBottom: spacing.normal}}>
                     <CardRow menuItem primary="Help" action={() => alert('menu navigation')}/>
                     <CardRow menuItem primary="About" secondary="v1.0.1" action={() => alert('menu navigation')}/>

@@ -50,9 +50,6 @@ export default StyleSheet.create({
     },
     linkButton: {
         backgroundColor: colors.transparent,
-        alignSelf: 'center',
-        marginLeft: 0,
-        marginRight: 0,
         padding: 0
     },
     disabledButton:{
@@ -88,14 +85,17 @@ export default StyleSheet.create({
     formLabelContainer:{
         // padding: 0, 
         // margin: 0, 
-        height: sizes.small
+        //height: sizes.small
+        //height: 16
+        //margin: 0
     },
     formLabel:{
         width: '100%', 
-        height:'100%', 
+        //height:'100%', 
         color:colors.purple, 
         marginLeft:0, 
-        marginTop: 0
+        marginTop: 0,
+        fontSize: 16
     },
     formInputContainer:{
         backgroundColor: 'blue',
@@ -128,6 +128,19 @@ export default StyleSheet.create({
         padding: spacing.normal,
         backgroundColor: colors.red,
         color: colors.white
+    },
+    headline:{
+        width: '100%',
+        textAlign: 'center',
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: colors.purple,
+        marginBottom: spacing.normal
+    },
+    paragraph:{
+        width: '100%',
+        color: colors.purple,
+        marginBottom: spacing.tiny
     }
 
 });

@@ -60,7 +60,7 @@ class Login extends React.Component{
 
     componentWillReceiveProps(nextProps){
         if(nextProps.token){
-            this.props.navigation.navigate('Home');
+            this.props.navigation.navigate('Lessons');
         }
         else{
             this.setState({password: ''});
@@ -124,9 +124,9 @@ class Login extends React.Component{
                     <View style={{flex: 0, marginTop: spacing.normal}}>
                     <FormLabel 
                         containerStyle={styles.formLabelContainer} 
-                        labelStyle={styles.formLabel}>Username</FormLabel>
+                        labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Username</FormLabel>
                     <FormInput
-                        containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.tiny}])}
+                        containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                         inputStyle={styles.formInput}
                         value={this.state.username}
                         placeholder="Please enter your username"
@@ -134,9 +134,9 @@ class Login extends React.Component{
                     />
                     <FormLabel 
                         containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal}])}
-                        labelStyle={styles.formLabel}>Password</FormLabel>
+                        labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Password</FormLabel>
                     <FormInput
-                        containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.tiny}])}
+                        containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                         inputStyle={styles.formInput}
                         value={this.state.password}
                         secureTextEntry={true}
@@ -151,16 +151,20 @@ class Login extends React.Component{
                         </FormValidationMessage>
                     }
                     <Button
-                        title="Sign In"
+                        title="SIGN IN"
                         // disabled={!this.state.username || !this.state.password}
                         // disabledStyle={styles.disabledButtonAlt}
                         onPress={this._onLogin.bind(this)}
                         buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.extraLarge}])}
                         containerViewStyle={styles.buttonContainer}
                     />
-                    <View style={{flexDirection:'row', justifyContent:'space-between',marginTop: spacing.extraLarge}}>
-                        <Button color={colors.white} buttonStyle={styles.linkButton} title="Forgot Password?" onPress={()=>alert('clicked')}></Button>
-                        <Button color={colors.white} buttonStyle={styles.linkButton} title="Create Account" onPress={()=>alert('clicked')}></Button>
+                    <View style={{
+                            flexDirection:'row', 
+                            justifyContent:'space-between',
+                            marginTop: spacing.extraLarge
+                        }}>
+                        <Button color={colors.white} containerViewStyle={{marginLeft:0, marginRight: 0}} buttonStyle={styles.linkButton} title="Forgot Password?" onPress={()=>alert('clicked')}></Button>
+                        <Button color={colors.white} containerViewStyle={{marginLeft:0, marginRight: 0}} buttonStyle={styles.linkButton} title="Create Account" onPress={()=>alert('clicked')}></Button>
                     </View>
                     </View>
                 </ScrollView>
