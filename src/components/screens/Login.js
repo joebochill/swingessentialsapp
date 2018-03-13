@@ -6,7 +6,6 @@ import {requestLogin} from '../../actions/LoginActions';
 
 import logo from '../../images/logo-big.png';
 
-
 import { 
     View, 
     SafeAreaView, 

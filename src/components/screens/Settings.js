@@ -2,37 +2,36 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import { 
-  StyleSheet, 
   View, 
-  Text, 
-  Image, 
-  FlatList, 
-  StatusBar, 
-  TouchableOpacity 
+  Text,
+  ScrollView,
+  StyleSheet
 } from 'react-native';
-import {Header} from 'react-native-elements';
-import { NavigationActions } from 'react-navigation';
-
+import {FormLabel, Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
-
+import CardRow from '../Card/CardRow';
 
 function mapStateToProps(state){
   return {};
 }
-
 function mapDispatchToProps(dispatch){
   return {};
 }
 
-class Settings extends React.Component{
+class SettingsScreen extends React.Component{
   constructor(props){
     super(props);
+    this.state={
+      handed: 'Right',
+      duration: 0,
+      delay: 0,
+      overlay: true
+    };
   }
 
   componentWillReceiveProps(nextProps){
 
   }
-
 
   render(){
     return (
@@ -49,9 +48,65 @@ class Settings extends React.Component{
             // }
             centerComponent={{ text: 'Settings', style: { color: colors.white, fontSize: 18 } }}
         />
+        <ScrollView contentContainerStyle={{alignItems: 'stretch'}}>
+          <FormLabel 
+            containerStyle={StyleSheet.flatten([styles.formLabelContainer, {
+              marginTop: spacing.normal,
+              marginBottom: spacing.small, 
+              paddingLeft: spacing.normal, 
+              paddingRight: spacing.normal
+            }])}
+            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+            User Settings
+          </FormLabel>
+          <CardRow 
+            customStyle={{borderTopWidth: 1}}
+            primary="Handedness" 
+            secondary={this.state.handed} 
+            action={() => {
+              this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Handedness'}});
+              this.props.navigation.push('Setting')
+            }}
+          />
+          <FormLabel 
+            containerStyle={StyleSheet.flatten([styles.formLabelContainer, {
+              marginTop: spacing.normal, 
+              marginBottom: spacing.small,
+              paddingLeft: spacing.normal, 
+              paddingRight: spacing.normal
+            }])}
+            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+            Camera Settings
+          </FormLabel>
+          <CardRow 
+            customStyle={{borderTopWidth: 1}}
+            primary="Duration" 
+            secondary={this.state.duration + 's'} 
+            action={() => {
+              this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Duration'}});
+              this.props.navigation.push('Setting')
+            }}
+          />
+          <CardRow 
+            primary="Delay" 
+            secondary={this.state.delay + 's'} 
+            action={() => {
+              this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Delay'}});
+              this.props.navigation.push('Setting')
+            }}
+          />
+          <CardRow 
+            primary="Overlay" 
+            secondary={this.state.overlay ? 'On':'Off'} 
+            action={() => {
+              this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Overlay'}});
+              this.props.navigation.push('Setting')
+            }}
+          />
+        </ScrollView>
       </View>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);

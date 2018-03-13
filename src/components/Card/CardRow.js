@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableHighlight } from 'react-native';
+import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
 import styles, {colors, spacing} from '../../styles/index';
 
 import MaterialIcons from 'react-native-vector-icons/Ionicons';
@@ -8,9 +8,12 @@ import MaterialIcons from 'react-native-vector-icons/Ionicons';
 class CardRow extends React.Component {
   render() {
     const row = (
-        <View style={styles.cardRow}>
+        <View style={StyleSheet.flatten([styles.cardRow, (this.props.customStyle ? this.props.customStyle: {})])}>
             <Text style={{color: colors.purple, flex: 1}}>{this.props.primary}</Text>
-            <Text style={{color: colors.purple, flex: 0}}>{this.props.secondary}</Text>
+            {this.props.secondary !== undefined && this.props.secondary !== '' &&
+                <Text style={{color: colors.purple, flex: 0}}>{this.props.secondary}</Text>
+            }
+            {this.props.secondaryInput}
             {this.props.action && !this.props.menuItem && 
                 <MaterialIcons name="ios-arrow-forward" 
                     size={16} 

@@ -17,6 +17,7 @@ import Lesson from '../components/screens/Lesson';
 import Help from '../components/screens/Help';
 import About from '../components/screens/About';
 import Settings from '../components/screens/Settings';
+import Setting from '../components/screens/Setting';
 import OrderDetails from '../components/screens/OrderDetails';
 
 import { addListener } from '../utils/redux';
@@ -92,7 +93,15 @@ export const AppNavigator = DrawerNavigator(
                         //title: '11-07-2017',
                       //headerLeft: <MaterialIcons name="arrow-back" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.pop()}/>
                   })
-              }
+              },
+              Setting: {
+                screen: Setting,
+                navigationOptions: ({ navigation }) => ({
+                  header: () => null
+                      //title: '11-07-2017',
+                    //headerLeft: <MaterialIcons name="arrow-back" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.pop()}/>
+                })
+            }
           },{
               initialRouteName: 'Lessons',
               contentOptions:{activeTintColor: '#e91e63'}

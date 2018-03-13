@@ -157,12 +157,32 @@ const lessons = (state = initialLessonsState, action) => {
   }
 }
 
+const initialSettingsState = {
+  duration: 3,
+  delay: 0,
+  overlay: true,
+  handed: 'Right',
+  selected: null
+}
+const settings = (state = initialSettingsState, action) => {
+  switch(action.type){
+
+    case 'SELECT_SETTING':
+      return {...state,
+        selected: action.data.setting
+      };
+    default:
+      return state;
+  }
+}
+
 const AppReducer = combineReducers({
   nav,
   userData,
   login,
   credits,
-  lessons
+  lessons,
+  settings
 });
 
 

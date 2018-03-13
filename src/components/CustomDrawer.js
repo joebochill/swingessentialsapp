@@ -29,7 +29,7 @@ function mapDispatchToProps(dispatch){
 
 class CustomDrawer extends React.Component {
     
-  render() {console.log(this.props.navigation);
+  render() {
     return (
         <View style={{flex: 1, backgroundColor: colors.backgroundGrey}}>
             <View style={{height:80, padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.lightPurple}}>
@@ -41,25 +41,27 @@ class CustomDrawer extends React.Component {
                 />
             </View>
             <View style={{height: spacing.large, alignItems: 'center', justifyContent:'center', backgroundColor: colors.lightPurple}}>
-                <Text style={{color:colors.white}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
+                <Text style={{color:colors.white, marginTop:-1*spacing.large}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
             </View>
             <View style={{flex: 1, justifyContent:'space-between'}}>
                 {this.props.token && 
                     <View style={{marginTop: spacing.normal}}>
                         <CardRow menuItem primary="Your Lessons" 
+                            customStyle={{borderTopWidth: 1}}
                             action={() => this.props.navigation.navigate('Lessons')}/>
                         <CardRow menuItem primary="Submit Your Swing" 
                             action={() => this.props.navigation.navigate('Redeem')}/>
                         <CardRow menuItem primary="Order Lessons" 
                             action={() => this.props.navigation.navigate('OrderDetails')}/>
-                        <CardRow menuItem primary="Settings" 
-                            action={() => this.props.navigation.navigate('Settings')}/>
                         <CardRow menuItem primary="Sign Out" 
                             action={() => this.props.requestLogout(this.props.token)}/>
                     </View>
                 }
                 {!this.props.token && <View></View>}
                 <View style={{marginBottom: spacing.normal}}>
+                    <CardRow menuItem primary="Settings" 
+                        customStyle={{borderTopWidth: 1}}
+                        action={() => this.props.navigation.navigate('Settings')}/>
                     <CardRow menuItem primary="Help" 
                         action={() => this.props.navigation.navigate('Help')}/>
                     <CardRow menuItem primary="About" secondary="v1.0.1" 
