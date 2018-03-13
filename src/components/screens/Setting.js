@@ -26,9 +26,9 @@ class SettingScreen extends React.Component{
     super(props);
     this.descriptions = {
       Overlay: 'Overlay shows an image of how you should stand while recording your swing',
-      Delay: 'How many seconds to wait between pressing record and the start of the recording',
-      Duration: 'How many seconds to record for your swing',
-      Handedness: 'Which is your dominant hand for golfing'
+      Delay: 'How long to wait between pressing record and the start of the recording',
+      Duration: 'How long to record for each swing',
+      Handedness: 'Your dominant hand for golfing'
     };
     this.state={
       value: true
