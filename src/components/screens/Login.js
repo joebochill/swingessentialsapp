@@ -1,5 +1,4 @@
 import React from 'react';
-import {bindActionCreators} from 'redux';
 import {NavigationActions} from 'react-navigation';
 import {connect} from 'react-redux';
 import {requestLogin} from '../../actions/LoginActions';
@@ -8,17 +7,13 @@ import logo from '../../images/logo-big.png';
 
 import { 
     View, 
-    SafeAreaView, 
-    KeyboardAvoidingView, 
     ScrollView, 
     StyleSheet, 
-    TouchableHighlight,
-    Image,
     Animated,
-    Keyboard 
+    Keyboard,
+    Platform
 } from 'react-native';
 import {FormInput, FormLabel, FormValidationMessage, Button, Header} from 'react-native-elements';
-
 
 import styles, {colors, spacing, altStyles} from '../../styles/index';
 
@@ -49,12 +44,25 @@ class Login extends React.Component{
     }
 
     componentWillMount () {
-        this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
-        this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
+        if(Platform.OS === 'ios'){
+            this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+            this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
+        }
+        else{
+            this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+            this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+        }
     }
     componentWillUnmount() {
-        this.keyboardWillShowSub.remove();
-        this.keyboardWillHideSub.remove();
+        if(Platform.OS === 'ios'){
+            this.keyboardWillShowSub.remove();
+            this.keyboardWillHideSub.remove();
+        }
+        else{
+            this.keyboardDidShowSub.remove();
+            this.keyboardDidHideSub.remove();
+        }
+        
     }
 
     componentWillReceiveProps(nextProps){
@@ -71,28 +79,38 @@ class Login extends React.Component{
     keyboardWillShow = (event) => {
         Animated.parallel([
           Animated.timing(this.keyboardHeight, {
-            duration: event.duration,
+            duration: event.duration || 0,
             toValue: event.endCoordinates.height+spacing.normal,
           }),
           Animated.timing(this.imageHeight, {
-            duration: event.duration,
+            duration: event.duration || 0,
             toValue: 50,
           }),
         ]).start();
-      };
+    };
+    keyboardDidShow = (event) => {
+        this.keyboardHeight = event.endCoordinates.height+spacing.normal;
+        this.imageHeight = 50;
+        this.forceUpdate();
+    }
     
-      keyboardWillHide = (event) => {
+    keyboardWillHide = (event) => {
         Animated.parallel([
           Animated.timing(this.keyboardHeight, {
-            duration: event.duration,
+            duration: event.duration || 0,
             toValue: spacing.normal,
           }),
           Animated.timing(this.imageHeight, {
-            duration: event.duration,
+            duration: event.duration || 0,
             toValue: 100,
           }),
         ]).start();
-      };
+    };
+    keyboardDidHide = () => {
+        this.keyboardHeight = spacing.normal;
+        this.imageHeight = 100;
+        this.forceUpdate();
+    }
 
     _onLogin(){
         if(!this.state.username || !this.state.password){
@@ -162,9 +180,15 @@ class Login extends React.Component{
                     <View style={{
                             flexDirection:'row', 
                             justifyContent:'space-between',
-                            marginTop: spacing.extraLarge
+                            marginTop: spacing.large
                         }}>
-                        <Button color={colors.white} containerViewStyle={{marginLeft:0, marginRight: 0}} buttonStyle={styles.linkButton} title="Forgot Password?" onPress={()=>alert('clicked')}></Button>
+                        <Button 
+                            color={colors.white} 
+                            containerViewStyle={{marginLeft:0, marginRight: 0}} 
+                            buttonStyle={styles.linkButton} 
+                            title="Forgot Password?" 
+                            onPress={()=>this.props.navigation.push('Forgot')}>
+                        </Button>
                         <Button color={colors.white} containerViewStyle={{marginLeft:0, marginRight: 0}} buttonStyle={styles.linkButton} title="Create Account" onPress={()=>alert('clicked')}></Button>
                     </View>
                     </View>

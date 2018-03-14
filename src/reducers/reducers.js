@@ -17,7 +17,7 @@ import { GET_SETTINGS } from '../actions/UserDataActions';
 
 
 
-const initialNavState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Login'));
+const initialNavState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Auth'));
 
 function nav(state = initialNavState, action) {
   let nextState;

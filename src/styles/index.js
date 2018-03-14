@@ -56,7 +56,10 @@ export default StyleSheet.create({
     },
     linkButton: {
         backgroundColor: colors.transparent,
-        padding: 0
+        paddingLeft: 0,
+        paddingRight:0,
+        paddingTop: spacing.small,
+        paddingBottom: spacing.small
     },
     disabledButton:{
         backgroundColor: colors.lightPurple,

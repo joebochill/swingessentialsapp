@@ -52,7 +52,7 @@ class CustomDrawer extends React.Component {
                         <CardRow menuItem primary="Submit Your Swing" 
                             action={() => this.props.navigation.navigate('Redeem')}/>
                         <CardRow menuItem primary="Order Lessons" 
-                            action={() => this.props.navigation.navigate('OrderDetails')}/>
+                            action={() => this.props.navigation.navigate('Order')}/>
                         <CardRow menuItem primary="Sign Out" 
                             action={() => this.props.requestLogout(this.props.token)}/>
                     </View>

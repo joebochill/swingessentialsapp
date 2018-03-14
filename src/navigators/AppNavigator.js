@@ -3,29 +3,39 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator, DrawerNavigator } from 'react-navigation';
 
-import MainScreen from '../components/screens/MainScreen';
-
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import CustomDrawer from '../components/CustomDrawer'; //This is our custom drawer component
+
 import Login from '../components/screens/Login';
-import Lessons from '../components/screens/Lessons';
 import Logout from '../components/screens/Logout';
-import YourLessons from '../components/screens/YourLessons';
-import Packages from '../components/screens/Packages';
-import Redeem from '../components/screens/Redeem';
+import Forgot from '../components/screens/Forgot';
+
+import Lessons from '../components/screens/Lessons';
 import Lesson from '../components/screens/Lesson';
+
+import Redeem from '../components/screens/Redeem';
+import Order from '../components/screens/Order';
+
 import Help from '../components/screens/Help';
 import About from '../components/screens/About';
+
 import Settings from '../components/screens/Settings';
 import Setting from '../components/screens/Setting';
-import OrderDetails from '../components/screens/OrderDetails';
+
 
 import { addListener } from '../utils/redux';
 
 export const AppNavigator = DrawerNavigator(
     {
-        Login: {
-            screen: Login,
+        Auth: {
+            screen: StackNavigator(
+                {
+                    Login: {screen: Login, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Forgot: {screen: Forgot, navigationOptions: ({ navigation }) => ({header: () => null})}
+                },
+                {initialRouteName: 'Login'}
+            ),
+            //screen: Login,
             navigationOptions: {
                 drawerLockMode: 'locked-closed',
                 drawerLabel: () => null
@@ -42,13 +52,12 @@ export const AppNavigator = DrawerNavigator(
                 {initialRouteName: 'Lessons'}
             )
         },
-        Order: {screen: OrderDetails},
+        Order: {screen: Order},
         Help: {screen: Help},
-        About: {screen: About},
-        Logout: {screen: Logout}
+        About: {screen: About}
     }, 
     {
-        initialRouteName: 'Login',
+        initialRouteName: 'Main',
         contentComponent: CustomDrawer
     }
 );
