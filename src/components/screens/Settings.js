@@ -12,7 +12,9 @@ import styles, {colors, spacing, altStyles} from '../../styles/index';
 import CardRow from '../Card/CardRow';
 
 function mapStateToProps(state){
-  return {};
+  return {
+    settings: state.settings
+  };
 }
 function mapDispatchToProps(dispatch){
   return {};
@@ -21,12 +23,7 @@ function mapDispatchToProps(dispatch){
 class SettingsScreen extends React.Component{
   constructor(props){
     super(props);
-    this.state={
-      handed: 'Right',
-      duration: 0,
-      delay: 0,
-      overlay: true
-    };
+    this.state={};
   }
 
   componentWillReceiveProps(nextProps){
@@ -62,7 +59,7 @@ class SettingsScreen extends React.Component{
           <CardRow 
             customStyle={{borderTopWidth: 1}}
             primary="Handedness" 
-            secondary={this.state.handed} 
+            secondary={this.props.settings.handedness} 
             action={() => {
               this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Handedness'}});
               this.props.navigation.push('Setting')
@@ -81,7 +78,7 @@ class SettingsScreen extends React.Component{
           <CardRow 
             customStyle={{borderTopWidth: 1}}
             primary="Duration" 
-            secondary={this.state.duration + 's'} 
+            secondary={this.props.settings.duration + 's'} 
             action={() => {
               this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Duration'}});
               this.props.navigation.push('Setting')
@@ -89,7 +86,7 @@ class SettingsScreen extends React.Component{
           />
           <CardRow 
             primary="Delay" 
-            secondary={this.state.delay + 's'} 
+            secondary={this.props.settings.delay + 's'} 
             action={() => {
               this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Delay'}});
               this.props.navigation.push('Setting')
@@ -97,7 +94,7 @@ class SettingsScreen extends React.Component{
           />
           <CardRow 
             primary="Overlay" 
-            secondary={this.state.overlay ? 'On':'Off'} 
+            secondary={this.props.settings.overlay ? 'On':'Off'} 
             action={() => {
               this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Overlay'}});
               this.props.navigation.push('Setting')

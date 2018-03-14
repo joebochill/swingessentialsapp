@@ -13,6 +13,7 @@ import {
   CHECK_COUPON,
   EXECUTE_PAYMENT
 } from '../actions/LessonActions.js';
+import { GET_SETTINGS } from '../actions/UserDataActions';
 
 
 
@@ -161,12 +162,18 @@ const initialSettingsState = {
   duration: 3,
   delay: 0,
   overlay: true,
-  handed: 'Right',
+  handedness: 'Right',
   selected: null
 }
 const settings = (state = initialSettingsState, action) => {
   switch(action.type){
-
+    case GET_SETTINGS.SUCCESS:
+      return {...state,
+        delay: action.data.camera.delay,
+        duration: action.data.camera.duration,
+        overlay: !!action.data.camera.overlay,
+        handedness: action.data.handed.charAt(0).toUpperCase() + action.data.handed.toLowerCase().slice(1)
+      };
     case 'SELECT_SETTING':
       return {...state,
         selected: action.data.setting

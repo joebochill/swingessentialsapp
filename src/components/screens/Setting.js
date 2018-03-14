@@ -11,14 +11,19 @@ import {
 import {FormLabel, Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
 import CardRow from '../Card/CardRow';
+import {putSettings} from '../../actions/UserDataActions';
 
 function mapStateToProps(state){
   return {
-    setting: state.settings.selected
+    token: state.login.token,
+    setting: state.settings.selected,
+    settings: state.settings
   };
 }
 function mapDispatchToProps(dispatch){
-  return {};
+  return {
+    updateSettings: (settings, token) => {dispatch(putSettings(settings, token));}
+  };
 }
 
 class SettingScreen extends React.Component{
@@ -30,13 +35,31 @@ class SettingScreen extends React.Component{
       Duration: 'How long to record for each swing',
       Handedness: 'Your dominant hand for golfing'
     };
+    this.durations = [3,4,5,6,7,8,9,10];
+    this.delays = [0,1,2,3,4,5,6,7];
+    this.hands = ['Right', 'Left'];
     this.state={
-      value: true
+      value: props.settings[props.setting.toLowerCase()]
     };
   }
 
   componentWillReceiveProps(nextProps){
 
+  }
+
+  _getNewSettingsObject(){
+    switch(this.props.setting){
+      case 'Handedness':
+        return {handed: this.state.value.toLowerCase()};
+      case 'Duration':
+        return {camera_duration: this.state.value};
+      case 'Delay':
+        return {camera_delay: this.state.value};
+      case 'Overlay':
+        return {camera_overlay: this.state.value}
+      default:
+        return {};
+    }
   }
 
   render(){
@@ -46,19 +69,18 @@ class SettingScreen extends React.Component{
             style={{flex: 0}}
             outerContainerStyles={{ backgroundColor: colors.lightPurple}}
             leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
-              onPress: () => this.props.navigation.pop()}}//this.props.navigation.dispatch(NavigationActions.back({key:this.props.navigation.state.key})) }}
-            // leftComponent={
-            //   <TouchableOpacity style={{backgroundColor: colors.red}} onPress={()=>this.props.navigation.pop()}>
-            //     <Text style={{color: colors.white, fontSize: 18}}>Backwards Oy</Text>
-            //   </TouchableOpacity>
-            // }
+              onPress: () => {
+                this.props.updateSettings(this._getNewSettingsObject(),this.props.token);
+                this.props.navigation.pop();
+              }
+            }}
             centerComponent={{ text: this.props.setting, style: { color: colors.white, fontSize: 18 } }}
         />
         <ScrollView contentContainerStyle={{alignItems: 'stretch'}}>
           {this.props.setting === 'Overlay' && 
-            <View>
+            <View style={{paddingTop: spacing.normal}}>
               <CardRow 
-                customStyle={{marginTop: spacing.normal, marginBottom: spacing.small, borderTopWidth: 1}}
+                customStyle={{borderTopWidth: 1}}
                 primary={this.props.setting} 
                 secondaryInput={
                   <Switch 
@@ -69,6 +91,7 @@ class SettingScreen extends React.Component{
                 } 
               />
               <Text style={StyleSheet.flatten([styles.paragraph, {
+                  marginTop: spacing.small,
                   paddingLeft: spacing.normal, 
                   paddingRight: spacing.normal
                 }])}>
@@ -77,26 +100,19 @@ class SettingScreen extends React.Component{
             </View>
           }
           {this.props.setting === 'Duration' && 
-            <View>
-              <CardRow 
-                customStyle={{marginTop: spacing.normal, marginBottom: spacing.small, borderTopWidth: 1}}
-                primary={this.props.setting} 
-                secondaryInput={
-                  <Picker
-                    selectedValue={this.state.value}
-                    onValueChange={(itemValue, itemIndex) => this.setState({value: itemValue})}>
-                    <Picker.Item label="3s" value={3} />
-                    <Picker.Item label="4s" value={4} />
-                    <Picker.Item label="5s" value={5} />
-                    <Picker.Item label="6s" value={6} />
-                    <Picker.Item label="7s" value={7} />
-                    <Picker.Item label="8s" value={8} />
-                    <Picker.Item label="9s" value={9} />
-                    <Picker.Item label="10s" value={10} />
-                  </Picker>
-                } 
-              />
+            <View style={{paddingTop: spacing.normal}}>
+              {this.durations.map((item,index) => 
+                <CardRow key={'row_'+index}
+                  customStyle={
+                    index === 0 ? {borderTopWidth: 1} : {}}
+                  primary={item+'s'} 
+                  menuItem
+                  selected={this.state.value === item}
+                  action={()=>this.setState({value: item})}
+                />
+              )}
               <Text style={StyleSheet.flatten([styles.paragraph, {
+                  marginTop: spacing.small,
                   paddingLeft: spacing.normal, 
                   paddingRight: spacing.normal
                 }])}>
@@ -105,29 +121,19 @@ class SettingScreen extends React.Component{
             </View>
           }
           {this.props.setting === 'Delay' && 
-            <View>
-              <CardRow 
-                customStyle={{marginTop: spacing.normal, marginBottom: spacing.small, borderTopWidth: 1}}
-                primary={this.props.setting} 
-                secondaryInput={
-                  <Picker
-                    selectedValue={this.state.value}
-                    onValueChange={(itemValue, itemIndex) => this.setState({value: itemValue})}>
-                    <Picker.Item label="0s" value={0} />
-                    <Picker.Item label="1s" value={1} />
-                    <Picker.Item label="2s" value={2} />
-                    <Picker.Item label="3s" value={3} />
-                    <Picker.Item label="4s" value={4} />
-                    <Picker.Item label="5s" value={5} />
-                    <Picker.Item label="6s" value={6} />
-                    <Picker.Item label="7s" value={7} />
-                    <Picker.Item label="8s" value={8} />
-                    <Picker.Item label="9s" value={9} />
-                    <Picker.Item label="10s" value={10} />
-                  </Picker>
-                } 
-              />
+            <View style={{paddingTop: spacing.normal}}>
+              {this.delays.map((item,index) => 
+                <CardRow key={'row_'+index}
+                  customStyle={
+                    index === 0 ? {borderTopWidth: 1} : {}}
+                  primary={item+'s'} 
+                  menuItem
+                  selected={this.state.value === item}
+                  action={()=>this.setState({value: item})}
+                />
+              )}
               <Text style={StyleSheet.flatten([styles.paragraph, {
+                  marginTop: spacing.small,
                   paddingLeft: spacing.normal, 
                   paddingRight: spacing.normal
                 }])}>
@@ -136,20 +142,19 @@ class SettingScreen extends React.Component{
             </View>
           }
           {this.props.setting === 'Handedness' && 
-            <View>
-              <CardRow 
-                customStyle={{marginTop: spacing.normal, marginBottom: spacing.small, borderTopWidth: 1}}
-                primary={this.props.setting} 
-                secondaryInput={
-                  <Picker
-                    selectedValue={this.state.value}
-                    onValueChange={(itemValue, itemIndex) => this.setState({value: itemValue})}>
-                    <Picker.Item label="Right" value={'Right'} />
-                    <Picker.Item label="Left" value={'Left'} />
-                  </Picker>
-                } 
-              />
+            <View style={{paddingTop: spacing.normal}}>
+              {this.hands.map((item,index) => 
+                <CardRow key={'row_'+index}
+                  customStyle={
+                    index === 0 ? {borderTopWidth: 1} : {}}
+                  primary={item} 
+                  menuItem
+                  selected={this.state.value === item}
+                  action={()=>this.setState({value: item})}
+                />
+              )}
               <Text style={StyleSheet.flatten([styles.paragraph, {
+                  marginTop: spacing.small,
                   paddingLeft: spacing.normal, 
                   paddingRight: spacing.normal
                 }])}>

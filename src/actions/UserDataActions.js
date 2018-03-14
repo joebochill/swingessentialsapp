@@ -5,6 +5,7 @@ export const UPDATE_CREDENTIALS = {REQUEST: 'UPDATE_CREDENTIALS', SUCCESS: 'UPDA
 export const PUT_USER_DATA = {SUCCESS: 'PUT_USER_DATA_SUCCESS', FAIL: 'PUT_USER_DATA_FAIL'};
 export const GET_USER_DATA = {SUCCESS: 'GET_USER_DATA_SUCCESS', FAIL: 'GET_USER_DATA_FAIL'};
 export const GET_SETTINGS = {SUCCESS: 'GET_SETTINGS_SUCCESS', FAIL: 'GET_SETTINGS_FAIL'};
+export const PUT_SETTINGS = {SUCCESS: 'PUT_SETTINGS_SUCCESS', FAIL: 'PUT_SETTINGS_FAIL'};
 export const GET_USERS = {SUCCESS: 'GET_USERS_SUCCESS', FAIL: 'GET_USERS_FAIL'};
 
 
@@ -133,6 +134,33 @@ export function getSettings(token){
                 default:
                     checkTimeout(response, dispatch);
                     dispatch(failure(GET_SETTINGS.FAIL, response));
+                    break;
+            }
+        })
+        .catch((error) => console.error(error));
+    }
+}
+
+/* Updates the user settings in the database */
+export function putSettings(data, token){
+    return (dispatch) => {
+        return fetch(BASEURL+'settings', { 
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            switch(response.status) {
+                case 200:
+                    dispatch(success(PUT_SETTINGS.SUCCESS));
+                    dispatch(getSettings(token));
+                    break;
+                default:
+                    checkTimeout(response, dispatch);
+                    dispatch(failure(PUT_SETTINGS.FAIL, response));
+                    dispatch(getSettings(token));
                     break;
             }
         })

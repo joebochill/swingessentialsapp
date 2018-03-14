@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
@@ -17,6 +17,7 @@ const store = createStore(
 
 class SwingEssentialsApp extends React.Component {
   render() {
+    StatusBar.setBarStyle('light-content', true);
     return (
       <Provider store={store}>
         <AppWithNavigationState />

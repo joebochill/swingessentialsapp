@@ -40,8 +40,8 @@ export function requestLogin(userCredentials){
                     response.json()
                     .then((json) => dispatch(success(LOGIN.SUCCESS, {...json,token:token})))
                     .then(() => dispatch(getLessons(token)))
-                    .then(() => dispatch(getCredits(token)));
-                    //.then(() => dispatch(getSettings(token)))
+                    .then(() => dispatch(getCredits(token)))
+                    .then(() => dispatch(getSettings(token)));
                     //.then(() => dispatch(getBlogs(token)))
                     //.then(() => dispatch(getTips(token)));
                     //.then(() => dispatch(getPackages(token)));

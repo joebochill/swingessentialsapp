@@ -22,165 +22,55 @@ import OrderDetails from '../components/screens/OrderDetails';
 
 import { addListener } from '../utils/redux';
 
-// export const AppNavigator2 = StackNavigator(
-    //   {
-    //     Main: { 
-    //       screen: MainScreen,
-    //       // path: 'Main',
-    //       navigationOptions: {
-    //         title: 'SquaTracK',
-    //         headerStyle:{
-    //           backgroundColor: '#333333'
-    //         },
-    //         headerTitleStyle:{
-    //           //color: 'rgba(255,51,51,1)',
-    //           color: 'rgba(255,255,255,0.7)',
-    //           fontSize: 22
-    //         },
-    //         headerLeft: <MaterialIcons name="menu" 
-    //                         size={28} 
-    //                         style={{ color: 'rgba(255,255,255,0.7)', paddingLeft: 15 }} 
-    //                         onPress={ () => alert('menu')}/>,
-    //         headerRight: <MaterialIcons name="settings" 
-    //                         size={28} 
-    //                         style={{ color: 'rgba(255,255,255,0.7)', paddingRight: 15 }} 
-    //                         onPress={ () => alert('settings')}/>
-    //       }
-    //     }
-    //   }
-    // );
-
 export const AppNavigator = DrawerNavigator(
-  {
-      Login: {
+    {
+        Login: {
             screen: Login,
-            navigationOptions: true ? {
+            navigationOptions: {
                 drawerLockMode: 'locked-closed',
-                drawerLabel: () => null //prevents this element from showing in the drawer if we are logged in
-            } : {}
-      },
-      // Each page that has several pages that you can step through is rendered as a StackNavigator
-      // Stack Navigator gives you a header component for free, we inject an icon there to open the drawer
-      Main: {
-          screen: StackNavigator({
-              Lessons: {
-                  screen: Lessons,
-                  navigationOptions:({ navigation }) => ({
-                    //   title: 'Your Lessons',
-                      header: () => null
-                    //   headerLeft: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.navigate('DrawerOpen')}/>
-                  })
-              },
-            //   Redeem: {
-            //       screen: Redeem,
-            //       navigationOptions: ({ navigation }) => ({
-            //           title: 'New Lesson',
-            //           headerLeft: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.navigate('DrawerOpen')}/>
-            //       })
-            //   },
-              Lesson: {
-                  screen: Lesson,
-                  navigationOptions: ({ navigation }) => ({
-                    header: () => null
-                        //title: '11-07-2017',
-                      //headerLeft: <MaterialIcons name="arrow-back" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.pop()}/>
-                  })
-              },
-              Settings: {
-                  screen: Settings,
-                  navigationOptions: ({ navigation }) => ({
-                    header: () => null
-                        //title: '11-07-2017',
-                      //headerLeft: <MaterialIcons name="arrow-back" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.pop()}/>
-                  })
-              },
-              Setting: {
-                screen: Setting,
-                navigationOptions: ({ navigation }) => ({
-                  header: () => null
-                      //title: '11-07-2017',
-                    //headerLeft: <MaterialIcons name="arrow-back" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.pop()}/>
-                })
+                drawerLabel: () => null
             }
-          },{
-              initialRouteName: 'Lessons',
-              contentOptions:{activeTintColor: '#e91e63'}
-          }),
-          navigationOptions:{
-              drawerLabel: 'Your Lessons',
-              drawerIcon: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }}/>
-          }  
-      },
-      Order: {
-          screen: StackNavigator({
-              Packages: {
-                  screen: Packages,
-                  navigationOptions:({ navigation }) => ({
-                      title: 'Order Lessons',
-                      headerLeft: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.navigate('DrawerOpen')}/>
-                  })
-              },
-              OrderDetails: {
-                  screen: OrderDetails,
-                  navigationOptions: ({ navigation }) => ({
-                      title: 'Order Details',
-                      headerLeft: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }} onPress={ () => navigation.navigate('DrawerOpen')}/>
-                  })
-              }
-          }),
-          navigationOptions:{
-              drawerLabel: 'Order Lessons',
-              drawerIcon: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }}/>
-          }  
-      },
-      // Solo screens don't get a header by default. We can add them in the Component definition (as I did here), or use the headerMode prop on the top-level Stack Navigator
-      Help: {
-          screen: Help,
-          navigationOptions: {
-              drawerLabel: 'Help',
-              drawerIcon: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }}/>
-          }
-      },
-      About: {
-          screen: About,
-          navigationOptions: {
-              drawerLabel: 'About',
-              drawerIcon: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }}/>
-          }
-      },
-      Logout: {
-          screen: Logout,
-          navigationOptions: {
-              drawerLabel: 'Sign Out',
-              drawerIcon: <MaterialIcons name="move-to-inbox" size={24} style={{ color: '#e91e63' }}/>
-          }
-      }
-  }, 
-  {
-      initialRouteName: 'Login',
-      contentOptions:{activeTintColor: '#e91e63'},
-      contentComponent: CustomDrawer
-  }
+        },
+        Main: {
+            screen: StackNavigator(
+                {
+                    Lessons: {screen: Lessons, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Lesson: {screen: Lesson, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Settings: {screen: Settings, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Setting: {screen: Setting, navigationOptions: ({ navigation }) => ({header: () => null})}
+                },
+                {initialRouteName: 'Lessons'}
+            )
+        },
+        Order: {screen: OrderDetails},
+        Help: {screen: Help},
+        About: {screen: About},
+        Logout: {screen: Logout}
+    }, 
+    {
+        initialRouteName: 'Login',
+        contentComponent: CustomDrawer
+    }
 );
 
 class AppWithNavigationState extends React.Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    nav: PropTypes.object.isRequired
-  };
+    static propTypes = {
+        dispatch: PropTypes.func.isRequired,
+        nav: PropTypes.object.isRequired
+    };
 
-  render() {
-    const { dispatch, nav } = this.props;
-    return (
-      <AppNavigator
-        navigation={addNavigationHelpers({
-          dispatch,
-          state: nav,
-          addListener
-        })}
-      />
-    );
-  }
+    render() {
+        const { dispatch, nav } = this.props;
+        return (
+            <AppNavigator
+                navigation={addNavigationHelpers({
+                dispatch,
+                state: nav,
+                addListener
+                })}
+            />
+        );
+    }
 }
 
 const mapStateToProps = state => ({

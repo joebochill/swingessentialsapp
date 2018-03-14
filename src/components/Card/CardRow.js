@@ -20,6 +20,12 @@ class CardRow extends React.Component {
                     style={{ color: colors.purple, paddingLeft: spacing.small, flex: 0 }} 
                 />
             }
+            {this.props.menuItem && this.props.selected &&
+                <MaterialIcons name="ios-checkmark" 
+                    size={36} 
+                    style={{ color: colors.purple, paddingLeft: spacing.small, flex: 0 }} 
+                />
+            }
         </View>
     );
     return (this.props.action ? 

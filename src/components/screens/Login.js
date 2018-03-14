@@ -127,6 +127,7 @@ class Login extends React.Component{
                     <FormInput
                         containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                         inputStyle={styles.formInput}
+                        underlineColorAndroid={colors.transparent}
                         value={this.state.username}
                         placeholder="Please enter your username"
                         onChangeText={(newText) => this.setState({username: newText})}
@@ -137,6 +138,7 @@ class Login extends React.Component{
                     <FormInput
                         containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                         inputStyle={styles.formInput}
+                        underlineColorAndroid={colors.transparent}
                         value={this.state.password}
                         secureTextEntry={true}
                         placeholder="Please enter your password"
