@@ -13,6 +13,7 @@ import CardRow from '../Card/CardRow';
 
 function mapStateToProps(state){
   return {
+    token: state.login.token,
     settings: state.settings
   };
 }
@@ -26,8 +27,15 @@ class SettingsScreen extends React.Component{
     this.state={};
   }
 
+  componentDidMount(){
+    if(!this.props.token){
+        this.props.navigation.navigate('Login');
+    }
+  }
   componentWillReceiveProps(nextProps){
-
+    if(!nextProps.token){
+        this.props.navigation.navigate('Login');
+    }
   }
 
   render(){

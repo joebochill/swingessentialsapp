@@ -43,8 +43,15 @@ class SettingScreen extends React.Component{
     };
   }
 
+  componentDidMount(){
+    if(!this.props.token){
+        this.props.navigation.navigate('Login');
+    }
+  }
   componentWillReceiveProps(nextProps){
-
+    if(!nextProps.token){
+        this.props.navigation.navigate('Login');
+    }
   }
 
   _getNewSettingsObject(){

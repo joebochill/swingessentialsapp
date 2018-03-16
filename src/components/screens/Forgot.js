@@ -8,7 +8,6 @@ import logo from '../../images/logo-big.png';
 import { 
     View, 
     Text,
-    KeyboardAvoidingView, 
     ScrollView, 
     StyleSheet
 } from 'react-native';
@@ -38,16 +37,7 @@ class Forgot extends React.Component{
         };
     }
 
-    componentWillMount () {
-    }
-    componentWillUnmount() {
-    }
-
-    componentWillReceiveProps(nextProps){
-
-    }
-
-     render(){
+    render(){
         return(
             <View style={{flex: 1}}>
                 <Header
@@ -57,7 +47,18 @@ class Forgot extends React.Component{
                         onPress: () => this.props.navigation.pop()}}//this.props.navigation.dispatch(NavigationActions.back({key:this.props.navigation.state.key})) }}
                     centerComponent={{ text: 'Reset Password', style: { color: colors.white, fontSize: 18 } }}
                 />
-                <KeyboardView>
+                <KeyboardView 
+                    fixed={!this.state.resetSent &&
+                        <Button
+                            title="SEND INSTRUCTIONS"
+                            disabled={!this.state.email.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i)}
+                            onPress={()=> {this.props.requestReset(this.state.email); this.setState({resetSent: true})}}
+                            buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                            disabledStyle={styles.disabledButton}
+                            containerViewStyle={styles.buttonContainer}
+                        />
+                    }
+                >
                     {!this.state.resetSent && 
                         <ScrollView>
                             <Text style={StyleSheet.flatten([styles.paragraph, {marginTop: 0, marginBottom: spacing.normal}])}>Enter your email address below and we will send you instructions for resetting your password.</Text>
@@ -73,14 +74,6 @@ class Forgot extends React.Component{
                                 placeholder="Please enter your email"
                                 onChangeText={(newText) => this.setState({email: newText})}
                             />
-                            {this.state.email.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i) && 
-                                <Button
-                                    title="SEND INSTRUCTIONS"
-                                    onPress={()=> {this.props.requestReset(this.state.email); this.setState({resetSent: true})}}
-                                    buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.extraLarge}])}
-                                    containerViewStyle={styles.buttonContainer}
-                                />
-                            }
                         </ScrollView>
                     }
                     {this.state.resetSent &&

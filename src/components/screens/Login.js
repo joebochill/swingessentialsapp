@@ -189,7 +189,15 @@ class Login extends React.Component{
                             title="Forgot Password?" 
                             onPress={()=>this.props.navigation.push('Forgot')}>
                         </Button>
-                        <Button color={colors.white} containerViewStyle={{marginLeft:0, marginRight: 0}} buttonStyle={styles.linkButton} title="Create Account" onPress={()=>alert('clicked')}></Button>
+                        <Button 
+                            color={colors.white} 
+                            containerViewStyle={{
+                                marginLeft:0, marginRight: 0
+                            }} 
+                            buttonStyle={styles.linkButton} 
+                            title="Create Account" 
+                            onPress={()=>this.props.navigation.push('Register')}>
+                        </Button>
                     </View>
                     </View>
                 </ScrollView>

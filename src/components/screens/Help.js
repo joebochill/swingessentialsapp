@@ -11,7 +11,9 @@ import {FormLabel, Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
 
 function mapStateToProps(state){
-  return {};
+  return {
+    token: state.login.token
+  };
 }
 function mapDispatchToProps(dispatch){
   return {};
@@ -22,8 +24,15 @@ class HelpScreen extends React.Component{
     super(props);
   }
 
+  componentDidMount(){
+    if(!this.props.token){
+        this.props.navigation.navigate('Login');
+    }
+  }
   componentWillReceiveProps(nextProps){
-
+      if(!nextProps.token){
+          this.props.navigation.navigate('Login');
+      }
   }
 
   render(){

@@ -7,8 +7,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import CustomDrawer from '../components/CustomDrawer'; //This is our custom drawer component
 
 import Login from '../components/screens/Login';
-import Logout from '../components/screens/Logout';
 import Forgot from '../components/screens/Forgot';
+import Register from '../components/screens/Register';
 
 import Lessons from '../components/screens/Lessons';
 import Lesson from '../components/screens/Lesson';
@@ -31,7 +31,8 @@ export const AppNavigator = DrawerNavigator(
             screen: StackNavigator(
                 {
                     Login: {screen: Login, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Forgot: {screen: Forgot, navigationOptions: ({ navigation }) => ({header: () => null})}
+                    Forgot: {screen: Forgot, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Register: {screen: Register, navigationOptions: ({ navigation }) => ({header: () => null})}
                 },
                 {initialRouteName: 'Login'}
             ),

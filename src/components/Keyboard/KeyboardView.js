@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Animated, Keyboard, Platform, StyleSheet } from 'react-native';
+import { View, ScrollView, Animated, Keyboard, Platform, StyleSheet } from 'react-native';
 import styles, {colors, spacing} from '../../styles/index';
 
 
@@ -58,13 +58,29 @@ class KeyboardView extends React.Component {
     render() {
         return (
             <Animated.View style={{
-                flex: 1, 
-                backgroundColor: this.props.backgroundColor, 
-                paddingRight: spacing.normal, 
-                paddingTop: spacing.normal, 
-                paddingLeft: spacing.normal, 
-                paddingBottom: this.keyboardHeight}}>
-                {this.props.children}
+                flex: 1,
+                backgroundColor: this.props.backgroundColor,
+                paddingBottom: this.keyboardHeight,
+                paddingTop: spacing.normal
+            }}>
+                <ScrollView style={{
+                    flex: 1,
+                    paddingRight: spacing.normal, 
+                    paddingLeft: spacing.normal
+                }}>
+                    {this.props.children}
+                </ScrollView>
+                {this.props.fixed && 
+                    <View style={{
+                        flex: 0,
+                        paddingRight: spacing.normal, 
+                        borderTopWidth: 1,
+                        borderTopColor: colors.borderGrey,
+                        paddingLeft: spacing.normal
+                    }}>
+                        {this.props.fixed}
+                    </View>
+                }
             </Animated.View>
         );
     }

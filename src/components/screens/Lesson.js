@@ -18,7 +18,8 @@ import {NavigationActions} from 'react-navigation';
 
 function mapStateToProps(state){
   return {
-      lessons: state.lessons
+    token: state.login.token,
+    lessons: state.lessons
   };
 }
 
@@ -31,8 +32,15 @@ class Lesson extends React.Component{
     super(props);
   }
 
+  componentDidMount(){
+    if(!this.props.token){
+        this.props.navigation.navigate('Login');
+    }
+  }
   componentWillReceiveProps(nextProps){
-
+    if(!nextProps.token){
+        this.props.navigation.navigate('Login');
+    }
   }
 
   _formatText(text){

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
-
-import {LOGIN, LOGOUT} from '../actions/LoginActions.js';
+import {TOKEN_TIMEOUT} from '../actions/actions';
+import {LOGIN, LOGOUT} from '../actions/LoginActions';
 
 import {
   GET_LESSONS, 
@@ -14,6 +14,7 @@ import {
   EXECUTE_PAYMENT
 } from '../actions/LessonActions.js';
 import { GET_SETTINGS } from '../actions/UserDataActions';
+import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL } from '../actions/RegistrationActions';
 
 
 
@@ -32,10 +33,10 @@ function nav(state = initialNavState, action) {
 }
 
 const initialUserState = {
-  username: '',
-  firstName: '',
-  lastName: '',
-  email: ''
+  username: ''//,
+  //firstName: '',
+  //lastName: '',
+  //email: ''
 };
 
 function userData(state = initialUserState, action){
@@ -45,6 +46,7 @@ function userData(state = initialUserState, action){
         username: action.data.personal.username
       };
     case LOGOUT.SUCCESS:
+    case TOKEN_TIMEOUT:
       return {...state,
         username: ''
       };
@@ -59,7 +61,8 @@ const initialLoginState = {
 };
 const login = (state=initialLoginState, action) => {
 	switch(action.type){
-		case LOGIN.SUCCESS:
+    case LOGIN.SUCCESS:
+    case CREATE_ACCOUNT.SUCCESS:
 			return{...state,
         token: action.data.token,
         failCount: 0
@@ -70,6 +73,7 @@ const login = (state=initialLoginState, action) => {
         failCount: state.failCount+1
       };
     case LOGOUT.SUCCESS:
+    case TOKEN_TIMEOUT:
       return {...state,
         token: null,
         failCount: 0
@@ -102,6 +106,7 @@ const credits = (state = initialCreditsState, action) => {
       };
     case GET_CREDITS.FAIL:
     case LOGOUT.SUCCESS:
+    case TOKEN_TIMEOUT:
       return {...state,
         inProgress: false,
         count: 0,
@@ -143,6 +148,7 @@ const lessons = (state = initialLessonsState, action) => {
         selected: null
       };
     case LOGOUT.SUCCESS:
+    case TOKEN_TIMEOUT:
       return {...state,
         loading: false,
         pending: [],
@@ -183,13 +189,48 @@ const settings = (state = initialSettingsState, action) => {
   }
 }
 
+const initialRegistrationState = {
+  pendingRegistration: false,
+  userAvailable: true,
+  lastUserChecked: '',
+  emailAvailable: true,
+  lastEmailChecked: '',
+  registrationFailure: false
+}
+const registration = (state = initialRegistrationState, action) => {
+  switch(action.type){
+    case CREATE_ACCOUNT.SUCCESS:
+      return {...state,
+        pendingRegistration: false,
+        registrationFailure: false
+      };
+    case CREATE_ACCOUNT.FAIL:
+      return {...state,
+        registrationFailure: true
+      };
+    case CHECK_USER.SUCCESS:
+			return{...state,
+				userAvailable: action.data.available,
+				lastUserChecked: action.data.lastChecked
+			}
+		case CHECK_EMAIL.SUCCESS:
+			return{...state,
+				emailAvailable: action.data.available,
+				lastEmailChecked: action.data.lastChecked
+			}
+    default:
+      return state;
+  }
+}
+
 const AppReducer = combineReducers({
   nav,
   userData,
   login,
   credits,
   lessons,
-  settings
+  settings,
+  registration
 });
 
 
