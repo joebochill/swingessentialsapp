@@ -15,6 +15,7 @@ import {
 } from '../actions/LessonActions.js';
 import { GET_SETTINGS } from '../actions/UserDataActions';
 import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL } from '../actions/RegistrationActions';
+import { GET_PACKAGES } from '../actions/PackageActions';
 
 
 
@@ -113,6 +114,29 @@ const credits = (state = initialCreditsState, action) => {
         unlimited: 0,
         unlimitedExpires: 0
       };
+    case EXECUTE_PAYMENT.REQUEST:
+			return{...state,
+				inProgress: true,
+				success: false,
+				fail: false
+      }
+    case EXECUTE_PAYMENT.SUCCESS:
+			return{...state,
+				inProgress: false,
+				success: true,
+				fail: false
+			}
+		case EXECUTE_PAYMENT.FAIL:
+			return{...state,
+				inProgress: false,
+				success: false,
+				fail: true
+      }
+    case 'Navigation/NAVIGATE':
+      return {...state,
+        success: false,
+        fail:false
+      };
     default:
       return state;
   }
@@ -128,7 +152,7 @@ const initialLessonsState = {
   redeemSuccess: false,
   newURL: null,
   selected: null,
-  coupon: {type: '', value: 0}
+  coupon: {type: '', value: 0, error: ''}
 }
 const lessons = (state = initialLessonsState, action) => {
   switch(action.type){
@@ -159,6 +183,23 @@ const lessons = (state = initialLessonsState, action) => {
       return {...state,
         selected: action.data.id
       };
+    case CHECK_COUPON.SUCCESS:
+			return{...state,
+				coupon:{
+					code: action.data.code,
+					type: action.data.type,
+					value: parseFloat(action.data.value),
+					error: ''
+        }
+      }; 
+    case CHECK_COUPON.FAIL:
+			return{...state,
+				coupon:{
+					type: '',
+					value: 0,
+					error: (action.error === 400801) ? "Coupon Code is Expired" : "Invalid Coupon Code"
+				}
+			}
     default:
       return state;
   }
@@ -223,6 +264,19 @@ const registration = (state = initialRegistrationState, action) => {
   }
 }
 
+const initialPackageState = {
+  list: []
+}
+const packages = (state = initialPackageState, action) => {
+  switch(action.type){
+		case GET_PACKAGES.SUCCESS:
+			return{...state,
+				list: action.data
+			}
+    default:
+      return state;
+  }
+}
 const AppReducer = combineReducers({
   nav,
   userData,
@@ -230,7 +284,8 @@ const AppReducer = combineReducers({
   credits,
   lessons,
   settings,
-  registration
+  registration,
+  packages
 });
 
 

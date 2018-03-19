@@ -9,7 +9,12 @@ class CardRow extends React.Component {
   render() {
     const row = (
         <View style={StyleSheet.flatten([styles.cardRow, (this.props.customStyle ? this.props.customStyle: {})])}>
-            <Text style={{color: colors.purple, flex: 1}}>{this.props.primary}</Text>
+            <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
+                <Text style={{color: colors.purple, flex: 0}}>{this.props.primary}</Text>
+                {this.props.subtitle && 
+                    <Text style={{color: colors.purple, flex: 0, fontSize: 10}}>{this.props.subtitle}</Text>
+                }
+            </View>
             {this.props.secondary !== undefined && this.props.secondary !== '' &&
                 <Text style={{color: colors.purple, flex: 0}}>{this.props.secondary}</Text>
             }

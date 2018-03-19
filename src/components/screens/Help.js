@@ -103,7 +103,7 @@ class HelpScreen extends React.Component{
             labelStyle={StyleSheet.flatten([styles.formLabel])}>
             What if I have technical problems?
           </FormLabel>
-          <Text style={styles.paragraph}>If you experience any problems while using the Swing Essentials app, please reach out to us and let us know. We strive to provide you with the best experience possible and we welcome all of your feedback. We can be for questions and comments at info@swingessentials.com.</Text>
+          <Text style={styles.paragraph}>If you experience any problems while using the Swing Essentials app, please reach out to us and let us know. We strive to provide you with the best experience possible and we welcome all of your feedback. We can be reached for questions and comments at info@swingessentials.com.</Text>
         </ScrollView>
       </View>
     );

@@ -5,7 +5,7 @@ import {BASEURL, failure, xhrfailure, success, checkTimeout} from './actions.js'
 export const GET_LESSONS = {REQUEST: 'GET_LESSONS', SUCCESS: 'GET_LESSONS_SUCCESS', FAIL: 'GET_LESSONS_FAIL'};
 export const REDEEM_CREDIT = {REQUEST: 'REDEEM_CREDIT', SUCCESS: 'REDEEM_CREDIT_SUCCESS', FAIL: 'REDEEM_CREDIT_FAIL'};
 export const ACTIVATE_UNLIMITED = {REQUEST: 'ACTIVATE_UNLIMITED', SUCCESS: 'ACTIVATE_UNLIMITED_SUCCESS', FAIL: 'ACTIVATE_UNLIMITED_FAIL'};
-export const GET_CREDITS = {SUCCESS: 'GET_CREDITS_SUCCESS', FAIL: 'GET_CREDITS_FAIL'};
+export const GET_CREDITS = {REQUEST: 'GET_CREDITS', SUCCESS: 'GET_CREDITS_SUCCESS', FAIL: 'GET_CREDITS_FAIL'};
 export const PURCHASE_LESSON = {REQUEST: 'PURCHASE_LESSON', SUCCESS: 'PURCHASE_LESSON_SUCCESS', FAIL: 'PURCHASE_LESSON_FAIL'};
 export const EXECUTE_PAYMENT = {REQUEST: 'EXECUTE_PAYMENT', SUCCESS: 'EXECUTE_PAYMENT_SUCCESS', FAIL: 'EXECUTE_PAYMENT_FAIL'};
 export const CHECK_COUPON = {REQUEST: 'CHECK_COUPON', SUCCESS: 'CHECK_COUPON_SUCCESS', FAIL: 'CHECK_COUPON_FAILURE'};
@@ -59,6 +59,8 @@ export function getLessons(token){
 /* Retrieves available credits */
 export function getCredits(token){
     return (dispatch) => {
+        dispatch({type: GET_CREDITS.REQUEST});
+
         return fetch(BASEURL+'credits', { 
             headers: {
                 'Authorization': 'Bearer ' + token

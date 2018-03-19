@@ -63,11 +63,14 @@ class KeyboardView extends React.Component {
                 paddingBottom: this.keyboardHeight,
                 paddingTop: spacing.normal
             }}>
-                <ScrollView style={{
-                    flex: 1,
-                    paddingRight: spacing.normal, 
-                    paddingLeft: spacing.normal
-                }}>
+                <ScrollView 
+                    keyboardShouldPersistTaps={'always'}
+                    style={{
+                        flex: 1,
+                        paddingRight: spacing.normal, 
+                        paddingLeft: spacing.normal
+                    }}
+                >
                     {this.props.children}
                 </ScrollView>
                 {this.props.fixed && 

@@ -1,139 +1,267 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import { 
-  StyleSheet, 
-  View, 
-  Text, 
-  Image, 
-  FlatList, 
-  StatusBar, 
-  TouchableOpacity 
-} from 'react-native';
+import {Text, View, ScrollView, Keyboard, FlatList, StyleSheet} from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
+import {FormInput, FormValidationMessage, Button, Header} from 'react-native-elements';
+import {executePayment, checkCoupon} from '../../actions/LessonActions';
+import {roundNumber} from '../../utils/utils';
+import CardRow from '../Card/CardRow';
+import {NavigationActions} from 'react-navigation';
+import KeyboardView from '../Keyboard/KeyboardView';
+import {atob} from '../../utils/base64.js';
 
-// import LoginStatusMessage from './LoginStatusMessage';
-// import AuthButton from './AuthButton';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    backgroundColor: '#000000',
-  },
-  historyRow:{
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-    paddingLeft: 20,
-    paddingRight: 20,
-    height: 50,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.15)',
-    // backgroundColor: 'green'
-  },
-  historyItemLeft:{
-    flex: 1,
-    textAlign: 'left',
-    color: 'white',
-    fontSize: 16
-  },
-  historyItemRight:{
-    flex: 1,
-    textAlign: 'right',
-    color: 'white',
-    fontSize: 24
-  },
-  fail:{
-    backgroundColor: 'red'
-  }
-});
-
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 function mapStateToProps(state){
-  return {};
+    return {
+        token: state.login.token,
+        packages: state.packages.list,
+        coupon: state.lessons.coupon,
+        purchaseInProgress: state.credits.inProgress,
+        purchaseSuccess: state.credits.success,
+        purchaseFail: state.credits.fail
+        //username: state.userData.username,
+        //lessons: state.lessons,
+        //credits: state.credits
+    };
 }
-
 function mapDispatchToProps(dispatch){
-  return {};
+    return {
+        checkCoupon: (code) => {dispatch(checkCoupon(code))},
+        executePayment: (data, token) => {dispatch(executePayment(data,token))},
+        // getCredits: (token) => {dispatch(getCredits(token))}
+    };
 }
 
-class MyListItem extends React.PureComponent {
-  // _onPress = () => {
-  //   this.props.onPressItem(this.props.id);
-  // };
+class Order extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            selected: props.packages[0],
+            coupon: '',
+            role: 'pending',
+            error: ''
+        }
+    }
+    componentWillMount(){
+        // check if the user is allowed to purchase
+        const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
+        if(role === 'pending'){
+            this.setState({role: 'pending', error: 'You must validate your email address before you can purchase lessons'});
+        }
+        else{
+            this.setState({role: role, error:''});
+        }
+    }
+    componentDidMount(){
+        if(!this.props.token){
+            this.props.navigation.navigate('Login');
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        if(!nextProps.token){
+            this.props.navigation.navigate('Login');
+        }
+        // else if(!nextProps.lessons.loading && !nextProps.credits.inProgress){
+        //     this.setState({refreshing: false});
+        // }
+    }
+    _getTotal(){
+        if(this.props.coupon.value <= 0){
+            return this.state.selected.price;
+        }
+        else if(this.props.coupon.type === 'amount'){
+            return roundNumber(Math.max(this.state.selected.price-this.props.coupon.value, 0), 2).toFixed(2);
+        }
+        else if(this.props.coupon.type === 'percent'){
+            return roundNumber(Math.max(this.state.selected.price-(this.props.coupon.value/100)*this.state.selected.price, 0), 2).toFixed(2);
+        }
+        else{
+            return this.state.selected.price;
+        }
+    }
 
-  render() {
-    const failstyle = this.props.fail ? styles.fail : {};
-    return (
-      // <TouchableOpacity onPress={()=>alert('clicked')}>
-        <View style={[styles.historyRow, failstyle]}>
-          <Text style={styles.historyItemLeft}>
-            FRI, FEB 2
-          </Text>
-          <Text style={styles.historyItemRight}>
-            {this.props.title}
-          </Text>
-        </View>
-      // </TouchableOpacity>
-    );
-  }
-}
+    _checkCoupon(){
+        Keyboard.dismiss();
+        if(!this.state.coupon){return;}
+        this.props.checkCoupon(this.state.coupon);
+        this.setState({coupon: ''});
+    }
 
-class MainScreen extends React.Component{
-  constructor(props){
-    super(props);
-  }
+    _purchaseLesson(data){
+        if(this.state.role === 'pending'){
+            return;
+        }
+        if(!data){ return;}
+        
+        this.props.executePayment(data,this.props.token);
+    }
 
-  componentWillReceiveProps(nextProps){
+    render(){
+        return(
+            <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
+                <Header
+                    style={{flex: 0}}
+                    outerContainerStyles={{ backgroundColor: colors.lightPurple}}
+                    leftComponent={{ icon: 'menu',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, onPress: () => this.props.navigation.navigate('DrawerOpen') }}
+                    centerComponent={{ text: 'Order Lessons', style: { color: colors.white, fontSize: 18 } }}
+                />
+                {this.props.purchaseFail && 
+                    <ScrollView style={{padding: spacing.normal}}>
+                        <Text style={StyleSheet.flatten([styles.paragraph, {marginTop: 0, marginBottom: 0}])}>There was an error processing your purchase. Please try again later or contact info@swingessentials.com for more information.</Text>
+                        <Button
+                            title="BACK TO LESSONS"
+                            onPress={()=> this.props.navigation.navigate('Lessons')}
+                            buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                            containerViewStyle={styles.buttonContainer}
+                        />
+                    </ScrollView>
+                }
+                {this.props.purchaseSuccess && 
+                    <ScrollView style={{padding: spacing.normal}}>
+                        <Text style={StyleSheet.flatten([styles.paragraph, {marginTop: 0, marginBottom: 0}])}>Thank you for your purchase!</Text>
+                        <Button
+                            title="REDEEM NOW"
+                            onPress={()=> this.props.navigation.navigate('Redeem')}
+                            buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                            containerViewStyle={styles.buttonContainer}
+                        />
+                        <Button
+                            title="BACK TO LESSONS"
+                            onPress={()=> this.props.navigation.navigate('Lessons')}
+                            buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                            containerViewStyle={styles.buttonContainer}
+                        />
+                    </ScrollView>
+                }
+                {!this.props.purchaseFail && !this.props.purchaseSuccess &&
+                    <KeyboardView
+                        fixed={
+                            <Button
+                                title="COMPLETE PURCHASE"
+                                disabled={this.state.role === 'pending' || this.props.purchaseInProgress}
+                                disabledStyle={styles.disabledButton}
+                                onPress={()=>this._purchaseLesson({
+                                    id: 'N/A',
+                                    payer: 'N/A',
+                                    package: this.state.selected.shortcode,
+                                    coupon: this.props.coupon.code,
+                                    total: this._getTotal()
+                                })}
+                                buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                                containerViewStyle={styles.buttonContainer}
+                            />
+                        }
+                    >
+                        <ScrollView ref={(ref) =>this.scroller=ref} 
+                            keyboardShouldPersistTaps={'always'}
+                        >
+                            {this.state.error !== '' && 
+                                <FormValidationMessage 
+                                    containerStyle={StyleSheet.flatten([styles.formValidationContainer, {marginTop: 0, marginBottom: spacing.normal}])} 
+                                    labelStyle={styles.formValidation}>
+                                    {this.state.error}
+                                </FormValidationMessage>
+                            }
+                            <FlatList
+                                scrollEnabled= {false}
+                                keyboardShouldPersistTaps = {'always'}
+                                ListHeaderComponent={
+                                    <View style={styles.cardHeader}>
+                                        <Text style={{color: colors.white}}>Select a Package</Text>
+                                    </View>
+                                }
+                                data={this.props.packages}
+                                renderItem={({item, index}) => 
+                                    <CardRow 
+                                        primary={item.name} 
+                                        subtitle={item.description}
+                                        secondary={`$${item.price}`}
+                                        action={this.props.purchaseInProgress ? null : ()=>this.setState({selected: item})}
+                                        menuItem
+                                        selected={this.state.selected.shortcode === item.shortcode}
+                                    />
+                                }
+                                keyExtractor={(item, index) => item.id}
+                            />
+                            <FlatList
+                                style={{marginTop: spacing.normal}}
+                                scrollEnabled= {false}
+                                keyboardShouldPersistTaps = {'always'}
+                                ListHeaderComponent={
+                                    <View style={styles.cardHeader}>
+                                        <Text style={{color: colors.white}}>Discount Code</Text>
+                                    </View>
+                                }
+                                data={[{id: 1}]}
+                                renderItem={({item, index}) => 
+                                    <View style={{flexDirection: 'row', height: sizes.normal, marginTop: spacing.small}}>
+                                        <FormInput
+                                            onFocus= {() => this.scroller.scrollTo({x: 0, y: 150, animated: true})}
+                                            disabled={this.props.purchaseInProgress}
+                                            containerStyle={StyleSheet.flatten([styles.formInputContainer, {flex: 1}])}
+                                            inputStyle={styles.formInput}
+                                            underlineColorAndroid={colors.transparent}
+                                            value={this.state.coupon}
+                                            onChangeText={(text)=>this.setState({coupon: text})}
+                                        />
+                                        <Button
+                                            title="APPLY"
+                                            disabled={!this.state.coupon || this.props.purchaseInProgress}
+                                            onPress={()=> {this._checkCoupon()}}
+                                            buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: 0}])}
+                                            disabledStyle={styles.disabledButton}
+                                            containerViewStyle={StyleSheet.flatten([styles.buttonContainer, {marginRight: 0, width: 'auto'}])}
+                                        />
+                                    </View>
+                                }
+                                keyExtractor={(item, index) => item.id}
+                            />
+                            {this.props.coupon.error !== '' && 
+                                <FormValidationMessage 
+                                    containerStyle={StyleSheet.flatten([styles.formValidationContainer, {marginTop: spacing.normal}])} 
+                                    labelStyle={styles.formValidation}>
+                                    {this.props.coupon.error}
+                                </FormValidationMessage>
+                            }
+                            <FlatList
+                                style={{marginTop: spacing.normal}}
+                                scrollEnabled= {false}
+                                keyboardShouldPersistTaps = {'always'}
+                                ListHeaderComponent={
+                                    <View style={styles.cardHeader}>
+                                        <Text style={{color: colors.white}}>Order Details</Text>
+                                    </View>
+                                }
+                                data={[
+                                    {primary: 'Sub-total', secondary: `$${this.state.selected.price}`},
+                                    ...(this.props.coupon.value > 0 ? [{
+                                        primary: 'Discount', 
+                                        subtitle: (this.props.coupon.type === 'amount' ? '$' : '') + this.props.coupon.value +
+                                            (this.props.coupon.type === 'percent' ? '% off' : ' off'), 
+                                        secondary: '-$'+roundNumber(this.state.selected.price - this._getTotal(), 2).toFixed(2)
+                                    }] : []),
+                                    {primary: 'Tax', secondary: '$0.00'},
+                                    {primary: 'Total', secondary: '$'+this._getTotal()}
+                                ]}
+                                renderItem={({item, index}) => 
+                                    <CardRow 
+                                        primary={item.primary} 
+                                        subtitle={item.subtitle}
+                                        secondary={item.secondary}
+                                    />
+                                }
+                                keyExtractor={(item, index) => index}
+                            />
+                        </ScrollView>    
+                    </KeyboardView> 
+                }           
+            </View>
 
-  }
+        );
+    }
+};
 
-  _renderItem = ({item}) => (
-    <MyListItem
-      id={item.key}
-      //onPressItem={this._onPressItem}
-      //selected={!!this.state.selected.get(item.id)}
-      fail={Math.random()<0.3}
-      title={item.val}
-    />
-  );
-
-  render(){
-    return (
-      <View style={styles.container}>
-        <View style={styles.container}>
-          <FlatList
-            data={[{key: 'a', val:'220 LB'}, {key: 'b', val:'220 LB'}, {key: 'c', val:'220 LB'}, {key: 'd', val:'220 LB'}, {key: 'e', val:'220 LB'}, {key: 'f', val:'220 LB'}, {key: 'g', val:'220 LB'}, {key: 'h', val:'220 LB'}, {key: 'i', val:'220 LB'}, {key: 'j', val:'220 LB'}, {key: 'k', val:'220 LB'}, {key: 'l', val:'220 LB'}, {key: 'm', val:'220 LB'}, {key: 'n', val:'220 LB'}, {key: 'o', val:'220 LB'}, {key: 'p', val:'220 LB'}, {key: 'q', val:'220 LB'},
-                    {key: 'r', val:'220 LB'}, {key: 's', val:'220 LB'}, {key: 't', val:'220 LB'}, {key: 'u', val:'220 LB'}, {key: 'v', val:'220 LB'}, {key: 'w', val:'220 LB'}, {key: 'x', val:'220 LB'}, {key: 'y', val:'220 LB'}, {key: 'z', val:'220 LB'}, {key: 'aa', val:'220 LB'}, {key: 'bb', val:'220 LB'}, {key: 'cc', val:'220 LB'}, {key: 'dd', val:'220 LB'}, {key: 'ee', val:'220 LB'}, {key: 'ff', val:'220 LB'}, {key: 'gg', val:'220 LB'}, {key: 'hh', val:'220 LB'}]}
-            renderItem={this._renderItem}
-          />
-        </View>
-      </View>
-    );
-  }
-}
-
-// const MainScreen = () => (
-//   <View style={styles.container}>
-//     {/* <LoginStatusMessage /> */}
-//     {/* <AurthButton /> */}
-//   </View>
-// );
-
-// MainScreen.navigationOptions = {
-//   // title: 'Home Screen',
-//   headerTintColor: 'black',
-//   headerStyle:{
-//     backgroundColor: 'black'
-//   },
-//   headerTitle:<View style={{backgroundColor: 'black'}}>
-//           {/* <StatusBar
-//           backgroundColor="blue"
-//           barStyle="light-content"
-//         /> */}
-//         <Image style={{height: 44, width:125}} source={require('../../images/squattrack.png')}/>
-//       </View>
-// };
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(Order);

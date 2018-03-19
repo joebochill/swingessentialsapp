@@ -1,7 +1,8 @@
 /* Constants */
-import {BASEURL, /*getPackages,*/ failure, success, checkTimeout, getBlogs, getTips} from './actions.js';
-import {getUserData, getSettings} from './UserDataActions.js';
-import {getLessons, getCredits} from './LessonActions.js';
+import {BASEURL, failure, success, checkTimeout} from './actions';
+import {getUserData, getSettings} from './UserDataActions';
+import {getLessons, getCredits} from './LessonActions';
+import {getPackages} from './PackageActions';
 
 export const LOGIN = {SUCCESS: 'LOGIN_SUCCESS', FAIL: 'LOGIN_FAIL'};
 export const LOGOUT = {SUCCESS: 'LOGOUT_SUCCESS', FAIL: 'LOGOUT_FAIL'};
@@ -25,8 +26,8 @@ export function requestLogin(userCredentials){
                     .then((json) => dispatch(success(LOGIN.SUCCESS, {...json,token:token})))
                     .then(() => dispatch(getLessons(token)))
                     .then(() => dispatch(getCredits(token)))
-                    .then(() => dispatch(getSettings(token)));
-                    //.then(() => dispatch(getPackages(token)));
+                    .then(() => dispatch(getSettings(token)))
+                    .then(() => dispatch(getPackages(token)));
                     break;
                 default:
                     checkTimeout(response, dispatch);

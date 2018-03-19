@@ -79,7 +79,7 @@ class Lessons extends React.Component{
                         data={[
                             {primary: 'Individual Lessons', secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.count+' Left':'', action: ()=>alert('redeem individual')}, 
                             {primary: 'Activate Unlimited', secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.unlimited+' Left':'', action: ()=>alert('activate unlimited')}, 
-                            {primary: 'Order More', action: ()=>alert('order more')}]}
+                            {primary: 'Order More', action: ()=> this.props.navigation.navigate('Order')}]}
                         renderItem={({item}) => 
                             <CardRow 
                                 primary={item.primary} 
