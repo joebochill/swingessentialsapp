@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator, DrawerNavigator } from 'react-navigation';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import CustomDrawer from '../components/CustomDrawer'; //This is our custom drawer component
 
 import Login from '../components/screens/Login';
@@ -54,6 +53,7 @@ export const AppNavigator = DrawerNavigator(
             )
         },
         Order: {screen: Order},
+        Redeem: {screen: Redeem},
         Help: {screen: Help},
         About: {screen: About}
     }, 

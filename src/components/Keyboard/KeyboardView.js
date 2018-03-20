@@ -65,10 +65,12 @@ class KeyboardView extends React.Component {
             }}>
                 <ScrollView 
                     keyboardShouldPersistTaps={'always'}
+                    contentContainerStyle={{paddingBottom: this.props.fixed ? spacing.normal : 0}}
                     style={{
                         flex: 1,
                         paddingRight: spacing.normal, 
-                        paddingLeft: spacing.normal
+                        paddingLeft: spacing.normal,
+                        //marginBottom: this.props.fixed ? spacing.normal : 0
                     }}
                 >
                     {this.props.children}

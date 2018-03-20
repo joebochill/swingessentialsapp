@@ -1,9 +1,6 @@
 import React from 'react';
-import {NavigationActions} from 'react-navigation';
 import {connect} from 'react-redux';
 import {createAccount, checkUsernameAvailability, checkEmailAvailability} from '../../actions/RegistrationActions';
-
-import logo from '../../images/logo-big.png';
 
 import { 
     View, 
@@ -157,7 +154,7 @@ class Register extends React.Component{
                     style={{flex: 0}}
                     outerContainerStyles={{ backgroundColor: colors.lightPurple}}
                     leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
-                        onPress: () => this.props.navigation.pop()}}//this.props.navigation.dispatch(NavigationActions.back({key:this.props.navigation.state.key})) }}
+                        onPress: () => this.props.navigation.pop()}}
                     centerComponent={{ text: 'Create Account', style: { color: colors.white, fontSize: 18 } }}
                 />
                 <KeyboardView fixed={
@@ -187,6 +184,7 @@ class Register extends React.Component{
                                 {item.display}
                             </FormLabel>
                             <FormInput
+                                autoCapitalize={'none'}
                                 containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                                 inputStyle={styles.formInput}
                                 underlineColorAndroid={colors.transparent}

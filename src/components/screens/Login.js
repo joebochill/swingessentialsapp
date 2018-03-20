@@ -1,5 +1,4 @@
 import React from 'react';
-import {NavigationActions} from 'react-navigation';
 import {connect} from 'react-redux';
 import {requestLogin} from '../../actions/LoginActions';
 
@@ -143,6 +142,7 @@ class Login extends React.Component{
                         containerStyle={styles.formLabelContainer} 
                         labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Username</FormLabel>
                     <FormInput
+                        autoCapitalize={'none'}
                         containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                         inputStyle={styles.formInput}
                         underlineColorAndroid={colors.transparent}
@@ -154,6 +154,7 @@ class Login extends React.Component{
                         containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal}])}
                         labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Password</FormLabel>
                     <FormInput
+                        autoCapitalize={'none'}
                         containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                         inputStyle={styles.formInput}
                         underlineColorAndroid={colors.transparent}

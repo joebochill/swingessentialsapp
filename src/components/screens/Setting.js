@@ -6,7 +6,7 @@ import {
   Text,
   ScrollView,
   StyleSheet,
-  Switch, Picker
+  Switch,
 } from 'react-native';
 import {FormLabel, Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';

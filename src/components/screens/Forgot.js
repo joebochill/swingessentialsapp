@@ -3,15 +3,13 @@ import {NavigationActions} from 'react-navigation';
 import {connect} from 'react-redux';
 import {requestReset} from '../../actions/RegistrationActions';
 
-import logo from '../../images/logo-big.png';
-
 import { 
     View, 
     Text,
     ScrollView, 
     StyleSheet
 } from 'react-native';
-import {FormInput, FormLabel, FormValidationMessage, Button, Header} from 'react-native-elements';
+import {FormInput, FormLabel, Button, Header} from 'react-native-elements';
 
 
 import styles, {colors, spacing, altStyles} from '../../styles/index';
@@ -66,6 +64,7 @@ class Forgot extends React.Component{
                                 containerStyle={styles.formLabelContainer} 
                                 labelStyle={StyleSheet.flatten([styles.formLabel])}>Email Address</FormLabel>
                             <FormInput
+                                autoCapitalize={'none'}
                                 containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                                 inputStyle={styles.formInput}
                                 underlineColorAndroid={colors.transparent}

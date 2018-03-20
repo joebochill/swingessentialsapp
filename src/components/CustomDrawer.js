@@ -1,12 +1,7 @@
 import React from 'react'
 import { Text, View, Image, Linking } from 'react-native'
-import { DrawerItems } from 'react-navigation'
 import {connect} from 'react-redux';
-import {NavigationActions} from 'react-navigation';
-
-
 import {requestLogout} from '../actions/LoginActions';
-
 
 import {colors, spacing} from '../styles/index';
 import logo from '../images/logo-big.png';

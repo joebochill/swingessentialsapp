@@ -1,139 +1,150 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import { 
-  StyleSheet, 
-  View, 
-  Text, 
-  Image, 
-  FlatList, 
-  StatusBar, 
-  TouchableOpacity 
-} from 'react-native';
+import {Image, Text, View, ScrollView, StyleSheet} from 'react-native';
+import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
+import {FormInput, FormLabel, FormValidationMessage, Button, Header} from 'react-native-elements';
+// import {executePayment, checkCoupon} from '../../actions/LessonActions';
+// import {roundNumber} from '../../utils/utils';
+// import CardRow from '../Card/CardRow';
+import KeyboardView from '../Keyboard/KeyboardView';
+// import {atob} from '../../utils/base64.js';
 
-// import LoginStatusMessage from './LoginStatusMessage';
-// import AuthButton from './AuthButton';
+import downtheline from '../../images/downtheline.png';
+import faceon from '../../images/faceon.png';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    backgroundColor: '#000000',
-  },
-  historyRow:{
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-    paddingLeft: 20,
-    paddingRight: 20,
-    height: 50,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.15)',
-    // backgroundColor: 'green'
-  },
-  historyItemLeft:{
-    flex: 1,
-    textAlign: 'left',
-    color: 'white',
-    fontSize: 16
-  },
-  historyItemRight:{
-    flex: 1,
-    textAlign: 'right',
-    color: 'white',
-    fontSize: 24
-  },
-  fail:{
-    backgroundColor: 'red'
-  }
-});
 
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 function mapStateToProps(state){
-  return {};
+    return {
+        token: state.login.token,
+        // packages: state.packages.list,
+        // coupon: state.lessons.coupon,
+        // purchaseInProgress: state.credits.inProgress,
+        // purchaseSuccess: state.credits.success,
+        // purchaseFail: state.credits.fail
+        //username: state.userData.username,
+        //lessons: state.lessons,
+        //credits: state.credits
+    };
 }
-
 function mapDispatchToProps(dispatch){
-  return {};
+    return {
+        // checkCoupon: (code) => {dispatch(checkCoupon(code))},
+        // executePayment: (data, token) => {dispatch(executePayment(data,token))},
+        // getCredits: (token) => {dispatch(getCredits(token))}
+    };
 }
 
-class MyListItem extends React.PureComponent {
-  // _onPress = () => {
-  //   this.props.onPressItem(this.props.id);
-  // };
+class Redeem extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            // selected: props.packages[0],
+            // coupon: '',
+            // role: 'pending',
+            // error: ''
+        }
+    }
+    componentWillMount(){
+        // check if the user is allowed to purchase
+        // const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
+        // if(role === 'pending'){
+        //     this.setState({role: 'pending', error: 'You must validate your email address before you can purchase lessons'});
+        // }
+        // else{
+        //     this.setState({role: role, error:''});
+        // }
+    }
+    componentDidMount(){
+        if(!this.props.token){
+            this.props.navigation.navigate('Login');
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        if(!nextProps.token){
+            this.props.navigation.navigate('Login');
+        }
+    }
 
-  render() {
-    const failstyle = this.props.fail ? styles.fail : {};
-    return (
-      // <TouchableOpacity onPress={()=>alert('clicked')}>
-        <View style={[styles.historyRow, failstyle]}>
-          <Text style={styles.historyItemLeft}>
-            FRI, FEB 2
-          </Text>
-          <Text style={styles.historyItemRight}>
-            {this.props.title}
-          </Text>
-        </View>
-      // </TouchableOpacity>
-    );
-  }
-}
+    render(){
+        return(
+            <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
+                <Header
+                    style={{flex: 0}}
+                    outerContainerStyles={{ backgroundColor: colors.lightPurple}}
+                    leftComponent={{ icon: 'menu',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, onPress: () => this.props.navigation.navigate('DrawerOpen') }}
+                    centerComponent={{ text: 'Submit Your Swing', style: { color: colors.white, fontSize: 18 } }}
+                />
 
-class MainScreen extends React.Component{
-  constructor(props){
-    super(props);
-  }
+                <KeyboardView
+                    fixed={
+                        <Button
+                            title="SUBMIT"
+                            disabled={this.state.role === 'pending' || !this.state.fo || !this.state.dtl}
+                            disabledStyle={styles.disabledButton}
+                            onPress={()=>alert('submitted swing')}
+                            buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                            containerViewStyle={styles.buttonContainer}
+                        />
+                    }
+                >
+                    <ScrollView 
+                        ref={(ref) => this.scroller = ref}
+                        //keyboardShouldPersistTaps={'always'}
+                        >
+                        <FormLabel 
+                            containerStyle={styles.formLabelContainer} 
+                            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+                            Special Requests
+                        </FormLabel>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing.small}}>
+                            <View style={{flex: 1, borderWidth: 2, borderColor: colors.purple, backgroundColor: colors.white, height: sizes.large, marginRight: spacing.normal}}>
+                                <View style={{flex: 1, margin: spacing.normal}}>
+                                    <Image
+                                        resizeMethod='resize'
+                                        style={{height:'100%', width: '100%', resizeMode: 'contain'}}
+                                        source={faceon}
+                                    />
+                                </View>
+                            </View>
+                            <View style={{flex: 1, borderWidth: 2, borderColor: colors.purple, backgroundColor: colors.white, height: sizes.large}}>
+                                <View style={{flex: 1, margin: spacing.normal}}>
+                                    <Image
+                                        resizeMethod='resize'
+                                        style={{height:'100%', width: '100%', resizeMode: 'contain'}}
+                                        source={downtheline}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                        <FormLabel 
+                            containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal}])} 
+                            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+                            Special Requests
+                        </FormLabel>
+                        <FormInput
+                            autoCapitalize={'none'}
+                            multiline={true}
+                            returnKeyType={'done'}
+                            blurOnSubmit={true}
+                            containerStyle={StyleSheet.flatten([styles.formInputContainer, {height: sizes.large, marginTop: spacing.small}])}
+                            inputStyle={styles.formInput}
+                            underlineColorAndroid={colors.transparent}
+                            onFocus={() => this.scroller.scrollTo({x: 0, y: 150, animated: true})}
+                            //value={this.state[item.property]}
+                            //keyboardType={item.property==='email'?'email-address':'default'}
+                            //secureTextEntry={item.property==='password' || item.property ==='passwordConfirm'}
+                            //onChangeText={item.change}
+                            //onBlur={item.blur}
+                        />
+                    </ScrollView>    
+                </KeyboardView> 
+            </View>
 
-  componentWillReceiveProps(nextProps){
+        );
+    }
+};
 
-  }
-
-  _renderItem = ({item}) => (
-    <MyListItem
-      id={item.key}
-      //onPressItem={this._onPressItem}
-      //selected={!!this.state.selected.get(item.id)}
-      fail={Math.random()<0.3}
-      title={item.val}
-    />
-  );
-
-  render(){
-    return (
-      <View style={styles.container}>
-        <View style={styles.container}>
-          <FlatList
-            data={[{key: 'a', val:'220 LB'}, {key: 'b', val:'220 LB'}, {key: 'c', val:'220 LB'}, {key: 'd', val:'220 LB'}, {key: 'e', val:'220 LB'}, {key: 'f', val:'220 LB'}, {key: 'g', val:'220 LB'}, {key: 'h', val:'220 LB'}, {key: 'i', val:'220 LB'}, {key: 'j', val:'220 LB'}, {key: 'k', val:'220 LB'}, {key: 'l', val:'220 LB'}, {key: 'm', val:'220 LB'}, {key: 'n', val:'220 LB'}, {key: 'o', val:'220 LB'}, {key: 'p', val:'220 LB'}, {key: 'q', val:'220 LB'},
-                    {key: 'r', val:'220 LB'}, {key: 's', val:'220 LB'}, {key: 't', val:'220 LB'}, {key: 'u', val:'220 LB'}, {key: 'v', val:'220 LB'}, {key: 'w', val:'220 LB'}, {key: 'x', val:'220 LB'}, {key: 'y', val:'220 LB'}, {key: 'z', val:'220 LB'}, {key: 'aa', val:'220 LB'}, {key: 'bb', val:'220 LB'}, {key: 'cc', val:'220 LB'}, {key: 'dd', val:'220 LB'}, {key: 'ee', val:'220 LB'}, {key: 'ff', val:'220 LB'}, {key: 'gg', val:'220 LB'}, {key: 'hh', val:'220 LB'}]}
-            renderItem={this._renderItem}
-          />
-        </View>
-      </View>
-    );
-  }
-}
-
-// const MainScreen = () => (
-//   <View style={styles.container}>
-//     {/* <LoginStatusMessage /> */}
-//     {/* <AurthButton /> */}
-//   </View>
-// );
-
-// MainScreen.navigationOptions = {
-//   // title: 'Home Screen',
-//   headerTintColor: 'black',
-//   headerStyle:{
-//     backgroundColor: 'black'
-//   },
-//   headerTitle:<View style={{backgroundColor: 'black'}}>
-//           {/* <StatusBar
-//           backgroundColor="blue"
-//           barStyle="light-content"
-//         /> */}
-//         <Image style={{height: 44, width:125}} source={require('../../images/squattrack.png')}/>
-//       </View>
-// };
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(Redeem);

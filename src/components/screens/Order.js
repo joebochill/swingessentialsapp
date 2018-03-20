@@ -2,13 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {Text, View, ScrollView, Keyboard, FlatList, StyleSheet} from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
 import {FormInput, FormValidationMessage, Button, Header} from 'react-native-elements';
 import {executePayment, checkCoupon} from '../../actions/LessonActions';
 import {roundNumber} from '../../utils/utils';
 import CardRow from '../Card/CardRow';
-import {NavigationActions} from 'react-navigation';
 import KeyboardView from '../Keyboard/KeyboardView';
 import {atob} from '../../utils/base64.js';
 
@@ -199,6 +197,7 @@ class Order extends React.Component{
                                 renderItem={({item, index}) => 
                                     <View style={{flexDirection: 'row', height: sizes.normal, marginTop: spacing.small}}>
                                         <FormInput
+                                            autoCapitalize={'none'}
                                             onFocus= {() => this.scroller.scrollTo({x: 0, y: 150, animated: true})}
                                             disabled={this.props.purchaseInProgress}
                                             containerStyle={StyleSheet.flatten([styles.formInputContainer, {flex: 1}])}

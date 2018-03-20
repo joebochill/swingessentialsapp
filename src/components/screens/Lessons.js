@@ -3,14 +3,9 @@ import {connect} from 'react-redux';
 
 import {Text, View, ScrollView, FlatList, RefreshControl} from 'react-native';
 import {Button, Header} from 'react-native-elements';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
 import {getLessons, getCredits} from '../../actions/LessonActions';
-
 import CardRow from '../Card/CardRow';
-import {NavigationActions} from 'react-navigation';
-
-// import Icon from 'react-native-vector-icons/FontAwesome';
 
 function mapStateToProps(state){
     return {
