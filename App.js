@@ -26,6 +26,6 @@ class SwingEssentialsApp extends React.Component {
   }
 }
 
-AppRegistry.registerComponent('SwingEssentials', () => SwingEssentialsApp);
+AppRegistry.registerComponent('swingessentialsapp', () => SwingEssentialsApp);
 
 export default SwingEssentialsApp ;

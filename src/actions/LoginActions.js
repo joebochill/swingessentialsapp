@@ -74,7 +74,7 @@ export function refreshToken(token){
             switch(response.status){
                 case 200:
                     const token = response.headers.get('Token');
-                    localStorage.setItem('token', token);
+                    //localStorage.setItem('token', token);
                     dispatch(success(REFRESH_TOKEN.SUCCESS, {token: token}));
                     break;
                 default:

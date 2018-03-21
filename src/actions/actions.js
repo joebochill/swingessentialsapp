@@ -6,7 +6,7 @@ export const GET_PACKAGES = {REQUEST: 'GET_PACKAGES', SUCCESS: 'GET_PACKAGES_SUC
 /* Base URL for fetch commands */
 // export const BASEURL = 'http://www.josephpboyle.com/api/swingessentialsapi.php/';
 // export const BASEURL = 'https://www.swingessentials.com/apis/swingessentials.php/';
-export const BASEURL = 'http://www.josephpboyle.com/api/swingessentials2.php/';
+export const BASEURL = 'https://www.josephpboyle.com/api/swingessentials2.php/';
 
 
 //const API_KEY = 'AIzaSyAzvggwVpvJ1pngsjQKJ84FcY8v07C8dNA';
@@ -18,11 +18,11 @@ export function checkTimeout(response, dispatch){
     // If we get a failed API call, check if our authentication needs to be re-upped
     const error = (response && response.headers && response.headers.get)?parseInt(response.headers.get('Error'),10):999;
     if(error && (error === 400100) && dispatch){
-        localStorage.removeItem('token');
-        localStorage.removeItem('lessons');
-        localStorage.removeItem('credits');
-        localStorage.removeItem('blogs');
-        localStorage.removeItem('tips');
+        //localStorage.removeItem('token');
+        //localStorage.removeItem('lessons');
+        //localStorage.removeItem('credits');
+        //localStorage.removeItem('blogs');
+        //localStorage.removeItem('tips');
         dispatch({type:TOKEN_TIMEOUT});
     }
 }
