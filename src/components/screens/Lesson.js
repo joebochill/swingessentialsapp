@@ -96,7 +96,7 @@ class Lesson extends React.Component{
           <FormLabel 
             containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
             labelStyle={StyleSheet.flatten([styles.formLabel])}>
-            Commentsß
+            Comments
           </FormLabel>
           {this._formatText(lesson.response_notes)}
         </ScrollView>
