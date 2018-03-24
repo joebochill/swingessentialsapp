@@ -177,7 +177,7 @@ class Register extends React.Component{
                     </View>
                 }>
                     {this.regProperties.map((item,index) =>
-                        <View style={{marginBottom:spacing.normal}}>
+                        <View key={'reg_field_'+index} style={{marginBottom:spacing.normal}}>
                             <FormLabel 
                                 containerStyle={styles.formLabelContainer} 
                                 labelStyle={StyleSheet.flatten([styles.formLabel])}>
