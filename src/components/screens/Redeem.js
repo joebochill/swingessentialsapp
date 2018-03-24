@@ -52,11 +52,9 @@ class Redeem extends React.Component{
                 Alert.alert(
                     'Swing Analysis Pending',
                     'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
-                    [
-                        {text: 'OK', onPress: () => this.props.navigation.navigate('Lessons')}
-                    ],
-                    {onDismiss: () => this.props.navigation.navigate('Lessons')}
+                    [{text: 'OK'}]
                 );
+                this.props.navigation.navigate('Lessons')
             }
             const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
             if(role === 'pending'){
@@ -85,11 +83,9 @@ class Redeem extends React.Component{
             Alert.alert(
                 'Success!',
                 'Your lesson request was submitted successfully. We are working on your analysis.',
-                [
-                    {text: 'Back to Lessons', onPress: () => this.props.navigation.navigate('Lessons')}
-                ],
-                {onDismiss: () => this.props.navigation.navigate('Lessons')}
+                [{text: 'OK'}]
             );
+            this.props.navigation.navigate('Lessons');
         }
         else if(nextProps.credits.count < 1 && nextProps.credits.unlimitedExpires < Date.now()/1000){
             Alert.alert(
@@ -102,15 +98,13 @@ class Redeem extends React.Component{
                 {onDismiss: () => this.props.navigation.navigate('Lessons')}
             );
         }
-        else if(nextProps.lessons.length > 0){
+        else if(nextProps.lessons.length > 0 && !nextProps.redeemSuccess){
             Alert.alert(
                 'Swing Analysis Pending',
                 'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
-                [
-                    {text: 'OK', onPress: () => this.props.navigation.navigate('Lessons')}
-                ],
-                {onDismiss: () => this.props.navigation.navigate('Lessons')}
+                [{text: 'OK'}]
             );
+            this.props.navigation.navigate('Lessons')
         }
         else if(this.props.redeemPending && !nextProps.redeemPending && !nextProps.redeemSuccess){
             Alert.alert(
@@ -131,7 +125,7 @@ class Redeem extends React.Component{
                 title: 'Select a Swing Video',
                 takePhotoButtonTitle: 'Record a New Video',
                 chooseFromLibraryButtonTitle: 'Choose From Library',
-                mediaType: 'mixed',//video
+                mediaType: 'video',//video
                 storageOptions: {
                     skipBackup: true,
                     path: 'images'
@@ -168,6 +162,7 @@ class Redeem extends React.Component{
         data.append('notes', this.state.notes);
 
         this.props.redeemCredit(data, this.props.token, this._updateProgress.bind(this));
+        this.scroller.scrollTo({x: 0, y: 0, animated: true});
     }
 
     _updateProgress(event){
@@ -188,7 +183,7 @@ class Redeem extends React.Component{
                     fixed={
                         <Button
                             title="SUBMIT"
-                            disabled={this.state.role === 'pending' || !this.state.foSource || !this.state.dtlSource}
+                            disabled={this.props.redeemPending || this.state.role === 'pending' || !this.state.foSource || !this.state.dtlSource}
                             disabledStyle={styles.disabledButton}
                             onPress={()=>this._redeemLesson()}
                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
@@ -206,6 +201,17 @@ class Redeem extends React.Component{
                                 labelStyle={styles.formValidation}>
                                 {'You must verify your email address before you can submit lessons.'}
                             </FormValidationMessage>
+                        }
+                        {this.props.redeemPending && 
+                            <View style={{marginTop: spacing.normal}}>
+                                <ActivityIndicator color={colors.purple}/>
+                                <Text style={{color: colors.purple, textAlign: 'center', width: '100%'}}>
+                                    {this.state.progress < 100 ?
+                                        ('Uploading Video Files... ' + this.state.progress.toFixed(2)+'%')
+                                        : 'Creating lesson...'
+                                    }
+                                </Text>
+                            </View>
                         }
                         <FormLabel 
                             containerStyle={styles.formLabelContainer} 
@@ -320,22 +326,12 @@ class Redeem extends React.Component{
                             underlineColorAndroid={colors.transparent}
                             onFocus={() => this.scroller.scrollTo({x: 0, y: 150, animated: true})}
                             value={this.state.notes}
+                            disabled={this.props.redeemPending}
                             //keyboardType={item.property==='email'?'email-address':'default'}
                             //secureTextEntry={item.property==='password' || item.property ==='passwordConfirm'}
                             onChangeText={(val)=>this.setState({notes: val})}
                             //onBlur={item.blur}
                         />
-                        {this.props.redeemPending && 
-                            <View style={{marginTop: spacing.normal}}>
-                                <ActivityIndicator color={colors.purple}/>
-                                <Text style={{color: colors.purple, textAlign: 'center', width: '100%'}}>
-                                    {this.state.progress < 100 ?
-                                        ('Uploading Video Files... ' + this.state.progress.toFixed(2)+'%')
-                                        : 'Creating lesson...'
-                                    }
-                                </Text>
-                            </View>
-                        }
                     </ScrollView>    
                 </KeyboardView> 
             </View>
