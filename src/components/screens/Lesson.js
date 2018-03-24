@@ -5,7 +5,6 @@ import {
   View, 
   Text,
   ScrollView,
-  WebView,
   StyleSheet
 } from 'react-native';
 import {FormLabel, Header} from 'react-native-elements';
@@ -74,27 +73,30 @@ class Lesson extends React.Component{
             labelStyle={StyleSheet.flatten([styles.formLabel])}>
             Video Response
           </FormLabel>
-          {/* <YouTube
-            videoId="KVZ-P-ZI6W4"   // The YouTube video ID
-            play={true}             // control playback of video with true/false
-            //fullscreen={true}       // control whether the video should play in fullscreen or inline
-            //loop={true}             // control whether the video should loop when ended
-
+          <YouTube
+            apiKey={'YOUR_API_KEY_GOES_HERE'}
+            videoId={lesson.response_video}  // The YouTube video ID
+            play={false}             // control playback of video with true/false
+            fullscreen={false}       // control whether the video should play in fullscreen or inline
+            loop={false}             // control whether the video should loop when ended
+            showinfo={false}
+            modestbranding={true}
+            rel={false}
             //onReady={e => this.setState({ isReady: true })}
             //onChangeState={e => this.setState({ status: e.state })}
             //onChangeQuality={e => this.setState({ quality: e.quality })}
             //onError={e => this.setState({ error: e.error })}
 
-            style={{ alignSelf: 'stretch', height: 300 }}
-          /> */}
-          <WebView
+            style={{width:'100%', height: 300 , marginTop: spacing.small}}
+          />
+          {/* <WebView
             style={{height:300, width:'100%', marginTop: spacing.small}}
             source={{uri: `https://www.youtube.com/embed/${lesson.response_video}`}}
-          />
+          /> */}
           <FormLabel 
             containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
             labelStyle={StyleSheet.flatten([styles.formLabel])}>
-            Comments
+            Commentsß
           </FormLabel>
           {this._formatText(lesson.response_notes)}
         </ScrollView>

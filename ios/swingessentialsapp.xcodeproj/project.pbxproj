@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -50,6 +49,7 @@
 		CA406277D0E24C0DAB45A673 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3BA1937A6B94906AB0C5EC8 /* Entypo.ttf */; };
 		F3A0B72E491945E593F7B77D /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C5165DD737B483B8254A00A /* Foundation.ttf */; };
 		FEB9B2E7D60E4BC79D7B768E /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D555CF5B0F0A446395F3AED2 /* SimpleLineIcons.ttf */; };
+		E7EF398DCF1044B48909600F /* YTPlayerView-iframe-player.html in Resources */ = {isa = PBXBuildFile; fileRef = 2147571436EF4877B98D4FEF /* YTPlayerView-iframe-player.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -384,6 +384,7 @@
 		D69C65DC2E894C2692976085 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		D6BFC149182E4AD39FD4527A /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		DF728FFC87F74878A70E5E56 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
+		2147571436EF4877B98D4FEF /* YTPlayerView-iframe-player.html */ = {isa = PBXFileReference; name = "YTPlayerView-iframe-player.html"; path = "../node_modules/react-native-youtube/assets/YTPlayerView-iframe-player.html"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -689,6 +690,7 @@
 				72371CD635BE47CB91A2CCB7 /* Octicons.ttf */,
 				D555CF5B0F0A446395F3AED2 /* SimpleLineIcons.ttf */,
 				033AE30E248F4D74B6DC4FD2 /* Zocial.ttf */,
+				2147571436EF4877B98D4FEF /* YTPlayerView-iframe-player.html */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1175,6 +1177,7 @@
 				97B6E3D5FCDE453AB085E74B /* Octicons.ttf in Resources */,
 				FEB9B2E7D60E4BC79D7B768E /* SimpleLineIcons.ttf in Resources */,
 				BB22FCB4C22549329E0B70C6 /* Zocial.ttf in Resources */,
+				E7EF398DCF1044B48909600F /* YTPlayerView-iframe-player.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
