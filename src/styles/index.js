@@ -8,6 +8,7 @@ export const colors = {
     borderGrey: '#c1c1c1',
     backgroundGrey: '#f0f0f0',
     red: '#ff3333',
+    black: '#0f0f0f',
     transparent: 'transparent'
 };
 

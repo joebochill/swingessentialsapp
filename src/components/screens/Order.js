@@ -44,19 +44,24 @@ class Order extends React.Component{
         }
     }
     componentWillMount(){
-        // check if the user is allowed to purchase
-        const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
-        if(role === 'pending'){
-            this.setState({role: 'pending', error: 'You must validate your email address before you can purchase lessons'});
-        }
-        else{
-            this.setState({role: role, error:''});
-        }
-    }
-    componentDidMount(){
         if(!this.props.token){
             this.props.navigation.navigate('Login');
         }
+        else{
+            // check if the user is allowed to purchase
+            const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
+            if(role === 'pending'){
+                this.setState({role: 'pending', error: 'You must validate your email address before you can purchase lessons'});
+            }
+            else{
+                this.setState({role: role, error:''});
+            }    
+        }
+    }
+    componentDidMount(){
+        // if(!this.props.token){
+        //     this.props.navigation.navigate('Login');
+        // }
     }
     componentWillReceiveProps(nextProps){
         if(!nextProps.token){

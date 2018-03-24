@@ -1,52 +1,32 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Image, Text, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
+import {ActivityIndicator, Alert, Image, Text, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
 import {FormInput, FormLabel, FormValidationMessage, Button, Header} from 'react-native-elements';
-// import {executePayment, checkCoupon} from '../../actions/LessonActions';
-// import {roundNumber} from '../../utils/utils';
-// import CardRow from '../Card/CardRow';
+import {redeemCredit} from '../../actions/LessonActions';
 import KeyboardView from '../Keyboard/KeyboardView';
-// import {atob} from '../../utils/base64.js';
 import Video from 'react-native-video';
 
 var ImagePicker = require('react-native-image-picker');
 
+import {atob} from '../../utils/base64';
+
 import downtheline from '../../images/downtheline.png';
 import faceon from '../../images/faceon.png';
-
-var options = {
-    title: 'Select Avatar',
-    mediaType: 'video',
-    storageOptions: {
-      skipBackup: true,
-      path: 'images'
-    }
-  };
-
-
-
-// import Icon from 'react-native-vector-icons/FontAwesome';
 
 function mapStateToProps(state){
     return {
         token: state.login.token,
-        // packages: state.packages.list,
-        // coupon: state.lessons.coupon,
-        // purchaseInProgress: state.credits.inProgress,
-        // purchaseSuccess: state.credits.success,
-        // purchaseFail: state.credits.fail
-        //username: state.userData.username,
-        //lessons: state.lessons,
-        //credits: state.credits
+        credits: state.credits,
+        lessons: state.lessons.pending,
+        redeemPending: state.lessons.redeemPending,
+        redeemSuccess: state.lessons.redeemSuccess
     };
 }
 function mapDispatchToProps(dispatch){
     return {
-        // checkCoupon: (code) => {dispatch(checkCoupon(code))},
-        // executePayment: (data, token) => {dispatch(executePayment(data,token))},
-        // getCredits: (token) => {dispatch(getCredits(token))}
+        redeemCredit: (data, token, onProgress) => {dispatch(redeemCredit(data, token, onProgress))}
     };
 }
 
@@ -54,60 +34,147 @@ class Redeem extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            // selected: props.packages[0],
-            // coupon: '',
-            // role: 'pending',
-            // error: ''
+            foSource: null,
+            dtlSource: null,
+            foPlaying: false,
+            dtlPlaying: false,
+            notes: '',
+            progress: 0,
+            role: 'pending'
         }
     }
     componentWillMount(){
-        // check if the user is allowed to purchase
-        // const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
-        // if(role === 'pending'){
-        //     this.setState({role: 'pending', error: 'You must validate your email address before you can purchase lessons'});
-        // }
-        // else{
-        //     this.setState({role: role, error:''});
-        // }
-    }
-    componentDidMount(){
         if(!this.props.token){
             this.props.navigation.navigate('Login');
         }
+        else{
+            if(this.props.lessons.length > 0){
+                Alert.alert(
+                    'Swing Analysis Pending',
+                    'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
+                    [
+                        {text: 'OK', onPress: () => this.props.navigation.navigate('Lessons')}
+                    ],
+                    {onDismiss: () => this.props.navigation.navigate('Lessons')}
+                );
+            }
+            const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
+            if(role === 'pending'){
+                this.setState({role: 'pending'});
+                // Alert.alert(
+                //     'Email Verification',
+                //     'You must verify your email address before you can submit lessons.',
+                //     [{text: 'OK'}]
+                // );
+            }
+            else{
+                this.setState({role: role});
+            }
+        }
     }
+    // componentDidMount(){
+    //     if(!this.props.token){
+    //         this.props.navigation.navigate('Login');
+    //     }
+    // }
     componentWillReceiveProps(nextProps){
         if(!nextProps.token){
             this.props.navigation.navigate('Login');
         }
+        if(nextProps.redeemSuccess && !this.props.redeemSuccess){
+            Alert.alert(
+                'Success!',
+                'Your lesson request was submitted successfully. We are working on your analysis.',
+                [
+                    {text: 'Back to Lessons', onPress: () => this.props.navigation.navigate('Lessons')}
+                ],
+                {onDismiss: () => this.props.navigation.navigate('Lessons')}
+            );
+        }
+        else if(nextProps.credits.count < 1 && nextProps.credits.unlimitedExpires < Date.now()/1000){
+            Alert.alert(
+                'Out of Credits',
+                'Looks like you\'re all out of lesson credits. Head over to the Order page to stock up.',
+                [
+                    {text: 'Order More', onPress: () => this.props.navigation.navigate('Order')},
+                    {text: 'Back to Lessons', onPress: () => this.props.navigation.navigate('Lessons')}
+                ],
+                {onDismiss: () => this.props.navigation.navigate('Lessons')}
+            );
+        }
+        else if(nextProps.lessons.length > 0){
+            Alert.alert(
+                'Swing Analysis Pending',
+                'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
+                [
+                    {text: 'OK', onPress: () => this.props.navigation.navigate('Lessons')}
+                ],
+                {onDismiss: () => this.props.navigation.navigate('Lessons')}
+            );
+        }
+        else if(this.props.redeemPending && !nextProps.redeemPending && !nextProps.redeemSuccess){
+            Alert.alert(
+                'Oops',
+                'There was an unexpected error while submitting your swing videos. Please try again later or contact us if the problem persists.',
+                [
+                    {text: 'Back to Lessons', onPress: () => this.props.navigation.navigate('Lessons')}
+                ],
+                {onDismiss: () => this.props.navigation.navigate('Lessons')}
+            );
+        }
     }
 
-    showPicker(){
-        ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
-          
-            if (response.didCancel) {
-              console.log('User cancelled image picker');
+    // Shows the picker option for recording a new swing video or choosing one from the library
+    _showPicker(swing){
+        ImagePicker.showImagePicker(
+            {
+                title: 'Select a Swing Video',
+                takePhotoButtonTitle: 'Record a New Video',
+                chooseFromLibraryButtonTitle: 'Choose From Library',
+                mediaType: 'mixed',//video
+                storageOptions: {
+                    skipBackup: true,
+                    path: 'images'
+                }
+            }, 
+            (response) => {
+           
+                if (response.didCancel) {
+                    //do nothing
+                }
+                else if (response.error) {
+                    alert('There was an error choosing a video. Try again later.');//response.error
+                }
+                else {
+                    this.setState({
+                        [swing]: { uri: response.uri }
+                    });
+                }
             }
-            else if (response.error) {
-              console.log('ImagePicker Error: ', response.error);
-            }
-            else {
-              let source = { uri: response.uri };
-          
-              // You can also display the image using data:
-              // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-          
-              this.setState({
-                avatarSource: source
-              });
-            }
-          });
+        );
+    }
+
+    _redeemLesson(){
+        if(!this.foplayer || !this.dtlplayer || this.props.redeemPending){
+            return;}
+        if(!this.state.foSource || !this.state.dtlSource){
+            this.setState({error: 'Missing Required Videos'});
+            return;
+        }
+
+        let data = new FormData();
+        data.append('fo', {name: 'fo.mov', uri: this.state.foSource, type:'video/mov'});
+        data.append('dtl', {name: 'fo.mov', uri: this.state.dtlSource, type:'video/mov'});
+        data.append('notes', this.state.notes);
+
+        this.props.redeemCredit(data, this.props.token, this._updateProgress.bind(this));
+    }
+
+    _updateProgress(event){
+        this.setState({progress: (event.loaded/event.total)*100});
     }
 
     render(){
-        console.log(this.state.avatarSource);
-        console.log('');
-        console.log('');
         return(
             <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
                 <Header
@@ -121,9 +188,9 @@ class Redeem extends React.Component{
                     fixed={
                         <Button
                             title="SUBMIT"
-                            disabled={this.state.role === 'pending' || !this.state.fo || !this.state.dtl}
+                            disabled={this.state.role === 'pending' || !this.state.foSource || !this.state.dtlSource}
                             disabledStyle={styles.disabledButton}
-                            onPress={()=>alert('submitted swing')}
+                            onPress={()=>this._redeemLesson()}
                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
                             containerViewStyle={styles.buttonContainer}
                         />
@@ -133,54 +200,109 @@ class Redeem extends React.Component{
                         ref={(ref) => this.scroller = ref}
                         //keyboardShouldPersistTaps={'always'}
                         >
+                        {this.state.role === 'pending' && 
+                            <FormValidationMessage 
+                                containerStyle={StyleSheet.flatten([styles.formValidationContainer, {marginTop: 0, marginBottom: spacing.normal}])} 
+                                labelStyle={styles.formValidation}>
+                                {'You must verify your email address before you can submit lessons.'}
+                            </FormValidationMessage>
+                        }
                         <FormLabel 
                             containerStyle={styles.formLabelContainer} 
                             labelStyle={StyleSheet.flatten([styles.formLabel])}>
-                            Special Requests
+                            Your Swing Videos
                         </FormLabel>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing.small}}>
-                            <View style={{flex: 1, borderWidth: 2, borderColor: colors.purple, backgroundColor: colors.white, height: sizes.large, marginRight: spacing.normal}}>
-                                <View style={{flex: 1, margin: spacing.normal}}>
-    {this.state.avatarSource && <Video source={this.state.avatarSource}    // Can be a URL or a local file.
-       //poster="https://baconmockup.com/300/200/" // uri to an image to display until the video plays
-       ref={(ref) => {
-         this.player = ref
-       }}                                      // Store reference
-       rate={1.0}                              // 0 is paused, 1 is normal.
-       volume={1.0}                            // 0 is muted, 1 is normal.
-       muted={false}                           // Mutes the audio entirely.
-       paused={true}                          // Pauses playback entirely.
-       resizeMode="cover"                    // Fill the whole screen at aspect ratio.*
-       repeat={false}                           // Repeat forever.
-       playInBackground={false}                // Audio continues to play when app entering background.
-       playWhenInactive={false}                // [iOS] Video continues to play when control or notification center are shown.
-       ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.
-       //progressUpdateInterval={250.0}          // [iOS] Interval to fire onProgress (default to ~250ms)
-       //onLoadStart={this.loadStart}            // Callback when video starts to load
-       //onLoad={this.setDuration}               // Callback when video loads
-       //onProgress={this.setTime}               // Callback every ~250ms with currentTime
-       //onEnd={this.onEnd}                      // Callback when playback finishes
-       //onError={this.videoError}               // Callback when video cannot be loaded
-       //onBuffer={this.onBuffer}                // Callback when remote video is buffering
-       //onTimedMetadata={this.onTimedMetadata}  // Callback when the stream receive some metadata
-       style={{height:'100%', width: '100%'}}/>}
-                                    {!this.state.avatarSource && <Image
-                                        resizeMethod='resize'
-                                        style={{height:'100%', width: '100%', resizeMode: 'contain'}}
-                                        source={faceon}
-                                    />}
+                            <View style={{flex: 1, marginRight: spacing.normal}}>
+                                <View style={{flex: 0, borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.foSource ? colors.black: colors.white, height: sizes.large}}>
+                                    {this.state.foSource && 
+                                        <TouchableOpacity style={{height:'100%', width: '100%'}} 
+                                            underlayColor={colors.black}
+                                            onPress={()=>this.setState({foPlaying: !this.state.foPlaying})}> 
+                                            <Video source={this.state.foSource}    // Can be a URL or a local file.
+                                                //poster="https://baconmockup.com/300/200/" // uri to an image to display until the video plays
+                                                ref={(ref) => {
+                                                    this.foplayer = ref
+                                                }}                                      // Store reference
+                                                rate={1.0}                              // 0 is paused, 1 is normal.
+                                                volume={1.0}                            // 0 is muted, 1 is normal.
+                                                muted={false}                           // Mutes the audio entirely.
+                                                paused={!this.state.foPlaying}                          // Pauses playback entirely.
+                                                onEnd={()=>this.setState({foPlaying: false})}
+                                                resizeMode="contain"                    // Fill the whole screen at aspect ratio.*
+                                                repeat={true}                           // Repeat forever.
+                                                playInBackground={false}                // Audio continues to play when app entering background.
+                                                playWhenInactive={false}                // [iOS] Video continues to play when control or notification center are shown.
+                                                ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.
+                                                style={{height:'100%', width: '100%'}}
+                                            />
+                                        </TouchableOpacity>    
+                                    }
+                                    {!this.state.foSource && 
+                                        <TouchableOpacity style={{height:'100%', width: '100%'}} 
+                                            onPress={()=>this._showPicker('foSource')}> 
+                                            <Image
+                                                resizeMethod='resize'
+                                                style={{height:'100%', width: '100%', resizeMode: 'contain'}}
+                                                source={faceon}
+                                            />
+                                        </TouchableOpacity>
+                                    }
                                 </View>
+                                <Button
+                                    containerViewStyle={{flex: 0}}
+                                    onPress={() => this._showPicker('foSource')}
+                                    title={'Face-On'}
+                                    icon={{name: 'camera-alt', color: colors.purple}}
+                                    backgroundColor={colors.transparent}
+                                    textStyle={{color: colors.purple}}
+                                />
                             </View>
-                            <View style={{flex: 1, borderWidth: 2, borderColor: colors.purple, backgroundColor: colors.white, height: sizes.large}}>
-                                <View style={{flex: 1, margin: spacing.normal}}>
-                                    <TouchableOpacity style={{height:'100%', width: '100%', backgroundColor: 'green'}} onPress={()=>this.showPicker()}> 
-                                    <Image
-                                        resizeMethod='resize'
-                                        style={{height:'100%', width: '100%', resizeMode: 'contain'}}
-                                        source={downtheline}
-                                    />
-                                    </TouchableOpacity>
+                            <View style={{flex: 1}}>
+                                <View style={{flex: 0, borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.dtlSource ? colors.black : colors.white, height: sizes.large}}>
+                                    {this.state.dtlSource && 
+                                        <TouchableOpacity style={{height:'100%', width: '100%'}} 
+                                            underlayColor={colors.black}
+                                            onPress={()=>this.setState({dtlPlaying: !this.state.dtlPlaying})}> 
+                                            <Video source={this.state.dtlSource}    // Can be a URL or a local file.
+                                                //poster="https://baconmockup.com/300/200/" // uri to an image to display until the video plays
+                                                ref={(ref) => {
+                                                    this.dtlplayer = ref
+                                                }}                                      // Store reference
+                                                rate={1.0}                              // 0 is paused, 1 is normal.
+                                                volume={1.0}                            // 0 is muted, 1 is normal.
+                                                muted={false}                           // Mutes the audio entirely.
+                                                paused={!this.state.dtlPlaying}                          // Pauses playback entirely.
+                                                onEnd={()=>this.setState({dtlPlaying: false})}
+                                                resizeMode="contain"                    // Fill the whole screen at aspect ratio.*
+                                                repeat={true}                           // Repeat forever.
+                                                playInBackground={false}                // Audio continues to play when app entering background.
+                                                playWhenInactive={false}                // [iOS] Video continues to play when control or notification center are shown.
+                                                ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.
+                                                style={{height:'100%', width: '100%'}}
+                                            />
+                                        </TouchableOpacity>    
+                                    }
+                                    {!this.state.dtlSource && 
+                                        <TouchableOpacity style={{height:'100%', width: '100%'}} 
+                                            onPress={()=>this._showPicker('dtlSource')}> 
+                                            <Image
+                                                resizeMethod='resize'
+                                                style={{height:'100%', width: '100%', resizeMode: 'contain'}}
+                                                source={downtheline}
+                                            />
+                                        </TouchableOpacity>
+                                    }
+                                    
                                 </View>
+                                <Button
+                                    containerViewStyle={{flex: 0}}
+                                    onPress={() => this._showPicker('dtlSource')}
+                                    title={'Down-the-Line'}
+                                    icon={{name: 'camera-alt', color: colors.purple}}
+                                    textStyle={{color: colors.purple}}
+                                    backgroundColor={colors.transparent}
+                                />
                             </View>
                         </View>
                         <FormLabel 
@@ -189,7 +311,7 @@ class Redeem extends React.Component{
                             Special Requests
                         </FormLabel>
                         <FormInput
-                            autoCapitalize={'none'}
+                            autoCapitalize={'sentences'}
                             multiline={true}
                             returnKeyType={'done'}
                             blurOnSubmit={true}
@@ -197,12 +319,23 @@ class Redeem extends React.Component{
                             inputStyle={styles.formInput}
                             underlineColorAndroid={colors.transparent}
                             onFocus={() => this.scroller.scrollTo({x: 0, y: 150, animated: true})}
-                            //value={this.state[item.property]}
+                            value={this.state.notes}
                             //keyboardType={item.property==='email'?'email-address':'default'}
                             //secureTextEntry={item.property==='password' || item.property ==='passwordConfirm'}
-                            //onChangeText={item.change}
+                            onChangeText={(val)=>this.setState({notes: val})}
                             //onBlur={item.blur}
                         />
+                        {this.props.redeemPending && 
+                            <View style={{marginTop: spacing.normal}}>
+                                <ActivityIndicator color={colors.purple}/>
+                                <Text style={{color: colors.purple, textAlign: 'center', width: '100%'}}>
+                                    {this.state.progress < 100 ?
+                                        ('Uploading Video Files... ' + this.state.progress.toFixed(2)+'%')
+                                        : 'Creating lesson...'
+                                    }
+                                </Text>
+                            </View>
+                        }
                     </ScrollView>    
                 </KeyboardView> 
             </View>

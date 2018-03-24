@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Image, Linking } from 'react-native'
+import { Alert, Text, View, Image, Linking } from 'react-native'
 import {connect} from 'react-redux';
 import {requestLogout} from '../actions/LoginActions';
 
@@ -12,7 +12,8 @@ import CardRow from './Card/CardRow';
 function mapStateToProps(state){
     return {
         username: state.userData.username,
-        token: state.login.token
+        token: state.login.token,
+        lessons: state.lessons.pending
     };
 }
 
@@ -45,7 +46,19 @@ class CustomDrawer extends React.Component {
                             customStyle={{borderTopWidth: 1}}
                             action={() => this.props.navigation.navigate('Lessons')}/>
                         <CardRow menuItem primary="Submit Your Swing" 
-                            action={() => this.props.navigation.navigate('Redeem')}/>
+                            action={() => {
+                                if(this.props.lessons.length < 1){
+                                    this.props.navigation.navigate('Redeem');
+                                }
+                                else{
+                                    Alert.alert(
+                                        'Swing Analysis Pending',
+                                        'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
+                                        [{text: 'OK'}]
+                                    );
+                                }
+                            }}
+                        />
                         <CardRow menuItem primary="Order Lessons" 
                             action={() => this.props.navigation.navigate('Order')}/>
                         <CardRow menuItem primary="Sign Out" 

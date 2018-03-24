@@ -23,11 +23,11 @@ export function requestLogin(userCredentials){
                 case 200:
                     const token = response.headers.get('Token');
                     response.json()
-                    .then((json) => dispatch(success(LOGIN.SUCCESS, {...json,token:token})))
-                    .then(() => dispatch(getLessons(token)))
-                    .then(() => dispatch(getCredits(token)))
-                    .then(() => dispatch(getSettings(token)))
-                    .then(() => dispatch(getPackages(token)));
+                    .then((json) => dispatch(success(LOGIN.SUCCESS, {...json,token:token})));
+                    dispatch(getLessons(token));
+                    dispatch(getCredits(token));
+                    dispatch(getSettings(token));
+                    dispatch(getPackages(token));
                     break;
                 default:
                     checkTimeout(response, dispatch);

@@ -10,6 +10,7 @@ import {
 import {FormLabel, Header} from 'react-native-elements';
 import YouTube from 'react-native-youtube'
 import styles, {colors, spacing, altStyles} from '../../styles/index';
+import { markLessonViewed } from '../../actions/LessonActions';
 
 function mapStateToProps(state){
   return {
@@ -19,7 +20,9 @@ function mapStateToProps(state){
 }
 
 function mapDispatchToProps(dispatch){
-  return {};
+  return {
+    markViewed: (id, token) => {dispatch(markLessonViewed(id, token))}
+  };
 }
 
 class Lesson extends React.Component{
@@ -27,14 +30,27 @@ class Lesson extends React.Component{
     super(props);
   }
 
-  componentDidMount(){
+  componentWillMount(){
     if(!this.props.token){
         this.props.navigation.navigate('Login');
     }
+    else{
+      const lesson = this._getLessonById(this.props.lessons.selected);
+      if(parseInt(lesson.viewed, 10) === 0){
+        this.props.markViewed({id: this.props.lessons.selected}, this.props.token);
+      }
+    }
   }
+
   componentWillReceiveProps(nextProps){
     if(!nextProps.token){
         this.props.navigation.navigate('Login');
+    }
+    if(nextProps.lessons.selected !== this.props.lessons.selected){
+      const lesson = this._getLessonById(nextProps.lessons.selected);
+      if(parseInt(lesson.viewed, 10) === 0){
+        this.props.markViewed({id: nextProps.lessons.selected}, this.props.token);
+      }
     }
   }
 

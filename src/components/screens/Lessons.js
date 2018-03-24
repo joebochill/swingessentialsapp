@@ -118,7 +118,7 @@ class Lessons extends React.Component{
                         renderItem={({item}) => 
                             <CardRow 
                                 primary={item.request_date} 
-                                secondary={item.new ? "NEW" : null} 
+                                secondary={parseInt(item.viewed, 10) === 0 ? "NEW" : null} 
                                 action={() => {
                                     this.props.navigation.dispatch({type:'SELECT_LESSON', data:{id:item.request_id}});
                                     this.props.navigation.push('Lesson');

@@ -7,7 +7,6 @@ import {LOGIN, LOGOUT} from '../actions/LoginActions';
 import {
   GET_LESSONS, 
   GET_CREDITS, 
-  PUT_LESSON_RESPONSE,
   PURCHASE_LESSON,
   REDEEM_CREDIT,
   CHECK_COUPON,
@@ -148,7 +147,6 @@ const initialLessonsState = {
   pending:[],
   closed:[],
   redeemPending: false,
-  redeemFinished: false,
   redeemSuccess: false,
   newURL: null,
   selected: null,
@@ -199,7 +197,32 @@ const lessons = (state = initialLessonsState, action) => {
 					value: 0,
 					error: (action.error === 400801) ? "Coupon Code is Expired" : "Invalid Coupon Code"
 				}
-			}
+      }
+    case REDEEM_CREDIT.REQUEST:
+      return {...state,
+        redeemPending: true,
+        redeemSuccess: false
+      };
+    case REDEEM_CREDIT.SUCCESS:
+      return {...state,
+        redeemPending: false,
+        redeemSuccess: true
+      };
+    case REDEEM_CREDIT.FAIL:
+      return {...state,
+        redeemPending: false,
+        redeemSuccess: false
+      };
+    case 'Navigation/NAVIGATE':
+      return {...state,
+        redeemPending: false,
+        redeemSuccess: false,
+        coupon:{
+          type: '',
+          value: 0,
+          error: ''
+        }
+      };
     default:
       return state;
   }
