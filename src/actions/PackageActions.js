@@ -17,8 +17,8 @@ export function getPackages(token){
             switch(response.status) {
                 case 200:
                     response.json()
-                    .then((json) => dispatch(success(GET_PACKAGES.SUCCESS, json)))
-                    .then((response) => localStorage.setItem('packages',JSON.stringify(response.data)));                    
+                    .then((json) => dispatch(success(GET_PACKAGES.SUCCESS, json)));
+                    //.then((response) => localStorage.setItem('packages',JSON.stringify(response.data)));                    
                     break;
                 default:
                     checkTimeout(response, dispatch);
