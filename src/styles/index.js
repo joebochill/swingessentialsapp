@@ -23,6 +23,7 @@ export const spacing = {
 export const sizes = {
     extraLarge: 250,
     large: 150,
+    medium: 75,
     normal: 50,
     small: 15
 }

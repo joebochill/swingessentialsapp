@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {ActivityIndicator, Keyboard, Alert, Image, Text, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
+import {ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {FormInput, FormLabel, FormValidationMessage, Button, Header} from 'react-native-elements';
+import {FormInput, FormLabel, FormValidationMessage, Button, Icon, Header} from 'react-native-elements';
 import {redeemCredit} from '../../actions/LessonActions';
 import KeyboardView from '../Keyboard/KeyboardView';
 import Video from 'react-native-video';
@@ -70,11 +70,7 @@ class Redeem extends React.Component{
             }
         }
     }
-    // componentDidMount(){
-    //     if(!this.props.token){
-    //         this.props.navigation.navigate('Login');
-    //     }
-    // }
+
     componentWillReceiveProps(nextProps){
         if(!nextProps.token){
             this.props.navigation.navigate('Login');
@@ -152,15 +148,24 @@ class Redeem extends React.Component{
     _redeemLesson(){
         Keyboard.dismiss();
         if(!this.foplayer || !this.dtlplayer || this.props.redeemPending){
-            return;}
+            return;
+        }
         if(!this.state.foSource || !this.state.dtlSource){
             this.setState({error: 'Missing Required Videos'});
             return;
         }
 
         let data = new FormData();
-        data.append('fo', {name: 'fo.mov', uri: this.state.foSource, type:'video/mov'});
-        data.append('dtl', {name: 'fo.mov', uri: this.state.dtlSource, type:'video/mov'});
+        data.append('fo', {
+            name: 'fo.mov', 
+            uri: this.state.foSource.uri, 
+            type:(Platform.OS === 'android' ? 'video/mp4' :'video/mov')
+        });
+        data.append('dtl', {
+            name: 'fo.mov', 
+            uri: this.state.dtlSource.uri, 
+            type:(Platform.OS === 'android' ? 'video/mp4' :'video/mov')
+        });
         data.append('notes', this.state.notes);
 
         this.props.redeemCredit(data, this.props.token, this._updateProgress.bind(this));
@@ -222,8 +227,8 @@ class Redeem extends React.Component{
                         </FormLabel>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing.small}}>
                             <View style={{flex: 1, marginRight: spacing.normal}}>
-                                <View style={{flex: 0, borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.foSource ? colors.black: colors.white, height: sizes.large}}>
-                                    {this.state.foSource && 
+                                <View style={{flex: 0, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.foSource && Platform.OS === 'ios' ? colors.black: colors.white, height: sizes.large}}>
+                                    {this.state.foSource && (Platform.OS === 'ios') &&
                                         <TouchableOpacity style={{height:'100%', width: '100%'}} 
                                             underlayColor={colors.black}
                                             onPress={()=>this.setState({foPlaying: !this.state.foPlaying})}> 
@@ -246,7 +251,7 @@ class Redeem extends React.Component{
                                             />
                                         </TouchableOpacity>    
                                     }
-                                    {!this.state.foSource && 
+                                    {(!this.state.foSource || (this.state.foSource && Platform.OS==='android')) && 
                                         <TouchableOpacity style={{height:'100%', width: '100%'}} 
                                             onPress={()=>this._showPicker('foSource')}> 
                                             <Image
@@ -254,6 +259,14 @@ class Redeem extends React.Component{
                                                 style={{height:'100%', width: '100%', resizeMode: 'contain'}}
                                                 source={faceon}
                                             />
+                                            {Platform.OS === 'android' && this.state.foSource &&
+                                                <Icon 
+                                                    containerStyle={{position: 'absolute', bottom: spacing.tiny, left: spacing.tiny}}
+                                                    name={'check-circle'} 
+                                                    size={sizes.normal} 
+                                                    color={'#4caf50'}
+                                                />
+                                            }
                                         </TouchableOpacity>
                                     }
                                 </View>
@@ -267,8 +280,8 @@ class Redeem extends React.Component{
                                 />
                             </View>
                             <View style={{flex: 1}}>
-                                <View style={{flex: 0, borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.dtlSource ? colors.black : colors.white, height: sizes.large}}>
-                                    {this.state.dtlSource && 
+                                <View style={{flex: 0, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.dtlSource && (Platform.OS === 'ios') ? colors.black : colors.white, height: sizes.large}}>
+                                    {this.state.dtlSource && (Platform.OS === 'ios') &&
                                         <TouchableOpacity style={{height:'100%', width: '100%'}} 
                                             underlayColor={colors.black}
                                             onPress={()=>this.setState({dtlPlaying: !this.state.dtlPlaying})}> 
@@ -291,7 +304,7 @@ class Redeem extends React.Component{
                                             />
                                         </TouchableOpacity>    
                                     }
-                                    {!this.state.dtlSource && 
+                                    {(!this.state.dtlSource || (this.state.dtlSource && Platform.OS==='android')) && 
                                         <TouchableOpacity style={{height:'100%', width: '100%'}} 
                                             onPress={()=>this._showPicker('dtlSource')}> 
                                             <Image
@@ -299,9 +312,16 @@ class Redeem extends React.Component{
                                                 style={{height:'100%', width: '100%', resizeMode: 'contain'}}
                                                 source={downtheline}
                                             />
+                                            {Platform.OS === 'android' && this.state.dtlSource &&
+                                                <Icon 
+                                                    containerStyle={{position: 'absolute', bottom: spacing.tiny, left: spacing.tiny}}
+                                                    name={'check-circle'} 
+                                                    size={sizes.normal} 
+                                                    color={'#4caf50'}
+                                                />
+                                            }
                                         </TouchableOpacity>
                                     }
-                                    
                                 </View>
                                 <Button
                                     containerViewStyle={{flex: 0}}
