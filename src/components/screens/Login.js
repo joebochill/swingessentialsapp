@@ -5,6 +5,7 @@ import {requestLogin} from '../../actions/LoginActions';
 import logo from '../../images/logo-big.png';
 
 import { 
+    ActivityIndicator,
     View, 
     ScrollView, 
     StyleSheet, 
@@ -36,7 +37,8 @@ class Login extends React.Component{
         this.state = {
             username: '',
             password: '',
-            error: false
+            error: false,
+            waiting: false
         };
         this.keyboardHeight = new Animated.Value(spacing.normal);
         this.imageHeight = new Animated.Value(100);
@@ -66,10 +68,11 @@ class Login extends React.Component{
 
     componentWillReceiveProps(nextProps){
         if(nextProps.token){
+            this.setState({waiting: false});
             this.props.navigation.navigate('Lessons');
         }
-        else{
-            this.setState({password: ''});
+        else if(nextProps.loginFails !== this.props.loginFails){
+            this.setState({password: '', waiting: false});
         }
     }
 
@@ -116,7 +119,7 @@ class Login extends React.Component{
             this.setState({error: true});
             return;
         }
-        this.setState({error: false});
+        this.setState({error: false, waiting: true});
         this.props.requestLogin({username: this.state.username, password: this.state.password});
     }
 
@@ -147,6 +150,7 @@ class Login extends React.Component{
                         inputStyle={styles.formInput}
                         underlineColorAndroid={colors.transparent}
                         value={this.state.username}
+                        editable={!this.state.waiting}
                         placeholder="Please enter your username"
                         onChangeText={(newText) => this.setState({username: newText})}
                     />
@@ -159,6 +163,7 @@ class Login extends React.Component{
                         inputStyle={styles.formInput}
                         underlineColorAndroid={colors.transparent}
                         value={this.state.password}
+                        editable={!this.state.waiting}
                         secureTextEntry={true}
                         placeholder="Please enter your password"
                         onChangeText={(newText) => this.setState({password: newText})}
@@ -170,14 +175,21 @@ class Login extends React.Component{
                             The username/password you entered was not correct.
                         </FormValidationMessage>
                     }
-                    <Button
-                        title="SIGN IN"
-                        // disabled={!this.state.username || !this.state.password}
-                        // disabledStyle={styles.disabledButtonAlt}
-                        onPress={this._onLogin.bind(this)}
-                        buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.extraLarge}])}
-                        containerViewStyle={styles.buttonContainer}
-                    />
+                    {!this.state.waiting &&
+                        <Button
+                            title="SIGN IN"
+                            onPress={this._onLogin.bind(this)}
+                            buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.extraLarge}])}
+                            containerViewStyle={styles.buttonContainer}
+                        />
+                    }
+                    {this.state.waiting &&
+                        <ActivityIndicator 
+                            style={{marginTop: spacing.extraLarge}} 
+                            size={'large'} 
+                            color={colors.white}
+                        />
+                    }
                     <View style={{
                             flexDirection:'row', 
                             justifyContent:'space-between',

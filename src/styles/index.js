@@ -125,7 +125,8 @@ export default StyleSheet.create({
         backgroundColor: colors.white,
         borderColor: colors.borderGrey,
         borderWidth: 1,
-        marginLeft: 0
+        marginLeft: 0,
+        textAlignVertical: 'top'
     },
     formValidationContainer:{
         width: '100%',
