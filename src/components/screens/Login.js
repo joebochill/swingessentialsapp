@@ -88,7 +88,7 @@ class Login extends React.Component{
         ]).start();
     };
     keyboardDidShow = (event) => {
-        this.keyboardHeight = event.endCoordinates.height+spacing.normal;
+        //this.keyboardHeight = event.endCoordinates.height+spacing.normal;
         this.imageHeight = 50;
         this.forceUpdate();
     }
@@ -106,7 +106,7 @@ class Login extends React.Component{
         ]).start();
     };
     keyboardDidHide = () => {
-        this.keyboardHeight = spacing.normal;
+        //this.keyboardHeight = spacing.normal;
         this.imageHeight = 100;
         this.forceUpdate();
     }

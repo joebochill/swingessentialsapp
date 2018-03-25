@@ -8,6 +8,7 @@ export const colors = {
     borderGrey: '#c1c1c1',
     backgroundGrey: '#f0f0f0',
     red: '#ff3333',
+    black: '#0f0f0f',
     transparent: 'transparent'
 };
 
@@ -22,6 +23,7 @@ export const spacing = {
 export const sizes = {
     extraLarge: 250,
     large: 150,
+    medium: 75,
     normal: 50,
     small: 15
 }

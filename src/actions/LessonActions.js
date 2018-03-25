@@ -120,7 +120,7 @@ export function redeemCredit(data, token, updateProgress){
                     dispatch(success(REDEEM_CREDIT.SUCCESS));
                     dispatch(getLessons(token));
                     break;
-                default:    
+                default:   
                     checkTimeout(response, dispatch);
                     dispatch(xhrfailure(REDEEM_CREDIT.FAIL, response));
                     break;

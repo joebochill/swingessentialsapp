@@ -14,20 +14,20 @@ class KeyboardView extends React.Component {
             this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
             this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
         }
-        else{
-            this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-            this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
-        }
+        // else{
+        //     this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+        //     this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+        // }
     }
     componentWillUnmount() {
         if(Platform.OS === 'ios'){
             this.keyboardWillShowSub.remove();
             this.keyboardWillHideSub.remove();
         }
-        else{
-            this.keyboardDidShowSub.remove();
-            this.keyboardDidHideSub.remove();
-        }
+        // else{
+        //     this.keyboardDidShowSub.remove();
+        //     this.keyboardDidHideSub.remove();
+        // }
         
     }
     keyboardWillShow = (event) => {

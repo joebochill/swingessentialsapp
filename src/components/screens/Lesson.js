@@ -5,11 +5,16 @@ import {
   View, 
   Text,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Platform,
+  TouchableOpacity
 } from 'react-native';
 import {FormLabel, Header} from 'react-native-elements';
 import YouTube from 'react-native-youtube'
-import styles, {colors, spacing, altStyles} from '../../styles/index';
+import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
+import { markLessonViewed } from '../../actions/LessonActions';
+import Video from 'react-native-video';
+
 
 function mapStateToProps(state){
   return {
@@ -19,26 +24,46 @@ function mapStateToProps(state){
 }
 
 function mapDispatchToProps(dispatch){
-  return {};
+  return {
+    markViewed: (id, token) => {dispatch(markLessonViewed(id, token))}
+  };
 }
 
 class Lesson extends React.Component{
   constructor(props){
     super(props);
+    this.state={
+      foPlaying: false,
+      dtlPlaying: false
+    };
   }
 
-  componentDidMount(){
+  componentWillMount(){
     if(!this.props.token){
         this.props.navigation.navigate('Login');
     }
+    else{
+      const lesson = this._getLessonById(this.props.lessons.selected);
+      if(parseInt(lesson.viewed, 10) === 0){
+        this.props.markViewed({id: this.props.lessons.selected}, this.props.token);
+      }
+    }
   }
+
   componentWillReceiveProps(nextProps){
     if(!nextProps.token){
         this.props.navigation.navigate('Login');
     }
+    if(nextProps.lessons.selected !== this.props.lessons.selected){
+      const lesson = this._getLessonById(nextProps.lessons.selected);
+      if(parseInt(lesson.viewed, 10) === 0){
+        this.props.markViewed({id: nextProps.lessons.selected}, this.props.token);
+      }
+    }
   }
 
   _formatText(text){
+    if(!text){ return null;}
     let arr = text.split(':::');
     return arr.map((val, index) => 
       <Text key={'par_'+index} style={styles.paragraph}>{val}</Text>
@@ -57,6 +82,7 @@ class Lesson extends React.Component{
 
   render(){
     const lesson = this._getLessonById(this.props.lessons.selected);
+    if(!lesson){return null;}
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
         <Header
@@ -82,23 +108,77 @@ class Lesson extends React.Component{
             showinfo={false}
             modestbranding={true}
             rel={false}
-            //onReady={e => this.setState({ isReady: true })}
-            //onChangeState={e => this.setState({ status: e.state })}
-            //onChangeQuality={e => this.setState({ quality: e.quality })}
-            //onError={e => this.setState({ error: e.error })}
-
             style={{width:'100%', height: 300 , marginTop: spacing.small}}
           />
-          {/* <WebView
-            style={{height:300, width:'100%', marginTop: spacing.small}}
-            source={{uri: `https://www.youtube.com/embed/${lesson.response_video}`}}
-          /> */}
           <FormLabel 
             containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
             labelStyle={StyleSheet.flatten([styles.formLabel])}>
-            Commentsß
+            Comments
           </FormLabel>
           {this._formatText(lesson.response_notes)}
+          {Platform.OS === 'ios' && //TODO: update this when react-native-video is working for Android
+            <View>
+              <FormLabel 
+                containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
+                labelStyle={StyleSheet.flatten([styles.formLabel])}>
+                Your Swing Videos
+              </FormLabel>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <View style={{flex: 1, marginRight: spacing.normal, backgroundColor: colors.black, height: sizes.large}}>
+                    <TouchableOpacity style={{height:'100%', width: '100%'}} 
+                        underlayColor={colors.black}
+                        onPress={()=>this.setState({foPlaying: !this.state.foPlaying})}> 
+                        <Video 
+                          source={{uri:'https://www.josephpboyle.com/video_links/'+lesson.request_url+'/'+lesson.fo_swing}}    // Can be a URL or a local file.
+                          ref={(ref) => {this.foplayer = ref}}    // Store reference
+                          rate={1.0}                              // 0 is paused, 1 is normal.
+                          volume={1.0}                            // 0 is muted, 1 is normal.
+                          muted={false}                           // Mutes the audio entirely.
+                          paused={!this.state.foPlaying}                          // Pauses playback entirely.
+                          onEnd={()=>this.setState({foPlaying: false})}
+                          resizeMode="contain"                    // Fill the whole screen at aspect ratio.*
+                          repeat={true}                           // Repeat forever.
+                          playInBackground={false}                // Audio continues to play when app entering background.
+                          playWhenInactive={false}                // [iOS] Video continues to play when control or notification center are shown.
+                          ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.
+                          style={{height:'100%', width: '100%'}}
+                        />
+                    </TouchableOpacity>    
+                  </View>
+                  <View style={{flex: 1, backgroundColor: colors.black, height: sizes.large}}>
+                    <TouchableOpacity style={{height:'100%', width: '100%'}} 
+                        underlayColor={colors.black}
+                        onPress={()=>this.setState({dtlPlaying: !this.state.dtlPlaying})}> 
+                        <Video 
+                          source={{uri:'https://www.josephpboyle.com/video_links/'+lesson.request_url+'/'+lesson.dtl_swing}}    // Can be a URL or a local file.
+                          ref={(ref) => {this.dtlplayer = ref}}    // Store reference
+                          rate={1.0}                              // 0 is paused, 1 is normal.
+                          volume={1.0}                            // 0 is muted, 1 is normal.
+                          muted={false}                           // Mutes the audio entirely.
+                          paused={!this.state.dtlPlaying}                          // Pauses playback entirely.
+                          onEnd={()=>this.setState({dtlPlaying: false})}
+                          resizeMode="contain"                    // Fill the whole screen at aspect ratio.*
+                          repeat={true}                           // Repeat forever.
+                          playInBackground={false}                // Audio continues to play when app entering background.
+                          playWhenInactive={false}                // [iOS] Video continues to play when control or notification center are shown.
+                          ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.
+                          style={{height:'100%', width: '100%'}}
+                        />
+                    </TouchableOpacity>    
+                  </View>
+              </View>
+              {lesson.request_notes.length > 0 && 
+                <View>
+                  <FormLabel 
+                    containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
+                    labelStyle={StyleSheet.flatten([styles.formLabel])}>
+                    Special Requests
+                  </FormLabel>
+                  {this._formatText(lesson.request_notes)}
+                </View>
+              }
+            </View>
+          }
         </ScrollView>
       </View>
     );
