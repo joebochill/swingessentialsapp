@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {ActivityIndicator, Alert, Image, Text, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
+import {ActivityIndicator, Keyboard, Alert, Image, Text, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
 import {FormInput, FormLabel, FormValidationMessage, Button, Header} from 'react-native-elements';
 import {redeemCredit} from '../../actions/LessonActions';
@@ -126,6 +126,7 @@ class Redeem extends React.Component{
                 takePhotoButtonTitle: 'Record a New Video',
                 chooseFromLibraryButtonTitle: 'Choose From Library',
                 mediaType: 'video',//video
+                durationLimit: 10,
                 storageOptions: {
                     skipBackup: true,
                     path: 'images'
@@ -149,6 +150,7 @@ class Redeem extends React.Component{
     }
 
     _redeemLesson(){
+        Keyboard.dismiss();
         if(!this.foplayer || !this.dtlplayer || this.props.redeemPending){
             return;}
         if(!this.state.foSource || !this.state.dtlSource){
@@ -203,7 +205,7 @@ class Redeem extends React.Component{
                             </FormValidationMessage>
                         }
                         {this.props.redeemPending && 
-                            <View style={{marginTop: spacing.normal}}>
+                            <View style={{marginBottom: spacing.normal}}>
                                 <ActivityIndicator color={colors.purple}/>
                                 <Text style={{color: colors.purple, textAlign: 'center', width: '100%'}}>
                                     {this.state.progress < 100 ?
@@ -326,7 +328,7 @@ class Redeem extends React.Component{
                             underlineColorAndroid={colors.transparent}
                             onFocus={() => this.scroller.scrollTo({x: 0, y: 150, animated: true})}
                             value={this.state.notes}
-                            disabled={this.props.redeemPending}
+                            editable={!this.props.redeemPending}
                             //keyboardType={item.property==='email'?'email-address':'default'}
                             //secureTextEntry={item.property==='password' || item.property ==='passwordConfirm'}
                             onChangeText={(val)=>this.setState({notes: val})}
