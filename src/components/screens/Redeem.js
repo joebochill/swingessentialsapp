@@ -121,6 +121,7 @@ class Redeem extends React.Component{
                 title: 'Select a Swing Video',
                 takePhotoButtonTitle: 'Record a New Video',
                 chooseFromLibraryButtonTitle: 'Choose From Library',
+                videoQuality: 'low',
                 mediaType: 'video',//video
                 durationLimit: 10,
                 storageOptions: {
@@ -147,7 +148,8 @@ class Redeem extends React.Component{
 
     _redeemLesson(){
         Keyboard.dismiss();
-        if(!this.foplayer || !this.dtlplayer || this.props.redeemPending){
+        if(this.props.redeemPending){ return;}
+        if(Platform.OS === 'ios' && (!this.foplayer || !this.dtlplayer)){
             return;
         }
         if(!this.state.foSource || !this.state.dtlSource){
@@ -162,7 +164,7 @@ class Redeem extends React.Component{
             type:(Platform.OS === 'android' ? 'video/mp4' :'video/mov')
         });
         data.append('dtl', {
-            name: 'fo.mov', 
+            name: 'dtl.mov', 
             uri: this.state.dtlSource.uri, 
             type:(Platform.OS === 'android' ? 'video/mp4' :'video/mov')
         });
