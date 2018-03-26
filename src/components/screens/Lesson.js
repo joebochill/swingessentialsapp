@@ -87,7 +87,12 @@ class Lesson extends React.Component{
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
         <Header
             style={{flex: 0}}
-            outerContainerStyles={{ backgroundColor: colors.lightPurple}}
+            outerContainerStyles={{ 
+              backgroundColor: colors.lightPurple, 
+              height: Platform.OS === 'ios' ? 70 :  70 - 24, 
+              padding: Platform.OS === 'ios' ? 15 : 10
+            }}
+            innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
             leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
               onPress: () => this.props.navigation.pop() }}
             centerComponent={{ text: 'Swing Analysis', style: { color: colors.white, fontSize: 18 } }}

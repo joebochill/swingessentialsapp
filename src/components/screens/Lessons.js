@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Alert, Text, View, ScrollView, FlatList, RefreshControl} from 'react-native';
+import {Alert, Text, View, ScrollView, FlatList, RefreshControl, Platform} from 'react-native';
 import {Button, Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
 import {getLessons, getCredits, activateUnlimited} from '../../actions/LessonActions';
@@ -78,7 +78,12 @@ class Lessons extends React.Component{
             <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
                 <Header
                     style={{flex: 0}}
-                    outerContainerStyles={{ backgroundColor: colors.lightPurple}}
+                    outerContainerStyles={{ 
+                        backgroundColor: colors.lightPurple, 
+                        height: Platform.OS === 'ios' ? 70 :  70 - 24, 
+                        padding: Platform.OS === 'ios' ? 15 : 10
+                    }}
+                    innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
                     leftComponent={{ icon: 'menu',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, onPress: () => this.props.navigation.navigate('DrawerOpen') }}
                     centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: 18 } }}
                     rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 

@@ -5,7 +5,8 @@ import {
   View, 
   Text,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from 'react-native';
 import {FormLabel, Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
@@ -43,14 +44,14 @@ class SettingsScreen extends React.Component{
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
         <Header
             style={{flex: 0}}
-            outerContainerStyles={{ backgroundColor: colors.lightPurple}}
+            outerContainerStyles={{ 
+              backgroundColor: colors.lightPurple, 
+              height: Platform.OS === 'ios' ? 70 :  70 - 24, 
+              padding: Platform.OS === 'ios' ? 15 : 10
+            }}
+            innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
             leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
               onPress: () => this.props.navigation.pop()}}//this.props.navigation.dispatch(NavigationActions.back({key:this.props.navigation.state.key})) }}
-            // leftComponent={
-            //   <TouchableOpacity style={{backgroundColor: colors.red}} onPress={()=>this.props.navigation.pop()}>
-            //     <Text style={{color: colors.white, fontSize: 18}}>Backwards Oy</Text>
-            //   </TouchableOpacity>
-            // }
             centerComponent={{ text: 'Settings', style: { color: colors.white, fontSize: 18 } }}
         />
         <ScrollView contentContainerStyle={{alignItems: 'stretch'}}>

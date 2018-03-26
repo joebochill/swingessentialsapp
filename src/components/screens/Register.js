@@ -5,7 +5,8 @@ import {createAccount, checkUsernameAvailability, checkEmailAvailability} from '
 import { 
     View, 
     Text,
-    StyleSheet
+    StyleSheet,
+    Platform
 } from 'react-native';
 import {FormInput, FormLabel, FormValidationMessage, Button, Header} from 'react-native-elements';
 
@@ -152,7 +153,12 @@ class Register extends React.Component{
             <View style={{flex: 1}}>
                 <Header
                     style={{flex: 0}}
-                    outerContainerStyles={{ backgroundColor: colors.lightPurple}}
+                    outerContainerStyles={{ 
+                        backgroundColor: colors.lightPurple, 
+                        height: Platform.OS === 'ios' ? 70 :  70 - 24, 
+                        padding: Platform.OS === 'ios' ? 15 : 10
+                    }}
+                    innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
                     leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
                         onPress: () => this.props.navigation.pop()}}
                     centerComponent={{ text: 'Create Account', style: { color: colors.white, fontSize: 18 } }}

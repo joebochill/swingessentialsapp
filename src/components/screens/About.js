@@ -5,7 +5,8 @@ import {
   View, 
   Text,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from 'react-native';
 import {FormLabel, Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
@@ -40,7 +41,12 @@ class AboutScreen extends React.Component{
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
         <Header
           style={{flex: 0}}
-          outerContainerStyles={{ backgroundColor: colors.lightPurple}}
+          outerContainerStyles={{ 
+            backgroundColor: colors.lightPurple, 
+            height: Platform.OS === 'ios' ? 70 :  70 - 24, 
+            padding: Platform.OS === 'ios' ? 15 : 10
+          }}
+          innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
           leftComponent={{ 
             icon: 'menu',
             underlayColor:colors.transparent, 
