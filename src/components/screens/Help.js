@@ -46,7 +46,7 @@ class HelpScreen extends React.Component{
             height: Platform.OS === 'ios' ? 70 :  70 - 24, 
             padding: Platform.OS === 'ios' ? 15 : 10
           }}
-          innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
+          //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
           leftComponent={{ 
             icon: 'menu',
             underlayColor:colors.transparent, 

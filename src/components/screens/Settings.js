@@ -49,7 +49,7 @@ class SettingsScreen extends React.Component{
               height: Platform.OS === 'ios' ? 70 :  70 - 24, 
               padding: Platform.OS === 'ios' ? 15 : 10
             }}
-            innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
+            //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
             leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
               onPress: () => this.props.navigation.pop()}}//this.props.navigation.dispatch(NavigationActions.back({key:this.props.navigation.state.key})) }}
             centerComponent={{ text: 'Settings', style: { color: colors.white, fontSize: 18 } }}
