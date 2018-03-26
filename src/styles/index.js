@@ -76,6 +76,7 @@ export default StyleSheet.create({
     cardHeader:{
         height: sizes.normal, 
         paddingLeft: spacing.normal, 
+        paddingRight: spacing.normal,
         borderColor: colors.purple, 
         borderWidth: 2, 
         flexDirection:'row', 

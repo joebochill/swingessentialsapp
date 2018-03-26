@@ -16,6 +16,7 @@ import { GET_SETTINGS } from '../actions/UserDataActions';
 import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL } from '../actions/RegistrationActions';
 import { GET_PACKAGES } from '../actions/PackageActions';
 
+import {atob} from '../utils/base64';
 
 
 const initialNavState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Auth'));
@@ -57,7 +58,8 @@ function userData(state = initialUserState, action){
 
 const initialLoginState = {
   token: null,
-  failCount: 0
+  failCount: 0,
+  admin: false
 };
 const login = (state=initialLoginState, action) => {
 	switch(action.type){
@@ -65,18 +67,21 @@ const login = (state=initialLoginState, action) => {
     case CREATE_ACCOUNT.SUCCESS:
 			return{...state,
         token: action.data.token,
-        failCount: 0
+        failCount: 0,
+        admin: (JSON.parse(atob(action.data.token.split('.')[1]))['role'].toLowerCase()==='administrator')
 			};
 		case LOGIN.FAIL:
 			return{...state,
         token: null,
-        failCount: state.failCount+1
+        failCount: state.failCount+1,
+        admin: false
       };
     case LOGOUT.SUCCESS:
     case TOKEN_TIMEOUT:
       return {...state,
         token: null,
-        failCount: 0
+        failCount: 0,
+        admin: false
       };
 		default:
 			return state;

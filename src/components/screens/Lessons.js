@@ -1,15 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Text, View, ScrollView, FlatList, RefreshControl} from 'react-native';
+import {Alert, Text, View, ScrollView, FlatList, RefreshControl} from 'react-native';
 import {Button, Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
-import {getLessons, getCredits} from '../../actions/LessonActions';
+import {getLessons, getCredits, activateUnlimited} from '../../actions/LessonActions';
 import CardRow from '../Card/CardRow';
 
 function mapStateToProps(state){
     return {
         token: state.login.token,
+        admin: state.login.admin,
         username: state.userData.username,
         lessons: state.lessons,
         credits: state.credits
@@ -18,7 +19,8 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
     return {
         getLessons: (token) => {dispatch(getLessons(token))},
-        getCredits: (token) => {dispatch(getCredits(token))}
+        getCredits: (token) => {dispatch(getCredits(token))},
+        activateUnlimited: (token) => {dispatch(activateUnlimited(token))}
     };
 }
 
@@ -49,6 +51,28 @@ class Lessons extends React.Component{
         this.props.getLessons(this.props.token);
     }
 
+    _formatUnlimited(){
+        let unlimitedRemaining = (this.props.credits.unlimitedExpires - (Date.now()/1000));
+        let countdown;
+    
+        if(unlimitedRemaining > 24*60*60){
+          countdown = Math.ceil(unlimitedRemaining/(24*60*60)) + " Days Left";
+        }
+        else if(unlimitedRemaining > 60*60){
+          countdown =  Math.ceil(unlimitedRemaining/(60*60)) + " Hours Left";
+        }
+        else if(unlimitedRemaining > 0){
+          const min = Math.ceil(unlimitedRemaining/60);
+          countdown =  min + (min > 1 ? " Minutes Left" : " Minute Left");
+        }
+        else{ 
+          countdown = '';
+          this.props.getCredits(this.props.token);
+        }
+
+        return countdown;
+    }
+
     render(){
         return(
             <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
@@ -64,26 +88,95 @@ class Lessons extends React.Component{
                     contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}
                     refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={()=>this._onRefresh()}/>}
                 >
-                    <FlatList
-                        scrollEnabled= {false}
-                        ListHeaderComponent={
-                            <View style={styles.cardHeader}>
-                                <Text style={{color: colors.white}}>Redeem a Lesson</Text>
-                            </View>
-                        }
-                        data={[
-                            {primary: 'Individual Lessons', secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.count+' Left':'', action: ()=>alert('redeem individual')}, 
-                            {primary: 'Activate Unlimited', secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.unlimited+' Left':'', action: ()=>alert('activate unlimited')}, 
-                            {primary: 'Order More', action: ()=> this.props.navigation.navigate('Order')}]}
-                        renderItem={({item}) => 
-                            <CardRow 
-                                primary={item.primary} 
-                                secondary={item.secondary}
-                                action={item.action}
-                            />
-                        }
-                        keyExtractor={(item, index) => item.primary}
-                    />
+                    {!this.props.admin && this.props.credits.unlimitedExpires <= Date.now()/1000 &&
+                        <FlatList
+                            scrollEnabled= {false}
+                            ListHeaderComponent={
+                                <View style={styles.cardHeader}>
+                                    <Text style={{color: colors.white}}>Redeem a Lesson</Text>
+                                </View>
+                            }
+                            data={[
+                                {primary: 'Individual Lessons', secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.count+' Left':'', 
+                                    action: ()=>{
+                                        if(this.props.lessons.pending.length < 1){
+                                            this.props.navigation.navigate('Redeem');
+                                        }
+                                        else{
+                                            Alert.alert(
+                                                'Swing Analysis Pending',
+                                                'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
+                                                [{text: 'OK'}]
+                                            );
+                                        }
+                                    }
+                                }, 
+                                {primary: 'Activate Unlimited', secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.unlimited+' Left':'', 
+                                    action: ()=>
+                                        Alert.alert(
+                                            'Activate Unlimited',
+                                            'Activating your unlimited lessons deal will give you access to unlimited lessons for 30 days. The clock starts when you click Activate.',
+                                            [
+                                                {text: 'Cancel'},
+                                                {text: 'Activate', 
+                                                    onPress: () => {
+                                                        this.setState({refreshing: true});
+                                                        this.props.activateUnlimited(this.props.token);
+                                                    }
+                                                }
+                                            ]
+                                        )
+                                },
+                                {primary: 'Order More', action: ()=> this.props.navigation.navigate('Order')}]}
+                            renderItem={({item}) => 
+                                <CardRow 
+                                    primary={item.primary} 
+                                    secondary={item.secondary}
+                                    action={item.action}
+                                />
+                            }
+                            keyExtractor={(item, index) => item.primary}
+                        />
+                    }
+
+                    {!this.props.admin && this.props.credits.unlimitedExpires > Date.now()/1000 &&
+                        <FlatList
+                            scrollEnabled= {false}
+                            ListHeaderComponent={
+                                <View style={styles.cardHeader}>
+                                    <Text style={{flex: 1, color: colors.white}}>Unlimited Lessons</Text>
+                                    <Text style={{flex: 0, color: colors.white, textAlign: 'right'}}>{this._formatUnlimited()}</Text>
+                                </View>
+                            }
+                            data={[
+                                {primary: 'Submit a Swing', action: () => {
+                                    if(this.props.lessons.pending.length < 1){
+                                        this.props.navigation.navigate('Redeem');
+                                    }
+                                    else{
+                                        Alert.alert(
+                                            'Swing Analysis Pending',
+                                            'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
+                                            [{text: 'OK'}]
+                                        );
+                                    }
+                                }},
+                                {primary: 'Individual Lessons', secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.count+' Left':'', disabled: true}, 
+                                {primary: 'Unlimited Rounds', secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.unlimited+' Left':'', disabled: true}, 
+                                {primary: 'Order More', action: ()=> this.props.navigation.navigate('Order')}]}
+                            renderItem={({item}) => 
+                                <CardRow 
+                                    primary={item.primary} 
+                                    secondary={item.secondary}
+                                    action={item.action}
+                                    customStyle={item.customStyle}
+                                    disabled={item.disabled}
+                                />
+                            }
+                            keyExtractor={(item, index) => item.primary}
+                        />
+                    }
+
                     <FlatList
                         style={{marginTop: spacing.normal}}
                         scrollEnabled= {false}

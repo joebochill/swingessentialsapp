@@ -59,11 +59,6 @@ class Redeem extends React.Component{
             const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
             if(role === 'pending'){
                 this.setState({role: 'pending'});
-                // Alert.alert(
-                //     'Email Verification',
-                //     'You must verify your email address before you can submit lessons.',
-                //     [{text: 'OK'}]
-                // );
             }
             else{
                 this.setState({role: role});
@@ -88,8 +83,9 @@ class Redeem extends React.Component{
                 'Out of Credits',
                 'Looks like you\'re all out of lesson credits. Head over to the Order page to stock up.',
                 [
-                    {text: 'Order More', onPress: () => this.props.navigation.navigate('Order')},
-                    {text: 'Back to Lessons', onPress: () => this.props.navigation.navigate('Lessons')}
+                    {text: 'Back to Lessons', onPress: () => this.props.navigation.navigate('Lessons')},
+                    {text: 'Order More', onPress: () => this.props.navigation.navigate('Order')}
+                    
                 ],
                 {onDismiss: () => this.props.navigation.navigate('Lessons')}
             );
