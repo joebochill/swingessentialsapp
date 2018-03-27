@@ -145,7 +145,11 @@ class Login extends React.Component{
                         containerStyle={styles.formLabelContainer} 
                         labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Username</FormLabel>
                     <FormInput
+                        autoFocus={true}
+                        autoCorrect={false}
                         autoCapitalize={'none'}
+                        onSubmitEditing={()=>{if(this.pass){this.pass.focus()}}}
+                        returnKeyType={'next'}
                         containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                         inputStyle={styles.formInput}
                         underlineColorAndroid={colors.transparent}
@@ -158,7 +162,10 @@ class Login extends React.Component{
                         containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal}])}
                         labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Password</FormLabel>
                     <FormInput
+                        ref={(ref) => this.pass = ref}
                         autoCapitalize={'none'}
+                        returnKeyType={'go'}
+                        onSubmitEditing={()=>{if(this.state.username && this.state.password){this._onLogin()}}}
                         containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                         inputStyle={styles.formInput}
                         underlineColorAndroid={colors.transparent}

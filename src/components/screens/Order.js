@@ -241,6 +241,7 @@ class Order extends React.Component{
                                     <View style={{flexDirection: 'row', height: sizes.normal, marginTop: spacing.small}}>
                                         <FormInput
                                             autoCapitalize={'none'}
+                                            autoCorrect={false}
                                             onFocus= {() => this.scroller.scrollTo({x: 0, y: 150, animated: true})}
                                             disabled={this.props.purchaseInProgress}
                                             containerStyle={StyleSheet.flatten([styles.formInputContainer, {flex: 1}])}

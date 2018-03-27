@@ -71,6 +71,7 @@ class Forgot extends React.Component{
                                 labelStyle={StyleSheet.flatten([styles.formLabel])}>Email Address</FormLabel>
                             <FormInput
                                 autoCapitalize={'none'}
+                                autoFocus={true}
                                 containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                                 inputStyle={styles.formInput}
                                 underlineColorAndroid={colors.transparent}
