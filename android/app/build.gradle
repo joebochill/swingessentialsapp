@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-braintree-xplat')
     compile project(':react-native-youtube')
     compile project(':react-native-video')
     compile project(':react-native-vector-icons')
