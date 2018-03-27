@@ -48,6 +48,7 @@ class Register extends React.Component{
             validPhone: true,
             validationError: false
         };
+        this.fields = [];
         this.regProperties=[
             {property: 'firstName', display: 'First Name', blur: null,
                 change: (value) => {this.setState({firstName: value.replace(/[^A-Z- .]/gi,"").substr(0,32)})}
@@ -190,6 +191,17 @@ class Register extends React.Component{
                                 {item.display}
                             </FormLabel>
                             <FormInput
+                                ref={(ref) => this.fields[index] = ref}
+                                autoFocus={index===0}
+                                onSubmitEditing={()=>{
+                                    if(this.fields[index+1]){
+                                        this.fields[index+1].focus()
+                                    }
+                                    else if(this._validateFields()){ 
+                                        this._submitRegistration();
+                                    }
+                                }}
+                                returnKeyType={index < this.regProperties.length -1 ? 'next' : 'go'}
                                 autoCapitalize={'none'}
                                 containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
                                 inputStyle={styles.formInput}

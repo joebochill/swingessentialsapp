@@ -102,9 +102,14 @@ class Lessons extends React.Component{
                                 </View>
                             }
                             data={[
-                                {primary: 'Individual Lessons', secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.count+' Left':'', 
+                                {primary: 'Individual Lessons', 
+                                    secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.count+' Left':'', 
+                                    disabled: this.props.credits.count < 1,
                                     action: ()=>{
-                                        if(this.props.lessons.pending.length < 1){
+                                        if(this.props.credits.count < 1){
+                                            return null;
+                                        }
+                                        else if(this.props.lessons.pending.length < 1){
                                             this.props.navigation.navigate('Redeem');
                                         }
                                         else{
@@ -116,8 +121,13 @@ class Lessons extends React.Component{
                                         }
                                     }
                                 }, 
-                                {primary: 'Activate Unlimited', secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.unlimited+' Left':'', 
-                                    action: ()=>
+                                {primary: 'Activate Unlimited', 
+                                    secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.unlimited+' Left':'', 
+                                    disabled: this.props.credits.unlimited < 1,
+                                    action: ()=>{
+                                        if(this.props.credits.unlimited < 1){
+                                            return null;
+                                        }
                                         Alert.alert(
                                             'Activate Unlimited',
                                             'Activating your unlimited lessons deal will give you access to unlimited lessons for 30 days. The clock starts when you click Activate.',
@@ -131,6 +141,7 @@ class Lessons extends React.Component{
                                                 }
                                             ]
                                         )
+                                    }
                                 },
                                 {primary: 'Order More', action: ()=> this.props.navigation.navigate('Order')}]}
                             renderItem={({item}) => 
@@ -138,6 +149,8 @@ class Lessons extends React.Component{
                                     primary={item.primary} 
                                     secondary={item.secondary}
                                     action={item.action}
+                                    customStyle={item.customStyle}
+                                    disabled={item.disabled}
                                 />
                             }
                             keyExtractor={(item, index) => item.primary}
