@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Text, View, ScrollView, Keyboard, FlatList, StyleSheet, Platform} from 'react-native';
+import {Alert, ActivityIndicator, Text, View, ScrollView, Keyboard, FlatList, StyleSheet, Platform} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
 import {FormInput, FormValidationMessage, Button, Header} from 'react-native-elements';
 import {executePayment, checkCoupon} from '../../actions/LessonActions';
@@ -9,6 +9,15 @@ import {roundNumber} from '../../utils/utils';
 import CardRow from '../Card/CardRow';
 import KeyboardView from '../Keyboard/KeyboardView';
 import {atob} from '../../utils/base64.js';
+
+// import BraintreeDropIn from 'react-native-braintree-payments-drop-in';
+var BTClient = require('react-native-braintree-xplat');
+if (Platform.OS === 'ios') {
+    BTClient.setupWithURLScheme('sandbox_2pqkx4x6_g7sz9ynwdm65gwxj', 'org.reactjs.native.example.swingessentialsapp.btpayments');
+} else {
+    BTClient.setup('sandbox_2pqkx4x6_g7sz9ynwdm65gwxj');
+}
+//BTClient.setup('sandbox_4stxm9hm_tbzth8d9frwrdw6z');//joe's braintree
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -98,11 +107,29 @@ class Order extends React.Component{
             return;
         }
         if(!data){ return;}
-        
-        this.props.executePayment(data,this.props.token);
+
+        this.setState({payPalActive: true}, () => {
+            this.forceUpdate();
+            BTClient.showPayPalViewController().then((nonce) => {
+                Alert.alert(
+                    'Confirm Payment',
+                    'You are about to pay $' + data.total + ' for a ' + this.state.selected.name + ' (' + this.state.selected.description + ').',
+                    [
+                        {text: 'Cancel'},
+                        {text: 'Confirm', onPress: () => this.props.executePayment({...data, nonce: nonce},this.props.token)}
+                        
+                    ]
+                );
+            })
+            .catch(function(err) {
+                //do nothing for now, we handle errors via the API
+            });
+            this.setState({payPalActive: false});
+        });
     }
 
     render(){
+        let free = (this._getTotal() <= 0);
         return(
             <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
                 <Header
@@ -147,19 +174,25 @@ class Order extends React.Component{
                 {!this.props.purchaseFail && !this.props.purchaseSuccess &&
                     <KeyboardView
                         fixed={
+                            (!this.props.purchaseInProgress && !this.state.payPalActive) ?
                             <Button
-                                title="COMPLETE PURCHASE"
-                                disabled={this.state.role === 'pending' || this.props.purchaseInProgress}
+                                title={free ? "COMPLETE PURCHASE" : "Pay with PayPal"}
+                                disabled={this.state.role === 'pending' || this.props.purchaseInProgress || this.state.payPalActive}
                                 disabledStyle={styles.disabledButton}
+                                fontWeight={free? null : '900'}
                                 onPress={()=>this._purchaseLesson({
-                                    id: 'N/A',
-                                    payer: 'N/A',
                                     package: this.state.selected.shortcode,
                                     coupon: this.props.coupon.code,
                                     total: this._getTotal()
                                 })}
-                                buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                                buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}, !free ? {backgroundColor: '#009cde', borderColor: colors.transparent} : {}])}
                                 containerViewStyle={styles.buttonContainer}
+                            /> 
+                            :
+                            <ActivityIndicator 
+                                style={{marginTop: spacing.normal}} 
+                                size={'large'} 
+                                color={colors.purple}
                             />
                         }
                     >
