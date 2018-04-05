@@ -5,6 +5,7 @@ import {ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpac
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
 import {FormInput, FormLabel, FormValidationMessage, Button, Icon, Header} from 'react-native-elements';
 import {redeemCredit} from '../../actions/LessonActions';
+import {checkToken} from '../../actions/LoginActions';
 import KeyboardView from '../Keyboard/KeyboardView';
 import Video from 'react-native-video';
 
@@ -26,7 +27,8 @@ function mapStateToProps(state){
 }
 function mapDispatchToProps(dispatch){
     return {
-        redeemCredit: (data, token, onProgress) => {dispatch(redeemCredit(data, token, onProgress))}
+        redeemCredit: (data, token, onProgress) => {dispatch(redeemCredit(data, token, onProgress))},
+        checkToken: (token) => {dispatch(checkToken(token))}
     };
 }
 
@@ -58,18 +60,27 @@ class Redeem extends React.Component{
             }
             const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
             if(role === 'pending'){
+                this.tokenCheckTimer = setInterval(()=>{his.props.checkToken(this.props.token)}, 1000*60);
                 this.setState({role: 'pending'});
             }
             else{
                 this.setState({role: role});
             }
-        }
+       }
     }
 
     componentWillReceiveProps(nextProps){
         if(!nextProps.token){
             this.props.navigation.navigate('Login');
         }
+
+        // If we get a new token, update the user role
+        if(nextProps.token && nextProps.token !== this.props.token){
+            const newrole = JSON.parse(atob(nextProps.token.split('.')[1])).role;
+            this.setState({role: newrole});
+            if(this.tokenCheckTimer){clearInterval(this.tokenCheckTimer);}
+        }
+
         if(nextProps.redeemSuccess && !this.props.redeemSuccess){
             Alert.alert(
                 'Success!',
@@ -78,7 +89,7 @@ class Redeem extends React.Component{
             );
             this.props.navigation.navigate('Lessons');
         }
-        else if(nextProps.credits.count < 1 && nextProps.credits.unlimitedExpires < Date.now()/1000){
+        else if(nextProps.token && nextProps.credits.count < 1 && nextProps.credits.unlimitedExpires < Date.now()/1000){
             Alert.alert(
                 'Out of Credits',
                 'Looks like you\'re all out of lesson credits. Head over to the Order page to stock up.',

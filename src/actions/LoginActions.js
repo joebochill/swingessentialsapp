@@ -7,6 +7,7 @@ import {getPackages} from './PackageActions';
 export const LOGIN = {SUCCESS: 'LOGIN_SUCCESS', FAIL: 'LOGIN_FAIL'};
 export const LOGOUT = {SUCCESS: 'LOGOUT_SUCCESS', FAIL: 'LOGOUT_FAIL'};
 export const REFRESH_TOKEN = {REQUEST: 'REFRESH_TOKEN', SUCCESS: 'REFRESH_TOKEN_SUCCESS', FAIL: 'REFRESH_TOKEN_FAIL'};
+export const CHECK_TOKEN = {REQUEST: 'CHECK_TOKEN', SUCCESS: 'CHECK_TOKEN_SUCCESS', FAIL: 'CHECK_TOKEN_FAIL'};
 
 import {btoa} from '../utils/base64.js';
 
@@ -80,6 +81,31 @@ export function refreshToken(token){
                 default:
                     checkTimeout(response, dispatch);
                     dispatch(failure(REFRESH_TOKEN.FAIL, response));
+            }
+        })
+        .catch((error) => console.error(error));
+    }
+}
+
+
+// Check the token of a pending user to see if they have since been verified
+export function checkToken(token){
+    return (dispatch) => {
+        fetch(BASEURL+'checkToken', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then((response) => {
+            switch(response.status){
+                case 200:
+                    const token = response.headers.get('Token');
+                    if(token){
+                        dispatch(success(CHECK_TOKEN.SUCCESS, {token: token}));
+                    }
+                    break;
+                default:
+                    checkTimeout(response, dispatch);
             }
         })
         .catch((error) => console.error(error));
