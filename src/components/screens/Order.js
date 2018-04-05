@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Alert, ActivityIndicator, Text, View, ScrollView, Keyboard, FlatList, StyleSheet, Platform} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
 import {FormInput, FormValidationMessage, Button, Header} from 'react-native-elements';
-import {executePayment, checkCoupon} from '../../actions/LessonActions';
+import {executePayment, checkCoupon, activateUnlimited} from '../../actions/LessonActions';
 import {roundNumber} from '../../utils/utils';
 import CardRow from '../Card/CardRow';
 import KeyboardView from '../Keyboard/KeyboardView';
@@ -28,16 +28,17 @@ function mapStateToProps(state){
         coupon: state.lessons.coupon,
         purchaseInProgress: state.credits.inProgress,
         purchaseSuccess: state.credits.success,
-        purchaseFail: state.credits.fail
+        purchaseFail: state.credits.fail,
         //username: state.userData.username,
-        //lessons: state.lessons,
-        //credits: state.credits
+        lessons: state.lessons,
+        credits: state.credits
     };
 }
 function mapDispatchToProps(dispatch){
     return {
         checkCoupon: (code) => {dispatch(checkCoupon(code))},
         executePayment: (data, token) => {dispatch(executePayment(data,token))},
+        activateUnlimited: (token) => {dispatch(activateUnlimited(token))}
         // getCredits: (token) => {dispatch(getCredits(token))}
     };
 }
@@ -108,24 +109,37 @@ class Order extends React.Component{
         }
         if(!data){ return;}
 
-        this.setState({payPalActive: true}, () => {
-            this.forceUpdate();
-            BTClient.showPayPalViewController().then((nonce) => {
-                Alert.alert(
-                    'Confirm Payment',
-                    'You are about to pay $' + data.total + ' for a ' + this.state.selected.name + ' (' + this.state.selected.description + ').',
-                    [
-                        {text: 'Cancel'},
-                        {text: 'Confirm', onPress: () => this.props.executePayment({...data, nonce: nonce},this.props.token)}
-                        
-                    ]
-                );
-            })
-            .catch(function(err) {
-                //do nothing for now, we handle errors via the API
+        if(data.total > 0){
+            this.setState({payPalActive: true}, () => {
+                this.forceUpdate();
+                BTClient.showPayPalViewController().then((nonce) => {
+                    Alert.alert(
+                        'Confirm Payment',
+                        'You are about to pay $' + data.total + ' for a ' + this.state.selected.name + ' (' + this.state.selected.description + ').',
+                        [
+                            {text: 'Cancel'},
+                            {text: 'Confirm', onPress: () => this.props.executePayment({...data, nonce: nonce},this.props.token)}
+                            
+                        ]
+                    );
+                })
+                .catch(function(err) {
+                    //do nothing for now, we handle errors via the API
+                });
+                this.setState({payPalActive: false});
             });
-            this.setState({payPalActive: false});
-        });
+        }
+        else{
+            Alert.alert(
+                'Confirm Payment',
+                'You are about to pay $' + data.total + ' for a ' + this.state.selected.name + ' (' + this.state.selected.description + ').',
+                [
+                    {text: 'Cancel'},
+                    {text: 'Confirm', onPress: () => this.props.executePayment({...data, nonce: 'N/A'},this.props.token)}
+                    
+                ]
+            );
+        }
     }
 
     render(){
@@ -157,14 +171,70 @@ class Order extends React.Component{
                 {this.props.purchaseSuccess && 
                     <ScrollView style={{padding: spacing.normal}}>
                         <Text style={StyleSheet.flatten([styles.paragraph, {marginTop: 0, marginBottom: 0}])}>Thank you for your purchase!</Text>
+                        {this.state.selected.shortcode !== 'albatross' &&
+                            <Button
+                                title="REDEEM NOW"
+                                onPress={()=> {
+                                    if(this.props.lessons.pending.length < 1){
+                                        this.props.navigation.navigate('Redeem');
+                                    }
+                                    else{
+                                        Alert.alert(
+                                            'Swing Analysis Pending',
+                                            'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
+                                            [{text: 'OK'}]
+                                        );
+                                    }
+                                }}
+                                buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                                containerViewStyle={styles.buttonContainer}
+                            />
+                        }
+                        {this.state.selected.shortcode === 'albatross' &&
+                            this.props.credits.unlimitedExpires <= Date.now()/1000 &&
+                            <Button
+                                title="ACTIVATE NOW"
+                                onPress={()=> {
+                                    Alert.alert(
+                                        'Activate Unlimited',
+                                        'Activating your unlimited lessons deal will give you access to unlimited lessons for 30 days. The clock starts when you click Activate.',
+                                        [
+                                            {text: 'Cancel'},
+                                            {text: 'Activate', 
+                                                onPress: () => {
+                                                    this.props.activateUnlimited(this.props.token);
+                                                    this.props.navigation.navigate('Lessons');
+                                                }
+                                            }
+                                        ]
+                                    )
+                                }}
+                                buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                                containerViewStyle={styles.buttonContainer}
+                            />
+                        }
+                        {this.state.selected.shortcode === 'albatross' &&
+                            this.props.credits.unlimitedExpires > Date.now()/1000 &&
+                            <Button
+                                title="SUBMIT A SWING"
+                                onPress={()=> {
+                                    if(this.props.lessons.pending.length < 1){
+                                        this.props.navigation.navigate('Redeem');
+                                    }
+                                    else{
+                                        Alert.alert(
+                                            'Swing Analysis Pending',
+                                            'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
+                                            [{text: 'OK'}]
+                                        );
+                                    }
+                                }}
+                                buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                                containerViewStyle={styles.buttonContainer}
+                            />
+                        }
                         <Button
-                            title="REDEEM NOW"
-                            onPress={()=> this.props.navigation.navigate('Redeem')}
-                            buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
-                            containerViewStyle={styles.buttonContainer}
-                        />
-                        <Button
-                            title="BACK TO LESSONS"
+                            title={"BACK TO LESSONS"}
                             onPress={()=> this.props.navigation.navigate('Lessons')}
                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
                             containerViewStyle={styles.buttonContainer}
