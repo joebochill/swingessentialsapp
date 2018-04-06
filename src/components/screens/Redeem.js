@@ -60,7 +60,7 @@ class Redeem extends React.Component{
             }
             const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
             if(role === 'pending'){
-                this.tokenCheckTimer = setInterval(()=>{his.props.checkToken(this.props.token)}, 1000*60);
+                this.tokenCheckTimer = setInterval(()=>{this.props.checkToken(this.props.token)}, 1000*60);
                 this.setState({role: 'pending'});
             }
             else{
