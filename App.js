@@ -8,7 +8,7 @@ import AppWithNavigationState from './src/navigators/AppNavigator';
 
 import { middleware } from './src/utils/redux';
 import thunk from 'redux-thunk';
-
+import SplashScreen from 'react-native-splash-screen';
 
 const store = createStore(
   AppReducer,
@@ -16,6 +16,9 @@ const store = createStore(
 );
 
 class SwingEssentialsApp extends React.Component {
+  componentDidMount(){
+    SplashScreen.hide()
+  }
   render() {
     StatusBar.setBarStyle('light-content', true);
     return (
