@@ -111,3 +111,8 @@ export function checkToken(token){
         .catch((error) => console.error(error));
     }
 }
+
+// Show (or hide) the token expiration warning modal
+export function showLogoutWarning(show=true){
+    return (dispatch) => {dispatch({type:show ? 'SHOW_LOGOUT_WARNING' : 'HIDE_LOGOUT_WARNING'});};
+}
