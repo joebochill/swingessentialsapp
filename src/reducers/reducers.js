@@ -59,27 +59,31 @@ function userData(state = initialUserState, action){
 const initialLoginState = {
   token: null,
   admin: false,
-  modalWarning: false
+  modalWarning: false,
+  loginFails: 0
 };
 const login = (state=initialLoginState, action) => {
 	switch(action.type){
     case LOGIN.SUCCESS:
     case CREATE_ACCOUNT.SUCCESS:
     case CHECK_TOKEN.SUCCESS:
-			return{...state,
+      return{...state,
+        loginFails: 0,
         token: action.data.token,
         admin: (JSON.parse(atob(action.data.token.split('.')[1]))['role'].toLowerCase()==='administrator')
 			};
 		case LOGIN.FAIL:
 			return{...state,
         token: null,
-        admin: false
+        admin: false,
+        loginFails: state.loginFails+1
       };
     case LOGOUT.SUCCESS:
     case TOKEN_TIMEOUT:
       return {...state,
         token: null,
-        admin: false
+        admin: false,
+        loginFails: 0
       };
     case 'SHOW_LOGOUT_WARNING':
       return {...state,
