@@ -32,7 +32,7 @@ class CustomDrawer extends React.Component {
     componentWillReceiveProps(nextProps){
         if(nextProps.token && nextProps.token !== this.props.token){
             if(this.tokenTimer){clearInterval(this.tokenTimer);}
-            this.tokenTimer = setInterval(() => this._checkTokenTimeout(), 3*60*1000);
+            this.tokenTimer = setInterval(() => this._checkTokenTimeout(), 60*1000);
             this.exp = JSON.parse(atob(nextProps.token.split('.')[1])).exp;
         }
     }

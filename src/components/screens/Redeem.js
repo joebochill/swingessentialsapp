@@ -178,7 +178,7 @@ class Redeem extends React.Component{
         data.append('notes', this.state.notes);
 
         this.props.redeemCredit(data, this.props.token, this._updateProgress.bind(this));
-        this.scroller.scrollTo({x: 0, y: 0, animated: true});
+        // this.scroller.scrollTo({x: 0, y: 0, animated: true});
     }
 
     _updateProgress(event){
@@ -201,7 +201,7 @@ class Redeem extends React.Component{
                 />
 
                 <KeyboardView
-                    fixed={
+                    fixed={ (!this.props.redeemPending) ?
                         <Button
                             title="SUBMIT"
                             disabled={this.props.redeemPending || this.state.role === 'pending' || !this.state.foSource || !this.state.dtlSource}
@@ -210,6 +210,16 @@ class Redeem extends React.Component{
                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
                             containerViewStyle={styles.buttonContainer}
                         />
+                        :
+                        <View style={{paddingTop: spacing.normal}}>
+                            <ActivityIndicator color={colors.purple}/>
+                            <Text style={{marginTop: spacing.tiny, color: colors.purple, textAlign: 'center', width: '100%'}}>
+                                {this.state.progress < 100 ?
+                                    ('Uploading Video Files... ' + this.state.progress.toFixed(2)+'%')
+                                    : 'Creating lesson...'
+                                }
+                            </Text>
+                        </View>
                     }
                 >
                     <ScrollView 
@@ -222,17 +232,6 @@ class Redeem extends React.Component{
                                 labelStyle={styles.formValidation}>
                                 {'You must verify your email address before you can submit lessons.'}
                             </FormValidationMessage>
-                        }
-                        {this.props.redeemPending && 
-                            <View style={{marginBottom: spacing.normal}}>
-                                <ActivityIndicator color={colors.purple}/>
-                                <Text style={{color: colors.purple, textAlign: 'center', width: '100%'}}>
-                                    {this.state.progress < 100 ?
-                                        ('Uploading Video Files... ' + this.state.progress.toFixed(2)+'%')
-                                        : 'Creating lesson...'
-                                    }
-                                </Text>
-                            </View>
                         }
                         <FormLabel 
                             containerStyle={styles.formLabelContainer} 
