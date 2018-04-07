@@ -25,6 +25,7 @@ export const sizes = {
     large: 150,
     medium: 75,
     normal: 50,
+    mediumSmall: 30,
     small: 15
 }
 

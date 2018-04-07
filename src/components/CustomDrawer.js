@@ -71,7 +71,7 @@ class CustomDrawer extends React.Component {
                             <CardRow menuItem primary="Submit Your Swing" 
                                 action={() => {
                                     if(this.props.lessons.length < 1){
-                                        this.props.navigation.navigate('Redeem');
+                                        this.props.navigation.navigate('RedeemTop');
                                     }
                                     else{
                                         Alert.alert(

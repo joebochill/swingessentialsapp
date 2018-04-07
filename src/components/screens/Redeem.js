@@ -125,9 +125,12 @@ class Redeem extends React.Component{
     _showPicker(swing){
         ImagePicker.showImagePicker(
             {
-                title: 'Select a Swing Video',
-                takePhotoButtonTitle: 'Record a New Video',
+                title: null,//'Select a Swing Video',
+                takePhotoButtonTitle: null,//'Record a New Video',
                 chooseFromLibraryButtonTitle: 'Choose From Library',
+                customButtons: [
+                    {name: 'record', title: 'Record a New Video'},
+                ],
                 videoQuality: 'low',
                 mediaType: 'video',//video
                 durationLimit: 10,
@@ -144,6 +147,9 @@ class Redeem extends React.Component{
                 else if (response.error) {
                     alert('There was an error choosing a video. Try again later.');//response.error
                 }
+                else if (response.customButton === 'record') {
+                    this.props.navigation.push('Record');
+                  }
                 else {
                     this.setState({
                         [swing]: { uri: response.uri }

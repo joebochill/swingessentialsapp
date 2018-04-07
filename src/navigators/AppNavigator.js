@@ -14,6 +14,7 @@ import Lesson from '../components/screens/Lesson';
 
 import Redeem from '../components/screens/Redeem';
 import Order from '../components/screens/Order';
+import Record from '../components/screens/Record';
 
 import Help from '../components/screens/Help';
 import About from '../components/screens/About';
@@ -45,15 +46,23 @@ export const AppNavigator = DrawerNavigator(
             screen: StackNavigator(
                 {
                     Lessons: {screen: Lessons, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Lesson: {screen: Lesson, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Settings: {screen: Settings, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Setting: {screen: Setting, navigationOptions: ({ navigation }) => ({header: () => null})}
+                    Lesson: {screen: Lesson, navigationOptions: ({ navigation }) => ({header: () => null})}
                 },
                 {initialRouteName: 'Lessons'}
             )
         },
         Order: {screen: Order},
-        Redeem: {screen: Redeem},
+        RedeemTop: {
+            screen: StackNavigator(
+                {
+                    Redeem: {screen: Redeem, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Record: {screen: Record, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Settings: {screen: Settings, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Setting: {screen: Setting, navigationOptions: ({ navigation }) => ({header: () => null})}
+                },
+                {initialRouteName: 'Redeem'}
+            ) 
+        },
         Help: {screen: Help},
         About: {screen: About}
     }, 

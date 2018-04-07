@@ -7,7 +7,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "test": "node node_modules/jest/bin/jest.js",
-    "postinstall": "rm -f ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
+    "postinstall": "./scripts/post.sh"
   },
   "jest": {
     "preset": "react-native",
@@ -25,6 +25,7 @@
     "react-native": "^0.52.0",
     "react-native-braintree-payments-drop-in": "^1.0.1",
     "react-native-braintree-xplat": "^4.0.0",
+    "react-native-camera": "^1.0.3",
     "react-native-elements": "^0.19.0",
     "react-native-image-picker": "^0.26.7",
     "react-native-splash-screen": "^3.0.6",
