@@ -148,7 +148,11 @@ class Redeem extends React.Component{
                     alert('There was an error choosing a video. Try again later.');//response.error
                 }
                 else if (response.customButton === 'record') {
-                    this.props.navigation.push('Record');
+                    this.props.navigation.push('Record', {returnFunc: (uri)=>{
+                        this.setState({
+                            [swing]: {uri: uri}
+                        });
+                    }});
                   }
                 else {
                     this.setState({
