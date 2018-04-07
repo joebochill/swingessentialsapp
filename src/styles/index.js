@@ -26,7 +26,8 @@ export const sizes = {
     medium: 75,
     normal: 50,
     mediumSmall: 30,
-    small: 15
+    small: 15,
+    tiny: 5
 }
 
 export const altStyles = {
