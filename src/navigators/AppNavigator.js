@@ -56,9 +56,15 @@ export const AppNavigator = DrawerNavigator(
             screen: StackNavigator(
                 {
                     Redeem: {screen: Redeem, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Record: {screen: Record, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Settings: {screen: Settings, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Setting: {screen: Setting, navigationOptions: ({ navigation }) => ({header: () => null})}
+                    Record: {screen: Record, navigationOptions: ({ navigation }) => (
+                        {drawerLockMode: 'locked-closed', drawerLabel: () => null, header: () => null})
+                    },
+                    Settings: {screen: Settings, navigationOptions: ({ navigation }) => (
+                        {drawerLockMode: 'locked-closed', drawerLabel: () => null, header: () => null})
+                    },
+                    Setting: {screen: Setting, navigationOptions: ({ navigation }) => (
+                        {drawerLockMode: 'locked-closed', drawerLabel: () => null, header: () => null})
+                    }
                 },
                 {initialRouteName: 'Redeem'}
             ) 

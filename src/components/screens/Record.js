@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
 import { RNCamera } from 'react-native-camera';
+import Video from 'react-native-video';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
 import {FormInput, FormLabel, FormValidationMessage, Button, Icon, Header} from 'react-native-elements';
 import {/*StatusBar,*/ ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
@@ -31,7 +32,8 @@ class Record extends Component {
             recording: false,
             duration: 0,
             delay: 0,
-            uri: null
+            uri: null,
+            playing: false
         };
         this.cameras = ['back', 'front'];
         // this.flashes = ['flash-off', 'flash-on', 'flash-auto'];
@@ -80,8 +82,8 @@ class Record extends Component {
                     this.setState({uri: result.uri, recording: false, duration: 0, recordLive: false});
                     
                     // return the uri and go back to the redeem screen
-                    this.props.navigation.state.params.returnFunc(result.uri);
-                    this.props.navigation.pop();
+                    //this.props.navigation.state.params.returnFunc(result.uri);
+                    //this.props.navigation.pop();
                 })
                 .catch((err)=>{
                     if(this.timer){clearInterval(this.timer)}
@@ -103,13 +105,13 @@ class Record extends Component {
     }
 
     render() {
-        return (
+        let recorder = (
             <View style={{backgroundColor: colors.backgroundGrey, flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
                 <RNCamera
                     ref={ref => {this.camera = ref;}}
                     style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
                     type={RNCamera.Constants.Type[this.cameras[this.state.camera]]}
-                    flashMode={(this.state.recording && !this.state.recordLive) ? RNCamera.Constants.FlashMode['torch'] : RNCamera.Constants.FlashMode['off']}
+                    flashMode={(this.props.settings.delay > 0 && this.state.recording && !this.state.recordLive) ? RNCamera.Constants.FlashMode['torch'] : RNCamera.Constants.FlashMode['off']}
                     // flashMode={RNCamera.Constants.FlashMode[this.flashes[this.state.flash].split('-')[1]]}
                 >
                     {this.props.settings.overlay && 
@@ -127,7 +129,7 @@ class Record extends Component {
                     }
                     {this.state.delay > 0 && 
                         <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.25)'}}>
-                            <Text style={{color: colors.white, fontSize: 72}}>{this.state.delay}</Text>
+                            <Text style={{color: colors.white, fontSize: 128}}>{this.state.delay}</Text>
                         </View>
                     }
                 </RNCamera>
@@ -235,15 +237,55 @@ class Record extends Component {
                 </View>
             </View>
         );
+        let player = !this.state.uri ? null : (
+            <View style={{backgroundColor: colors.backgroundGrey, flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
+                <Video source={{uri:this.state.uri}}    // Can be a URL or a local file.
+                    ref={(ref) => {
+                        this.player = ref
+                    }}                                      // Store reference
+                    rate={1.0}                              // 0 is paused, 1 is normal.
+                    volume={1.0}                            // 0 is muted, 1 is normal.
+                    muted={false}                           // Mutes the audio entirely.
+                    paused={!this.state.playing}                          // Pauses playback entirely.
+                    onEnd={()=>this.setState({playing: false})}
+                    resizeMode="contain"                    // Fill the whole screen at aspect ratio.*
+                    repeat={true}                           // Repeat forever.
+                    playInBackground={false}                // Audio continues to play when app entering background.
+                    playWhenInactive={false}                // [iOS] Video continues to play when control or notification center are shown.
+                    ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.
+                    style={{height:'100%', width: '100%'}}
+                />
+                <View style={{
+                    position: 'absolute', 
+                    backgroundColor: 'rgba(0,0,0,0.35)', 
+                    bottom: 0, left: 0, right: 0,
+                    flexDirection: 'row', 
+                    alignItems: 'center',
+                }}>
+                    <TouchableOpacity onPress={()=> this.setState({uri: null})} style={{flex: 1, padding: spacing.normal}}>
+                        <Text style={{color: colors.white, textAlign: 'left'}}>Retake</Text>
+                    </TouchableOpacity>
+                    <Icon 
+                        name={this.state.playing ? 'pause' : 'play-arrow'} 
+                        size={sizes.medium} 
+                        color={colors.white}
+                        underlayColor={colors.transparent}
+                        iconStyle={{flex: 0}}
+                        onPress={()=>this.setState({playing: !this.state.playing})}
+                    />
+                    <TouchableOpacity style={{flex: 1, padding: spacing.normal}} 
+                        onPress={()=> {
+                            this.props.navigation.state.params.returnFunc(this.state.uri);
+                            this.props.navigation.pop();
+                        }}
+                    >
+                        <Text style={{color: colors.white, textAlign: 'right'}}>Use Video</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+        return (this.state.uri ? player : recorder);
     }
-
-    takePicture = async function() {
-        if (this.camera) {
-        const options = { quality: 0.5, base64: true };
-        const data = await this.camera.takePictureAsync(options)
-        console.log(data.uri);
-        }
-    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Record);
