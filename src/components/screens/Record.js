@@ -112,27 +112,28 @@ class Record extends Component {
                     style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
                     type={RNCamera.Constants.Type[this.cameras[this.state.camera]]}
                     flashMode={(this.props.settings.delay > 0 && this.state.recording && !this.state.recordLive) ? RNCamera.Constants.FlashMode['torch'] : RNCamera.Constants.FlashMode['off']}
+                    permissionDialogTitle={'Permission to use camera'}
+                    permissionDialogMessage={'We need your permission to use your camera phone'}
                     // flashMode={RNCamera.Constants.FlashMode[this.flashes[this.state.flash].split('-')[1]]}
-                >
-                    {this.props.settings.overlay && 
-                        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
-                            <Image
-                                resizeMethod='resize'
-                                style={{height:'100%', width: '100%', opacity: 0.35, resizeMode: 'contain'}}
-                                source={
-                                    this.props.navigation.state.params.swing === 'dtl' ? 
-                                        (this.props.settings.handedness === 'Left' ? downthelineLH : downthelineRH) : 
-                                        (this.props.settings.handedness === 'Left' ? faceonLH : faceonRH)
-                                }
-                            />
-                        </View>
-                    }
-                    {this.state.delay > 0 && 
-                        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.25)'}}>
-                            <Text style={{color: colors.white, fontSize: 128}}>{this.state.delay}</Text>
-                        </View>
-                    }
-                </RNCamera>
+                />
+                {this.props.settings.overlay && 
+                    <View style={StyleSheet.flatten([styles.absolute, styles.centered])}>
+                        <Image
+                            resizeMethod='resize'
+                            style={{height:'100%', width: '100%', opacity: 0.35, resizeMode: 'contain'}}
+                            source={
+                                this.props.navigation.state.params.swing === 'dtl' ? 
+                                    (this.props.settings.handedness === 'Left' ? downthelineLH : downthelineRH) : 
+                                    (this.props.settings.handedness === 'Left' ? faceonLH : faceonRH)
+                            }
+                        />
+                    </View>
+                }
+                {this.state.delay > 0 && 
+                    <View style={StyleSheet.flatten([styles.absolute, styles.centered, {backgroundColor: 'rgba(0,0,0,0.25)'}])}>
+                        <Text style={{color: colors.white, fontSize: 128}}>{this.state.delay}</Text>
+                    </View>
+                }
                 <Header
                     outerContainerStyles={{ 
                         backgroundColor: 'rgba(0,0,0,0.25)',//colors.transparent, 
@@ -238,7 +239,7 @@ class Record extends Component {
             </View>
         );
         let player = !this.state.uri ? null : (
-            <View style={{backgroundColor: colors.backgroundGrey, flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
+            <View style={{backgroundColor: colors.black, flex: 1, flexDirection: 'column', alignItems: 'stretch'}}>
                 <Video source={{uri:this.state.uri}}    // Can be a URL or a local file.
                     ref={(ref) => {
                         this.player = ref

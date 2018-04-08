@@ -158,6 +158,16 @@ export default StyleSheet.create({
         width: '100%',
         color: colors.purple,
         marginBottom: spacing.tiny
+    },
+    absolute:{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0
+    },
+    centered:{
+        alignItems: 'center',
+        justifyContent: 'center'
     }
-
 });

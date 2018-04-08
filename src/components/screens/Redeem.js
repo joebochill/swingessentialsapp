@@ -169,7 +169,7 @@ class Redeem extends React.Component{
     _redeemLesson(){
         Keyboard.dismiss();
         if(this.props.redeemPending){ return;}
-        if(Platform.OS === 'ios' && (!this.foplayer || !this.dtlplayer)){
+        if((!this.foplayer || !this.dtlplayer)){
             return;
         }
         if(!this.state.foSource || !this.state.dtlSource){
@@ -253,11 +253,19 @@ class Redeem extends React.Component{
                         </FormLabel>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing.small}}>
                             <View style={{flex: 1, marginRight: spacing.normal}}>
-                                <View style={{flex: 0, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.foSource && Platform.OS === 'ios' ? colors.black: colors.white, height: sizes.large}}>
-                                    {this.state.foSource && (Platform.OS === 'ios') &&
+                                <View style={{flex: 0, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.foSource ? colors.black: colors.white, height: sizes.large}}>
+                                    {this.state.foSource &&
                                         <TouchableOpacity style={{height:'100%', width: '100%'}} 
                                             underlayColor={colors.black}
                                             onPress={()=>this.setState({foPlaying: !this.state.foPlaying})}> 
+                                            <View style={StyleSheet.flatten([styles.absolute, styles.centered])}>
+                                                <Icon 
+                                                    name={'play-arrow'} 
+                                                    size={sizes.medium} 
+                                                    color={colors.white}
+                                                    underlayColor={colors.transparent}
+                                                />
+                                            </View>
                                             <Video source={this.state.foSource}    // Can be a URL or a local file.
                                                 //poster="https://baconmockup.com/300/200/" // uri to an image to display until the video plays
                                                 ref={(ref) => {
@@ -277,7 +285,7 @@ class Redeem extends React.Component{
                                             />
                                         </TouchableOpacity>    
                                     }
-                                    {(!this.state.foSource || (this.state.foSource && Platform.OS==='android')) && 
+                                    {!this.state.foSource  && 
                                         <TouchableOpacity style={{height:'100%', width: '100%'}} 
                                             onPress={()=>this._showPicker('foSource')}> 
                                             <Image
@@ -285,14 +293,14 @@ class Redeem extends React.Component{
                                                 style={{height:'100%', width: '100%', resizeMode: 'contain'}}
                                                 source={faceon}
                                             />
-                                            {Platform.OS === 'android' && this.state.foSource &&
+                                            {/* {Platform.OS === 'android' && this.state.foSource &&
                                                 <Icon 
                                                     containerStyle={{position: 'absolute', bottom: spacing.tiny, left: spacing.tiny}}
                                                     name={'check-circle'} 
                                                     size={sizes.normal} 
                                                     color={'#4caf50'}
                                                 />
-                                            }
+                                            } */}
                                         </TouchableOpacity>
                                     }
                                 </View>
@@ -306,11 +314,19 @@ class Redeem extends React.Component{
                                 />
                             </View>
                             <View style={{flex: 1}}>
-                                <View style={{flex: 0, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.dtlSource && (Platform.OS === 'ios') ? colors.black : colors.white, height: sizes.large}}>
-                                    {this.state.dtlSource && (Platform.OS === 'ios') &&
+                                <View style={{flex: 0, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.dtlSource ? colors.black : colors.white, height: sizes.large}}>
+                                    {this.state.dtlSource &&
                                         <TouchableOpacity style={{height:'100%', width: '100%'}} 
                                             underlayColor={colors.black}
                                             onPress={()=>this.setState({dtlPlaying: !this.state.dtlPlaying})}> 
+                                            <View style={StyleSheet.flatten([styles.absolute, styles.centered])}>
+                                                <Icon 
+                                                    name={'play-arrow'} 
+                                                    size={sizes.medium} 
+                                                    color={colors.white}
+                                                    underlayColor={colors.transparent}
+                                                />
+                                            </View>
                                             <Video source={this.state.dtlSource}    // Can be a URL or a local file.
                                                 //poster="https://baconmockup.com/300/200/" // uri to an image to display until the video plays
                                                 ref={(ref) => {
@@ -330,7 +346,7 @@ class Redeem extends React.Component{
                                             />
                                         </TouchableOpacity>    
                                     }
-                                    {(!this.state.dtlSource || (this.state.dtlSource && Platform.OS==='android')) && 
+                                    {!this.state.dtlSource && 
                                         <TouchableOpacity style={{height:'100%', width: '100%'}} 
                                             onPress={()=>this._showPicker('dtlSource')}> 
                                             <Image
@@ -338,14 +354,14 @@ class Redeem extends React.Component{
                                                 style={{height:'100%', width: '100%', resizeMode: 'contain'}}
                                                 source={downtheline}
                                             />
-                                            {Platform.OS === 'android' && this.state.dtlSource &&
+                                            {/* {Platform.OS === 'android' && this.state.dtlSource &&
                                                 <Icon 
                                                     containerStyle={{position: 'absolute', bottom: spacing.tiny, left: spacing.tiny}}
                                                     name={'check-circle'} 
                                                     size={sizes.normal} 
                                                     color={'#4caf50'}
                                                 />
-                                            }
+                                            } */}
                                         </TouchableOpacity>
                                     }
                                 </View>
