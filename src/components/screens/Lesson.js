@@ -9,7 +9,7 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
-import {FormLabel, Header} from 'react-native-elements';
+import {FormLabel, Header, Icon} from 'react-native-elements';
 import YouTube from 'react-native-youtube'
 import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
 import { markLessonViewed } from '../../actions/LessonActions';
@@ -121,83 +121,85 @@ class Lesson extends React.Component{
             Comments
           </FormLabel>
           {this._formatText(lesson.response_notes)}
-          <View>
-            <FormLabel 
-              containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
-              labelStyle={StyleSheet.flatten([styles.formLabel])}>
-              Your Swing Videos
-            </FormLabel>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <View style={{flex: 1, marginRight: spacing.normal, backgroundColor: colors.black, height: sizes.large}}>
-                  <TouchableOpacity style={{height:'100%', width: '100%'}} 
-                      underlayColor={colors.black}
-                      onPress={()=>this.setState({foPlaying: !this.state.foPlaying})}> 
-                      <View style={StyleSheet.flatten([styles.absolute, styles.centered])}>
-                          <Icon 
-                              name={'play-arrow'} 
-                              size={sizes.medium} 
-                              color={colors.white}
-                              underlayColor={colors.transparent}
-                          />
-                      </View>
-                      <Video 
-                        source={{uri:'https://www.josephpboyle.com/video_links/'+lesson.request_url+'/'+lesson.fo_swing}}    // Can be a URL or a local file.
-                        ref={(ref) => {this.foplayer = ref}}    // Store reference
-                        rate={1.0}                              // 0 is paused, 1 is normal.
-                        volume={1.0}                            // 0 is muted, 1 is normal.
-                        muted={false}                           // Mutes the audio entirely.
-                        paused={!this.state.foPlaying}                          // Pauses playback entirely.
-                        onEnd={()=>this.setState({foPlaying: false})}
-                        resizeMode="contain"                    // Fill the whole screen at aspect ratio.*
-                        repeat={true}                           // Repeat forever.
-                        playInBackground={false}                // Audio continues to play when app entering background.
-                        playWhenInactive={false}                // [iOS] Video continues to play when control or notification center are shown.
-                        ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.
-                        style={{height:'100%', width: '100%'}}
-                      />
-                  </TouchableOpacity>    
-                </View>
-                <View style={{flex: 1, backgroundColor: colors.black, height: sizes.large}}>
-                  <TouchableOpacity style={{height:'100%', width: '100%'}} 
-                      underlayColor={colors.black}
-                      onPress={()=>this.setState({dtlPlaying: !this.state.dtlPlaying})}> 
-                      <View style={StyleSheet.flatten([styles.absolute, styles.centered])}>
-                          <Icon 
-                              name={'play-arrow'} 
-                              size={sizes.medium} 
-                              color={colors.white}
-                              underlayColor={colors.transparent}
-                          />
-                      </View>
-                      <Video 
-                        source={{uri:'https://www.josephpboyle.com/video_links/'+lesson.request_url+'/'+lesson.dtl_swing}}    // Can be a URL or a local file.
-                        ref={(ref) => {this.dtlplayer = ref}}    // Store reference
-                        rate={1.0}                              // 0 is paused, 1 is normal.
-                        volume={1.0}                            // 0 is muted, 1 is normal.
-                        muted={false}                           // Mutes the audio entirely.
-                        paused={!this.state.dtlPlaying}                          // Pauses playback entirely.
-                        onEnd={()=>this.setState({dtlPlaying: false})}
-                        resizeMode="contain"                    // Fill the whole screen at aspect ratio.*
-                        repeat={true}                           // Repeat forever.
-                        playInBackground={false}                // Audio continues to play when app entering background.
-                        playWhenInactive={false}                // [iOS] Video continues to play when control or notification center are shown.
-                        ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.
-                        style={{height:'100%', width: '100%'}}
-                      />
-                  </TouchableOpacity>    
-                </View>
-            </View>
-            {lesson.request_notes.length > 0 && 
-              <View>
-                <FormLabel 
-                  containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
-                  labelStyle={StyleSheet.flatten([styles.formLabel])}>
-                  Special Requests
-                </FormLabel>
-                {this._formatText(lesson.request_notes)}
+          {Platform.OS === 'ios' &&
+            <View>
+              <FormLabel 
+                containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
+                labelStyle={StyleSheet.flatten([styles.formLabel])}>
+                Your Swing Videos
+              </FormLabel>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <View style={{flex: 1, marginRight: spacing.normal, backgroundColor: colors.black, height: sizes.large}}>
+                    <TouchableOpacity style={{height:'100%', width: '100%'}} 
+                        underlayColor={colors.black}
+                        onPress={()=>this.setState({foPlaying: !this.state.foPlaying})}> 
+                        <View style={StyleSheet.flatten([styles.absolute, styles.centered])}>
+                            <Icon 
+                                name={'play-arrow'} 
+                                size={sizes.medium} 
+                                color={colors.white}
+                                underlayColor={colors.transparent}
+                            />
+                        </View>
+                        <Video 
+                          source={{uri:'https://www.josephpboyle.com/video_links/'+lesson.request_url+'/'+lesson.fo_swing}}    // Can be a URL or a local file.
+                          ref={(ref) => {this.foplayer = ref}}    // Store reference
+                          rate={1.0}                              // 0 is paused, 1 is normal.
+                          volume={1.0}                            // 0 is muted, 1 is normal.
+                          muted={false}                           // Mutes the audio entirely.
+                          paused={!this.state.foPlaying}                          // Pauses playback entirely.
+                          onEnd={()=>this.setState({foPlaying: false})}
+                          resizeMode="contain"                    // Fill the whole screen at aspect ratio.*
+                          repeat={true}                           // Repeat forever.
+                          playInBackground={false}                // Audio continues to play when app entering background.
+                          playWhenInactive={false}                // [iOS] Video continues to play when control or notification center are shown.
+                          ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.
+                          style={{height:'100%', width: '100%'}}
+                        />
+                    </TouchableOpacity>    
+                  </View>
+                  <View style={{flex: 1, backgroundColor: colors.black, height: sizes.large}}>
+                    <TouchableOpacity style={{height:'100%', width: '100%'}} 
+                        underlayColor={colors.black}
+                        onPress={()=>this.setState({dtlPlaying: !this.state.dtlPlaying})}> 
+                        <View style={StyleSheet.flatten([styles.absolute, styles.centered])}>
+                            <Icon 
+                                name={'play-arrow'} 
+                                size={sizes.medium} 
+                                color={colors.white}
+                                underlayColor={colors.transparent}
+                            />
+                        </View>
+                        <Video 
+                          source={{uri:'https://www.josephpboyle.com/video_links/'+lesson.request_url+'/'+lesson.dtl_swing}}    // Can be a URL or a local file.
+                          ref={(ref) => {this.dtlplayer = ref}}    // Store reference
+                          rate={1.0}                              // 0 is paused, 1 is normal.
+                          volume={1.0}                            // 0 is muted, 1 is normal.
+                          muted={false}                           // Mutes the audio entirely.
+                          paused={!this.state.dtlPlaying}                          // Pauses playback entirely.
+                          onEnd={()=>this.setState({dtlPlaying: false})}
+                          resizeMode="contain"                    // Fill the whole screen at aspect ratio.*
+                          repeat={true}                           // Repeat forever.
+                          playInBackground={false}                // Audio continues to play when app entering background.
+                          playWhenInactive={false}                // [iOS] Video continues to play when control or notification center are shown.
+                          ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.
+                          style={{height:'100%', width: '100%'}}
+                        />
+                    </TouchableOpacity>    
+                  </View>
               </View>
-            }
-          </View>
+              {lesson.request_notes.length > 0 && 
+                <View>
+                  <FormLabel 
+                    containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
+                    labelStyle={StyleSheet.flatten([styles.formLabel])}>
+                    Special Requests
+                  </FormLabel>
+                  {this._formatText(lesson.request_notes)}
+                </View>
+              }
+            </View>
+          }
         </ScrollView>
       </View>
     );
