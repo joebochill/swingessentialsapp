@@ -121,7 +121,7 @@ class CustomDrawer extends React.Component {
                             action={() => this.props.navigation.navigate('Settings')}/> */}
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>
-                        <CardRow menuItem primary="About" secondary="v1.0.1" 
+                        <CardRow menuItem primary="About" secondary="v1.0.10" 
                             action={() => this.props.navigation.navigate('About')}/>
                         <CardRow menuItem primary="View Website" 
                             action={() =>Linking.openURL('https://www.swingessentials.com')}/>
