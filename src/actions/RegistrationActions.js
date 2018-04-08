@@ -69,7 +69,7 @@ export function createAccount(data){
                     dispatch(getSettings(token));
                     break;
                 default:
-                    checkTimeout(response, dispatch);
+                    //checkTimeout(response, dispatch);
                     dispatch(failure(CREATE_ACCOUNT.FAIL, response));
                     break;
             }

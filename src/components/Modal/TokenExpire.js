@@ -57,9 +57,10 @@ class TokenExpireModal extends React.Component {
         }
         let remaining = this.exp - Date.now()/1000;
 
-        if(remaining <= 89*60){
+        if(remaining <= 0){
             if(this.tokenTimer){clearInterval(this.tokenTimer);}
             this.props.logout();
+            return;
         }
 
         let min = Math.floor(remaining/60);
@@ -99,7 +100,7 @@ class TokenExpireModal extends React.Component {
                             <Text style={{color: colors.purple}}>Your session is about to expire. Click below to stay logged in.</Text>
                             <Button
                                 title="KEEP ME LOGGED IN"
-                                onPress={this._cancel.bind(this)}
+                                onPress={this._okay.bind(this)}
                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal, marginLeft: 0}])}
                                 containerViewStyle={StyleSheet.flatten([styles.buttonContainer, {marginLeft: 0, marginRight: 0, alignSelf: 'center'}])}
                             />

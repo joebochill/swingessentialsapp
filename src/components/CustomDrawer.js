@@ -1,7 +1,9 @@
 import React from 'react'
-import { Alert, Text, View, Image, Linking } from 'react-native';
+import { AppState, Alert, Text, View, Image, Linking } from 'react-native';
 import {connect} from 'react-redux';
-import {requestLogout, showLogoutWarning} from '../actions/LoginActions';
+import {requestLogout, 
+    showLogoutWarning, 
+    requestDataFromToken} from '../actions/LoginActions';
 import LogoutWarning from './Modal/TokenExpire';
 
 import {colors, spacing} from '../styles/index';
@@ -23,22 +25,46 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
+        refreshData: (token) => dispatch(requestDataFromToken(token)),
         requestLogout: (token) => dispatch(requestLogout(token)),
         showLogoutWarning: (show) => dispatch(showLogoutWarning(show))
     }
 }
 
 class CustomDrawer extends React.Component {
+    constructor(props){
+        super(props);
+        this.state={
+            appState: AppState.currentState
+        }
+    }
+    componentDidMount(){
+        AppState.addEventListener('change', this._handleAppStateChange);
+    }
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+    }
     componentWillReceiveProps(nextProps){
         if(nextProps.token && nextProps.token !== this.props.token){
             if(this.tokenTimer){clearInterval(this.tokenTimer);}
-            this.tokenTimer = setInterval(() => this._checkTokenTimeout(), 60*1000);
+            
             this.exp = JSON.parse(atob(nextProps.token.split('.')[1])).exp;
+            this.tokenTimer = setInterval(() => this._checkTokenTimeout(nextProps.token), 60*1000);
+            this._checkTokenTimeout(nextProps.token);
         }
     }
-    // Periodically checks the token timeout and will show a renew dialog if the time is < 5 minutes, < 2 minutes
-    _checkTokenTimeout(){
-        if(!this.props.token){
+
+    // Handle the app coming into the foreground after being backgrounded
+    _handleAppStateChange = (nextAppState) => {
+        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+            this.props.refreshData(this.props.token);
+        }
+        this.setState({appState: nextAppState});
+    }
+
+    // Periodically checks the token timeout and will show a renew dialog if the time is < 3 minutes
+    _checkTokenTimeout(token=this.props.token){
+        if(!token){
             if(this.tokenTimer){clearInterval(this.tokenTimer);}
             return;
         }

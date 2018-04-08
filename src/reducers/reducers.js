@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
 import {TOKEN_TIMEOUT} from '../actions/actions';
-import {LOGIN, LOGOUT, CHECK_TOKEN} from '../actions/LoginActions';
+import {LOGIN, LOGOUT, CHECK_TOKEN, REFRESH_TOKEN} from '../actions/LoginActions';
 
 import {
   GET_LESSONS, 
@@ -67,6 +67,7 @@ const login = (state=initialLoginState, action) => {
     case LOGIN.SUCCESS:
     case CREATE_ACCOUNT.SUCCESS:
     case CHECK_TOKEN.SUCCESS:
+    case REFRESH_TOKEN.SUCCESS:
       return{...state,
         failCount: 0,
         token: action.data.token,
