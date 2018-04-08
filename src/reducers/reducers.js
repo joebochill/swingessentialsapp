@@ -83,7 +83,8 @@ const login = (state=initialLoginState, action) => {
       return {...state,
         failCount: 0,
         token: null,
-        admin: false
+        admin: false,
+        loginFails: 0
       };
     case 'SHOW_LOGOUT_WARNING':
       return {...state,
