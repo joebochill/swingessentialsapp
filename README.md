@@ -16,9 +16,9 @@ This project was bootstrapped using [Create React Native App](https://github.com
 ### Lessons
 The lessons page is the first page you see when you open the app. It shows a list of your past/pending swing analysis videos as well as information about any lesson credits you currently have available. Clicking on a lesson row will open up the analysis.
 
-<img width="200" alt="Lessons" src="assets/lessons.PNG">
-<img width="200" alt="Lessons Unlimited" src="assets/lessons_unlimited.PNG">
-<img width="200" alt="Swing Analysis" src="assets/lesson_response.PNG">
+Lessons | Unlimited Active | Analysis
+---- | ---- | ----
+<img width="200" alt="Lessons" src="assets/lessons.PNG"> | <img width="200" alt="Lessons Unlimited" src="assets/lessons_unlimited.PNG"> | <img width="200" alt="Swing Analysis" src="assets/lesson_response.PNG">
 
 
 ### Order Credits
@@ -32,8 +32,9 @@ To submit a request for a swing analysis, users must provide a video of their sw
 
 There are several settings available if the user wishes to record a new swing from the app. They may set the desired duration of the recording as well as a delay period to give them time to set up prior to the recording. They may also choose to view a graphical overlay over their video to show them how they should stand for each required view.
 
-<img width="200" alt="Record Swing" src="assets/capture.PNG">
-<img width="200" alt="Submit Swing" src="assets/lesson_request.PNG">
+Capture | Submit
+---- | ----
+<img width="200" alt="Record Swing" src="assets/capture.PNG"> | <img width="200" alt="Submit Swing" src="assets/lesson_request.PNG">
 
 
 ## Set Up
