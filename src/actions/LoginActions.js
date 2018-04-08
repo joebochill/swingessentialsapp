@@ -8,8 +8,21 @@ export const LOGIN = {SUCCESS: 'LOGIN_SUCCESS', FAIL: 'LOGIN_FAIL'};
 export const LOGOUT = {SUCCESS: 'LOGOUT_SUCCESS', FAIL: 'LOGOUT_FAIL'};
 export const REFRESH_TOKEN = {REQUEST: 'REFRESH_TOKEN', SUCCESS: 'REFRESH_TOKEN_SUCCESS', FAIL: 'REFRESH_TOKEN_FAIL'};
 export const CHECK_TOKEN = {REQUEST: 'CHECK_TOKEN', SUCCESS: 'CHECK_TOKEN_SUCCESS', FAIL: 'CHECK_TOKEN_FAIL'};
+export const DATA_FROM_TOKEN = {REQUEST: 'DATA_FROM_TOKEN', SUCCESS: 'DATA_FROM_TOKEN_SUCCESS', FAIL: 'DATA_FROM_TOKEN_FAIL'};
+
 
 import {btoa} from '../utils/base64.js';
+
+/* requests application data from a token after returning from background */
+export function requestDataFromToken(token){
+    return (dispatch) => {
+        dispatch({type:DATA_FROM_TOKEN});
+        // dispatch(getUserData(token));
+        dispatch(getLessons(token));
+        dispatch(getCredits(token));
+        // dispatch(getSettings(token));
+    }
+}
 
 /* submit username/pass credentials to get a auth token */
 export function requestLogin(userCredentials){
@@ -52,6 +65,7 @@ export function requestLogout(token){
             switch(response.status) {
                 case 200:
                     dispatch(success(LOGOUT.SUCCESS));
+                    showLogoutWarning(false);
                     break;
                 default:
                     checkTimeout(response, dispatch);

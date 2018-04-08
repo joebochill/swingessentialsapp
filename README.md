@@ -3,7 +3,7 @@
 
 
 
-This project was bootstrapped using [Create React Native App](https://github.com/react-community/create-react-native-app) and takes advantage of the following libraries:
+This project was bootstrapped using [Create React Native App](https://github.com/react-community/create-react-native-app) and takes advantage of the following libraries (many thanks to the contributors):
 * [react-native-video](https://github.com/react-native-community/react-native-video)
 * [react-native-camera](https://github.com/react-native-community/react-native-camera)
 * [react-native-youtube](https://github.com/inProgress-team/react-native-youtube)
@@ -37,12 +37,24 @@ Capture | Submit
 <img width="200" alt="Record Swing" src="assets/capture.PNG"> | <img width="200" alt="Submit Swing" src="assets/lesson_request.PNG">
 
 
-## Set Up
-To use or contribute to this project, clone the repository to your local machine and install the necessary dependencies:
+## Getting Started
+To extend, update, or contribute to this project, clone the repository to your local machine and install the necessary dependencies:
 
 ````
 git clone https://github.com/joebochill/swingessentialsapp2.git
+cd swingessentialsapp2
 npm install
 ````
 
-This project has been ejected from create-react-app and as such requires that you have Android Studio or Xcode installed on your machine in order to run builds.
+You will also need to make sure that you have the react-native-cli installed globally on your machine:
+
+````
+npm install -g react-native-cli
+````
+
+Because this project has been ejected from create-react-native-app, your must have Android Studio (with necessary SDKs and tools installed) or Xcode available on your machine to deploy the application. If you have these properly installed, you should be able to open the respective /ios or /android project folders to run the projects. Alternatively, you could use the command line:
+
+````
+react-native run-ios
+react-native run-android
+````
