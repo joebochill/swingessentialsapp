@@ -9,7 +9,7 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
-import {FormLabel, Header} from 'react-native-elements';
+import {FormLabel, Header, Icon} from 'react-native-elements';
 import YouTube from 'react-native-youtube'
 import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
 import { markLessonViewed } from '../../actions/LessonActions';
@@ -121,7 +121,7 @@ class Lesson extends React.Component{
             Comments
           </FormLabel>
           {this._formatText(lesson.response_notes)}
-          {Platform.OS === 'ios' && //TODO: update this when react-native-video is working for Android
+          {Platform.OS === 'ios' &&
             <View>
               <FormLabel 
                 containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
@@ -133,6 +133,14 @@ class Lesson extends React.Component{
                     <TouchableOpacity style={{height:'100%', width: '100%'}} 
                         underlayColor={colors.black}
                         onPress={()=>this.setState({foPlaying: !this.state.foPlaying})}> 
+                        <View style={StyleSheet.flatten([styles.absolute, styles.centered])}>
+                            <Icon 
+                                name={'play-arrow'} 
+                                size={sizes.medium} 
+                                color={colors.white}
+                                underlayColor={colors.transparent}
+                            />
+                        </View>
                         <Video 
                           source={{uri:'https://www.josephpboyle.com/video_links/'+lesson.request_url+'/'+lesson.fo_swing}}    // Can be a URL or a local file.
                           ref={(ref) => {this.foplayer = ref}}    // Store reference
@@ -154,6 +162,14 @@ class Lesson extends React.Component{
                     <TouchableOpacity style={{height:'100%', width: '100%'}} 
                         underlayColor={colors.black}
                         onPress={()=>this.setState({dtlPlaying: !this.state.dtlPlaying})}> 
+                        <View style={StyleSheet.flatten([styles.absolute, styles.centered])}>
+                            <Icon 
+                                name={'play-arrow'} 
+                                size={sizes.medium} 
+                                color={colors.white}
+                                underlayColor={colors.transparent}
+                            />
+                        </View>
                         <Video 
                           source={{uri:'https://www.josephpboyle.com/video_links/'+lesson.request_url+'/'+lesson.dtl_swing}}    // Can be a URL or a local file.
                           ref={(ref) => {this.dtlplayer = ref}}    // Store reference

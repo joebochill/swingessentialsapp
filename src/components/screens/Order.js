@@ -176,7 +176,7 @@ class Order extends React.Component{
                                 title="REDEEM NOW"
                                 onPress={()=> {
                                     if(this.props.lessons.pending.length < 1){
-                                        this.props.navigation.navigate('Redeem');
+                                        this.props.navigation.navigate('RedeemTop');
                                     }
                                     else{
                                         Alert.alert(
@@ -219,7 +219,7 @@ class Order extends React.Component{
                                 title="SUBMIT A SWING"
                                 onPress={()=> {
                                     if(this.props.lessons.pending.length < 1){
-                                        this.props.navigation.navigate('Redeem');
+                                        this.props.navigation.navigate('RedeemTop');
                                     }
                                     else{
                                         Alert.alert(

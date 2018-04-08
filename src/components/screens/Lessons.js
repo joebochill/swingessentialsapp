@@ -86,8 +86,8 @@ class Lessons extends React.Component{
                     //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
                     leftComponent={{ icon: 'menu',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, onPress: () => this.props.navigation.navigate('DrawerOpen') }}
                     centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: 18 } }}
-                    rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
-                        onPress: () => {this.props.navigation.push('Settings')}}}
+                    //rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
+                    //   onPress: () => {this.props.navigation.push('Settings')}}}
                 />
                 <ScrollView 
                     contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}
@@ -107,7 +107,7 @@ class Lessons extends React.Component{
                                     disabled: this.props.credits.count < 1,
                                     action: this.props.credits.count < 1 ? null : ()=>{
                                         if(this.props.lessons.pending.length < 1){
-                                            this.props.navigation.navigate('Redeem');
+                                            this.props.navigation.navigate('RedeemTop');
                                         }
                                         else{
                                             Alert.alert(
@@ -163,7 +163,7 @@ class Lessons extends React.Component{
                             data={[
                                 {primary: 'Submit a Swing', action: () => {
                                     if(this.props.lessons.pending.length < 1){
-                                        this.props.navigation.navigate('Redeem');
+                                        this.props.navigation.navigate('RedeemTop');
                                     }
                                     else{
                                         Alert.alert(

@@ -60,7 +60,7 @@ const initialLoginState = {
   token: null,
   admin: false,
   modalWarning: false,
-  loginFails: 0
+  failCount: 0
 };
 const login = (state=initialLoginState, action) => {
 	switch(action.type){
@@ -68,7 +68,7 @@ const login = (state=initialLoginState, action) => {
     case CREATE_ACCOUNT.SUCCESS:
     case CHECK_TOKEN.SUCCESS:
       return{...state,
-        loginFails: 0,
+        failCount: 0,
         token: action.data.token,
         admin: (JSON.parse(atob(action.data.token.split('.')[1]))['role'].toLowerCase()==='administrator')
 			};
@@ -76,11 +76,12 @@ const login = (state=initialLoginState, action) => {
 			return{...state,
         token: null,
         admin: false,
-        loginFails: state.loginFails+1
+        failCount: state.failCount+1
       };
     case LOGOUT.SUCCESS:
     case TOKEN_TIMEOUT:
       return {...state,
+        failCount: 0,
         token: null,
         admin: false,
         loginFails: 0

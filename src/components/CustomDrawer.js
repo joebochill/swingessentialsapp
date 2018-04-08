@@ -71,7 +71,7 @@ class CustomDrawer extends React.Component {
                             <CardRow menuItem primary="Submit Your Swing" 
                                 action={() => {
                                     if(this.props.lessons.length < 1){
-                                        this.props.navigation.navigate('Redeem');
+                                        this.props.navigation.navigate('RedeemTop');
                                     }
                                     else{
                                         Alert.alert(
@@ -90,9 +90,9 @@ class CustomDrawer extends React.Component {
                     }
                     {!this.props.token && <View></View>}
                     <View style={{marginBottom: spacing.normal}}>
-                        <CardRow menuItem primary="Settings" 
+                        {/* <CardRow menuItem primary="Settings" 
                             customStyle={{borderTopWidth: 1}}
-                            action={() => this.props.navigation.navigate('Settings')}/>
+                            action={() => this.props.navigation.navigate('Settings')}/> */}
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>
                         <CardRow menuItem primary="About" secondary="v1.0.1" 

@@ -3,6 +3,7 @@ package com.swingessentialsapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.reactnative.camera.RNCameraPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.pw.droplet.braintree.BraintreePackage;
 import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCameraPackage(),
             new SplashScreenReactPackage(),
             new BraintreePackage(),
             new ReactNativeYouTube(),

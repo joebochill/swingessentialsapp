@@ -36,8 +36,8 @@ class SettingScreen extends React.Component{
       Duration: 'How long to record for each swing',
       Handedness: 'Your dominant hand for golfing'
     };
-    this.durations = [3,4,5,6,7,8,9,10];
-    this.delays = [0,1,2,3,4,5,6,7];
+    this.durations = [5,10,15];
+    this.delays = [0,5,10];
     this.hands = ['Right', 'Left'];
     this.state={
       value: props.settings[props.setting.toLowerCase()]
