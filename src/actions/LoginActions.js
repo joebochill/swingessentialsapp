@@ -65,7 +65,6 @@ export function requestLogout(token){
             switch(response.status) {
                 case 200:
                     dispatch(success(LOGOUT.SUCCESS));
-                    showLogoutWarning(false);
                     break;
                 default:
                     checkTimeout(response, dispatch);

@@ -69,6 +69,7 @@ const login = (state=initialLoginState, action) => {
     case CHECK_TOKEN.SUCCESS:
     case REFRESH_TOKEN.SUCCESS:
       return{...state,
+        modalWarning: false,
         failCount: 0,
         token: action.data.token,
         admin: (JSON.parse(atob(action.data.token.split('.')[1]))['role'].toLowerCase()==='administrator')
@@ -82,6 +83,7 @@ const login = (state=initialLoginState, action) => {
     case LOGOUT.SUCCESS:
     case TOKEN_TIMEOUT:
       return {...state,
+        modalWarning: false,
         failCount: 0,
         token: null,
         admin: false,
