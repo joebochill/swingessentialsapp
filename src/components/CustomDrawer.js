@@ -56,7 +56,7 @@ class CustomDrawer extends React.Component {
 
     // Handle the app coming into the foreground after being backgrounded
     _handleAppStateChange = (nextAppState) => {
-        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active' && this.props.token) {
             this.props.refreshData(this.props.token);
         }
         this.setState({appState: nextAppState});

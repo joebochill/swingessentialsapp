@@ -88,7 +88,6 @@ class Record extends Component {
                 .catch((err)=>{
                     if(this.timer){clearInterval(this.timer)}
                     this.setState({uri: null, recording: false, duration: 0, recordLive: false});
-                    console.log(err);
                 })
             }, parseInt(this.props.settings.delay, 10)*1000);
     }

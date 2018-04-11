@@ -3,6 +3,7 @@ import {BASEURL, failure, success, checkTimeout} from './actions';
 import {getUserData, getSettings} from './UserDataActions';
 import {getLessons, getCredits} from './LessonActions';
 import {getPackages} from './PackageActions';
+import * as Keychain from 'react-native-keychain';
 
 export const LOGIN = {SUCCESS: 'LOGIN_SUCCESS', FAIL: 'LOGIN_FAIL'};
 export const LOGOUT = {SUCCESS: 'LOGOUT_SUCCESS', FAIL: 'LOGOUT_FAIL'};
@@ -35,6 +36,7 @@ export function requestLogin(userCredentials){
         .then((response) => {
             switch(response.status) {
                 case 200:
+                    Keychain.setGenericPassword(userCredentials.username, userCredentials.password);
                     const token = response.headers.get('Token');
                     response.json()
                     .then((json) => dispatch(success(LOGIN.SUCCESS, {...json,token:token})));
@@ -44,7 +46,8 @@ export function requestLogin(userCredentials){
                     dispatch(getPackages(token));
                     break;
                 default:
-                    checkTimeout(response, dispatch);
+                    Keychain.resetGenericPassword();
+                    //checkTimeout(response, dispatch);
                     dispatch(failure(LOGIN.FAIL, response));
                     break;
             }

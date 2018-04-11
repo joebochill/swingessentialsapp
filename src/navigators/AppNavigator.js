@@ -73,7 +73,7 @@ export const AppNavigator = DrawerNavigator(
         About: {screen: About}
     }, 
     {
-        initialRouteName: 'Main',
+        initialRouteName: 'Auth',
         contentComponent: CustomDrawer
     }
 );

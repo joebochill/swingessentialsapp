@@ -1,28 +1,34 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import * as Keychain from 'react-native-keychain';
+import TouchID from 'react-native-touch-id';
 import {requestLogin} from '../../actions/LoginActions';
 
 import logo from '../../images/logo-big.png';
 
 import { 
     ActivityIndicator,
+    AsyncStorage,
     View, 
     ScrollView, 
     StyleSheet, 
     Animated,
     Keyboard,
-    Platform
+    Platform,
+    Switch,
+    Text
 } from 'react-native';
-import {FormInput, FormLabel, FormValidationMessage, Button, Header} from 'react-native-elements';
+import {FormInput, FormLabel, FormValidationMessage, Button, Header, Icon} from 'react-native-elements';
 
-import styles, {colors, spacing, altStyles} from '../../styles/index';
+import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
 
 
 function mapStateToProps(state){
     return {
         username: state.userData.username,
         loginFails: state.login.failCount,
-        token: state.login.token
+        token: state.login.token,
+        loggedOut: state.login.loggedOut
     };
 }
 function mapDispatchToProps(dispatch){
@@ -38,12 +44,45 @@ class Login extends React.Component{
             username: '',
             password: '',
             error: false,
-            waiting: false
+            waiting: false,
+            touchFail: false,
+            biometry: null,
+            credentials: null,
+            remember: false
         };
         this.keyboardHeight = new Animated.Value(spacing.normal);
         this.imageHeight = new Animated.Value(100);
     }
+    componentDidMount(){
+        AsyncStorage.getItem('@SwingEssentials:saveUser')
+        .then((val)=>{
+            this.setState({remember: val==='yes'});
 
+            Keychain.getGenericPassword()
+            .then((credentials) => {
+                if(!credentials){return;}
+                if(val==='yes'){this.setState({username: credentials.username})}
+                this.setState({credentials: credentials});
+                
+                TouchID.isSupported()
+                .then((biometryType) => {
+                    if(biometryType === 'TouchID'){this.setState({biometry: 'TouchID'});}
+                    else if(biometryType === 'FaceID'){this.setState({biometry: 'FaceID'});}
+                    else if(biometryType === true){this.setState({biometry: 'Fingerprint ID'});}
+                    else{
+                        this.setState({biometry: null})
+                        return;
+                    }
+                    if(!this.props.loggedOut){
+                        this._showBiometricLogin();
+                    }
+                })
+                .catch((err) => {
+                    // could not determine bio type - fallback to password
+                });
+            })
+        });        
+    }
     componentWillMount () {
         if(Platform.OS === 'ios'){
             this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
@@ -123,6 +162,38 @@ class Login extends React.Component{
         this.props.requestLogin({username: this.state.username, password: this.state.password});
     }
 
+    _showBiometricLogin(){
+        if(!this.state.biometry || !this.state.credentials){ return; }
+
+        TouchID.authenticate('Secure Sign In')
+        // TouchID.authenticate('to sign in as ' + this.state.credentials.username)
+        .then(() => {
+            this.setState({error: false, waiting: true});
+            this.props.requestLogin({username: this.state.credentials.username, password: this.state.credentials.password});
+        })
+        .catch((err)=>{
+            switch(err.name){
+                
+                case 'LAErrorAuthenticationFailed':
+                case 'RCTTouchIDUnknownError':
+                    // authentication failed
+                    this.setState({touchFail: true});
+                    break;
+                case 'LAErrorUserCancel':
+                case 'LAErrorUserFallback':
+                case 'LAErrorSystemCancel':
+                    // user canceled touch id - fallback to password
+                case 'LAErrorPasscodeNotSet':
+                case 'LAErrorTouchIDNotAvailable':
+                case 'LAErrorTouchIDNotEnrolled':
+                case 'RCTTouchIDNotSupported':
+                // Do nothing, TouchID is unavailable - fallback to password 
+                default:
+                    break;
+            }
+        });
+    }
+
 
     render(){
         return(
@@ -144,8 +215,9 @@ class Login extends React.Component{
                     <FormLabel 
                         containerStyle={styles.formLabelContainer} 
                         labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Username</FormLabel>
-                    <FormInput
-                        autoFocus={true}
+                    <View>
+                        <FormInput
+                        //autoFocus={true}
                         autoCorrect={false}
                         autoCapitalize={'none'}
                         onSubmitEditing={()=>{if(this.pass){this.pass.focus()}}}
@@ -158,6 +230,25 @@ class Login extends React.Component{
                         placeholder="Please enter your username"
                         onChangeText={(newText) => this.setState({username: newText})}
                     />
+                    {this.state.biometry && 
+                        <View style={{
+                            position: 'absolute', 
+                            right: spacing.small, top: 0, 
+                            marginTop: spacing.small, 
+                            height: sizes.normal, 
+                            alignItems: 'center', 
+                            justifyContent:'center'}}>
+                            <Icon 
+                                // type={'ionicon'}
+                                name={'fingerprint'} 
+                                size={sizes.mediumSmall} 
+                                color={colors.purple}
+                                underlayColor={colors.transparent}
+                                onPress={() => this._showBiometricLogin()}
+                            />
+                        </View>
+                    }
+                    </View>
                     <FormLabel 
                         containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal}])}
                         labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Password</FormLabel>
@@ -175,11 +266,30 @@ class Login extends React.Component{
                         placeholder="Please enter your password"
                         onChangeText={(newText) => this.setState({password: newText})}
                     />
+                    <View style={{marginTop: spacing.normal, flexDirection: 'row', alignItems: 'center', justifyContent:'flex-end'}}>
+                        <Text style={{color: colors.white, marginRight: spacing.small}}>Save Username</Text>
+                        <Switch 
+                            value={this.state.remember} 
+                            onValueChange={(val) => {
+                                this.setState({remember: val});
+                                AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes':'no');
+                            }}
+                            onTintColor={colors.purple}
+                        />
+                        
+                    </View>
                     {(this.props.loginFails > 0 || this.state.error) && 
                         <FormValidationMessage 
                             containerStyle={styles.formValidationContainer} 
                             labelStyle={styles.formValidation}>
                             The username/password you entered was not correct.
+                        </FormValidationMessage>
+                    }
+                    {this.state.touchFail && this.props.loginFails <= 0 && 
+                        <FormValidationMessage 
+                            containerStyle={styles.formValidationContainer} 
+                            labelStyle={styles.formValidation}>
+                            {`Your ${this.state.biometry} was not recognized. Please enter your password to sign in.`} 
                         </FormValidationMessage>
                     }
                     {!this.state.waiting &&
