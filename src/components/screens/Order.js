@@ -55,7 +55,7 @@ class Order extends React.Component{
     }
     componentWillMount(){
         if(!this.props.token){
-            this.props.navigation.navigate('Login');
+            this.props.navigation.navigate('Auth');
         }
         else{
             // check if the user is allowed to purchase
@@ -70,12 +70,12 @@ class Order extends React.Component{
     }
     componentDidMount(){
         // if(!this.props.token){
-        //     this.props.navigation.navigate('Login');
+        //     this.props.navigation.navigate('Auth');
         // }
     }
     componentWillReceiveProps(nextProps){
         if(!nextProps.token){
-            this.props.navigation.navigate('Login');
+            this.props.navigation.navigate('Auth');
         }
         // else if(!nextProps.lessons.loading && !nextProps.credits.inProgress){
         //     this.setState({refreshing: false});
