@@ -57,21 +57,24 @@ class KeyboardView extends React.Component {
     }
     render() {
         return (
-            <Animated.View style={{
-                flex: 1,
-                backgroundColor: this.props.backgroundColor,
-                paddingBottom: this.keyboardHeight,
-                paddingTop: spacing.normal
-            }}>
+            <Animated.View style={StyleSheet.flatten([
+                {
+                    flex: 1,
+                    backgroundColor: this.props.backgroundColor,
+                    paddingBottom: this.keyboardHeight,
+                    paddingTop: spacing.normal
+                },
+                this.props.style
+            ])}>
                 <ScrollView 
                     keyboardShouldPersistTaps={'always'}
-                    contentContainerStyle={{paddingBottom: this.props.fixed ? spacing.normal : 0}}
-                    style={{
+                    contentContainerStyle={StyleSheet.flatten([{paddingBottom: this.props.fixed ? spacing.normal : 0},this.props.scrollStyle])}
+                    style={StyleSheet.flatten([{
                         flex: 1,
                         paddingRight: spacing.normal, 
                         paddingLeft: spacing.normal,
                         //marginBottom: this.props.fixed ? spacing.normal : 0
-                    }}
+                    }])}
                 >
                     {this.props.children}
                 </ScrollView>

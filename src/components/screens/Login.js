@@ -12,13 +12,14 @@ import {
     View, 
     ScrollView, 
     StyleSheet, 
-    Animated,
+    Image,
     Keyboard,
-    Platform,
     Switch,
-    Text
+    Text,
+    StatusBar
 } from 'react-native';
 import {FormInput, FormLabel, FormValidationMessage, Button, Header, Icon} from 'react-native-elements';
+import KeyboardView from '../Keyboard/KeyboardView';
 
 import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
 
@@ -48,61 +49,46 @@ class Login extends React.Component{
             touchFail: false,
             biometry: null,
             credentials: null,
-            remember: false
+            remember: false,
+            useTouch: false
         };
-        this.keyboardHeight = new Animated.Value(spacing.normal);
-        this.imageHeight = new Animated.Value(100);
     }
-    componentDidMount(){
+
+    componentWillMount () {
+        StatusBar.setHidden(false);
+        // read the values of the toggle options from storage
+        let saveUser = false;
+        let useTouch = false;
         AsyncStorage.getItem('@SwingEssentials:saveUser')
         .then((val)=>{
+            saveUser = val === 'yes';
             this.setState({remember: val==='yes'});
+        });
+        AsyncStorage.getItem('@SwingEssentials:useTouch')
+        .then((val)=>{
+            useTouch = val === 'yes';
+            this.setState({useTouch: val==='yes'});
+        });
 
-            Keychain.getGenericPassword()
-            .then((credentials) => {
-                if(!credentials){return;}
-                if(val==='yes'){this.setState({username: credentials.username})}
-                this.setState({credentials: credentials});
-                
-                TouchID.isSupported()
-                .then((biometryType) => {
-                    if(biometryType === 'TouchID'){this.setState({biometry: 'TouchID'});}
-                    else if(biometryType === 'FaceID'){this.setState({biometry: 'FaceID'});}
-                    else if(biometryType === true){this.setState({biometry: 'Fingerprint ID'});}
-                    else{
-                        this.setState({biometry: null})
-                        return;
-                    }
-                    if(!this.props.loggedOut){
-                        this._showBiometricLogin();
-                    }
-                })
-                .catch((err) => {
-                    // could not determine bio type - fallback to password
-                });
-            })
-        });        
-    }
-    componentWillMount () {
-        if(Platform.OS === 'ios'){
-            this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
-            this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
-        }
-        else{
-            this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-            this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
-        }
-    }
-    componentWillUnmount() {
-        if(Platform.OS === 'ios'){
-            this.keyboardWillShowSub.remove();
-            this.keyboardWillHideSub.remove();
-        }
-        else{
-            this.keyboardDidShowSub.remove();
-            this.keyboardDidHideSub.remove();
-        }
-        
+        // check if biometry is available
+        TouchID.isSupported()
+        .then((biometryType) => {
+            if(biometryType === 'TouchID'){this.setState({biometry: 'TouchID'});}
+            else if(biometryType === 'FaceID'){this.setState({biometry: 'FaceID'});}
+            else if(biometryType === true){this.setState({biometry: 'Fingerprint ID'});}
+            else{
+                this.setState({biometry: null})
+                return;
+            }
+            this._updateKeychain(()=>{
+                if(!this.props.loggedOut && useTouch){
+                    this._showBiometricLogin();
+                }
+            });
+         })
+        .catch((err) => {
+            // could not determine bio type - fallback to password
+        });
     }
 
     componentWillReceiveProps(nextProps){
@@ -112,45 +98,18 @@ class Login extends React.Component{
         }
         else if(nextProps.loginFails !== this.props.loginFails){
             this.setState({password: '', waiting: false});
+            this._updateKeychain();
         }
     }
 
-    // TODO: Add android event names (DidShow, DidHide)
-    //https://medium.freecodecamp.org/how-to-make-your-react-native-app-respond-gracefully-when-the-keyboard-pops-up-7442c1535580
-    keyboardWillShow = (event) => {
-        Animated.parallel([
-          Animated.timing(this.keyboardHeight, {
-            duration: event.duration || 0,
-            toValue: event.endCoordinates.height+spacing.normal,
-          }),
-          Animated.timing(this.imageHeight, {
-            duration: event.duration || 0,
-            toValue: 50,
-          }),
-        ]).start();
-    };
-    keyboardDidShow = (event) => {
-        //this.keyboardHeight = event.endCoordinates.height+spacing.normal;
-        this.imageHeight = 50;
-        this.forceUpdate();
-    }
-    
-    keyboardWillHide = (event) => {
-        Animated.parallel([
-          Animated.timing(this.keyboardHeight, {
-            duration: event.duration || 0,
-            toValue: spacing.normal,
-          }),
-          Animated.timing(this.imageHeight, {
-            duration: event.duration || 0,
-            toValue: 100,
-          }),
-        ]).start();
-    };
-    keyboardDidHide = () => {
-        //this.keyboardHeight = spacing.normal;
-        this.imageHeight = 100;
-        this.forceUpdate();
+    _updateKeychain(callback=null){
+        Keychain.getGenericPassword()
+        .then((credentials) => {
+            this.setState({credentials: credentials});
+            if(!credentials){ return; }
+            if(this.state.remember){this.setState({username: credentials.username})}
+            if(callback){callback();}
+        })
     }
 
     _onLogin(){
@@ -197,21 +156,18 @@ class Login extends React.Component{
 
     render(){
         return(
-            <Animated.View style={{
-                flex: 1, 
-                backgroundColor: colors.lightPurple, 
-                
-                paddingRight: spacing.normal, 
-                paddingTop: spacing.normal, 
-                paddingLeft: spacing.normal, 
-                paddingBottom: this.keyboardHeight}}>
-                <ScrollView contentContainerStyle={{flex: 1, alignItems: 'stretch', justifyContent:'center'}}>
-                    <Animated.Image 
-                        source={logo} 
-                        resizeMethod='resize'
-                        style={{height: this.imageHeight, width:'100%', resizeMode: 'contain'}}
-                    />
-                    <View style={{flex: 0, marginTop: spacing.normal}}>
+            <KeyboardView style={{
+                    backgroundColor: colors.lightPurple, 
+                    justifyContent: 'center'
+                }}
+                scrollStyle={{height: '100%', justifyContent: 'center', alignItems: 'stretch'}}
+            >
+                <Image 
+                    source={logo} 
+                    resizeMethod='resize'
+                    style={{height: 50, width:'100%', resizeMode: 'contain'}}
+                />
+                <View style={{flex: 0, marginTop: spacing.normal}}>
                     <FormLabel 
                         containerStyle={styles.formLabelContainer} 
                         labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Username</FormLabel>
@@ -230,7 +186,7 @@ class Login extends React.Component{
                         placeholder="Please enter your username"
                         onChangeText={(newText) => this.setState({username: newText})}
                     />
-                    {this.state.biometry && 
+                    {this.state.biometry && this.state.useTouch && this.state.credentials &&
                         <View style={{
                             position: 'absolute', 
                             right: spacing.small, top: 0, 
@@ -248,7 +204,7 @@ class Login extends React.Component{
                             />
                         </View>
                     }
-                    </View>
+                </View>
                     <FormLabel 
                         containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal}])}
                         labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Password</FormLabel>
@@ -266,17 +222,31 @@ class Login extends React.Component{
                         placeholder="Please enter your password"
                         onChangeText={(newText) => this.setState({password: newText})}
                     />
-                    <View style={{marginTop: spacing.normal, flexDirection: 'row', alignItems: 'center', justifyContent:'flex-end'}}>
-                        <Text style={{color: colors.white, marginRight: spacing.small}}>Save Username</Text>
-                        <Switch 
-                            value={this.state.remember} 
-                            onValueChange={(val) => {
-                                this.setState({remember: val});
-                                AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes':'no');
-                            }}
-                            onTintColor={colors.purple}
-                        />
-                        
+                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap:'wrap'}}>
+                        <View style={{marginTop: spacing.normal, flexDirection: 'row', alignItems: 'center', justifyContent:'flex-end'}}>
+                            <Text style={{color: colors.white, marginRight: spacing.small}}>Save Username</Text>
+                            <Switch 
+                                value={this.state.remember} 
+                                onValueChange={(val) => {
+                                    this.setState({remember: val});
+                                    AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes':'no');
+                                }}
+                                onTintColor={colors.purple}
+                            />
+                        </View>
+                        {this.state.biometry &&
+                            <View style={{marginTop: spacing.normal, flexDirection: 'row', alignItems: 'center', justifyContent:'flex-end'}}>
+                                <Text style={{color: colors.white, marginRight: spacing.small}}>{this.state.biometry}</Text>
+                                <Switch 
+                                    value={this.state.useTouch} 
+                                    onValueChange={(val) => {
+                                        this.setState({useTouch: val});
+                                        AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes':'no');
+                                    }}
+                                    onTintColor={colors.purple}
+                                />
+                            </View>
+                        }
                     </View>
                     {(this.props.loginFails > 0 || this.state.error) && 
                         <FormValidationMessage 
@@ -329,9 +299,8 @@ class Login extends React.Component{
                             onPress={()=>this.props.navigation.push('Register')}>
                         </Button>
                     </View>
-                    </View>
-                </ScrollView>
-            </Animated.View>
+                </View>
+            </KeyboardView>
         )
     }
 };

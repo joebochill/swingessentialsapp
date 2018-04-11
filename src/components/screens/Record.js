@@ -188,6 +188,7 @@ class Record extends Component {
                     bottom: 0, left: 0, right: 0,
                     flexDirection: 'row', 
                     alignItems: 'center',
+                    height: sizes.medium + 2*20
                 }}>
                     <TouchableOpacity
                         onPress={()=> this.props.navigation.pop()}
@@ -261,6 +262,7 @@ class Record extends Component {
                     bottom: 0, left: 0, right: 0,
                     flexDirection: 'row', 
                     alignItems: 'center',
+                    height: sizes.medium + 2*20
                 }}>
                     <TouchableOpacity onPress={()=> this.setState({uri: null})} style={{flex: 1, padding: spacing.normal}}>
                         <Text style={{color: colors.white, textAlign: 'left'}}>Retake</Text>
