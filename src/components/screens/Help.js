@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import {Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
+import {scale, verticalScale} from '../../styles/dimension';
+
 
 function mapStateToProps(state){
   return {
@@ -43,12 +45,13 @@ class HelpScreen extends React.Component{
           style={{flex: 0}}
           outerContainerStyles={{ 
             backgroundColor: colors.lightPurple, 
-            height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-            padding: Platform.OS === 'ios' ? 15 : 10
+            height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+            padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
           }}
           //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
           leftComponent={{ 
             icon: 'menu',
+            size: verticalScale(26),
             underlayColor:colors.transparent, 
             color: colors.white, 
             containerStyle:styles.headerIcon, 
@@ -56,7 +59,7 @@ class HelpScreen extends React.Component{
           }}
           centerComponent={{ 
             text: 'Help', 
-            style: { color: colors.white, fontSize: 18 } 
+            style: { color: colors.white, fontSize: scale(18) } 
           }}
           // rightComponent={{ 
           //   icon: 'settings',

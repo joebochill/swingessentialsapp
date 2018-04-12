@@ -14,7 +14,7 @@ import {FormInput, Button, Header} from 'react-native-elements';
 
 
 import styles, {colors, spacing, altStyles} from '../../styles/index';
-import {scale} from '../../styles/dimension';
+import {scale, verticalScale} from '../../styles/dimension';
 
 import KeyboardView from '../Keyboard/KeyboardView';
 
@@ -45,13 +45,18 @@ class Forgot extends React.Component{
                     style={{flex: 0}}
                     outerContainerStyles={{ 
                         backgroundColor: colors.lightPurple, 
-                        height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-                        padding: Platform.OS === 'ios' ? 15 : 10
+                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
                       }}
-                    //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
-                        onPress: () => this.props.navigation.pop()}}//this.props.navigation.dispatch(NavigationActions.back({key:this.props.navigation.state.key})) }}
-                    centerComponent={{ text: 'Reset Password', style: { color: colors.white, fontSize: 18 } }}
+                    leftComponent={{ 
+                        icon: 'arrow-back',
+                        size: verticalScale(26),
+                        underlayColor:colors.transparent,
+                        containerStyle:styles.headerIcon, 
+                        color: colors.white, 
+                        onPress: () => this.props.navigation.pop()
+                    }}
+                    centerComponent={{ text: 'Reset Password', style: { color: colors.white, fontSize: scale(18) } }}
                 />
                 <KeyboardView 
                     fixed={!this.state.resetSent &&

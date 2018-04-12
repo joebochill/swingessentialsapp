@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Alert, Text, View, ScrollView, FlatList, RefreshControl, Platform} from 'react-native';
 import {Button, Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
-import {scale} from '../../styles/dimension';
+import {scale, verticalScale} from '../../styles/dimension';
 
 import {getLessons, getCredits, activateUnlimited} from '../../actions/LessonActions';
 import CardRow from '../Card/CardRow';
@@ -82,12 +82,19 @@ class Lessons extends React.Component{
                     style={{flex: 0}}
                     outerContainerStyles={{ 
                         backgroundColor: colors.lightPurple, 
-                        height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-                        padding: Platform.OS === 'ios' ? 15 : 10
+                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
                     }}
                     //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    leftComponent={{ icon: 'menu',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, onPress: () => this.props.navigation.navigate('DrawerOpen') }}
-                    centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: 18 } }}
+                    leftComponent={{ 
+                        icon: 'menu',
+                        size: verticalScale(26),
+                        underlayColor:colors.transparent, 
+                        color: colors.white, 
+                        containerStyle:styles.headerIcon, 
+                        onPress: () => this.props.navigation.navigate('DrawerOpen') 
+                    }}
+                    centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: scale(18) } }}
                     //rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
                     //   onPress: () => {this.props.navigation.push('Settings')}}}
                 />

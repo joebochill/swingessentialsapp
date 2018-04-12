@@ -12,7 +12,7 @@ import {
 import {Header, Icon} from 'react-native-elements';
 import YouTube from 'react-native-youtube'
 import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
-import {scale} from '../../styles/dimension';
+import {scale, verticalScale} from '../../styles/dimension';
 
 import { markLessonViewed } from '../../actions/LessonActions';
 import Video from 'react-native-video';
@@ -91,13 +91,19 @@ class Lesson extends React.Component{
             style={{flex: 0}}
             outerContainerStyles={{ 
               backgroundColor: colors.lightPurple, 
-              height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-              padding: Platform.OS === 'ios' ? 15 : 10
+              height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+              padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
             }}
             //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-            leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
-              onPress: () => this.props.navigation.pop() }}
-            centerComponent={{ text: 'Swing Analysis', style: { color: colors.white, fontSize: 18 } }}
+            leftComponent={{ 
+              icon: 'arrow-back',
+              size: verticalScale(26),
+              underlayColor:colors.transparent,
+              containerStyle:styles.headerIcon, 
+              color: colors.white, 
+              onPress: () => this.props.navigation.pop() 
+            }}
+            centerComponent={{ text: 'Swing Analysis', style: { color: colors.white, fontSize: scale(18) } }}
         />
         <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
           <Text style={styles.headline}>{lesson.request_date}</Text>

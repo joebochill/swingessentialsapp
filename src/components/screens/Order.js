@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {Alert, ActivityIndicator, Text, View, ScrollView, Keyboard, FlatList, StyleSheet, Platform} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {scale} from '../../styles/dimension';
+import {scale, verticalScale} from '../../styles/dimension';
 
 import {FormInput, Button, Header} from 'react-native-elements';
 import {executePayment, checkCoupon, activateUnlimited} from '../../actions/LessonActions';
@@ -152,12 +152,19 @@ class Order extends React.Component{
                     style={{flex: 0}}
                     outerContainerStyles={{ 
                         backgroundColor: colors.lightPurple, 
-                        height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-                        padding: Platform.OS === 'ios' ? 15 : 10
+                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
                     }}
                     //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    leftComponent={{ icon: 'menu',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, onPress: () => this.props.navigation.navigate('DrawerOpen') }}
-                    centerComponent={{ text: 'Order Lessons', style: { color: colors.white, fontSize: 18 } }}
+                    leftComponent={{ 
+                        icon: 'menu',
+                        underlayColor:colors.transparent, 
+                        color: colors.white, 
+                        containerStyle:styles.headerIcon, 
+                        size: verticalScale(26),
+                        onPress: () => this.props.navigation.navigate('DrawerOpen') 
+                    }}
+                    centerComponent={{ text: 'Order Lessons', style: { color: colors.white, fontSize: scale(18) } }}
                 />
                 {this.props.purchaseFail && 
                     <ScrollView style={{padding: spacing.normal}}>

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {scale} from '../../styles/dimension';
+import {scale, verticalScale} from '../../styles/dimension';
 
 import {FormInput, Button, Icon, Header} from 'react-native-elements';
 import {redeemCredit} from '../../actions/LessonActions';
@@ -207,12 +207,19 @@ class Redeem extends React.Component{
                     style={{flex: 0}}
                     outerContainerStyles={{ 
                         backgroundColor: colors.lightPurple, 
-                        height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-                        padding: Platform.OS === 'ios' ? 15 : 10
+                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
                     }}
                     //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    leftComponent={{ icon: 'menu',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, onPress: () => this.props.navigation.navigate('DrawerOpen') }}
-                    centerComponent={{ text: 'Submit Your Swing', style: { color: colors.white, fontSize: 18 } }}
+                    leftComponent={{ 
+                        icon: 'menu',
+                        size: verticalScale(26),
+                        underlayColor:colors.transparent,
+                        color: colors.white, 
+                        containerStyle:styles.headerIcon, 
+                        onPress: () => this.props.navigation.navigate('DrawerOpen') 
+                    }}
+                    centerComponent={{ text: 'Submit Your Swing', style: { color: colors.white, fontSize: scale(18) } }}
                 />
 
                 <KeyboardView

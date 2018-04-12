@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import { RNCamera } from 'react-native-camera';
 import Video from 'react-native-video';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {scale} from '../../styles/dimension';
+import {scale, verticalScale} from '../../styles/dimension';
 
 import {FormInput, Button, Icon, Header} from 'react-native-elements';
 import {/*StatusBar,*/ ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
@@ -138,24 +138,17 @@ class Record extends Component {
                 <Header
                     outerContainerStyles={{ 
                         backgroundColor: 'rgba(0,0,0,0.25)',//colors.transparent, 
-                        height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-                        padding: Platform.OS === 'ios' ? 15 : 10,
+                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10),
                         position: 'absolute',
                         borderBottomWidth: 0,
                         top:0, right: 0, left: 0
                     }}
-                    //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    // leftComponent={{ 
-                    //     icon: this.flashes[this.state.flash],
-                    //     underlayColor:colors.transparent, 
-                    //     color: colors.white, 
-                    //     containerStyle:styles.headerIcon, 
-                    //     onPress: () => this.setState({flash: (this.state.flash+1)%this.flashes.length}) 
-                    // }}
-                    // centerComponent={{ 
-                    //     text: '00:00:'+(this.state.duration < 10 ? '0' : '')+this.state.duration, 
-                    //     style: { color: colors.white} 
-                    // }}
+                    leftComponent={this.state.recording ? null : { 
+                        icon: 'arrow-back',
+                        size: verticalScale(26),
+                        containerStyle: StyleSheet.flatten([styles.headerIcon, {opacity: 0}]) //hidden, for centering only
+                    }}
                     centerComponent={
                         <View>
                             {this.state.recordLive &&
@@ -178,6 +171,7 @@ class Record extends Component {
                     }
                     rightComponent={this.state.recording ? null : { 
                         icon: 'settings',
+                        size: verticalScale(26),
                         underlayColor:colors.transparent, 
                         color: colors.white, 
                         containerStyle:styles.headerIcon, 
