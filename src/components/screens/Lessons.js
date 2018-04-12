@@ -232,7 +232,7 @@ class Lessons extends React.Component{
                                     }}
                                 />
                                 :
-                                <CardRow primary={item.request_date} secondary={'in progress'} />
+                                <CardRow primary={item.request_date} secondary={'IN PROGRESS'} />
                         }
                         keyExtractor={(item, index) => item.request_id}
                     />
