@@ -188,46 +188,51 @@ class Lessons extends React.Component{
                             keyExtractor={(item, index) => item.primary}
                         />
                     }
-
+                    {this.props.admin &&
+                        <FlatList
+                            style={{marginTop: spacing.normal}}
+                            scrollEnabled= {false}
+                            ListHeaderComponent={
+                                <View style={styles.cardHeader}>
+                                    <Text style={{color: colors.white}}>Active Lessons</Text>
+                                </View>
+                            }
+                            data={this.props.lessons.pending}
+                            ListEmptyComponent={!this.props.lessons.loading ?
+                                <CardRow primary={'No Active Lessons'}/>
+                                : <CardRow primary={'Loading Lessons...'}/>
+                            }
+                            renderItem={({item}) => 
+                                <CardRow primary={item.request_date} secondary={item.username} />
+                            }
+                            keyExtractor={(item, index) => item.request_id}
+                        />
+                    }
                     <FlatList
                         style={{marginTop: spacing.normal}}
                         scrollEnabled= {false}
                         ListHeaderComponent={
                             <View style={styles.cardHeader}>
-                                <Text style={{color: colors.white}}>In Progress</Text>
+                                <Text style={{color: colors.white}}>Lesson History</Text>
                             </View>
                         }
-                        data={this.props.lessons.pending}
+                        data={this.props.admin ? this.props.lessons.closed : this.props.lessons.pending.concat(this.props.lessons.closed)}
                         ListEmptyComponent={!this.props.lessons.loading ?
-                            <CardRow primary={'No Lessons In Progress'}/>
-                            : <CardRow primary={'Loading Lessons...'}/>
-                        }
-                        renderItem={({item}) => 
-                            <CardRow primary={item.request_date} />
-                        }
-                        keyExtractor={(item, index) => item.request_id}
-                    />
-                    <FlatList
-                        style={{marginTop: spacing.normal}}
-                        scrollEnabled= {false}
-                        ListHeaderComponent={
-                            <View style={styles.cardHeader}>
-                                <Text style={{color: colors.white}}>Completed</Text>
-                            </View>
-                        }
-                        data={this.props.lessons.closed}
-                        ListEmptyComponent={!this.props.lessons.loading ?
-                            <CardRow primary={'No Completed Lessons'}/>
+                            <CardRow primary={'No Lessons'}/>
                             :<CardRow primary={'Loading Lessons...'}/>
                         }
                         renderItem={({item}) => 
-                            <CardRow 
-                                primary={item.request_date} 
-                                secondary={parseInt(item.viewed, 10) === 0 ? "NEW" : null} 
-                                action={() => {
-                                    this.props.navigation.dispatch({type:'SELECT_LESSON', data:{id:item.request_id}});
-                                    this.props.navigation.push('Lesson');
-                                }}/>
+                            item.response_video ? 
+                                <CardRow 
+                                    primary={item.request_date} 
+                                    secondary={this.props.admin ? item.username : (parseInt(item.viewed, 10) === 0 ? "NEW" : null)} 
+                                    action={() => {
+                                        this.props.navigation.dispatch({type:'SELECT_LESSON', data:{id:item.request_id}});
+                                        this.props.navigation.push('Lesson');
+                                    }}
+                                />
+                                :
+                                <CardRow primary={item.request_date} secondary={'in progress'} />
                         }
                         keyExtractor={(item, index) => item.request_id}
                     />
