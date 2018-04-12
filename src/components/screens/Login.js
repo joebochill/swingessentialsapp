@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
 import {requestLogin} from '../../actions/LoginActions';
-import {scale, verticalScale, moderateScale} from '../../styles/dimension';
+import {scale} from '../../styles/dimension';
 
 import logo from '../../images/logo-big.png';
 

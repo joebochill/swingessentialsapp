@@ -12,6 +12,8 @@ import {FormInput, Button, Header} from 'react-native-elements';
 
 
 import styles, {colors, spacing, altStyles} from '../../styles/index';
+import {scale} from '../../styles/dimension';
+
 import KeyboardView from '../Keyboard/KeyboardView';
 
 function mapStateToProps(state){
@@ -169,6 +171,7 @@ class Register extends React.Component{
                         {!this.props.registrationFailure ?
                             <Button
                                 title="CREATE ACCOUNT"
+                                fontSize={scale(14)}
                                 disabled={!this._validateFields() || this.props.registrationFailure}
                                 onPress={()=> {this._submitRegistration()}}
                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}

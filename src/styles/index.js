@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import {scale, verticalScale, moderateScale} from './dimension';
+import {scale} from './dimension';
 
 export const colors = {
     white: '#ffffff',

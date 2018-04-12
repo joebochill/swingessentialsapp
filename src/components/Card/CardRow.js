@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
 import styles, {colors, spacing} from '../../styles/index';
-import {scale, verticalScale, moderateScale} from '../../styles/dimension';
+import {scale} from '../../styles/dimension';
 
 import MaterialIcons from 'react-native-vector-icons/Ionicons';
 

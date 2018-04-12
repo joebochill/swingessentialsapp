@@ -12,6 +12,8 @@ import {
 import {Header, Icon} from 'react-native-elements';
 import YouTube from 'react-native-youtube'
 import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
+import {scale} from '../../styles/dimension';
+
 import { markLessonViewed } from '../../actions/LessonActions';
 import Video from 'react-native-video';
 
@@ -111,7 +113,7 @@ class Lesson extends React.Component{
             showinfo={false}
             modestbranding={true}
             rel={false}
-            style={{width:'100%', height: 300 , marginTop: spacing.small}}
+            style={{width:'100%', height: scale(168) , marginTop: spacing.small}}
           />
           <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
             Comments
@@ -123,7 +125,7 @@ class Lesson extends React.Component{
                 Your Swing Videos
               </Text>
               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <View style={{flex: 1, marginRight: spacing.normal, backgroundColor: colors.black, height: sizes.large}}>
+                  <View style={{flex: 1, marginRight: spacing.normal, backgroundColor: colors.black, height: scale(267)}}>
                     <TouchableOpacity style={{height:'100%', width: '100%'}} 
                         underlayColor={colors.black}
                         onPress={()=>this.setState({foPlaying: !this.state.foPlaying})}> 
@@ -152,7 +154,7 @@ class Lesson extends React.Component{
                         />
                     </TouchableOpacity>    
                   </View>
-                  <View style={{flex: 1, backgroundColor: colors.black, height: sizes.large}}>
+                  <View style={{flex: 1, backgroundColor: colors.black, height: scale(267)}}>
                     <TouchableOpacity style={{height:'100%', width: '100%'}} 
                         underlayColor={colors.black}
                         onPress={()=>this.setState({dtlPlaying: !this.state.dtlPlaying})}> 

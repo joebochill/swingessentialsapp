@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {Alert, ActivityIndicator, Text, View, ScrollView, Keyboard, FlatList, StyleSheet, Platform} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {scale, verticalScale, moderateScale} from '../../styles/dimension';
+import {scale} from '../../styles/dimension';
 
 import {FormInput, Button, Header} from 'react-native-elements';
 import {executePayment, checkCoupon, activateUnlimited} from '../../actions/LessonActions';

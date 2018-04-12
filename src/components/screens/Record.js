@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import { RNCamera } from 'react-native-camera';
 import Video from 'react-native-video';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
+import {scale} from '../../styles/dimension';
+
 import {FormInput, Button, Icon, Header} from 'react-native-elements';
 import {/*StatusBar,*/ ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
 import downtheline from '../../images/downtheline.png';
@@ -130,7 +132,7 @@ class Record extends Component {
                 }
                 {this.state.delay > 0 && 
                     <View style={StyleSheet.flatten([styles.absolute, styles.centered, {backgroundColor: 'rgba(0,0,0,0.25)'}])}>
-                        <Text style={{color: colors.white, fontSize: 128}}>{this.state.delay}</Text>
+                        <Text style={{color: colors.white, fontSize: scale(128)}}>{this.state.delay}</Text>
                     </View>
                 }
                 <Header
@@ -171,7 +173,7 @@ class Record extends Component {
                                     }}/>
                                 </View>
                             }
-                            <Text style={{color: colors.white}}>{'00:00:'+(this.state.duration < 10 ? '0' : '')+this.state.duration}</Text>
+                            <Text style={{fontSize: scale(14), color: colors.white}}>{'00:00:'+(this.state.duration < 10 ? '0' : '')+this.state.duration}</Text>
                         </View>
                     }
                     rightComponent={this.state.recording ? null : { 
@@ -188,14 +190,14 @@ class Record extends Component {
                     bottom: 0, left: 0, right: 0,
                     flexDirection: 'row', 
                     alignItems: 'center',
-                    height: sizes.medium + 2*20
+                    height: sizes.medium + scale(2*20)
                 }}>
                     <TouchableOpacity
                         onPress={()=> this.props.navigation.pop()}
                         disabled={this.state.recording}
                         style={{flex: 1, padding: spacing.normal}}
                     >
-                        {!this.state.recording && <Text style={{color: colors.white, textAlign: 'left'}}>Cancel</Text>}
+                        {!this.state.recording && <Text style={{fontSize: scale(14), color: colors.white, textAlign: 'left'}}>Cancel</Text>}
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={()=>{
@@ -215,7 +217,7 @@ class Record extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     padding: spacing.tiny,
-                                    margin: 20}}
+                                    margin: scale(20)}}
                     >
                         {!this.state.recording ?
                             <View style={{flex: 1, alignSelf: 'stretch', backgroundColor: colors.red, borderRadius: sizes.normal}}/>
@@ -262,10 +264,10 @@ class Record extends Component {
                     bottom: 0, left: 0, right: 0,
                     flexDirection: 'row', 
                     alignItems: 'center',
-                    height: sizes.medium + 2*20
+                    height: sizes.medium + scale(2*20)
                 }}>
                     <TouchableOpacity onPress={()=> this.setState({uri: null})} style={{flex: 1, padding: spacing.normal}}>
-                        <Text style={{color: colors.white, textAlign: 'left'}}>Retake</Text>
+                        <Text style={{fontSize: scale(14), color: colors.white, textAlign: 'left'}}>Retake</Text>
                     </TouchableOpacity>
                     <Icon 
                         name={this.state.playing ? 'pause' : 'play-arrow'} 
@@ -281,7 +283,7 @@ class Record extends Component {
                             this.props.navigation.pop();
                         }}
                     >
-                        <Text style={{color: colors.white, textAlign: 'right'}}>Use Video</Text>
+                        <Text style={{fontSize: scale(14), color: colors.white, textAlign: 'right'}}>Use Video</Text>
                     </TouchableOpacity>
                 </View>
             </View>

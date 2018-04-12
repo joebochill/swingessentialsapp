@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Alert, Text, View, ScrollView, FlatList, RefreshControl, Platform} from 'react-native';
 import {Button, Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
-import {scale, verticalScale, moderateScale} from '../../styles/dimension';
+import {scale} from '../../styles/dimension';
 
 import {getLessons, getCredits, activateUnlimited} from '../../actions/LessonActions';
 import CardRow from '../Card/CardRow';

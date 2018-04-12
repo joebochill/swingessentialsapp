@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 
 import {ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
+import {scale} from '../../styles/dimension';
+
 import {FormInput, Button, Icon, Header} from 'react-native-elements';
 import {redeemCredit} from '../../actions/LessonActions';
 import {checkToken} from '../../actions/LoginActions';
@@ -217,6 +219,7 @@ class Redeem extends React.Component{
                     fixed={ (!this.props.redeemPending) ?
                         <Button
                             title="SUBMIT"
+                            fontSize={scale(14)}
                             disabled={this.props.redeemPending || this.state.role === 'pending' || !this.state.foSource || !this.state.dtlSource}
                             disabledStyle={styles.disabledButton}
                             onPress={()=>this._redeemLesson()}
@@ -226,7 +229,7 @@ class Redeem extends React.Component{
                         :
                         <View style={{paddingTop: spacing.normal}}>
                             <ActivityIndicator color={colors.purple}/>
-                            <Text style={{marginTop: spacing.tiny, color: colors.purple, textAlign: 'center', width: '100%'}}>
+                            <Text style={{fontSize: scale(14), marginTop: spacing.tiny, color: colors.purple, textAlign: 'center', width: '100%'}}>
                                 {this.state.progress < 100 ?
                                     ('Uploading Video Files... ' + this.state.progress.toFixed(2)+'%')
                                     : 'Creating lesson...'
@@ -302,7 +305,8 @@ class Redeem extends React.Component{
                                     containerViewStyle={{flex: 0}}
                                     onPress={() => this._showPicker('foSource')}
                                     title={'Face-On'}
-                                    icon={{name: 'camera-alt', color: colors.purple}}
+                                    fontSize={scale(14)}
+                                    icon={{name: 'camera-alt', color: colors.purple, size: scale(14)}}
                                     backgroundColor={colors.transparent}
                                     textStyle={{color: colors.purple}}
                                 />
@@ -363,7 +367,8 @@ class Redeem extends React.Component{
                                     containerViewStyle={{flex: 0}}
                                     onPress={() => this._showPicker('dtlSource')}
                                     title={'Down-the-Line'}
-                                    icon={{name: 'camera-alt', color: colors.purple}}
+                                    fontSize={scale(14)}
+                                    icon={{name: 'camera-alt', color: colors.purple, size: scale(14)}}
                                     textStyle={{color: colors.purple}}
                                     backgroundColor={colors.transparent}
                                 />

@@ -7,7 +7,7 @@ import {requestLogout,
 import LogoutWarning from './Modal/TokenExpire';
 
 import {colors, spacing} from '../styles/index';
-import {scale, verticalScale, moderateScale} from '../styles/dimension';
+import {scale, verticalScale} from '../styles/dimension';
 
 import logo from '../images/logo-big.png';
 
@@ -79,7 +79,7 @@ class CustomDrawer extends React.Component {
     render() {
         return (
             <View style={{flex: 1, width: '100%', backgroundColor: colors.backgroundGrey}}>
-                <View style={{height:scale(80), padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.lightPurple}}>
+                <View style={{height:verticalScale(80), padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.lightPurple}}>
                     <Image
                         //resizeMode='contain'
                         resizeMethod='resize'
@@ -88,7 +88,7 @@ class CustomDrawer extends React.Component {
                     />
                 </View>
                 <View style={{height: spacing.large, alignItems: 'center', justifyContent:'center', backgroundColor: colors.lightPurple}}>
-                    <Text style={{color:colors.white, marginTop:-1*spacing.large}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
+                    <Text style={{fontSize: scale(14), color:colors.white, marginTop:-1*spacing.large}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
                 </View>
                 <View style={{flex: 1, justifyContent:'space-between'}}>
                     {this.props.token && 

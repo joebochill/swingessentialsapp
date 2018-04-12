@@ -14,6 +14,8 @@ import {FormInput, Button, Header} from 'react-native-elements';
 
 
 import styles, {colors, spacing, altStyles} from '../../styles/index';
+import {scale} from '../../styles/dimension';
+
 import KeyboardView from '../Keyboard/KeyboardView';
 
 function mapStateToProps(state){
@@ -55,6 +57,7 @@ class Forgot extends React.Component{
                     fixed={!this.state.resetSent &&
                         <Button
                             title="SEND INSTRUCTIONS"
+                            fontSize={scale(14)}
                             disabled={!this.state.email.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i)}
                             onPress={()=> {this.props.requestReset(this.state.email); this.setState({resetSent: true})}}
                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
