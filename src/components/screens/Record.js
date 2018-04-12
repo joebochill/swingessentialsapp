@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import { RNCamera } from 'react-native-camera';
 import Video from 'react-native-video';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {FormInput, FormLabel, FormValidationMessage, Button, Icon, Header} from 'react-native-elements';
+import {FormInput, Button, Icon, Header} from 'react-native-elements';
 import {/*StatusBar,*/ ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
 import downtheline from '../../images/downtheline.png';
 import faceonLH from '../../images/overlay-fo-lh.png';

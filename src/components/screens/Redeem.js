@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {FormInput, FormLabel, FormValidationMessage, Button, Icon, Header} from 'react-native-elements';
+import {FormInput, Button, Icon, Header} from 'react-native-elements';
 import {redeemCredit} from '../../actions/LessonActions';
 import {checkToken} from '../../actions/LoginActions';
 import KeyboardView from '../Keyboard/KeyboardView';
@@ -240,17 +240,11 @@ class Redeem extends React.Component{
                         //keyboardShouldPersistTaps={'always'}
                         >
                         {this.state.role === 'pending' && 
-                            <FormValidationMessage 
-                                containerStyle={StyleSheet.flatten([styles.formValidationContainer, {marginTop: 0, marginBottom: spacing.normal}])} 
-                                labelStyle={styles.formValidation}>
+                            <Text style={StyleSheet.flatten([styles.formValidation, {marginBottom: spacing.normal}])}> 
                                 {'You must verify your email address before you can submit lessons.'}
-                            </FormValidationMessage>
+                            </Text>
                         }
-                        <FormLabel 
-                            containerStyle={styles.formLabelContainer} 
-                            labelStyle={StyleSheet.flatten([styles.formLabel])}>
-                            Your Swing Videos
-                        </FormLabel>
+                        <Text style={styles.formLabel}>Your Swing Videos</Text>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing.small}}>
                             <View style={{flex: 1, marginRight: spacing.normal}}>
                                 <View style={{flex: 0, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.foSource ? colors.black: colors.white, height: sizes.large}}>
@@ -375,11 +369,9 @@ class Redeem extends React.Component{
                                 />
                             </View>
                         </View>
-                        <FormLabel 
-                            containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal}])} 
-                            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+                        <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal}])}>
                             Special Requests
-                        </FormLabel>
+                        </Text>
                         <FormInput
                             autoCapitalize={'sentences'}
                             multiline={true}

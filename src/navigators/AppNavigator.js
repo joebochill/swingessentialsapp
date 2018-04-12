@@ -74,6 +74,7 @@ export const AppNavigator = DrawerNavigator(
     }, 
     {
         initialRouteName: 'Auth',
+        //drawerWidth: '80%',
         contentComponent: CustomDrawer
     }
 );

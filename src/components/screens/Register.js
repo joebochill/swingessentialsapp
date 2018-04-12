@@ -8,7 +8,7 @@ import {
     StyleSheet,
     Platform
 } from 'react-native';
-import {FormInput, FormLabel, FormValidationMessage, Button, Header} from 'react-native-elements';
+import {FormInput, Button, Header} from 'react-native-elements';
 
 
 import styles, {colors, spacing, altStyles} from '../../styles/index';
@@ -175,21 +175,15 @@ class Register extends React.Component{
                                 disabledStyle={styles.disabledButton}
                                 containerViewStyle={styles.buttonContainer}
                             /> :
-                            <FormValidationMessage 
-                                containerStyle={StyleSheet.flatten([styles.formValidationContainer, {marginTop: spacing.normal}])} 
-                                labelStyle={styles.formValidation}>
+                            <Text style={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])}>
                                 Registration Failed - try again later
-                            </FormValidationMessage>
+                            </Text>
                         }
                     </View>
                 }>
                     {this.regProperties.map((item,index) =>
                         <View key={'reg_field_'+index} style={{marginBottom:spacing.normal}}>
-                            <FormLabel 
-                                containerStyle={styles.formLabelContainer} 
-                                labelStyle={StyleSheet.flatten([styles.formLabel])}>
-                                {item.display}
-                            </FormLabel>
+                            <Text style={styles.formLabel}>{item.display}</Text>
                             <FormInput
                                 ref={(ref) => this.fields[index] = ref}
                                 autoFocus={index===0}
@@ -213,11 +207,9 @@ class Register extends React.Component{
                                 onBlur={item.blur}
                             />
                             {item.error && item.error() && !this.state.validationError && 
-                                <FormValidationMessage 
-                                    containerStyle={StyleSheet.flatten([styles.formValidationContainer, {marginTop: spacing.normal}])} 
-                                    labelStyle={styles.formValidation}>
+                                <Text containerStyle={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])}>
                                     {item.errorMessage()}
-                                </FormValidationMessage> 
+                                </Text> 
                             }
                         </View>
                     )}

@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Platform
 } from 'react-native';
-import {FormLabel, Header} from 'react-native-elements';
+import {Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
 import CardRow from '../Card/CardRow';
 
@@ -55,16 +55,14 @@ class SettingsScreen extends React.Component{
             centerComponent={{ text: 'Settings', style: { color: colors.white, fontSize: 18 } }}
         />
         <ScrollView contentContainerStyle={{alignItems: 'stretch'}}>
-          <FormLabel 
-            containerStyle={StyleSheet.flatten([styles.formLabelContainer, {
+          <Text style={StyleSheet.flatten([styles.formLabel, {
               marginTop: spacing.normal,
               marginBottom: spacing.small, 
               paddingLeft: spacing.normal, 
               paddingRight: spacing.normal
-            }])}
-            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+            }])}>
             User Settings
-          </FormLabel>
+          </Text>
           <CardRow 
             customStyle={{borderTopWidth: 1}}
             primary="Handedness" 
@@ -74,16 +72,14 @@ class SettingsScreen extends React.Component{
               this.props.navigation.push('Setting')
             }}
           />
-          <FormLabel 
-            containerStyle={StyleSheet.flatten([styles.formLabelContainer, {
+          <Text style={StyleSheet.flatten([styles.formLabel, {
               marginTop: spacing.normal, 
               marginBottom: spacing.small,
               paddingLeft: spacing.normal, 
               paddingRight: spacing.normal
-            }])}
-            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+            }])}>
             Camera Settings
-          </FormLabel>
+          </Text>
           <CardRow 
             customStyle={{borderTopWidth: 1}}
             primary="Duration" 

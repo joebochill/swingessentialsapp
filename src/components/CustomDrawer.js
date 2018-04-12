@@ -7,6 +7,8 @@ import {requestLogout,
 import LogoutWarning from './Modal/TokenExpire';
 
 import {colors, spacing} from '../styles/index';
+import {scale, verticalScale, moderateScale} from '../styles/dimension';
+
 import logo from '../images/logo-big.png';
 
 import CardRow from './Card/CardRow';
@@ -76,8 +78,8 @@ class CustomDrawer extends React.Component {
     }
     render() {
         return (
-            <View style={{flex: 1, backgroundColor: colors.backgroundGrey}}>
-                <View style={{height:80, padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.lightPurple}}>
+            <View style={{flex: 1, width: '100%', backgroundColor: colors.backgroundGrey}}>
+                <View style={{height:scale(80), padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.lightPurple}}>
                     <Image
                         //resizeMode='contain'
                         resizeMethod='resize'
@@ -92,7 +94,7 @@ class CustomDrawer extends React.Component {
                     {this.props.token && 
                         <View style={{marginTop: spacing.normal}}>
                             <CardRow menuItem primary="Your Lessons" 
-                                customStyle={{borderTopWidth: 1}}
+                                customStyle={{borderTopWidth: scale(1)}}
                                 action={() => this.props.navigation.navigate('Lessons')}/>
                             <CardRow menuItem primary="Submit Your Swing" 
                                 action={() => {

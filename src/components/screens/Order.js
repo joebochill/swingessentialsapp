@@ -3,7 +3,9 @@ import {connect} from 'react-redux';
 
 import {Alert, ActivityIndicator, Text, View, ScrollView, Keyboard, FlatList, StyleSheet, Platform} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {FormInput, FormValidationMessage, Button, Header} from 'react-native-elements';
+import {scale, verticalScale, moderateScale} from '../../styles/dimension';
+
+import {FormInput, Button, Header} from 'react-native-elements';
 import {executePayment, checkCoupon, activateUnlimited} from '../../actions/LessonActions';
 import {roundNumber} from '../../utils/utils';
 import CardRow from '../Card/CardRow';
@@ -162,9 +164,11 @@ class Order extends React.Component{
                         <Text style={StyleSheet.flatten([styles.paragraph, {marginTop: 0, marginBottom: 0}])}>There was an error processing your purchase. Please try again later or contact info@swingessentials.com for more information.</Text>
                         <Button
                             title="BACK TO LESSONS"
+                            fontSize={scale(14)}
                             onPress={()=> this.props.navigation.navigate('Lessons')}
                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
                             containerViewStyle={styles.buttonContainer}
+                            fontSize={scale(14)}
                         />
                     </ScrollView>
                 }
@@ -174,6 +178,7 @@ class Order extends React.Component{
                         {this.state.selected.shortcode !== 'albatross' &&
                             <Button
                                 title="REDEEM NOW"
+                                fontSize={scale(14)}
                                 onPress={()=> {
                                     if(this.props.lessons.pending.length < 1){
                                         this.props.navigation.navigate('RedeemTop');
@@ -194,6 +199,7 @@ class Order extends React.Component{
                             this.props.credits.unlimitedExpires <= Date.now()/1000 &&
                             <Button
                                 title="ACTIVATE NOW"
+                                fontSize={scale(14)}
                                 onPress={()=> {
                                     Alert.alert(
                                         'Activate Unlimited',
@@ -217,6 +223,7 @@ class Order extends React.Component{
                             this.props.credits.unlimitedExpires > Date.now()/1000 &&
                             <Button
                                 title="SUBMIT A SWING"
+                                fontSize={scale(14)}
                                 onPress={()=> {
                                     if(this.props.lessons.pending.length < 1){
                                         this.props.navigation.navigate('RedeemTop');
@@ -235,6 +242,7 @@ class Order extends React.Component{
                         }
                         <Button
                             title={"BACK TO LESSONS"}
+                            fontSize={scale(14)}
                             onPress={()=> this.props.navigation.navigate('Lessons')}
                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
                             containerViewStyle={styles.buttonContainer}
@@ -247,6 +255,7 @@ class Order extends React.Component{
                             (!this.props.purchaseInProgress && !this.state.payPalActive) ?
                             <Button
                                 title={free ? "COMPLETE PURCHASE" : "Pay with PayPal"}
+                                fontSize={scale(14)}
                                 disabled={this.state.role === 'pending' || this.props.purchaseInProgress || this.state.payPalActive}
                                 disabledStyle={styles.disabledButton}
                                 fontWeight={free? null : '900'}
@@ -270,18 +279,16 @@ class Order extends React.Component{
                             keyboardShouldPersistTaps={'always'}
                         >
                             {this.state.error !== '' && 
-                                <FormValidationMessage 
-                                    containerStyle={StyleSheet.flatten([styles.formValidationContainer, {marginTop: 0, marginBottom: spacing.normal}])} 
-                                    labelStyle={styles.formValidation}>
+                                <Text style={StyleSheet.flatten([styles.formValidation, {marginBottom: spacing.normal}])}>
                                     {this.state.error}
-                                </FormValidationMessage>
+                                </Text>
                             }
                             <FlatList
                                 scrollEnabled= {false}
                                 keyboardShouldPersistTaps = {'always'}
                                 ListHeaderComponent={
                                     <View style={styles.cardHeader}>
-                                        <Text style={{color: colors.white}}>Select a Package</Text>
+                                        <Text style={{fontSize: scale(14), color: colors.white}}>Select a Package</Text>
                                     </View>
                                 }
                                 data={this.props.packages}
@@ -303,7 +310,7 @@ class Order extends React.Component{
                                 keyboardShouldPersistTaps = {'always'}
                                 ListHeaderComponent={
                                     <View style={styles.cardHeader}>
-                                        <Text style={{color: colors.white}}>Discount Code</Text>
+                                        <Text style={{fontSize: scale(14), color: colors.white}}>Discount Code</Text>
                                     </View>
                                 }
                                 data={[{id: 1}]}
@@ -322,6 +329,7 @@ class Order extends React.Component{
                                         />
                                         <Button
                                             title="APPLY"
+                                            fontSize={scale(14)}
                                             disabled={!this.state.coupon || this.props.purchaseInProgress}
                                             onPress={()=> {this._checkCoupon()}}
                                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: 0}])}
@@ -333,11 +341,9 @@ class Order extends React.Component{
                                 keyExtractor={(item, index) => item.id}
                             />
                             {this.props.coupon.error !== '' && 
-                                <FormValidationMessage 
-                                    containerStyle={StyleSheet.flatten([styles.formValidationContainer, {marginTop: spacing.normal}])} 
-                                    labelStyle={styles.formValidation}>
+                                <Text style={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])} >
                                     {this.props.coupon.error}
-                                </FormValidationMessage>
+                                </Text>
                             }
                             <FlatList
                                 style={{marginTop: spacing.normal}}
@@ -345,7 +351,7 @@ class Order extends React.Component{
                                 keyboardShouldPersistTaps = {'always'}
                                 ListHeaderComponent={
                                     <View style={styles.cardHeader}>
-                                        <Text style={{color: colors.white}}>Order Details</Text>
+                                        <Text style={{fontSize: scale(14), color: colors.white}}>Order Details</Text>
                                     </View>
                                 }
                                 data={[

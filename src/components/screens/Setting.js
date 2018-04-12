@@ -9,7 +9,7 @@ import {
   Switch,
   Platform
 } from 'react-native';
-import {FormLabel, Header} from 'react-native-elements';
+import {Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
 import CardRow from '../Card/CardRow';
 import {putSettings} from '../../actions/UserDataActions';

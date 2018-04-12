@@ -10,7 +10,7 @@ import {
     StyleSheet,
     Platform
 } from 'react-native';
-import {FormInput, FormLabel, Button, Header} from 'react-native-elements';
+import {FormInput, Button, Header} from 'react-native-elements';
 
 
 import styles, {colors, spacing, altStyles} from '../../styles/index';
@@ -66,9 +66,7 @@ class Forgot extends React.Component{
                     {!this.state.resetSent && 
                         <ScrollView>
                             <Text style={StyleSheet.flatten([styles.paragraph, {marginTop: 0, marginBottom: spacing.normal}])}>Enter your email address below and we will send you instructions for resetting your password.</Text>
-                            <FormLabel 
-                                containerStyle={styles.formLabelContainer} 
-                                labelStyle={StyleSheet.flatten([styles.formLabel])}>Email Address</FormLabel>
+                            <Text style={styles.formLabel}>Email Address</Text>
                             <FormInput
                                 autoCapitalize={'none'}
                                 autoFocus={true}
