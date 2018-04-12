@@ -19,7 +19,7 @@ import { GET_PACKAGES } from '../actions/PackageActions';
 import {atob} from '../utils/base64';
 
 
-const initialNavState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Auth'));
+const initialNavState = null;//AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Auth'));
 
 function nav(state = initialNavState, action) {
   let nextState;
@@ -60,7 +60,8 @@ const initialLoginState = {
   token: null,
   admin: false,
   modalWarning: false,
-  failCount: 0
+  failCount: 0,
+  loggedOut: false
 };
 const login = (state=initialLoginState, action) => {
 	switch(action.type){
@@ -70,6 +71,7 @@ const login = (state=initialLoginState, action) => {
     case REFRESH_TOKEN.SUCCESS:
       return{...state,
         modalWarning: false,
+        loggedOut: false,
         failCount: 0,
         token: action.data.token,
         admin: (JSON.parse(atob(action.data.token.split('.')[1]))['role'].toLowerCase()==='administrator')
@@ -84,6 +86,7 @@ const login = (state=initialLoginState, action) => {
     case TOKEN_TIMEOUT:
       return {...state,
         modalWarning: false,
+        loggedOut: true,
         failCount: 0,
         token: null,
         admin: false,

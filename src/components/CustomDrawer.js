@@ -56,7 +56,7 @@ class CustomDrawer extends React.Component {
 
     // Handle the app coming into the foreground after being backgrounded
     _handleAppStateChange = (nextAppState) => {
-        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active' && this.props.token) {
             this.props.refreshData(this.props.token);
         }
         this.setState({appState: nextAppState});
@@ -121,7 +121,7 @@ class CustomDrawer extends React.Component {
                             action={() => this.props.navigation.navigate('Settings')}/> */}
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>
-                        <CardRow menuItem primary="About" secondary="v1.0.10" 
+                        <CardRow menuItem primary="About" secondary="v1.0.13" 
                             action={() => this.props.navigation.navigate('About')}/>
                         <CardRow menuItem primary="View Website" 
                             action={() =>Linking.openURL('https://www.swingessentials.com')}/>

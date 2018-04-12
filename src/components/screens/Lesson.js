@@ -40,7 +40,7 @@ class Lesson extends React.Component{
 
   componentWillMount(){
     if(!this.props.token){
-        this.props.navigation.navigate('Login');
+        this.props.navigation.navigate('Auth');
     }
     else{
       const lesson = this._getLessonById(this.props.lessons.selected);
@@ -52,7 +52,7 @@ class Lesson extends React.Component{
 
   componentWillReceiveProps(nextProps){
     if(!nextProps.token){
-        this.props.navigation.navigate('Login');
+        this.props.navigation.navigate('Auth');
     }
     if(nextProps.lessons.selected !== this.props.lessons.selected){
       const lesson = this._getLessonById(nextProps.lessons.selected);

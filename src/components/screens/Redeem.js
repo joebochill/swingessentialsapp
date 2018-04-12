@@ -47,7 +47,7 @@ class Redeem extends React.Component{
     }
     componentWillMount(){
         if(!this.props.token){
-            this.props.navigation.navigate('Login');
+            this.props.navigation.navigate('Auth');
         }
         else{
             if(this.props.lessons.length > 0){
@@ -71,7 +71,7 @@ class Redeem extends React.Component{
 
     componentWillReceiveProps(nextProps){
         if(!nextProps.token){
-            this.props.navigation.navigate('Login');
+            this.props.navigation.navigate('Auth');
         }
 
         // If we get a new token, update the user role
