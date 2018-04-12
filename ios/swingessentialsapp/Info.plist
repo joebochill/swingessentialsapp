@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>13</string>
+	<string>14</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>com.paypal.ppclient.touch.v1</string>
@@ -54,6 +54,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Swing Essentials needs access to your camera to record swing videos.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Swing Essentials needs access to FaceID to use it for Sign In.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
