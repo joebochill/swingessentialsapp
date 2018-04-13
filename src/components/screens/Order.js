@@ -328,6 +328,7 @@ class Order extends React.Component{
                                             autoCorrect={false}
                                             onFocus= {() => this.scroller.scrollTo({x: 0, y: 150, animated: true})}
                                             disabled={this.props.purchaseInProgress}
+                                            onSubmitEditing={()=>{if(this.state.coupon){this._checkCoupon()}}}
                                             containerStyle={StyleSheet.flatten([styles.formInputContainer, {flex: 1}])}
                                             inputStyle={styles.formInput}
                                             underlineColorAndroid={colors.transparent}
