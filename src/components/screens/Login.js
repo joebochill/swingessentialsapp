@@ -250,7 +250,7 @@ class Login extends React.Component{
                         }
                     </View>
                     {(this.props.loginFails > 0 || this.state.error) && 
-                        <Text tyle={styles.formValidation}>
+                        <Text style={styles.formValidation}>
                             The username/password you entered was not correct.
                         </Text>
                     }
