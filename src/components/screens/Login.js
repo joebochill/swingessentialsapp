@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
 import {requestLogin} from '../../actions/LoginActions';
-import {scale} from '../../styles/dimension';
+import {scale, moderateScale} from '../../styles/dimension';
 
 import logo from '../../images/logo-big.png';
 
@@ -162,13 +162,13 @@ class Login extends React.Component{
                     backgroundColor: colors.lightPurple, 
                     justifyContent: 'center'
                 }}
-                scrollStyle={{height: '100%', justifyContent: 'center', alignItems: 'center'}}
+                scrollStyle={{minHeight: '100%', justifyContent: 'center', alignItems: 'center'}}
             >
-            <View style={{width: '100%', maxWidth: 750}}>
+            <View style={{width: '100%', maxWidth: 500}}>
                 <Image 
                     source={logo} 
                     resizeMethod='resize'
-                    style={{height: scale(50), width:'100%', resizeMode: 'contain'}}
+                    style={{height: moderateScale(50, .5), width:'100%', resizeMode: 'contain'}}
                 />
                 <View style={{flex: 0, marginTop: spacing.normal}}>
                     <Text style={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Username</Text>

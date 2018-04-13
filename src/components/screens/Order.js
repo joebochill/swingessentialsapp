@@ -164,7 +164,7 @@ class Order extends React.Component{
                         size: verticalScale(26),
                         onPress: () => this.props.navigation.navigate('DrawerOpen') 
                     }}
-                    centerComponent={{ text: 'Order Lessons', style: { color: colors.white, fontSize: scale(18) } }}
+                    centerComponent={{ text: 'Order Lessons', style: { color: colors.white, fontSize: verticalScale(18) } }}
                 />
                 {this.props.purchaseFail && 
                     <ScrollView style={{padding: spacing.normal}}>

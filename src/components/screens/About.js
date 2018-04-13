@@ -59,7 +59,7 @@ class AboutScreen extends React.Component{
           }}
           centerComponent={{ 
             text: 'About', 
-            style: { color: colors.white, fontSize: scale(18) } 
+            style: { color: colors.white, fontSize: verticalScale(18) } 
           }}
         />
         <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>

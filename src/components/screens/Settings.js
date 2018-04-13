@@ -60,7 +60,7 @@ class SettingsScreen extends React.Component{
               color: colors.white, 
               onPress: () => this.props.navigation.pop()
             }}//this.props.navigation.dispatch(NavigationActions.back({key:this.props.navigation.state.key})) }}
-            centerComponent={{ text: 'Settings', style: { color: colors.white, fontSize: scale(18) } }}
+            centerComponent={{ text: 'Settings', style: { color: colors.white, fontSize: verticalScale(18) } }}
         />
         <ScrollView contentContainerStyle={{alignItems: 'stretch'}}>
           <Text style={StyleSheet.flatten([styles.formLabel, {

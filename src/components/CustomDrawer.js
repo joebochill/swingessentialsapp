@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppState, Alert, Text, View, Image, Linking } from 'react-native';
+import { AppState, Alert, Text, View, ScrollView, Image, Linking } from 'react-native';
 import {connect} from 'react-redux';
 import {requestLogout, 
     showLogoutWarning, 
@@ -90,7 +90,7 @@ class CustomDrawer extends React.Component {
                 <View style={{height: spacing.large, alignItems: 'center', justifyContent:'center', backgroundColor: colors.lightPurple}}>
                     <Text style={{fontSize: scale(14), color:colors.white, marginTop:-1*spacing.large}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
                 </View>
-                <View style={{flex: 1, justifyContent:'space-between'}}>
+                <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent:'space-between'}}>
                     {this.props.token && 
                         <View style={{marginTop: spacing.normal}}>
                             <CardRow menuItem primary="Your Lessons" 
@@ -128,7 +128,7 @@ class CustomDrawer extends React.Component {
                         <CardRow menuItem primary="View Website" 
                             action={() =>Linking.openURL('https://www.swingessentials.com')}/>
                     </View>
-                </View>
+                </ScrollView>
                 {this.props.token && this.props.modalWarning && <LogoutWarning/>}
             </View>
         )

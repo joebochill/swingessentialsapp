@@ -94,7 +94,7 @@ class SettingScreen extends React.Component{
                 this.props.navigation.pop();
               }
             }}
-            centerComponent={{ text: this.props.setting, style: { color: colors.white, fontSize: scale(18) } }}
+            centerComponent={{ text: this.props.setting, style: { color: colors.white, fontSize: verticalScale(18) } }}
         />
         <ScrollView contentContainerStyle={{alignItems: 'stretch'}}>
           {this.props.setting === 'Overlay' && 

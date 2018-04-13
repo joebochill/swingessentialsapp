@@ -219,7 +219,7 @@ class Redeem extends React.Component{
                         containerStyle:styles.headerIcon, 
                         onPress: () => this.props.navigation.navigate('DrawerOpen') 
                     }}
-                    centerComponent={{ text: 'Submit Your Swing', style: { color: colors.white, fontSize: scale(18) } }}
+                    centerComponent={{ text: 'Submit Your Swing', style: { color: colors.white, fontSize: verticalScale(18) } }}
                 />
 
                 <KeyboardView

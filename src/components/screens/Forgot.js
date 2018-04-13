@@ -56,7 +56,7 @@ class Forgot extends React.Component{
                         color: colors.white, 
                         onPress: () => this.props.navigation.pop()
                     }}
-                    centerComponent={{ text: 'Reset Password', style: { color: colors.white, fontSize: scale(18) } }}
+                    centerComponent={{ text: 'Reset Password', style: { color: colors.white, fontSize: verticalScale(18) } }}
                 />
                 <KeyboardView 
                     fixed={!this.state.resetSent &&

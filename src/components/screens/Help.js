@@ -59,7 +59,7 @@ class HelpScreen extends React.Component{
           }}
           centerComponent={{ 
             text: 'Help', 
-            style: { color: colors.white, fontSize: scale(18) } 
+            style: { color: colors.white, fontSize: verticalScale(18) } 
           }}
           // rightComponent={{ 
           //   icon: 'settings',

@@ -170,7 +170,7 @@ class Register extends React.Component{
                         color: colors.white, 
                         onPress: () => this.props.navigation.pop()
                     }}
-                    centerComponent={{ text: 'Create Account', style: { color: colors.white, fontSize: scale(18) } }}
+                    centerComponent={{ text: 'Create Account', style: { color: colors.white, fontSize: verticalScale(18) } }}
                 />
                 <KeyboardView fixed={
                     <View>

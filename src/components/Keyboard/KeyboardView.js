@@ -70,7 +70,7 @@ class KeyboardView extends React.Component {
                     keyboardShouldPersistTaps={'always'}
                     contentContainerStyle={StyleSheet.flatten([{paddingBottom: this.props.fixed ? spacing.normal : 0},this.props.scrollStyle])}
                     style={StyleSheet.flatten([{
-                        flex: 1,
+                        //flex: 1,
                         paddingRight: spacing.normal, 
                         paddingLeft: spacing.normal,
                         //marginBottom: this.props.fixed ? spacing.normal : 0

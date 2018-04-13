@@ -103,7 +103,7 @@ class Lesson extends React.Component{
               color: colors.white, 
               onPress: () => this.props.navigation.pop() 
             }}
-            centerComponent={{ text: 'Swing Analysis', style: { color: colors.white, fontSize: scale(18) } }}
+            centerComponent={{ text: 'Swing Analysis', style: { color: colors.white, fontSize: verticalScale(18) } }}
         />
         <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
           <Text style={styles.headline}>{lesson.request_date}</Text>

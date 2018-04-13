@@ -94,7 +94,7 @@ class Lessons extends React.Component{
                         containerStyle:styles.headerIcon, 
                         onPress: () => this.props.navigation.navigate('DrawerOpen') 
                     }}
-                    centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: scale(18) } }}
+                    centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: verticalScale(18) } }}
                     //rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
                     //   onPress: () => {this.props.navigation.push('Settings')}}}
                 />
