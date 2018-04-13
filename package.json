@@ -1,13 +1,13 @@
 {
-  "name": "swingessentials2",
-  "version": "0.0.1",
+  "name": "swingessentials",
+  "version": "1.0.17",
   "private": true,
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "test": "node node_modules/jest/bin/jest.js",
-    "postinstall": "./scripts/post.sh"
+    "postinstall": "scripts/post.sh"
   },
   "jest": {
     "preset": "react-native",
