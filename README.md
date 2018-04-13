@@ -41,8 +41,8 @@ Capture | Submit
 To extend, update, or contribute to this project, clone the repository to your local machine and install the necessary dependencies:
 
 ````
-git clone https://github.com/joebochill/swingessentialsapp2.git
-cd swingessentialsapp2
+git clone https://github.com/joebochill/swingessentialsapp.git
+cd swingessentialsapp
 npm install
 ````
 
