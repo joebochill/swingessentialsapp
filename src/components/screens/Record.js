@@ -4,7 +4,9 @@ import {connect} from 'react-redux';
 import { RNCamera } from 'react-native-camera';
 import Video from 'react-native-video';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {FormInput, FormLabel, FormValidationMessage, Button, Icon, Header} from 'react-native-elements';
+import {scale, verticalScale} from '../../styles/dimension';
+
+import {FormInput, Button, Icon, Header} from 'react-native-elements';
 import {/*StatusBar,*/ ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
 import downtheline from '../../images/downtheline.png';
 import faceonLH from '../../images/overlay-fo-lh.png';
@@ -130,30 +132,23 @@ class Record extends Component {
                 }
                 {this.state.delay > 0 && 
                     <View style={StyleSheet.flatten([styles.absolute, styles.centered, {backgroundColor: 'rgba(0,0,0,0.25)'}])}>
-                        <Text style={{color: colors.white, fontSize: 128}}>{this.state.delay}</Text>
+                        <Text style={{color: colors.white, fontSize: scale(128)}}>{this.state.delay}</Text>
                     </View>
                 }
                 <Header
                     outerContainerStyles={{ 
                         backgroundColor: 'rgba(0,0,0,0.25)',//colors.transparent, 
-                        height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-                        padding: Platform.OS === 'ios' ? 15 : 10,
+                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10),
                         position: 'absolute',
                         borderBottomWidth: 0,
                         top:0, right: 0, left: 0
                     }}
-                    //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    // leftComponent={{ 
-                    //     icon: this.flashes[this.state.flash],
-                    //     underlayColor:colors.transparent, 
-                    //     color: colors.white, 
-                    //     containerStyle:styles.headerIcon, 
-                    //     onPress: () => this.setState({flash: (this.state.flash+1)%this.flashes.length}) 
-                    // }}
-                    // centerComponent={{ 
-                    //     text: '00:00:'+(this.state.duration < 10 ? '0' : '')+this.state.duration, 
-                    //     style: { color: colors.white} 
-                    // }}
+                    leftComponent={this.state.recording ? null : { 
+                        icon: 'arrow-back',
+                        size: verticalScale(26),
+                        containerStyle: StyleSheet.flatten([styles.headerIcon, {opacity: 0}]) //hidden, for centering only
+                    }}
                     centerComponent={
                         <View>
                             {this.state.recordLive &&
@@ -171,11 +166,12 @@ class Record extends Component {
                                     }}/>
                                 </View>
                             }
-                            <Text style={{color: colors.white}}>{'00:00:'+(this.state.duration < 10 ? '0' : '')+this.state.duration}</Text>
+                            <Text style={{fontSize: scale(14), color: colors.white}}>{'00:00:'+(this.state.duration < 10 ? '0' : '')+this.state.duration}</Text>
                         </View>
                     }
                     rightComponent={this.state.recording ? null : { 
                         icon: 'settings',
+                        size: verticalScale(26),
                         underlayColor:colors.transparent, 
                         color: colors.white, 
                         containerStyle:styles.headerIcon, 
@@ -188,14 +184,14 @@ class Record extends Component {
                     bottom: 0, left: 0, right: 0,
                     flexDirection: 'row', 
                     alignItems: 'center',
-                    height: sizes.medium + 2*20
+                    height: sizes.medium + scale(2*20)
                 }}>
                     <TouchableOpacity
                         onPress={()=> this.props.navigation.pop()}
                         disabled={this.state.recording}
                         style={{flex: 1, padding: spacing.normal}}
                     >
-                        {!this.state.recording && <Text style={{color: colors.white, textAlign: 'left'}}>Cancel</Text>}
+                        {!this.state.recording && <Text style={{fontSize: scale(14), color: colors.white, textAlign: 'left'}}>Cancel</Text>}
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={()=>{
@@ -215,7 +211,7 @@ class Record extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     padding: spacing.tiny,
-                                    margin: 20}}
+                                    margin: scale(20)}}
                     >
                         {!this.state.recording ?
                             <View style={{flex: 1, alignSelf: 'stretch', backgroundColor: colors.red, borderRadius: sizes.normal}}/>
@@ -262,10 +258,10 @@ class Record extends Component {
                     bottom: 0, left: 0, right: 0,
                     flexDirection: 'row', 
                     alignItems: 'center',
-                    height: sizes.medium + 2*20
+                    height: sizes.medium + scale(2*20)
                 }}>
                     <TouchableOpacity onPress={()=> this.setState({uri: null})} style={{flex: 1, padding: spacing.normal}}>
-                        <Text style={{color: colors.white, textAlign: 'left'}}>Retake</Text>
+                        <Text style={{fontSize: scale(14), color: colors.white, textAlign: 'left'}}>Retake</Text>
                     </TouchableOpacity>
                     <Icon 
                         name={this.state.playing ? 'pause' : 'play-arrow'} 
@@ -281,7 +277,7 @@ class Record extends Component {
                             this.props.navigation.pop();
                         }}
                     >
-                        <Text style={{color: colors.white, textAlign: 'right'}}>Use Video</Text>
+                        <Text style={{fontSize: scale(14), color: colors.white, textAlign: 'right'}}>Use Video</Text>
                     </TouchableOpacity>
                 </View>
             </View>

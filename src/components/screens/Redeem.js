@@ -3,7 +3,9 @@ import {connect} from 'react-redux';
 
 import {ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
 import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {FormInput, FormLabel, FormValidationMessage, Button, Icon, Header} from 'react-native-elements';
+import {scale, verticalScale} from '../../styles/dimension';
+
+import {FormInput, Button, Icon, Header} from 'react-native-elements';
 import {redeemCredit} from '../../actions/LessonActions';
 import {checkToken} from '../../actions/LoginActions';
 import KeyboardView from '../Keyboard/KeyboardView';
@@ -205,18 +207,26 @@ class Redeem extends React.Component{
                     style={{flex: 0}}
                     outerContainerStyles={{ 
                         backgroundColor: colors.lightPurple, 
-                        height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-                        padding: Platform.OS === 'ios' ? 15 : 10
+                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
                     }}
                     //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    leftComponent={{ icon: 'menu',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, onPress: () => this.props.navigation.navigate('DrawerOpen') }}
-                    centerComponent={{ text: 'Submit Your Swing', style: { color: colors.white, fontSize: 18 } }}
+                    leftComponent={{ 
+                        icon: 'menu',
+                        size: verticalScale(26),
+                        underlayColor:colors.transparent,
+                        color: colors.white, 
+                        containerStyle:styles.headerIcon, 
+                        onPress: () => this.props.navigation.navigate('DrawerOpen') 
+                    }}
+                    centerComponent={{ text: 'Submit Your Swing', style: { color: colors.white, fontSize: scale(18) } }}
                 />
 
                 <KeyboardView
                     fixed={ (!this.props.redeemPending) ?
                         <Button
                             title="SUBMIT"
+                            fontSize={scale(14)}
                             disabled={this.props.redeemPending || this.state.role === 'pending' || !this.state.foSource || !this.state.dtlSource}
                             disabledStyle={styles.disabledButton}
                             onPress={()=>this._redeemLesson()}
@@ -226,7 +236,7 @@ class Redeem extends React.Component{
                         :
                         <View style={{paddingTop: spacing.normal}}>
                             <ActivityIndicator color={colors.purple}/>
-                            <Text style={{marginTop: spacing.tiny, color: colors.purple, textAlign: 'center', width: '100%'}}>
+                            <Text style={{fontSize: scale(14), marginTop: spacing.tiny, color: colors.purple, textAlign: 'center', width: '100%'}}>
                                 {this.state.progress < 100 ?
                                     ('Uploading Video Files... ' + this.state.progress.toFixed(2)+'%')
                                     : 'Creating lesson...'
@@ -240,17 +250,11 @@ class Redeem extends React.Component{
                         //keyboardShouldPersistTaps={'always'}
                         >
                         {this.state.role === 'pending' && 
-                            <FormValidationMessage 
-                                containerStyle={StyleSheet.flatten([styles.formValidationContainer, {marginTop: 0, marginBottom: spacing.normal}])} 
-                                labelStyle={styles.formValidation}>
+                            <Text style={StyleSheet.flatten([styles.formValidation, {marginBottom: spacing.normal}])}> 
                                 {'You must verify your email address before you can submit lessons.'}
-                            </FormValidationMessage>
+                            </Text>
                         }
-                        <FormLabel 
-                            containerStyle={styles.formLabelContainer} 
-                            labelStyle={StyleSheet.flatten([styles.formLabel])}>
-                            Your Swing Videos
-                        </FormLabel>
+                        <Text style={styles.formLabel}>Your Swing Videos</Text>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing.small}}>
                             <View style={{flex: 1, marginRight: spacing.normal}}>
                                 <View style={{flex: 0, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.purple, backgroundColor: this.state.foSource ? colors.black: colors.white, height: sizes.large}}>
@@ -308,7 +312,8 @@ class Redeem extends React.Component{
                                     containerViewStyle={{flex: 0}}
                                     onPress={() => this._showPicker('foSource')}
                                     title={'Face-On'}
-                                    icon={{name: 'camera-alt', color: colors.purple}}
+                                    fontSize={scale(14)}
+                                    icon={{name: 'camera-alt', color: colors.purple, size: scale(14)}}
                                     backgroundColor={colors.transparent}
                                     textStyle={{color: colors.purple}}
                                 />
@@ -369,17 +374,16 @@ class Redeem extends React.Component{
                                     containerViewStyle={{flex: 0}}
                                     onPress={() => this._showPicker('dtlSource')}
                                     title={'Down-the-Line'}
-                                    icon={{name: 'camera-alt', color: colors.purple}}
+                                    fontSize={scale(14)}
+                                    icon={{name: 'camera-alt', color: colors.purple, size: scale(14)}}
                                     textStyle={{color: colors.purple}}
                                     backgroundColor={colors.transparent}
                                 />
                             </View>
                         </View>
-                        <FormLabel 
-                            containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal}])} 
-                            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+                        <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal}])}>
                             Special Requests
-                        </FormLabel>
+                        </Text>
                         <FormInput
                             autoCapitalize={'sentences'}
                             multiline={true}

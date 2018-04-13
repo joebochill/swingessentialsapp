@@ -8,10 +8,12 @@ import {
     StyleSheet,
     Platform
 } from 'react-native';
-import {FormInput, FormLabel, FormValidationMessage, Button, Header} from 'react-native-elements';
+import {FormInput, Button, Header} from 'react-native-elements';
 
 
 import styles, {colors, spacing, altStyles} from '../../styles/index';
+import {scale, verticalScale} from '../../styles/dimension';
+
 import KeyboardView from '../Keyboard/KeyboardView';
 
 function mapStateToProps(state){
@@ -156,40 +158,41 @@ class Register extends React.Component{
                     style={{flex: 0}}
                     outerContainerStyles={{ 
                         backgroundColor: colors.lightPurple, 
-                        height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-                        padding: Platform.OS === 'ios' ? 15 : 10
+                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
                     }}
                     //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
-                        onPress: () => this.props.navigation.pop()}}
-                    centerComponent={{ text: 'Create Account', style: { color: colors.white, fontSize: 18 } }}
+                    leftComponent={{ 
+                        icon: 'arrow-back',
+                        size: verticalScale(26),
+                        underlayColor:colors.transparent,
+                        containerStyle:styles.headerIcon, 
+                        color: colors.white, 
+                        onPress: () => this.props.navigation.pop()
+                    }}
+                    centerComponent={{ text: 'Create Account', style: { color: colors.white, fontSize: scale(18) } }}
                 />
                 <KeyboardView fixed={
                     <View>
                         {!this.props.registrationFailure ?
                             <Button
                                 title="CREATE ACCOUNT"
+                                fontSize={scale(14)}
                                 disabled={!this._validateFields() || this.props.registrationFailure}
                                 onPress={()=> {this._submitRegistration()}}
                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
                                 disabledStyle={styles.disabledButton}
                                 containerViewStyle={styles.buttonContainer}
                             /> :
-                            <FormValidationMessage 
-                                containerStyle={StyleSheet.flatten([styles.formValidationContainer, {marginTop: spacing.normal}])} 
-                                labelStyle={styles.formValidation}>
+                            <Text style={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])}>
                                 Registration Failed - try again later
-                            </FormValidationMessage>
+                            </Text>
                         }
                     </View>
                 }>
                     {this.regProperties.map((item,index) =>
                         <View key={'reg_field_'+index} style={{marginBottom:spacing.normal}}>
-                            <FormLabel 
-                                containerStyle={styles.formLabelContainer} 
-                                labelStyle={StyleSheet.flatten([styles.formLabel])}>
-                                {item.display}
-                            </FormLabel>
+                            <Text style={styles.formLabel}>{item.display}</Text>
                             <FormInput
                                 ref={(ref) => this.fields[index] = ref}
                                 autoFocus={index===0}
@@ -213,11 +216,9 @@ class Register extends React.Component{
                                 onBlur={item.blur}
                             />
                             {item.error && item.error() && !this.state.validationError && 
-                                <FormValidationMessage 
-                                    containerStyle={StyleSheet.flatten([styles.formValidationContainer, {marginTop: spacing.normal}])} 
-                                    labelStyle={styles.formValidation}>
+                                <Text containerStyle={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])}>
                                     {item.errorMessage()}
-                                </FormValidationMessage> 
+                                </Text> 
                             }
                         </View>
                     )}

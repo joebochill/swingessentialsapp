@@ -8,8 +8,10 @@ import {
   StyleSheet,
   Platform
 } from 'react-native';
-import {FormLabel, Header} from 'react-native-elements';
+import {Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
+import {scale, verticalScale} from '../../styles/dimension';
+
 import CardRow from '../Card/CardRow';
 
 function mapStateToProps(state){
@@ -46,25 +48,29 @@ class SettingsScreen extends React.Component{
             style={{flex: 0}}
             outerContainerStyles={{ 
               backgroundColor: colors.lightPurple, 
-              height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-              padding: Platform.OS === 'ios' ? 15 : 10
+              height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+              padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
             }}
             //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-            leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
-              onPress: () => this.props.navigation.pop()}}//this.props.navigation.dispatch(NavigationActions.back({key:this.props.navigation.state.key})) }}
-            centerComponent={{ text: 'Settings', style: { color: colors.white, fontSize: 18 } }}
+            leftComponent={{ 
+              icon: 'arrow-back',
+              size: verticalScale(26),
+              underlayColor:colors.transparent,
+              containerStyle:styles.headerIcon, 
+              color: colors.white, 
+              onPress: () => this.props.navigation.pop()
+            }}//this.props.navigation.dispatch(NavigationActions.back({key:this.props.navigation.state.key})) }}
+            centerComponent={{ text: 'Settings', style: { color: colors.white, fontSize: scale(18) } }}
         />
         <ScrollView contentContainerStyle={{alignItems: 'stretch'}}>
-          <FormLabel 
-            containerStyle={StyleSheet.flatten([styles.formLabelContainer, {
+          <Text style={StyleSheet.flatten([styles.formLabel, {
               marginTop: spacing.normal,
               marginBottom: spacing.small, 
               paddingLeft: spacing.normal, 
               paddingRight: spacing.normal
-            }])}
-            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+            }])}>
             User Settings
-          </FormLabel>
+          </Text>
           <CardRow 
             customStyle={{borderTopWidth: 1}}
             primary="Handedness" 
@@ -74,16 +80,14 @@ class SettingsScreen extends React.Component{
               this.props.navigation.push('Setting')
             }}
           />
-          <FormLabel 
-            containerStyle={StyleSheet.flatten([styles.formLabelContainer, {
+          <Text style={StyleSheet.flatten([styles.formLabel, {
               marginTop: spacing.normal, 
               marginBottom: spacing.small,
               paddingLeft: spacing.normal, 
               paddingRight: spacing.normal
-            }])}
-            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+            }])}>
             Camera Settings
-          </FormLabel>
+          </Text>
           <CardRow 
             customStyle={{borderTopWidth: 1}}
             primary="Duration" 

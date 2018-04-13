@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator, DrawerNavigator } from 'react-navigation';
+import {scale} from '../styles/dimension';
 
 import CustomDrawer from '../components/CustomDrawer'; //This is our custom drawer component
 
@@ -74,6 +75,7 @@ export const AppNavigator = DrawerNavigator(
     }, 
     {
         initialRouteName: 'Auth',
+        drawerWidth: scale(280),
         contentComponent: CustomDrawer
     }
 );

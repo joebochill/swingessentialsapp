@@ -1,4 +1,6 @@
+import React from 'react';
 import { StyleSheet } from 'react-native';
+import {scale} from './dimension';
 
 export const colors = {
     white: '#ffffff',
@@ -13,26 +15,31 @@ export const colors = {
 };
 
 export const spacing = {
-    extraLarge: 30,
-    large: 20,
-    normal: 15,
-    small: 10,
-    tiny: 5
+    extraLarge: scale(30),
+    large: scale(20),
+    normal: scale(15),
+    small: scale(10),
+    tiny: scale(5)
 };
 
 export const sizes = {
-    extraLarge: 250,
-    large: 150,
-    medium: 75,
-    normal: 50,
-    mediumSmall: 30,
-    small: 15,
-    tiny: 5
+    extraLarge: scale(250),
+    large: scale(150),
+    medium: scale(75),
+    normal: scale(50),
+    mediumSmall: scale(30),
+    small: scale(15),
+    tiny: scale(5)
+}
+
+export const defaultFont = {
+    fontSize: scale(14),
+    color: '#231f61'
 }
 
 export const altStyles = {
     buttonIcon:{
-        size: 24,
+        size: scale(24),
         color: colors.white,
         style:{marginRight: 0}
     }
@@ -40,10 +47,10 @@ export const altStyles = {
 
 export default StyleSheet.create({
     headerIcon:{
-        padding: 15,
-        marginLeft: -15,
-        marginRight: -15,
-        marginBottom: -15
+        padding: scale(15),
+        marginLeft: scale(-15),
+        marginRight: scale(-15),
+        marginBottom: scale(-15)
     },
     buttonContainer:{
         width: '100%', 
@@ -54,8 +61,8 @@ export default StyleSheet.create({
         backgroundColor: colors.lightPurple,
         height: sizes.normal,
         borderColor: colors.purple,
-        borderWidth: 2,
-        borderRadius: 5,
+        borderWidth: scale(2),
+        borderRadius: scale(5),
         marginTop: spacing.normal,
         marginLeft: 0,
         marginRight: 0
@@ -80,10 +87,10 @@ export default StyleSheet.create({
         paddingLeft: spacing.normal, 
         paddingRight: spacing.normal,
         borderColor: colors.purple, 
-        borderWidth: 2, 
+        borderWidth: scale(2), 
         flexDirection:'row', 
         alignItems:'center', 
-        backgroundColor: colors.lightPurple    
+        backgroundColor: colors.lightPurple
     },
     cardRow:{
         height: sizes.normal, 
@@ -93,17 +100,10 @@ export default StyleSheet.create({
         alignItems: 'center',
         // justifyContent: 'space-between',
         borderColor: colors.borderGrey, 
-        borderWidth:1, 
+        borderWidth:scale(1), 
         borderTopWidth: 0,
         alignItems: 'center', 
         backgroundColor: colors.white
-    },
-    formLabelContainer:{
-        // padding: 0, 
-        // margin: 0, 
-        //height: sizes.small
-        //height: 16
-        //margin: 0
     },
     formLabel:{
         width: '100%', 
@@ -111,11 +111,12 @@ export default StyleSheet.create({
         color:colors.purple, 
         marginLeft:0, 
         marginTop: 0,
-        fontSize: 16
+        fontSize: scale(16),
+        fontWeight: 'bold'
     },
     formInputContainer:{
         backgroundColor: 'blue',
-        height: sizes.normal,
+        height: sizes.normal,//scale(sizes.normal),
         width: '100%',
         marginLeft: 0
     },
@@ -127,29 +128,23 @@ export default StyleSheet.create({
         color: colors.purple,
         backgroundColor: colors.white,
         borderColor: colors.borderGrey,
-        borderWidth: 1,
+        borderWidth: scale(1),
         marginLeft: 0,
-        textAlignVertical: 'top'
-    },
-    formValidationContainer:{
-        width: '100%',
-        marginLeft: 0,
-        padding: 0,
-        paddingTop: 0,
-        marginTop: spacing.extraLarge
+        textAlignVertical: 'top',
+        fontSize: scale(14)
     },
     formValidation:{
         width: '100%',
-        marginLeft: 0,
-        marginTop: 0,
+        margin: 0,
         padding: spacing.normal,
         backgroundColor: colors.red,
-        color: colors.white
+        color: colors.white,
+        fontSize: scale(14)
     },
     headline:{
         width: '100%',
         textAlign: 'center',
-        fontSize: 18,
+        fontSize: scale(18),
         fontWeight: 'bold',
         color: colors.purple,
         marginBottom: spacing.normal
@@ -157,7 +152,8 @@ export default StyleSheet.create({
     paragraph:{
         width: '100%',
         color: colors.purple,
-        marginBottom: spacing.tiny
+        marginBottom: spacing.tiny,
+        fontSize: scale(14)
     },
     absolute:{
         position: 'absolute',

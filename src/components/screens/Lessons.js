@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import {Alert, Text, View, ScrollView, FlatList, RefreshControl, Platform} from 'react-native';
 import {Button, Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
+import {scale, verticalScale} from '../../styles/dimension';
+
 import {getLessons, getCredits, activateUnlimited} from '../../actions/LessonActions';
 import CardRow from '../Card/CardRow';
 
@@ -80,12 +82,19 @@ class Lessons extends React.Component{
                     style={{flex: 0}}
                     outerContainerStyles={{ 
                         backgroundColor: colors.lightPurple, 
-                        height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-                        padding: Platform.OS === 'ios' ? 15 : 10
+                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
                     }}
                     //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    leftComponent={{ icon: 'menu',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, onPress: () => this.props.navigation.navigate('DrawerOpen') }}
-                    centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: 18 } }}
+                    leftComponent={{ 
+                        icon: 'menu',
+                        size: verticalScale(26),
+                        underlayColor:colors.transparent, 
+                        color: colors.white, 
+                        containerStyle:styles.headerIcon, 
+                        onPress: () => this.props.navigation.navigate('DrawerOpen') 
+                    }}
+                    centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: scale(18) } }}
                     //rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
                     //   onPress: () => {this.props.navigation.push('Settings')}}}
                 />
@@ -98,7 +107,7 @@ class Lessons extends React.Component{
                             scrollEnabled= {false}
                             ListHeaderComponent={
                                 <View style={styles.cardHeader}>
-                                    <Text style={{color: colors.white}}>Redeem a Lesson</Text>
+                                    <Text style={{fontSize: scale(14), color: colors.white}}>Redeem a Lesson</Text>
                                 </View>
                             }
                             data={[
@@ -156,8 +165,8 @@ class Lessons extends React.Component{
                             scrollEnabled= {false}
                             ListHeaderComponent={
                                 <View style={styles.cardHeader}>
-                                    <Text style={{flex: 1, color: colors.white}}>Unlimited Lessons</Text>
-                                    <Text style={{flex: 0, color: colors.white, textAlign: 'right'}}>{this._formatUnlimited()}</Text>
+                                    <Text style={{fontSize: scale(14), flex: 1, color: colors.white}}>Unlimited Lessons</Text>
+                                    <Text style={{fontSize: scale(14), flex: 0, color: colors.white, textAlign: 'right'}}>{this._formatUnlimited()}</Text>
                                 </View>
                             }
                             data={[
@@ -194,7 +203,7 @@ class Lessons extends React.Component{
                             scrollEnabled= {false}
                             ListHeaderComponent={
                                 <View style={styles.cardHeader}>
-                                    <Text style={{color: colors.white}}>Active Lessons</Text>
+                                    <Text style={{fontSize: scale(14), color: colors.white}}>Active Lessons</Text>
                                 </View>
                             }
                             data={this.props.lessons.pending}
@@ -213,7 +222,7 @@ class Lessons extends React.Component{
                         scrollEnabled= {false}
                         ListHeaderComponent={
                             <View style={styles.cardHeader}>
-                                <Text style={{color: colors.white}}>Lesson History</Text>
+                                <Text style={{fontSize: scale(14), color: colors.white}}>Lesson History</Text>
                             </View>
                         }
                         data={this.props.admin ? this.props.lessons.closed : this.props.lessons.pending.concat(this.props.lessons.closed)}

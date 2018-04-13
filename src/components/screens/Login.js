@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
 import {requestLogin} from '../../actions/LoginActions';
+import {scale} from '../../styles/dimension';
 
 import logo from '../../images/logo-big.png';
 
@@ -15,10 +16,11 @@ import {
     Image,
     Keyboard,
     Switch,
-    Text,
-    StatusBar
+    StatusBar,
+    Text
 } from 'react-native';
-import {FormInput, FormLabel, FormValidationMessage, Button, Header, Icon} from 'react-native-elements';
+//import Text from '../Text/Text';
+import {FormInput, Button, Header, Icon} from 'react-native-elements';
 import KeyboardView from '../Keyboard/KeyboardView';
 
 import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
@@ -160,17 +162,16 @@ class Login extends React.Component{
                     backgroundColor: colors.lightPurple, 
                     justifyContent: 'center'
                 }}
-                scrollStyle={{height: '100%', justifyContent: 'center', alignItems: 'stretch'}}
+                scrollStyle={{height: '100%', justifyContent: 'center', alignItems: 'center'}}
             >
+            <View style={{width: '100%', maxWidth: 750}}>
                 <Image 
                     source={logo} 
                     resizeMethod='resize'
-                    style={{height: 50, width:'100%', resizeMode: 'contain'}}
+                    style={{height: scale(50), width:'100%', resizeMode: 'contain'}}
                 />
                 <View style={{flex: 0, marginTop: spacing.normal}}>
-                    <FormLabel 
-                        containerStyle={styles.formLabelContainer} 
-                        labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Username</FormLabel>
+                    <Text style={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Username</Text>
                     <View>
                         <FormInput
                         //autoFocus={true}
@@ -205,9 +206,7 @@ class Login extends React.Component{
                         </View>
                     }
                 </View>
-                    <FormLabel 
-                        containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal}])}
-                        labelStyle={StyleSheet.flatten([styles.formLabel, {color: colors.white}])}>Password</FormLabel>
+                    <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, color: colors.white}])}>Password</Text>
                     <FormInput
                         ref={(ref) => this.pass = ref}
                         autoCapitalize={'none'}
@@ -222,9 +221,9 @@ class Login extends React.Component{
                         placeholder="Please enter your password"
                         onChangeText={(newText) => this.setState({password: newText})}
                     />
-                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap:'wrap'}}>
-                        <View style={{marginTop: spacing.normal, flexDirection: 'row', alignItems: 'center', justifyContent:'flex-end'}}>
-                            <Text style={{color: colors.white, marginRight: spacing.small}}>Save Username</Text>
+                    <View style={{marginTop: spacing.extraLarge, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap:'wrap'}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent:'flex-end'}}>
+                            <Text style={{fontSize: scale(14), color: colors.white, marginRight: spacing.small}}>Save Username</Text>
                             <Switch 
                                 value={this.state.remember} 
                                 onValueChange={(val) => {
@@ -232,11 +231,12 @@ class Login extends React.Component{
                                     AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes':'no');
                                 }}
                                 onTintColor={colors.purple}
+                                //style={{transform: [{ scaleX: scale(1) }, { scaleY: scale(1) }]}}
                             />
                         </View>
                         {this.state.biometry &&
-                            <View style={{marginTop: spacing.normal, flexDirection: 'row', alignItems: 'center', justifyContent:'flex-end'}}>
-                                <Text style={{color: colors.white, marginRight: spacing.small}}>{this.state.biometry}</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent:'flex-end'}}>
+                                <Text style={{fontSize: scale(14), color: colors.white, marginRight: spacing.small}}>{this.state.biometry}</Text>
                                 <Switch 
                                     value={this.state.useTouch} 
                                     onValueChange={(val) => {
@@ -244,27 +244,25 @@ class Login extends React.Component{
                                         AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes':'no');
                                     }}
                                     onTintColor={colors.purple}
+                                    //style={{transform: [{ scaleX: scale(1) }, { scaleY: scale(1) }]}}
                                 />
                             </View>
                         }
                     </View>
                     {(this.props.loginFails > 0 || this.state.error) && 
-                        <FormValidationMessage 
-                            containerStyle={styles.formValidationContainer} 
-                            labelStyle={styles.formValidation}>
+                        <Text tyle={styles.formValidation}>
                             The username/password you entered was not correct.
-                        </FormValidationMessage>
+                        </Text>
                     }
                     {this.state.touchFail && this.props.loginFails <= 0 && 
-                        <FormValidationMessage 
-                            containerStyle={styles.formValidationContainer} 
-                            labelStyle={styles.formValidation}>
+                        <Text style={styles.formValidation}>
                             {`Your ${this.state.biometry} was not recognized. Please enter your password to sign in.`} 
-                        </FormValidationMessage>
+                        </Text>
                     }
                     {!this.state.waiting &&
                         <Button
                             title="SIGN IN"
+                            fontSize={scale(14)}
                             onPress={this._onLogin.bind(this)}
                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.extraLarge}])}
                             containerViewStyle={styles.buttonContainer}
@@ -287,6 +285,7 @@ class Login extends React.Component{
                             containerViewStyle={{marginLeft:0, marginRight: 0}} 
                             buttonStyle={styles.linkButton} 
                             title="Forgot Password?" 
+                            fontSize={scale(14)}
                             onPress={()=>this.props.navigation.push('Forgot')}>
                         </Button>
                         <Button 
@@ -296,10 +295,12 @@ class Login extends React.Component{
                             }} 
                             buttonStyle={styles.linkButton} 
                             title="Create Account" 
+                            fontSize={scale(14)}
                             onPress={()=>this.props.navigation.push('Register')}>
                         </Button>
                     </View>
                 </View>
+            </View>
             </KeyboardView>
         )
     }

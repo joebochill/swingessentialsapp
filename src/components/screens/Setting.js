@@ -9,8 +9,10 @@ import {
   Switch,
   Platform
 } from 'react-native';
-import {FormLabel, Header} from 'react-native-elements';
+import {Header} from 'react-native-elements';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
+import {scale, verticalScale} from '../../styles/dimension';
+
 import CardRow from '../Card/CardRow';
 import {putSettings} from '../../actions/UserDataActions';
 
@@ -77,17 +79,22 @@ class SettingScreen extends React.Component{
             style={{flex: 0}}
             outerContainerStyles={{ 
               backgroundColor: colors.lightPurple, 
-              height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-              padding: Platform.OS === 'ios' ? 15 : 10
+              height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+              padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
             }}
             //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-            leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
+            leftComponent={{ 
+              icon: 'arrow-back',
+              size: verticalScale(26),
+              underlayColor:colors.transparent,
+              containerStyle:styles.headerIcon, 
+              color: colors.white, 
               onPress: () => {
                 this.props.updateSettings(this._getNewSettingsObject(),this.props.token);
                 this.props.navigation.pop();
               }
             }}
-            centerComponent={{ text: this.props.setting, style: { color: colors.white, fontSize: 18 } }}
+            centerComponent={{ text: this.props.setting, style: { color: colors.white, fontSize: scale(18) } }}
         />
         <ScrollView contentContainerStyle={{alignItems: 'stretch'}}>
           {this.props.setting === 'Overlay' && 

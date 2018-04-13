@@ -9,9 +9,11 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
-import {FormLabel, Header, Icon} from 'react-native-elements';
+import {Header, Icon} from 'react-native-elements';
 import YouTube from 'react-native-youtube'
 import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
+import {scale, verticalScale} from '../../styles/dimension';
+
 import { markLessonViewed } from '../../actions/LessonActions';
 import Video from 'react-native-video';
 
@@ -89,21 +91,25 @@ class Lesson extends React.Component{
             style={{flex: 0}}
             outerContainerStyles={{ 
               backgroundColor: colors.lightPurple, 
-              height: Platform.OS === 'ios' ? 70 :  70 - 24, 
-              padding: Platform.OS === 'ios' ? 15 : 10
+              height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+              padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
             }}
             //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-            leftComponent={{ icon: 'arrow-back',underlayColor:colors.transparent,containerStyle:styles.headerIcon, color: colors.white, 
-              onPress: () => this.props.navigation.pop() }}
-            centerComponent={{ text: 'Swing Analysis', style: { color: colors.white, fontSize: 18 } }}
+            leftComponent={{ 
+              icon: 'arrow-back',
+              size: verticalScale(26),
+              underlayColor:colors.transparent,
+              containerStyle:styles.headerIcon, 
+              color: colors.white, 
+              onPress: () => this.props.navigation.pop() 
+            }}
+            centerComponent={{ text: 'Swing Analysis', style: { color: colors.white, fontSize: scale(18) } }}
         />
         <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
           <Text style={styles.headline}>{lesson.request_date}</Text>
-          <FormLabel 
-            containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginBottom: spacing.tiny}])}
-            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+          <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.tiny}])}>
             Video Response
-          </FormLabel>
+          </Text>
           <YouTube
             apiKey={'YOUR_API_KEY_GOES_HERE'}
             videoId={lesson.response_video}  // The YouTube video ID
@@ -113,23 +119,19 @@ class Lesson extends React.Component{
             showinfo={false}
             modestbranding={true}
             rel={false}
-            style={{width:'100%', height: 300 , marginTop: spacing.small}}
+            style={{width:'100%', height: scale(168) , marginTop: spacing.small}}
           />
-          <FormLabel 
-            containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
-            labelStyle={StyleSheet.flatten([styles.formLabel])}>
+          <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
             Comments
-          </FormLabel>
+          </Text>
           {this._formatText(lesson.response_notes)}
           {Platform.OS === 'ios' &&
             <View>
-              <FormLabel 
-                containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
-                labelStyle={StyleSheet.flatten([styles.formLabel])}>
+              <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
                 Your Swing Videos
-              </FormLabel>
+              </Text>
               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <View style={{flex: 1, marginRight: spacing.normal, backgroundColor: colors.black, height: sizes.large}}>
+                  <View style={{flex: 1, marginRight: spacing.normal, backgroundColor: colors.black, height: scale(267)}}>
                     <TouchableOpacity style={{height:'100%', width: '100%'}} 
                         underlayColor={colors.black}
                         onPress={()=>this.setState({foPlaying: !this.state.foPlaying})}> 
@@ -158,7 +160,7 @@ class Lesson extends React.Component{
                         />
                     </TouchableOpacity>    
                   </View>
-                  <View style={{flex: 1, backgroundColor: colors.black, height: sizes.large}}>
+                  <View style={{flex: 1, backgroundColor: colors.black, height: scale(267)}}>
                     <TouchableOpacity style={{height:'100%', width: '100%'}} 
                         underlayColor={colors.black}
                         onPress={()=>this.setState({dtlPlaying: !this.state.dtlPlaying})}> 
@@ -190,11 +192,9 @@ class Lesson extends React.Component{
               </View>
               {lesson.request_notes.length > 0 && 
                 <View>
-                  <FormLabel 
-                    containerStyle={StyleSheet.flatten([styles.formLabelContainer, {marginTop: spacing.normal, marginBottom: spacing.small}])}
-                    labelStyle={StyleSheet.flatten([styles.formLabel])}>
+                  <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
                     Special Requests
-                  </FormLabel>
+                  </Text>
                   {this._formatText(lesson.request_notes)}
                 </View>
               }

@@ -7,6 +7,8 @@ import {requestLogout,
 import LogoutWarning from './Modal/TokenExpire';
 
 import {colors, spacing} from '../styles/index';
+import {scale, verticalScale} from '../styles/dimension';
+
 import logo from '../images/logo-big.png';
 
 import CardRow from './Card/CardRow';
@@ -76,8 +78,8 @@ class CustomDrawer extends React.Component {
     }
     render() {
         return (
-            <View style={{flex: 1, backgroundColor: colors.backgroundGrey}}>
-                <View style={{height:80, padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.lightPurple}}>
+            <View style={{flex: 1, width: '100%', backgroundColor: colors.backgroundGrey}}>
+                <View style={{height:verticalScale(80), padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.lightPurple}}>
                     <Image
                         //resizeMode='contain'
                         resizeMethod='resize'
@@ -86,13 +88,13 @@ class CustomDrawer extends React.Component {
                     />
                 </View>
                 <View style={{height: spacing.large, alignItems: 'center', justifyContent:'center', backgroundColor: colors.lightPurple}}>
-                    <Text style={{color:colors.white, marginTop:-1*spacing.large}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
+                    <Text style={{fontSize: scale(14), color:colors.white, marginTop:-1*spacing.large}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
                 </View>
                 <View style={{flex: 1, justifyContent:'space-between'}}>
                     {this.props.token && 
                         <View style={{marginTop: spacing.normal}}>
                             <CardRow menuItem primary="Your Lessons" 
-                                customStyle={{borderTopWidth: 1}}
+                                customStyle={{borderTopWidth: scale(1)}}
                                 action={() => this.props.navigation.navigate('Lessons')}/>
                             <CardRow menuItem primary="Submit Your Swing" 
                                 action={() => {
@@ -121,7 +123,7 @@ class CustomDrawer extends React.Component {
                             action={() => this.props.navigation.navigate('Settings')}/> */}
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>
-                        <CardRow menuItem primary="About" secondary="v1.0.14" 
+                        <CardRow menuItem primary="About" secondary="v1.0.16" 
                             action={() => this.props.navigation.navigate('About')}/>
                         <CardRow menuItem primary="View Website" 
                             action={() =>Linking.openURL('https://www.swingessentials.com')}/>
