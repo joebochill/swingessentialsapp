@@ -125,7 +125,7 @@ class Lesson extends React.Component{
             Comments
           </Text>
           {this._formatText(lesson.response_notes)}
-          {Platform.OS === 'ios' &&
+          {Platform.OS === 'ios' && lesson.fo_swing && lesson.dtl_swing &&
             <View>
               <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
                 Your Swing Videos
