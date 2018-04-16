@@ -199,7 +199,6 @@ class Lessons extends React.Component{
                     }
                     {this.props.admin &&
                         <FlatList
-                            style={{marginTop: spacing.normal}}
                             scrollEnabled= {false}
                             ListHeaderComponent={
                                 <View style={styles.cardHeader}>

@@ -84,8 +84,6 @@ class Lesson extends React.Component{
 
   render(){
     const lesson = this._getLessonById(this.props.lessons.selected);
-    console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-    console.log(lesson);
     if(!lesson){return null;}
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
