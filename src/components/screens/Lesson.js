@@ -84,6 +84,8 @@ class Lesson extends React.Component{
 
   render(){
     const lesson = this._getLessonById(this.props.lessons.selected);
+    console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+    console.log(lesson);
     if(!lesson){return null;}
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
@@ -125,7 +127,7 @@ class Lesson extends React.Component{
             Comments
           </Text>
           {this._formatText(lesson.response_notes)}
-          {Platform.OS === 'ios' && lesson.fo_swing && lesson.dtl_swing &&
+          {(Platform.OS === 'ios' && lesson.fo_swing !== '' && lesson.dtl_swing !== '') &&
             <View>
               <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
                 Your Swing Videos

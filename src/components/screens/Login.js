@@ -250,12 +250,12 @@ class Login extends React.Component{
                         }
                     </View>
                     {(this.props.loginFails > 0 || this.state.error) && 
-                        <Text style={styles.formValidation}>
+                        <Text style={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.extraLarge}])}>
                             The username/password you entered was not correct.
                         </Text>
                     }
                     {this.state.touchFail && this.props.loginFails <= 0 && 
-                        <Text style={styles.formValidation}>
+                        <Text style={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.extraLarge}])}>
                             {`Your ${this.state.biometry} was not recognized. Please enter your password to sign in.`} 
                         </Text>
                     }
