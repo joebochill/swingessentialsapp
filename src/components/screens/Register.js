@@ -216,7 +216,7 @@ class Register extends React.Component{
                                 onBlur={item.blur}
                             />
                             {item.error && item.error() && !this.state.validationError && 
-                                <Text containerStyle={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])}>
+                                <Text style={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])}>
                                     {item.errorMessage()}
                                 </Text> 
                             }

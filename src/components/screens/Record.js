@@ -122,10 +122,14 @@ class Record extends Component {
                         <Image
                             resizeMethod='resize'
                             style={{height:'100%', width: '100%', opacity: 0.35, resizeMode: 'contain'}}
-                            source={
+                            source={ // front-camera will mirror the overlay
                                 this.props.navigation.state.params.swing === 'dtl' ? 
-                                    (this.props.settings.handedness === 'Left' ? downthelineLH : downthelineRH) : 
-                                    (this.props.settings.handedness === 'Left' ? faceonLH : faceonRH)
+                                    (this.props.settings.handedness === 'Left' ? 
+                                        (this.cameras[this.state.camera] === 'back' ? downthelineLH : downthelineRH) 
+                                        :(this.cameras[this.state.camera] === 'back' ? downthelineRH : downthelineLH))
+                                    :(this.props.settings.handedness === 'Left' ? 
+                                        (this.cameras[this.state.camera] === 'back' ? faceonLH : faceonRH) 
+                                        :(this.cameras[this.state.camera] === 'back' ? faceonRH : faceonLH))
                             }
                         />
                     </View>
