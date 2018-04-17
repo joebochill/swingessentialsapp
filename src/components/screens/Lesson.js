@@ -66,7 +66,7 @@ class Lesson extends React.Component{
 
   _formatText(text){
     if(!text){ return null;}
-    let arr = text.split(':::');
+    let arr = text.split('|:::|');
     return arr.map((val, index) => 
       <Text key={'par_'+index} style={styles.paragraph}>{val}</Text>
     );
