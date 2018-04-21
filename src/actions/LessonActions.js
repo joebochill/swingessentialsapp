@@ -190,7 +190,7 @@ export function executePayment(data, token){
     return (dispatch) => {
         dispatch({type: EXECUTE_PAYMENT.REQUEST});
 
-        return fetch(BASEURL+'executemobilepayment/', {
+        return fetch(BASEURL+'executeiospayment/', {
             method: 'PUT',
             headers: {
                 'Authorization': 'Bearer ' + token
