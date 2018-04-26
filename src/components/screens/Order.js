@@ -39,9 +39,10 @@ class Order extends React.Component{
         super(props);
         this.state={
             selected: props.packages[0],
-            coupon: '',
+            //coupon: '',
             role: 'pending',
-            error: ''
+            error: '',
+            products: []
         }
     }
     componentWillMount(){
@@ -75,18 +76,27 @@ class Order extends React.Component{
             .then(() => {
                 RNIap.getProducts(this.skus)
                 .then((products) => {
-                    //console.log(products);
+                    // console.log(products);
+                    this.setState({products: products.sort(
+                        (a,b)=>{
+                            return parseInt(a.price, 10) > parseInt(b.price,10)
+                        }
+                    )});
                 })
             })
         } catch(err) {
             // TODO: Proper error handling
-            alert(err); // standardized err.code and err.message available
+            //alert(err); // standardized err.code and err.message available
+            // console.log(err.message);
         }
     }
     componentWillReceiveProps(nextProps){
         if(!nextProps.token){
             this.props.navigation.navigate('Auth');
         }
+    }
+    componentWillUnmount(){
+        RNIap.endConnection();
     }
 
     _purchaseLesson(data){
@@ -223,7 +233,7 @@ class Order extends React.Component{
                             <Button
                                 title={'PURCHASE'}
                                 fontSize={scale(14)}
-                                disabled={this.state.role === 'pending' || this.props.purchaseInProgress || this.state.paymentActive}
+                                disabled={this.state.role === 'pending' || this.props.purchaseInProgress || this.state.paymentActive || this.state.products.length < 1}
                                 disabledStyle={styles.disabledButton}
                                 onPress={()=>this._purchaseLesson({
                                     package: this.state.selected.shortcode
@@ -260,7 +270,7 @@ class Order extends React.Component{
                                     <CardRow 
                                         primary={item.name} 
                                         subtitle={item.description}
-                                        secondary={`$${item.ios_price}`}
+                                        secondary={this.state.products.length > 0 ? `$${this.state.products[index].price}` : '--'}
                                         action={this.props.purchaseInProgress ? null : ()=>this.setState({selected: item})}
                                         menuItem
                                         selected={this.state.selected.shortcode === item.shortcode}
