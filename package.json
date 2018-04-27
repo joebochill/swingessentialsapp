@@ -26,6 +26,7 @@
     "react-native-braintree-xplat": "^4.0.0",
     "react-native-camera": "^1.0.3",
     "react-native-elements": "^0.19.1",
+    "react-native-iap": "^0.3.15",
     "react-native-image-picker": "^0.26.7",
     "react-native-keychain": "^3.0.0-rc.3",
     "react-native-splash-screen": "^3.0.6",

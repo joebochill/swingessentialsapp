@@ -90,11 +90,11 @@ class HelpScreen extends React.Component{
           <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, marginBottom: spacing.small}])}>
             How do I pay?
           </Text>
-          <Text style={styles.paragraph}>We try to keep payments simple and straightforward. We utilize PayPal to handle our payment processing, so you are free to use any payment method accepted by PayPal to pay for Swing Essentials lessons (credit card, bank transfer, etc.)</Text>
+          <Text style={styles.paragraph}>Payment through the app are handled by Apple's In-App Purchase mechanism. You'll need to have a valid Apple ID with a connected payment method. If you need to add a payment method, visit your Apple ID settings.</Text>
           <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, marginBottom: spacing.small}])}>
             What do I need in order to use Swing Essentials?
           </Text>
-          <Text style={styles.paragraph}>All you need to get started with Swing Essentials is an iPhone or Android smartphone with a camera capable of recording video. If you don't have a smartphone, you can also upload your swing videos on our website if you've recorded them on another device. You will also need to have a PayPal account in order to purchase more lessons.</Text>
+          <Text style={styles.paragraph}>All you need to get started with Swing Essentials is an iPhone or Android smartphone with a camera capable of recording video. If you don't have a smartphone, you can also upload your swing videos on our website..</Text>
           <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, marginBottom: spacing.small}])}>
             What if I have technical problems?
           </Text>
