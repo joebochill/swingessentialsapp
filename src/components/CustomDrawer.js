@@ -112,8 +112,6 @@ class CustomDrawer extends React.Component {
                             />
                             <CardRow menuItem primary="Order Lessons" 
                                 action={() => this.props.navigation.navigate('Order')}/>
-                            <CardRow menuItem primary="Sign Out" 
-                                action={() => this.props.requestLogout(this.props.token)}/>
                         </View>
                     }
                     {!this.props.token && <View></View>}
@@ -121,12 +119,14 @@ class CustomDrawer extends React.Component {
                         {/* <CardRow menuItem primary="Settings" 
                             customStyle={{borderTopWidth: 1}}
                             action={() => this.props.navigation.navigate('Settings')}/> */}
+                        <CardRow menuItem primary="Sign Out" 
+                                action={() => this.props.requestLogout(this.props.token)}/>
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>
-                        <CardRow menuItem primary="About" secondary="v1.0.22" 
+                        <CardRow menuItem primary="About" secondary="v1.1.0" 
                             action={() => this.props.navigation.navigate('About')}/>
-                        <CardRow menuItem primary="View Website" 
-                            action={() =>Linking.openURL('https://www.swingessentials.com')}/>
+                        {/* <CardRow menuItem primary="View Website" 
+                            action={() =>Linking.openURL('https://www.swingessentials.com')}/> */}
                     </View>
                 </ScrollView>
                 {this.props.token && this.props.modalWarning && <LogoutWarning/>}
