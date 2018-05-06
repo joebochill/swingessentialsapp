@@ -186,11 +186,11 @@ export function markLessonViewed(data, token){
 }
 
 /* Hands the payment processing over to the server */
-export function executePayment(data, token){
+export function executePayment(data, token, platform){
     return (dispatch) => {
         dispatch({type: EXECUTE_PAYMENT.REQUEST});
-
-        return fetch(BASEURL+'executeiospayment/', {
+        const endpoint = (platform === "ios") ? 'executeiospayment/' : 'executeandroidpayment/';
+        return fetch(BASEURL+endpoint, {
             method: 'PUT',
             headers: {
                 'Authorization': 'Bearer ' + token

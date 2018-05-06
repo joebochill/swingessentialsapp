@@ -107,7 +107,7 @@ class Order extends React.Component{
         if(!data){ return;}
         this.setState({paymentActive: true});
         RNIap.buyProduct('com.swingessentials.'+data.sku).then(purchase => {
-            this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token)
+            this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token, Platform.OS);
             this.setState({paymentActive: false});
           }).catch(err => {
             console.log(err);
