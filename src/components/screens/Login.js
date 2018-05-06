@@ -17,6 +17,7 @@ import {
     Keyboard,
     Switch,
     StatusBar,
+    Platform,
     Text
 } from 'react-native';
 //import Text from '../Text/Text';
@@ -73,24 +74,30 @@ class Login extends React.Component{
         });
 
         // check if biometry is available
-        TouchID.isSupported()
-        .then((biometryType) => {
-            if(biometryType === 'TouchID'){this.setState({biometry: 'TouchID'});}
-            else if(biometryType === 'FaceID'){this.setState({biometry: 'FaceID'});}
-            else if(biometryType === true){this.setState({biometry: 'Fingerprint ID'});}
-            else{
-                this.setState({biometry: null})
-                return;
-            }
-            this._updateKeychain(()=>{
-                if(!this.props.loggedOut && useTouch){
-                    this._showBiometricLogin();
+        if(Platform.OS === 'android' && Platform.Version <= 23){
+            this.setState({biometry: null})
+            return;
+        }
+        else{
+            TouchID.isSupported()
+            .then((biometryType) => {
+                if(biometryType === 'TouchID'){this.setState({biometry: 'TouchID'});}
+                else if(biometryType === 'FaceID'){this.setState({biometry: 'FaceID'});}
+                else if(biometryType === true){this.setState({biometry: 'Fingerprint ID'});}
+                else{
+                    this.setState({biometry: null})
+                    return;
                 }
+                this._updateKeychain(()=>{
+                    if(!this.props.loggedOut && useTouch){
+                        this._showBiometricLogin();
+                    }
+                });
+            })
+            .catch((err) => {
+                // could not determine bio type - fallback to password
             });
-         })
-        .catch((err) => {
-            // could not determine bio type - fallback to password
-        });
+        }
     }
 
     componentWillReceiveProps(nextProps){

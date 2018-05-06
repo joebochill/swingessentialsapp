@@ -101,8 +101,8 @@ android {
         applicationId "com.swingessentialsapp"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -142,7 +142,6 @@ dependencies {
     compile project(':react-native-touch-id')
     compile project(':react-native-camera')
     compile project(':react-native-splash-screen')
-    compile project(':react-native-braintree-xplat')
     compile project(':react-native-youtube')
     compile project(':react-native-video')
     compile project(':react-native-vector-icons')

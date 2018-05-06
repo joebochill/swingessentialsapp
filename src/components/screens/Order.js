@@ -39,6 +39,7 @@ class Order extends React.Component{
         super(props);
         this.state={
             selected: props.packages[0],
+            selectedIndex: 0,
             //coupon: '',
             role: 'pending',
             error: '',
@@ -79,7 +80,7 @@ class Order extends React.Component{
                     // console.log(products);
                     this.setState({products: products.sort(
                         (a,b)=>{
-                            return parseInt(a.price, 10) > parseInt(b.price,10)
+                            return parseInt(a.price, 10) - parseInt(b.price,10);
                         }
                     )});
                 })
@@ -105,7 +106,7 @@ class Order extends React.Component{
         }
         if(!data){ return;}
         this.setState({paymentActive: true});
-        RNIap.buyProduct('com.swingessentials.'+data.package).then(purchase => {
+        RNIap.buyProduct('com.swingessentials.'+data.sku).then(purchase => {
             this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token)
             this.setState({paymentActive: false});
           }).catch(err => {
@@ -236,7 +237,8 @@ class Order extends React.Component{
                                 disabled={this.state.role === 'pending' || this.props.purchaseInProgress || this.state.paymentActive || this.state.products.length < 1}
                                 disabledStyle={styles.disabledButton}
                                 onPress={()=>this._purchaseLesson({
-                                    package: this.state.selected.shortcode
+                                    package: this.state.selected.shortcode,
+                                    sku: this.state.products[this.state.selectedIndex].productId
                                 })}
                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
                                 containerViewStyle={styles.buttonContainer}
@@ -271,7 +273,7 @@ class Order extends React.Component{
                                         primary={item.name} 
                                         subtitle={item.description}
                                         secondary={this.state.products.length > 0 ? `$${this.state.products[index].price}` : '--'}
-                                        action={this.props.purchaseInProgress ? null : ()=>this.setState({selected: item})}
+                                        action={this.props.purchaseInProgress ? null : ()=>this.setState({selected: item, selectedIndex: index})}
                                         menuItem
                                         selected={this.state.selected.shortcode === item.shortcode}
                                     />

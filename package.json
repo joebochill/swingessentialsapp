@@ -23,7 +23,6 @@
     "prop-types": "^15.5.10",
     "react": "16.2.0",
     "react-native": "^0.52.0",
-    "react-native-braintree-xplat": "^4.0.0",
     "react-native-camera": "^1.0.3",
     "react-native-elements": "^0.19.1",
     "react-native-iap": "^0.3.15",
