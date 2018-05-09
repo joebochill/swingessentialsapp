@@ -4,12 +4,12 @@
     <item
         android:drawable="@color/purple"/>
 
-    <item
-        android:width="300dp"
-        android:height="69dp"
-        android:drawable="@mipmap/logo"
-        android:gravity="center"
-        android:left="20dp"
-        android:right="20dp"/>
+    <!--<item-->
+        <!--android:width="300dp"-->
+        <!--android:height="69dp"-->
+        <!--android:drawable="@mipmap/logo"-->
+        <!--android:gravity="center"-->
+        <!--android:left="20dp"-->
+        <!--android:right="20dp"/>-->
 
 </layer-list>

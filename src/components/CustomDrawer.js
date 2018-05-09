@@ -88,7 +88,7 @@ class CustomDrawer extends React.Component {
                     />
                 </View>
                 <View style={{height: spacing.large, alignItems: 'center', justifyContent:'center', backgroundColor: colors.lightPurple}}>
-                    <Text style={{fontSize: scale(14), color:colors.white, marginTop:-1*spacing.large}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
+                    <Text style={{fontSize: scale(14), color:colors.white, marginTop:scale(-14)}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
                 </View>
                 <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent:'space-between'}}>
                     {this.props.token && 
@@ -123,7 +123,7 @@ class CustomDrawer extends React.Component {
                                 action={() => this.props.requestLogout(this.props.token)}/>
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>
-                        <CardRow menuItem primary="About" secondary="v1.1.4" 
+                        <CardRow menuItem primary="About" secondary="v1.1.6" 
                             action={() => this.props.navigation.navigate('About')}/>
                         {/* <CardRow menuItem primary="View Website" 
                             action={() =>Linking.openURL('https://www.swingessentials.com')}/> */}

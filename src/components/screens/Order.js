@@ -29,7 +29,7 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
     return {
         checkCoupon: (code) => {dispatch(checkCoupon(code))},
-        executePayment: (data, token) => {dispatch(executePayment(data,token))},
+        executePayment: (data, token, platform) => {dispatch(executePayment(data,token, platform))},
         activateUnlimited: (token) => {dispatch(activateUnlimited(token))}
     };
 }
@@ -65,7 +65,7 @@ class Order extends React.Component{
                 let skus = [];
                 for(let i = 0; i < this.props.packages.length; i++){
                     //skus.push(this.props.packages[i].sku);
-                    skus.push(this.props.packages[i].ios_sku);
+                    skus.push(this.props.packages[i].app_sku);
                 }
                 this.skus = skus;
             }
@@ -100,15 +100,28 @@ class Order extends React.Component{
         RNIap.endConnection();
     }
 
+    // _clearPurchases(){
+    //     RNIap.getAvailablePurchases()
+    //     .then((purchaseList) => {
+    //         purchaseList.forEach(element => {
+    //             RNIap.consumePurchase(element.transactionReceipt);
+    //         });
+    //     })
+    //     .catch((err)=>{
+    //         alert(err.message);
+    //     });
+    // }
+
     _purchaseLesson(data){
         if(this.state.role === 'pending'){
             return;
         }
         if(!data){ return;}
         this.setState({paymentActive: true});
-        RNIap.buyProduct('com.swingessentials.'+data.sku).then(purchase => {
+        RNIap.buyProduct(data.sku).then(purchase => {
             this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token, Platform.OS);
             this.setState({paymentActive: false});
+            RNIap.consumePurchase(purchase.transactionReceipt);
           }).catch(err => {
             console.log(err);
             this.setState({iap_error: err.code === 'E_USER_CANCELLED' ? false : true, paymentActive: false});
@@ -268,6 +281,7 @@ class Order extends React.Component{
                                     </View>
                                 }
                                 data={this.props.packages}
+                                extraData={this.state.products}
                                 renderItem={({item, index}) => 
                                     <CardRow 
                                         primary={item.name} 

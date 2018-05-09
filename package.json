@@ -1,6 +1,6 @@
 {
   "name": "swingessentials",
-  "version": "1.0.17",
+  "version": "1.1.6",
   "private": true,
   "scripts": {
     "start": "react-native start",
