@@ -64,7 +64,6 @@ class Order extends React.Component{
             if(this.props.packages){
                 let skus = [];
                 for(let i = 0; i < this.props.packages.length; i++){
-                    //skus.push(this.props.packages[i].sku);
                     skus.push(this.props.packages[i].app_sku);
                 }
                 this.skus = skus;
@@ -77,14 +76,13 @@ class Order extends React.Component{
             .then(() => {
                 RNIap.getProducts(this.skus)
                 .then((products) => {
-                    // console.log(products);
                     this.setState({products: products.sort(
                         (a,b)=>{
                             return parseInt(a.price, 10) - parseInt(b.price,10);
                         }
                     )});
-                })
-            })
+                });
+            });
         } catch(err) {
             // TODO: Proper error handling
             //alert(err); // standardized err.code and err.message available
@@ -120,10 +118,15 @@ class Order extends React.Component{
         this.setState({paymentActive: true});
         RNIap.buyProduct(data.sku).then(purchase => {
             this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token, Platform.OS);
+            //console.log(purchase.transactionReceipt);
+
             this.setState({paymentActive: false});
-            RNIap.consumePurchase(purchase.transactionReceipt);
+            if(Platform.OS === 'android') {
+                RNIap.consumePurchase(purchase.transactionReceipt);
+            }
+
           }).catch(err => {
-            console.log(err);
+              console.log(err);
             this.setState({iap_error: err.code === 'E_USER_CANCELLED' ? false : true, paymentActive: false});
             // TODO: proper error handling for errors
             //alert(err.message);
