@@ -8,7 +8,6 @@ import com.oblador.keychain.KeychainPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import org.reactnative.camera.RNCameraPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.pw.droplet.braintree.BraintreePackage;
 import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
 import com.brentvatne.react.ReactVideoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -38,7 +37,6 @@ public class MainApplication extends Application implements ReactApplication {
             new FingerprintAuthPackage(),
             new RNCameraPackage(),
             new SplashScreenReactPackage(),
-            new BraintreePackage(),
             new ReactNativeYouTube(),
             new ReactVideoPackage(),
             new VectorIconsPackage(),

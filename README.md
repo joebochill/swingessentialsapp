@@ -8,7 +8,6 @@ This project was bootstrapped using [Create React Native App](https://github.com
 * [react-native-camera](https://github.com/react-native-community/react-native-camera)
 * [react-native-youtube](https://github.com/inProgress-team/react-native-youtube)
 * [react-native-image-picker](https://github.com/react-community/react-native-image-picker)
-* [react-native-braintree-xplat](https://github.com/kraffslol/react-native-braintree-xplat)
 
 <img width="200" alt="Splash Screen" src="assets/splash.jpg">
 

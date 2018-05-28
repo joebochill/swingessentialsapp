@@ -29,7 +29,7 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
     return {
         checkCoupon: (code) => {dispatch(checkCoupon(code))},
-        executePayment: (data, token) => {dispatch(executePayment(data,token))},
+        executePayment: (data, token, platform) => {dispatch(executePayment(data,token, platform))},
         activateUnlimited: (token) => {dispatch(activateUnlimited(token))}
     };
 }
@@ -39,6 +39,7 @@ class Order extends React.Component{
         super(props);
         this.state={
             selected: props.packages[0],
+            selectedIndex: 0,
             //coupon: '',
             role: 'pending',
             error: '',
@@ -63,8 +64,7 @@ class Order extends React.Component{
             if(this.props.packages){
                 let skus = [];
                 for(let i = 0; i < this.props.packages.length; i++){
-                    //skus.push(this.props.packages[i].sku);
-                    skus.push(this.props.packages[i].ios_sku);
+                    skus.push(this.props.packages[i].app_sku);
                 }
                 this.skus = skus;
             }
@@ -76,14 +76,13 @@ class Order extends React.Component{
             .then(() => {
                 RNIap.getProducts(this.skus)
                 .then((products) => {
-                    // console.log(products);
                     this.setState({products: products.sort(
                         (a,b)=>{
-                            return parseInt(a.price, 10) > parseInt(b.price,10)
+                            return parseInt(a.price, 10) - parseInt(b.price,10);
                         }
                     )});
-                })
-            })
+                });
+            });
         } catch(err) {
             // TODO: Proper error handling
             //alert(err); // standardized err.code and err.message available
@@ -99,17 +98,35 @@ class Order extends React.Component{
         RNIap.endConnection();
     }
 
+    // _clearPurchases(){
+    //     RNIap.getAvailablePurchases()
+    //     .then((purchaseList) => {
+    //         purchaseList.forEach(element => {
+    //             RNIap.consumePurchase(element.transactionReceipt);
+    //         });
+    //     })
+    //     .catch((err)=>{
+    //         alert(err.message);
+    //     });
+    // }
+
     _purchaseLesson(data){
         if(this.state.role === 'pending'){
             return;
         }
         if(!data){ return;}
         this.setState({paymentActive: true});
-        RNIap.buyProduct('com.swingessentials.'+data.package).then(purchase => {
-            this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token)
+        RNIap.buyProduct(data.sku).then(purchase => {
+            this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token, Platform.OS);
+            //console.log(purchase.transactionReceipt);
+
             this.setState({paymentActive: false});
+            if(Platform.OS === 'android') {
+                RNIap.consumePurchase(purchase.transactionReceipt);
+            }
+
           }).catch(err => {
-            console.log(err);
+              console.log(err);
             this.setState({iap_error: err.code === 'E_USER_CANCELLED' ? false : true, paymentActive: false});
             // TODO: proper error handling for errors
             //alert(err.message);
@@ -236,7 +253,8 @@ class Order extends React.Component{
                                 disabled={this.state.role === 'pending' || this.props.purchaseInProgress || this.state.paymentActive || this.state.products.length < 1}
                                 disabledStyle={styles.disabledButton}
                                 onPress={()=>this._purchaseLesson({
-                                    package: this.state.selected.shortcode
+                                    package: this.state.selected.shortcode,
+                                    sku: this.state.products[this.state.selectedIndex].productId
                                 })}
                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
                                 containerViewStyle={styles.buttonContainer}
@@ -266,12 +284,13 @@ class Order extends React.Component{
                                     </View>
                                 }
                                 data={this.props.packages}
+                                extraData={this.state.products}
                                 renderItem={({item, index}) => 
                                     <CardRow 
                                         primary={item.name} 
                                         subtitle={item.description}
                                         secondary={this.state.products.length > 0 ? `$${this.state.products[index].price}` : '--'}
-                                        action={this.props.purchaseInProgress ? null : ()=>this.setState({selected: item})}
+                                        action={this.props.purchaseInProgress ? null : ()=>this.setState({selected: item, selectedIndex: index})}
                                         menuItem
                                         selected={this.state.selected.shortcode === item.shortcode}
                                     />

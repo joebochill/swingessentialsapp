@@ -336,6 +336,13 @@
 			remoteGlobalIDString = DE4F06CC1D156AA8005F99CD;
 			remoteInfo = RCTBraintree;
 		};
+		A5E3C36F209FF98100ACD32C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A92E2A595BA47E0917B16C6 /* RCTBraintree.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DE4F06CC1D156AA8005F99CD;
+			remoteInfo = RCTBraintree;
+		};
 		A5F70DFE2060AE2F00292A71 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -463,6 +470,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		80880A13C09246A382F85530 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		8A92E2A595BA47E0917B16C6 /* RCTBraintree.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTBraintree.xcodeproj; path = "../node_modules/react-native-braintree-xplat/ios/RCTBraintree.xcodeproj"; sourceTree = "<group>"; };
 		9E0987D681E941F08EDEC18F /* libRCTVideo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTVideo.a; sourceTree = "<group>"; };
 		A25EEC879DF040238C639D91 /* libRNKeychain.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNKeychain.a; sourceTree = "<group>"; };
 		A26B6F6B98FE46B2ACCAB74D /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -717,6 +725,7 @@
 				FBC2842E541C4720AD824297 /* TouchID.xcodeproj */,
 				A50F864F4FA64FBB81D44FB8 /* RNKeychain.xcodeproj */,
 				00BE327FDF9A4A4C8F8B057F /* RNIap.xcodeproj */,
+				8A92E2A595BA47E0917B16C6 /* RCTBraintree.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -811,6 +820,14 @@
 			isa = PBXGroup;
 			children = (
 				A5C1B173206999AB00C49419 /* libRCTBraintree.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A5E3C367209FF98000ACD32C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A5E3C370209FF98100ACD32C /* libRCTBraintree.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -974,6 +991,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 4KFCFX93VP;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -1014,6 +1032,10 @@
 				{
 					ProductGroup = ADBDB9201DFEBF0600ED6528 /* Products */;
 					ProjectRef = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
+				},
+				{
+					ProductGroup = A5E3C367209FF98000ACD32C /* Products */;
+					ProjectRef = 8A92E2A595BA47E0917B16C6 /* RCTBraintree.xcodeproj */;
 				},
 				{
 					ProductGroup = A5C1B16F206999AB00C49419 /* Products */;
@@ -1362,6 +1384,13 @@
 			remoteRef = A5C1B172206999AB00C49419 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A5E3C370209FF98100ACD32C /* libRCTBraintree.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTBraintree.a;
+			remoteRef = A5E3C36F209FF98100ACD32C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		A5F70DFF2060AE2F00292A71 /* libjsinspector.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1608,6 +1637,7 @@
 					"$(SRCROOT)/../node_modules/react-native-touch-id",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-iap/ios",
+					"$(SRCROOT)/../node_modules/react-native-braintree-xplat/ios/RCTBraintree/**",
 				);
 				INFOPLIST_FILE = swingessentialsappTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1651,6 +1681,7 @@
 					"$(SRCROOT)/../node_modules/react-native-touch-id",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-iap/ios",
+					"$(SRCROOT)/../node_modules/react-native-braintree-xplat/ios/RCTBraintree/**",
 				);
 				INFOPLIST_FILE = swingessentialsappTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1682,9 +1713,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 4KFCFX93VP;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1697,6 +1729,7 @@
 					"$(SRCROOT)/../node_modules/react-native-touch-id",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-iap/ios",
+					"$(SRCROOT)/../node_modules/react-native-braintree-xplat/ios/RCTBraintree/**",
 				);
 				INFOPLIST_FILE = swingessentialsapp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1708,6 +1741,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.swingessentialsapp;
 				PRODUCT_NAME = swingessentialsapp;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1719,8 +1754,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4KFCFX93VP;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1733,6 +1769,7 @@
 					"$(SRCROOT)/../node_modules/react-native-touch-id",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-iap/ios",
+					"$(SRCROOT)/../node_modules/react-native-braintree-xplat/ios/RCTBraintree/**",
 				);
 				INFOPLIST_FILE = swingessentialsapp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1744,6 +1781,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.swingessentialsapp;
 				PRODUCT_NAME = swingessentialsapp;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1773,6 +1812,7 @@
 					"$(SRCROOT)/../node_modules/react-native-touch-id",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-iap/ios",
+					"$(SRCROOT)/../node_modules/react-native-braintree-xplat/ios/RCTBraintree/**",
 				);
 				INFOPLIST_FILE = "swingessentialsapp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1825,6 +1865,7 @@
 					"$(SRCROOT)/../node_modules/react-native-touch-id",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-iap/ios",
+					"$(SRCROOT)/../node_modules/react-native-braintree-xplat/ios/RCTBraintree/**",
 				);
 				INFOPLIST_FILE = "swingessentialsapp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
