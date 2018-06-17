@@ -33,7 +33,7 @@ export const AppNavigator = DrawerNavigator(
                 {
                     Login: {screen: Login, navigationOptions: ({ navigation }) => ({header: () => null})},
                     Forgot: {screen: Forgot, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    // Register: {screen: Register, navigationOptions: ({ navigation }) => ({header: () => null})}
+                    Register: {screen: Register, navigationOptions: ({ navigation }) => ({header: () => null})}
                 },
                 {initialRouteName: 'Login'}
             ),

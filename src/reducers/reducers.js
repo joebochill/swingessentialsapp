@@ -13,7 +13,7 @@ import {
   EXECUTE_PAYMENT
 } from '../actions/LessonActions.js';
 import { GET_SETTINGS } from '../actions/UserDataActions';
-import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL } from '../actions/RegistrationActions';
+import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL, VERIFY_EMAIL } from '../actions/RegistrationActions';
 import { GET_PACKAGES } from '../actions/PackageActions';
 
 import {atob} from '../utils/base64';
@@ -281,7 +281,9 @@ const initialRegistrationState = {
   lastUserChecked: '',
   emailAvailable: true,
   lastEmailChecked: '',
-  registrationFailure: false
+  registrationFailure: false,
+  registrationActivated: false,
+  registrationError: ''
 }
 const registration = (state = initialRegistrationState, action) => {
   switch(action.type){
@@ -303,6 +305,24 @@ const registration = (state = initialRegistrationState, action) => {
 			return{...state,
 				emailAvailable: action.data.available,
 				lastEmailChecked: action.data.lastChecked
+      }
+    case VERIFY_EMAIL.REQUEST:
+			return{...state,
+				pendingRegistration: true,
+				registrationActivated: false,
+				registrationError: ''
+			}
+		case VERIFY_EMAIL.SUCCESS:
+			return{...state,
+				pendingRegistration: false,
+				registrationActivated: true,
+				registrationError: ''
+			}
+		case VERIFY_EMAIL.FAIL:
+			return{...state,
+				pendingRegistration: false,
+				registrationActivated: false,
+				registrationError: isNaN(parseInt(action.error,10)) ? '' : parseInt(action.error,10)
 			}
     default:
       return state;

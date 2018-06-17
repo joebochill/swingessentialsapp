@@ -6,11 +6,14 @@ import {
     View, 
     Text,
     StyleSheet,
-    Platform
+    Platform,
+    ActivityIndicator
 } from 'react-native';
 import {FormInput, Button, Header} from 'react-native-elements';
+import {setTargetRoute} from '../../actions/actions';
 
 
+import {verifyEmail} from '../../actions/RegistrationActions';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
 import {scale, verticalScale} from '../../styles/dimension';
 
@@ -21,14 +24,20 @@ function mapStateToProps(state){
         token: state.login.token,
         emailAvailable: state.registration.emailAvailable,
         userAvailable: state.registration.userAvailable,
-        registrationFailure: state.registration.registrationFailure
+        registrationFailure: state.registration.registrationFailure,
+        pendingRegistration: state.registration.pendingRegistration,
+        registrationActivated: state.registration.registrationActivated,
+        registrationError: state.registration.registrationError,
+        links: state.links
     };
 }
 function mapDispatchToProps(dispatch){
     return {
         createAccount: (data) => {dispatch(createAccount(data))},
         checkUser: (user) => {dispatch(checkUsernameAvailability(user))},
-        checkEmail: (email) => {dispatch(checkEmailAvailability(email))}
+        checkEmail: (email) => {dispatch(checkEmailAvailability(email))},
+        setTargetRoute: (loc, extra) => {dispatch(setTargetRoute(loc, extra))},
+        verifyEmail: (code) => {dispatch(verifyEmail(code))}
     }
 }
 
@@ -48,7 +57,8 @@ class Register extends React.Component{
             userFocus: false,
             emailFocus: false,
             validPhone: true,
-            validationError: false
+            validationError: false,
+            regCode: null
         };
         this.fields = [];
         this.regProperties=[
@@ -85,7 +95,11 @@ class Register extends React.Component{
     }
 
     componentWillMount () {
-
+        if(this.props.links.targetRoute === 'Register' && this.props.links.extra){
+            this.setState({regCode: this.props.links.extra});
+            this.props.verifyEmail(this.props.links.extra);
+            this.props.setTargetRoute(null, null);
+        }
     }
     componentWillUnmount() {
     }
@@ -151,7 +165,21 @@ class Register extends React.Component{
         }
     }
 
+    _getRegistrationErrorMessage(code){
+        switch(code){
+            case 400302:
+                return 'Oops! our verification link is invalid.<br/>Please check your registration email and try again. If you continue to have problems, please contact us.';
+            case 400303:
+                return 'Your verification link has expired. You will need to re-register.';
+            case 400304:
+                return 'Your your email address has already been verified. Sign in to view your account.';
+            default:
+                return 'Unknown Error: ' + code;
+        }
+    }
+
     render(){
+        let regError = this.props.registrationError;
         return(
             <View style={{flex: 1}}>
                 <Header
@@ -172,57 +200,93 @@ class Register extends React.Component{
                     }}
                     centerComponent={{ text: 'Create Account', style: { color: colors.white, fontSize: verticalScale(18) } }}
                 />
-                <KeyboardView fixed={
-                    <View>
-                        {!this.props.registrationFailure ?
+                {this.state.regCode && 
+                    <KeyboardView
+                        fixed={true ?//((this.props.registrationActivated && !regError) || regError === 400304) ? 
                             <Button
-                                title="CREATE ACCOUNT"
+                                title="SIGN IN"
                                 fontSize={scale(14)}
-                                disabled={!this._validateFields() || this.props.registrationFailure}
-                                onPress={()=> {this._submitRegistration()}}
+                                onPress={()=> {this.props.navigation.navigate('Login')}}
                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
-                                disabledStyle={styles.disabledButton}
                                 containerViewStyle={styles.buttonContainer}
-                            /> :
-                            <Text style={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])}>
-                                Registration Failed - try again later
-                            </Text>
-                        }
-                    </View>
-                }>
-                    {this.regProperties.map((item,index) =>
-                        <View key={'reg_field_'+index} style={{marginBottom:spacing.normal}}>
-                            <Text style={styles.formLabel}>{item.display}</Text>
-                            <FormInput
-                                ref={(ref) => this.fields[index] = ref}
-                                autoFocus={index===0}
-                                onSubmitEditing={()=>{
-                                    if(this.fields[index+1]){
-                                        this.fields[index+1].focus()
-                                    }
-                                    else if(this._validateFields()){ 
-                                        this._submitRegistration();
-                                    }
-                                }}
-                                returnKeyType={index < this.regProperties.length -1 ? 'next' : 'go'}
-                                autoCapitalize={'none'}
-                                containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
-                                inputStyle={styles.formInput}
-                                underlineColorAndroid={colors.transparent}
-                                value={this.state[item.property]}
-                                keyboardType={item.property==='email'?'email-address':'default'}
-                                secureTextEntry={item.property==='password' || item.property ==='passwordConfirm'}
-                                onChangeText={item.change}
-                                onBlur={item.blur}
                             />
-                            {item.error && item.error() && !this.state.validationError && 
-                                <Text style={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])}>
-                                    {item.errorMessage()}
-                                </Text> 
+                        : null}
+                    >
+                        <View>
+                            {this.props.pendingRegistration &&
+                                <View>
+                                    <ActivityIndicator color={colors.purple}/>
+                                    <Text style={{fontSize: scale(14), marginTop: spacing.tiny, color: colors.purple, textAlign: 'center', width: '100%'}}>
+                                        {'Checking Verification Code...'}
+                                    </Text>
+                                </View>
+                            }
+                            {this.props.registrationActivated && !regError &&
+                                <Text style={{fontSize: scale(14), color: colors.purple, textAlign: 'center', width: '100%'}}>
+                                    Your email address has been confirmed. Please sign in to view your account.
+                                </Text>
+                            }
+                            {regError !== null && regError !== '' &&
+                                <Text style={{fontSize: scale(14), color: colors.purple, textAlign: 'center', width: '100%'}}>
+                                    {this._getRegistrationErrorMessage(regError)}
+                                </Text>
                             }
                         </View>
-                    )}
-                </KeyboardView>
+                    </KeyboardView>
+                }
+                {!this.state.regCode && 
+                    <KeyboardView fixed={
+                        <View>
+                            {!this.props.registrationFailure ?
+                                <Button
+                                    title="CREATE ACCOUNT"
+                                    fontSize={scale(14)}
+                                    disabled={!this._validateFields() || this.props.registrationFailure}
+                                    onPress={()=> {this._submitRegistration()}}
+                                    buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                                    disabledStyle={styles.disabledButton}
+                                    containerViewStyle={styles.buttonContainer}
+                                /> :
+                                <Text style={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])}>
+                                    Registration Failed - try again later
+                                </Text>
+                            }
+                        </View>
+                    }>
+                        {this.regProperties.map((item,index) =>
+                            <View key={'reg_field_'+index} style={{marginBottom:spacing.normal}}>
+                                <Text style={styles.formLabel}>{item.display}</Text>
+                                <FormInput
+                                    ref={(ref) => this.fields[index] = ref}
+                                    autoFocus={index===0}
+                                    onSubmitEditing={()=>{
+                                        if(this.fields[index+1]){
+                                            this.fields[index+1].focus()
+                                        }
+                                        else if(this._validateFields()){ 
+                                            this._submitRegistration();
+                                        }
+                                    }}
+                                    returnKeyType={index < this.regProperties.length -1 ? 'next' : 'go'}
+                                    autoCapitalize={'none'}
+                                    containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
+                                    inputStyle={styles.formInput}
+                                    underlineColorAndroid={colors.transparent}
+                                    value={this.state[item.property]}
+                                    keyboardType={item.property==='email'?'email-address':'default'}
+                                    secureTextEntry={item.property==='password' || item.property ==='passwordConfirm'}
+                                    onChangeText={item.change}
+                                    onBlur={item.blur}
+                                />
+                                {item.error && item.error() && !this.state.validationError && 
+                                    <Text style={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])}>
+                                        {item.errorMessage()}
+                                    </Text> 
+                                }
+                            </View>
+                        )}
+                    </KeyboardView>
+                }
             </View>
         )
     }
