@@ -17,7 +17,7 @@ import {btoa} from '../utils/base64.js';
 /* requests application data from a token after returning from background */
 export function requestDataFromToken(token){
     return (dispatch) => {
-        dispatch({type:DATA_FROM_TOKEN});
+        dispatch({type:DATA_FROM_TOKEN.REQUEST});
         // dispatch(getUserData(token));
         dispatch(getLessons(token));
         dispatch(getCredits(token));

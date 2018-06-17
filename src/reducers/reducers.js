@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
-import {TOKEN_TIMEOUT} from '../actions/actions';
+import {TOKEN_TIMEOUT, SET_TARGET_ROUTE} from '../actions/actions';
 import {LOGIN, LOGOUT, CHECK_TOKEN, REFRESH_TOKEN} from '../actions/LoginActions';
 
 import {
@@ -322,6 +322,24 @@ const packages = (state = initialPackageState, action) => {
       return state;
   }
 }
+
+const initialLinkingState = {
+  targetRoute: null,
+  extra: null
+};
+const links = (state = initialLinkingState, action) => {
+  switch(action.type){
+    case SET_TARGET_ROUTE.REQUEST:
+      return {...state, 
+        targetRoute: action.data.loc,
+        extra: action.data.extra
+      };
+    default:
+      return state;
+  }
+}
+
+/* Combine all of the reducers into one */
 const AppReducer = combineReducers({
   nav,
   userData,
@@ -330,7 +348,8 @@ const AppReducer = combineReducers({
   lessons,
   settings,
   registration,
-  packages
+  packages,
+  links
 });
 
 
