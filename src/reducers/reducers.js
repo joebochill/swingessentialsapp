@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
-import {TOKEN_TIMEOUT} from '../actions/actions';
+import {TOKEN_TIMEOUT, SET_TARGET_ROUTE} from '../actions/actions';
 import {LOGIN, LOGOUT, CHECK_TOKEN, REFRESH_TOKEN} from '../actions/LoginActions';
 
 import {
@@ -13,7 +13,7 @@ import {
   EXECUTE_PAYMENT
 } from '../actions/LessonActions.js';
 import { GET_SETTINGS } from '../actions/UserDataActions';
-import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL } from '../actions/RegistrationActions';
+import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL, VERIFY_EMAIL } from '../actions/RegistrationActions';
 import { GET_PACKAGES } from '../actions/PackageActions';
 
 import {atob} from '../utils/base64';
@@ -281,7 +281,9 @@ const initialRegistrationState = {
   lastUserChecked: '',
   emailAvailable: true,
   lastEmailChecked: '',
-  registrationFailure: false
+  registrationFailure: false,
+  registrationActivated: false,
+  registrationError: ''
 }
 const registration = (state = initialRegistrationState, action) => {
   switch(action.type){
@@ -303,6 +305,24 @@ const registration = (state = initialRegistrationState, action) => {
 			return{...state,
 				emailAvailable: action.data.available,
 				lastEmailChecked: action.data.lastChecked
+      }
+    case VERIFY_EMAIL.REQUEST:
+			return{...state,
+				pendingRegistration: true,
+				registrationActivated: false,
+				registrationError: ''
+			}
+		case VERIFY_EMAIL.SUCCESS:
+			return{...state,
+				pendingRegistration: false,
+				registrationActivated: true,
+				registrationError: ''
+			}
+		case VERIFY_EMAIL.FAIL:
+			return{...state,
+				pendingRegistration: false,
+				registrationActivated: false,
+				registrationError: isNaN(parseInt(action.error,10)) ? '' : parseInt(action.error,10)
 			}
     default:
       return state;
@@ -322,6 +342,24 @@ const packages = (state = initialPackageState, action) => {
       return state;
   }
 }
+
+const initialLinkingState = {
+  targetRoute: null,
+  extra: null
+};
+const links = (state = initialLinkingState, action) => {
+  switch(action.type){
+    case SET_TARGET_ROUTE.REQUEST:
+      return {...state, 
+        targetRoute: action.data.loc,
+        extra: action.data.extra
+      };
+    default:
+      return state;
+  }
+}
+
+/* Combine all of the reducers into one */
 const AppReducer = combineReducers({
   nav,
   userData,
@@ -330,7 +368,8 @@ const AppReducer = combineReducers({
   lessons,
   settings,
   registration,
-  packages
+  packages,
+  links
 });
 
 

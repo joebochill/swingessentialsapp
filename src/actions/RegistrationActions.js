@@ -7,6 +7,8 @@ export const CREATE_ACCOUNT = {REQUEST: 'CREATE_ACCOUNT', SUCCESS: 'CREATE_ACCOU
 export const REQUEST_RESET = {REQUEST: 'REQUEST_RESET', SUCCESS: 'REQUEST_RESET_SUCCESS', FAIL: 'REQUEST_RESET_FAIL'};
 export const CHECK_USER = {REQUEST: 'CHECK_USER', SUCCESS: 'CHECK_USER_SUCCESS', FAIL:'CHECK_USER_FAIL'};
 export const CHECK_EMAIL = {REQUEST: 'CHECK_EMAIL', SUCCESS: 'CHECK_EMAIL_SUCCESS', FAIL:'CHECK_EMAIL_FAIL'};
+export const VERIFY_EMAIL = {REQUEST: 'VERIFY_EMAIL', SUCCESS: 'VERIFY_EMAIL_SUCCESS', FAIL: 'VERIFY_EMAIL_FAIL'};
+
 
 /* Check if a requested username is available */
 export function checkUsernameAvailability(username){
@@ -96,6 +98,35 @@ export function requestReset(data){
                 default:
                     checkTimeout(response, dispatch);
                     dispatch(failure(REQUEST_RESET.FAIL, response));
+                    break;
+            }
+        })
+        .catch((error) => console.error(error));
+    }
+}
+
+/* Lets the database know that a user has verified his email address
+and is now a full, verified user */
+export function verifyEmail(code){   
+    return (dispatch) => {
+        
+        dispatch({type: VERIFY_EMAIL.REQUEST});
+
+        return fetch(BASEURL+'verify', { 
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({type:'email',code: code})
+        })
+        .then((response) => {
+            switch(response.status) {
+                case 200:
+                    dispatch(success(VERIFY_EMAIL.SUCCESS));
+                    break;
+                default:
+                    checkTimeout(response, dispatch);
+                    dispatch(failure(VERIFY_EMAIL.FAIL, response));
                     break;
             }
         })

@@ -24,6 +24,7 @@
       android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"
+        android:launchMode="singleTask"
         android:label="@string/app_name"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
         android:windowSoftInputMode="adjustResize"
@@ -32,6 +33,16 @@
             <!--<action android:name="android.intent.action.MAIN" />-->
             <!--<category android:name="android.intent.category.LAUNCHER" />-->
         <!--</intent-filter>-->
+          <intent-filter android:label="Swing Essentials">
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+              <data android:scheme="http"
+                  android:host="www.josephpboyle.com"
+                  android:pathPrefix="/swingessentials/register" />
+              <!-- note that the leading "/" is required for pathPrefix-->
+          </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
       <activity

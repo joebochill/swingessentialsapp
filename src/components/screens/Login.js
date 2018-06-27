@@ -284,7 +284,7 @@ class Login extends React.Component{
                     }
                     <View style={{
                             flexDirection:'row', 
-                            justifyContent:'center',
+                            justifyContent:'space-between',
                             marginTop: spacing.large
                         }}>
                         <Button 
@@ -295,7 +295,7 @@ class Login extends React.Component{
                             fontSize={scale(14)}
                             onPress={()=>this.props.navigation.push('Forgot')}>
                         </Button>
-                        {/* <Button 
+                        <Button 
                             color={colors.white} 
                             containerViewStyle={{
                                 marginLeft:0, marginRight: 0
@@ -304,7 +304,7 @@ class Login extends React.Component{
                             title="Create Account" 
                             fontSize={scale(14)}
                             onPress={()=>this.props.navigation.push('Register')}>
-                        </Button> */}
+                        </Button>
                     </View>
                 </View>
             </View>

@@ -14,6 +14,7 @@ import YouTube from 'react-native-youtube'
 import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
 import {scale, verticalScale} from '../../styles/dimension';
 
+import {setTargetRoute} from '../../actions/actions';
 import { markLessonViewed } from '../../actions/LessonActions';
 import Video from 'react-native-video';
 
@@ -21,13 +22,15 @@ import Video from 'react-native-video';
 function mapStateToProps(state){
   return {
     token: state.login.token,
-    lessons: state.lessons
+    lessons: state.lessons,
+    links: state.links
   };
 }
 
 function mapDispatchToProps(dispatch){
   return {
-    markViewed: (id, token) => {dispatch(markLessonViewed(id, token))}
+    markViewed: (id, token) => {dispatch(markLessonViewed(id, token))},
+    setTargetRoute: (loc, extra) => {dispatch(setTargetRoute(loc, extra))}
   };
 }
 
@@ -44,11 +47,25 @@ class Lesson extends React.Component{
     if(!this.props.token){
         this.props.navigation.navigate('Auth');
     }
-    else{
+    else if(this.props.lessons.selected){
       const lesson = this._getLessonById(this.props.lessons.selected);
-      if(parseInt(lesson.viewed, 10) === 0){
+      if(lesson && parseInt(lesson.viewed, 10) === 0){
         this.props.markViewed({id: this.props.lessons.selected}, this.props.token);
       }
+    }
+    else if(this.props.links.targetRoute === 'Lesson' && this.props.links.extra){
+      const lesson = this._getLessonByURL(this.props.links.extra);
+      if(!lesson){return;}
+
+      if(parseInt(lesson.viewed, 10) === 0){
+        this.props.markViewed({id: lesson.request_id}, this.props.token);
+      }
+
+      this.props.navigation.dispatch({type:'SELECT_LESSON', data:{id:lesson.request_id}});
+      this.props.setTargetRoute(null, null);
+    }
+    else{
+      this.props.navigation.navigate('Lessons');
     }
   }
 
@@ -58,9 +75,20 @@ class Lesson extends React.Component{
     }
     if(nextProps.lessons.selected !== this.props.lessons.selected){
       const lesson = this._getLessonById(nextProps.lessons.selected);
-      if(parseInt(lesson.viewed, 10) === 0){
+      if(lesson && parseInt(lesson.viewed, 10) === 0){
         this.props.markViewed({id: nextProps.lessons.selected}, this.props.token);
       }
+    }
+    else if(nextProps.links.targetRoute === 'Lesson' && nextProps.links.extra){
+      const lesson = this._getLessonByURL(nextProps.links.extra);
+      if(!lesson){return;}
+
+      if(parseInt(lesson.viewed, 10) === 0){
+        this.props.markViewed({id: lesson.request_id}, this.props.token);
+      }
+
+      this.props.navigation.dispatch({type:'SELECT_LESSON', data:{id:lesson.request_id}});
+      this.props.setTargetRoute(null, null);
     }
   }
 
@@ -81,9 +109,22 @@ class Lesson extends React.Component{
     }
     return null;
   }
+ 
+  _getLessonByURL(url){
+    if(this.props.lessons.closed.length < 1){return null;}
+    for(let i = 0; i < this.props.lessons.closed.length; i++){
+      if(this.props.lessons.closed[i].request_url === url){
+        return this.props.lessons.closed[i];
+      }
+    }
+    return null;
+  }
 
   render(){
-    const lesson = this._getLessonById(this.props.lessons.selected);
+    const lesson = this.props.lessons.selected ? 
+      this._getLessonById(this.props.lessons.selected) :
+      this._getLessonByURL(this.props.links.extra);
+
     if(!lesson){return null;}
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
@@ -121,9 +162,11 @@ class Lesson extends React.Component{
             rel={false}
             style={{width:'100%', height: scale(168) , marginTop: spacing.small}}
           />
-          <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
-            Comments
-          </Text>
+          {lesson.responseNotes && 
+            <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
+              Comments
+            </Text>
+          }
           {this._formatText(lesson.response_notes)}
           {(Platform.OS === 'ios' && lesson.fo_swing !== '' && lesson.dtl_swing !== '') &&
             <View>
