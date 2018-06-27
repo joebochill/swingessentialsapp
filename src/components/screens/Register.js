@@ -168,7 +168,7 @@ class Register extends React.Component{
     _getRegistrationErrorMessage(code){
         switch(code){
             case 400302:
-                return 'Oops! our verification link is invalid.<br/>Please check your registration email and try again. If you continue to have problems, please contact us.';
+                return 'Oops! Your verification link is invalid. Please check your registration email and try again. If you continue to have problems, please contact us.';
             case 400303:
                 return 'Your verification link has expired. You will need to re-register.';
             case 400304:

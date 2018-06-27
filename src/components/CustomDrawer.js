@@ -51,6 +51,7 @@ class CustomDrawer extends React.Component {
         Linking.getInitialURL()
         .then((url) => {
           if (url) {
+
             let path = url.split('/').filter((el) => el.length > 0);
             if(url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
                 this.props.setTargetRoute('Lesson', path[path.length - 1]);
@@ -97,6 +98,7 @@ class CustomDrawer extends React.Component {
     // Handles activating a deep link while the app is in the background
     _wakeupByLink = (event) => {
         let path = event.url.split('/').filter((el) => el.length > 0);
+
         if(event.url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
             this.props.setTargetRoute('Lesson', path[path.length - 1]);
             if(this.props.token) {this.props.navigation.navigate('Lesson')}
