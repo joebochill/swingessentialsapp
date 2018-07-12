@@ -1,5 +1,5 @@
 /* Constants */
-import {BASEURL, failure, success, checkTimeout} from './actions.js';
+import {BASEURL, AUTH, failure, success, checkTimeout} from './actions.js';
 
 export const GET_USER_DATA = {SUCCESS: 'GET_USER_DATA_SUCCESS', FAIL: 'GET_USER_DATA_FAIL'};
 export const GET_SETTINGS = {SUCCESS: 'GET_SETTINGS_SUCCESS', FAIL: 'GET_SETTINGS_FAIL'};
@@ -10,7 +10,7 @@ export function getUserData(token){
     return (dispatch) => {
         return fetch(BASEURL+'user', { 
             headers: {
-                'Authorization': 'Bearer ' + token
+                [AUTH]: 'Bearer ' + token
             }
         })
         .then((response) => {
@@ -34,7 +34,7 @@ export function getSettings(token){
     return (dispatch) => {
         return fetch(BASEURL+'settings', { 
             headers: {
-                'Authorization': 'Bearer ' + token
+                [AUTH]: 'Bearer ' + token
             }
         })
         .then((response) => {
@@ -59,7 +59,7 @@ export function putSettings(data, token){
         return fetch(BASEURL+'settings', { 
             method: 'PUT',
             headers: {
-                'Authorization': 'Bearer ' + token
+                [AUTH]: 'Bearer ' + token
             },
             body: JSON.stringify(data)
         })

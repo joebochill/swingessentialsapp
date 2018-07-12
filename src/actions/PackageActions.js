@@ -1,5 +1,5 @@
 /* Constants */
-import {BASEURL, failure, success, checkTimeout} from './actions.js';
+import {BASEURL, AUTH, failure, success, checkTimeout} from './actions.js';
 
 export const GET_PACKAGES = {REQUEST: 'GET_PACKAGES', SUCCESS: 'GET_PACKAGES_SUCCESS', FAIL: 'GET_PACKAGES_FAIL'};
 
@@ -10,7 +10,7 @@ export function getPackages(token){
 
         return fetch(BASEURL+'packages', { 
             headers: {
-                'Authorization': 'Bearer ' + token
+                [AUTH]: 'Bearer ' + token
             }
         })
         .then((response) => {
