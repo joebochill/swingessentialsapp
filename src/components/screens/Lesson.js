@@ -162,7 +162,7 @@ class Lesson extends React.Component{
             rel={false}
             style={{width:'100%', height: scale(168) , marginTop: spacing.small}}
           />
-          {lesson.responseNotes && 
+          {lesson.response_notes && lesson.response_notes.length > 0 && 
             <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
               Comments
             </Text>
