@@ -6,8 +6,8 @@ export const SET_TARGET_ROUTE = {REQUEST: 'SET_TARGET_ROUTE', SUCCESS: 'SET_TARG
 
 /* Base URL for fetch commands */
 // export const BASEURL = 'http://www.josephpboyle.com/api/swingessentialsapi.php/';
-// export const BASEURL = 'https://www.swingessentials.com/apis/swingessentials.php/';
-export const BASEURL = 'https://www.josephpboyle.com/api/swingessentials2.php/';
+export const BASEURL = 'https://www.swingessentials.com/apis/swingessentials.php/';
+//export const BASEURL = 'https://www.josephpboyle.com/api/swingessentials2.php/';
 export const AUTH = 'Message';
 
 //const API_KEY = 'AIzaSyAzvggwVpvJ1pngsjQKJ84FcY8v07C8dNA';

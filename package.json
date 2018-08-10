@@ -1,6 +1,6 @@
 {
   "name": "swingessentials",
-  "version": "1.1.6",
+  "version": "2.0.2",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -20,24 +20,24 @@
     ]
   },
   "dependencies": {
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.6.2",
     "react": "16.2.0",
     "react-native": "^0.52.0",
-    "react-native-camera": "^1.0.3",
+    "react-native-camera": "^1.1.4",
     "react-native-elements": "^0.19.1",
-    "react-native-iap": "^0.3.15",
-    "react-native-image-picker": "^0.26.7",
-    "react-native-keychain": "^3.0.0-rc.3",
-    "react-native-splash-screen": "^3.0.6",
-    "react-native-touch-id": "^4.0.1",
+    "react-native-iap": "^0.3.24",
+    "react-native-image-picker": "^0.26.10",
+    "react-native-keychain": "^3.0.0",
+    "react-native-splash-screen": "3.0.9",
+    "react-native-touch-id": "^4.0.4",
     "react-native-vector-icons": "^4.6.0",
-    "react-native-video": "^2.0.0",
+    "react-native-video": "^2.3.1",
     "react-native-youtube": "^1.1.0",
-    "react-navigation": "^1.5.11",
-    "react-navigation-redux-helpers": "^1.0.4",
+    "react-navigation": "^1.5.12",
+    "react-navigation-redux-helpers": "^1.1.2",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-jest": "^21.0.0",

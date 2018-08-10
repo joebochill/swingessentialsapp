@@ -130,7 +130,7 @@ export default StyleSheet.create({
         borderColor: colors.borderGrey,
         borderWidth: scale(1),
         marginLeft: 0,
-        textAlignVertical: 'top',
+        textAlignVertical: 'center',
         fontSize: scale(14)
     },
     formValidation:{

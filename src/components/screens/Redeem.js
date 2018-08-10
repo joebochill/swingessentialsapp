@@ -390,7 +390,7 @@ class Redeem extends React.Component{
                             returnKeyType={'done'}
                             blurOnSubmit={true}
                             containerStyle={StyleSheet.flatten([styles.formInputContainer, {height: sizes.large, marginTop: spacing.small}])}
-                            inputStyle={styles.formInput}
+                            inputStyle={StyleSheet.flatten([styles.formInput, {textAlignVertical: 'top'}])}
                             underlineColorAndroid={colors.transparent}
                             onFocus={() => this.scroller.scrollTo({x: 0, y: 150, animated: true})}
                             value={this.state.notes}

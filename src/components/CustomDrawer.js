@@ -169,10 +169,11 @@ class CustomDrawer extends React.Component {
                             customStyle={{borderTopWidth: 1}}
                             action={() => this.props.navigation.navigate('Settings')}/> */}
                         <CardRow menuItem primary="Sign Out" 
+                                customStyle={{borderTopWidth: scale(1)}}
                                 action={() => this.props.requestLogout(this.props.token)}/>
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>
-                        <CardRow menuItem primary="About" secondary="v1.1.10" 
+                        <CardRow menuItem primary="About" secondary="v2.0.2" 
                             action={() => this.props.navigation.navigate('About')}/>
                         {/* <CardRow menuItem primary="View Website" 
                             action={() =>Linking.openURL('https://www.swingessentials.com')}/> */}
