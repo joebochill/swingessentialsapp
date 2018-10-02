@@ -152,7 +152,7 @@ class Lesson extends React.Component{
             Video Response
           </Text>
           <YouTube
-            apiKey={'YOUR_API_KEY'}
+            apiKey={'AIzaSyBLUJUqz7E3Z5XNcXbMYO9gVmXd0zYAR4U'}
             videoId={lesson.response_video}  // The YouTube video ID
             play={false}             // control playback of video with true/false
             fullscreen={false}       // control whether the video should play in fullscreen or inline

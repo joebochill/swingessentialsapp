@@ -48,24 +48,24 @@ class CustomDrawer extends React.Component {
         Linking.addEventListener('url', this._wakeupByLink);
 
         // Handle the case where the application is opened from a Universal Link
-        Linking.getInitialURL()
-        .then((url) => {
-          if (url) {
+        // Linking.getInitialURL()
+        // .then((url) => {
+        //   if (url) {
 
-            let path = url.split('/').filter((el) => el.length > 0);
-            if(url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
-                this.props.setTargetRoute('Lesson', path[path.length - 1]);
-            }
-            else if(url.match(/\/lessons\/?$/gi)){
-                this.props.setTargetRoute('Lessons', null);
-            }
-            else if(url.match(/\/register\/[A-Z0-9]+\/?$/gi)){
-                this.props.setTargetRoute('Register', path[path.length - 1]);
-                this.props.navigation.navigate('Register');
-            }
-          }
-        })
-        .catch((e) => {});
+        //     let path = url.split('/').filter((el) => el.length > 0);
+        //     if(url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
+        //         this.props.setTargetRoute('Lesson', path[path.length - 1]);
+        //     }
+        //     else if(url.match(/\/lessons\/?$/gi)){
+        //         this.props.setTargetRoute('Lessons', null);
+        //     }
+        //     else if(url.match(/\/register\/[A-Z0-9]+\/?$/gi)){
+        //         this.props.setTargetRoute('Register', path[path.length - 1]);
+        //         this.props.navigation.navigate('Register');
+        //     }
+        //   }
+        // })
+        // .catch((e) => {});
     }
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
@@ -173,7 +173,7 @@ class CustomDrawer extends React.Component {
                                 action={() => this.props.requestLogout(this.props.token)}/>
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>
-                        <CardRow menuItem primary="About" secondary="v2.0.2" 
+                        <CardRow menuItem primary="About" secondary="v2.0.4" 
                             action={() => this.props.navigation.navigate('About')}/>
                         {/* <CardRow menuItem primary="View Website" 
                             action={() =>Linking.openURL('https://www.swingessentials.com')}/> */}
