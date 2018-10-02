@@ -152,13 +152,14 @@ class Lesson extends React.Component{
             Video Response
           </Text>
           <YouTube
-            apiKey={'YOUR_API_KEY_GOES_HERE'}
+            apiKey={'AIzaSyBLUJUqz7E3Z5XNcXbMYO9gVmXd0zYAR4U'}
             videoId={lesson.response_video}  // The YouTube video ID
             play={false}             // control playback of video with true/false
             fullscreen={false}       // control whether the video should play in fullscreen or inline
             loop={false}             // control whether the video should loop when ended
             showinfo={false}
             modestbranding={true}
+            controls={2}
             rel={false}
             style={{width:'100%', height: scale(168) , marginTop: spacing.small}}
           />
@@ -187,7 +188,7 @@ class Lesson extends React.Component{
                             />
                         </View>
                         <Video 
-                          source={{uri:'https://www.josephpboyle.com/video_links/'+lesson.request_url+'/'+lesson.fo_swing}}    // Can be a URL or a local file.
+                          source={{uri:'https://www.swingessentials.com/video_links/'+lesson.request_url+'/'+lesson.fo_swing}}    // Can be a URL or a local file.
                           ref={(ref) => {this.foplayer = ref}}    // Store reference
                           rate={1.0}                              // 0 is paused, 1 is normal.
                           volume={1.0}                            // 0 is muted, 1 is normal.
@@ -216,7 +217,7 @@ class Lesson extends React.Component{
                             />
                         </View>
                         <Video 
-                          source={{uri:'https://www.josephpboyle.com/video_links/'+lesson.request_url+'/'+lesson.dtl_swing}}    // Can be a URL or a local file.
+                          source={{uri:'https://www.swingessentials.com/video_links/'+lesson.request_url+'/'+lesson.dtl_swing}}    // Can be a URL or a local file.
                           ref={(ref) => {this.dtlplayer = ref}}    // Store reference
                           rate={1.0}                              // 0 is paused, 1 is normal.
                           volume={1.0}                            // 0 is muted, 1 is normal.

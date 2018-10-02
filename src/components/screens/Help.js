@@ -90,7 +90,12 @@ class HelpScreen extends React.Component{
           <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, marginBottom: spacing.small}])}>
             How do I pay?
           </Text>
-          <Text style={styles.paragraph}>Payment through the app are handled by Apple's In-App Purchase mechanism. You'll need to have a valid Apple ID with a connected payment method. If you need to add a payment method, visit your Apple ID settings.</Text>
+          {Platform.OS === 'ios' &&
+            <Text style={styles.paragraph}>Payment through the app are handled by Apple's In-App Purchase mechanism. You'll need to have a valid Apple ID with a connected payment method. If you need to add a payment method, visit your Apple ID settings.</Text>
+          }
+          {Platform.OS !== 'ios' &&
+            <Text style={styles.paragraph}>Payment through the app are handled by Google's In-App Payments mechanism. You'll need to have a valid Google account with a connected payment method. If you need to add a payment method, check your device settings.</Text>
+          }
           <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, marginBottom: spacing.small}])}>
             What do I need in order to use Swing Essentials?
           </Text>

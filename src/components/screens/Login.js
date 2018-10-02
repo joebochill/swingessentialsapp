@@ -95,6 +95,7 @@ class Login extends React.Component{
                 });
             })
             .catch((err) => {
+                this._updateKeychain();
                 // could not determine bio type - fallback to password
             });
         }
@@ -119,6 +120,9 @@ class Login extends React.Component{
             if(this.state.remember){this.setState({username: credentials.username})}
             if(callback){callback();}
         })
+        .catch((err) => {
+            console.log(err);
+        });
     }
 
     _onLogin(){

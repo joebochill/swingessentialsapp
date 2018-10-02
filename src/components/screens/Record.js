@@ -65,7 +65,10 @@ class Record extends Component {
         this.setState({recording: true});
 
         // Set the recording constraints and start the recording
-        const options = { maxFileSize: 9.5*1024*1024, maxDuration: parseInt(this.props.settings.duration, 10), quality: RNCamera.Constants.VideoQuality['480p'] };
+        const options = {   maxFileSize: 9.5*1024*1024, 
+                            maxDuration: parseInt(this.props.settings.duration, 10), 
+                            quality: RNCamera.Constants.VideoQuality['480p']
+                        };
         // delay the start of the recording if a delay is set
         this.delayTimer = 
             setTimeout(()=>{
@@ -88,6 +91,7 @@ class Record extends Component {
                     //this.props.navigation.pop();
                 })
                 .catch((err)=>{
+                    console.log(err);
                     if(this.timer){clearInterval(this.timer)}
                     this.setState({uri: null, recording: false, duration: 0, recordLive: false});
                 })
@@ -250,7 +254,7 @@ class Record extends Component {
                     paused={!this.state.playing}                          // Pauses playback entirely.
                     onEnd={()=>this.setState({playing: false})}
                     resizeMode="contain"                    // Fill the whole screen at aspect ratio.*
-                    repeat={true}                           // Repeat forever.
+                    repeat={false}                           // Repeat forever.
                     playInBackground={false}                // Audio continues to play when app entering background.
                     playWhenInactive={false}                // [iOS] Video continues to play when control or notification center are shown.
                     ignoreSilentSwitch={"ignore"}           // [iOS] ignore | obey - When 'ignore', audio will still play with the iOS hard silent switch set to silent. When 'obey', audio will toggle with the switch. When not specified, will inherit audio settings as usual.

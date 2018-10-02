@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.swingessentialsapp"
-    android:versionCode="6"
-    android:versionName="1.1">
+    package="com.swingessentials.app"
+    android:versionCode="24"
+    android:versionName="2.0.4">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
@@ -13,8 +13,8 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-sdk
-        android:minSdkVersion="22"
-        android:targetSdkVersion="22" />
+        android:minSdkVersion="23"
+        android:targetSdkVersion="26" />
 
     <application
       android:name=".MainApplication"
@@ -33,16 +33,19 @@
             <!--<action android:name="android.intent.action.MAIN" />-->
             <!--<category android:name="android.intent.category.LAUNCHER" />-->
         <!--</intent-filter>-->
-          <intent-filter android:label="Swing Essentials">
+          <!-- <intent-filter android:label="Swing Essentials">
               <action android:name="android.intent.action.VIEW" />
               <category android:name="android.intent.category.DEFAULT" />
-              <category android:name="android.intent.category.BROWSABLE" />
+              <category android:name="android.intent.category.BROWSABLE" /> -->
               <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+              <!-- <data android:scheme="http"
+                  android:host="www.swingessentials.com"
+                  android:pathPrefix="/register" />
               <data android:scheme="http"
-                  android:host="www.josephpboyle.com"
-                  android:pathPrefix="/swingessentials/register" />
+                  android:host="www.swingessentials.com"
+                  android:pathPrefix="/lesson" /> -->
               <!-- note that the leading "/" is required for pathPrefix-->
-          </intent-filter>
+          <!-- </intent-filter> -->
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
       <activity
