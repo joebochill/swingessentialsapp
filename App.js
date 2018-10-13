@@ -18,7 +18,7 @@ async function requestPermissions() {
     const readrollranted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
     const writerollgranted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
   } catch (err) {
-    console.warn(err)
+    // console.warn(err)
   }
 };
 

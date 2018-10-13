@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {requestLogout, 
     showLogoutWarning, 
     requestDataFromToken} from '../actions/LoginActions';
+import {getTips} from '../actions/TipActions';
 import { setTargetRoute} from '../actions/actions';
 import LogoutWarning from './Modal/TokenExpire';
 
@@ -23,7 +24,8 @@ function mapStateToProps(state){
         token: state.login.token,
         lessons: state.lessons,
         modalWarning: state.login.modalWarning,
-        targetRoute: state.links.targetRoute
+        targetRoute: state.links.targetRoute,
+        // tips: state.tips.tipList
     };
 }
 
@@ -32,7 +34,8 @@ function mapDispatchToProps(dispatch){
         refreshData: (token) => dispatch(requestDataFromToken(token)),
         requestLogout: (token) => dispatch(requestLogout(token)),
         showLogoutWarning: (show) => dispatch(showLogoutWarning(show)),
-        setTargetRoute: (loc, extra) => dispatch(setTargetRoute(loc, extra))
+        setTargetRoute: (loc, extra) => dispatch(setTargetRoute(loc, extra)),
+        getTips: (token = null) => dispatch(getTips(token))
     }
 }
 
@@ -42,30 +45,18 @@ class CustomDrawer extends React.Component {
         this.state={
             appState: AppState.currentState
         }
+        // TODO: load all data from the saved token
+        // const token = localStorage.getItem('token');
+        // if(token){
+        //   store.dispatch(requestDataFromToken(token));
+        // }
+
+        // load the tips of the month and blogs as soon as we load the app
+        this.props.getTips();
     }
     componentDidMount(){
         AppState.addEventListener('change', this._handleAppStateChange);
         Linking.addEventListener('url', this._wakeupByLink);
-
-        // Handle the case where the application is opened from a Universal Link
-        // Linking.getInitialURL()
-        // .then((url) => {
-        //   if (url) {
-
-        //     let path = url.split('/').filter((el) => el.length > 0);
-        //     if(url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
-        //         this.props.setTargetRoute('Lesson', path[path.length - 1]);
-        //     }
-        //     else if(url.match(/\/lessons\/?$/gi)){
-        //         this.props.setTargetRoute('Lessons', null);
-        //     }
-        //     else if(url.match(/\/register\/[A-Z0-9]+\/?$/gi)){
-        //         this.props.setTargetRoute('Register', path[path.length - 1]);
-        //         this.props.navigation.navigate('Register');
-        //     }
-        //   }
-        // })
-        // .catch((e) => {});
     }
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
@@ -164,6 +155,13 @@ class CustomDrawer extends React.Component {
                         </View>
                     }
                     {!this.props.token && <View></View>}
+                    <View>
+                        <CardRow menuItem primary="Tips of the Month" 
+                            customStyle={{borderTopWidth: scale(1)}}
+                            action={() => this.props.navigation.navigate('Tips')}/>
+                        <CardRow menuItem primary="The 19th Hole" 
+                            action={() => alert('coming soon')}/>
+                    </View>
                     <View style={{marginBottom: spacing.normal}}>
                         {/* <CardRow menuItem primary="Settings" 
                             customStyle={{borderTopWidth: 1}}

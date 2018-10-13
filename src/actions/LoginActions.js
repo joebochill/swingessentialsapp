@@ -2,6 +2,7 @@
 import {BASEURL, AUTH, failure, success, checkTimeout} from './actions';
 import {getUserData, getSettings} from './UserDataActions';
 import {getLessons, getCredits} from './LessonActions';
+import {getTips} from './TipActions';
 import {getPackages} from './PackageActions';
 import * as Keychain from 'react-native-keychain';
 
@@ -21,6 +22,7 @@ export function requestDataFromToken(token){
         // dispatch(getUserData(token));
         dispatch(getLessons(token));
         dispatch(getCredits(token));
+        // dispatch(getTips(token));
         // dispatch(getSettings(token));
     }
 }
