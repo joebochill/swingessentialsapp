@@ -19,7 +19,7 @@ import {setTargetRoute} from '../../actions/actions';
 import { markLessonViewed } from '../../actions/LessonActions';
 import Video from 'react-native-video';
 
-import YOUTUBE_API_KEY from '../../constants/index';
+import {YOUTUBE_API_KEY} from '../../constants/index';
 
 
 function mapStateToProps(state){

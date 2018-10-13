@@ -14,7 +14,7 @@ import styles, {colors, spacing} from '../../styles/index';
 import {scale, verticalScale} from '../../styles/dimension';
 import {formatText} from '../../utils/utils';
 
-import YOUTUBE_API_KEY from '../../constants/index';
+import {YOUTUBE_API_KEY} from '../../constants/index';
 
 
 function mapStateToProps(state){
