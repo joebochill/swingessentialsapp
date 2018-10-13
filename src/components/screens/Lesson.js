@@ -13,10 +13,13 @@ import {Header, Icon} from 'react-native-elements';
 import YouTube from 'react-native-youtube'
 import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
 import {scale, verticalScale} from '../../styles/dimension';
+import {formatText} from '../../utils/utils';
 
 import {setTargetRoute} from '../../actions/actions';
 import { markLessonViewed } from '../../actions/LessonActions';
 import Video from 'react-native-video';
+
+import {YOUTUBE_API_KEY} from '../../constants/index';
 
 
 function mapStateToProps(state){
@@ -92,14 +95,6 @@ class Lesson extends React.Component{
     }
   }
 
-  _formatText(text){
-    if(!text){ return null;}
-    let arr = text.split('|:::|');
-    return arr.map((val, index) => 
-      <Text key={'par_'+index} style={styles.paragraph}>{val}</Text>
-    );
-  }
-
   _getLessonById(id){
     if(this.props.lessons.closed.length < 1){return null;}
     for(let i = 0; i < this.props.lessons.closed.length; i++){
@@ -152,7 +147,7 @@ class Lesson extends React.Component{
             Video Response
           </Text>
           <YouTube
-            apiKey={'AIzaSyBLUJUqz7E3Z5XNcXbMYO9gVmXd0zYAR4U'}
+            apiKey={YOUTUBE_API_KEY}
             videoId={lesson.response_video}  // The YouTube video ID
             play={false}             // control playback of video with true/false
             fullscreen={false}       // control whether the video should play in fullscreen or inline
@@ -168,7 +163,7 @@ class Lesson extends React.Component{
               Comments
             </Text>
           }
-          {this._formatText(lesson.response_notes)}
+          {formatText(lesson.response_notes)}
           {(Platform.OS === 'ios' && lesson.fo_swing !== '' && lesson.dtl_swing !== '') &&
             <View>
               <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
@@ -239,7 +234,7 @@ class Lesson extends React.Component{
                   <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
                     Special Requests
                   </Text>
-                  {this._formatText(lesson.request_notes)}
+                  {formatText(lesson.request_notes)}
                 </View>
               }
             </View>

@@ -15,13 +15,14 @@ import {
 import { GET_SETTINGS } from '../actions/UserDataActions';
 import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL, VERIFY_EMAIL } from '../actions/RegistrationActions';
 import { GET_PACKAGES } from '../actions/PackageActions';
+import { GET_TIPS } from '../actions/TipActions';
+import { GET_BLOGS } from '../actions/BlogActions';
 
 import {atob} from '../utils/base64';
 
 
 const initialNavState = null;//AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Auth'));
-
-function nav(state = initialNavState, action) {
+const nav = (state = initialNavState, action) => {
   let nextState;
   switch (action.type) {
     default:
@@ -39,8 +40,7 @@ const initialUserState = {
   //lastName: '',
   //email: ''
 };
-
-function userData(state = initialUserState, action){
+const userData = (state = initialUserState, action) => {
   switch(action.type){
     case LOGIN.SUCCESS:
       return{...state, 
@@ -250,6 +250,62 @@ const lessons = (state = initialLessonsState, action) => {
   }
 }
 
+const initialTipsState = {
+  loading: false,
+  tipList: []
+}
+const tips = (state = initialTipsState, action) => {
+	switch(action.type){
+		case GET_TIPS.REQUEST:
+			return{...state,
+				loading: true
+			}
+		case GET_TIPS.SUCCESS:
+			return{
+				loading: false,
+				tipList: action.data
+			}
+		case LOGOUT.SUCCESS:
+		case LOGOUT.FAIL:
+		case GET_TIPS.FAIL:
+		case TOKEN_TIMEOUT:
+			return{
+				loading: false,
+				tipList: []
+			}
+		default:
+			return state;
+	}
+}
+
+const initialBlogsState = {
+  loading: false,
+  blogList: []
+}
+const blogs = (state=initialBlogsState, action) => {
+	switch(action.type){
+		case GET_BLOGS.REQUEST:
+			return{...state,
+				loading: true
+			}
+    case GET_BLOGS.SUCCESS:
+			return{
+				loading: false,
+				blogList: action.data
+			}
+		case LOGOUT.SUCCESS:
+		case LOGOUT.FAIL:
+		case GET_BLOGS.FAIL:
+		case TOKEN_TIMEOUT:
+			return{
+				loading: false,
+				blogList: []
+			}
+		default:
+			return state;
+	}
+}
+
 const initialSettingsState = {
   duration: 3,
   delay: 0,
@@ -366,6 +422,8 @@ const AppReducer = combineReducers({
   login,
   credits,
   lessons,
+  tips,
+  blogs,
   settings,
   registration,
   packages,

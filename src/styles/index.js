@@ -152,7 +152,7 @@ export default StyleSheet.create({
     paragraph:{
         width: '100%',
         color: colors.purple,
-        marginBottom: spacing.tiny,
+        marginBottom: spacing.normal,
         fontSize: scale(14)
     },
     absolute:{

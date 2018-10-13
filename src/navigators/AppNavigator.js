@@ -13,6 +13,12 @@ import Register from '../components/screens/Register';
 import Lessons from '../components/screens/Lessons';
 import Lesson from '../components/screens/Lesson';
 
+import Tips from '../components/screens/Tips';
+import Tip from '../components/screens/Tip';
+
+import Blogs from '../components/screens/Blogs';
+import Blog from '../components/screens/Blog';
+
 import Redeem from '../components/screens/Redeem';
 import Order from '../components/screens/Order';
 import Record from '../components/screens/Record';
@@ -50,6 +56,24 @@ export const AppNavigator = DrawerNavigator(
                     Lesson: {screen: Lesson, navigationOptions: ({ navigation }) => ({header: () => null})}
                 },
                 {initialRouteName: 'Lessons'}
+            )
+        },
+        TipsTop: {
+            screen: StackNavigator(
+                {
+                    Tips: {screen: Tips, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Tip: {screen: Tip, navigationOptions: ({ navigation }) => ({header: () => null})}
+                },
+                {initialRouteName: 'Tips'}
+            )
+        },
+        BlogsTop: {
+            screen: StackNavigator(
+                {
+                    Blogs: {screen: Blogs, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Blog: {screen: Blog, navigationOptions: ({ navigation }) => ({header: () => null})}
+                },
+                {initialRouteName: 'Blogs'}
             )
         },
         Order: {screen: Order},
