@@ -100,11 +100,7 @@ class Tips extends React.Component{
                             renderItem={({item}) => 
                                 <CardRow 
                                     primary={item.title} 
-                                    // action={() => {
-                                    //     this.props.navigation.dispatch({type:'SELECT_LESSON', data:{id:item.request_id}});
-                                    //     this.props.navigation.push('Lesson');
-                                    // }}
-                                    action={() => alert('coming soon')}
+                                    action={() => this.props.navigation.push('Tip', {tip: item})}
                                 />
                             }
                             keyExtractor={(item, index) => item.id}

@@ -18,6 +18,8 @@ import {setTargetRoute} from '../../actions/actions';
 import { markLessonViewed } from '../../actions/LessonActions';
 import Video from 'react-native-video';
 
+import YOUTUBE_API_KEY from '../../constants/index';
+
 
 function mapStateToProps(state){
   return {
@@ -152,7 +154,7 @@ class Lesson extends React.Component{
             Video Response
           </Text>
           <YouTube
-            apiKey={'AIzaSyBLUJUqz7E3Z5XNcXbMYO9gVmXd0zYAR4U'}
+            apiKey={YOUTUBE_API_KEY}
             videoId={lesson.response_video}  // The YouTube video ID
             play={false}             // control playback of video with true/false
             fullscreen={false}       // control whether the video should play in fullscreen or inline
