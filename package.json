@@ -25,7 +25,7 @@
     "prop-types": "^15.6.2",
     "react": "16.2.0",
     "react-native": "^0.52.0",
-    "react-native-camera": "^1.1.4",
+    "react-native-camera": "1.2.0",
     "react-native-elements": "^0.19.1",
     "react-native-iap": "^0.3.24",
     "react-native-image-picker": "^0.26.10",
