@@ -2,15 +2,15 @@ import { AsyncStorage } from 'react-native';
 
 /* Constants */
 import {BASEURL, AUTH, failure, success, checkTimeout} from './actions.js';
-export const GET_TIPS = {REQUEST: 'GET_TIPS', SUCCESS: 'GET_TIPS_SUCCESS', FAIL: 'GET_TIPS_FAIL'};
+export const GET_BLOGS = {REQUEST: 'GET_BLOGS', SUCCESS: 'GET_BLOGS_SUCCESS', FAIL: 'GET_BLOGS_FAIL'};
 
 
-/* Retrieves List of Tips-of-the-month */
-/* Specifying an admin token will retrieve future tips as well as current */
-export function getTips(token=null){
+/* Retrives list of 19th-hole blog posts */
+/* Specifying an admin token will retrieve future blogs as well as current */
+export function getBlogs(token = null){
     return (dispatch) => {
-        dispatch({type: GET_TIPS.REQUEST});
-        return fetch(BASEURL+'tips', {
+        dispatch({type: GET_BLOGS.REQUEST});
+        return fetch(BASEURL+'blogs', {
             method: 'GET',
             headers: (!token ? {} : {
                 [AUTH]: 'Bearer ' + token
@@ -20,12 +20,12 @@ export function getTips(token=null){
             switch(response.status) {
                 case 200:
                     response.json()
-                    .then((json) => dispatch(success(GET_TIPS.SUCCESS, json)))
-                    //.then((response) => AsyncStorage.setItem('@SwingEssentials:tips', JSON.stringify(response.data)));
+                    .then((json) => dispatch(success(GET_BLOGS.SUCCESS, json)))
+                    //.then((response) => AsyncStorage.setItem('@SwingEssentials:blogs', JSON.stringify(response.data)));
                     break;
                 default:
                     checkTimeout(response, dispatch);
-                    dispatch(failure(GET_TIPS.FAIL, response));
+                    dispatch(failure(GET_BLOGS.FAIL, response));
                     break;
             }
         })

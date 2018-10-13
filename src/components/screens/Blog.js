@@ -25,22 +25,22 @@ function mapDispatchToProps(dispatch){
   return {};
 }
 
-class Tip extends React.Component{
+class Blog extends React.Component{
   constructor(props){
     super(props);
 
-    const tip = this.props.navigation.getParam('tip', null);
-    if(tip === null){this.props.navigation.pop();}
+    const blog = this.props.navigation.getParam('blog', null);
+    if(blog === null){this.props.navigation.pop();}
 
     this.state={
-      tip: tip
+      blog: blog
     }
   }
 
   render(){
-    const tip = this.state.tip;
+    const blog = this.state.blog;
 
-    if(!tip){return null;}
+    if(!blog){return null;}
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
         <Header
@@ -59,35 +59,18 @@ class Tip extends React.Component{
               color: colors.white, 
               onPress: () => this.props.navigation.pop() 
             }}
-            centerComponent={{ text: 'Tip of the Month', style: { color: colors.white, fontSize: verticalScale(18) } }}
+            centerComponent={{ text: 'The 19th Hole', style: { color: colors.white, fontSize: verticalScale(18) } }}
         />
         <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
-          <Text style={styles.headline}>{tip.date}</Text>
+          <Text style={styles.headline}>{blog.date}</Text>
           <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.tiny}])}>
-            {tip.title}
+            {blog.title}
           </Text>
-          <YouTube
-            apiKey={YOUTUBE_API_KEY}
-            videoId={tip.video}      // The YouTube video ID
-            play={false}             // control playback of video with true/false
-            fullscreen={false}       // control whether the video should play in fullscreen or inline
-            loop={false}             // control whether the video should loop when ended
-            showinfo={false}
-            modestbranding={true}
-            controls={2}
-            rel={false}
-            style={{width:'100%', height: scale(168) , marginTop: spacing.small}}
-          />
-          {tip.comments && tip.comments.length > 0 && 
-            <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
-              Comments
-            </Text>
-          }
-          {formatText(tip.comments)}
+          {formatText(blog.body)}
         </ScrollView>
       </View>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Tip);
+export default connect(mapStateToProps, mapDispatchToProps)(Blog);

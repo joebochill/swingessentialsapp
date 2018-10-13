@@ -16,6 +16,7 @@ import { GET_SETTINGS } from '../actions/UserDataActions';
 import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL, VERIFY_EMAIL } from '../actions/RegistrationActions';
 import { GET_PACKAGES } from '../actions/PackageActions';
 import { GET_TIPS } from '../actions/TipActions';
+import { GET_BLOGS } from '../actions/BlogActions';
 
 import {atob} from '../utils/base64';
 
@@ -277,6 +278,34 @@ const tips = (state = initialTipsState, action) => {
 	}
 }
 
+const initialBlogsState = {
+  loading: false,
+  blogList: []
+}
+const blogs = (state=initialBlogsState, action) => {
+	switch(action.type){
+		case GET_BLOGS.REQUEST:
+			return{...state,
+				loading: true
+			}
+    case GET_BLOGS.SUCCESS:
+			return{
+				loading: false,
+				blogList: action.data
+			}
+		case LOGOUT.SUCCESS:
+		case LOGOUT.FAIL:
+		case GET_BLOGS.FAIL:
+		case TOKEN_TIMEOUT:
+			return{
+				loading: false,
+				blogList: []
+			}
+		default:
+			return state;
+	}
+}
+
 const initialSettingsState = {
   duration: 3,
   delay: 0,
@@ -394,6 +423,7 @@ const AppReducer = combineReducers({
   credits,
   lessons,
   tips,
+  blogs,
   settings,
   registration,
   packages,

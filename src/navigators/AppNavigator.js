@@ -16,6 +16,9 @@ import Lesson from '../components/screens/Lesson';
 import Tips from '../components/screens/Tips';
 import Tip from '../components/screens/Tip';
 
+import Blogs from '../components/screens/Blogs';
+import Blog from '../components/screens/Blog';
+
 import Redeem from '../components/screens/Redeem';
 import Order from '../components/screens/Order';
 import Record from '../components/screens/Record';
@@ -62,6 +65,15 @@ export const AppNavigator = DrawerNavigator(
                     Tip: {screen: Tip, navigationOptions: ({ navigation }) => ({header: () => null})}
                 },
                 {initialRouteName: 'Tips'}
+            )
+        },
+        BlogsTop: {
+            screen: StackNavigator(
+                {
+                    Blogs: {screen: Blogs, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Blog: {screen: Blog, navigationOptions: ({ navigation }) => ({header: () => null})}
+                },
+                {initialRouteName: 'Blogs'}
             )
         },
         Order: {screen: Order},

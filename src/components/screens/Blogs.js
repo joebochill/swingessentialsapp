@@ -6,23 +6,23 @@ import {Header} from 'react-native-elements';
 import styles, {colors, spacing} from '../../styles/index';
 import {scale, verticalScale} from '../../styles/dimension';
 
-import {getTips} from '../../actions/TipActions';
+import {getBlogs} from '../../actions/BlogActions';
 import CardRow from '../Card/CardRow';
 
 function mapStateToProps(state){
     return {
         token: state.login.token,
         admin: state.login.admin,
-        tips: state.tips
+        blogs: state.blogs
     };
 }
 function mapDispatchToProps(dispatch){
     return {
-        getTips: (token = null) => dispatch(getTips(token))
+        getBlogs: (token = null) => dispatch(getBlogs(token))
     };
 }
 
-class Tips extends React.Component{
+class Blogs extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -30,31 +30,28 @@ class Tips extends React.Component{
         }
     }
     componentWillReceiveProps(nextProps){
-        // if(!nextProps.token){
-        //     this.props.navigation.navigate('Auth');
-        // }
-        if(!nextProps.tips.loading){
+        if(!nextProps.blogs.loading){
             this.setState({refreshing: false});
         }
     }
 
     _onRefresh(){
         this.setState({refreshing: true});
-        this.props.getTips(this.props.token);
+        this.props.getBlogs(this.props.token);
     }
 
-    // returns the tips list categorized by year
-    tipsByYear() {
-        return this.props.tips.tipList.reduce(function(newTips, tip) {
-            const year = tip.date.split('-',3)[0];
-            if (!newTips[year]) { newTips[year] = []; }
-            newTips[year].push(tip);
-            return newTips;
+    // returns the blogs list categorized by year
+    blogsByYear() {
+        return this.props.blogs.blogList.reduce(function(newBlogs, blog) {
+            const year = blog.date.split('-',3)[0];
+            if (!newBlogs[year]) { newBlogs[year] = []; }
+            newBlogs[year].push(blog);
+            return newBlogs;
         }, {});
     }
 
     render(){
-        const splitTips = this.tipsByYear();
+        const splitBlogs = this.blogsByYear();
         return(
             <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
                 <Header
@@ -73,7 +70,7 @@ class Tips extends React.Component{
                         containerStyle:styles.headerIcon, 
                         onPress: () => this.props.navigation.navigate('DrawerOpen') 
                     }}
-                    centerComponent={{ text: 'Tips of the Month', style: { color: colors.white, fontSize: verticalScale(18) } }}
+                    centerComponent={{ text: 'The 19th Hole', style: { color: colors.white, fontSize: verticalScale(18) } }}
                     //rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
                     //   onPress: () => {this.props.navigation.push('Settings')}}}
                 />
@@ -81,7 +78,7 @@ class Tips extends React.Component{
                     contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}
                     refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={()=>this._onRefresh()}/>}
                 >
-                    {Object.keys(splitTips).sort().reverse().map((year, index) =>
+                    {Object.keys(splitBlogs).sort().reverse().map((year, index) =>
                         <FlatList
                             key={'yearList_'+year}
                             style={{marginTop: index === 0 ? 0 : spacing.normal}}
@@ -92,15 +89,15 @@ class Tips extends React.Component{
                                     <Text style={{fontSize: scale(14), color: colors.white}}>{year}</Text>
                                 </View>
                             }
-                            data={splitTips[year]}
-                            ListEmptyComponent={!this.props.tips.loading ?
-                                <CardRow primary={'No Tips'}/>
-                                :<CardRow primary={'Loading Tips...'}/>
+                            data={splitBlogs[year]}
+                            ListEmptyComponent={!this.props.blogs.loading ?
+                                <CardRow primary={'No Posts'}/>
+                                :<CardRow primary={'Loading Posts...'}/>
                             }
                             renderItem={({item}) => 
                                 <CardRow 
                                     primary={item.title} 
-                                    action={() => this.props.navigation.push('Tip', {tip: item})}
+                                    action={() => this.props.navigation.push('Blog', {blog: item})}
                                 />
                             }
                             keyExtractor={(item, index) => item.id}
@@ -114,4 +111,4 @@ class Tips extends React.Component{
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Tips);
+export default connect(mapStateToProps, mapDispatchToProps)(Blogs);

@@ -5,6 +5,7 @@ import {requestLogout,
     showLogoutWarning, 
     requestDataFromToken} from '../actions/LoginActions';
 import {getTips} from '../actions/TipActions';
+import {getBlogs} from '../actions/BlogActions';
 import { setTargetRoute} from '../actions/actions';
 import LogoutWarning from './Modal/TokenExpire';
 
@@ -16,6 +17,7 @@ import logo from '../images/logo-big.png';
 import CardRow from './Card/CardRow';
 
 import {atob} from '../utils/base64';
+import {APP_VERSION} from '../constants/index';
 
 
 function mapStateToProps(state){
@@ -35,7 +37,8 @@ function mapDispatchToProps(dispatch){
         requestLogout: (token) => dispatch(requestLogout(token)),
         showLogoutWarning: (show) => dispatch(showLogoutWarning(show)),
         setTargetRoute: (loc, extra) => dispatch(setTargetRoute(loc, extra)),
-        getTips: (token = null) => dispatch(getTips(token))
+        getTips: (token = null) => dispatch(getTips(token)),
+        getBlogs: (token = null) => dispatch(getBlogs(token))
     }
 }
 
@@ -53,6 +56,7 @@ class CustomDrawer extends React.Component {
 
         // load the tips of the month and blogs as soon as we load the app
         this.props.getTips();
+        this.props.getBlogs();
     }
     componentDidMount(){
         AppState.addEventListener('change', this._handleAppStateChange);
@@ -160,21 +164,16 @@ class CustomDrawer extends React.Component {
                             customStyle={{borderTopWidth: scale(1)}}
                             action={() => this.props.navigation.navigate('Tips')}/>
                         <CardRow menuItem primary="The 19th Hole" 
-                            action={() => alert('coming soon')}/>
+                            action={() => this.props.navigation.navigate('Blogs')}/>
                     </View>
                     <View style={{marginBottom: spacing.normal}}>
-                        {/* <CardRow menuItem primary="Settings" 
-                            customStyle={{borderTopWidth: 1}}
-                            action={() => this.props.navigation.navigate('Settings')}/> */}
                         <CardRow menuItem primary="Sign Out" 
                                 customStyle={{borderTopWidth: scale(1)}}
                                 action={() => this.props.requestLogout(this.props.token)}/>
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>
-                        <CardRow menuItem primary="About" secondary="v2.0.4" 
+                        <CardRow menuItem primary="About" secondary={`v${APP_VERSION}`} 
                             action={() => this.props.navigation.navigate('About')}/>
-                        {/* <CardRow menuItem primary="View Website" 
-                            action={() =>Linking.openURL('https://www.swingessentials.com')}/> */}
                     </View>
                 </ScrollView>
                 {this.props.token && this.props.modalWarning && <LogoutWarning/>}
