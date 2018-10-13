@@ -101,8 +101,8 @@ android {
         applicationId "com.swingessentials.app"
         minSdkVersion 23
         targetSdkVersion 26
-        versionCode 24
-        versionName "2.0.4"
+        versionCode 25
+        versionName "2.1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
