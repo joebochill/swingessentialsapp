@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { AppNavigator } from '../navigators/AppNavigator';
 import {TUTORIALS} from '../constants/index';
 import {TOKEN_TIMEOUT, SET_TARGET_ROUTE} from '../actions/actions';
-import {LOGIN, LOGOUT, CHECK_TOKEN, REFRESH_TOKEN} from '../actions/LoginActions';
+import {LOGIN, LOGOUT, CHECK_TOKEN, REFRESH_TOKEN, SET_TOKEN} from '../actions/LoginActions';
 
 import {
   GET_LESSONS, 
@@ -12,7 +12,7 @@ import {
   EXECUTE_PAYMENT
 } from '../actions/LessonActions.js';
 import {MARK_TUTORIAL} from '../actions/TutorialActions';
-import { GET_SETTINGS } from '../actions/UserDataActions';
+import { GET_SETTINGS, GET_USER_DATA } from '../actions/UserDataActions';
 import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL, VERIFY_EMAIL } from '../actions/RegistrationActions';
 import { GET_PACKAGES } from '../actions/PackageActions';
 import { GET_TIPS } from '../actions/TipActions';
@@ -42,10 +42,12 @@ const initialUserState = {
 };
 const userData = (state = initialUserState, action) => {
   switch(action.type){
+    case GET_USER_DATA.SUCCESS:
     case LOGIN.SUCCESS:
       return{...state, 
         username: action.data.personal.username
       };
+    case GET_USER_DATA.FAIL:
     case LOGOUT.SUCCESS:
     case TOKEN_TIMEOUT:
       return {...state,
@@ -65,6 +67,10 @@ const initialLoginState = {
 };
 const login = (state=initialLoginState, action) => {
 	switch(action.type){
+    case SET_TOKEN.REQUEST:
+      return{...state,
+        token: action.data
+      };
     case LOGIN.SUCCESS:
     case CREATE_ACCOUNT.SUCCESS:
     case CHECK_TOKEN.SUCCESS:
