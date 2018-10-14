@@ -4,15 +4,11 @@ import {BASEURL, AUTH, failure, success, checkTimeout} from './actions.js';
 export const GET_PACKAGES = {REQUEST: 'GET_PACKAGES', SUCCESS: 'GET_PACKAGES_SUCCESS', FAIL: 'GET_PACKAGES_FAIL'};
 
 /* Retrieves List of available lesson packages and prices */
-export function getPackages(token){
+export function getPackages(token = null){
     return (dispatch) => {
         dispatch({type:GET_PACKAGES.REQUEST});
 
-        return fetch(BASEURL+'packages', { 
-            headers: {
-                [AUTH]: 'Bearer ' + token
-            }
-        })
+        return fetch(BASEURL+'packages')
         .then((response) => {
             switch(response.status) {
                 case 200:

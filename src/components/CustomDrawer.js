@@ -6,6 +6,7 @@ import {requestLogout,
     requestDataFromToken} from '../actions/LoginActions';
 import {getTips} from '../actions/TipActions';
 import {getBlogs} from '../actions/BlogActions';
+import {getPackages} from '../actions/PackageActions';
 import { setTargetRoute} from '../actions/actions';
 import LogoutWarning from './Modal/TokenExpire';
 
@@ -38,7 +39,8 @@ function mapDispatchToProps(dispatch){
         showLogoutWarning: (show) => dispatch(showLogoutWarning(show)),
         setTargetRoute: (loc, extra) => dispatch(setTargetRoute(loc, extra)),
         getTips: (token = null) => dispatch(getTips(token)),
-        getBlogs: (token = null) => dispatch(getBlogs(token))
+        getBlogs: (token = null) => dispatch(getBlogs(token)),
+        getPackages: (token = null) => dispatch(getPackages(token))
     }
 }
 
@@ -57,6 +59,7 @@ class CustomDrawer extends React.Component {
         // load the tips of the month and blogs as soon as we load the app
         this.props.getTips();
         this.props.getBlogs();
+        this.props.getPackages();
     }
     componentDidMount(){
         AppState.addEventListener('change', this._handleAppStateChange);
@@ -135,7 +138,6 @@ class CustomDrawer extends React.Component {
                     <Text style={{fontSize: scale(14), color:colors.white, marginTop:scale(-14)}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
                 </View>
                 <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent:'space-between'}}>
-                    {this.props.token && 
                         <View style={{marginTop: spacing.normal}}>
                             <CardRow menuItem primary="Your Lessons" 
                                 customStyle={{borderTopWidth: scale(1)}}
@@ -157,8 +159,6 @@ class CustomDrawer extends React.Component {
                             <CardRow menuItem primary="Order Lessons" 
                                 action={() => this.props.navigation.navigate('Order')}/>
                         </View>
-                    }
-                    {!this.props.token && <View></View>}
                     <View>
                         <CardRow menuItem primary="Tips of the Month" 
                             customStyle={{borderTopWidth: scale(1)}}
@@ -167,9 +167,16 @@ class CustomDrawer extends React.Component {
                             action={() => this.props.navigation.navigate('Blogs')}/>
                     </View>
                     <View style={{marginBottom: spacing.normal}}>
-                        <CardRow menuItem primary="Sign Out" 
+                        {this.props.token && 
+                            <CardRow menuItem primary="Sign Out" 
                                 customStyle={{borderTopWidth: scale(1)}}
                                 action={() => this.props.requestLogout(this.props.token)}/>
+                        }
+                        {!this.props.token &&
+                            <CardRow menuItem primary="Sign In / Register" 
+                                customStyle={{borderTopWidth: scale(1)}}
+                                action={() => this.props.navigation.push('Auth')}/>
+                        }
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>
                         <CardRow menuItem primary="About" secondary={`v${APP_VERSION}`} 

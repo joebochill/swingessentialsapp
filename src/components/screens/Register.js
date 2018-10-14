@@ -106,7 +106,7 @@ class Register extends React.Component{
 
     componentWillReceiveProps(nextProps){
         if(nextProps.token){
-            this.props.navigation.pop();
+            this.props.navigation.goBack(null);
         }
     }
     _validateUser(){

@@ -107,9 +107,9 @@ const login = (state=initialLoginState, action) => {
 
 const initialCreditsState = {
   count: 0,
-  unlimited: false,
+  unlimited: 0,
   unlimitedExpires: 0,
-  inProgress: true,
+  inProgress: false,
   success: false,
   fail: false
 };
@@ -165,7 +165,7 @@ const credits = (state = initialCreditsState, action) => {
 
 
 const initialLessonsState = {
-  loading: true,
+  loading: false,
   pending:[],
   closed:[],
   redeemPending: false,
@@ -269,9 +269,8 @@ const tips = (state = initialTipsState, action) => {
 		case LOGOUT.FAIL:
 		case GET_TIPS.FAIL:
 		case TOKEN_TIMEOUT:
-			return{
+			return{...state,
 				loading: false,
-				tipList: []
 			}
 		default:
 			return state;
@@ -297,9 +296,8 @@ const blogs = (state=initialBlogsState, action) => {
 		case LOGOUT.FAIL:
 		case GET_BLOGS.FAIL:
 		case TOKEN_TIMEOUT:
-			return{
+			return{...state,
 				loading: false,
-				blogList: []
 			}
 		default:
 			return state;

@@ -9,14 +9,16 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
-import {Header, Icon} from 'react-native-elements';
+import Header from '../Header/Header';
+import {Icon} from 'react-native-elements';
 import YouTube from 'react-native-youtube'
-import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
+import styles, {colors, spacing, sizes} from '../../styles/index';
+import {scale} from '../../styles/dimension';
 import {formatText} from '../../utils/utils';
 
 import {setTargetRoute} from '../../actions/actions';
 import { markLessonViewed } from '../../actions/LessonActions';
+
 import Video from 'react-native-video';
 
 import {YOUTUBE_API_KEY} from '../../constants/index';
@@ -47,6 +49,7 @@ class Lesson extends React.Component{
   }
 
   componentWillMount(){
+    // TODO: fix this for sample lesson
     if(!this.props.token){
         this.props.navigation.navigate('Auth');
     }
@@ -74,7 +77,7 @@ class Lesson extends React.Component{
 
   componentWillReceiveProps(nextProps){
     if(!nextProps.token){
-        this.props.navigation.navigate('Auth');
+        this.props.navigation.pop();
     }
     if(nextProps.lessons.selected !== this.props.lessons.selected){
       const lesson = this._getLessonById(nextProps.lessons.selected);
@@ -123,24 +126,7 @@ class Lesson extends React.Component{
     if(!lesson){return null;}
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
-        <Header
-            style={{flex: 0}}
-            outerContainerStyles={{ 
-              backgroundColor: colors.lightPurple, 
-              height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
-              padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
-            }}
-            //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-            leftComponent={{ 
-              icon: 'arrow-back',
-              size: verticalScale(26),
-              underlayColor:colors.transparent,
-              containerStyle:styles.headerIcon, 
-              color: colors.white, 
-              onPress: () => this.props.navigation.pop() 
-            }}
-            centerComponent={{ text: 'Swing Analysis', style: { color: colors.white, fontSize: verticalScale(18) } }}
-        />
+        <Header title={'Swing Analysis'} navigation={this.props.navigation} type={'back'}/>
         <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
           <Text style={styles.headline}>{lesson.request_date}</Text>
           <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.tiny}])}>

@@ -14,3 +14,18 @@ export function formatText(text){
       <Text key={'par_'+index} style={styles.paragraph}>{val}</Text>
     );
 }
+
+export function checkVersionGreater(test, against){
+    test = test.split('.', 3);
+    test.map((item) => parseInt(item, 10));
+    against = against.split('.', 3);
+    against.map((item) => parseInt(item, 10));
+    for(let i = 0; i < against.length; i++){
+
+        if(test[i] === against[i]){continue}
+        else{
+            return (test[i] > against[i]);
+        }
+    }
+    return true;
+}
