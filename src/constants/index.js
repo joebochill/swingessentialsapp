@@ -1,6 +1,6 @@
 export const YOUTUBE_API_KEY = 'YOUR_API_KEY_HERE';
 
-export const APP_VERSION = '2.1.0';
+export const APP_VERSION = '2.1.1';
 export const ASYNC_PREFIX = '@SwingEssentials:';
 
 export const TUTORIAL_KEYS = {
@@ -18,8 +18,8 @@ export const TUTORIALS = {
 }
 
 export const TUTORIAL_VERSIONS = {
-    [TUTORIAL_KEYS.LESSON_LIST]: '2.1.0',
-    [TUTORIAL_KEYS.LESSON]: '2.1.0',
-    [TUTORIAL_KEYS.SUBMIT_SWING]: '2.1.0',
-    [TUTORIAL_KEYS.ORDER]: '2.1.0'
+    [TUTORIAL_KEYS.LESSON_LIST]: '2.1.1',
+    [TUTORIAL_KEYS.LESSON]: '2.1.1',
+    [TUTORIAL_KEYS.SUBMIT_SWING]: '2.1.1',
+    [TUTORIAL_KEYS.ORDER]: '2.1.1'
 }
