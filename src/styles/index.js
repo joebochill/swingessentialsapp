@@ -6,6 +6,7 @@ export const colors = {
     white: '#ffffff',
     purple: '#231f61',
     lightPurple: 'rgba(35,31,97,0.8)',
+    flatPurple: 'rgba(79,76,129,1)',
     veryLightPurple: 'rgba(35,31,97,0.6)',
     borderGrey: '#c1c1c1',
     backgroundGrey: '#f0f0f0',
@@ -164,6 +165,14 @@ export default StyleSheet.create({
     },
     centered:{
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+    },
+    tutorial:{
+        alignSelf: 'stretch',
+        justifyContent: 'center',
+        padding: spacing.large
+    },
+    tutorialText:{
+
     }
 });

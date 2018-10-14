@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Alert, Text, View, ScrollView, FlatList, RefreshControl, Platform} from 'react-native';
+import {Alert, Text, View, ScrollView, FlatList, RefreshControl, StyleSheet, Platform} from 'react-native';
 import {Button, Header} from 'react-native-elements';
+import Tutorial from '../Tutorial/Lessons';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
 import {scale, verticalScale} from '../../styles/dimension';
 
@@ -30,7 +31,8 @@ class Lessons extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            refreshing: false
+            refreshing: false,
+            showTutorial: false
         }
     }
     componentDidMount(){
@@ -95,8 +97,8 @@ class Lessons extends React.Component{
                         onPress: () => this.props.navigation.navigate('DrawerOpen') 
                     }}
                     centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: verticalScale(18) } }}
-                    //rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
-                    //   onPress: () => {this.props.navigation.push('Settings')}}}
+                    rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
+                       onPress: () => {this.setState({showTutorial: !this.state.showTutorial})}}}
                 />
                 <ScrollView 
                     contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}
@@ -244,7 +246,8 @@ class Lessons extends React.Component{
                         }
                         keyExtractor={(item, index) => item.request_id}
                     />
-                </ScrollView>                
+                </ScrollView>   
+                <Tutorial isVisible={this.state.showTutorial} close={()=>this.setState({showTutorial: false})}/>       
             </View>
 
         );

@@ -14,3 +14,13 @@ export function formatText(text){
       <Text key={'par_'+index} style={styles.paragraph}>{val}</Text>
     );
 }
+
+export function getDate(unix){
+    let day = new Date(unix);
+    let dd = day.getUTCDate();
+    let mm = day.getUTCMonth()+1; 
+    let yyyy = day.getUTCFullYear();
+    if(dd<10){dd='0'+dd;} 
+    if(mm<10) {mm='0'+mm;} 
+    return (yyyy + '-' + mm + '-' + dd);
+}
