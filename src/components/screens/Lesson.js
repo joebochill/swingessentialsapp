@@ -15,9 +15,14 @@ import YouTube from 'react-native-youtube'
 import styles, {colors, spacing, sizes} from '../../styles/index';
 import {scale} from '../../styles/dimension';
 import {formatText} from '../../utils/utils';
+import Tutorial from '../Tutorial/Lesson';
+
 
 import {setTargetRoute} from '../../actions/actions';
 import { markLessonViewed } from '../../actions/LessonActions';
+
+import {TUTORIALS} from '../../constants/index';
+import { tutorialViewed } from '../../actions/TutorialActions';
 
 import Video from 'react-native-video';
 
@@ -28,14 +33,16 @@ function mapStateToProps(state){
   return {
     token: state.login.token,
     lessons: state.lessons,
-    links: state.links
+    links: state.links,
+    showTutorial: state.tutorial[TUTORIALS.LESSON]
   };
 }
 
 function mapDispatchToProps(dispatch){
   return {
     markViewed: (id, token) => {dispatch(markLessonViewed(id, token))},
-    setTargetRoute: (loc, extra) => {dispatch(setTargetRoute(loc, extra))}
+    setTargetRoute: (loc, extra) => {dispatch(setTargetRoute(loc, extra))},
+    closeTutorial: () => {dispatch(tutorialViewed(TUTORIALS.LESSON))}
   };
 }
 
@@ -226,6 +233,7 @@ class Lesson extends React.Component{
             </View>
           }
         </ScrollView>
+        <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>       
       </View>
     );
   }

@@ -14,6 +14,10 @@ import KeyboardView from '../Keyboard/KeyboardView';
 import {atob} from '../../utils/base64.js';
 import * as RNIap from 'react-native-iap';
 
+import Tutorial from '../Tutorial/Order';
+import {TUTORIALS} from '../../constants/index';
+import { tutorialViewed } from '../../actions/TutorialActions';
+
 function mapStateToProps(state){
     return {
         token: state.login.token,
@@ -23,14 +27,16 @@ function mapStateToProps(state){
         purchaseSuccess: state.credits.success,
         purchaseFail: state.credits.fail,
         lessons: state.lessons,
-        credits: state.credits
+        credits: state.credits,
+        showTutorial: state.tutorial[TUTORIALS.ORDER]
     };
 }
 function mapDispatchToProps(dispatch){
     return {
         checkCoupon: (code) => {dispatch(checkCoupon(code))},
         executePayment: (data, token, platform) => {dispatch(executePayment(data,token, platform))},
-        activateUnlimited: (token) => {dispatch(activateUnlimited(token))}
+        activateUnlimited: (token) => {dispatch(activateUnlimited(token))},
+        closeTutorial: () => {dispatch(tutorialViewed(TUTORIALS.ORDER))}
     };
 }
 
@@ -284,7 +290,8 @@ class Order extends React.Component{
                                 }
                                 keyExtractor={(item, index) => item.id}
                             />
-                        </ScrollView>    
+                        </ScrollView>   
+                        <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>        
                     </KeyboardView> 
                 }           
             </View>

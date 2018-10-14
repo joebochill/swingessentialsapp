@@ -16,7 +16,6 @@ export function tutorialViewed(tutorial){
 
 /* Sets the specified tutorial to show */
 export function tutorialNew(tutorial){
-    console.log('marking tutorial new: ' + tutorial);
     return (dispatch) => {
         dispatch({type: MARK_TUTORIAL.NEW, data: tutorial});
     }

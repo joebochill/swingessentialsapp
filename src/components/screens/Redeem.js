@@ -9,6 +9,10 @@ import Header from '../Header/Header';
 import {FormInput, Button, Icon} from 'react-native-elements';
 import {redeemCredit} from '../../actions/LessonActions';
 
+import Tutorial from '../Tutorial/Redeem';
+import {TUTORIALS} from '../../constants/index';
+import { tutorialViewed } from '../../actions/TutorialActions';
+
 import {checkToken} from '../../actions/LoginActions';
 import KeyboardView from '../Keyboard/KeyboardView';
 import Video from 'react-native-video';
@@ -26,13 +30,15 @@ function mapStateToProps(state){
         credits: state.credits,
         lessons: state.lessons.pending,
         redeemPending: state.lessons.redeemPending,
-        redeemSuccess: state.lessons.redeemSuccess
+        redeemSuccess: state.lessons.redeemSuccess,
+        showTutorial: state.tutorial[TUTORIALS.SUBMIT_SWING]
     };
 }
 function mapDispatchToProps(dispatch){
     return {
         redeemCredit: (data, token, onProgress) => {dispatch(redeemCredit(data, token, onProgress))},
         checkToken: (token) => {dispatch(checkToken(token))},
+        closeTutorial: () => {dispatch(tutorialViewed(TUTORIALS.SUBMIT_SWING))}
     };
 }
 
@@ -378,6 +384,7 @@ class Redeem extends React.Component{
                             //onBlur={item.blur}
                         />
                     </ScrollView>    
+                    <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>       
                 </KeyboardView> 
             </View>
 

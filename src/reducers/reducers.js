@@ -426,7 +426,6 @@ const tutorial = (state = initialTutorialState, action) => {
         [action.data]: false
       };
     case MARK_TUTORIAL.NEW:
-      console.log('reducing new tutorial: ' + action.data);
       return {...state,
         [action.data]: true
       }
