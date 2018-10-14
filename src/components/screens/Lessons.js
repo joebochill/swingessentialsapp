@@ -1,11 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {AsyncStorage, Alert, Text, View, ScrollView, FlatList, RefreshControl, StyleSheet, Platform} from 'react-native';
-import {Button, Header} from 'react-native-elements';
+import {AsyncStorage, Alert, Text, View, ScrollView, FlatList, RefreshControl, Platform} from 'react-native';
+import Header from '../Header/Header';
 import Tutorial from '../Tutorial/Lessons';
-import styles, {colors, spacing, altStyles} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
+import styles, {colors, spacing} from '../../styles/index';
+import {scale} from '../../styles/dimension';
 
 import {getLessons, getCredits, activateUnlimited} from '../../actions/LessonActions';
 import CardRow from '../Card/CardRow';
@@ -23,7 +23,7 @@ function mapDispatchToProps(dispatch){
     return {
         getLessons: (token) => {dispatch(getLessons(token))},
         getCredits: (token) => {dispatch(getCredits(token))},
-        activateUnlimited: (token) => {dispatch(activateUnlimited(token))}
+        activateUnlimited: (token) => {dispatch(activateUnlimited(token))},
     };
 }
 
@@ -35,10 +35,8 @@ class Lessons extends React.Component{
             showTutorial: false
         }
     }
+
     componentDidMount(){
-        if(!this.props.token){
-            this.props.navigation.navigate('Auth');
-        }
         AsyncStorage.getItem('@SwingEssentials:tutorial_lessons')
         .then((val)=>{
             if(!val){this.setState({showTutorial: true})}
@@ -48,11 +46,9 @@ class Lessons extends React.Component{
             }
         });
     }
+
     componentWillReceiveProps(nextProps){
-        if(!nextProps.token){
-            this.props.navigation.navigate('Auth');
-        }
-        else if(!nextProps.lessons.loading && !nextProps.credits.inProgress){
+        if(!nextProps.lessons.loading && !nextProps.credits.inProgress){
             this.setState({refreshing: false});
         }
     }
@@ -88,24 +84,7 @@ class Lessons extends React.Component{
     render(){
         return(
             <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
-                <Header
-                    style={{flex: 0}}
-                    outerContainerStyles={{ 
-                        backgroundColor: colors.lightPurple, 
-                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
-                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
-                    }}
-                    //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    leftComponent={{ 
-                        icon: 'menu',
-                        size: verticalScale(26),
-                        underlayColor:colors.transparent, 
-                        color: colors.white, 
-                        containerStyle:styles.headerIcon, 
-                        onPress: () => this.props.navigation.navigate('DrawerOpen') 
-                    }}
-                    centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: verticalScale(18) } }}
-                />
+                <Header title={'Your Lessons'} navigation={this.props.navigation}/>
                 <ScrollView 
                     contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}
                     refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={()=>this._onRefresh()}/>}
@@ -118,43 +97,49 @@ class Lessons extends React.Component{
                                     <Text style={{fontSize: scale(14), color: colors.white}}>Redeem a Lesson</Text>
                                 </View>
                             }
-                            data={[
-                                {primary: 'Individual Lessons', 
-                                    secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.count+' Left':'', 
-                                    disabled: this.props.credits.count < 1,
-                                    action: this.props.credits.count < 1 ? null : ()=>{
-                                        if(this.props.lessons.pending.length < 1){
-                                            this.props.navigation.navigate('RedeemTop');
+                            data={ this.props.token ? 
+                                [
+                                    {primary: 'Individual Lessons', 
+                                        secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.count+' Left':'', 
+                                        disabled: this.props.credits.count < 1,
+                                        action: this.props.credits.count < 1 ? null : ()=>{
+                                            if(this.props.lessons.pending.length < 1){
+                                                this.props.navigation.navigate('RedeemTop');
+                                            }
+                                            else{
+                                                Alert.alert(
+                                                    'Swing Analysis Pending',
+                                                    'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
+                                                    [{text: 'OK'}]
+                                                );
+                                            }
                                         }
-                                        else{
+                                    }, 
+                                    {primary: 'Activate Unlimited', 
+                                        secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.unlimited + ' Left':'', 
+                                        disabled: this.props.credits.unlimited < 1,
+                                        action: this.props.credits.unlimited < 1 ? null : ()=>{
                                             Alert.alert(
-                                                'Swing Analysis Pending',
-                                                'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
-                                                [{text: 'OK'}]
-                                            );
-                                        }
-                                    }
-                                }, 
-                                {primary: 'Activate Unlimited', 
-                                    secondary: (this.props.credits && !this.props.credits.inProgress) ? this.props.credits.unlimited+' Left':'', 
-                                    disabled: this.props.credits.unlimited < 1,
-                                    action: this.props.credits.unlimited < 1 ? null : ()=>{
-                                        Alert.alert(
-                                            'Activate Unlimited',
-                                            'Activating your unlimited lessons deal will give you access to unlimited lessons for 30 days. The clock starts when you click Activate.',
-                                            [
-                                                {text: 'Cancel'},
-                                                {text: 'Activate', 
-                                                    onPress: () => {
-                                                        this.setState({refreshing: true});
-                                                        this.props.activateUnlimited(this.props.token);
+                                                'Activate Unlimited',
+                                                'Activating your unlimited lessons deal will give you access to unlimited lessons for 30 days. The clock starts when you click Activate.',
+                                                [
+                                                    {text: 'Cancel'},
+                                                    {text: 'Activate', 
+                                                        onPress: () => {
+                                                            this.setState({refreshing: true});
+                                                            this.props.activateUnlimited(this.props.token);
+                                                        }
                                                     }
-                                                }
-                                            ]
-                                        )
-                                    }
-                                },
-                                {primary: 'Order More', action: ()=> this.props.navigation.navigate('Order')}]}
+                                                ]
+                                            )
+                                        }
+                                    },
+                                    {primary: 'Order More', action: ()=> this.props.navigation.navigate('Order')}
+                                ] : 
+                                [
+                                    {primary: 'Sign in to see your credits', action: ()=> this.props.navigation.push('Auth')}
+                                ]
+                            }
                             renderItem={({item}) => 
                                 <CardRow 
                                     primary={item.primary} 
@@ -234,7 +219,9 @@ class Lessons extends React.Component{
                         }
                         data={this.props.admin ? this.props.lessons.closed : this.props.lessons.pending.concat(this.props.lessons.closed)}
                         ListEmptyComponent={!this.props.lessons.loading ?
-                            <CardRow primary={'No Lessons'}/>
+                            <CardRow primary={'Welcome to Swing Essentials!'}
+                                action={() => alert('coming soon')}
+                            />
                             :<CardRow primary={'Loading Lessons...'}/>
                         }
                         renderItem={({item}) => 

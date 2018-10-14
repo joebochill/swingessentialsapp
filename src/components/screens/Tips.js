@@ -1,12 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Text, View, ScrollView, FlatList, RefreshControl, Platform} from 'react-native';
-import {Header} from 'react-native-elements';
+import {Text, View, ScrollView, FlatList, RefreshControl} from 'react-native';
+import Header from '../Header/Header';
 import styles, {colors, spacing} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
+import {scale} from '../../styles/dimension';
 
 import {getTips} from '../../actions/TipActions';
+
 import CardRow from '../Card/CardRow';
 
 function mapStateToProps(state){
@@ -18,7 +19,7 @@ function mapStateToProps(state){
 }
 function mapDispatchToProps(dispatch){
     return {
-        getTips: (token = null) => dispatch(getTips(token))
+        getTips: (token = null) => dispatch(getTips(token)),
     };
 }
 
@@ -30,9 +31,7 @@ class Tips extends React.Component{
         }
     }
     componentWillReceiveProps(nextProps){
-        // if(!nextProps.token){
-        //     this.props.navigation.navigate('Auth');
-        // }
+
         if(!nextProps.tips.loading){
             this.setState({refreshing: false});
         }
@@ -57,26 +56,7 @@ class Tips extends React.Component{
         const splitTips = this.tipsByYear();
         return(
             <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
-                <Header
-                    style={{flex: 0}}
-                    outerContainerStyles={{ 
-                        backgroundColor: colors.lightPurple, 
-                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
-                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
-                    }}
-                    //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    leftComponent={{ 
-                        icon: 'menu',
-                        size: verticalScale(26),
-                        underlayColor:colors.transparent, 
-                        color: colors.white, 
-                        containerStyle:styles.headerIcon, 
-                        onPress: () => this.props.navigation.navigate('DrawerOpen') 
-                    }}
-                    centerComponent={{ text: 'Tips of the Month', style: { color: colors.white, fontSize: verticalScale(18) } }}
-                    //rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
-                    //   onPress: () => {this.props.navigation.push('Settings')}}}
-                />
+                <Header title={'Tip of the Month'} navigation={this.props.navigation}/>
                 <ScrollView 
                     contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}
                     refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={()=>this._onRefresh()}/>}
@@ -106,10 +86,8 @@ class Tips extends React.Component{
                             keyExtractor={(item, index) => item.id}
                         />
                     )}
-                    
                 </ScrollView>                
             </View>
-
         );
     }
 };

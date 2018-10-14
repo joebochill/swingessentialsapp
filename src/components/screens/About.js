@@ -6,12 +6,9 @@ import {
   Text,
   ScrollView,
   StyleSheet,
-  Platform
 } from 'react-native';
-import {Header} from 'react-native-elements';
-import styles, {colors, spacing, altStyles} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
-
+import Header from '../Header/Header';
+import styles, {colors, spacing} from '../../styles/index';
 
 function mapStateToProps(state){
   return {
@@ -19,49 +16,15 @@ function mapStateToProps(state){
   };
 }
 function mapDispatchToProps(dispatch){
-  return {};
+  return {
+  };
 }
 
 class AboutScreen extends React.Component{
-  constructor(props){
-    super(props);
-  }
-
-  componentDidMount(){
-    if(!this.props.token){
-        this.props.navigation.navigate('Auth');
-    }
-  }
-  componentWillReceiveProps(nextProps){
-      if(!nextProps.token){
-          this.props.navigation.navigate('Auth');
-      }
-  }
-
   render(){
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
-        <Header
-          style={{flex: 0}}
-          outerContainerStyles={{ 
-            backgroundColor: colors.lightPurple, 
-            height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
-            padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
-          }}
-          //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-          leftComponent={{ 
-            icon: 'menu',
-            size: verticalScale(26),
-            underlayColor:colors.transparent, 
-            color: colors.white, 
-            containerStyle:styles.headerIcon, 
-            onPress: () => this.props.navigation.navigate('DrawerOpen') 
-          }}
-          centerComponent={{ 
-            text: 'About', 
-            style: { color: colors.white, fontSize: verticalScale(18) } 
-          }}
-        />
+        <Header title={'About'} navigation={this.props.navigation}/>
         <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
           <Text style={styles.headline}>What is Swing Essentials?</Text>
           <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, marginBottom: spacing.small}])}>

@@ -32,28 +32,30 @@ import Setting from '../components/screens/Setting';
 
 import { addListener } from '../utils/redux';
 
+const AuthNavigator = {
+    screen: StackNavigator(
+        {
+            Login: {screen: Login, navigationOptions: ({ navigation }) => ({header: () => null})},
+            Forgot: {screen: Forgot, navigationOptions: ({ navigation }) => ({header: () => null})},
+            Register: {screen: Register, navigationOptions: ({ navigation }) => ({header: () => null})}
+        },
+        {initialRouteName: 'Login'}
+    ),
+    //screen: Login,
+    navigationOptions: {
+        drawerLockMode: 'locked-closed',
+        drawerLabel: () => null
+    }
+}
+
 export const AppNavigator = DrawerNavigator(
     {
-        Auth: {
-            screen: StackNavigator(
-                {
-                    Login: {screen: Login, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Forgot: {screen: Forgot, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Register: {screen: Register, navigationOptions: ({ navigation }) => ({header: () => null})}
-                },
-                {initialRouteName: 'Login'}
-            ),
-            //screen: Login,
-            navigationOptions: {
-                drawerLockMode: 'locked-closed',
-                drawerLabel: () => null
-            }
-        },
         Main: {
             screen: StackNavigator(
                 {
                     Lessons: {screen: Lessons, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Lesson: {screen: Lesson, navigationOptions: ({ navigation }) => ({header: () => null})}
+                    Lesson: {screen: Lesson, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Auth: AuthNavigator
                 },
                 {initialRouteName: 'Lessons'}
             )
@@ -62,7 +64,8 @@ export const AppNavigator = DrawerNavigator(
             screen: StackNavigator(
                 {
                     Tips: {screen: Tips, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Tip: {screen: Tip, navigationOptions: ({ navigation }) => ({header: () => null})}
+                    Tip: {screen: Tip, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Auth: AuthNavigator
                 },
                 {initialRouteName: 'Tips'}
             )
@@ -71,12 +74,21 @@ export const AppNavigator = DrawerNavigator(
             screen: StackNavigator(
                 {
                     Blogs: {screen: Blogs, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Blog: {screen: Blog, navigationOptions: ({ navigation }) => ({header: () => null})}
+                    Blog: {screen: Blog, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Auth: AuthNavigator
                 },
                 {initialRouteName: 'Blogs'}
             )
         },
-        Order: {screen: Order},
+        OrderTop: {
+            screen: StackNavigator(
+                {
+                    Order: {screen: Order, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Auth: AuthNavigator
+                },
+                {initialRouteName: 'Order'}
+            )
+        },
         RedeemTop: {
             screen: StackNavigator(
                 {
@@ -89,16 +101,33 @@ export const AppNavigator = DrawerNavigator(
                     },
                     Setting: {screen: Setting, navigationOptions: ({ navigation }) => (
                         {drawerLockMode: 'locked-closed', drawerLabel: () => null, header: () => null})
-                    }
+                    },
+                    Auth: AuthNavigator
                 },
                 {initialRouteName: 'Redeem'}
             ) 
         },
-        Help: {screen: Help},
-        About: {screen: About}
+        HelpTop: {
+            screen: StackNavigator(
+                {
+                    Help: {screen: Help, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Auth: AuthNavigator
+                },
+                {initialRouteName: 'Help'}
+            )
+        },
+        AboutTop: {
+            screen: StackNavigator(
+                {
+                    About: {screen: About, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Auth: AuthNavigator
+                },
+                {initialRouteName: 'About'}
+            )
+        }
     }, 
     {
-        initialRouteName: 'Auth',
+        initialRouteName: 'Main',
         drawerWidth: scale(280),
         contentComponent: CustomDrawer
     }

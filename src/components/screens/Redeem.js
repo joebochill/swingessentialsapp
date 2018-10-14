@@ -2,11 +2,13 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
-import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
+import styles, {sizes, colors, spacing} from '../../styles/index';
+import {scale} from '../../styles/dimension';
 
-import {FormInput, Button, Icon, Header} from 'react-native-elements';
+import Header from '../Header/Header';
+import {FormInput, Button, Icon} from 'react-native-elements';
 import {redeemCredit} from '../../actions/LessonActions';
+
 import {checkToken} from '../../actions/LoginActions';
 import KeyboardView from '../Keyboard/KeyboardView';
 import Video from 'react-native-video';
@@ -30,7 +32,7 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
     return {
         redeemCredit: (data, token, onProgress) => {dispatch(redeemCredit(data, token, onProgress))},
-        checkToken: (token) => {dispatch(checkToken(token))}
+        checkToken: (token) => {dispatch(checkToken(token))},
     };
 }
 
@@ -44,43 +46,26 @@ class Redeem extends React.Component{
             dtlPlaying: false,
             notes: '',
             progress: 0,
-            role: 'pending'
+            role: 'pending',
+            error: ''
         }
     }
     componentWillMount(){
-        if(!this.props.token){
-            this.props.navigation.navigate('Auth');
+        this._updateUserRole(this.props.token);
+        if(this.props.lessons.length > 0){
+            Alert.alert(
+                'Swing Analysis Pending',
+                'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
+                [{text: 'OK'}]
+            );
+            this.props.navigation.navigate('Lessons');
         }
-        else{
-            if(this.props.lessons.length > 0){
-                Alert.alert(
-                    'Swing Analysis Pending',
-                    'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
-                    [{text: 'OK'}]
-                );
-                this.props.navigation.navigate('Lessons')
-            }
-            const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
-            if(role === 'pending'){
-                this.tokenCheckTimer = setInterval(()=>{this.props.checkToken(this.props.token)}, 1000*60);
-                this.setState({role: 'pending'});
-            }
-            else{
-                this.setState({role: role});
-            }
-       }
     }
 
     componentWillReceiveProps(nextProps){
-        if(!nextProps.token){
-            this.props.navigation.navigate('Auth');
-        }
-
         // If we get a new token, update the user role
-        if(nextProps.token && nextProps.token !== this.props.token){
-            const newrole = JSON.parse(atob(nextProps.token.split('.')[1])).role;
-            this.setState({role: newrole});
-            if(this.tokenCheckTimer){clearInterval(this.tokenCheckTimer);}
+        if(nextProps.token !== this.props.token){
+            this._updateUserRole(nextProps.token);
         }
 
         if(nextProps.redeemSuccess && !this.props.redeemSuccess){
@@ -92,16 +77,7 @@ class Redeem extends React.Component{
             this.props.navigation.navigate('Lessons');
         }
         else if(nextProps.token && nextProps.credits.count < 1 && nextProps.credits.unlimitedExpires < Date.now()/1000){
-            Alert.alert(
-                'Out of Credits',
-                'Looks like you\'re all out of lesson credits. Head over to the Order page to stock up.',
-                [
-                    {text: 'Back to Lessons', onPress: () => this.props.navigation.navigate('Lessons')},
-                    {text: 'Order More', onPress: () => this.props.navigation.navigate('Order')}
-                    
-                ],
-                {onDismiss: () => this.props.navigation.navigate('Lessons')}
-            );
+            this.setState({error: 'Looks like you\'re all out of lesson credits. Head to the Order page to stock up.'})
         }
         else if(nextProps.lessons.length > 0 && !nextProps.redeemSuccess){
             Alert.alert(
@@ -121,6 +97,25 @@ class Redeem extends React.Component{
                 {onDismiss: () => this.props.navigation.navigate('Lessons')}
             );
         }
+    }
+
+    _updateUserRole(token){
+        if(!token){
+            // this.props.navigation.navigate('Auth');
+            this.setState({role: 'anonymous', error: 'You must be signed in to submit swing videos for analysis.'});
+            if(this.tokenCheckTimer){clearInterval(this.tokenCheckTimer);}
+        }
+        else{
+            const role = JSON.parse(atob(token.split('.')[1])).role;
+            if(role === 'pending'){
+                this.tokenCheckTimer = setInterval(()=>{this.props.checkToken(token)}, 1000*60);
+                this.setState({role: 'pending', error: 'You must verify your email address before you can submit lessons.'});
+            }
+            else{
+                this.setState({role: role, error: ''});
+                if(this.tokenCheckTimer){clearInterval(this.tokenCheckTimer);}
+            }
+       }   
     }
 
     // Shows the picker option for recording a new swing video or choosing one from the library
@@ -203,25 +198,7 @@ class Redeem extends React.Component{
     render(){
         return(
             <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
-                <Header
-                    style={{flex: 0}}
-                    outerContainerStyles={{ 
-                        backgroundColor: colors.lightPurple, 
-                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
-                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
-                    }}
-                    //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    leftComponent={{ 
-                        icon: 'menu',
-                        size: verticalScale(26),
-                        underlayColor:colors.transparent,
-                        color: colors.white, 
-                        containerStyle:styles.headerIcon, 
-                        onPress: () => this.props.navigation.navigate('DrawerOpen') 
-                    }}
-                    centerComponent={{ text: 'Submit Your Swing', style: { color: colors.white, fontSize: verticalScale(18) } }}
-                />
-
+                <Header title={'Submit Your Swing'} navigation={this.props.navigation}/>
                 <KeyboardView
                     fixed={ (!this.props.redeemPending) ?
                         <Button
@@ -249,9 +226,9 @@ class Redeem extends React.Component{
                         ref={(ref) => this.scroller = ref}
                         //keyboardShouldPersistTaps={'always'}
                         >
-                        {this.state.role === 'pending' && 
+                        {this.state.error !== '' && 
                             <Text style={StyleSheet.flatten([styles.formValidation, {marginBottom: spacing.normal}])}> 
-                                {'You must verify your email address before you can submit lessons.'}
+                                {this.state.error}
                             </Text>
                         }
                         <Text style={styles.formLabel}>Your Swing Videos</Text>

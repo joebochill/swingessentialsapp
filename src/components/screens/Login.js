@@ -104,7 +104,7 @@ class Login extends React.Component{
     componentWillReceiveProps(nextProps){
         if(nextProps.token){
             this.setState({waiting: false});
-            this.props.navigation.navigate('Lessons');
+            this.props.navigation.goBack(null);
         }
         else if(nextProps.loginFails !== this.props.loginFails){
             this.setState({password: '', waiting: false});
@@ -271,13 +271,23 @@ class Login extends React.Component{
                         </Text>
                     }
                     {!this.state.waiting &&
-                        <Button
-                            title="SIGN IN"
-                            fontSize={scale(14)}
-                            onPress={this._onLogin.bind(this)}
-                            buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.extraLarge}])}
-                            containerViewStyle={styles.buttonContainer}
-                        />
+                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: spacing.extraLarge}}>
+                            <Button
+                                title="SIGN IN"
+                                fontSize={scale(14)}
+                                onPress={this._onLogin.bind(this)}
+                                buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: 0, flex: 1}])}
+                                containerViewStyle={{flex: 1, marginLeft: 0, marginRight: 0}}
+                            />
+                            <Button 
+                                color={colors.white} 
+                                containerViewStyle={{marginLeft: spacing.normal, marginRight: 0, flex: 0}} 
+                                buttonStyle={styles.linkButton} 
+                                title="CANCEL" 
+                                fontSize={scale(14)}
+                                onPress={()=>this.props.navigation.goBack(null)}>
+                            </Button>
+                        </View>
                     }
                     {this.state.waiting &&
                         <ActivityIndicator 
