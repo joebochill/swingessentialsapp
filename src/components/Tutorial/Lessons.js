@@ -1,5 +1,6 @@
 import React from 'react';
-import { AsyncStorage, Text, View, FlatList, StyleSheet, Platform } from 'react-native';
+
+import {Text, View, FlatList, StyleSheet } from 'react-native';
 import {Button, Icon} from 'react-native-elements';
 
 import styles, {colors, spacing, sizes} from '../../styles/index';
@@ -9,9 +10,6 @@ import Tutorial from './Tutorial';
 import {getDate} from '../../utils/utils';
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-
-import {APP_VERSION} from '../../constants/index';
-
 
 class LessonsTutorial extends React.Component {
     constructor(props){
@@ -61,13 +59,10 @@ class LessonsTutorial extends React.Component {
     _renderItem ({item, index}) {
         return this.slides[index];
     }
-    doneWithTutorial(){
-        AsyncStorage.setItem('@SwingEssentials:tutorial_lessons', APP_VERSION);
-        this.props.close();
-    }
+
     render() {
         return (
-            <Tutorial isVisible={this.props.isVisible} close={() => this.doneWithTutorial()}> 
+            <Tutorial isVisible={this.props.isVisible} close={() => this.props.close()}> 
                 <Carousel
                 ref={(c) => { this._carousel = c; }}
                 data={this.slides}

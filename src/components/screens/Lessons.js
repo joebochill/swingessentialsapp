@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {AsyncStorage, Alert, Text, View, ScrollView, FlatList, RefreshControl, Platform} from 'react-native';
+import {Alert, Text, View, ScrollView, FlatList, RefreshControl, Platform} from 'react-native';
 import Header from '../Header/Header';
 import Tutorial from '../Tutorial/Lessons';
 import styles, {colors, spacing} from '../../styles/index';
@@ -10,13 +10,17 @@ import {scale} from '../../styles/dimension';
 import {getLessons, getCredits, activateUnlimited} from '../../actions/LessonActions';
 import CardRow from '../Card/CardRow';
 
+import {TUTORIALS} from '../../constants/index';
+import { tutorialViewed } from '../../actions/TutorialActions';
+
 function mapStateToProps(state){
     return {
         token: state.login.token,
         admin: state.login.admin,
         username: state.userData.username,
         lessons: state.lessons,
-        credits: state.credits
+        credits: state.credits,
+        showTutorial: state.tutorial[TUTORIALS.LESSON_LIST]
     };
 }
 function mapDispatchToProps(dispatch){
@@ -24,6 +28,7 @@ function mapDispatchToProps(dispatch){
         getLessons: (token) => {dispatch(getLessons(token))},
         getCredits: (token) => {dispatch(getCredits(token))},
         activateUnlimited: (token) => {dispatch(activateUnlimited(token))},
+        closeTutorial: () => {dispatch(tutorialViewed(TUTORIALS.LESSON_LIST))}
     };
 }
 
@@ -32,19 +37,8 @@ class Lessons extends React.Component{
         super(props);
         this.state={
             refreshing: false,
-            showTutorial: false
+            // showTutorial: false
         }
-    }
-
-    componentDidMount(){
-        AsyncStorage.getItem('@SwingEssentials:tutorial_lessons')
-        .then((val)=>{
-            if(!val){this.setState({showTutorial: true})}
-            //TODO: update this with the function
-            else{
-                this.setState({showTutorial: val !== '2.2.0'});
-            }
-        });
     }
 
     componentWillReceiveProps(nextProps){
@@ -240,7 +234,7 @@ class Lessons extends React.Component{
                         keyExtractor={(item, index) => item.request_id}
                     />
                 </ScrollView>   
-                <Tutorial isVisible={this.state.showTutorial} close={()=>this.setState({showTutorial: false})}/>       
+                <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>       
             </View>
 
         );

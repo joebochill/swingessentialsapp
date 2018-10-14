@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, Platform, StyleSheet } from 'react-native';
+import { View, Platform, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import Modal from 'react-native-modal';
 
-import styles, {colors, sizes, spacing} from '../../styles/index';
+import styles, {colors, spacing} from '../../styles/index';
 
 import {scale} from '../../styles/dimension';
 

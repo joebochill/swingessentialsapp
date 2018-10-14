@@ -26,6 +26,7 @@ export function getDate(unix){
 }
 
 export function checkVersionGreater(test, against){
+    if(!test || typeof test !== 'string' || test.length < 5){return false;}
     test = test.split('.', 3);
     test.map((item) => parseInt(item, 10));
     against = against.split('.', 3);

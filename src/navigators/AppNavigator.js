@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator, DrawerNavigator } from 'react-navigation';
 import {scale} from '../styles/dimension';
@@ -31,6 +32,7 @@ import Setting from '../components/screens/Setting';
 
 
 import { addListener } from '../utils/redux';
+import { loadTutorials } from '../utils/tutorials';
 
 const AuthNavigator = {
     screen: StackNavigator(
@@ -139,6 +141,12 @@ class AppWithNavigationState extends React.Component {
         nav: PropTypes.object.isRequired
     };
 
+    constructor(props){
+        super(props);
+        //TODO: Maybe this belongs somewhere else
+        loadTutorials(this.props.dispatch);
+    }
+
     render() {
         const { dispatch, nav } = this.props;
         return (
@@ -154,7 +162,7 @@ class AppWithNavigationState extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  nav: state.nav
+    nav: state.nav
 });
 
 export default connect(mapStateToProps)(AppWithNavigationState);

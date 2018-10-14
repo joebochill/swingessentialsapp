@@ -1,17 +1,17 @@
 import { combineReducers } from 'redux';
-import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
+import {TUTORIALS} from '../constants/index';
 import {TOKEN_TIMEOUT, SET_TARGET_ROUTE} from '../actions/actions';
 import {LOGIN, LOGOUT, CHECK_TOKEN, REFRESH_TOKEN} from '../actions/LoginActions';
 
 import {
   GET_LESSONS, 
   GET_CREDITS, 
-  PURCHASE_LESSON,
   REDEEM_CREDIT,
   CHECK_COUPON,
   EXECUTE_PAYMENT
 } from '../actions/LessonActions.js';
+import {MARK_TUTORIAL} from '../actions/TutorialActions';
 import { GET_SETTINGS } from '../actions/UserDataActions';
 import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL, VERIFY_EMAIL } from '../actions/RegistrationActions';
 import { GET_PACKAGES } from '../actions/PackageActions';
@@ -413,6 +413,28 @@ const links = (state = initialLinkingState, action) => {
   }
 }
 
+const initialTutorialState = {
+  [TUTORIALS.LESSON_LIST]: false,
+  [TUTORIALS.LESSON]: false,
+  [TUTORIALS.SUBMIT_SWING]: false,
+  [TUTORIALS.ORDER]: false
+};
+const tutorial = (state = initialTutorialState, action) => {
+  switch(action.type){
+    case MARK_TUTORIAL.VIEWED:
+      return {...state, 
+        [action.data]: false
+      };
+    case MARK_TUTORIAL.NEW:
+      console.log('reducing new tutorial: ' + action.data);
+      return {...state,
+        [action.data]: true
+      }
+    default:
+      return state;
+  }
+}
+
 /* Combine all of the reducers into one */
 const AppReducer = combineReducers({
   nav,
@@ -425,7 +447,8 @@ const AppReducer = combineReducers({
   settings,
   registration,
   packages,
-  links
+  links,
+  tutorial
 });
 
 

@@ -8,16 +8,10 @@ import CardRow from '../Card/CardRow';
 import Tutorial from './Tutorial';
 import {getDate} from '../../utils/utils';
 
-import {APP_VERSION} from '../../constants/index';
-
 class LessonsTutorial extends React.Component {
-    doneWithTutorial(){
-        AsyncStorage.setItem('@SwingEssentials:tutorial_lessons', APP_VERSION);
-        this.props.close();
-    }
     render() {
         return (
-            <Tutorial isVisible={this.props.isVisible} close={() => this.doneWithTutorial()}> 
+            <Tutorial isVisible={this.props.isVisible} close={() => this.props.close()}> 
                 <View>
                     <Text style={StyleSheet.flatten([styles.headline, {fontSize: scale(28), color: colors.white}])}>{'Welcome to Swing Essentials!'}</Text>
                     <Text style={StyleSheet.flatten([styles.paragraph, {color: colors.white, textAlign: 'center'}])}>When you have submitted your golf swing for analysis, your lessons will appear in this list.</Text>
