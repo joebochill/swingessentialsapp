@@ -31,6 +31,7 @@
     "react-native-image-picker": "^0.26.10",
     "react-native-keychain": "^3.0.0",
     "react-native-modal": "^6.5.0",
+    "react-native-snap-carousel": "^3.7.5",
     "react-native-splash-screen": "3.0.9",
     "react-native-touch-id": "^4.0.4",
     "react-native-vector-icons": "^4.6.0",

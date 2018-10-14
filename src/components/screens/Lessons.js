@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Alert, Text, View, ScrollView, FlatList, RefreshControl, StyleSheet, Platform} from 'react-native';
+import {AsyncStorage, Alert, Text, View, ScrollView, FlatList, RefreshControl, StyleSheet, Platform} from 'react-native';
 import {Button, Header} from 'react-native-elements';
 import Tutorial from '../Tutorial/Lessons';
 import styles, {colors, spacing, altStyles} from '../../styles/index';
@@ -39,6 +39,14 @@ class Lessons extends React.Component{
         if(!this.props.token){
             this.props.navigation.navigate('Auth');
         }
+        AsyncStorage.getItem('@SwingEssentials:tutorial_lessons')
+        .then((val)=>{
+            if(!val){this.setState({showTutorial: true})}
+            //TODO: update this with the function
+            else{
+                this.setState({showTutorial: val !== '2.2.0'});
+            }
+        });
     }
     componentWillReceiveProps(nextProps){
         if(!nextProps.token){
@@ -97,8 +105,6 @@ class Lessons extends React.Component{
                         onPress: () => this.props.navigation.navigate('DrawerOpen') 
                     }}
                     centerComponent={{ text: 'Your Lessons', style: { color: colors.white, fontSize: verticalScale(18) } }}
-                    rightComponent={{ icon: 'settings',underlayColor:colors.transparent, color: colors.white, containerStyle:styles.headerIcon, 
-                       onPress: () => {this.setState({showTutorial: !this.state.showTutorial})}}}
                 />
                 <ScrollView 
                     contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}
