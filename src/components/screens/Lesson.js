@@ -14,9 +14,8 @@ import {Icon} from 'react-native-elements';
 import YouTube from 'react-native-youtube'
 import styles, {colors, spacing, sizes} from '../../styles/index';
 import {scale} from '../../styles/dimension';
-import {formatText} from '../../utils/utils';
+import {formatText, getDate} from '../../utils/utils';
 import Tutorial from '../Tutorial/Lesson';
-
 
 import {setTargetRoute} from '../../actions/actions';
 import { markLessonViewed } from '../../actions/LessonActions';
@@ -87,12 +86,24 @@ class Lesson extends React.Component{
   }
 
   componentWillReceiveProps(nextProps){
-    if(!nextProps.token){
+    if(this.props.token && !nextProps.token){
         this.props.navigation.pop();
     }
   }
 
   _getLessonById(id){
+    // check for the placeholder lesson
+    if(id === -1){
+      return {
+        request_date: getDate(Date.now()),
+        response_video: 'l3Y3iJa6DvE',
+        response_notes: 'Welcome to the Swing Essentials family! We\'re super excited to have you aboard.|:::|Upload a video of your golf swing and we\'ll have a PGA-certified professional analyze your swing and provide a custom-tailored breakdown video highlighting what you\'re doing well, as well as areas you can work on to improve your game.',
+        request_notes: '',
+        fo_swing: '',
+        dtl_swing: ''
+      }
+    }
+
     if(this.props.lessons.closed.length < 1){return null;}
     for(let i = 0; i < this.props.lessons.closed.length; i++){
       if(this.props.lessons.closed[i].request_id === id){

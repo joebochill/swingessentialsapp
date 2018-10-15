@@ -214,7 +214,7 @@ class Lessons extends React.Component{
                         data={this.props.admin ? this.props.lessons.closed : this.props.lessons.pending.concat(this.props.lessons.closed)}
                         ListEmptyComponent={!this.props.lessons.loading ?
                             <CardRow primary={'Welcome to Swing Essentials!'}
-                                action={() => alert('coming soon')}
+                                action={() => this.props.navigation.push('Lesson', {id: -1})}
                             />
                             :<CardRow primary={'Loading Lessons...'}/>
                         }
