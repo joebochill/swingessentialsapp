@@ -26,9 +26,7 @@ function mapStateToProps(state){
         username: state.userData.username,
         token: state.login.token,
         lessons: state.lessons,
-        modalWarning: state.login.modalWarning,
-        targetRoute: state.links.targetRoute,
-        // tips: state.tips.tipList
+        modalWarning: state.login.modalWarning
     };
 }
 
@@ -50,11 +48,6 @@ class CustomDrawer extends React.Component {
         this.state={
             appState: AppState.currentState
         }
-        // TODO: load all data from the saved token
-        // const token = localStorage.getItem('token');
-        // if(token){
-        //   store.dispatch(requestDataFromToken(token));
-        // }
 
         // load the tips of the month and blogs as soon as we load the app
         this.props.getTips();
@@ -98,16 +91,10 @@ class CustomDrawer extends React.Component {
         let path = event.url.split('/').filter((el) => el.length > 0);
 
         if(event.url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
-            this.props.setTargetRoute('Lesson', path[path.length - 1]);
-            if(this.props.token) {this.props.navigation.navigate('Lesson')}
-        }
-        else if(event.url.match(/\/lessons\/?$/gi)){
-            this.props.setTargetRoute('Lessons', null);
-            if(this.props.token) {this.props.navigation.navigate('Lessons')}
+            if(this.props.token) {this.props.navigation.navigate('Lesson',{url: path[path.length - 1]})}
         }
         else if(event.url.match(/\/register\/[A-Z0-9]+\/?$/gi)){
-            this.props.setTargetRoute('Register', path[path.length - 1]);
-            this.props.navigation.navigate('Register');
+            this.props.navigation.navigate('Register', {code: path[path.length - 1]});
         }
     }
 

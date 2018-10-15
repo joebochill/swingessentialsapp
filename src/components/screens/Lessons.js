@@ -223,10 +223,7 @@ class Lessons extends React.Component{
                                 <CardRow 
                                     primary={item.request_date} 
                                     secondary={this.props.admin ? item.username : (parseInt(item.viewed, 10) === 0 ? "NEW" : null)} 
-                                    action={() => {
-                                        this.props.navigation.dispatch({type:'SELECT_LESSON', data:{id:item.request_id}});
-                                        this.props.navigation.push('Lesson');
-                                    }}
+                                    action={() => this.props.navigation.push('Lesson', {id: item.request_id})}
                                 />
                                 :
                                 <CardRow primary={item.request_date} secondary={'IN PROGRESS'} />

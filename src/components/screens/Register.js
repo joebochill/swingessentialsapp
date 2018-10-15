@@ -60,6 +60,14 @@ class Register extends React.Component{
             validationError: false,
             regCode: null
         };
+
+        // Check if we are coming from a deep link
+        const code = this.props.navigation.getParam('code', null);
+        if(code){
+            this.state.regCode = code;
+            this.props.verifyEmail(code);
+        }
+
         this.fields = [];
         this.regProperties=[
             {property: 'firstName', display: 'First Name', blur: null,
@@ -94,13 +102,6 @@ class Register extends React.Component{
         ];
     }
 
-    componentWillMount () {
-        if(this.props.links.targetRoute === 'Register' && this.props.links.extra){
-            this.setState({regCode: this.props.links.extra});
-            this.props.verifyEmail(this.props.links.extra);
-            this.props.setTargetRoute(null, null);
-        }
-    }
     componentWillUnmount() {
     }
 

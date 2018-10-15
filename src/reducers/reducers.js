@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { AppNavigator } from '../navigators/AppNavigator';
 import {TUTORIALS} from '../constants/index';
-import {TOKEN_TIMEOUT, SET_TARGET_ROUTE} from '../actions/actions';
+import {TOKEN_TIMEOUT} from '../actions/actions';
 import {LOGIN, LOGOUT, CHECK_TOKEN, REFRESH_TOKEN, SET_TOKEN} from '../actions/LoginActions';
 
 import {
@@ -69,7 +69,8 @@ const login = (state=initialLoginState, action) => {
 	switch(action.type){
     case SET_TOKEN.REQUEST:
       return{...state,
-        token: action.data
+        token: action.data,
+        admin: (JSON.parse(atob(action.data.split('.')[1]))['role'].toLowerCase()==='administrator')
       };
     case LOGIN.SUCCESS:
     case CREATE_ACCOUNT.SUCCESS:
@@ -403,22 +404,6 @@ const packages = (state = initialPackageState, action) => {
   }
 }
 
-const initialLinkingState = {
-  targetRoute: null,
-  extra: null
-};
-const links = (state = initialLinkingState, action) => {
-  switch(action.type){
-    case SET_TARGET_ROUTE.REQUEST:
-      return {...state, 
-        targetRoute: action.data.loc,
-        extra: action.data.extra
-      };
-    default:
-      return state;
-  }
-}
-
 const initialTutorialState = {
   [TUTORIALS.LESSON_LIST]: false,
   [TUTORIALS.LESSON]: false,
@@ -452,7 +437,6 @@ const AppReducer = combineReducers({
   settings,
   registration,
   packages,
-  links,
   tutorial
 });
 

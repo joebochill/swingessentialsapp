@@ -53,55 +53,42 @@ class Lesson extends React.Component{
       foPlaying: false,
       dtlPlaying: false
     };
-  }
 
-  componentWillMount(){
-    // TODO: fix this for sample lesson
-    if(!this.props.token){
-        this.props.navigation.navigate('Auth');
-    }
-    else if(this.props.lessons.selected){
-      const lesson = this._getLessonById(this.props.lessons.selected);
-      if(lesson && parseInt(lesson.viewed, 10) === 0){
-        this.props.markViewed({id: this.props.lessons.selected}, this.props.token);
+
+    const lesson_id = this.props.navigation.getParam('id', null);
+    const lesson_url = this.props.navigation.getParam('url', null);
+
+    let lesson;
+
+    if(!lesson_id && !lesson_url){this.props.navigation.pop();}
+    
+    if(lesson_id){
+      lesson = this._getLessonById(parseInt(lesson_id, 10));
+
+      if(lesson === null){
+        this.props.navigation.pop();
+      }
+      if(parseInt(lesson.viewed, 10) === 0){
+        this.props.markViewed({id: lesson_id}, this.props.token);
       }
     }
-    else if(this.props.links.targetRoute === 'Lesson' && this.props.links.extra){
-      const lesson = this._getLessonByURL(this.props.links.extra);
-      if(!lesson){return;}
+    else if(lesson_url){
+      lesson = this._getLessonByURL(lesson_url);
+
+      if(lesson === null){
+        this.props.navigation.pop();
+      }
 
       if(parseInt(lesson.viewed, 10) === 0){
         this.props.markViewed({id: lesson.request_id}, this.props.token);
       }
-
-      this.props.navigation.dispatch({type:'SELECT_LESSON', data:{id:lesson.request_id}});
-      this.props.setTargetRoute(null, null);
     }
-    else{
-      this.props.navigation.navigate('Lessons');
-    }
+    this.state.lesson = lesson;
   }
 
   componentWillReceiveProps(nextProps){
     if(!nextProps.token){
         this.props.navigation.pop();
-    }
-    if(nextProps.lessons.selected !== this.props.lessons.selected){
-      const lesson = this._getLessonById(nextProps.lessons.selected);
-      if(lesson && parseInt(lesson.viewed, 10) === 0){
-        this.props.markViewed({id: nextProps.lessons.selected}, this.props.token);
-      }
-    }
-    else if(nextProps.links.targetRoute === 'Lesson' && nextProps.links.extra){
-      const lesson = this._getLessonByURL(nextProps.links.extra);
-      if(!lesson){return;}
-
-      if(parseInt(lesson.viewed, 10) === 0){
-        this.props.markViewed({id: lesson.request_id}, this.props.token);
-      }
-
-      this.props.navigation.dispatch({type:'SELECT_LESSON', data:{id:lesson.request_id}});
-      this.props.setTargetRoute(null, null);
     }
   }
 
@@ -126,10 +113,7 @@ class Lesson extends React.Component{
   }
 
   render(){
-    const lesson = this.props.lessons.selected ? 
-      this._getLessonById(this.props.lessons.selected) :
-      this._getLessonByURL(this.props.links.extra);
-
+    const lesson = this.state.lesson;
     if(!lesson){return null;}
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
