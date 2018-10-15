@@ -37,7 +37,7 @@ class Lessons extends React.Component{
         super(props);
         this.state={
             refreshing: false,
-            // showTutorial: false
+            listLimit: 10
         }
     }
 
@@ -52,6 +52,10 @@ class Lessons extends React.Component{
         this.props.getCredits(this.props.token);
         this.props.getLessons(this.props.token);
     }
+
+    handleLoadMore = () => {
+        this.setState({listLimit: this.state.listLimit+10});
+    };
 
     _formatUnlimited(){
         let unlimitedRemaining = (this.props.credits.unlimitedExpires - (Date.now()/1000));
@@ -206,12 +210,17 @@ class Lessons extends React.Component{
                     <FlatList
                         style={{marginTop: spacing.normal}}
                         scrollEnabled= {false}
+                        onEndReached={this.handleLoadMore}
+                        onEndThreshold={1}
                         ListHeaderComponent={
                             <View style={styles.cardHeader}>
                                 <Text style={{fontSize: scale(14), color: colors.white}}>Lesson History</Text>
                             </View>
                         }
-                        data={this.props.admin ? this.props.lessons.closed : this.props.lessons.pending.concat(this.props.lessons.closed)}
+                        data={this.props.admin ? 
+                            this.props.lessons.closed.slice(0, this.state.listLimit) : 
+                            this.props.lessons.pending.concat(this.props.lessons.closed).slice(0, this.state.listLimit)
+                        }
                         ListEmptyComponent={!this.props.lessons.loading ?
                             <CardRow primary={'Welcome to Swing Essentials!'}
                                 action={() => this.props.navigation.push('Lesson', {id: -1})}

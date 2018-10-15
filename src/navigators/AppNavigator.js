@@ -32,7 +32,6 @@ import Setting from '../components/screens/Setting';
 
 
 import { addListener } from '../utils/redux';
-import { loadTutorials } from '../utils/tutorials';
 
 const AuthNavigator = {
     screen: StackNavigator(
@@ -140,12 +139,6 @@ class AppWithNavigationState extends React.Component {
         dispatch: PropTypes.func.isRequired,
         nav: PropTypes.object.isRequired
     };
-
-    constructor(props){
-        super(props);
-        //TODO: Maybe this belongs somewhere else
-        loadTutorials(this.props.dispatch);
-    }
 
     render() {
         const { dispatch, nav } = this.props;

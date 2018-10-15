@@ -13,6 +13,7 @@ import { PermissionsAndroid } from 'react-native';
 
 import {ASYNC_PREFIX} from './src/constants/index';
 import {setToken} from './src/actions/LoginActions';
+import { loadTutorials } from './src/utils/tutorials';
 
 async function requestPermissions() {
   try {
@@ -37,6 +38,7 @@ class SwingEssentialsApp extends React.Component {
     .then((token)=>{
       if(token){store.dispatch(setToken(token));}
     });
+    loadTutorials(store.dispatch);
   }
 
   componentDidMount(){
