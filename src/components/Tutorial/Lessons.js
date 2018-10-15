@@ -34,7 +34,7 @@ class LessonsTutorial extends React.Component {
                             {date: getDate(Date.now())},{date: getDate(Date.now()-24*60*60*1000)},{date: getDate(Date.now()-7*24*60*60*1000)}
                         ]}
                         renderItem={({item, index}) => 
-                            <CardRow primary={item.date} secondary={index === 0 ? 'IN PROGRESS' : ''} action={index !== 0} />
+                            <CardRow primary={item.date} secondary={index === 0 ? 'IN PROGRESS' : index === 1 ? 'NEW' : ''} action={index !== 0 ? () => {} : null} />
                         }
                         keyExtractor={(item, index) => index}
                     />

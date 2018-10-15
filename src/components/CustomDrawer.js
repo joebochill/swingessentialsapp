@@ -160,7 +160,7 @@ class CustomDrawer extends React.Component {
                                 action={() => this.props.navigation.navigate('Order')}/>
                         </View>
                     <View>
-                        <CardRow menuItem primary="Tips of the Month" 
+                        <CardRow menuItem primary="Tip of the Month" 
                             customStyle={{borderTopWidth: scale(1)}}
                             action={() => this.props.navigation.navigate('Tips')}/>
                         <CardRow menuItem primary="The 19th Hole" 

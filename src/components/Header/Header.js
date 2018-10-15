@@ -50,6 +50,7 @@ class CustomHeader extends React.Component {
             }}
             rightComponent={{ 
                 icon: this.props.token ? 'exit-to-app' : 'person',
+                size: verticalScale(26),
                 underlayColor:colors.transparent, 
                 color: colors.white, 
                 containerStyle:styles.headerIcon, 
