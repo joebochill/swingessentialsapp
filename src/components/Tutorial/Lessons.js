@@ -23,7 +23,7 @@ class LessonsTutorial extends React.Component {
                     <Text style={StyleSheet.flatten([styles.headline, {fontSize: scale(28), color: colors.white}])}>{'Welcome to Swing Essentials!'}</Text>
                     <Text style={StyleSheet.flatten([styles.paragraph, {color: colors.white, textAlign: 'center'}])}>When you have submitted your golf swing for analysis, your lessons will appear in this list.</Text>
                     <FlatList
-                        style={{marginTop: spacing.normal,flex: 0}}
+                        style={{marginTop: spacing.normal,flex: 0, marginHorizontal: 0}}
                         scrollEnabled= {false}
                         ListHeaderComponent={
                             <View style={styles.cardHeader}>
@@ -34,7 +34,7 @@ class LessonsTutorial extends React.Component {
                             {date: getDate(Date.now())},{date: getDate(Date.now()-24*60*60*1000)},{date: getDate(Date.now()-7*24*60*60*1000)}
                         ]}
                         renderItem={({item, index}) => 
-                            <CardRow primary={item.date} secondary={index === 0 ? 'IN PROGRESS' : index === 1 ? 'NEW' : ''} action={index !== 0 ? () => {} : null} />
+                            <CardRow primary={item.date} secondary={index === 0 ? 'IN PROGRESS' : index === 1 ? 'NEW' : ''} nav={index !== 0} />
                         }
                         keyExtractor={(item, index) => index}
                     />

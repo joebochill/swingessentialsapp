@@ -171,7 +171,10 @@ class Redeem extends React.Component{
 
     _redeemLesson(){
         Keyboard.dismiss();
-        if(this.props.redeemPending){ return;}
+        if(this.props.redeemPending || 
+            this.state.error !== ''){ 
+                return;
+        }
         if((!this.foplayer || !this.dtlplayer)){
             return;
         }
@@ -210,7 +213,11 @@ class Redeem extends React.Component{
                         <Button
                             title="SUBMIT"
                             fontSize={scale(14)}
-                            disabled={this.props.redeemPending || this.state.role === 'pending' || !this.state.foSource || !this.state.dtlSource}
+                            disabled={this.props.redeemPending || 
+                                this.state.error !== '' ||
+                                !this.state.foSource || 
+                                !this.state.dtlSource
+                            }
                             disabledStyle={styles.disabledButton}
                             onPress={()=>this._redeemLesson()}
                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}

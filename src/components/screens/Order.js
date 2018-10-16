@@ -120,10 +120,10 @@ class Order extends React.Component{
     }
 
     _purchaseLesson(data){
-        if(this.state.role !== 'customer' && this.state.role !== 'admin'){
+        if(this.state.error !== '' || this.state.role === ''){
             return;
         }
-        if(!data){ return;}
+        if(!data){return;}
         this.setState({paymentActive: true});
         RNIap.buyProduct(data.sku).then(purchase => {
             this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token, Platform.OS);

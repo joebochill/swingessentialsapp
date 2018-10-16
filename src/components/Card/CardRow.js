@@ -20,7 +20,7 @@ class CardRow extends React.Component {
                 <Text style={{fontSize: scale(14), color: colors.purple, flex: 0, opacity: this.props.disabled ? 0.7 : 1}}>{this.props.secondary}</Text>
             }
             {this.props.secondaryInput}
-            {this.props.action && !this.props.menuItem && 
+            {(this.props.action || this.props.nav) && !this.props.menuItem && 
                 <MaterialIcons name="ios-arrow-forward" 
                     size={scale(16)} 
                     style={{ fontSize: scale(14), color: colors.purple, paddingLeft: spacing.small, flex: 0, opacity: this.props.disabled ? 0.7 : 1 }} 

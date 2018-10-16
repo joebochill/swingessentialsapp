@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import Header from '../Header/Header';
 import {Icon} from 'react-native-elements';
-import YouTube from 'react-native-youtube'
+import YouTube from 'react-native-youtube';
+import {YOUTUBE_API_KEY} from '../../constants/index';
 import styles, {colors, spacing, sizes} from '../../styles/index';
 import {scale} from '../../styles/dimension';
 import {formatText, getDate} from '../../utils/utils';
@@ -25,7 +26,7 @@ import { tutorialViewed } from '../../actions/TutorialActions';
 
 import Video from 'react-native-video';
 
-import {YOUTUBE_API_KEY} from '../../constants/index';
+
 
 
 function mapStateToProps(state){
