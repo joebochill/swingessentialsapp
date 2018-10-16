@@ -51,7 +51,8 @@ class Order extends React.Component{
             error: '',
             products: []
         }
-
+    }
+    componentWillMount(){
         this._updateUserRole(this.props.token);         
         //get the package SKU numbers from the packages object
         if(this.props.packages){
@@ -62,7 +63,6 @@ class Order extends React.Component{
             this.skus = skus;
         }
     }
-
     componentDidMount(){
         try {
             RNIap.prepare()
