@@ -106,6 +106,7 @@ export function refreshToken(token){
                     const token = response.headers.get('Token');
                     //localStorage.setItem('token', token);
                     dispatch(success(REFRESH_TOKEN.SUCCESS, {token: token}));
+                    AsyncStorage.setItem(ASYNC_PREFIX+'token', token);
                     break;
                 default:
                     checkTimeout(response, dispatch);
