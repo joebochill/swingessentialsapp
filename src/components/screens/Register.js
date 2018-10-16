@@ -6,16 +6,16 @@ import {
     View, 
     Text,
     StyleSheet,
-    Platform,
     ActivityIndicator
 } from 'react-native';
-import {FormInput, Button, Header} from 'react-native-elements';
+import {FormInput, Button} from 'react-native-elements';
+import Header from '../Header/Header';
 import {setTargetRoute} from '../../actions/actions';
 
 
 import {verifyEmail} from '../../actions/RegistrationActions';
-import styles, {colors, spacing, altStyles} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
+import styles, {colors, spacing} from '../../styles/index';
+import {scale} from '../../styles/dimension';
 
 import KeyboardView from '../Keyboard/KeyboardView';
 
@@ -106,7 +106,7 @@ class Register extends React.Component{
     }
 
     componentWillReceiveProps(nextProps){
-        if(nextProps.token){
+        if(nextProps.token && nextProps.token !== this.props.token){
             this.props.navigation.goBack(null);
         }
     }
@@ -132,7 +132,6 @@ class Register extends React.Component{
             this.state.firstName && 
             this.state.lastName && 
             this.state.email && this.state.validEmail && this.props.emailAvailable &&
-            //(!this.state.phone || (this.state.phone && this.state.validPhone)) &&
             this.state.password && 
             this.state.password === this.state.passwordConfirm);
     }
@@ -183,31 +182,14 @@ class Register extends React.Component{
         let regError = this.props.registrationError;
         return(
             <View style={{flex: 1}}>
-                <Header
-                    style={{flex: 0}}
-                    outerContainerStyles={{ 
-                        backgroundColor: colors.lightPurple, 
-                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
-                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
-                    }}
-                    //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-                    leftComponent={{ 
-                        icon: 'arrow-back',
-                        size: verticalScale(26),
-                        underlayColor:colors.transparent,
-                        containerStyle:styles.headerIcon, 
-                        color: colors.white, 
-                        onPress: () => this.props.navigation.pop()
-                    }}
-                    centerComponent={{ text: 'Create Account', style: { color: colors.white, fontSize: verticalScale(18) } }}
-                />
+                <Header title={'Create Account'} navigation={this.props.navigation} type={'back'}/>
                 {this.state.regCode && 
                     <KeyboardView
                         fixed={true ?//((this.props.registrationActivated && !regError) || regError === 400304) ? 
                             <Button
                                 title="SIGN IN"
                                 fontSize={scale(14)}
-                                onPress={()=> {this.props.navigation.navigate('Login')}}
+                                onPress={()=> {this.props.navigation.pop()}}
                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
                                 containerViewStyle={styles.buttonContainer}
                             />

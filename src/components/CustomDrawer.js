@@ -93,8 +93,14 @@ class CustomDrawer extends React.Component {
         if(event.url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
             if(this.props.token) {this.props.navigation.navigate('Lesson',{url: path[path.length - 1]})}
         }
+        else if(event.url.match(/\/lessons\/?$/gi)){
+            if(this.props.token) {this.props.navigation.navigate('Lessons')}
+        }
         else if(event.url.match(/\/register\/[A-Z0-9]+\/?$/gi)){
             this.props.navigation.navigate('Register', {code: path[path.length - 1]});
+        }
+        else if(event.url.match(/\/register\/?$/gi)){
+            this.props.navigation.navigate('Register');
         }
     }
 
