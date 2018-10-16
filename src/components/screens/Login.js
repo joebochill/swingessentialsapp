@@ -31,8 +31,7 @@ function mapStateToProps(state){
     return {
         username: state.userData.username,
         loginFails: state.login.failCount,
-        token: state.login.token,
-        loggedOut: state.login.loggedOut
+        token: state.login.token
     };
 }
 function mapDispatchToProps(dispatch){
@@ -89,7 +88,7 @@ class Login extends React.Component{
                     return;
                 }
                 this._updateKeychain(()=>{
-                    if(!this.props.loggedOut && useTouch){
+                    if(useTouch){
                         this._showBiometricLogin();
                     }
                 });

@@ -55,8 +55,7 @@ class Redeem extends React.Component{
             role: 'pending',
             error: ''
         }
-    }
-    componentWillMount(){
+
         this._updateUserRole(this.props.token);
         if(this.props.lessons.length > 0){
             Alert.alert(

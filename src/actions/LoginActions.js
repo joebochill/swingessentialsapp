@@ -81,6 +81,7 @@ export function requestLogout(token){
             switch(response.status) {
                 case 200:
                     dispatch(success(LOGOUT.SUCCESS));
+                    AsyncStorage.removeItem(ASYNC_PREFIX+'token');
                     break;
                 default:
                     checkTimeout(response, dispatch);
