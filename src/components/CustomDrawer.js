@@ -6,6 +6,7 @@ import {requestLogout,
     requestDataFromToken} from '../actions/LoginActions';
 import {getTips} from '../actions/TipActions';
 import {getBlogs} from '../actions/BlogActions';
+import {getPackages} from '../actions/PackageActions';
 import { setTargetRoute} from '../actions/actions';
 import LogoutWarning from './Modal/TokenExpire';
 
@@ -25,9 +26,7 @@ function mapStateToProps(state){
         username: state.userData.username,
         token: state.login.token,
         lessons: state.lessons,
-        modalWarning: state.login.modalWarning,
-        targetRoute: state.links.targetRoute,
-        // tips: state.tips.tipList
+        modalWarning: state.login.modalWarning
     };
 }
 
@@ -38,7 +37,8 @@ function mapDispatchToProps(dispatch){
         showLogoutWarning: (show) => dispatch(showLogoutWarning(show)),
         setTargetRoute: (loc, extra) => dispatch(setTargetRoute(loc, extra)),
         getTips: (token = null) => dispatch(getTips(token)),
-        getBlogs: (token = null) => dispatch(getBlogs(token))
+        getBlogs: (token = null) => dispatch(getBlogs(token)),
+        getPackages: (token = null) => dispatch(getPackages(token))
     }
 }
 
@@ -48,15 +48,11 @@ class CustomDrawer extends React.Component {
         this.state={
             appState: AppState.currentState
         }
-        // TODO: load all data from the saved token
-        // const token = localStorage.getItem('token');
-        // if(token){
-        //   store.dispatch(requestDataFromToken(token));
-        // }
 
         // load the tips of the month and blogs as soon as we load the app
         this.props.getTips();
         this.props.getBlogs();
+        this.props.getPackages();
     }
     componentDidMount(){
         AppState.addEventListener('change', this._handleAppStateChange);
@@ -95,15 +91,15 @@ class CustomDrawer extends React.Component {
         let path = event.url.split('/').filter((el) => el.length > 0);
 
         if(event.url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
-            this.props.setTargetRoute('Lesson', path[path.length - 1]);
-            if(this.props.token) {this.props.navigation.navigate('Lesson')}
+            if(this.props.token) {this.props.navigation.navigate('Lesson',{url: path[path.length - 1]})}
         }
         else if(event.url.match(/\/lessons\/?$/gi)){
-            this.props.setTargetRoute('Lessons', null);
             if(this.props.token) {this.props.navigation.navigate('Lessons')}
         }
         else if(event.url.match(/\/register\/[A-Z0-9]+\/?$/gi)){
-            this.props.setTargetRoute('Register', path[path.length - 1]);
+            this.props.navigation.navigate('Register', {code: path[path.length - 1]});
+        }
+        else if(event.url.match(/\/register\/?$/gi)){
             this.props.navigation.navigate('Register');
         }
     }
@@ -135,7 +131,6 @@ class CustomDrawer extends React.Component {
                     <Text style={{fontSize: scale(14), color:colors.white, marginTop:scale(-14)}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>
                 </View>
                 <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent:'space-between'}}>
-                    {this.props.token && 
                         <View style={{marginTop: spacing.normal}}>
                             <CardRow menuItem primary="Your Lessons" 
                                 customStyle={{borderTopWidth: scale(1)}}
@@ -157,19 +152,24 @@ class CustomDrawer extends React.Component {
                             <CardRow menuItem primary="Order Lessons" 
                                 action={() => this.props.navigation.navigate('Order')}/>
                         </View>
-                    }
-                    {!this.props.token && <View></View>}
                     <View>
-                        <CardRow menuItem primary="Tips of the Month" 
+                        <CardRow menuItem primary="Tip of the Month" 
                             customStyle={{borderTopWidth: scale(1)}}
                             action={() => this.props.navigation.navigate('Tips')}/>
                         <CardRow menuItem primary="The 19th Hole" 
                             action={() => this.props.navigation.navigate('Blogs')}/>
                     </View>
                     <View style={{marginBottom: spacing.normal}}>
-                        <CardRow menuItem primary="Sign Out" 
+                        {this.props.token && 
+                            <CardRow menuItem primary="Sign Out" 
                                 customStyle={{borderTopWidth: scale(1)}}
                                 action={() => this.props.requestLogout(this.props.token)}/>
+                        }
+                        {!this.props.token &&
+                            <CardRow menuItem primary="Sign In / Register" 
+                                customStyle={{borderTopWidth: scale(1)}}
+                                action={() => this.props.navigation.push('Auth')}/>
+                        }
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>
                         <CardRow menuItem primary="About" secondary={`v${APP_VERSION}`} 

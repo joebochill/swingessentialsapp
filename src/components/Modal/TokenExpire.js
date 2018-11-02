@@ -97,9 +97,9 @@ class TokenExpireModal extends React.Component {
                             <Text style={{fontWeight: 'bold', color: colors.purple}}>{'Session Expiration In: ' + this.state.time}</Text>
                         </View>
                         <View style={{padding: spacing.normal}}>
-                            <Text style={{color: colors.purple}}>Your session is about to expire. Click below to stay logged in.</Text>
+                            <Text style={{color: colors.purple}}>Your session is about to expire. Click below to stay signed in.</Text>
                             <Button
-                                title="KEEP ME LOGGED IN"
+                                title="KEEP ME SIGNED IN"
                                 onPress={this._okay.bind(this)}
                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal, marginLeft: 0}])}
                                 containerViewStyle={StyleSheet.flatten([styles.buttonContainer, {marginLeft: 0, marginRight: 0, alignSelf: 'center'}])}

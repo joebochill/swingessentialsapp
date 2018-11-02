@@ -9,31 +9,40 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
-import {Header, Icon} from 'react-native-elements';
-import YouTube from 'react-native-youtube'
-import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
-import {formatText} from '../../utils/utils';
+import Header from '../Header/Header';
+import {Icon} from 'react-native-elements';
+import YouTube from 'react-native-youtube';
+import {YOUTUBE_API_KEY} from '../../constants/index';
+import styles, {colors, spacing, sizes} from '../../styles/index';
+import {scale} from '../../styles/dimension';
+import {formatText, getDate} from '../../utils/utils';
+import Tutorial from '../Tutorial/Lesson';
 
 import {setTargetRoute} from '../../actions/actions';
 import { markLessonViewed } from '../../actions/LessonActions';
+
+import {TUTORIALS} from '../../constants/index';
+import { tutorialViewed } from '../../actions/TutorialActions';
+
 import Video from 'react-native-video';
 
-import {YOUTUBE_API_KEY} from '../../constants/index';
+
 
 
 function mapStateToProps(state){
   return {
     token: state.login.token,
     lessons: state.lessons,
-    links: state.links
+    links: state.links,
+    showTutorial: state.tutorial[TUTORIALS.LESSON]
   };
 }
 
 function mapDispatchToProps(dispatch){
   return {
     markViewed: (id, token) => {dispatch(markLessonViewed(id, token))},
-    setTargetRoute: (loc, extra) => {dispatch(setTargetRoute(loc, extra))}
+    setTargetRoute: (loc, extra) => {dispatch(setTargetRoute(loc, extra))},
+    closeTutorial: () => {dispatch(tutorialViewed(TUTORIALS.LESSON))}
   };
 }
 
@@ -44,58 +53,58 @@ class Lesson extends React.Component{
       foPlaying: false,
       dtlPlaying: false
     };
-  }
 
-  componentWillMount(){
-    if(!this.props.token){
-        this.props.navigation.navigate('Auth');
-    }
-    else if(this.props.lessons.selected){
-      const lesson = this._getLessonById(this.props.lessons.selected);
-      if(lesson && parseInt(lesson.viewed, 10) === 0){
-        this.props.markViewed({id: this.props.lessons.selected}, this.props.token);
+
+    const lesson_id = this.props.navigation.getParam('id', null);
+    const lesson_url = this.props.navigation.getParam('url', null);
+
+    let lesson;
+
+    if(!lesson_id && !lesson_url){this.props.navigation.pop();}
+    
+    if(lesson_id){
+      lesson = this._getLessonById(parseInt(lesson_id, 10));
+
+      if(lesson === null){
+        this.props.navigation.pop();
+      }
+      if(parseInt(lesson.viewed, 10) === 0){
+        this.props.markViewed({id: lesson_id}, this.props.token);
       }
     }
-    else if(this.props.links.targetRoute === 'Lesson' && this.props.links.extra){
-      const lesson = this._getLessonByURL(this.props.links.extra);
-      if(!lesson){return;}
+    else if(lesson_url){
+      lesson = this._getLessonByURL(lesson_url);
+
+      if(lesson === null){
+        this.props.navigation.pop();
+      }
 
       if(parseInt(lesson.viewed, 10) === 0){
         this.props.markViewed({id: lesson.request_id}, this.props.token);
       }
-
-      this.props.navigation.dispatch({type:'SELECT_LESSON', data:{id:lesson.request_id}});
-      this.props.setTargetRoute(null, null);
     }
-    else{
-      this.props.navigation.navigate('Lessons');
-    }
+    this.state.lesson = lesson;
   }
 
   componentWillReceiveProps(nextProps){
-    if(!nextProps.token){
-        this.props.navigation.navigate('Auth');
-    }
-    if(nextProps.lessons.selected !== this.props.lessons.selected){
-      const lesson = this._getLessonById(nextProps.lessons.selected);
-      if(lesson && parseInt(lesson.viewed, 10) === 0){
-        this.props.markViewed({id: nextProps.lessons.selected}, this.props.token);
-      }
-    }
-    else if(nextProps.links.targetRoute === 'Lesson' && nextProps.links.extra){
-      const lesson = this._getLessonByURL(nextProps.links.extra);
-      if(!lesson){return;}
-
-      if(parseInt(lesson.viewed, 10) === 0){
-        this.props.markViewed({id: lesson.request_id}, this.props.token);
-      }
-
-      this.props.navigation.dispatch({type:'SELECT_LESSON', data:{id:lesson.request_id}});
-      this.props.setTargetRoute(null, null);
+    if(this.props.token && !nextProps.token){
+        this.props.navigation.pop();
     }
   }
 
   _getLessonById(id){
+    // check for the placeholder lesson
+    if(id === -1){
+      return {
+        request_date: getDate(Date.now()),
+        response_video: 'l3Y3iJa6DvE',
+        response_notes: 'Welcome to the Swing Essentials family! We\'re super excited to have you aboard.|:::|Upload a video of your golf swing and we\'ll have a PGA-certified professional analyze your swing and provide a custom-tailored breakdown video highlighting what you\'re doing well, as well as areas you can work on to improve your game.',
+        request_notes: '',
+        fo_swing: '',
+        dtl_swing: ''
+      }
+    }
+
     if(this.props.lessons.closed.length < 1){return null;}
     for(let i = 0; i < this.props.lessons.closed.length; i++){
       if(this.props.lessons.closed[i].request_id === id){
@@ -116,31 +125,11 @@ class Lesson extends React.Component{
   }
 
   render(){
-    const lesson = this.props.lessons.selected ? 
-      this._getLessonById(this.props.lessons.selected) :
-      this._getLessonByURL(this.props.links.extra);
-
+    const lesson = this.state.lesson;
     if(!lesson){return null;}
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
-        <Header
-            style={{flex: 0}}
-            outerContainerStyles={{ 
-              backgroundColor: colors.lightPurple, 
-              height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
-              padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
-            }}
-            //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-            leftComponent={{ 
-              icon: 'arrow-back',
-              size: verticalScale(26),
-              underlayColor:colors.transparent,
-              containerStyle:styles.headerIcon, 
-              color: colors.white, 
-              onPress: () => this.props.navigation.pop() 
-            }}
-            centerComponent={{ text: 'Swing Analysis', style: { color: colors.white, fontSize: verticalScale(18) } }}
-        />
+        <Header title={'Swing Analysis'} navigation={this.props.navigation} type={'back'}/>
         <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
           <Text style={styles.headline}>{lesson.request_date}</Text>
           <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.tiny}])}>
@@ -240,6 +229,7 @@ class Lesson extends React.Component{
             </View>
           }
         </ScrollView>
+        <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>       
       </View>
     );
   }

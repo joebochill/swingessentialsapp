@@ -30,16 +30,6 @@ class SettingsScreen extends React.Component{
     this.state={};
   }
 
-  componentDidMount(){
-    if(!this.props.token){
-        this.props.navigation.navigate('Auth');
-    }
-  }
-  componentWillReceiveProps(nextProps){
-    if(!nextProps.token){
-        this.props.navigation.navigate('Auth');
-    }
-  }
 
   render(){
     return (

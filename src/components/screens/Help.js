@@ -8,10 +8,12 @@ import {
   StyleSheet,
   Platform
 } from 'react-native';
-import {Header} from 'react-native-elements';
-import styles, {colors, spacing, altStyles} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
+import Header from '../Header/Header';
+import styles, {colors, spacing} from '../../styles/index';
+import {width} from '../../styles/dimension';
 
+import YouTube from 'react-native-youtube';
+import {YOUTUBE_API_KEY} from '../../constants/index';
 
 function mapStateToProps(state){
   return {
@@ -23,58 +25,32 @@ function mapDispatchToProps(dispatch){
 }
 
 class HelpScreen extends React.Component{
-  constructor(props){
-    super(props);
-  }
-
-  componentDidMount(){
-    if(!this.props.token){
-        this.props.navigation.navigate('Auth');
-    }
-  }
-  componentWillReceiveProps(nextProps){
-      if(!nextProps.token){
-          this.props.navigation.navigate('Auth');
-      }
-  }
-
   render(){
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
-        <Header
-          style={{flex: 0}}
-          outerContainerStyles={{ 
-            backgroundColor: colors.lightPurple, 
-            height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
-            padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
-          }}
-          //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-          leftComponent={{ 
-            icon: 'menu',
-            size: verticalScale(26),
-            underlayColor:colors.transparent, 
-            color: colors.white, 
-            containerStyle:styles.headerIcon, 
-            onPress: () => this.props.navigation.navigate('DrawerOpen') 
-          }}
-          centerComponent={{ 
-            text: 'Help', 
-            style: { color: colors.white, fontSize: verticalScale(18) } 
-          }}
-          // rightComponent={{ 
-          //   icon: 'settings',
-          //   underlayColor:colors.transparent, 
-          //   color: colors.white, 
-          //   containerStyle:styles.headerIcon, 
-          //   onPress: () => {this.props.navigation.push('Settings')}
-          // }}
-        />
+        <Header title={'Help'} navigation={this.props.navigation}/>
         <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
           <Text style={styles.headline}>Frequently Asked Questions</Text>
           <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, marginBottom: spacing.small}])}>
             How does it work?
           </Text>
           <Text style={styles.paragraph}>Once you have downloaded the app, head over to the Redeem page from the menu. There you will be able to use your device's camera to record two videos of your swing (one face-on view and one down-the-line view). Once you are satisfied with the recording, you can submit your videos for expert analysis. Our PGA professional will build a custom swing analysis video for you comparing your swing side by side with a professional golfer. This analysis will highlight some of the things you are doing well and give you some things to work on in your next session to help you continue to improve your game.</Text>
+          <YouTube
+            apiKey={YOUTUBE_API_KEY}
+            videoId={'e8QozoBJfF8'}  // The YouTube video ID
+            play={false}             // control playback of video with true/false
+            fullscreen={false}       // control whether the video should play in fullscreen or inline
+            loop={false}             // control whether the video should loop when ended
+            showinfo={false}
+            modestbranding={true}
+            controls={2}
+            rel={false}
+            style={{
+              width:'100%', 
+              height: (width - 2*spacing.large)*(9/16), 
+              marginBottom: spacing.normal + spacing.small
+            }}
+          />
           <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, marginBottom: spacing.small}])}>
             How fast will I receive my swing analysis?
           </Text>

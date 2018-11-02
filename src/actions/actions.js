@@ -2,7 +2,6 @@
 export const LOCATION_CHANGE = '@@router/LOCATION_CHANGE';
 export const TOKEN_TIMEOUT = 'TOKEN_TIMEOUT';
 export const GET_PACKAGES = {REQUEST: 'GET_PACKAGES', SUCCESS: 'GET_PACKAGES_SUCCESS', FAIL: 'GET_PACKAGES_FAIL'};
-export const SET_TARGET_ROUTE = {REQUEST: 'SET_TARGET_ROUTE', SUCCESS: 'SET_TARGET_ROUTE_SUCCESS', FAIL: 'SET_TARGET_ROUTE_FAIL'};
 
 /* Base URL for fetch commands */
 // export const BASEURL = 'http://www.josephpboyle.com/api/swingessentialsapi.php/';
@@ -28,13 +27,6 @@ export function checkTimeout(response, dispatch){
     }
 }
 
-/* Sets the page to go to after navigating into the application from an external link. App will navigate
-to that page after the user has authenticated */
-export function setTargetRoute(loc, extra = null){
-    return (dispatch) => {
-        dispatch({type: SET_TARGET_ROUTE.REQUEST, data: {loc: loc, extra: extra}});
-    }
-}
 
 /* Dispatch a failure action for the supplied action type */
 export function failure(type, response){

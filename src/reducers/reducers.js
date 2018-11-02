@@ -1,18 +1,18 @@
 import { combineReducers } from 'redux';
-import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
-import {TOKEN_TIMEOUT, SET_TARGET_ROUTE} from '../actions/actions';
-import {LOGIN, LOGOUT, CHECK_TOKEN, REFRESH_TOKEN} from '../actions/LoginActions';
+import {TUTORIALS} from '../constants/index';
+import {TOKEN_TIMEOUT} from '../actions/actions';
+import {LOGIN, LOGOUT, CHECK_TOKEN, REFRESH_TOKEN, SET_TOKEN} from '../actions/LoginActions';
 
 import {
   GET_LESSONS, 
   GET_CREDITS, 
-  PURCHASE_LESSON,
   REDEEM_CREDIT,
   CHECK_COUPON,
   EXECUTE_PAYMENT
 } from '../actions/LessonActions.js';
-import { GET_SETTINGS } from '../actions/UserDataActions';
+import {MARK_TUTORIAL} from '../actions/TutorialActions';
+import { GET_SETTINGS, GET_USER_DATA } from '../actions/UserDataActions';
 import { CREATE_ACCOUNT, CHECK_USER, CHECK_EMAIL, VERIFY_EMAIL } from '../actions/RegistrationActions';
 import { GET_PACKAGES } from '../actions/PackageActions';
 import { GET_TIPS } from '../actions/TipActions';
@@ -42,10 +42,12 @@ const initialUserState = {
 };
 const userData = (state = initialUserState, action) => {
   switch(action.type){
+    case GET_USER_DATA.SUCCESS:
     case LOGIN.SUCCESS:
       return{...state, 
         username: action.data.personal.username
       };
+    case GET_USER_DATA.FAIL:
     case LOGOUT.SUCCESS:
     case TOKEN_TIMEOUT:
       return {...state,
@@ -60,18 +62,21 @@ const initialLoginState = {
   token: null,
   admin: false,
   modalWarning: false,
-  failCount: 0,
-  loggedOut: false
+  failCount: 0
 };
 const login = (state=initialLoginState, action) => {
 	switch(action.type){
+    case SET_TOKEN.REQUEST:
+      return{...state,
+        token: action.data,
+        admin: (JSON.parse(atob(action.data.split('.')[1]))['role'].toLowerCase()==='administrator')
+      };
     case LOGIN.SUCCESS:
     case CREATE_ACCOUNT.SUCCESS:
     case CHECK_TOKEN.SUCCESS:
     case REFRESH_TOKEN.SUCCESS:
       return{...state,
         modalWarning: false,
-        loggedOut: false,
         failCount: 0,
         token: action.data.token,
         admin: (JSON.parse(atob(action.data.token.split('.')[1]))['role'].toLowerCase()==='administrator')
@@ -86,7 +91,6 @@ const login = (state=initialLoginState, action) => {
     case TOKEN_TIMEOUT:
       return {...state,
         modalWarning: false,
-        loggedOut: true,
         failCount: 0,
         token: null,
         admin: false,
@@ -107,9 +111,9 @@ const login = (state=initialLoginState, action) => {
 
 const initialCreditsState = {
   count: 0,
-  unlimited: false,
+  unlimited: 0,
   unlimitedExpires: 0,
-  inProgress: true,
+  inProgress: false,
   success: false,
   fail: false
 };
@@ -165,7 +169,7 @@ const credits = (state = initialCreditsState, action) => {
 
 
 const initialLessonsState = {
-  loading: true,
+  loading: false,
   pending:[],
   closed:[],
   redeemPending: false,
@@ -269,9 +273,8 @@ const tips = (state = initialTipsState, action) => {
 		case LOGOUT.FAIL:
 		case GET_TIPS.FAIL:
 		case TOKEN_TIMEOUT:
-			return{
+			return{...state,
 				loading: false,
-				tipList: []
 			}
 		default:
 			return state;
@@ -297,9 +300,8 @@ const blogs = (state=initialBlogsState, action) => {
 		case LOGOUT.FAIL:
 		case GET_BLOGS.FAIL:
 		case TOKEN_TIMEOUT:
-			return{
+			return{...state,
 				loading: false,
-				blogList: []
 			}
 		default:
 			return state;
@@ -399,17 +401,22 @@ const packages = (state = initialPackageState, action) => {
   }
 }
 
-const initialLinkingState = {
-  targetRoute: null,
-  extra: null
+const initialTutorialState = {
+  [TUTORIALS.LESSON_LIST]: false,
+  [TUTORIALS.LESSON]: false,
+  [TUTORIALS.SUBMIT_SWING]: false,
+  [TUTORIALS.ORDER]: false
 };
-const links = (state = initialLinkingState, action) => {
+const tutorial = (state = initialTutorialState, action) => {
   switch(action.type){
-    case SET_TARGET_ROUTE.REQUEST:
+    case MARK_TUTORIAL.VIEWED:
       return {...state, 
-        targetRoute: action.data.loc,
-        extra: action.data.extra
+        [action.data]: false
       };
+    case MARK_TUTORIAL.NEW:
+      return {...state,
+        [action.data]: true
+      }
     default:
       return state;
   }
@@ -427,7 +434,7 @@ const AppReducer = combineReducers({
   settings,
   registration,
   packages,
-  links
+  tutorial
 });
 
 

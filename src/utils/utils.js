@@ -14,3 +14,29 @@ export function formatText(text){
       <Text key={'par_'+index} style={styles.paragraph}>{val}</Text>
     );
 }
+
+export function getDate(unix){
+    let day = new Date(unix);
+    let dd = day.getUTCDate();
+    let mm = day.getUTCMonth()+1; 
+    let yyyy = day.getUTCFullYear();
+    if(dd<10){dd='0'+dd;} 
+    if(mm<10) {mm='0'+mm;} 
+    return (yyyy + '-' + mm + '-' + dd);
+}
+
+export function checkVersionGreater(test, against){
+    if(!test || typeof test !== 'string' || test.length < 5){return false;}
+    test = test.split('.', 3);
+    test.map((item) => parseInt(item, 10));
+    against = against.split('.', 3);
+    against.map((item) => parseInt(item, 10));
+    for(let i = 0; i < against.length; i++){
+
+        if(test[i] === against[i]){continue}
+        else{
+            return (test[i] > against[i]);
+        }
+    }
+    return true;
+}

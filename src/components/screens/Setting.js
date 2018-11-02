@@ -23,6 +23,7 @@ function mapStateToProps(state){
     settings: state.settings
   };
 }
+
 function mapDispatchToProps(dispatch){
   return {
     updateSettings: (settings, token) => {dispatch(putSettings(settings, token));}
@@ -46,16 +47,6 @@ class SettingScreen extends React.Component{
     };
   }
 
-  componentDidMount(){
-    if(!this.props.token){
-        this.props.navigation.navigate('Auth');
-    }
-  }
-  componentWillReceiveProps(nextProps){
-    if(!nextProps.token){
-        this.props.navigation.navigate('Auth');
-    }
-  }
 
   _getNewSettingsObject(){
     switch(this.props.setting){

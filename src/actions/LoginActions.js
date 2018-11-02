@@ -1,3 +1,4 @@
+import {AsyncStorage} from 'react-native';
 /* Constants */
 import {BASEURL, AUTH, failure, success, checkTimeout} from './actions';
 import {getUserData, getSettings} from './UserDataActions';
@@ -8,22 +9,31 @@ import * as Keychain from 'react-native-keychain';
 
 export const LOGIN = {SUCCESS: 'LOGIN_SUCCESS', FAIL: 'LOGIN_FAIL'};
 export const LOGOUT = {SUCCESS: 'LOGOUT_SUCCESS', FAIL: 'LOGOUT_FAIL'};
+export const SET_TOKEN = {REQUEST: 'SET_TOKEN_REQUEST'};
 export const REFRESH_TOKEN = {REQUEST: 'REFRESH_TOKEN', SUCCESS: 'REFRESH_TOKEN_SUCCESS', FAIL: 'REFRESH_TOKEN_FAIL'};
 export const CHECK_TOKEN = {REQUEST: 'CHECK_TOKEN', SUCCESS: 'CHECK_TOKEN_SUCCESS', FAIL: 'CHECK_TOKEN_FAIL'};
 export const DATA_FROM_TOKEN = {REQUEST: 'DATA_FROM_TOKEN', SUCCESS: 'DATA_FROM_TOKEN_SUCCESS', FAIL: 'DATA_FROM_TOKEN_FAIL'};
 
 
 import {btoa} from '../utils/base64.js';
+import { ASYNC_PREFIX } from '../constants';
 
 /* requests application data from a token after returning from background */
 export function requestDataFromToken(token){
     return (dispatch) => {
         dispatch({type:DATA_FROM_TOKEN.REQUEST});
-        // dispatch(getUserData(token));
+        dispatch(getUserData(token));
         dispatch(getLessons(token));
         dispatch(getCredits(token));
         // dispatch(getTips(token));
         // dispatch(getSettings(token));
+    }
+}
+
+export function setToken(token){
+    return (dispatch) => {
+        dispatch({type:SET_TOKEN.REQUEST, data: token});
+        dispatch(requestDataFromToken(token));
     }
 }
 
@@ -42,6 +52,7 @@ export function requestLogin(userCredentials){
                     const token = response.headers.get('Token');
                     response.json()
                     .then((json) => dispatch(success(LOGIN.SUCCESS, {...json,token:token})));
+                    AsyncStorage.setItem(ASYNC_PREFIX+'token', token);
                     dispatch(getLessons(token));
                     dispatch(getCredits(token));
                     dispatch(getSettings(token));
@@ -70,6 +81,7 @@ export function requestLogout(token){
             switch(response.status) {
                 case 200:
                     dispatch(success(LOGOUT.SUCCESS));
+                    AsyncStorage.removeItem(ASYNC_PREFIX+'token');
                     break;
                 default:
                     checkTimeout(response, dispatch);
@@ -95,6 +107,7 @@ export function refreshToken(token){
                     const token = response.headers.get('Token');
                     //localStorage.setItem('token', token);
                     dispatch(success(REFRESH_TOKEN.SUCCESS, {token: token}));
+                    AsyncStorage.setItem(ASYNC_PREFIX+'token', token);
                     break;
                 default:
                     checkTimeout(response, dispatch);

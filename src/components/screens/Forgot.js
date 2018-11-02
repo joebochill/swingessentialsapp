@@ -1,5 +1,4 @@
 import React from 'react';
-import {NavigationActions} from 'react-navigation';
 import {connect} from 'react-redux';
 import {requestReset} from '../../actions/RegistrationActions';
 
@@ -7,14 +6,14 @@ import {
     View, 
     Text,
     ScrollView, 
-    StyleSheet,
-    Platform
+    StyleSheet
 } from 'react-native';
-import {FormInput, Button, Header} from 'react-native-elements';
+import {FormInput, Button} from 'react-native-elements';
+import Header from '../Header/Header';
 
 
-import styles, {colors, spacing, altStyles} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
+import styles, {colors, spacing} from '../../styles/index';
+import {scale} from '../../styles/dimension';
 
 import KeyboardView from '../Keyboard/KeyboardView';
 
@@ -41,23 +40,7 @@ class Forgot extends React.Component{
     render(){
         return(
             <View style={{flex: 1}}>
-                <Header
-                    style={{flex: 0}}
-                    outerContainerStyles={{ 
-                        backgroundColor: colors.lightPurple, 
-                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
-                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
-                      }}
-                    leftComponent={{ 
-                        icon: 'arrow-back',
-                        size: verticalScale(26),
-                        underlayColor:colors.transparent,
-                        containerStyle:styles.headerIcon, 
-                        color: colors.white, 
-                        onPress: () => this.props.navigation.pop()
-                    }}
-                    centerComponent={{ text: 'Reset Password', style: { color: colors.white, fontSize: verticalScale(18) } }}
-                />
+                <Header title={'Reset Password'} navigation={this.props.navigation} type={'back'}/>
                 <KeyboardView 
                     fixed={!this.state.resetSent &&
                         <Button

@@ -6,20 +6,20 @@ import {
   Text,
   ScrollView,
   StyleSheet,
-  Platform,
 } from 'react-native';
-import {Header} from 'react-native-elements';
-import YouTube from 'react-native-youtube'
+import Header from '../Header/Header';
 import styles, {colors, spacing} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
 import {formatText} from '../../utils/utils';
 
 function mapStateToProps(state){
-  return {};
+  return {
+    token: state.login.token,
+  };
 }
 
 function mapDispatchToProps(dispatch){
-  return {};
+  return {
+  };
 }
 
 class Blog extends React.Component{
@@ -40,24 +40,7 @@ class Blog extends React.Component{
     if(!blog){return null;}
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
-        <Header
-            style={{flex: 0}}
-            outerContainerStyles={{ 
-              backgroundColor: colors.lightPurple, 
-              height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
-              padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
-            }}
-            //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-            leftComponent={{ 
-              icon: 'arrow-back',
-              size: verticalScale(26),
-              underlayColor:colors.transparent,
-              containerStyle:styles.headerIcon, 
-              color: colors.white, 
-              onPress: () => this.props.navigation.pop() 
-            }}
-            centerComponent={{ text: 'The 19th Hole', style: { color: colors.white, fontSize: verticalScale(18) } }}
-        />
+        <Header title={'The 19th Hole'} navigation={this.props.navigation} type={'back'}/>
         <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
           <Text style={styles.headline}>{blog.date}</Text>
           <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.tiny}])}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, StatusBar } from 'react-native';
+import { AsyncStorage, AppRegistry, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
@@ -10,6 +10,10 @@ import { middleware } from './src/utils/redux';
 import thunk from 'redux-thunk';
 import SplashScreen from 'react-native-splash-screen';
 import { PermissionsAndroid } from 'react-native';
+
+import {ASYNC_PREFIX} from './src/constants/index';
+import {setToken} from './src/actions/LoginActions';
+import { loadTutorials } from './src/utils/tutorials';
 
 async function requestPermissions() {
   try {
@@ -28,10 +32,20 @@ const store = createStore(
 );
 
 class SwingEssentialsApp extends React.Component {
+  constructor(props){
+    super(props);
+    AsyncStorage.getItem(ASYNC_PREFIX+'token')
+    .then((token)=>{
+      if(token){store.dispatch(setToken(token));}
+    });
+    loadTutorials(store.dispatch);
+  }
+
   componentDidMount(){
     SplashScreen.hide();
     requestPermissions();
   }
+
   render() {
     StatusBar.setBarStyle('light-content', true);
     return (

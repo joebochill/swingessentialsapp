@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+// import { AsyncStorage } from 'react-native';
 
 /* Constants */
 import {BASEURL, AUTH, failure, success, checkTimeout} from './actions.js';

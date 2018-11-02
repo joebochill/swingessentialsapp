@@ -1,17 +1,22 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Alert, ActivityIndicator, Text, View, ScrollView, Keyboard, FlatList, StyleSheet, Platform} from 'react-native';
-import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
+import {Alert, ActivityIndicator, Text, View, ScrollView, FlatList, StyleSheet, Platform} from 'react-native';
+import styles, {colors, spacing} from '../../styles/index';
+import {scale} from '../../styles/dimension';
 
-import {FormInput, Button, Header} from 'react-native-elements';
+import Header from '../Header/Header';
+import {Button} from 'react-native-elements';
 import {executePayment, checkCoupon, activateUnlimited} from '../../actions/LessonActions';
-import {roundNumber} from '../../utils/utils';
+
 import CardRow from '../Card/CardRow';
 import KeyboardView from '../Keyboard/KeyboardView';
 import {atob} from '../../utils/base64.js';
 import * as RNIap from 'react-native-iap';
+
+import Tutorial from '../Tutorial/Order';
+import {TUTORIALS} from '../../constants/index';
+import { tutorialViewed } from '../../actions/TutorialActions';
 
 function mapStateToProps(state){
     return {
@@ -21,16 +26,17 @@ function mapStateToProps(state){
         purchaseInProgress: state.credits.inProgress,
         purchaseSuccess: state.credits.success,
         purchaseFail: state.credits.fail,
-        //username: state.userData.username,
         lessons: state.lessons,
-        credits: state.credits
+        credits: state.credits,
+        showTutorial: state.tutorial[TUTORIALS.ORDER]
     };
 }
 function mapDispatchToProps(dispatch){
     return {
         checkCoupon: (code) => {dispatch(checkCoupon(code))},
         executePayment: (data, token, platform) => {dispatch(executePayment(data,token, platform))},
-        activateUnlimited: (token) => {dispatch(activateUnlimited(token))}
+        activateUnlimited: (token) => {dispatch(activateUnlimited(token))},
+        closeTutorial: () => {dispatch(tutorialViewed(TUTORIALS.ORDER))}
     };
 }
 
@@ -47,27 +53,14 @@ class Order extends React.Component{
         }
     }
     componentWillMount(){
-        if(!this.props.token){
-            this.props.navigation.navigate('Auth');
-        }
-        else{
-            // check if the user is allowed to purchase
-            const role = JSON.parse(atob(this.props.token.split('.')[1])).role;
-            if(role === 'pending'){
-                this.setState({role: 'pending', error: 'You must validate your email address before you can purchase lessons'});
+        this._updateUserRole(this.props.token);         
+        //get the package SKU numbers from the packages object
+        if(this.props.packages){
+            let skus = [];
+            for(let i = 0; i < this.props.packages.length; i++){
+                skus.push(this.props.packages[i].app_sku);
             }
-            else{
-                this.setState({role: role, error:''});
-            }    
-
-            //get the package SKU numbers from the packages object
-            if(this.props.packages){
-                let skus = [];
-                for(let i = 0; i < this.props.packages.length; i++){
-                    skus.push(this.props.packages[i].app_sku);
-                }
-                this.skus = skus;
-            }
+            this.skus = skus;
         }
     }
     componentDidMount(){
@@ -90,8 +83,8 @@ class Order extends React.Component{
         }
     }
     componentWillReceiveProps(nextProps){
-        if(!nextProps.token){
-            this.props.navigation.navigate('Auth');
+        if(nextProps.token !== this.props.token){
+            this._updateUserRole(nextProps.token);
         }
     }
     componentWillUnmount(){
@@ -110,11 +103,27 @@ class Order extends React.Component{
     //     });
     // }
 
+    _updateUserRole(token){
+        if(!token){
+            this.setState({role: 'anonymous', error: 'You must be signed in to purchase lessons'});
+        }
+        else{
+            // check if the user is allowed to purchase
+            const role = JSON.parse(atob(token.split('.')[1])).role;
+            if(role === 'pending'){
+                this.setState({role: 'pending', error: 'You must validate your email address before you can purchase lessons'});
+            }
+            else{
+                this.setState({role: role, error:''});
+            }    
+        }    
+    }
+
     _purchaseLesson(data){
-        if(this.state.role === 'pending'){
+        if(this.state.error !== '' || this.state.role === ''){
             return;
         }
-        if(!data){ return;}
+        if(!data){return;}
         this.setState({paymentActive: true});
         RNIap.buyProduct(data.sku).then(purchase => {
             this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token, Platform.OS);
@@ -136,23 +145,7 @@ class Order extends React.Component{
     render(){
         return(
             <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
-                <Header
-                    style={{flex: 0}}
-                    outerContainerStyles={{ 
-                        backgroundColor: colors.lightPurple, 
-                        height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
-                        padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
-                    }}
-                    leftComponent={{ 
-                        icon: 'menu',
-                        underlayColor:colors.transparent, 
-                        color: colors.white, 
-                        containerStyle:styles.headerIcon, 
-                        size: verticalScale(26),
-                        onPress: () => this.props.navigation.navigate('DrawerOpen') 
-                    }}
-                    centerComponent={{ text: 'Order Lessons', style: { color: colors.white, fontSize: verticalScale(18) } }}
-                />
+                <Header title={'Order Lessons'} navigation={this.props.navigation}/>
                 {(this.props.purchaseFail || this.state.iap_error) && 
                     <ScrollView style={{padding: spacing.normal}}>
                         <Text style={StyleSheet.flatten([styles.paragraph, {marginTop: 0, marginBottom: 0}])}>There was an error processing your purchase. Please try again later or contact info@swingessentials.com for more information.</Text>
@@ -250,7 +243,7 @@ class Order extends React.Component{
                             <Button
                                 title={'PURCHASE'}
                                 fontSize={scale(14)}
-                                disabled={this.state.role === 'pending' || this.props.purchaseInProgress || this.state.paymentActive || this.state.products.length < 1}
+                                disabled={this.state.role === 'pending' || this.state.role === 'anonymous' || this.props.purchaseInProgress || this.state.paymentActive || this.state.products.length < 1}
                                 disabledStyle={styles.disabledButton}
                                 onPress={()=>this._purchaseLesson({
                                     package: this.state.selected.shortcode,
@@ -297,7 +290,8 @@ class Order extends React.Component{
                                 }
                                 keyExtractor={(item, index) => item.id}
                             />
-                        </ScrollView>    
+                        </ScrollView>   
+                        <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>        
                     </KeyboardView> 
                 }           
             </View>
