@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import { 
+  ActivityIndicator,
   View, 
   Text,
   ScrollView,
@@ -18,15 +19,12 @@ import {scale} from '../../styles/dimension';
 import {formatText, getDate} from '../../utils/utils';
 import Tutorial from '../Tutorial/Lesson';
 
-import {setTargetRoute} from '../../actions/actions';
 import { markLessonViewed } from '../../actions/LessonActions';
 
 import {TUTORIALS} from '../../constants/index';
 import { tutorialViewed } from '../../actions/TutorialActions';
 
 import Video from 'react-native-video';
-
-
 
 
 function mapStateToProps(state){
@@ -41,7 +39,6 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
   return {
     markViewed: (id, token) => {dispatch(markLessonViewed(id, token))},
-    setTargetRoute: (loc, extra) => {dispatch(setTargetRoute(loc, extra))},
     closeTutorial: () => {dispatch(tutorialViewed(TUTORIALS.LESSON))}
   };
 }
@@ -54,42 +51,39 @@ class Lesson extends React.Component{
       dtlPlaying: false
     };
 
+    const lesson_id = props.navigation.getParam('id', null);
+    const lesson_url = props.navigation.getParam('url', null);
 
-    const lesson_id = this.props.navigation.getParam('id', null);
-    const lesson_url = this.props.navigation.getParam('url', null);
-
-    let lesson;
-
-    if(!lesson_id && !lesson_url){this.props.navigation.pop();}
-    
-    if(lesson_id){
-      lesson = this._getLessonById(parseInt(lesson_id, 10));
-
-      if(lesson === null){
-        this.props.navigation.pop();
-      }
-      if(parseInt(lesson.viewed, 10) === 0){
-        this.props.markViewed({id: lesson_id}, this.props.token);
-      }
+    if(!props.token){
+      if(!lesson_id && !lesson_url){ props.navigation.pop(); }
+      else if(lesson_id !== -1){ props.navigation.push('Auth'); }
     }
-    else if(lesson_url){
-      lesson = this._getLessonByURL(lesson_url);
-
-      if(lesson === null){
-        this.props.navigation.pop();
-      }
-
-      if(parseInt(lesson.viewed, 10) === 0){
-        this.props.markViewed({id: lesson.request_id}, this.props.token);
-      }
-    }
-    this.state.lesson = lesson;
   }
 
   componentWillReceiveProps(nextProps){
     if(this.props.token && !nextProps.token){
         this.props.navigation.pop();
     }
+  }
+
+  _getActiveLesson(){
+    const lesson_id = this.props.navigation.getParam('id', null);
+    const lesson_url = this.props.navigation.getParam('url', null);
+    let lesson;
+    
+    if(lesson_id){
+      lesson = this._getLessonById(parseInt(lesson_id, 10));
+      if(lesson !== null && parseInt(lesson.viewed, 10) === 0){
+        this.props.markViewed({id: lesson_id}, this.props.token);
+      }
+    }
+    else if(lesson_url){
+      lesson = this._getLessonByURL(lesson_url);
+      if(lesson !== null && parseInt(lesson.viewed, 10) === 0){
+        this.props.markViewed({id: lesson.request_id}, this.props.token);
+      }
+    }
+    return lesson;
   }
 
   _getLessonById(id){
@@ -125,12 +119,19 @@ class Lesson extends React.Component{
   }
 
   render(){
-    const lesson = this.state.lesson;
-    if(!lesson){return null;}
+    const lesson = this._getActiveLesson();
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
         <Header title={'Swing Analysis'} navigation={this.props.navigation} type={'back'}/>
-        <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
+        {!lesson && 
+          <React.Fragment>
+            <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.tiny}])}>
+              Loading Analysis
+            </Text>
+            <ActivityIndicator />
+          </React.Fragment>
+        }
+        {lesson && <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
           <Text style={styles.headline}>{lesson.request_date}</Text>
           <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.tiny}])}>
             Video Response
@@ -229,6 +230,7 @@ class Lesson extends React.Component{
             </View>
           }
         </ScrollView>
+        }
         <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>       
       </View>
     );

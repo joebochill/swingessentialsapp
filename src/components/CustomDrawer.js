@@ -7,7 +7,6 @@ import {requestLogout,
 import {getTips} from '../actions/TipActions';
 import {getBlogs} from '../actions/BlogActions';
 import {getPackages} from '../actions/PackageActions';
-import { setTargetRoute} from '../actions/actions';
 import LogoutWarning from './Modal/TokenExpire';
 
 import {colors, spacing} from '../styles/index';
@@ -35,7 +34,6 @@ function mapDispatchToProps(dispatch){
         refreshData: (token) => dispatch(requestDataFromToken(token)),
         requestLogout: (token) => dispatch(requestLogout(token)),
         showLogoutWarning: (show) => dispatch(showLogoutWarning(show)),
-        setTargetRoute: (loc, extra) => dispatch(setTargetRoute(loc, extra)),
         getTips: (token = null) => dispatch(getTips(token)),
         getBlogs: (token = null) => dispatch(getBlogs(token)),
         getPackages: (token = null) => dispatch(getPackages(token))
@@ -57,6 +55,17 @@ class CustomDrawer extends React.Component {
     componentDidMount(){
         AppState.addEventListener('change', this._handleAppStateChange);
         Linking.addEventListener('url', this._wakeupByLink);
+
+        // Handle the case where the application is opened from a Universal Link
+        // Linking.getInitialURL()
+        // .then((url) => {
+        //   if (url) {
+        //       alert('initial');
+        //     let path = url.split('/').filter((el) => el.length > 0);
+        //     this._linkRoute(url, path);
+        //   }
+        // })
+        // .catch((e) => {});
     }
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
@@ -70,11 +79,6 @@ class CustomDrawer extends React.Component {
             this.exp = JSON.parse(atob(nextProps.token.split('.')[1])).exp;
             this.tokenTimer = setInterval(() => this._checkTokenTimeout(nextProps.token), 60*1000);
             this._checkTokenTimeout(nextProps.token);
-
-            // Check if a target route was linked
-            if(nextProps.targetRoute){
-                this.props.navigation.navigate(nextProps.targetRoute);
-            }
         }
     }
 
@@ -89,17 +93,20 @@ class CustomDrawer extends React.Component {
     // Handles activating a deep link while the app is in the background
     _wakeupByLink = (event) => {
         let path = event.url.split('/').filter((el) => el.length > 0);
+        this._linkRoute(event.url, path)
+    }
 
-        if(event.url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
-            if(this.props.token) {this.props.navigation.navigate('Lesson',{url: path[path.length - 1]})}
+    _linkRoute(url, path){
+        if(url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
+            this.props.navigation.navigate('Lesson',{url: path[path.length - 1]})
         }
-        else if(event.url.match(/\/lessons\/?$/gi)){
+        else if(url.match(/\/lessons\/?$/gi)){
             if(this.props.token) {this.props.navigation.navigate('Lessons')}
         }
-        else if(event.url.match(/\/register\/[A-Z0-9]+\/?$/gi)){
+        else if(url.match(/\/register\/[A-Z0-9]+\/?$/gi)){
             this.props.navigation.navigate('Register', {code: path[path.length - 1]});
         }
-        else if(event.url.match(/\/register\/?$/gi)){
+        else if(url.match(/\/register\/?$/gi)){
             this.props.navigation.navigate('Register');
         }
     }
