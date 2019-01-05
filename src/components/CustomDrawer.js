@@ -97,10 +97,11 @@ class CustomDrawer extends React.Component {
     }
 
     _linkRoute(url, path){
-        if(url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
-            this.props.navigation.navigate('Lesson',{url: path[path.length - 1]})
-        }
-        else if(url.match(/\/lessons\/?$/gi)){
+        // if(url.match(/\/lessons\/[A-Z0-9]+\/?$/gi)){
+        //     this.props.navigation.navigate('Lesson',{url: path[path.length - 1]})
+        // }
+        // else 
+        if(url.match(/\/lessons\/?/gi)){
             if(this.props.token) {this.props.navigation.navigate('Lessons')}
         }
         else if(url.match(/\/register\/[A-Z0-9]+\/?$/gi)){
