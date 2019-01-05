@@ -42,7 +42,7 @@ class CustomHeader extends React.Component {
                 color: colors.white, 
                 onPress: this.props.type === 'back' ? 
                     () => this.props.navigation.pop() :
-                    () => this.props.navigation.navigate('DrawerOpen')
+                    () => this.props.navigation.openDrawer()
             }}
             centerComponent={{ 
                 text: this.props.title, 

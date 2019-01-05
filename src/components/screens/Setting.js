@@ -97,6 +97,7 @@ class SettingScreen extends React.Component{
                   <Switch 
                     value={this.state.value} 
                     onValueChange={(val) => this.setState({value: val})}
+                    trackColor={colors.lightPurple}
                     onTintColor={colors.lightPurple}
                   />
                 } 

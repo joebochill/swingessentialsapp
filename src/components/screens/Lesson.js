@@ -18,16 +18,12 @@ import {scale} from '../../styles/dimension';
 import {formatText, getDate} from '../../utils/utils';
 import Tutorial from '../Tutorial/Lesson';
 
-import {setTargetRoute} from '../../actions/actions';
 import { markLessonViewed } from '../../actions/LessonActions';
 
 import {TUTORIALS} from '../../constants/index';
 import { tutorialViewed } from '../../actions/TutorialActions';
 
 import Video from 'react-native-video';
-
-
-
 
 function mapStateToProps(state){
   return {
@@ -41,7 +37,6 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
   return {
     markViewed: (id, token) => {dispatch(markLessonViewed(id, token))},
-    setTargetRoute: (loc, extra) => {dispatch(setTargetRoute(loc, extra))},
     closeTutorial: () => {dispatch(tutorialViewed(TUTORIALS.LESSON))}
   };
 }

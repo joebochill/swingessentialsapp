@@ -3,15 +3,16 @@ package com.swingessentials.app;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.dooboolab.RNIap.RNIapPackage;
-import com.oblador.keychain.KeychainPackage;
-import com.rnfingerprint.FingerprintAuthPackage;
-import org.reactnative.camera.RNCameraPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
 import com.brentvatne.react.ReactVideoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.rnfingerprint.FingerprintAuthPackage;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.oblador.keychain.KeychainPackage;
 import com.imagepicker.ImagePickerPackage;
+import com.dooboolab.RNIap.RNIapPackage;
+import org.reactnative.camera.RNCameraPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -32,15 +33,16 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNIapPackage(),
-            new KeychainPackage(),
-            new FingerprintAuthPackage(),
-            new RNCameraPackage(),
-            new SplashScreenReactPackage(),
+            new RNGestureHandlerPackage(),
             new ReactNativeYouTube(),
             new ReactVideoPackage(),
             new VectorIconsPackage(),
-            new ImagePickerPackage()
+            new FingerprintAuthPackage(),
+            new SplashScreenReactPackage(),
+            new KeychainPackage(),
+            new ImagePickerPackage(),
+            new RNIapPackage(),
+            new RNCameraPackage()
       );
     }
 

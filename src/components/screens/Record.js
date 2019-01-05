@@ -67,7 +67,7 @@ class Record extends Component {
         // Set the recording constraints and start the recording
         const options = {   maxFileSize: 9.5*1024*1024, 
                             maxDuration: parseInt(this.props.settings.duration, 10), 
-                            quality: RNCamera.Constants.VideoQuality['480p']
+                            quality: RNCamera.Constants.VideoQuality['720p']
                         };
         // delay the start of the recording if a delay is set
         this.delayTimer = 
@@ -231,7 +231,7 @@ class Record extends Component {
                         {!this.state.recording &&
                             <Icon 
                                 type={'ionicon'}
-                                name={'ios-reverse-camera-outline'} 
+                                name={'ios-reverse-camera'} 
                                 size={sizes.normal} 
                                 color={colors.white}
                                 underlayColor={colors.transparent}

@@ -94,15 +94,15 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.swingessentials.app"
-        minSdkVersion 23
-        targetSdkVersion 26
-        versionCode 28
-        versionName "2.1.4"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 29
+        versionName "2.1.5"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -134,22 +134,24 @@ android {
             }
         }
     }
+    compileOptions {
+     targetCompatibility JavaVersion.VERSION_1_8
+   }
 }
 
 dependencies {
-    implementation project(':react-native-iap')
-    implementation project(':react-native-keychain')
-    implementation project(':react-native-touch-id')
-    implementation project(':react-native-camera')
-    implementation project(':react-native-splash-screen')
-    implementation (project(':react-native-youtube')) {
-        exclude group: "com.android.support"
-    }
-    implementation project(':react-native-video')
-    implementation project(':react-native-vector-icons')
-    implementation project(':react-native-image-picker')
+    compile project(':react-native-gesture-handler')
+    compile project(':react-native-youtube')
+    compile project(':react-native-video')
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-touch-id')
+    compile project(':react-native-splash-screen')
+    compile project(':react-native-keychain')
+    compile project(':react-native-image-picker')
+    compile project(':react-native-iap')
+    compile project(':react-native-camera')
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "com.android.support:appcompat-v7:27.1.1"
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
 }
 

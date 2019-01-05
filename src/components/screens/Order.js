@@ -65,7 +65,7 @@ class Order extends React.Component{
     }
     componentDidMount(){
         try {
-            RNIap.prepare()
+            RNIap.initConnection()
             .then(() => {
                 RNIap.getProducts(this.skus)
                 .then((products) => {

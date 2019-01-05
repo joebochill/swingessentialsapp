@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {FormInput, Button} from 'react-native-elements';
 import Header from '../Header/Header';
-import {setTargetRoute} from '../../actions/actions';
 
 
 import {verifyEmail} from '../../actions/RegistrationActions';
@@ -36,7 +35,6 @@ function mapDispatchToProps(dispatch){
         createAccount: (data) => {dispatch(createAccount(data))},
         checkUser: (user) => {dispatch(checkUsernameAvailability(user))},
         checkEmail: (email) => {dispatch(checkEmailAvailability(email))},
-        setTargetRoute: (loc, extra) => {dispatch(setTargetRoute(loc, extra))},
         verifyEmail: (code) => {dispatch(verifyEmail(code))}
     }
 }

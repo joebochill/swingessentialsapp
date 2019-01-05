@@ -1,12 +1,12 @@
 import React from 'react';
-import { AsyncStorage, AppRegistry, StatusBar } from 'react-native';
+import { AsyncStorage, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
 import AppReducer from './src/reducers/reducers';
 import AppWithNavigationState from './src/navigators/AppNavigator';
 
-import { middleware } from './src/utils/redux';
+// import { middleware } from './src/utils/redux';
 import thunk from 'redux-thunk';
 import SplashScreen from 'react-native-splash-screen';
 import { PermissionsAndroid } from 'react-native';
@@ -28,7 +28,7 @@ async function requestPermissions() {
 
 const store = createStore(
   AppReducer,
-  applyMiddleware(middleware, thunk),
+  applyMiddleware(/*middleware,*/ thunk),
 );
 
 class SwingEssentialsApp extends React.Component {
@@ -55,7 +55,5 @@ class SwingEssentialsApp extends React.Component {
     );
   }
 }
-
-AppRegistry.registerComponent('swingessentialsapp', () => SwingEssentialsApp);
 
 export default SwingEssentialsApp ;
