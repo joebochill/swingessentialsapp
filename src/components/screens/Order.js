@@ -288,7 +288,7 @@ class Order extends React.Component{
                                         selected={this.state.selected.shortcode === item.shortcode}
                                     />
                                 }
-                                keyExtractor={(item, index) => item.id}
+                                keyExtractor={(item, index) => ('package_'+item.id)}
                             />
                         </ScrollView>   
                         <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>        

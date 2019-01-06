@@ -204,7 +204,7 @@ class Lessons extends React.Component{
                             renderItem={({item}) => 
                                 <CardRow primary={item.request_date} secondary={item.username} />
                             }
-                            keyExtractor={(item, index) => item.request_id}
+                            keyExtractor={(item, index) => ('pending_'+item.request_id)}
                         />
                     }
                     <FlatList
@@ -237,7 +237,7 @@ class Lessons extends React.Component{
                                 :
                                 <CardRow primary={item.request_date} secondary={'IN PROGRESS'} />
                         }
-                        keyExtractor={(item, index) => item.request_id}
+                        keyExtractor={(item, index) => ('complete_'+item.request_id)}
                     />
                 </ScrollView>   
                 <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>       

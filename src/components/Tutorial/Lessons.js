@@ -36,7 +36,7 @@ class LessonsTutorial extends React.Component {
                         renderItem={({item, index}) => 
                             <CardRow primary={item.date} secondary={index === 0 ? 'IN PROGRESS' : index === 1 ? 'NEW' : ''} nav={index !== 0} />
                         }
-                        keyExtractor={(item, index) => index}
+                        keyExtractor={(item, index) => ('fakelesson_'+index)}
                     />
                 </View>  
             ),

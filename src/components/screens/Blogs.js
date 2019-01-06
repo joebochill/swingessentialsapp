@@ -82,7 +82,7 @@ class Blogs extends React.Component{
                                     action={() => this.props.navigation.push('Blog', {blog: item})}
                                 />
                             }
-                            keyExtractor={(item, index) => item.id}
+                            keyExtractor={(item, index) => ('blog_'+item.id)}
                         />
                     )}
                 </ScrollView>                
