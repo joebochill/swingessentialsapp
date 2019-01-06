@@ -309,11 +309,10 @@ const blogs = (state=initialBlogsState, action) => {
 }
 
 const initialSettingsState = {
-  duration: 3,
-  delay: 0,
+  duration: 5,
+  delay: 5,
   overlay: true,
-  handedness: 'Right',
-  selected: null
+  handedness: 'Right'
 }
 const settings = (state = initialSettingsState, action) => {
   switch(action.type){

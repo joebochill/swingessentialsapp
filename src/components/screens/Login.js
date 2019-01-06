@@ -11,20 +11,18 @@ import {
     ActivityIndicator,
     AsyncStorage,
     View, 
-    ScrollView, 
     StyleSheet, 
     Image,
-    Keyboard,
     Switch,
     StatusBar,
     Platform,
     Text
 } from 'react-native';
 //import Text from '../Text/Text';
-import {FormInput, Button, Header, Icon} from 'react-native-elements';
+import {FormInput, Button, Icon} from 'react-native-elements';
 import KeyboardView from '../Keyboard/KeyboardView';
 
-import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
+import styles, {colors, spacing, sizes} from '../../styles/index';
 
 
 function mapStateToProps(state){

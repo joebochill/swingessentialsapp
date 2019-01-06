@@ -9,8 +9,8 @@ import {
   Platform
 } from 'react-native';
 import {Header} from 'react-native-elements';
-import styles, {colors, spacing, altStyles} from '../../styles/index';
-import {scale, verticalScale} from '../../styles/dimension';
+import styles, {colors, spacing} from '../../styles/index';
+import {verticalScale} from '../../styles/dimension';
 
 import CardRow from '../Card/CardRow';
 

@@ -3,12 +3,11 @@ import {connect} from 'react-redux';
 
 import { RNCamera } from 'react-native-camera';
 import Video from 'react-native-video';
-import styles, {sizes, colors, spacing, altStyles} from '../../styles/index';
+import styles, {sizes, colors, spacing} from '../../styles/index';
 import {scale, verticalScale} from '../../styles/dimension';
 
-import {FormInput, Button, Icon, Header} from 'react-native-elements';
-import {/*StatusBar,*/ ActivityIndicator, Keyboard, Alert, Image, Text, Platform, TouchableOpacity, View, ScrollView, StyleSheet} from 'react-native';
-import downtheline from '../../images/downtheline.png';
+import {Icon, Header} from 'react-native-elements';
+import {Image, Text, Platform, TouchableOpacity, View, StyleSheet} from 'react-native';
 import faceonLH from '../../images/overlay-fo-lh.png';
 import faceonRH from '../../images/overlay-fo-rh.png';
 import downthelineLH from '../../images/overlay-dtl-lh.png';
@@ -16,7 +15,8 @@ import downthelineRH from '../../images/overlay-dtl-rh.png';
 
 function mapStateToProps(state){
     return {
-        settings: state.settings
+        settings: state.settings,
+        token: state.login.token
     };
 }
 function mapDispatchToProps(dispatch){
@@ -29,7 +29,6 @@ class Record extends Component {
     constructor(props){
         super(props);
         this.state = {
-            // flash: 0,
             camera: 0,
             recording: false,
             duration: 0,
@@ -38,15 +37,10 @@ class Record extends Component {
             playing: false
         };
         this.cameras = ['back', 'front'];
-        // this.flashes = ['flash-off', 'flash-on', 'flash-auto'];
         this.start = 0;
         this.timer = null;
     }
-    componentWillMount(){
-        //StatusBar.setHidden(true);
-    }
     componentWillUnmount(){
-        //StatusBar.setHidden(false);
         if(this.timer){clearInterval(this.timer)};
         this._endRecording();
     }
@@ -85,10 +79,6 @@ class Record extends Component {
                 .then((result) => {
                     if(this.timer){clearInterval(this.timer)}
                     this.setState({uri: result.uri, recording: false, duration: 0, recordLive: false});
-                    
-                    // return the uri and go back to the redeem screen
-                    //this.props.navigation.state.params.returnFunc(result.uri);
-                    //this.props.navigation.pop();
                 })
                 .catch((err)=>{
                     console.log(err);
@@ -119,7 +109,6 @@ class Record extends Component {
                     flashMode={(this.props.settings.delay > 0 && this.state.recording && !this.state.recordLive) ? RNCamera.Constants.FlashMode['torch'] : RNCamera.Constants.FlashMode['off']}
                     permissionDialogTitle={'Permission to use camera'}
                     permissionDialogMessage={'We need your permission to use your camera phone'}
-                    // flashMode={RNCamera.Constants.FlashMode[this.flashes[this.state.flash].split('-')[1]]}
                 />
                 {this.props.settings.overlay && 
                     <View style={StyleSheet.flatten([styles.absolute, styles.centered])}>
@@ -145,7 +134,7 @@ class Record extends Component {
                 }
                 <Header
                     outerContainerStyles={{ 
-                        backgroundColor: 'rgba(0,0,0,0.25)',//colors.transparent, 
+                        backgroundColor: 'rgba(0,0,0,0.25)',
                         height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
                         padding: verticalScale(Platform.OS === 'ios' ? 15 : 10),
                         position: 'absolute',
@@ -177,7 +166,7 @@ class Record extends Component {
                             <Text style={{fontSize: scale(14), color: colors.white}}>{'00:00:'+(this.state.duration < 10 ? '0' : '')+this.state.duration}</Text>
                         </View>
                     }
-                    rightComponent={this.state.recording ? null : { 
+                    rightComponent={this.state.recording || !this.props.token ? null : { 
                         icon: 'settings',
                         size: verticalScale(26),
                         underlayColor:colors.transparent, 
@@ -188,7 +177,7 @@ class Record extends Component {
                 />
                 <View style={{
                     position: 'absolute', 
-                    backgroundColor: this.state.recording ? colors.tranparent : 'rgba(0,0,0,0.35)', 
+                    backgroundColor: this.state.recording ? colors.transparent : 'rgba(0,0,0,0.35)', 
                     bottom: 0, left: 0, right: 0,
                     flexDirection: 'row', 
                     alignItems: 'center',

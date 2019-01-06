@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Alert, Text, View, ScrollView, FlatList, RefreshControl, Platform} from 'react-native';
+import {Alert, Text, View, ScrollView, FlatList, RefreshControl} from 'react-native';
 import Header from '../Header/Header';
 import Tutorial from '../Tutorial/Lessons';
 import styles, {colors, spacing} from '../../styles/index';
