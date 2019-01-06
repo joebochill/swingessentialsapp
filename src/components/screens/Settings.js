@@ -41,7 +41,6 @@ class SettingsScreen extends React.Component{
               height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
               padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
             }}
-            //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
             leftComponent={{ 
               icon: 'arrow-back',
               size: verticalScale(26),
@@ -49,7 +48,7 @@ class SettingsScreen extends React.Component{
               containerStyle:styles.headerIcon, 
               color: colors.white, 
               onPress: () => this.props.navigation.pop()
-            }}//this.props.navigation.dispatch(NavigationActions.back({key:this.props.navigation.state.key})) }}
+            }}
             centerComponent={{ text: 'Settings', style: { color: colors.white, fontSize: verticalScale(18) } }}
         />
         <ScrollView contentContainerStyle={{alignItems: 'stretch'}}>
@@ -66,8 +65,7 @@ class SettingsScreen extends React.Component{
             primary="Handedness" 
             secondary={this.props.settings.handedness} 
             action={() => {
-              this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Handedness'}});
-              this.props.navigation.push('Setting')
+              this.props.navigation.push('Setting', {setting: 'Handedness'})
             }}
           />
           <Text style={StyleSheet.flatten([styles.formLabel, {
@@ -83,24 +81,21 @@ class SettingsScreen extends React.Component{
             primary="Duration" 
             secondary={this.props.settings.duration + 's'} 
             action={() => {
-              this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Duration'}});
-              this.props.navigation.push('Setting')
+              this.props.navigation.push('Setting', {setting: 'Duration'})
             }}
           />
           <CardRow 
             primary="Delay" 
             secondary={this.props.settings.delay + 's'} 
             action={() => {
-              this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Delay'}});
-              this.props.navigation.push('Setting')
+              this.props.navigation.push('Setting', {setting: 'Delay'})
             }}
           />
           <CardRow 
             primary="Overlay" 
             secondary={this.props.settings.overlay ? 'On':'Off'} 
             action={() => {
-              this.props.navigation.dispatch({type:'SELECT_SETTING', data:{setting:'Overlay'}});
-              this.props.navigation.push('Setting')
+              this.props.navigation.push('Setting', {setting: 'Overlay'})
             }}
           />
         </ScrollView>

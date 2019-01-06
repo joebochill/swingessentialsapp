@@ -19,7 +19,6 @@ import {putSettings} from '../../actions/UserDataActions';
 function mapStateToProps(state){
   return {
     token: state.login.token,
-    setting: state.settings.selected,
     settings: state.settings
   };
 }
@@ -39,17 +38,18 @@ class SettingScreen extends React.Component{
       Duration: 'How long to record for each swing',
       Handedness: 'Your dominant hand for golfing'
     };
-    this.durations = [5,10,15];
+    this.durations = [5,8,10];
     this.delays = [0,5,10];
     this.hands = ['Right', 'Left'];
     this.state={
-      value: props.settings[props.setting.toLowerCase()]
+      setting: props.navigation.getParam('setting', ''),
+      value: props.settings[props.navigation.getParam('setting', '').toLowerCase()]
     };
   }
 
 
   _getNewSettingsObject(){
-    switch(this.props.setting){
+    switch(this.state.setting){
       case 'Handedness':
         return {handed: this.state.value.toLowerCase()};
       case 'Duration':
@@ -62,6 +62,7 @@ class SettingScreen extends React.Component{
         return {};
     }
   }
+
 
   render(){
     return (
@@ -85,14 +86,14 @@ class SettingScreen extends React.Component{
                 this.props.navigation.pop();
               }
             }}
-            centerComponent={{ text: this.props.setting, style: { color: colors.white, fontSize: verticalScale(18) } }}
+            centerComponent={{ text: this.state.setting, style: { color: colors.white, fontSize: verticalScale(18) } }}
         />
         <ScrollView contentContainerStyle={{alignItems: 'stretch'}}>
-          {this.props.setting === 'Overlay' && 
+          {this.state.setting === 'Overlay' && 
             <View style={{paddingTop: spacing.normal}}>
               <CardRow 
                 customStyle={{borderTopWidth: 1}}
-                primary={this.props.setting} 
+                primary={this.state.setting} 
                 secondaryInput={
                   <Switch 
                     value={this.state.value} 
@@ -107,11 +108,11 @@ class SettingScreen extends React.Component{
                   paddingLeft: spacing.normal, 
                   paddingRight: spacing.normal
                 }])}>
-                {this.descriptions[this.props.setting]}
+                {this.descriptions[this.state.setting]}
               </Text>
             </View>
           }
-          {this.props.setting === 'Duration' && 
+          {this.state.setting === 'Duration' && 
             <View style={{paddingTop: spacing.normal}}>
               {this.durations.map((item,index) => 
                 <CardRow key={'row_'+index}
@@ -128,11 +129,11 @@ class SettingScreen extends React.Component{
                   paddingLeft: spacing.normal, 
                   paddingRight: spacing.normal
                 }])}>
-                {this.descriptions[this.props.setting]}
+                {this.descriptions[this.state.setting]}
               </Text>
             </View>
           }
-          {this.props.setting === 'Delay' && 
+          {this.state.setting === 'Delay' && 
             <View style={{paddingTop: spacing.normal}}>
               {this.delays.map((item,index) => 
                 <CardRow key={'row_'+index}
@@ -149,11 +150,11 @@ class SettingScreen extends React.Component{
                   paddingLeft: spacing.normal, 
                   paddingRight: spacing.normal
                 }])}>
-                {this.descriptions[this.props.setting]}
+                {this.descriptions[this.state.setting]}
               </Text>
             </View>
           }
-          {this.props.setting === 'Handedness' && 
+          {this.state.setting === 'Handedness' && 
             <View style={{paddingTop: spacing.normal}}>
               {this.hands.map((item,index) => 
                 <CardRow key={'row_'+index}
@@ -170,7 +171,7 @@ class SettingScreen extends React.Component{
                   paddingLeft: spacing.normal, 
                   paddingRight: spacing.normal
                 }])}>
-                {this.descriptions[this.props.setting]}
+                {this.descriptions[this.state.setting]}
               </Text>
             </View>
           }

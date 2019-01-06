@@ -324,10 +324,6 @@ const settings = (state = initialSettingsState, action) => {
         overlay: !!action.data.camera.overlay,
         handedness: action.data.handed.charAt(0).toUpperCase() + action.data.handed.toLowerCase().slice(1)
       };
-    case 'SELECT_SETTING':
-      return {...state,
-        selected: action.data.setting
-      };
     default:
       return state;
   }
