@@ -1756,6 +1756,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.swingessentials.app;
 				PRODUCT_NAME = swingessentials;
 				PROVISIONING_PROFILE_SPECIFIER = "Swing Essentials Distribution";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1792,6 +1793,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.swingessentials.app;
 				PRODUCT_NAME = swingessentials;
 				PROVISIONING_PROFILE_SPECIFIER = "Swing Essentials Distribution";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
