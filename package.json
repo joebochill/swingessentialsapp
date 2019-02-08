@@ -6,8 +6,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "postinstall": "scripts/post.sh",
-    "bundle:clear": "rm -f ./android/app///src/main/assets/index.android.bundle && rm -f ./android/app///src/main/assets/index.android.bundle.meta",
-    "bundle": "npm run bundle:clear && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
+    "bundle:clear": "rm -rf ./android/app///src/main/assets/index.android.bundle && rm -rf ./android/app///src/main/assets/index.android.bundle.meta",
+    "bundle": "yarn bundle:clear && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
   },
   "dependencies": {
     "prop-types": "^15.6.2",
@@ -22,6 +22,7 @@
     "react-native-modal": "^7.0.2",
     "react-native-snap-carousel": "^3.7.5",
     "react-native-splash-screen": "^3.1.1",
+    "react-native-thumbnail-video": "^0.1.2",
     "react-native-touch-id": "^4.3.0",
     "react-native-vector-icons": "^6.1.0",
     "react-native-video": "^4.3.1",
