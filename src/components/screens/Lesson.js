@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import Header from '../Header/Header';
 import {Icon} from 'react-native-elements';
-import YouTube from 'react-native-youtube';
+import YouTube, {YouTubeStandaloneAndroid} from 'react-native-youtube';
+import { Thumbnail } from 'react-native-thumbnail-video';
 import {YOUTUBE_API_KEY} from '../../constants/index';
 import styles, {colors, spacing, sizes} from '../../styles/index';
 import {scale} from '../../styles/dimension';
@@ -119,6 +120,17 @@ class Lesson extends React.Component{
     return null;
   }
 
+  openStandaloneAndroidPlayer(id){
+    YouTubeStandaloneAndroid.playVideo({
+        apiKey: YOUTUBE_API_KEY,     // Your YouTube Developer API Key
+        videoId: id,     // YouTube video ID
+        autoplay: true,             // Autoplay the video
+        startTime: 0,             // Starting point of video (in seconds)
+      })
+        .then(() => console.log('Standalone Player Exited'))
+        .catch(errorMessage => console.error(errorMessage))
+  }
+
   render(){
     const lesson = this.state.lesson;
     if(!lesson){return null;}
@@ -130,18 +142,32 @@ class Lesson extends React.Component{
           <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.tiny}])}>
             Video Response
           </Text>
-          <YouTube
-            apiKey={YOUTUBE_API_KEY}
-            videoId={lesson.response_video}  // The YouTube video ID
-            play={false}             // control playback of video with true/false
-            fullscreen={false}       // control whether the video should play in fullscreen or inline
-            loop={false}             // control whether the video should loop when ended
-            showinfo={false}
-            modestbranding={true}
-            controls={2}
-            rel={false}
-            style={{width:'100%', height: scale(168) , marginTop: spacing.small}}
-          />
+          {Platform.OS === 'ios' &&
+            <YouTube
+              apiKey={YOUTUBE_API_KEY}
+              videoId={lesson.response_video}  // The YouTube video ID
+              play={false}             // control playback of video with true/false
+              fullscreen={false}       // control whether the video should play in fullscreen or inline
+              loop={false}             // control whether the video should loop when ended
+              showinfo={false}
+              modestbranding={true}
+              controls={2}
+              rel={false}
+              style={{width:'100%', height: scale(168) , marginTop: spacing.small}}
+            />
+          }
+          {Platform.OS === 'android' &&
+            <View style={{width:'100%', height: scale(168) , marginTop: spacing.small}}>
+              <Thumbnail
+                url={`https://www.youtube.com/watch?v=${lesson.response_video}`}
+                onPress={() => this.openStandaloneAndroidPlayer(lesson.response_video)}
+                imageHeight="100%"
+                imageWidth="100%"
+                showPlayIcon={true}
+                type="maximum"
+              />
+            </View>
+          }
           {lesson.response_notes && lesson.response_notes.length > 0 && 
             <Text style={StyleSheet.flatten([styles.formLabel, {marginBottom: spacing.small, marginTop: spacing.normal}])}>
               Comments

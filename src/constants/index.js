@@ -1,6 +1,6 @@
-export const YOUTUBE_API_KEY = 'YOUR_API_KEY_HERE';
+export const YOUTUBE_API_KEY = 'AIzaSyBLUJUqz7E3Z5XNcXbMYO9gVmXd0zYAR4U';
 
-export const APP_VERSION = '2.1.5';
+export const APP_VERSION = '2.2.9';
 export const ASYNC_PREFIX = '@SwingEssentials:';
 
 export const TUTORIAL_KEYS = {

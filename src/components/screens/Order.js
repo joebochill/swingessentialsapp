@@ -65,7 +65,7 @@ class Order extends React.Component{
     }
     componentDidMount(){
         try {
-            RNIap.prepare()
+            RNIap.initConnection()
             .then(() => {
                 RNIap.getProducts(this.skus)
                 .then((products) => {
@@ -288,7 +288,7 @@ class Order extends React.Component{
                                         selected={this.state.selected.shortcode === item.shortcode}
                                     />
                                 }
-                                keyExtractor={(item, index) => item.id}
+                                keyExtractor={(item, index) => ('package_'+item.id)}
                             />
                         </ScrollView>   
                         <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>        

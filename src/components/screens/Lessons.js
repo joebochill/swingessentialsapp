@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {Alert, Text, View, ScrollView, FlatList, RefreshControl, Platform} from 'react-native';
+import {Alert, Text, View, ScrollView, FlatList, RefreshControl} from 'react-native';
 import Header from '../Header/Header';
 import Tutorial from '../Tutorial/Lessons';
 import styles, {colors, spacing} from '../../styles/index';
@@ -204,7 +204,7 @@ class Lessons extends React.Component{
                             renderItem={({item}) => 
                                 <CardRow primary={item.request_date} secondary={item.username} />
                             }
-                            keyExtractor={(item, index) => item.request_id}
+                            keyExtractor={(item, index) => ('pending_'+item.request_id)}
                         />
                     }
                     <FlatList
@@ -237,7 +237,7 @@ class Lessons extends React.Component{
                                 :
                                 <CardRow primary={item.request_date} secondary={'IN PROGRESS'} />
                         }
-                        keyExtractor={(item, index) => item.request_id}
+                        keyExtractor={(item, index) => ('complete_'+item.request_id)}
                     />
                 </ScrollView>   
                 <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>       

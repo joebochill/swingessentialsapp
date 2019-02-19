@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { addNavigationHelpers, StackNavigator, DrawerNavigator } from 'react-navigation';
+import { createStackNavigator, createDrawerNavigator, createAppContainer } from 'react-navigation';
 import {scale} from '../styles/dimension';
 
 import CustomDrawer from '../components/CustomDrawer'; //This is our custom drawer component
@@ -33,129 +33,138 @@ import Setting from '../components/screens/Setting';
 
 import { addListener } from '../utils/redux';
 
-const AuthNavigator = {
-    screen: StackNavigator(
-        {
-            Login: {screen: Login, navigationOptions: ({ navigation }) => ({header: () => null})},
-            Forgot: {screen: Forgot, navigationOptions: ({ navigation }) => ({header: () => null})},
-            Register: {screen: Register, navigationOptions: ({ navigation }) => ({header: () => null})}
-        },
-        {initialRouteName: 'Login'}
-    ),
-    //screen: Login,
-    navigationOptions: {
-        drawerLockMode: 'locked-closed',
-        drawerLabel: () => null
-    }
-}
+// hideHeader = ({navigationOptions}) => ({header: null});
 
-export const AppNavigator = DrawerNavigator(
+const AuthNavigator = createStackNavigator({
+        Login: Login,
+        Forgot: Forgot,
+        Register: Register
+    },
+    {initialRouteName: 'Login', headerMode: 'none'}
+);
+AuthNavigator.navigationOptions = ({ navigation }) => {
+    drawerLockMode = 'locked-closed';  
+    return {
+      drawerLockMode
+    };
+  };
+
+const RedeemNav = createStackNavigator(
+    {
+        Redeem: Redeem,
+        Record: {screen: Record, navigationOptions: ({ navigation }) => (
+            {drawerLockMode: 'locked-closed', drawerLabel: () => null})
+        },
+        Settings: {screen: Settings, navigationOptions: ({ navigation }) => (
+            {drawerLockMode: 'locked-closed', drawerLabel: () => null})
+        },
+        Setting: {screen: Setting, navigationOptions: ({ navigation }) => (
+            {drawerLockMode: 'locked-closed', drawerLabel: () => null})
+        },
+        Auth: AuthNavigator
+    },
+    {initialRouteName: 'Redeem', headerMode: 'none'}
+);
+RedeemNav.navigationOptions = ({ navigation }) => {
+    let drawerLockMode = 'unlocked';
+    if (navigation.state.index > 0) {
+      drawerLockMode = 'locked-closed';
+    }
+    return {
+      drawerLockMode,
+    };
+  };
+
+const AppNavigator = createDrawerNavigator(
     {
         Main: {
-            screen: StackNavigator(
+            screen: createStackNavigator(
                 {
-                    Lessons: {screen: Lessons, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Lesson: {screen: Lesson, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Lessons: Lessons,
+                    Lesson: Lesson,
                     Auth: AuthNavigator
                 },
-                {initialRouteName: 'Lessons'}
+                {initialRouteName: 'Lessons', headerMode: 'none'}
             )
         },
         TipsTop: {
-            screen: StackNavigator(
+            screen: createStackNavigator(
                 {
-                    Tips: {screen: Tips, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Tip: {screen: Tip, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Tips: Tips,
+                    Tip: Tip,
                     Auth: AuthNavigator
                 },
-                {initialRouteName: 'Tips'}
+                {initialRouteName: 'Tips', headerMode: 'none'}
             )
         },
         BlogsTop: {
-            screen: StackNavigator(
+            screen: createStackNavigator(
                 {
-                    Blogs: {screen: Blogs, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Blog: {screen: Blog, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Blogs: Blogs,
+                    Blog: Blog,
                     Auth: AuthNavigator
                 },
-                {initialRouteName: 'Blogs'}
+                {initialRouteName: 'Blogs', headerMode: 'none'}
             )
         },
         OrderTop: {
-            screen: StackNavigator(
+            screen: createStackNavigator(
                 {
-                    Order: {screen: Order, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Order: Order,
                     Auth: AuthNavigator
                 },
-                {initialRouteName: 'Order'}
+                {initialRouteName: 'Order', headerMode: 'none'}
             )
         },
-        RedeemTop: {
-            screen: StackNavigator(
-                {
-                    Redeem: {screen: Redeem, navigationOptions: ({ navigation }) => ({header: () => null})},
-                    Record: {screen: Record, navigationOptions: ({ navigation }) => (
-                        {drawerLockMode: 'locked-closed', drawerLabel: () => null, header: () => null})
-                    },
-                    Settings: {screen: Settings, navigationOptions: ({ navigation }) => (
-                        {drawerLockMode: 'locked-closed', drawerLabel: () => null, header: () => null})
-                    },
-                    Setting: {screen: Setting, navigationOptions: ({ navigation }) => (
-                        {drawerLockMode: 'locked-closed', drawerLabel: () => null, header: () => null})
-                    },
-                    Auth: AuthNavigator
-                },
-                {initialRouteName: 'Redeem'}
-            ) 
-        },
+        RedeemTop: RedeemNav,
         HelpTop: {
-            screen: StackNavigator(
+            screen: createStackNavigator(
                 {
-                    Help: {screen: Help, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    Help: Help,
                     Auth: AuthNavigator
                 },
-                {initialRouteName: 'Help'}
+                {initialRouteName: 'Help', headerMode: 'none'}
             )
         },
         AboutTop: {
-            screen: StackNavigator(
+            screen: createStackNavigator(
                 {
-                    About: {screen: About, navigationOptions: ({ navigation }) => ({header: () => null})},
+                    About: About,
                     Auth: AuthNavigator
                 },
-                {initialRouteName: 'About'}
+                {initialRouteName: 'About', headerMode: 'none'}
             )
         }
     }, 
     {
         initialRouteName: 'Main',
         drawerWidth: scale(280),
-        contentComponent: CustomDrawer
+        contentComponent: CustomDrawer,
+        headerMode: 'none'
     }
 );
+// class AppWithNavigationState extends React.Component {
+//     static propTypes = {
+//         dispatch: PropTypes.func.isRequired,
+//         nav: PropTypes.object.isRequired
+//     };
 
-class AppWithNavigationState extends React.Component {
-    static propTypes = {
-        dispatch: PropTypes.func.isRequired,
-        nav: PropTypes.object.isRequired
-    };
-
-    render() {
-        const { dispatch, nav } = this.props;
-        return (
-            <AppNavigator
-                navigation={addNavigationHelpers({
-                dispatch,
-                state: nav,
-                addListener
-                })}
-            />
-        );
-    }
-}
+//     render() {
+//         const { dispatch, nav } = this.props;
+//         return (
+//             <AppNavigator
+//                 navigation={addNavigationHelpers({
+//                 dispatch,
+//                 state: nav,
+//                 addListener
+//                 })}
+//             />
+//         );
+//     }
+// }
 
 const mapStateToProps = state => ({
     nav: state.nav
 });
 
-export default connect(mapStateToProps)(AppWithNavigationState);
+export default connect(mapStateToProps)(createAppContainer(AppNavigator));

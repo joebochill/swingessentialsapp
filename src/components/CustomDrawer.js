@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppState, Alert, Text, View, ScrollView, Image, Linking } from 'react-native';
+import { AppState, Alert, Text, View, Platform, ScrollView, Image, Linking } from 'react-native';
 import {connect} from 'react-redux';
 import {requestLogout, 
     showLogoutWarning, 
@@ -57,15 +57,16 @@ class CustomDrawer extends React.Component {
         Linking.addEventListener('url', this._wakeupByLink);
 
         // Handle the case where the application is opened from a Universal Link
-        // Linking.getInitialURL()
-        // .then((url) => {
-        //   if (url) {
-        //       alert('initial');
-        //     let path = url.split('/').filter((el) => el.length > 0);
-        //     this._linkRoute(url, path);
-        //   }
-        // })
-        // .catch((e) => {});
+        if(Platform.OS !== 'ios'){
+            Linking.getInitialURL()
+            .then((url) => {
+            if (url) {
+                let path = url.split('/').filter((el) => el.length > 0);
+                this._linkRoute(url, path);
+            }
+            })
+            .catch((e) => {});
+        }
     }
     componentWillUnmount() {
         AppState.removeEventListener('change', this._handleAppStateChange);
@@ -176,7 +177,7 @@ class CustomDrawer extends React.Component {
                         {!this.props.token &&
                             <CardRow menuItem primary="Sign In / Register" 
                                 customStyle={{borderTopWidth: scale(1)}}
-                                action={() => this.props.navigation.push('Auth')}/>
+                                action={() => this.props.navigation.navigate('Auth')}/>
                         }
                         <CardRow menuItem primary="Help" 
                             action={() => this.props.navigation.navigate('Help')}/>

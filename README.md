@@ -4,10 +4,18 @@
 
 
 This project was bootstrapped using [Create React Native App](https://github.com/react-community/create-react-native-app) and takes advantage of the following libraries (many thanks to the contributors):
-* [react-native-video](https://github.com/react-native-community/react-native-video)
 * [react-native-camera](https://github.com/react-native-community/react-native-camera)
-* [react-native-youtube](https://github.com/inProgress-team/react-native-youtube)
+* [react-native-elements](https://github.com/react-native-training/react-native-elements)
+* [react-native-iap](https://github.com/dooboolab/react-native-iap)
 * [react-native-image-picker](https://github.com/react-community/react-native-image-picker)
+* [react-native-keychain](https://github.com/oblador/react-native-keychain)
+* [react-native-modal](https://github.com/react-native-community/react-native-modal)
+* [react-native-snap-carousel](https://github.com/archriss/react-native-snap-carousel)
+* [react-native-splash-screen](https://github.com/crazycodeboy/react-native-splash-screen)
+* [react-native-touch-id](https://github.com/naoufal/react-native-touch-id)
+* [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)
+* [react-native-video](https://github.com/react-native-community/react-native-video)
+* [react-native-youtube](https://github.com/inProgress-team/react-native-youtube)
 
 <img width="200" alt="Splash Screen" src="assets/splash.jpg">
 
@@ -21,7 +29,7 @@ Lessons | Unlimited Active | Analysis
 
 
 ### Order Credits
-New users automatically receive a free credit to use to evaluate the Swing Essentials service. Additional credits can be purchased on the Order screen. Multiple packages are available, including an unlimited package that offers unlimited swing analyses for a period of 30 days. Purchases are accomplished via PayPal checkout.
+New users automatically receive a free credit to use to evaluate the Swing Essentials service. Additional credits can be purchased on the Order screen. Multiple packages are available, including an unlimited package that offers unlimited swing analyses for a period of 30 days. Purchases are accomplished via in-app payments through Apple/Google.
 
 <img width="200" alt="Purchase" src="assets/purchase.PNG">
 
@@ -35,20 +43,22 @@ Capture | Submit
 ---- | ----
 <img width="200" alt="Record Swing" src="assets/capture.PNG"> | <img width="200" alt="Submit Swing" src="assets/lesson_request.PNG">
 
+### Tips / Blogs
+Video tips (delivered monthly) can also be viewed through the app. Likewise, 19th Hole blog posts can also be viewed. Both are accessible from the main menu.
 
 ## Getting Started
-To extend, update, or contribute to this project, clone the repository to your local machine and install the necessary dependencies:
+To extend, update, or contribute to this project, clone the repository to your local machine and install the necessary dependencies (for final deployment, you will also need to install dev dependencies):
 
 ````
 git clone https://github.com/joebochill/swingessentialsapp.git
 cd swingessentialsapp
-npm install
+yarn install
 ````
 
 You will also need to make sure that you have the react-native-cli installed globally on your machine:
 
 ````
-npm install -g react-native-cli
+yarn global add react-native-cli
 ````
 
 Because this project has been ejected from create-react-native-app, your must have Android Studio (with necessary SDKs and tools installed) or Xcode available on your machine to deploy the application. If you have these properly installed, you should be able to open the respective /ios or /android project folders to run the projects. Alternatively, you could use the command line:

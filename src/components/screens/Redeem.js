@@ -82,7 +82,7 @@ class Redeem extends React.Component{
             );
             this.props.navigation.navigate('Lessons');
         }
-        else if(nextProps.token && nextProps.credits.count < 1 && nextProps.credits.unlimitedExpires < Date.now()/1000){
+        else if(nextProps.token && !nextProps.credits.inProgress && nextProps.credits.count < 1 && nextProps.credits.unlimitedExpires < Date.now()/1000){
             this.setState({error: 'Looks like you\'re all out of lesson credits. Head to the Order page to stock up.'})
         }
         else if(nextProps.lessons.length > 0 && !nextProps.redeemSuccess){
@@ -102,6 +102,9 @@ class Redeem extends React.Component{
                 ],
                 {onDismiss: () => this.props.navigation.navigate('Lessons')}
             );
+        }
+        else{
+            this.setState({error: ''})
         }
     }
 

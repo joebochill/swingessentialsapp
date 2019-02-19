@@ -21,18 +21,18 @@ import { GET_BLOGS } from '../actions/BlogActions';
 import {atob} from '../utils/base64';
 
 
-const initialNavState = null;//AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Auth'));
-const nav = (state = initialNavState, action) => {
-  let nextState;
-  switch (action.type) {
-    default:
-      nextState = AppNavigator.router.getStateForAction(action, state);
-      break;
-  }
+// const initialNavState = null;//AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Auth'));
+// const nav = (state = initialNavState, action) => {
+//   let nextState;
+//   switch (action.type) {
+//     default:
+//       nextState = AppNavigator.router.getStateForAction(action, state);
+//       break;
+//   }
 
-  // Simply return the original `state` if `nextState` is null or undefined.
-  return nextState || state;
-}
+//   // Simply return the original `state` if `nextState` is null or undefined.
+//   return nextState || state;
+// }
 
 const initialUserState = {
   username: ''//,
@@ -309,11 +309,10 @@ const blogs = (state=initialBlogsState, action) => {
 }
 
 const initialSettingsState = {
-  duration: 3,
-  delay: 0,
+  duration: 5,
+  delay: 5,
   overlay: true,
-  handedness: 'Right',
-  selected: null
+  handedness: 'Right'
 }
 const settings = (state = initialSettingsState, action) => {
   switch(action.type){
@@ -323,10 +322,6 @@ const settings = (state = initialSettingsState, action) => {
         duration: action.data.camera.duration,
         overlay: !!action.data.camera.overlay,
         handedness: action.data.handed.charAt(0).toUpperCase() + action.data.handed.toLowerCase().slice(1)
-      };
-    case 'SELECT_SETTING':
-      return {...state,
-        selected: action.data.setting
       };
     default:
       return state;
@@ -424,7 +419,7 @@ const tutorial = (state = initialTutorialState, action) => {
 
 /* Combine all of the reducers into one */
 const AppReducer = combineReducers({
-  nav,
+  // nav,
   userData,
   login,
   credits,

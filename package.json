@@ -1,53 +1,45 @@
 {
   "name": "swingessentials",
-  "version": "2.0.2",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "react-native start",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "test": "node node_modules/jest/bin/jest.js",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
     "postinstall": "scripts/post.sh",
-    "bundle:clear": "rm ./android/app///src/main/assets/index.android.bundle && rm ./android/app///src/main/assets/index.android.bundle.meta",
-    "bundle": "npm run bundle:clear && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
-  },
-  "jest": {
-    "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "/node_modules/.*/react-native/",
-      "/node_modules/.*/react/"
-    ],
-    "transformIgnorePatterns": [
-      "/node_modules/(?!react-native|react-navigation)/"
-    ]
+    "bundle:clear": "rm -rf ./android/app///src/main/assets/index.android.bundle && rm -rf ./android/app///src/main/assets/index.android.bundle.meta",
+    "bundle": "yarn bundle:clear && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "react": "16.2.0",
-    "react-native": "^0.52.0",
-    "react-native-camera": "1.2.0",
+    "react": "16.6.3",
+    "react-native": "0.57.8",
+    "react-native-camera": "^1.6.4",
     "react-native-elements": "^0.19.1",
-    "react-native-iap": "^0.3.24",
-    "react-native-image-picker": "^0.26.10",
+    "react-native-gesture-handler": "^1.0.12",
+    "react-native-iap": "^2.4.0-beta5",
+    "react-native-image-picker": "^0.27.2",
     "react-native-keychain": "^3.0.0",
-    "react-native-modal": "^6.5.0",
+    "react-native-modal": "^7.0.2",
     "react-native-snap-carousel": "^3.7.5",
-    "react-native-splash-screen": "3.0.9",
-    "react-native-touch-id": "^4.0.4",
-    "react-native-vector-icons": "^4.6.0",
-    "react-native-video": "^2.3.1",
+    "react-native-splash-screen": "^3.1.1",
+    "react-native-thumbnail-video": "^0.1.2",
+    "react-native-touch-id": "^4.3.0",
+    "react-native-vector-icons": "^6.1.0",
+    "react-native-video": "^4.3.1",
     "react-native-youtube": "^1.1.0",
-    "react-navigation": "^1.5.12",
-    "react-navigation-redux-helpers": "^1.1.2",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2",
+    "react-navigation": "^3.0.9",
+    "react-navigation-redux-helpers": "^2.0.9",
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "babel-jest": "^21.0.0",
-    "babel-preset-react-native-stage-0": "^1.0.1",
-    "jest": "^21.0.1",
-    "jest-react-native": "^18.0.0",
-    "react-test-renderer": "16.0.0"
+    "babel-jest": "23.6.0",
+    "jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "react-test-renderer": "16.6.3"
+  },
+  "jest": {
+    "preset": "react-native"
   }
 }

@@ -83,7 +83,7 @@ class Tips extends React.Component{
                                     action={() => this.props.navigation.push('Tip', {tip: item})}
                                 />
                             }
-                            keyExtractor={(item, index) => item.id}
+                            keyExtractor={(item, index) => ('tip_'+item.id)}
                         />
                     )}
                 </ScrollView>                

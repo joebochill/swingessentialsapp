@@ -38,7 +38,7 @@ class OrderTutorial extends React.Component {
                                 menuItem
                             />
                         }
-                        keyExtractor={(item, index) => item.id}
+                        keyExtractor={(item, index) => ('package_'+item.id)}
                     />
                     <Text style={StyleSheet.flatten([styles.paragraph, {marginTop: spacing.normal, color: colors.white, textAlign: 'center'}])}>Make sure you have a payment method linked to your phone before purchasing.</Text>
                     <Button

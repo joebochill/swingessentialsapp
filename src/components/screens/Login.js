@@ -11,20 +11,18 @@ import {
     ActivityIndicator,
     AsyncStorage,
     View, 
-    ScrollView, 
     StyleSheet, 
     Image,
-    Keyboard,
     Switch,
     StatusBar,
     Platform,
     Text
 } from 'react-native';
 //import Text from '../Text/Text';
-import {FormInput, Button, Header, Icon} from 'react-native-elements';
+import {FormInput, Button, Icon} from 'react-native-elements';
 import KeyboardView from '../Keyboard/KeyboardView';
 
-import styles, {colors, spacing, sizes, altStyles} from '../../styles/index';
+import styles, {colors, spacing, sizes} from '../../styles/index';
 
 
 function mapStateToProps(state){
@@ -240,6 +238,7 @@ class Login extends React.Component{
                                     this.setState({remember: val});
                                     AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes':'no');
                                 }}
+                                trackColor={colors.purple}
                                 onTintColor={colors.purple}
                                 //style={{transform: [{ scaleX: scale(1) }, { scaleY: scale(1) }]}}
                             />
@@ -254,6 +253,7 @@ class Login extends React.Component{
                                         AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes':'no');
                                     }}
                                     onTintColor={colors.purple}
+                                    trackColor={colors.purple}
                                     //style={{transform: [{ scaleX: scale(1) }, { scaleY: scale(1) }]}}
                                 />
                             </View>
