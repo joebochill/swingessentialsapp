@@ -1,3 +1,5 @@
+import { logLocalError } from "../utils/utils";
+
 /* Constants */
 export const LOCATION_CHANGE = '@@router/LOCATION_CHANGE';
 export const TOKEN_TIMEOUT = 'TOKEN_TIMEOUT';
@@ -31,7 +33,7 @@ export function checkTimeout(response, dispatch){
 /* Dispatch a failure action for the supplied action type */
 export function failure(type, response){
     if(response && response.headers && response.headers.get){
-        console.log('Error ' + response.headers.get('Error') + ': ' + response.headers.get('Message'));
+        logLocalError('Error ' + response.headers.get('Error') + ': ' + response.headers.get('Message'));
     }
     
     return{
@@ -44,7 +46,7 @@ export function failure(type, response){
 /* Dispatch a failure action for the supplied action type, XMLHTTPRequest variant */
 export function xhrfailure(type, response){
     if(response && response.getResponseHeader){
-        console.log('Error ' + response.getResponseHeader('Error') + ': ' + response.getResponseHeader('Message'));
+        logLocalError('Error ' + response.getResponseHeader('Error') + ': ' + response.getResponseHeader('Message'));
     }
     
     return{

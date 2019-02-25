@@ -1,5 +1,6 @@
 /* Constants */
 import {BASEURL, AUTH, failure, success, checkTimeout} from './actions.js';
+import { logLocalError } from '../utils/utils.js';
 
 export const GET_USER_DATA = {SUCCESS: 'GET_USER_DATA_SUCCESS', FAIL: 'GET_USER_DATA_FAIL'};
 export const GET_SETTINGS = {SUCCESS: 'GET_SETTINGS_SUCCESS', FAIL: 'GET_SETTINGS_FAIL'};
@@ -25,7 +26,9 @@ export function getUserData(token){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('Promise Error: getting user data');
+        });
     }
 }
 
@@ -49,7 +52,9 @@ export function getSettings(token){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('Promise Error: getting settings');
+        });
     }
 }
 
@@ -76,6 +81,8 @@ export function putSettings(data, token){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('Promise Error: updating settings');
+        });
     }
 }

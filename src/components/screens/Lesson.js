@@ -16,7 +16,7 @@ import { Thumbnail } from 'react-native-thumbnail-video';
 import {YOUTUBE_API_KEY} from '../../constants/index';
 import styles, {colors, spacing, sizes} from '../../styles/index';
 import {scale} from '../../styles/dimension';
-import {formatText, getDate} from '../../utils/utils';
+import {formatText, getDate, logLocalError} from '../../utils/utils';
 import Tutorial from '../Tutorial/Lesson';
 
 import { markLessonViewed } from '../../actions/LessonActions';
@@ -127,8 +127,9 @@ class Lesson extends React.Component{
         autoplay: true,             // Autoplay the video
         startTime: 0,             // Starting point of video (in seconds)
       })
-        .then(() => console.log('Standalone Player Exited'))
-        .catch(errorMessage => console.error(errorMessage))
+        .catch(errorMessage => {
+          logLocalError('Youtube Standalone: ' + errorMessage);
+        });
   }
 
   render(){

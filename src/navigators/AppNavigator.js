@@ -26,6 +26,7 @@ import Record from '../components/screens/Record';
 
 import Help from '../components/screens/Help';
 import About from '../components/screens/About';
+import Logs from '../components/screens/Logs';
 
 import Settings from '../components/screens/Settings';
 import Setting from '../components/screens/Setting';
@@ -133,6 +134,15 @@ const AppNavigator = createDrawerNavigator(
                     Auth: AuthNavigator
                 },
                 {initialRouteName: 'About', headerMode: 'none'}
+            )
+        },
+        LogsTop: {
+            screen: createStackNavigator(
+                {
+                    Logs: Logs,
+                    Auth: AuthNavigator
+                },
+                {initialRouteName: 'Logs', headerMode: 'none'}
             )
         }
     }, 

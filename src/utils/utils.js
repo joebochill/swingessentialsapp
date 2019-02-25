@@ -2,6 +2,9 @@ import React from 'react';
 import {Text} from 'react-native';
 import styles from '../styles/index';
 
+var RNFS = require('react-native-fs');
+const path = RNFS.DocumentDirectoryPath + '/error.txt';
+
 // Returns a number rounded to the specified number of decimal places
 export function roundNumber(num, dec) {
     return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
@@ -39,4 +42,43 @@ export function checkVersionGreater(test, against){
         }
     }
     return true;
+}
+
+export function logLocalError(error){
+    RNFS.exists(path)
+    .then((exists) => {
+        if(exists){
+            RNFS.readFile(path, 'utf8').then((content) => {
+                writeError(content, error);
+            });
+        }
+        else{
+            writeError('', error);
+        }
+    });
+}
+export function clearErrorLog(){
+    RNFS.writeFile(path, '', 'utf8');
+}
+
+function writeError(existing, newContent){
+    const now = Date.now();
+    const date = new Date(now);
+    RNFS.writeFile(path, 
+        existing + 
+        getDate(now) + ' ' + 
+        date.getHours() + ':' + 
+        date.getMinutes() + ':' + 
+        date.getSeconds() + 
+        ' (' + (now/1000).toFixed(0) + 
+        '):\r\n'+
+        newContent + 
+        '\r\n\r\n', 'utf8'
+    )
+    // .then((success) => {
+    //     console.log('FILE WRITTEN!');
+    // }) 
+    // .catch((err) => {
+    //     console.log(err.message);
+    // });
 }

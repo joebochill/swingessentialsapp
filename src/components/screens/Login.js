@@ -23,6 +23,7 @@ import {FormInput, Button, Icon} from 'react-native-elements';
 import KeyboardView from '../Keyboard/KeyboardView';
 
 import styles, {colors, spacing, sizes} from '../../styles/index';
+import { logLocalError } from '../../utils/utils';
 
 
 function mapStateToProps(state){
@@ -118,7 +119,7 @@ class Login extends React.Component{
             if(callback){callback();}
         })
         .catch((err) => {
-            console.log(err);
+            logLocalError('Keychain Error: ' + err.toString());
         });
     }
 

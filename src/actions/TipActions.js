@@ -2,6 +2,7 @@
 
 /* Constants */
 import {BASEURL, AUTH, failure, success, checkTimeout} from './actions.js';
+import { logLocalError } from '../utils/utils.js';
 export const GET_TIPS = {REQUEST: 'GET_TIPS', SUCCESS: 'GET_TIPS_SUCCESS', FAIL: 'GET_TIPS_FAIL'};
 
 
@@ -29,6 +30,8 @@ export function getTips(token=null){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('Promise Error: getting tips');
+        });
     }
 }

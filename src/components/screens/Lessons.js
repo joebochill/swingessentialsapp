@@ -12,6 +12,10 @@ import CardRow from '../Card/CardRow';
 
 import {TUTORIALS} from '../../constants/index';
 import { tutorialViewed } from '../../actions/TutorialActions';
+import { getDate } from '../../utils/utils';
+
+var RNFS = require('react-native-fs');
+const path = RNFS.DocumentDirectoryPath + '/error.txt';
 
 function mapStateToProps(state){
     return {

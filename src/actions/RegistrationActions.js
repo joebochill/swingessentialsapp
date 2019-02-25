@@ -2,6 +2,7 @@
 import {BASEURL, AUTH, failure, success, checkTimeout} from './actions.js';
 import {getUserData, getSettings} from './UserDataActions.js';
 import {getLessons, getCredits} from './LessonActions.js';
+import { logLocalError } from '../utils/utils.js';
 
 export const CREATE_ACCOUNT = {REQUEST: 'CREATE_ACCOUNT', SUCCESS: 'CREATE_ACCOUNT_SUCCESS', FAIL: 'CREATE_ACCOUNT_FAIL'};
 export const REQUEST_RESET = {REQUEST: 'REQUEST_RESET', SUCCESS: 'REQUEST_RESET_SUCCESS', FAIL: 'REQUEST_RESET_FAIL'};
@@ -26,7 +27,9 @@ export function checkUsernameAvailability(username){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('Promise Error: checking username');
+        });
     }
 }
 
@@ -46,7 +49,9 @@ export function checkEmailAvailability(email){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('Promise Error: checking email');
+        });
     }
 }
 
@@ -76,7 +81,9 @@ export function createAccount(data){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('Promise Error: creating account');
+        });
     }
 }
 
@@ -101,7 +108,9 @@ export function requestReset(data){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('Promise Error: resetting password');
+        });
     }
 }
 
@@ -130,6 +139,8 @@ export function verifyEmail(code){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('Promise Error: verifying email');
+        });
     }
 }
