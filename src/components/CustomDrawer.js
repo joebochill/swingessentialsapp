@@ -130,7 +130,7 @@ class CustomDrawer extends React.Component {
         return (
             <View style={{flex: 1, width: '100%', backgroundColor: colors.backgroundGrey}}>
                 <View style={{height:verticalScale(80), padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.lightPurple}}>
-                    <MultiTap style={{width: '100%', height: '100%'}} onMultiTap={() => this.props.navigation.navigate('Logs')}>
+                    <MultiTap style={{width: '100%', height: '100%'}} onMultiTap={this.props.token ? () => this.props.navigation.navigate('Logs') : null}>
                         <Image
                             //resizeMode='contain'
                             resizeMethod='resize'

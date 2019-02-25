@@ -17,7 +17,7 @@ export default class NTap extends React.Component {
     if (this.start && (now - this.start) < this.props.delay) {
         this.tapCount++;
         if(this.tapCount >= this.props.n)
-      this.props.onMultiTap();
+      if(this.props.onMultiTap){this.props.onMultiTap();}
     } else {
       this.start = now;
       this.tapCount = 1;

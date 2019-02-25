@@ -45,7 +45,7 @@ export function checkVersionGreater(test, against){
 }
 
 export function logLocalError(error){
-    RNFS.exists(path)
+    return RNFS.exists(path)
     .then((exists) => {
         if(exists){
             RNFS.readFile(path, 'utf8').then((content) => {

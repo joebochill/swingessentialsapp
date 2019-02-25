@@ -2,10 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import { 
+  Alert, 
   View, 
   Text,
-  ScrollView,
-  StyleSheet,
+  StyleSheet
 } from 'react-native';
 import {Button} from 'react-native-elements';
 import Mailer from 'react-native-mail';
@@ -16,7 +16,7 @@ import KeyboardView from '../Keyboard/KeyboardView';
 import styles, {colors, spacing} from '../../styles/index';
 import {scale} from '../../styles/dimension';
 
-import { formatText } from '../../utils/utils';
+import { formatText, logLocalError, clearErrorLog } from '../../utils/utils';
 
 var RNFS = require('react-native-fs');
 const path = RNFS.DocumentDirectoryPath + '/error.txt';
@@ -35,54 +35,90 @@ class LogsScreen extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      content: ''
-    }
-    RNFS.readFile(path, 'utf8').then((content) => {
-      this.setState({content: content});
+      content: '',
+      refreshing: false
+    };
+    RNFS.exists(path)
+    .then((exists) => {
+      if(exists){
+        this.readErrorLog();
+      }
     });
   }
+
+  readErrorLog(){
+    return RNFS.readFile(path, 'utf8')
+    .then((content) => {
+      this.setState({content: content});
+    })
+    .catch(err => {
+      //alert('error');
+    })
+  }
+  refresh(){
+    this.setState(
+      {refreshing: true}, 
+      () => this.readErrorLog().then(() => this.setState({refreshing: false}))
+    )
+  }
+
   sendErrorMail(){
     Mailer.mail({
-      subject: 'Error Report',
-      recipients: 'boyle.p.joseph@gmail.com',
-      body: 'I have received an error',
-      isHTML: true,
+      subject: 'Swing Essentials Error Report',
+      recipients: ['boyle.p.joseph@gmail.com'],
+      body: 'My Swing Essentials app has been encountering errors. Please see the attached error log.',
+      isHTML: false,
       attachment: {
         path: path,
-        type: 'txt',
+        type: 'doc',
         name: 'ErrorLog.txt'
       }
     }, (error, event) => {
-      alert('error');
+      if(error){
+        logLocalError('Error sending error report: ' + error);
+      }
+      else if(event && event === 'sent'){
+        // message sent successfully
+        clearErrorLog();
+        Alert.alert(
+          'Error Report Sent',
+          'Your error report has been submitted successfully. Thank you for helping us improve the app!',
+          [{text: 'DONE', onPress: () => this.refresh()}]
+        );
+      }
+      else if(event && event === 'canceled'){
+        logLocalError('Error sending error report: ' + event);
+      }
+      else if(event){
+        logLocalError('Error sending error report: ' + event);
+      }
     });
   }
   render(){
     return (
       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
-        <Header title={'Error Log'} navigation={this.props.navigation}/>
+        <Header type="refresh" onRefresh={() => this.refresh()} title={'Error Log'} navigation={this.props.navigation}/>
         <KeyboardView
+          onRefresh={() => this.refresh()}
+          refreshing={this.state.refreshing}
           fixed={
-              <Button
-                  title={'SEND ERROR REPORT'}
-                  fontSize={scale(14)}
-                  disabled={this.state.content.length < 1}
-                  disabledStyle={styles.disabledButton}
-                  // onPress={()=>this._purchaseLesson({
-                  //     package: this.state.selected.shortcode,
-                  //     sku: this.state.products[this.state.selectedIndex].productId
-                  // })}
-                  onPress={() => this.sendErrorMail()}
-                  buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
-                  containerViewStyle={styles.buttonContainer}
-              /> 
+            <Button
+                title={'SEND ERROR REPORT'}
+                fontSize={scale(14)}
+                disabled={this.state.content.length < 1}
+                disabledStyle={styles.disabledButton}
+                onPress={() => this.sendErrorMail()}
+                buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
+                containerViewStyle={styles.buttonContainer}
+            /> 
           }
         >
-          <ScrollView contentContainerStyle={{padding: spacing.normal, alignItems: 'stretch'}}>
+          <View contentContainerStyle={{alignItems: 'stretch'}}>            
             {formatText(this.state.content)}
             {this.state.content.length < 1 &&
-              <Text style={StyleSheet.flatten([styles.paragraph, {fontSize: 36, textAlign: 'center'}])}>No Errors</Text>
+              <Text style={StyleSheet.flatten([styles.paragraph, {fontSize: 36, textAlign: 'center'}])}>No Logs Since Last Report</Text>
             }
-          </ScrollView>
+          </View>
         </KeyboardView>
       </View>
     );

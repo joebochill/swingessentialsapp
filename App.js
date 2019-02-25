@@ -42,6 +42,7 @@ class SwingEssentialsApp extends React.Component {
       if(token){store.dispatch(setToken(token));}
     });
     loadTutorials(store.dispatch);
+    logLocalError('TODO: Remove. The application was loaded.');
   }
 
   componentDidMount(){
