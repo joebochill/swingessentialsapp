@@ -137,7 +137,7 @@ class Redeem extends React.Component{
                 customButtons: [
                     {name: 'record', title: 'Record a New Video'},
                 ],
-                videoQuality: 'low',
+                videoQuality: 'high',//'low',
                 mediaType: 'video',//video
                 durationLimit: 10,
                 storageOptions: {

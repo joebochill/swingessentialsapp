@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import { 
   Alert, 
   View, 
+  Platform,
   Text,
   StyleSheet
 } from 'react-native';
@@ -64,16 +65,18 @@ class LogsScreen extends React.Component{
   }
 
   sendErrorMail(){
+    if(Platform.OS === 'android'){this.refresh();}
+
     Mailer.mail({
       subject: 'Swing Essentials Error Report (' + this.props.username + ')',
       recipients: ['info@swingessentials.com'],
-      body: 'My Swing Essentials app has been encountering errors. Please see the attached error log.',
+      body: 'My Swing Essentials app has been encountering errors. ' + (Platform.OS === 'ios' ? 'Please see the attached error log.' : 'Please see the following:\r\n\r\n\r\n' + this.state.content),
       isHTML: false,
-      attachment: {
+      attachment: Platform.OS === 'ios' ? {
         path: path,
         type: 'doc',
         name: 'ErrorLog.txt'
-      }
+      } : null
     }, (error, event) => {
       if(error && error === 'canceled'){
         // Do nothing
