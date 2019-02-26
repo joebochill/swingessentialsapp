@@ -66,7 +66,7 @@ class LogsScreen extends React.Component{
   sendErrorMail(){
     Mailer.mail({
       subject: 'Swing Essentials Error Report (' + this.props.username + ')',
-      recipients: ['info@swingessentials.com'], // TODO: Change to info@swingessentials.com
+      recipients: ['info@swingessentials.com'],
       body: 'My Swing Essentials app has been encountering errors. Please see the attached error log.',
       isHTML: false,
       attachment: {
@@ -75,7 +75,10 @@ class LogsScreen extends React.Component{
         name: 'ErrorLog.txt'
       }
     }, (error, event) => {
-      if(error){
+      if(error && error === 'canceled'){
+        // Do nothing
+      }
+      else if(error){
         logLocalError('Error sending error report: ' + error);
       }
       else if(event && event === 'sent'){

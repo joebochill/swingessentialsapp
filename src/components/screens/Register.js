@@ -104,10 +104,11 @@ class Register extends React.Component{
                 items: [
                     {label:'In-person Lesson', value:'In-person Lesson'},
                     {label:'From a Friend', value:'From a Friend'},
+                    {label:'Google Search', value:'Google Search'},
                     {label:'Online Ad', value:'Online Ad'},
                     {label:'Golf Course Ad', value:'Golf Course Ad'},
+                    {label: 'Social Media', value:'Social Media'},
                     {label:'Youtube', value:'Youtube'},
-                    {label:'Google Search', value:'Google Search'},
                     {label:'Other', value:'Other'}
                 ],
                 change: (value) => {this.setState({heard: value.substr(0,32)})}
@@ -275,7 +276,7 @@ class Register extends React.Component{
                                         ref={(ref) => this.fields[index] = ref}
                                         autoFocus={index===0}
                                         onSubmitEditing={()=>{
-                                            if(this.fields[index+1]){
+                                            if(this.fields[index+1] && this.fields[index+1].focus){
                                                 this.fields[index+1].focus()
                                             }
                                             else if(this._validateFields()){ 
