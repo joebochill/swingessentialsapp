@@ -58,7 +58,7 @@ export function logLocalError(error){
     });
 }
 export function clearErrorLog(){
-    RNFS.writeFile(path, '', 'utf8');
+    return RNFS.writeFile(path, '', 'utf8');
 }
 
 function writeError(existing, newContent){

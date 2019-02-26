@@ -109,7 +109,29 @@ class LogsScreen extends React.Component{
           onRefresh={() => this.refresh()}
           refreshing={this.state.refreshing}
           fixed={
-            <Button
+            <React.Fragment>
+              {Platform.OS === 'ios' && 
+                <Button
+                  title={'CLEAR LOG'}
+                  fontSize={scale(14)}
+                  disabled={this.state.content.length < 1}
+                  disabledStyle={{opacity: 0.5}}
+                  onPress={() => {
+                    Alert.alert(
+                      'Clear Error Log',
+                      'Are you sure you want to clear the log?',
+                      [ 
+                        {text: 'CANCEL'},
+                        {text: 'CLEAR', onPress: () => clearErrorLog().then(() => this.refresh())}, 
+                      ]
+                    );}
+                  }
+                  color={'#333333'}
+                  buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal, borderColor: '#c1c1c1', backgroundColor: '#efefef'}])}
+                  containerViewStyle={styles.buttonContainer}
+                /> 
+              }
+              <Button
                 title={'SEND ERROR REPORT'}
                 fontSize={scale(14)}
                 disabled={this.state.content.length < 1}
@@ -117,7 +139,8 @@ class LogsScreen extends React.Component{
                 onPress={() => this.sendErrorMail()}
                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
                 containerViewStyle={styles.buttonContainer}
-            /> 
+              />
+            </React.Fragment>
           }
         >
           <View contentContainerStyle={{alignItems: 'stretch'}}>            
