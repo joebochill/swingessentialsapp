@@ -22,6 +22,7 @@
     "react-native-keychain": "^3.0.0",
     "react-native-mail": "^3.0.7",
     "react-native-modal": "^7.0.2",
+    "react-native-picker-select": "^6.0.0",
     "react-native-snap-carousel": "^3.7.5",
     "react-native-splash-screen": "^3.1.1",
     "react-native-thumbnail-video": "^0.1.2",

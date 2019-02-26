@@ -23,7 +23,8 @@ const path = RNFS.DocumentDirectoryPath + '/error.txt';
 
 function mapStateToProps(state){
   return {
-    token: state.login.token
+    token: state.login.token,
+    username: state.userData.username,
   };
 }
 function mapDispatchToProps(dispatch){
@@ -64,8 +65,8 @@ class LogsScreen extends React.Component{
 
   sendErrorMail(){
     Mailer.mail({
-      subject: 'Swing Essentials Error Report',
-      recipients: ['boyle.p.joseph@gmail.com'],
+      subject: 'Swing Essentials Error Report (' + this.props.username + ')',
+      recipients: ['info@swingessentials.com'], // TODO: Change to info@swingessentials.com
       body: 'My Swing Essentials app has been encountering errors. Please see the attached error log.',
       isHTML: false,
       attachment: {
@@ -87,7 +88,7 @@ class LogsScreen extends React.Component{
         );
       }
       else if(event && event === 'canceled'){
-        logLocalError('Error sending error report: ' + event);
+        // logLocalError('Error sending error report: ' + event);
       }
       else if(event){
         logLocalError('Error sending error report: ' + event);
@@ -116,7 +117,7 @@ class LogsScreen extends React.Component{
           <View contentContainerStyle={{alignItems: 'stretch'}}>            
             {formatText(this.state.content)}
             {this.state.content.length < 1 &&
-              <Text style={StyleSheet.flatten([styles.paragraph, {fontSize: 36, textAlign: 'center'}])}>No Logs Since Last Report</Text>
+              <Text style={StyleSheet.flatten([styles.paragraph, {fontSize: 24, textAlign: 'center'}])}>No Logs Since Last Report</Text>
             }
           </View>
         </KeyboardView>
