@@ -82,7 +82,7 @@ class Record extends Component {
                     this.setState({uri: result.uri, recording: false, duration: 0, recordLive: false});
                 })
                 .catch((err)=>{
-                    logLocalError('Camera Recording Error: ' + err.toString())
+                    logLocalError('135: Camera Recording Error: ' + err.toString())
                     if(this.timer){clearInterval(this.timer)}
                     this.setState({uri: null, recording: false, duration: 0, recordLive: false});
                 })

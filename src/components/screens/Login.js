@@ -119,7 +119,7 @@ class Login extends React.Component{
             if(callback){callback();}
         })
         .catch((err) => {
-            logLocalError('Keychain Error: ' + err.toString());
+            logLocalError('128: Keychain Error: ' + err.toString());
         });
     }
 

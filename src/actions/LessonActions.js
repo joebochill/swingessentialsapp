@@ -29,7 +29,7 @@ export function checkCoupon(code){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: checking coupon');
+            logLocalError('105: Promise Error: checking coupon');
         });
     }
 }
@@ -56,7 +56,7 @@ export function getLessons(token){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: getting lessons');
+            logLocalError('106: Promise Error: getting lessons');
         });
     }
 }
@@ -84,7 +84,7 @@ export function getCredits(token){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: getting credits');
+            logLocalError('107: Promise Error: getting credits');
         });
     }
 }
@@ -134,7 +134,7 @@ export function redeemCredit(data, token, updateProgress){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: redeeming lesson');
+            logLocalError('108: Promise Error: redeeming lesson');
         });
     }
 }
@@ -163,7 +163,7 @@ export function activateUnlimited(token){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: activating unlimited');
+            logLocalError('109: Promise Error: activating unlimited');
         });
     }
 }
@@ -193,7 +193,7 @@ export function markLessonViewed(data, token){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: marking lesson viewed');
+            logLocalError('110: Promise Error: marking lesson viewed');
         });
     }
 }
@@ -223,7 +223,7 @@ export function executePayment(data, token, platform){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: executing payment');
+            logLocalError('111: Promise Error: executing payment');
         });
     }
 }

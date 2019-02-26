@@ -31,7 +31,7 @@ export function getTips(token=null){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: getting tips');
+            logLocalError('123: Promise Error: getting tips');
         });
     }
 }

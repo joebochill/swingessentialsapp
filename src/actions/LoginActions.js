@@ -36,7 +36,7 @@ export function setToken(token){
     if(exp < Date.now()/1000){
         AsyncStorage.removeItem(ASYNC_PREFIX+'token');
         return (dispatch) => {
-            logLocalError('Local token expired');
+            logLocalError('112: Local token expired');
         }
     }
     return (dispatch) => {
@@ -74,7 +74,7 @@ export function requestLogin(userCredentials){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: logging in');
+            logLocalError('113: Promise Error: logging in');
         });
     }
 }
@@ -100,7 +100,7 @@ export function requestLogout(token){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: logging out');
+            logLocalError('114: Promise Error: logging out');
         });
     }
 }
@@ -127,7 +127,7 @@ export function refreshToken(token){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: refreshing token');
+            logLocalError('115: Promise Error: refreshing token');
         });
     }
 }
@@ -154,7 +154,7 @@ export function checkToken(token){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: checking token');
+            logLocalError('116: Promise Error: checking token');
         });
     }
 }

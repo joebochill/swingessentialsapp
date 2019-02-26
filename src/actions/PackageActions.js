@@ -24,7 +24,7 @@ export function getPackages(token = null){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: getting packages');
+            logLocalError('117: Promise Error: getting packages');
         });
     }
 }

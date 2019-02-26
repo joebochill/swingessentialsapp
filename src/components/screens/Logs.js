@@ -82,7 +82,7 @@ class LogsScreen extends React.Component{
         // Do nothing
       }
       else if(error){
-        logLocalError('Error sending error report: ' + error);
+        logLocalError('129: Error sending error report: ' + error);
       }
       else if(event && event === 'sent'){
         // message sent successfully
@@ -93,11 +93,11 @@ class LogsScreen extends React.Component{
           [{text: 'DONE', onPress: () => this.refresh()}]
         );
       }
-      else if(event && event === 'canceled'){
-        // logLocalError('Error sending error report: ' + event);
+      else if(event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')){
+        // logLocalError('130: Error sending error report: ' + event);
       }
       else if(event){
-        logLocalError('Error sending error report: ' + event);
+        logLocalError('131: Error sending error report: ' + event);
       }
     });
   }

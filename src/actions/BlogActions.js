@@ -31,7 +31,7 @@ export function getBlogs(token = null){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: retrieving blogs');
+            logLocalError('104: Promise Error: retrieving blogs');
         });
     }
 }

@@ -27,7 +27,7 @@ export function getUserData(token){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: getting user data');
+            logLocalError('124: Promise Error: getting user data');
         });
     }
 }
@@ -53,7 +53,7 @@ export function getSettings(token){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: getting settings');
+            logLocalError('125: Promise Error: getting settings');
         });
     }
 }
@@ -82,7 +82,7 @@ export function putSettings(data, token){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: updating settings');
+            logLocalError('126: Promise Error: updating settings');
         });
     }
 }

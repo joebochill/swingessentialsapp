@@ -33,7 +33,7 @@ export function checkTimeout(response, dispatch){
 /* Dispatch a failure action for the supplied action type */
 export function failure(type, response){
     if(response && response.headers && response.headers.get){
-        logLocalError('Error ' + response.headers.get('Error') + ': ' + response.headers.get('Message'));
+        logLocalError('102: Error ' + response.headers.get('Error') + ': ' + response.headers.get('Message'));
     }
     
     return{
@@ -46,7 +46,7 @@ export function failure(type, response){
 /* Dispatch a failure action for the supplied action type, XMLHTTPRequest variant */
 export function xhrfailure(type, response){
     if(response && response.getResponseHeader){
-        logLocalError('Error ' + response.getResponseHeader('Error') + ': ' + response.getResponseHeader('Message'));
+        logLocalError('103: Error ' + response.getResponseHeader('Error') + ': ' + response.getResponseHeader('Message'));
     }
     
     return{

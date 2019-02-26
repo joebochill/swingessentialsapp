@@ -28,7 +28,7 @@ export function checkUsernameAvailability(username){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: checking username');
+            logLocalError('118: Promise Error: checking username');
         });
     }
 }
@@ -50,7 +50,7 @@ export function checkEmailAvailability(email){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: checking email');
+            logLocalError('119: Promise Error: checking email');
         });
     }
 }
@@ -82,7 +82,7 @@ export function createAccount(data){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: creating account');
+            logLocalError('120: Promise Error: creating account');
         });
     }
 }
@@ -109,7 +109,7 @@ export function requestReset(data){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: resetting password');
+            logLocalError('121: Promise Error: resetting password');
         });
     }
 }
@@ -140,7 +140,7 @@ export function verifyEmail(code){
             }
         })
         .catch((error) => {
-            logLocalError('Promise Error: verifying email');
+            logLocalError('122: Promise Error: verifying email');
         });
     }
 }

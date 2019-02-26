@@ -78,7 +78,7 @@ class Order extends React.Component{
                 });
             });
         } catch(err) {
-            logLocalError('RNIAP Error: ' + err.code + ' ' + err.message);
+            logLocalError('132: RNIAP Error: ' + err.code + ' ' + err.message);
         }
     }
     componentWillReceiveProps(nextProps){
@@ -126,7 +126,7 @@ class Order extends React.Component{
         this.setState({paymentActive: true});
         RNIap.buyProduct(data.sku).then(purchase => {
             this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token, Platform.OS);
-            logLocalError('Purchase: ' + purchase.transactionReceipt);
+            logLocalError('133: Purchase: ' + purchase.transactionReceipt);
             
             this.setState({paymentActive: false});
             if(Platform.OS === 'android') {
@@ -135,7 +135,7 @@ class Order extends React.Component{
 
           }).catch(err => {
             this.setState({iap_error: err.code === 'E_USER_CANCELLED' ? false : true, paymentActive: false});
-            logLocalError('RNIAP Error: ' + err.code + ' ' + err.message);
+            logLocalError('134: RNIAP Error: ' + err.code + ' ' + err.message);
           })
     }
 
