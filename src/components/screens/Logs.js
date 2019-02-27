@@ -110,7 +110,7 @@ class LogsScreen extends React.Component{
           refreshing={this.state.refreshing}
           fixed={
             <React.Fragment>
-              {Platform.OS === 'ios' && 
+              {Platform.OS === 'android' && 
                 <Button
                   title={'CLEAR LOG'}
                   fontSize={scale(14)}
