@@ -2,6 +2,7 @@
 
 /* Constants */
 import {BASEURL, AUTH, failure, success, checkTimeout} from './actions.js';
+import { logLocalError } from '../utils/utils.js';
 export const GET_BLOGS = {REQUEST: 'GET_BLOGS', SUCCESS: 'GET_BLOGS_SUCCESS', FAIL: 'GET_BLOGS_FAIL'};
 
 
@@ -29,6 +30,8 @@ export function getBlogs(token = null){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('104: Promise Error: retrieving blogs');
+        });
     }
 }

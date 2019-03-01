@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppState, Alert, Text, View, Platform, ScrollView, Image, Linking } from 'react-native';
+import { AppState, Alert, Text, View, Platform, ScrollView, Image, Linking, Button } from 'react-native';
 import {connect} from 'react-redux';
 import {requestLogout, 
     showLogoutWarning, 
@@ -15,6 +15,7 @@ import {scale, verticalScale} from '../styles/dimension';
 import logo from '../images/logo-big.png';
 
 import CardRow from './Card/CardRow';
+import MultiTap from './Other/MultiTap';
 
 import {atob} from '../utils/base64';
 import {APP_VERSION} from '../constants/index';
@@ -129,12 +130,14 @@ class CustomDrawer extends React.Component {
         return (
             <View style={{flex: 1, width: '100%', backgroundColor: colors.backgroundGrey}}>
                 <View style={{height:verticalScale(80), padding: spacing.normal, paddingTop: spacing.large, paddingBottom: 0, backgroundColor: colors.lightPurple}}>
-                    <Image
-                        //resizeMode='contain'
-                        resizeMethod='resize'
-                        style={{width: '100%', height: '100%', resizeMode: 'contain'}}
-                        source={logo}
-                    />
+                    <MultiTap style={{width: '100%', height: '100%'}} onMultiTap={this.props.token ? () => this.props.navigation.navigate('Logs') : null}>
+                        <Image
+                            //resizeMode='contain'
+                            resizeMethod='resize'
+                            style={{width: '100%', height: '100%', resizeMode: 'contain'}}
+                            source={logo}
+                        />
+                    </MultiTap>
                 </View>
                 <View style={{height: spacing.large, alignItems: 'center', justifyContent:'center', backgroundColor: colors.lightPurple}}>
                     <Text style={{fontSize: scale(14), color:colors.white, marginTop:scale(-14)}}>{this.props.username ? 'Welcome, ' + this.props.username + '!' : ''}</Text>

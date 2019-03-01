@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, StatusBar } from 'react-native';
+import { AsyncStorage, StatusBar, Platform } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
@@ -14,15 +14,18 @@ import { PermissionsAndroid } from 'react-native';
 import {ASYNC_PREFIX} from './src/constants/index';
 import {setToken} from './src/actions/LoginActions';
 import { loadTutorials } from './src/utils/tutorials';
+import { logLocalError, clearErrorLog } from './src/utils/utils';
 
 async function requestPermissions() {
-  try {
-    const cameragranted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
-    const audiogranted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
-    const readrollranted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
-    const writerollgranted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
-  } catch (err) {
-    // console.warn(err)
+  if(Platform.OS === 'android'){
+    try {
+      const cameragranted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
+      const audiogranted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+      const readrollranted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
+      const writerollgranted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+    } catch (err) {
+      logLocalError('101: Error gathering app permissions\r\n' + err);
+    }
   }
 };
 

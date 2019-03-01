@@ -17,6 +17,7 @@ import * as RNIap from 'react-native-iap';
 import Tutorial from '../Tutorial/Order';
 import {TUTORIALS} from '../../constants/index';
 import { tutorialViewed } from '../../actions/TutorialActions';
+import { logLocalError } from '../../utils/utils';
 
 function mapStateToProps(state){
     return {
@@ -77,9 +78,7 @@ class Order extends React.Component{
                 });
             });
         } catch(err) {
-            // TODO: Proper error handling
-            //alert(err); // standardized err.code and err.message available
-            // console.log(err.message);
+            logLocalError('132: RNIAP Error: ' + err.code + ' ' + err.message);
         }
     }
     componentWillReceiveProps(nextProps){
@@ -127,18 +126,16 @@ class Order extends React.Component{
         this.setState({paymentActive: true});
         RNIap.buyProduct(data.sku).then(purchase => {
             this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token, Platform.OS);
-            //console.log(purchase.transactionReceipt);
-
+            logLocalError('133: Purchase: ' + purchase.transactionReceipt);
+            
             this.setState({paymentActive: false});
             if(Platform.OS === 'android') {
                 RNIap.consumePurchase(purchase.transactionReceipt);
             }
 
           }).catch(err => {
-              console.log(err);
             this.setState({iap_error: err.code === 'E_USER_CANCELLED' ? false : true, paymentActive: false});
-            // TODO: proper error handling for errors
-            //alert(err.message);
+            logLocalError('134: RNIAP Error: ' + err.code + ' ' + err.message);
           })
     }
 

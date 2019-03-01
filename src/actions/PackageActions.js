@@ -1,5 +1,6 @@
 /* Constants */
 import {BASEURL, AUTH, failure, success, checkTimeout} from './actions.js';
+import { logLocalError } from '../utils/utils.js';
 
 export const GET_PACKAGES = {REQUEST: 'GET_PACKAGES', SUCCESS: 'GET_PACKAGES_SUCCESS', FAIL: 'GET_PACKAGES_FAIL'};
 
@@ -22,6 +23,8 @@ export function getPackages(token = null){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('117: Promise Error: getting packages');
+        });
     }
 }

@@ -13,7 +13,7 @@ import YouTube, {YouTubeStandaloneAndroid} from 'react-native-youtube';
 import { Thumbnail } from 'react-native-thumbnail-video';
 import styles, {colors, spacing} from '../../styles/index';
 import {scale} from '../../styles/dimension';
-import {formatText} from '../../utils/utils';
+import {formatText, logLocalError} from '../../utils/utils';
 
 import {YOUTUBE_API_KEY} from '../../constants/index';
 
@@ -48,8 +48,9 @@ class Tip extends React.Component{
         autoplay: true,             // Autoplay the video
         startTime: 0,             // Starting point of video (in seconds)
       })
-        .then(() => console.log('Standalone Player Exited'))
-        .catch(errorMessage => console.error(errorMessage))
+        .catch(errorMessage => {
+          logLocalError('136: Youtube Player Error (Tip): ' + errorMessage);
+        });
   }
 
   render(){

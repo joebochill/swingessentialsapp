@@ -15,8 +15,9 @@ export const CHECK_TOKEN = {REQUEST: 'CHECK_TOKEN', SUCCESS: 'CHECK_TOKEN_SUCCES
 export const DATA_FROM_TOKEN = {REQUEST: 'DATA_FROM_TOKEN', SUCCESS: 'DATA_FROM_TOKEN_SUCCESS', FAIL: 'DATA_FROM_TOKEN_FAIL'};
 
 
-import {btoa} from '../utils/base64.js';
+import {btoa, atob} from '../utils/base64.js';
 import { ASYNC_PREFIX } from '../constants';
+import { logLocalError } from '../utils/utils';
 
 /* requests application data from a token after returning from background */
 export function requestDataFromToken(token){
@@ -31,6 +32,13 @@ export function requestDataFromToken(token){
 }
 
 export function setToken(token){
+    let exp = JSON.parse(atob(token.split('.')[1])).exp;
+    if(exp < Date.now()/1000){
+        AsyncStorage.removeItem(ASYNC_PREFIX+'token');
+        return (dispatch) => {
+            logLocalError('112: Local token expired');
+        }
+    }
     return (dispatch) => {
         dispatch({type:SET_TOKEN.REQUEST, data: token});
         dispatch(requestDataFromToken(token));
@@ -65,7 +73,9 @@ export function requestLogin(userCredentials){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('113: Promise Error: logging in');
+        });
     }
 }
 
@@ -89,7 +99,9 @@ export function requestLogout(token){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('114: Promise Error: logging out');
+        });
     }
 }
 
@@ -114,7 +126,9 @@ export function refreshToken(token){
                     dispatch(failure(REFRESH_TOKEN.FAIL, response));
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('115: Promise Error: refreshing token');
+        });
     }
 }
 
@@ -139,7 +153,9 @@ export function checkToken(token){
                     checkTimeout(response, dispatch);
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('116: Promise Error: checking token');
+        });
     }
 }
 

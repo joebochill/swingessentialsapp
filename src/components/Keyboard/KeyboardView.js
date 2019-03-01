@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ScrollView, Animated, Keyboard, Platform, StyleSheet } from 'react-native';
-import styles, {colors, spacing} from '../../styles/index';
+import { View, ScrollView, RefreshControl, Animated, Keyboard, Platform, StyleSheet } from 'react-native';
+import {colors, spacing} from '../../styles/index';
 
 
 class KeyboardView extends React.Component {
@@ -69,6 +69,7 @@ class KeyboardView extends React.Component {
                 <ScrollView 
                     keyboardShouldPersistTaps={'always'}
                     contentContainerStyle={StyleSheet.flatten([{paddingBottom: this.props.fixed ? spacing.normal : 0},this.props.scrollStyle])}
+                    refreshControl={this.props.onRefresh ? <RefreshControl refreshing={this.props.refreshing} onRefresh={()=>this.props.onRefresh()}/> : null}
                     style={StyleSheet.flatten([{
                         //flex: 1,
                         paddingRight: spacing.normal, 

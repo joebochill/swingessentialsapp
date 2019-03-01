@@ -12,6 +12,7 @@ import faceonLH from '../../images/overlay-fo-lh.png';
 import faceonRH from '../../images/overlay-fo-rh.png';
 import downthelineLH from '../../images/overlay-dtl-lh.png';
 import downthelineRH from '../../images/overlay-dtl-rh.png';
+import { logLocalError } from '../../utils/utils';
 
 function mapStateToProps(state){
     return {
@@ -81,7 +82,7 @@ class Record extends Component {
                     this.setState({uri: result.uri, recording: false, duration: 0, recordLive: false});
                 })
                 .catch((err)=>{
-                    console.log(err);
+                    logLocalError('135: Camera Recording Error: ' + err.toString())
                     if(this.timer){clearInterval(this.timer)}
                     this.setState({uri: null, recording: false, duration: 0, recordLive: false});
                 })

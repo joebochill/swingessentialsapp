@@ -1,5 +1,6 @@
 /* Constants */
 import {BASEURL, AUTH, failure, xhrfailure, success, checkTimeout} from './actions.js';
+import { logLocalError } from '../utils/utils.js';
 // import {getUserData, getSettings} from './UserDataActions.js';
 
 export const GET_LESSONS = {REQUEST: 'GET_LESSONS', SUCCESS: 'GET_LESSONS_SUCCESS', FAIL: 'GET_LESSONS_FAIL'};
@@ -27,7 +28,9 @@ export function checkCoupon(code){
                     dispatch(failure(CHECK_COUPON.FAIL, response));
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('105: Promise Error: checking coupon');
+        });
     }
 }
 
@@ -52,7 +55,9 @@ export function getLessons(token){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('106: Promise Error: getting lessons');
+        });
     }
 }
 
@@ -78,7 +83,9 @@ export function getCredits(token){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('107: Promise Error: getting credits');
+        });
     }
 }
 export function futch(url, opts={}, onProgress) {
@@ -126,7 +133,9 @@ export function redeemCredit(data, token, updateProgress){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('108: Promise Error: redeeming lesson');
+        });
     }
 }
 
@@ -153,7 +162,9 @@ export function activateUnlimited(token){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('109: Promise Error: activating unlimited');
+        });
     }
 }
 
@@ -181,7 +192,9 @@ export function markLessonViewed(data, token){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('110: Promise Error: marking lesson viewed');
+        });
     }
 }
 
@@ -209,6 +222,8 @@ export function executePayment(data, token, platform){
                     break;
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            logLocalError('111: Promise Error: executing payment');
+        });
     }
 }

@@ -49,12 +49,12 @@ class CustomHeader extends React.Component {
                 style: { color: colors.white, fontSize: verticalScale(18) } 
             }}
             rightComponent={{ 
-                icon: this.props.token ? 'exit-to-app' : 'person',
+                icon: (this.props.type === 'refresh') ? 'refresh' : this.props.token ? 'exit-to-app' : 'person',
                 size: verticalScale(26),
                 underlayColor:colors.transparent, 
                 color: colors.white, 
                 containerStyle:styles.headerIcon, 
-                onPress: !this.props.token ? 
+                onPress: (this.props.type === 'refresh') ? () => this.props.onRefresh() : (!this.props.token ? 
                     () => this.props.navigation.push('Auth') : 
                     () => Alert.alert(
                         'Log Out',
@@ -67,7 +67,7 @@ class CustomHeader extends React.Component {
                                 }
                             }
                         ]
-                    )
+                    ))
                 }}
             />
         );

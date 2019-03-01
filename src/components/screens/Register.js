@@ -9,6 +9,8 @@ import {
     ActivityIndicator
 } from 'react-native';
 import {FormInput, Button} from 'react-native-elements';
+import RNPickerSelect from 'react-native-picker-select';
+
 import Header from '../Header/Header';
 
 
@@ -47,6 +49,7 @@ class Register extends React.Component{
             firstName: '',
             lastName: '',
             phone: '',
+            heard: '',
             email: '',
             password: '',
             passwordConfirm: '',
@@ -96,6 +99,19 @@ class Register extends React.Component{
                 error: () => !this.state.passwordsMatch,
                 errorMessage: () => 'Passwords don\'t match',
                 change: (value) => {this.setState({passwordConfirm: value}); this._checkPasswords(null, value);}
+            },
+            {property: 'heard', type: 'select', display: 'How did you hear about us?',
+                items: [
+                    {label:'In-person Lesson', value:'In-person Lesson'},
+                    {label:'From a Friend', value:'From a Friend'},
+                    {label:'Google Search', value:'Google Search'},
+                    {label:'Online Ad', value:'Online Ad'},
+                    {label:'Golf Course Ad', value:'Golf Course Ad'},
+                    {label: 'Social Media', value:'Social Media'},
+                    {label:'Youtube', value:'Youtube'},
+                    {label:'Other', value:'Other'}
+                ],
+                change: (value) => {this.setState({heard: value.substr(0,32)})}
             }
         ];
     }
@@ -131,7 +147,8 @@ class Register extends React.Component{
             this.state.lastName && 
             this.state.email && this.state.validEmail && this.props.emailAvailable &&
             this.state.password && 
-            this.state.password === this.state.passwordConfirm);
+            this.state.password === this.state.passwordConfirm) &&
+            this.state.heard.length > 0
     }
     
     _checkPasswords(pass=null,conf=null){
@@ -157,6 +174,7 @@ class Register extends React.Component{
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
                 email: this.state.email,
+                heard: this.state.heard,
                 phone: this.state.phone,
                 password: this.state.password
             });
@@ -237,28 +255,46 @@ class Register extends React.Component{
                         {this.regProperties.map((item,index) =>
                             <View key={'reg_field_'+index} style={{marginBottom:spacing.normal}}>
                                 <Text style={styles.formLabel}>{item.display}</Text>
-                                <FormInput
-                                    ref={(ref) => this.fields[index] = ref}
-                                    autoFocus={index===0}
-                                    onSubmitEditing={()=>{
-                                        if(this.fields[index+1]){
-                                            this.fields[index+1].focus()
-                                        }
-                                        else if(this._validateFields()){ 
-                                            this._submitRegistration();
-                                        }
-                                    }}
-                                    returnKeyType={index < this.regProperties.length -1 ? 'next' : 'go'}
-                                    autoCapitalize={'none'}
-                                    containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
-                                    inputStyle={styles.formInput}
-                                    underlineColorAndroid={colors.transparent}
-                                    value={this.state[item.property]}
-                                    keyboardType={item.property==='email'?'email-address':'default'}
-                                    secureTextEntry={item.property==='password' || item.property ==='passwordConfirm'}
-                                    onChangeText={item.change}
-                                    onBlur={item.blur}
-                                />
+                                {item.type === 'select' ? 
+                                    <RNPickerSelect
+                                        placeholder={{ label: item.placeholder || 'Choose One...', value: '', color: '#9EA0A4' }}
+                                        items={item.items}
+                                        onValueChange={item.change}
+                                        value={this.state[item.property]}
+                                        useNativeAndroidPickerStyle={false}
+                                        ref={(ref) => this.fields[index] = ref}
+                                    >
+                                        <FormInput
+                                            containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
+                                            inputStyle={styles.formInput}
+                                            editable={false}
+                                            underlineColorAndroid={colors.transparent}
+                                            value={this.state[item.property]}
+                                        />
+                                    </RNPickerSelect>
+                                    :<FormInput
+                                        ref={(ref) => this.fields[index] = ref}
+                                        autoFocus={index===0}
+                                        onSubmitEditing={()=>{
+                                            if(this.fields[index+1] && this.fields[index+1].focus){
+                                                this.fields[index+1].focus()
+                                            }
+                                            else if(this._validateFields()){ 
+                                                this._submitRegistration();
+                                            }
+                                        }}
+                                        returnKeyType={index < this.regProperties.length -1 ? 'next' : 'go'}
+                                        autoCapitalize={'none'}
+                                        containerStyle={StyleSheet.flatten([styles.formInputContainer, {marginTop: spacing.small}])}
+                                        inputStyle={styles.formInput}
+                                        underlineColorAndroid={colors.transparent}
+                                        value={this.state[item.property]}
+                                        keyboardType={item.property==='email'?'email-address':'default'}
+                                        secureTextEntry={item.property==='password' || item.property ==='passwordConfirm'}
+                                        onChangeText={item.change}
+                                        onBlur={item.blur}
+                                    />
+                                }
                                 {item.error && item.error() && !this.state.validationError && 
                                     <Text style={StyleSheet.flatten([styles.formValidation, {marginTop: spacing.normal}])}>
                                         {item.errorMessage()}
