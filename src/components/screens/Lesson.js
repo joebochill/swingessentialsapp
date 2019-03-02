@@ -132,6 +132,8 @@ class Lesson extends React.Component{
         });
   }
 
+
+
   render(){
     const lesson = this.state.lesson;
     if(!lesson){return null;}
@@ -148,7 +150,7 @@ class Lesson extends React.Component{
               apiKey={YOUTUBE_API_KEY}
               videoId={lesson.response_video}  // The YouTube video ID
               play={false}             // control playback of video with true/false
-              fullscreen={false}       // control whether the video should play in fullscreen or inline
+              fullscreen={true}       // control whether the video should play in fullscreen or inline
               loop={false}             // control whether the video should loop when ended
               showinfo={false}
               modestbranding={true}
