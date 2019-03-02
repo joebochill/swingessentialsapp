@@ -6,6 +6,7 @@ import {
     View, 
     Text,
     StyleSheet,
+    Platform,
     ActivityIndicator
 } from 'react-native';
 import {FormInput, Button} from 'react-native-elements';
@@ -176,7 +177,8 @@ class Register extends React.Component{
                 email: this.state.email,
                 heard: this.state.heard,
                 phone: this.state.phone,
-                password: this.state.password
+                password: this.state.password,
+                platform: Platform.OS
             });
         }
     }
