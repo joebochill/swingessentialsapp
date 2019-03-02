@@ -28,6 +28,19 @@ export function getDate(unix){
     return (yyyy + '-' + mm + '-' + dd);
 }
 
+export function getTime(unix){
+    let day = new Date(unix);
+    let hh = day.getUTCHours();
+    let mm = day.getUTCMinutes();
+    let ss = day.getUTCSeconds();
+
+    if(hh<10){hh='0'+hh;} 
+    if(mm<10){mm='0'+mm;} 
+    if(ss<10){ss='0'+ss;} 
+
+    return (hh + ':' + mm + ':' + ss);
+}
+
 export function checkVersionGreater(test, against){
     if(!test || typeof test !== 'string' || test.length < 5){return false;}
     test = test.split('.', 3);
@@ -67,18 +80,10 @@ function writeError(existing, newContent){
     RNFS.writeFile(path, 
         existing + 
         getDate(now) + ' ' + 
-        date.getHours() + ':' + 
-        date.getMinutes() + ':' + 
-        date.getSeconds() + 
+        getTime(now) +
         ' (' + (now/1000).toFixed(0) + 
         '):\r\n'+
         newContent + 
         '\r\n\r\n', 'utf8'
     )
-    // .then((success) => {
-    //     console.log('FILE WRITTEN!');
-    // }) 
-    // .catch((err) => {
-    //     console.log(err.message);
-    // });
 }

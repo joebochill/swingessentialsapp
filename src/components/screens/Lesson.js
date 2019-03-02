@@ -132,6 +132,8 @@ class Lesson extends React.Component{
         });
   }
 
+
+
   render(){
     const lesson = this.state.lesson;
     if(!lesson){return null;}

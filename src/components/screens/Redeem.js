@@ -388,11 +388,13 @@ class Redeem extends React.Component{
                             onFocus={() => this.scroller.scrollTo({x: 0, y: 150, animated: true})}
                             value={this.state.notes}
                             editable={!this.props.redeemPending}
+                            maxLength={500}
                             //keyboardType={item.property==='email'?'email-address':'default'}
                             //secureTextEntry={item.property==='password' || item.property ==='passwordConfirm'}
                             onChangeText={(val)=>this.setState({notes: val})}
                             //onBlur={item.blur}
                         />
+                        <Text color={colors.purple} style={{textAlign: 'right'}}>{`${500 - this.state.notes.length} Characters Left`}</Text>
                     </ScrollView>    
                     <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>       
                 </KeyboardView> 

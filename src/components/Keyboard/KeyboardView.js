@@ -73,7 +73,7 @@ class KeyboardView extends React.Component {
                     style={StyleSheet.flatten([{
                         //flex: 1,
                         paddingRight: spacing.normal, 
-                        paddingLeft: spacing.normal,
+                        paddingLeft: spacing.normal
                         //marginBottom: this.props.fixed ? spacing.normal : 0
                     }])}
                 >

@@ -143,7 +143,7 @@ class LogsScreen extends React.Component{
             </React.Fragment>
           }
         >
-          <View contentContainerStyle={{alignItems: 'stretch'}}>            
+          <View style={(Platform.OS === 'android') ? {paddingLeft: spacing.small, paddingRight: spacing.small} : {}}>
             {formatText(this.state.content)}
             {this.state.content.length < 1 &&
               <Text style={StyleSheet.flatten([styles.paragraph, {fontSize: 24, textAlign: 'center'}])}>No Logs Since Last Report</Text>
