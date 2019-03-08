@@ -46,7 +46,10 @@ class Record extends Component {
         this._endRecording();
     }
     _startRecording(){
-        if(!this.camera){ return;}
+        if(!this.camera){ 
+            logLocalError('138: Camera Recording Error: no camera object');
+            return;
+        }
 
         // check if the user has a recording delay configured in settings
         const delay = parseInt(this.props.settings.delay, 10);
@@ -89,7 +92,10 @@ class Record extends Component {
             }, parseInt(this.props.settings.delay, 10)*1000);
     }
     _endRecording(){
-        if(!this.camera){return;}
+        if(!this.camera){
+            logLocalError('139: Camera Recording Error: no camera object');
+            return;
+        }
         if(this.state.recordLive){
             this.camera.stopRecording();
         }

@@ -120,9 +120,13 @@ class Order extends React.Component{
 
     _purchaseLesson(data){
         if(this.state.error !== '' || this.state.role === ''){
+            logLocalError('137: Purchase request not sent: ' + this.state.error);
             return;
         }
-        if(!data){return;}
+        if(!data){
+            logLocalError('138: Purchase: missing data');
+            return;
+        }
         this.setState({paymentActive: true});
         RNIap.buyProduct(data.sku).then(purchase => {
             this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token, Platform.OS);
