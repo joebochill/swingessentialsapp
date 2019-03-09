@@ -71,8 +71,7 @@ export function requestLogin(userCredentials){
                             AsyncStorage.setItem(ASYNC_PREFIX+'logs_sent', ('' + Math.floor(Date.now()/1000)));
                         }
                         // If we haven't sent a log for 10 days, send one
-                        // if(Date.now()/1000 - parseInt(lastRefresh, 10) >= 10*24*60*60){
-                        if(Date.now()/1000 - parseInt(lastRefresh, 10) >= 1*60){
+                        if(Date.now()/1000 - parseInt(lastRefresh, 10) >= 10*24*60*60){
                             readLocalErrors()
                             .then((content) => {
                                 if(content.length > 0){
