@@ -14,7 +14,7 @@ import { PermissionsAndroid } from 'react-native';
 import {ASYNC_PREFIX} from './src/constants/index';
 import {setToken} from './src/actions/LoginActions';
 import { loadTutorials } from './src/utils/tutorials';
-import { logLocalError, clearErrorLog } from './src/utils/utils';
+import { logLocalError} from './src/utils/utils';
 
 async function requestPermissions() {
   if(Platform.OS === 'android'){

@@ -1,6 +1,6 @@
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage, Platform} from 'react-native';
 /* Constants */
-import {BASEURL, AUTH, failure, success, checkTimeout} from './actions';
+import {BASEURL, AUTH, failure, success, checkTimeout, sendLogReport} from './actions';
 import {getUserData, getSettings} from './UserDataActions';
 import {getLessons, getCredits} from './LessonActions';
 import {getTips} from './TipActions';
@@ -17,7 +17,7 @@ export const DATA_FROM_TOKEN = {REQUEST: 'DATA_FROM_TOKEN', SUCCESS: 'DATA_FROM_
 
 import {btoa, atob} from '../utils/base64.js';
 import { ASYNC_PREFIX } from '../constants';
-import { logLocalError } from '../utils/utils';
+import { logLocalError, readLocalErrors } from '../utils/utils';
 
 /* requests application data from a token after returning from background */
 export function requestDataFromToken(token){
@@ -65,6 +65,25 @@ export function requestLogin(userCredentials){
                     dispatch(getCredits(token));
                     dispatch(getSettings(token));
                     dispatch(getPackages(token));
+                    AsyncStorage.getItem(ASYNC_PREFIX+'logs_sent')
+                    .then((lastRefresh)=>{
+                        if(lastRefresh === null){
+                            AsyncStorage.setItem(ASYNC_PREFIX+'logs_sent', ('' + Math.floor(Date.now()/1000)));
+                        }
+                        // If we haven't sent a log for 10 days, send one
+                        // if(Date.now()/1000 - parseInt(lastRefresh, 10) >= 10*24*60*60){
+                        if(Date.now()/1000 - parseInt(lastRefresh, 10) >= 1*60){
+                            readLocalErrors()
+                            .then((content) => {
+                                if(content.length > 0){
+                                    dispatch(sendLogReport(token, {platform: Platform.OS, data: content}))
+                                }
+                                else{
+                                    AsyncStorage.setItem(ASYNC_PREFIX+'logs_sent', ('' + Math.floor(Date.now()/1000)));
+                                }
+                            })
+                        }
+                      });
                     break;
                 default:
                     Keychain.resetGenericPassword();

@@ -1,19 +1,40 @@
-import { logLocalError } from "../utils/utils";
+import { logLocalError, clearErrorLog } from "../utils/utils";
+import {AsyncStorage} from 'react-native';
+import { ASYNC_PREFIX } from "../constants";
 
 /* Constants */
 export const LOCATION_CHANGE = '@@router/LOCATION_CHANGE';
 export const TOKEN_TIMEOUT = 'TOKEN_TIMEOUT';
-export const GET_PACKAGES = {REQUEST: 'GET_PACKAGES', SUCCESS: 'GET_PACKAGES_SUCCESS', FAIL: 'GET_PACKAGES_FAIL'};
 
 /* Base URL for fetch commands */
-// export const BASEURL = 'http://www.josephpboyle.com/api/swingessentialsapi.php/';
 export const BASEURL = 'https://www.swingessentials.com/apis/swingessentials.php/';
-//export const BASEURL = 'https://www.josephpboyle.com/api/swingessentials2.php/';
 export const AUTH = 'Message';
 
-//const API_KEY = 'AIzaSyAzvggwVpvJ1pngsjQKJ84FcY8v07C8dNA';
-//const googleURL = 'https://www.googleapis.com/upload/storage/v1/b/www.joebochill.com/';
-
+// Send report with log data to swingessentials
+export function sendLogReport(token, data){
+    return (dispatch) => {
+        fetch(BASEURL+'logs', { 
+            method: 'POST',
+            headers: {
+                [AUTH]: 'Bearer ' + token
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            switch(response.status){
+                case 200:
+                    clearErrorLog();
+                    AsyncStorage.setItem(ASYNC_PREFIX+'logs_sent', ('' + Math.floor(Date.now()/1000)));
+                    break;
+                default:
+                    logLocalError('999: Failed to submit error log automatically');
+            }
+        })
+        .catch((error) => {
+            logLocalError('116: Promise Error: checking token');
+        });
+    }
+}
 
 /* Check if the request failed because of an expired token */
 export function checkTimeout(response, dispatch){

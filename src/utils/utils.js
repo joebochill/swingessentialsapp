@@ -57,19 +57,25 @@ export function checkVersionGreater(test, against){
     return true;
 }
 
-export function logLocalError(error){
+export function readLocalErrors(){
     return RNFS.exists(path)
     .then((exists) => {
         if(exists){
-            RNFS.readFile(path, 'utf8').then((content) => {
-                writeError(content, error);
-            });
+            return RNFS.readFile(path, 'utf8')
         }
         else{
-            writeError('', error);
+            return '';
         }
     });
 }
+
+export function logLocalError(error){
+    return readLocalErrors()
+    .then(content => {
+        writeError(content, error)
+    });
+}
+
 export function clearErrorLog(){
     return RNFS.writeFile(path, '', 'utf8');
 }

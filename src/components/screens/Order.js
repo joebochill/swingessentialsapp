@@ -129,7 +129,7 @@ class Order extends React.Component{
         }
         this.setState({paymentActive: true});
         RNIap.buyProduct(data.sku).then(purchase => {
-            this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token, Platform.OS);
+            this.props.executePayment({...data, receipt: purchase.transactionReceipt}, this.props.token, Platform.OS);
             logLocalError('133: Purchase: ' + purchase.transactionReceipt);
             
             this.setState({paymentActive: false});
