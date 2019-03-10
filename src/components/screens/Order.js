@@ -90,18 +90,6 @@ class Order extends React.Component{
         RNIap.endConnection();
     }
 
-    // _clearPurchases(){
-    //     RNIap.getAvailablePurchases()
-    //     .then((purchaseList) => {
-    //         purchaseList.forEach(element => {
-    //             RNIap.consumePurchase(element.transactionReceipt);
-    //         });
-    //     })
-    //     .catch((err)=>{
-    //         alert(err.message);
-    //     });
-    // }
-
     _updateUserRole(token){
         if(!token){
             this.setState({role: 'anonymous', error: 'You must be signed in to purchase lessons'});
@@ -133,13 +121,12 @@ class Order extends React.Component{
             logLocalError('133: Purchase: ' + purchase.transactionReceipt);
             
             this.setState({paymentActive: false});
-            if(Platform.OS === 'android') {
-                RNIap.consumePurchase(purchase.transactionReceipt);
-            }
+            RNIap.consumePurchase(purchase.purchaseToken);
 
           }).catch(err => {
             this.setState({iap_error: err.code === 'E_USER_CANCELLED' ? false : true, paymentActive: false});
             logLocalError('134: RNIAP Error: ' + err.code + ' ' + err.message);
+            RNIap.consumeAllItems();
           })
     }
 
