@@ -23,6 +23,7 @@ import {atob} from '../../utils/base64';
 
 import downtheline from '../../images/downtheline.png';
 import faceon from '../../images/faceon.png';
+import { logLocalError } from '../../utils/utils';
 
 function mapStateToProps(state){
     return {
@@ -176,9 +177,11 @@ class Redeem extends React.Component{
         Keyboard.dismiss();
         if(this.props.redeemPending || 
             this.state.error !== ''){ 
+                logLocalError('140: Redeem state error: ' + this.state.error);
                 return;
         }
         if((!this.foplayer || !this.dtlplayer)){
+            logLocalError('141: Redeem: missing video container');
             return;
         }
         if(!this.state.foSource || !this.state.dtlSource){
@@ -200,7 +203,6 @@ class Redeem extends React.Component{
         data.append('notes', this.state.notes);
 
         this.props.redeemCredit(data, this.props.token, this._updateProgress.bind(this));
-        // this.scroller.scrollTo({x: 0, y: 0, animated: true});
     }
 
     _updateProgress(event){

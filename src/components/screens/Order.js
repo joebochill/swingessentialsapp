@@ -90,18 +90,6 @@ class Order extends React.Component{
         RNIap.endConnection();
     }
 
-    // _clearPurchases(){
-    //     RNIap.getAvailablePurchases()
-    //     .then((purchaseList) => {
-    //         purchaseList.forEach(element => {
-    //             RNIap.consumePurchase(element.transactionReceipt);
-    //         });
-    //     })
-    //     .catch((err)=>{
-    //         alert(err.message);
-    //     });
-    // }
-
     _updateUserRole(token){
         if(!token){
             this.setState({role: 'anonymous', error: 'You must be signed in to purchase lessons'});
@@ -120,22 +108,25 @@ class Order extends React.Component{
 
     _purchaseLesson(data){
         if(this.state.error !== '' || this.state.role === ''){
+            logLocalError('137: Purchase request not sent: ' + this.state.error);
             return;
         }
-        if(!data){return;}
+        if(!data){
+            logLocalError('138: Purchase: missing data');
+            return;
+        }
         this.setState({paymentActive: true});
         RNIap.buyProduct(data.sku).then(purchase => {
-            this.props.executePayment({...data, receipt: purchase.transactionReceipt},this.props.token, Platform.OS);
+            this.props.executePayment({...data, receipt: purchase.transactionReceipt}, this.props.token, Platform.OS);
             logLocalError('133: Purchase: ' + purchase.transactionReceipt);
             
             this.setState({paymentActive: false});
-            if(Platform.OS === 'android') {
-                RNIap.consumePurchase(purchase.transactionReceipt);
-            }
+            RNIap.consumePurchase(purchase.purchaseToken);
 
           }).catch(err => {
             this.setState({iap_error: err.code === 'E_USER_CANCELLED' ? false : true, paymentActive: false});
             logLocalError('134: RNIAP Error: ' + err.code + ' ' + err.message);
+            RNIap.consumeAllItems();
           })
     }
 
