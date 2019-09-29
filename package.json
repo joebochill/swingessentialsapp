@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint ."
+    "test": "yarn test:jest && yarn test:sagas",
+    "lint": "eslint .",
+    "test:jest": "jest __tests__/*",
+    "test:sagas": "babel-node __saga_tests__/sagas.spec.js | tap-spec"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.1",
@@ -17,10 +19,14 @@
     "react-navigation": "^3.11.1",
     "react-redux": "^7.1.0",
     "redux": "^4.0.4",
-    "redux-saga": "^1.0.5"
+    "redux-saga": "^1.0.5",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.11.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.6.2",
     "@babel/core": "^7.5.5",
+    "@babel/node": "^7.6.2",
     "@babel/runtime": "^7.5.5",
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-jest": "^24.8.0",
@@ -35,7 +41,8 @@
       "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|react-navigation-header-buttons|react-navigation-stack|@react-navigation)"
     ],
     "setupFiles": [
-      "./node_modules/react-native-gesture-handler/jestSetup.js", "./jestSetup.js"
+      "./node_modules/react-native-gesture-handler/jestSetup.js",
+      "./jestSetup.js"
     ],
     "testEnvironment": "jsdom"
   }
