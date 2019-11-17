@@ -20,7 +20,7 @@ class LessonsTutorial extends React.Component {
         this.slides = [
             (
                 <View>
-                    <Text style={StyleSheet.flatten([styles.headline, {fontSize: scale(28), color: colors.white}])}>{'Welcome to Swing Essentials!'}</Text>
+                    <Text style={StyleSheet.flatten([styles.headline, {fontSize: scale(28), color: colors.white}])}>{'Welcome to Swing Essentials™!'}</Text>
                     <Text style={StyleSheet.flatten([styles.paragraph, {color: colors.white, textAlign: 'center'}])}>When you have submitted your golf swing for analysis, your lessons will appear in this list.</Text>
                     <FlatList
                         style={{marginTop: spacing.normal,flex: 0, marginHorizontal: 0}}
