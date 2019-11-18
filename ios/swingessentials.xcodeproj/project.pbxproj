@@ -1091,6 +1091,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1848,7 +1849,7 @@
 				CODE_SIGN_ENTITLEMENTS = swingessentials/swingessentials.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = U4XC42DW6S;
 				HEADER_SEARCH_PATHS = (
@@ -1875,7 +1876,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.swingessentials.app;
 				PRODUCT_NAME = swingessentials;
-				PROVISIONING_PROFILE_SPECIFIER = "Swing Essentials Distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "Swing Essentials LLC distro";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1888,7 +1889,7 @@
 				CODE_SIGN_ENTITLEMENTS = swingessentials/swingessentials.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = U4XC42DW6S;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1914,7 +1915,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.swingessentials.app;
 				PRODUCT_NAME = swingessentials;
-				PROVISIONING_PROFILE_SPECIFIER = "Swing Essentials Distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "Swing Essentials LLC distro";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2177,6 +2178,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2230,6 +2232,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
