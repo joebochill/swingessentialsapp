@@ -98,7 +98,7 @@ class Redeem extends React.Component {
         else if (this.props.redeemPending && !nextProps.redeemPending && !nextProps.redeemSuccess) {
             // 400701 means files were stripped for size
             // 400702 too large
-            if (nextProps.redeemError && (nextProps.redeemError === 400701 || nextProps.redeemError === 400703)) {
+            if (nextProps.redeemError && (nextProps.redeemError === '400701' || nextProps.redeemError === '400703')) {
                 Alert.alert(
                     'Oops',
                     'The videos you have submitted are too large. Please edit the videos to be smaller and/or avoid the use of slow-motion video. If this error persists, please contact us.',
