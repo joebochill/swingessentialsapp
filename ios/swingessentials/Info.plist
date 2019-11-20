@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.2.12</string>
+	<string>2.2.13</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>6</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -41,6 +41,10 @@
 	<string>Swing Essentials needs access to your camera to record swing videos.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Swing Essentials needs access to FaceID to use it for sign in.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Swing Essentials needs to access your location for video tagging</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Swing Essentials needs to access your location for video tagging</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Swing Essentials needs access to your microphone to capture audio in your swing videos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
