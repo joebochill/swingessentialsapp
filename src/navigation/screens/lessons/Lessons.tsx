@@ -12,7 +12,7 @@ const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 export const Lessons = withNavigation(props => (
     <View style={styles.container}>
         <Header
-            navigation={{ icon: MenuIcon, onPress: () => {} }}
+            navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Your Lessons'}
             subtitle={"...see how far you've come"}
         />

@@ -5,7 +5,7 @@ import { Header } from '@pxblue/react-native-components';
 import { EmptyState, wrapIcon } from '@pxblue/react-native-components';
 import { withNavigation } from 'react-navigation';
 // import * as Colors from '@pxblue/colors';
-const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
+const BackIcon = wrapIcon({ IconClass: Icon, name: 'arrow-back' });
 const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 
 export const SingleLesson = withNavigation(props => {
@@ -13,7 +13,7 @@ export const SingleLesson = withNavigation(props => {
     return (
         <View style={styles.container}>
             <Header
-                navigation={{ icon: MenuIcon, onPress: () => {} }}
+                navigation={{ icon: BackIcon, onPress: () => props.navigation.goBack() }}
                 title={'08/19/2019'}
                 subtitle={'In-person lesson'}
             />
