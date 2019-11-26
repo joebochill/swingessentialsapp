@@ -22,11 +22,11 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
     const [password, setPassword] = useState('');
     const [remember, setRemember] = useState(false);
     const [error, setError] = useState(false);
-    const [touchFail, setTouchFail] = useState(false);
-    const [credentialsStored, setCredentialsStored] = useState(true);
+    const [touchFail] = useState(false);
+    const [credentialsStored] = useState(true);
     const [useBiometric, setUseBiometric] = useState(true);
-    const [biometricAvailable, setUseBiometricAvailable] = useState(true);
-    const [biometricType, setBiometricType] = useState('TouchID');
+    const [biometricAvailable] = useState(true);
+    const [biometricType] = useState('TouchID');
     // Redux State
     const pending = useSelector(state => state.login.pending);
     const token = useSelector(state => state.login.token);
@@ -36,27 +36,32 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
     // Refs
     const passField = useRef(null);
 
-    const onLogin = useCallback((username, password) => {
-        if (!username || !password) {
-            setError(true);
-            return;
-        }
-        setError(false);
-        dispatch(requestLogin({ username, password }))
-    }, []);
+    const onLogin = useCallback(
+        (username, password) => {
+            if (!username || !password) {
+                setError(true);
+                return;
+            }
+            setError(false);
+            dispatch(requestLogin({ username, password }));
+        },
+        [dispatch],
+    );
 
     useEffect(() => {
         if (token) {
             props.navigation.pop();
         }
-        if (failuresChanged) { setPassword('') }
-    });
+        if (failuresChanged) {
+            setPassword('');
+        }
+    }, [token, failuresChanged, props.navigation]);
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 {/* LOGO */}
-                <Image source={logo} resizeMethod='resize' style={styles.logo} />
+                <Image source={logo} resizeMethod="resize" style={styles.logo} />
 
                 {/* Username Field */}
                 <View>
@@ -70,30 +75,35 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
                         label={'Username'}
                         labelStyle={[styles.formLabel, { color: white[50] }]}
                         onChangeText={(val: string) => setUsername(val)}
-                        onSubmitEditing={() => { if (passField.current) { passField.current.focus() } }}
+                        onSubmitEditing={() => {
+                            if (passField.current) {
+                                passField.current.focus();
+                            }
+                        }}
                         placeholder="Please enter your username"
                         returnKeyType={'next'}
                         underlineColorAndroid={transparent}
                         value={username}
                     />
-                    {biometricAvailable && useBiometric && credentialsStored &&
-                        <View style={{
-                            position: 'absolute',
-                            right: spaces.medium,
-                            bottom: 0,
-                            height: sizes.large,
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
+                    {biometricAvailable && useBiometric && credentialsStored && (
+                        <View
+                            style={{
+                                position: 'absolute',
+                                right: spaces.medium,
+                                bottom: 0,
+                                height: sizes.large,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}>
                             <Icon
                                 name={'fingerprint'}
                                 size={sizes.small}
                                 color={purple[500]}
                                 underlayColor={transparent}
-                            // onPress={() => this._showBiometricLogin()}
+                                // onPress={() => this._showBiometricLogin()}
                             />
                         </View>
-                    }
+                    )}
                 </View>
 
                 {/* Password Field */}
@@ -129,7 +139,7 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
                             trackColor={{ false: white[50], true: purple[500] }}
                         />
                     </View>
-                    {biometricAvailable &&
+                    {biometricAvailable && (
                         <View style={styles.toggle}>
                             <Text style={styles.toggleLabel}>{`Use ${biometricType}`}</Text>
                             <Switch
@@ -142,60 +152,47 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
                                 trackColor={{ false: white[50], true: purple[500] }}
                             />
                         </View>
-                    }
+                    )}
                 </View>
 
                 {/* Error Messages */}
                 <ErrorBox
-                    show={failures > 0 || error}//={(this.props.loginFails > 0 || this.state.error)}
+                    show={failures > 0 || error} //={(this.props.loginFails > 0 || this.state.error)}
                     error={'The username/password you entered was not correct.'}
                 />
                 <ErrorBox
-                    show={touchFail && failures <= 0}//={(this.state.touchFail && this.props.loginFails <= 0)}
+                    show={touchFail && failures <= 0} //={(this.state.touchFail && this.props.loginFails <= 0)}
                     error={`Your ${'FaceID'} was not recognized. Please enter your password to sign in.`}
                 />
 
                 {/* Log In Buttons */}
-                {!pending &&
+                {!pending && (
                     <View style={styles.loginRow}>
                         <SEButton
                             title="SIGN IN"
                             containerStyle={{ flex: 1 }}
                             onPress={() => onLogin(username, password)}
                         />
-                        <SEButton link
+                        <SEButton
+                            link
                             containerStyle={{ marginLeft: spaces.medium, flex: 0 }}
                             title="CANCEL"
                             onPress={() => props.navigation.pop()}
                         />
                     </View>
-                }
+                )}
 
                 {/* Loading Spinner */}
-                {pending &&
-                    <ActivityIndicator
-                        style={{ marginTop: spaces.jumbo }}
-                        size={'large'}
-                        color={white[50]}
-                    />
-                }
+                {pending && <ActivityIndicator style={{ marginTop: spaces.jumbo }} size={'large'} color={white[50]} />}
 
                 {/* Registration Links */}
                 <View style={styles.registerRow}>
-                    <SEButton
-                        link
-                        title="Forgot Password?"
-                        onPress={() => props.navigation.push('Forgot')}
-                    />
-                    <SEButton
-                        link
-                        title="Create Account"
-                        onPress={() => props.navigation.push('Register')}
-                    />
+                    <SEButton link title="Forgot Password?" onPress={() => props.navigation.push('Forgot')} />
+                    <SEButton link title="Create Account" onPress={() => props.navigation.push('Register')} />
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
-    )
+    );
 });
 
 const styles = StyleSheet.create({
@@ -203,20 +200,20 @@ const styles = StyleSheet.create({
         flex: 1,
         maxWidth: unit(500),
         backgroundColor: purple[400],
-        paddingHorizontal: spaces.medium
+        paddingHorizontal: spaces.medium,
     },
     formLabel: {
         color: purple[500],
         marginLeft: 0,
         marginTop: 0,
         fontSize: fonts[14],
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     input: {
         color: purple[500],
         fontSize: fonts[14],
         textAlignVertical: 'center',
-        paddingHorizontal: spaces.small
+        paddingHorizontal: spaces.small,
     },
     inputContainer: {
         height: sizes.large,
@@ -224,39 +221,39 @@ const styles = StyleSheet.create({
         marginTop: spaces.small,
         padding: spaces.small,
         borderColor: purple[800],
-        borderWidth: unit(1)
+        borderWidth: unit(1),
     },
     loginRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: spaces.xLarge
+        marginTop: spaces.xLarge,
     },
     logo: {
         height: unit(60),
         width: '100%',
         resizeMode: 'contain',
-        marginBottom: spaces.medium
+        marginBottom: spaces.medium,
     },
     registerRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: spaces.medium
+        marginTop: spaces.medium,
     },
     rememberRow: {
         marginTop: spaces.xLarge,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
     },
-    scrollContainer:{
+    scrollContainer: {
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     toggle: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
     },
-    toggleLabel: { fontSize: fonts[14], color: white[50], marginRight: spaces.small }
+    toggleLabel: { fontSize: fonts[14], color: white[50], marginRight: spaces.small },
 });

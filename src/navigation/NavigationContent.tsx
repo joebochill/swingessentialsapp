@@ -2,7 +2,7 @@ import { ROUTES } from '../constants/routes';
 type RouteGroup = {
     name: string;
     data: Array<Route>;
-}
+};
 type Route = {
     title: string;
     icon: string;
@@ -10,7 +10,7 @@ type Route = {
     iconType?: string;
     nested?: boolean;
     activatePanel?: number;
-}
+};
 
 export const mainNavigationItems: RouteGroup = {
     name: 'main',
@@ -18,49 +18,49 @@ export const mainNavigationItems: RouteGroup = {
         {
             title: 'Home',
             icon: 'home',
-            route: ROUTES.HOME
+            route: ROUTES.HOME,
         },
         {
             title: 'Your Lessons',
             icon: 'subscriptions',
-            route: ROUTES.LESSONS
+            route: ROUTES.LESSONS,
         },
         {
             title: 'Submit Your Swing',
             icon: 'videocam',
-            route: ROUTES.SUBMIT_GROUP
+            route: ROUTES.SUBMIT_GROUP,
         },
         {
             title: 'Order More',
             icon: 'shopping-cart',
-            route: ROUTES.ORDER
+            route: ROUTES.ORDER,
         },
         {
             title: 'Tip of the Month',
             iconType: 'material-community',
             icon: 'calendar-today',
-            route: ROUTES.TIPS_GROUP
+            route: ROUTES.TIPS_GROUP,
         },
         {
             title: '19th Hole',
             iconType: 'material-community',
             icon: 'beer',
-            route: ROUTES.BLOGS_GROUP
+            route: ROUTES.BLOGS_GROUP,
         },
         {
             title: 'My Account',
             icon: 'person',
             nested: true,
-            activatePanel: 1
+            activatePanel: 1,
         },
         {
             title: 'Help',
             icon: 'help',
             nested: true,
-            activatePanel: 2
+            activatePanel: 2,
         },
-    ]
-}
+    ],
+};
 
 export const helpNavigationItems: RouteGroup = {
     name: 'help',
@@ -68,25 +68,25 @@ export const helpNavigationItems: RouteGroup = {
         {
             title: 'About',
             icon: 'info',
-            route: ROUTES.ABOUT
+            route: ROUTES.ABOUT,
         },
         {
             title: 'FAQ',
             icon: 'help',
-            route: ROUTES.FAQ
+            route: ROUTES.FAQ,
         },
         {
             title: 'Contact Us',
             icon: 'mail',
-            route: ROUTES.CONTACT
+            route: ROUTES.CONTACT,
         },
         {
             title: 'Back',
             icon: 'arrow-back',
-            activatePanel: 0
+            activatePanel: 0,
         },
-    ]
-}
+    ],
+};
 
 export const accountNavigationItems: RouteGroup = {
     name: 'account',
@@ -94,22 +94,22 @@ export const accountNavigationItems: RouteGroup = {
         {
             title: 'Account Details',
             icon: 'person',
-            route: ROUTES.ACCOUNT_DETAILS
+            route: ROUTES.ACCOUNT_DETAILS,
         },
         {
             title: 'Order History',
             icon: 'receipt',
-            route: ROUTES.HISTORY
+            route: ROUTES.HISTORY,
         },
         {
             title: 'Error Logs',
             icon: 'list',
-            route: ROUTES.LOGS
+            route: ROUTES.LOGS,
         },
         {
             title: 'Settings',
             icon: 'settings',
-            route: ROUTES.SETTINGS
+            route: ROUTES.SETTINGS,
         },
         {
             title: 'Log Out',
@@ -119,13 +119,9 @@ export const accountNavigationItems: RouteGroup = {
         {
             title: 'Back',
             icon: 'arrow-back',
-            activatePanel: 0
+            activatePanel: 0,
         },
-    ]
-}
+    ],
+};
 
-export const NavigationItems = [
-    mainNavigationItems,
-    accountNavigationItems,
-    helpNavigationItems
-]
+export const NavigationItems = [mainNavigationItems, accountNavigationItems, helpNavigationItems];

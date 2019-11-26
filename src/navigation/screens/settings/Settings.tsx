@@ -14,7 +14,7 @@ export const Settings = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Settings'}
-            subtitle={"...options"}
+            subtitle={'...options'}
         />
         <EmptyState
             IconClass={AccessTime}

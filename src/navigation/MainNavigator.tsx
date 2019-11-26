@@ -12,14 +12,29 @@ import { ROUTES } from '../constants/routes';
 
 // Route Components
 import { NavigationDrawer } from './NavigationDrawer';
-import { 
-    AuthLoading, Login, Register, ForgotPassword, 
-    About, FAQ, Contact,
-    Settings, SingleSetting, 
-    AccountDetails, OrderHistory, ErrorLogs, 
-    Home, 
-    Lessons, SingleLesson, Order, Submit, Record, 
-    Blogs, SingleBlog, Tips, SingleTip 
+import {
+    // AuthLoading,
+    Login,
+    Register,
+    ForgotPassword,
+    About,
+    FAQ,
+    Contact,
+    Settings,
+    SingleSetting,
+    AccountDetails,
+    OrderHistory,
+    ErrorLogs,
+    Home,
+    Lessons,
+    SingleLesson,
+    Order,
+    Submit,
+    Record,
+    Blogs,
+    SingleBlog,
+    Tips,
+    SingleTip,
 } from './screens';
 
 const AuthStack = createStackNavigator(
@@ -53,31 +68,30 @@ const AppStack = createDrawerNavigator(
         },
         [ROUTES.ORDER]: {
             screen: Order,
-            
         },
         [ROUTES.ABOUT]: {
-            screen: About
+            screen: About,
         },
         [ROUTES.FAQ]: {
-            screen: FAQ
+            screen: FAQ,
         },
         [ROUTES.CONTACT]: {
-            screen: Contact
+            screen: Contact,
         },
         [ROUTES.ACCOUNT_DETAILS]: {
-            screen: AccountDetails
+            screen: AccountDetails,
         },
         [ROUTES.LOGS]: {
-            screen: ErrorLogs
+            screen: ErrorLogs,
         },
         [ROUTES.HISTORY]: {
-            screen: OrderHistory
+            screen: OrderHistory,
         },
         [ROUTES.SUBMIT_GROUP]: {
             screen: createStackNavigator(
                 {
                     [ROUTES.SUBMIT]: Submit,
-                    [ROUTES.RECORD]: Record
+                    [ROUTES.RECORD]: Record,
                 },
                 { initialRouteName: ROUTES.SUBMIT, headerMode: 'none' },
             ),
@@ -86,7 +100,7 @@ const AppStack = createDrawerNavigator(
             screen: createStackNavigator(
                 {
                     [ROUTES.BLOGS]: Blogs,
-                    [ROUTES.BLOG]: SingleBlog
+                    [ROUTES.BLOG]: SingleBlog,
                 },
                 { initialRouteName: ROUTES.BLOGS, headerMode: 'none' },
             ),
@@ -95,7 +109,7 @@ const AppStack = createDrawerNavigator(
             screen: createStackNavigator(
                 {
                     [ROUTES.TIPS]: Tips,
-                    [ROUTES.TIP]: SingleTip
+                    [ROUTES.TIP]: SingleTip,
                 },
                 { initialRouteName: ROUTES.TIPS, headerMode: 'none' },
             ),
@@ -104,11 +118,11 @@ const AppStack = createDrawerNavigator(
             screen: createStackNavigator(
                 {
                     [ROUTES.SETTINGS]: Settings,
-                    [ROUTES.SETTING]: SingleSetting
+                    [ROUTES.SETTING]: SingleSetting,
                 },
                 { initialRouteName: ROUTES.SETTINGS, headerMode: 'none' },
             ),
-        }
+        },
     },
     {
         initialRouteName: ROUTES.HOME_GROUP,
@@ -116,8 +130,6 @@ const AppStack = createDrawerNavigator(
         contentComponent: NavigationDrawer,
     },
 );
-
-
 
 export default createAppContainer(
     // createAnimatedSwitchNavigator(

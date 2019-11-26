@@ -14,7 +14,7 @@ export const FAQ = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'FAQ'}
-            subtitle={"...frequently asked"}
+            subtitle={'...frequently asked'}
         />
         <EmptyState
             IconClass={AccessTime}

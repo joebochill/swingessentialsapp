@@ -14,7 +14,7 @@ export const Order = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Order Lessons'}
-            subtitle={"...multiple package options"}
+            subtitle={'...multiple package options'}
         />
         <EmptyState
             IconClass={AccessTime}

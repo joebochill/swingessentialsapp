@@ -14,7 +14,7 @@ export const Blogs = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'19th Hole'}
-            subtitle={"...Q&A and tales from the course"}
+            subtitle={'...Q&A and tales from the course'}
         />
         <EmptyState
             IconClass={AccessTime}

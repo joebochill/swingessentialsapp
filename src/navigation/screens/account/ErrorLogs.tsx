@@ -14,7 +14,7 @@ export const ErrorLogs = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Error Logs'}
-            subtitle={"...whats wrong"}
+            subtitle={'...whats wrong'}
         />
         <EmptyState
             IconClass={AccessTime}

@@ -14,7 +14,7 @@ export const ForgotPassword = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Reset Password'}
-            subtitle={"...silly goose"}
+            subtitle={'...silly goose'}
         />
         <EmptyState
             IconClass={AccessTime}

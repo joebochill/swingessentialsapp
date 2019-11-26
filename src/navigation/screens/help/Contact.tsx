@@ -14,7 +14,7 @@ export const Contact = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Contact Us'}
-            subtitle={"...ask away"}
+            subtitle={'...ask away'}
         />
         <EmptyState
             IconClass={AccessTime}

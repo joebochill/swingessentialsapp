@@ -14,7 +14,7 @@ export const Record = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Record'}
-            subtitle={"...multiple package options"}
+            subtitle={'...multiple package options'}
         />
         <EmptyState
             IconClass={AccessTime}

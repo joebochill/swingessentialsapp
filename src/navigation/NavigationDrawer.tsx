@@ -1,22 +1,7 @@
 import React from 'react';
-import {
-    Animated,
-    SafeAreaView,
-    StatusBar,
-    Text,
-    View,
-    Platform,
-    FlatList,
-    StyleSheet,
-    ScrollView,
-    Button,
-    Alert,
-} from 'react-native';
+import { Animated, SafeAreaView, StatusBar, View, Platform, FlatList, StyleSheet, ScrollView } from 'react-native';
 import { APP_VERSION } from '../constants/index';
-import { withNavigation } from 'react-navigation';
-
 import { NavigationItems } from './NavigationContent';
-// import { ROUTES } from '../constants/routes';
 
 import topology from '../images/topology.png';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -30,6 +15,7 @@ const DRAWER_WIDTH = 350;
 
 import { DrawerContentComponentProps } from 'react-navigation-drawer';
 import { ROUTES } from '../constants/routes';
+import { purple } from 'src/styles/colors';
 
 type NavigatorState = {
     scrollY: Animated.Value;
@@ -51,23 +37,23 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
         };
     }
     componentDidUpdate() {
-        const { activePanel, mainLeft, accountLeft, helpLeft } = this.state
+        const { activePanel, mainLeft, accountLeft, helpLeft } = this.state;
 
         const mainToValue = activePanel === 0 ? 0 : -1 * DRAWER_WIDTH;
         Animated.timing(mainLeft, {
             toValue: mainToValue,
             duration: 250,
-        }).start()
+        }).start();
         const accountToValue = activePanel === 1 ? 0 : 1 * DRAWER_WIDTH;
         Animated.timing(accountLeft, {
             toValue: accountToValue,
             duration: 250,
-        }).start()
+        }).start();
         const helpToValue = activePanel === 2 ? 0 : 1 * DRAWER_WIDTH;
         Animated.timing(helpLeft, {
             toValue: helpToValue,
             duration: 250,
-        }).start()
+        }).start();
     }
     render() {
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
@@ -75,51 +61,35 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
         return (
             <View style={styles.container}>
                 <StatusBar barStyle={'light-content'} />
-                <AnimatedSafeAreaView
-                    style={[
-                        styles.bar,
-                        {
-                            justifyContent: 'flex-end',
-                            height: headerHeight,
-                            paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
-                        },
-                    ]}>
+                <AnimatedSafeAreaView style={[styles.bar, { height: headerHeight }]}>
                     <Animated.Image
                         source={topology}
                         resizeMethod={'resize'}
                         onPress={() => this.props.navigation.navigate(ROUTES.HOME)}
-                        style={[
-                            styles.image,
-                            {
-                                height: headerHeight,
-                                opacity: 0.5,
-                            },
-                        ]}
+                        style={[styles.image, { height: headerHeight }]}
                     />
                     <Animated.View style={[this.contentStyle()]}>
-                        <View style={{ justifyContent: 'center' }}>
+                        <View style={styles.avatarContainer}>
                             <Animated.View
-                                style={{
-                                    height: this.scaleByHeaderHeight(100, 0),
-                                    width: this.scaleByHeaderHeight(100, 0),
-                                    borderRadius: 100,
-                                    backgroundColor: 'white',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
+                                style={[
+                                    styles.avatar,
+                                    {
+                                        height: this.scaleByHeaderHeight(100, 0),
+                                        width: this.scaleByHeaderHeight(100, 0),
+                                    },
+                                ]}>
                                 <Animated.Text
                                     adjustsFontSizeToFit
                                     allowFontScaling
                                     style={{
                                         fontSize: this.scaleByHeaderHeight(32, 0),
-                                        color: '#4f4c81',
+                                        color: purple[500],
                                     }}>
                                     JB
                                 </Animated.Text>
                             </Animated.View>
                         </View>
-                        <Animated.View
-                            style={{ flex: 1, justifyContent: 'center', marginLeft: this.scaleByHeaderHeight(16, 0) }}>
+                        <Animated.View style={[styles.headerText, { marginLeft: this.scaleByHeaderHeight(16, 0) }]}>
                             <Animated.Text style={this.titleStyle()} numberOfLines={1} ellipsizeMode={'tail'}>
                                 {'joebochill'}
                             </Animated.Text>
@@ -130,21 +100,12 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
                                 {'Member Since April 5, 1989'}
                             </Animated.Text>
                         </Animated.View>
-                        <View style={{ marginLeft: 16 }}>
+                        <View style={styles.headerAction}>
                             <Icon name={'person'} size={24} color={'white'} />
                         </View>
                     </Animated.View>
-                    <View
-
-                        style={{
-                            flex: 0,
-                            height: 56,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            padding: 16,
-                        }}>
-                        <Typography.H7 color={'onPrimary'} >SWING ESSENTIALS</Typography.H7>
+                    <View style={styles.userInfo}>
+                        <Typography.H7 color={'onPrimary'}>SWING ESSENTIALS</Typography.H7>
                         <Typography.Body color={'onPrimary'} font={'light'}>{`v${APP_VERSION}`}</Typography.Body>
                     </View>
                 </AnimatedSafeAreaView>
@@ -160,38 +121,35 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
                         },
                     ])}
                     scrollEventThrottle={16}>
-                    <View style={{ flexDirection: 'row', backgroundColor: 'orange', position: 'relative' }}>
+                    <View style={styles.drawerBody}>
                         {NavigationItems.map((panel, ind) => {
-                            const leftPosition = (ind === 2 ? helpLeft : (ind === 1 ? accountLeft : mainLeft));
+                            const leftPosition = ind === 2 ? helpLeft : ind === 1 ? accountLeft : mainLeft;
                             return (
                                 <Animated.View
                                     key={`Panel_${panel.name}`}
-                                    style={{
-                                        position: 'absolute',
-                                        width: DRAWER_WIDTH,
-                                        left: leftPosition,
-                                    }}
-                                >
+                                    style={[styles.panel, { left: leftPosition }]}>
                                     <FlatList
                                         data={panel.data}
                                         keyExtractor={(item, index) => `${index}`}
                                         renderItem={({ item }) => (
                                             <ListItem
-                                                containerStyle={{ paddingHorizontal: 16 }}
+                                                containerStyle={styles.navItem}
                                                 bottomDivider
                                                 chevron={item.nested}
-                                                onPress={item.route ?
-                                                    () => {
-                                                        this.props.navigation.navigate(item.route);
-                                                        // this.setState({ activePanel: 0 });
-                                                    } :
-                                                    (item.activatePanel !== undefined) ? () => {
-                                                        this.setState({ activePanel: item.activatePanel });
-                                                    } :
-                                                    undefined
+                                                onPress={
+                                                    item.route
+                                                        ? () => {
+                                                              this.props.navigation.navigate(item.route);
+                                                              // this.setState({ activePanel: 0 });
+                                                          }
+                                                        : item.activatePanel !== undefined
+                                                        ? () => {
+                                                              this.setState({ activePanel: item.activatePanel });
+                                                          }
+                                                        : undefined
                                                 }
                                                 title={
-                                                    <Typography.Body font={'regular'} style={{ marginLeft: 16, color: '#231f61' }}>
+                                                    <Typography.Body font={'regular'} style={styles.navLabel}>
                                                         {item.title}
                                                     </Typography.Body>
                                                 }
@@ -205,7 +163,7 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
                                         )}
                                     />
                                 </Animated.View>
-                            )
+                            );
                         })}
                     </View>
                 </ScrollView>
@@ -258,13 +216,24 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
     }
 }
 const styles = StyleSheet.create({
+    avatarContainer: {
+        justifyContent: 'center',
+    },
+    avatar: {
+        borderRadius: 100,
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     container: {
         flex: 1,
         backgroundColor: '#fff',
     },
     bar: {
         width: '100%',
+        paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         position: 'absolute',
+        justifyContent: 'flex-end',
         zIndex: 1000,
         shadowColor: 'rgba(0, 0, 0, 0.3)',
         shadowOffset: {
@@ -281,13 +250,44 @@ const styles = StyleSheet.create({
         padding: 16,
         flexDirection: 'row',
     },
+    navItem: {
+        paddingHorizontal: 16,
+    },
+    headerText: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    headerAction: {
+        marginLeft: 16,
+    },
+    navLabel: {
+        marginLeft: 16,
+        color: '#231f61',
+    },
+    drawerBody: {
+        flexDirection: 'row',
+        position: 'relative',
+    },
     scrollContainer: {
         paddingTop: HEADER_EXPANDED_HEIGHT,
     },
     image: {
         position: 'absolute',
         right: 0,
+        opacity: 0.5,
         width: '100%',
         resizeMode: 'cover',
+    },
+    panel: {
+        position: 'absolute',
+        width: DRAWER_WIDTH,
+    },
+    userInfo: {
+        flex: 0,
+        height: 56,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 16,
     },
 });

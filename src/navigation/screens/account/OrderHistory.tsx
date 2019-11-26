@@ -14,7 +14,7 @@ export const OrderHistory = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Order History'}
-            subtitle={"...your purchases"}
+            subtitle={'...your purchases'}
         />
         <EmptyState
             IconClass={AccessTime}

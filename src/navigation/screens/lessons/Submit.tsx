@@ -14,7 +14,7 @@ export const Submit = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Submit Your Swing'}
-            subtitle={"...create a new lesson"}
+            subtitle={'...create a new lesson'}
         />
         <EmptyState
             IconClass={AccessTime}

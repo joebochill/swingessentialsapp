@@ -14,7 +14,7 @@ export const AccountDetails = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Account Details'}
-            subtitle={"...about you"}
+            subtitle={'...about you'}
         />
         <EmptyState
             IconClass={AccessTime}

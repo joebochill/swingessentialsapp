@@ -11,16 +11,13 @@ const styles = StyleSheet.create({
         backgroundColor: red[500],
         color: white[50],
         fontSize: fonts[14],
-        marginTop: spaces.xLarge
-    }
-})
+        marginTop: spaces.xLarge,
+    },
+});
 type ErrorBoxProps = {
     show?: boolean;
     error: string;
-    style?: StyleProp<ViewStyle>
-}
-export const ErrorBox = (props: ErrorBoxProps) => props.show ? (
-    <Text style={StyleSheet.flatten([styles.error, props.style])}>
-        {props.error}
-    </Text>
-) : null;
+    style?: StyleProp<ViewStyle>;
+};
+export const ErrorBox = (props: ErrorBoxProps) =>
+    props.show ? <Text style={StyleSheet.flatten([styles.error, props.style])}>{props.error}</Text> : null;

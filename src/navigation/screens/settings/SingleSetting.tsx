@@ -14,7 +14,7 @@ export const SingleSetting = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Single Setting'}
-            subtitle={"...set value"}
+            subtitle={'...set value'}
         />
         <EmptyState
             IconClass={AccessTime}

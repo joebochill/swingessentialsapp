@@ -14,7 +14,7 @@ export const Tips = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Tip of the Month'}
-            subtitle={"...small changes"}
+            subtitle={'...small changes'}
         />
         <EmptyState
             IconClass={AccessTime}

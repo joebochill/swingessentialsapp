@@ -14,7 +14,7 @@ export const SingleBlog = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Blog'}
-            subtitle={"..."}
+            subtitle={'...'}
         />
         <EmptyState
             IconClass={AccessTime}

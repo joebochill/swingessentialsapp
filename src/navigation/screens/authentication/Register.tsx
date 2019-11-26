@@ -14,7 +14,7 @@ export const Register = withNavigation(props => (
         <Header
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             title={'Register'}
-            subtitle={"...sign up"}
+            subtitle={'...sign up'}
         />
         <EmptyState
             IconClass={AccessTime}
