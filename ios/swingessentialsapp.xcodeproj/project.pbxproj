@@ -5,29 +5,30 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* swingessentialsappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* swingessentialsappTests.m */; };
+		0421067FDCF64DE6B6A5887B /* SFCompactDisplayHeavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = BB54AF7A1BBA432E8702BC85 /* SFCompactDisplayHeavy.otf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		19A902C99F3C47FF94CB4766 /* SFCompactDisplay-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5875D4D15729454DB8F70C50 /* SFCompactDisplay-Ultralight.otf */; };
+		1C324908141246928E1BDEBD /* SFCompactDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 98E6EC2F2B8545959F310C0A /* SFCompactDisplay-Bold.otf */; };
 		1F113A67488DBEF79D6E8404 /* libPods-swingessentialsapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 756598F37F46742BC620A44D /* libPods-swingessentialsapp-tvOSTests.a */; };
+		27234B8D7EF8483EBD90DDF5 /* SFCompactDisplay-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 584692C02743414B86789A0A /* SFCompactDisplay-Thin.otf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* swingessentialsappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* swingessentialsappTests.m */; };
 		41C0B18E86187A4FCE105847 /* libPods-swingessentialsapp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FAB31A55F769CA39D8AB369 /* libPods-swingessentialsapp-tvOS.a */; };
 		64E0A68079477B13463CA669 /* libPods-swingessentialsapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 024D3C573F21EBE2E13EE062 /* libPods-swingessentialsapp.a */; };
-		998B6E03906486D13ACCB3FE /* libPods-swingessentialsappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B7339F853FD2DBF524B91 /* libPods-swingessentialsappTests.a */; };
 		90754342EA6C44AA99EB47E7 /* SFCompactDisplay-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 684D0E0DCCF84DC7B993319C /* SFCompactDisplay-Black.otf */; };
-		1C324908141246928E1BDEBD /* SFCompactDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 98E6EC2F2B8545959F310C0A /* SFCompactDisplay-Bold.otf */; };
+		998B6E03906486D13ACCB3FE /* libPods-swingessentialsappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B7339F853FD2DBF524B91 /* libPods-swingessentialsappTests.a */; };
+		A8EA8D9DF720439EBAF6FEB7 /* SFCompactDisplay-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E6C1958251084AD28D49AF33 /* SFCompactDisplay-Semibold.otf */; };
+		C52CBA7324AC4DF89AF38BE2 /* SFCompactDisplay-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5CF6E0D23E9C491CA3124613 /* SFCompactDisplay-Regular.otf */; };
 		D99CC4B5D9BC491FB8215F38 /* SFCompactDisplay-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = AC0C22B21B8A4679816682EB /* SFCompactDisplay-Light.otf */; };
 		E11B75CEC8264181A02DFFEA /* SFCompactDisplay-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 95BACF34B6EB44749D0F9CEA /* SFCompactDisplay-Medium.otf */; };
-		C52CBA7324AC4DF89AF38BE2 /* SFCompactDisplay-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5CF6E0D23E9C491CA3124613 /* SFCompactDisplay-Regular.otf */; };
-		A8EA8D9DF720439EBAF6FEB7 /* SFCompactDisplay-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E6C1958251084AD28D49AF33 /* SFCompactDisplay-Semibold.otf */; };
-		27234B8D7EF8483EBD90DDF5 /* SFCompactDisplay-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 584692C02743414B86789A0A /* SFCompactDisplay-Thin.otf */; };
-		19A902C99F3C47FF94CB4766 /* SFCompactDisplay-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5875D4D15729454DB8F70C50 /* SFCompactDisplay-Ultralight.otf */; };
-		0421067FDCF64DE6B6A5887B /* SFCompactDisplayHeavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = BB54AF7A1BBA432E8702BC85 /* SFCompactDisplayHeavy.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,35 +72,35 @@
 		42C9DEDB1193C098B6727B7C /* Pods-swingessentialsappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsappTests.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsappTests/Pods-swingessentialsappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4732BFE0A089E2DA091FA8AF /* Pods-swingessentialsapp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOS/Pods-swingessentialsapp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		4C2B7339F853FD2DBF524B91 /* libPods-swingessentialsappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		584692C02743414B86789A0A /* SFCompactDisplay-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Thin.otf"; path = "../assets/fonts/SFCompactDisplay-Thin.otf"; sourceTree = "<group>"; };
+		5875D4D15729454DB8F70C50 /* SFCompactDisplay-Ultralight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Ultralight.otf"; path = "../assets/fonts/SFCompactDisplay-Ultralight.otf"; sourceTree = "<group>"; };
+		5CF6E0D23E9C491CA3124613 /* SFCompactDisplay-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Regular.otf"; path = "../assets/fonts/SFCompactDisplay-Regular.otf"; sourceTree = "<group>"; };
 		652E45594726434BA4D46CD5 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		684D0E0DCCF84DC7B993319C /* SFCompactDisplay-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Black.otf"; path = "../assets/fonts/SFCompactDisplay-Black.otf"; sourceTree = "<group>"; };
 		6FAB31A55F769CA39D8AB369 /* libPods-swingessentialsapp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		756598F37F46742BC620A44D /* libPods-swingessentialsapp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A917961D94D4DDF9C520FA7 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		853186997CFC4ECD8AC1B709 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		8ED6357265DD401688DDAC5B /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		92A29B2E8009424DB55C9C4D /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		95BACF34B6EB44749D0F9CEA /* SFCompactDisplay-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Medium.otf"; path = "../assets/fonts/SFCompactDisplay-Medium.otf"; sourceTree = "<group>"; };
+		98E6EC2F2B8545959F310C0A /* SFCompactDisplay-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Bold.otf"; path = "../assets/fonts/SFCompactDisplay-Bold.otf"; sourceTree = "<group>"; };
 		9B06C63438824B49A5BCCF18 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		A29D659D66E2092548978AA2 /* Pods-swingessentialsapp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOSTests/Pods-swingessentialsapp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		AC0C22B21B8A4679816682EB /* SFCompactDisplay-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Light.otf"; path = "../assets/fonts/SFCompactDisplay-Light.otf"; sourceTree = "<group>"; };
 		AE0C748F07DE48B58E100349 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		BB54AF7A1BBA432E8702BC85 /* SFCompactDisplayHeavy.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = SFCompactDisplayHeavy.otf; path = ../assets/fonts/SFCompactDisplayHeavy.otf; sourceTree = "<group>"; };
 		C76E373055A3DEA7080BCCBB /* Pods-swingessentialsapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp.release.xcconfig"; sourceTree = "<group>"; };
 		D359F6FC018547ECA5E63D47 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		DD8A543EDEFB479A9B566EFA /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		E2C4A7780167977D95760A22 /* Pods-swingessentialsapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp.debug.xcconfig"; sourceTree = "<group>"; };
+		E6C1958251084AD28D49AF33 /* SFCompactDisplay-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Semibold.otf"; path = "../assets/fonts/SFCompactDisplay-Semibold.otf"; sourceTree = "<group>"; };
 		E9742FE9438A4EFBBF33C3C6 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F18D0EE95EC64ECBB4ACE7F9 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		FA0BC020B7BB4374ABF22BAB /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		FA19E2465B274786BB308C8D /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		684D0E0DCCF84DC7B993319C /* SFCompactDisplay-Black.otf */ = {isa = PBXFileReference; name = "SFCompactDisplay-Black.otf"; path = "../assets/fonts/SFCompactDisplay-Black.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		98E6EC2F2B8545959F310C0A /* SFCompactDisplay-Bold.otf */ = {isa = PBXFileReference; name = "SFCompactDisplay-Bold.otf"; path = "../assets/fonts/SFCompactDisplay-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		AC0C22B21B8A4679816682EB /* SFCompactDisplay-Light.otf */ = {isa = PBXFileReference; name = "SFCompactDisplay-Light.otf"; path = "../assets/fonts/SFCompactDisplay-Light.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		95BACF34B6EB44749D0F9CEA /* SFCompactDisplay-Medium.otf */ = {isa = PBXFileReference; name = "SFCompactDisplay-Medium.otf"; path = "../assets/fonts/SFCompactDisplay-Medium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5CF6E0D23E9C491CA3124613 /* SFCompactDisplay-Regular.otf */ = {isa = PBXFileReference; name = "SFCompactDisplay-Regular.otf"; path = "../assets/fonts/SFCompactDisplay-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E6C1958251084AD28D49AF33 /* SFCompactDisplay-Semibold.otf */ = {isa = PBXFileReference; name = "SFCompactDisplay-Semibold.otf"; path = "../assets/fonts/SFCompactDisplay-Semibold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		584692C02743414B86789A0A /* SFCompactDisplay-Thin.otf */ = {isa = PBXFileReference; name = "SFCompactDisplay-Thin.otf"; path = "../assets/fonts/SFCompactDisplay-Thin.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5875D4D15729454DB8F70C50 /* SFCompactDisplay-Ultralight.otf */ = {isa = PBXFileReference; name = "SFCompactDisplay-Ultralight.otf"; path = "../assets/fonts/SFCompactDisplay-Ultralight.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		BB54AF7A1BBA432E8702BC85 /* SFCompactDisplayHeavy.otf */ = {isa = PBXFileReference; name = "SFCompactDisplayHeavy.otf"; path = "../assets/fonts/SFCompactDisplayHeavy.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -530,6 +531,7 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_ROOT}/YoutubePlayer-in-WKWebView/WKYTPlayerView/WKYTPlayerView.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -549,6 +551,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WKYTPlayerView.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

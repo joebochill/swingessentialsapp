@@ -20,7 +20,7 @@ import { NavigationItems } from './NavigationContent';
 
 import topology from '../images/topology.png';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { Body } from '@pxblue/react-native-components';
+import * as Typography from '@pxblue/react-native-components/core/typography';
 import { ListItem, Icon } from 'react-native-elements';
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
@@ -33,7 +33,6 @@ import { ROUTES } from '../constants/routes';
 
 type NavigatorState = {
     scrollY: Animated.Value;
-    currentRoutes: Array<Route>;
     activePanel: 0 | 1 | 2;
     mainLeft: Animated.Value;
     accountLeft: Animated.Value;
@@ -45,7 +44,6 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
         super(props);
         this.state = {
             scrollY: new Animated.Value(0),
-            currentRoutes: NavigationItems[0].data,
             activePanel: 0,
             mainLeft: new Animated.Value(0),
             accountLeft: new Animated.Value(DRAWER_WIDTH),
@@ -146,8 +144,8 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
                             alignItems: 'center',
                             padding: 16,
                         }}>
-                        <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>SWING ESSENTIALS</Text>
-                        <Text style={{ color: 'white', fontSize: 16, fontWeight: '300' }}>{`v${APP_VERSION}`}</Text>
+                        <Typography.H7 color={'onPrimary'} >SWING ESSENTIALS</Typography.H7>
+                        <Typography.Body color={'onPrimary'} font={'light'}>{`v${APP_VERSION}`}</Typography.Body>
                     </View>
                 </AnimatedSafeAreaView>
                 <ScrollView
@@ -193,9 +191,9 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
                                                     undefined
                                                 }
                                                 title={
-                                                    <Body font={'regular'} style={{ marginLeft: 16, color: '#231f61' }}>
+                                                    <Typography.Body font={'regular'} style={{ marginLeft: 16, color: '#231f61' }}>
                                                         {item.title}
-                                                    </Body>
+                                                    </Typography.Body>
                                                 }
                                                 leftIcon={{
                                                     type: item.iconType || 'material',
