@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text, Switch, ActivityIndicator } from 'react-native';
 import { Button, Icon, Input } from 'react-native-elements';
 import { white, purple, black, oledBlack, transparent } from '../../../styles/colors';
@@ -9,6 +9,9 @@ import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 import { ROUTES } from '../../../constants/routes';
 import AsyncStorage from '@react-native-community/async-storage';
 import logo from '../../../images/logo-big.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { LOGIN } from '../../../redux/actions/types';
+import { requestLogin } from '../../../redux/actions';
 
 type LoginProps = NavigationInjectedProps & {}
 
@@ -20,7 +23,15 @@ export const Login = withNavigation((props: LoginProps) => {
     const [credentialsStored, setCredentialsStored] = useState(true);
     const [useBiometric, setUseBiometric] = useState(true);
     const [biometricAvailable, setUseBiometricAvailable] = useState(true);
-    const [biometricType, setBiometricType] = useState('TouchID')
+    const [biometricType, setBiometricType] = useState('TouchID');
+    const dispatch = useDispatch();
+    const token = useSelector(state => state.login.token);
+
+    useEffect(() => {
+        if (token) {
+            props.navigation.pop();
+        }
+    });
 
     return (
         <View style={styles.container}>
@@ -131,14 +142,15 @@ export const Login = withNavigation((props: LoginProps) => {
                         title="SIGN IN"
                         containerStyle={{ flex: 1 }}
                         onPress={async () => {
-                            await AsyncStorage.setItem('userToken', 'abc');
-                            props.navigation.navigate(ROUTES.APP_GROUP);
+                            // await AsyncStorage.setItem('userToken', 'abc');
+                            // props.navigation.pop();
+                            dispatch(requestLogin({username: username, password: password}))
                         }}
                     />
                     <SEButton link
                         containerStyle={{ marginLeft: spaces.medium, flex: 0 }}
                         title="CANCEL"
-                        onPress={() => props.navigation.goBack()}
+                        onPress={() => props.navigation.pop()}
                     />
                 </View>
             }
@@ -184,6 +196,12 @@ const styles = StyleSheet.create({
         fontSize: fonts[14],
         fontWeight: 'bold'
     },
+    input: {
+        color: purple[500],
+        fontSize: fonts[14],
+        textAlignVertical: 'center',
+        paddingHorizontal: spaces.small
+    },
     inputContainer: {
         height: sizes.large,
         backgroundColor: white[50],
@@ -192,11 +210,21 @@ const styles = StyleSheet.create({
         borderColor: purple[800],
         borderWidth: unit(1)
     },
-    input: {
-        color: purple[500],
-        fontSize: fonts[14],
-        textAlignVertical: 'center',
-        paddingHorizontal: spaces.small
+    loginRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: spaces.xLarge
+    },
+    logo: {
+        height: unit(60),
+        width: '100%',
+        resizeMode: 'contain',
+        marginBottom: spaces.medium
+    },
+    registerRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: spaces.medium
     },
     rememberRow: {
         marginTop: spaces.xLarge,
@@ -209,22 +237,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
-    },
-    loginRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: spaces.xLarge
-    },
-    registerRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: spaces.medium
-    },
-    logo: {
-        height: unit(50),
-        width: '100%',
-        resizeMode: 'contain',
-        marginBottom: spaces.medium
     },
     toggleLabel: { fontSize: fonts[14], color: white[50], marginRight: spaces.small }
 });

@@ -22,12 +22,21 @@ import {
     Blogs, SingleBlog, Tips, SingleTip 
 } from './screens';
 
+const AuthStack = createStackNavigator(
+    {
+        [ROUTES.LOGIN]: Login,
+        [ROUTES.REGISTER]: Register,
+        [ROUTES.RESET_PASSWORD]: ForgotPassword,
+    },
+    { initialRouteName: ROUTES.LOGIN, headerMode: 'none' },
+);
 const AppStack = createDrawerNavigator(
     {
         [ROUTES.HOME_GROUP]: {
             screen: createStackNavigator(
                 {
                     [ROUTES.HOME]: Home,
+                    [ROUTES.AUTH_GROUP]: AuthStack,
                 },
                 { initialRouteName: ROUTES.HOME, headerMode: 'none' },
             ),
@@ -37,12 +46,14 @@ const AppStack = createDrawerNavigator(
                 {
                     [ROUTES.LESSONS]: Lessons,
                     [ROUTES.LESSON]: SingleLesson,
+                    [ROUTES.AUTH_GROUP]: AuthStack,
                 },
                 { initialRouteName: ROUTES.LESSONS, headerMode: 'none' },
             ),
         },
         [ROUTES.ORDER]: {
-            screen: Order
+            screen: Order,
+            
         },
         [ROUTES.ABOUT]: {
             screen: About
@@ -106,25 +117,18 @@ const AppStack = createDrawerNavigator(
     },
 );
 
-const AuthStack = createStackNavigator(
-    {
-        [ROUTES.LOGIN]: Login,
-        [ROUTES.REGISTER]: Register,
-        [ROUTES.RESET_PASSWORD]: ForgotPassword,
-    },
-    { initialRouteName: ROUTES.LOGIN, headerMode: 'none' },
-);
+
 
 export default createAppContainer(
     // createAnimatedSwitchNavigator(
     createSwitchNavigator(
         {
-            [ROUTES.AUTH_LOADING]: AuthLoading,
+            // [ROUTES.AUTH_LOADING]: AuthLoading,
             [ROUTES.APP_GROUP]: AppStack,
-            [ROUTES.AUTH_GROUP]: AuthStack,
+            // [ROUTES.AUTH_GROUP]: AuthStack,
         },
         {
-            initialRouteName: ROUTES.AUTH_LOADING,
+            initialRouteName: ROUTES.APP_GROUP,
             // transition: (
             //     <Transition.Together>
             //       <Transition.Out

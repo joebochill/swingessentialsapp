@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, SafeAreaView } from 'react-native';
 import { Icon, ListItem } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
@@ -11,24 +11,34 @@ import topology from '../../../images/topology_40.png';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ROUTES } from '../../../constants/routes';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useSelector, useDispatch } from 'react-redux';
+import { LOGOUT } from '../../../redux/actions/types';
+import { requestLogout } from '../../../redux/actions';
+
 // import * as Colors from '@pxblue/colors';
 const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
 const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-variant' });
-const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
+const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
 
-export const Home = withNavigation((props) => (
-    <View style={styles.container}>
-        <Header
-            expandable
-            navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
-            backgroundImage={topology}
-            // backgroundColor={'#4f4c81'}
-            title={'SWING ESSENTIALS'}
-            subtitle={'A PGA Pro in your pocket'}
-            actionItems={[
-                { icon: LogoutIcon, onPress: async () => {await AsyncStorage.clear(); props.navigation.navigate(ROUTES.LOGIN) } }
-            ]}
-        />
+export const Home = withNavigation((props) => {
+    const token = useSelector(state => state.login.token);
+    const dispatch = useDispatch();
+
+    return (
+        <View style={styles.container}>
+            <Header
+                expandable
+                navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
+                backgroundImage={topology}
+                // backgroundColor={'#4f4c81'}
+                title={'SWING ESSENTIALS'}
+                subtitle={'A PGA Pro in your pocket'}
+                actionItems={[
+                    token ?
+                        { icon: LogoutIcon, onPress: async () => dispatch(requestLogout(token))}://{ await AsyncStorage.clear(); } } :
+                        { icon: AccountIcon, onPress: () => props.navigation.push(ROUTES.AUTH_GROUP) }
+                ]}
+            />
             <ScrollView
                 contentContainerStyle={{ paddingVertical: 16 }}
             >
@@ -103,10 +113,11 @@ export const Home = withNavigation((props) => (
                     rel={false}
                     style={{ marginHorizontal: 16, width: 382, height: 215 }}
                 />
-                <SafeAreaView/>
+                <SafeAreaView />
             </ScrollView>
-    </View>
-));
+        </View>
+    )
+});
 const styles = StyleSheet.create({
     container: {
         flex: 1,
