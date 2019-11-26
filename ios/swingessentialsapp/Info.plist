@@ -71,6 +71,15 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>SFCompactDisplay-Black.otf</string>
+		<string>SFCompactDisplay-Bold.otf</string>
+		<string>SFCompactDisplay-Light.otf</string>
+		<string>SFCompactDisplay-Medium.otf</string>
+		<string>SFCompactDisplay-Regular.otf</string>
+		<string>SFCompactDisplay-Semibold.otf</string>
+		<string>SFCompactDisplay-Thin.otf</string>
+		<string>SFCompactDisplay-Ultralight.otf</string>
+		<string>SFCompactDisplayHeavy.otf</string>
 	</array>
 </dict>
 </plist>
