@@ -11,7 +11,7 @@ import topology from '../../../images/topology_40.png';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ROUTES } from '../../../constants/routes';
 import { useSelector, useDispatch } from 'react-redux';
-import { requestLogout } from '../../../redux/actions';
+import { requestLogout, loadLessons } from '../../../redux/actions';
 
 // import * as Colors from '@pxblue/colors';
 const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
@@ -43,6 +43,7 @@ export const Home = withNavigation(props => {
                               },
                           }
                         : { icon: AccountIcon, onPress: () => props.navigation.push(ROUTES.AUTH_GROUP) },
+                        { icon: MenuIcon, onPress: () => dispatch(loadLessons()) },
                 ]}
             />
             <ScrollView contentContainerStyle={{ paddingVertical: 16 }}>

@@ -5,8 +5,9 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { AppReducer } from './src/redux/reducers';
+import { saveAuthToken } from './src/api/tokenMiddleware';
 
-const store = createStore(AppReducer, applyMiddleware(thunk));
+const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 
 export const App = () => {
     return (

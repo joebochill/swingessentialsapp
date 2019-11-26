@@ -1,14 +1,14 @@
-import { http, btoa, handleResponse, success, failure } from '../../api/http-helper';
+import { success, failure } from '../../api/http-helper';
+import { btoa } from '../../utilities/btoa';
 import * as ACTIONS from './types';
 import { ASYNC_PREFIX, AUTH, BASEURL } from '../../constants';
 // import * as Keychain from 'react-native-keychain';
 import AsyncStorage from '@react-native-community/async-storage';
 
-
 export function requestLogin(userCredentials) {
     return (dispatch) => {
         dispatch({type: ACTIONS.LOGIN.REQUEST});
-        return fetch(BASEURL+'login', { 
+        return fetch(BASEURL+'/login', { 
             headers: {
                 [AUTH]: 'Basic ' + btoa(userCredentials.username) + '.' + btoa(userCredentials.password)
             }
@@ -38,7 +38,7 @@ export function requestLogin(userCredentials) {
 /* clears the current authentication token */
 export function requestLogout(token){
     return (dispatch) => {
-        return fetch(BASEURL+'logout', { 
+        return fetch(BASEURL+'/logout', { 
             headers: {
                 [AUTH]: 'Bearer ' + token
             }

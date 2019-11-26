@@ -15,7 +15,7 @@ const DRAWER_WIDTH = 350;
 
 import { DrawerContentComponentProps } from 'react-navigation-drawer';
 import { ROUTES } from '../constants/routes';
-import { purple } from 'src/styles/colors';
+import { purple } from '../styles/colors';
 
 type NavigatorState = {
     scrollY: Animated.Value;
