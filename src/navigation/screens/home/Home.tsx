@@ -21,7 +21,7 @@ export const Home = withNavigation((props) => (
             expandable
             navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
             backgroundImage={topology}
-            backgroundColor={'#4f4c81'}
+            // backgroundColor={'#4f4c81'}
             title={'SWING ESSENTIALS'}
             subtitle={'A PGA Pro in your pocket'}
             actionItems={[

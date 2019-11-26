@@ -29,7 +29,7 @@ export const App = () => {
                 }
             },
             colors: {
-                primary: '#231F61',
+                primary: '#4F4C81',
                 background: '#F2F2F2',
                 surface: '#FFFFFF',
                 accent: '#4F4C81',
