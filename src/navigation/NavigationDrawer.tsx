@@ -9,10 +9,13 @@ import {
     FlatList,
     StyleSheet,
     ScrollView,
+    Button,
+    Alert,
 } from 'react-native';
 import { APP_VERSION } from '../constants/index';
 import { withNavigation } from 'react-navigation';
 
+import { NavigationItems } from './NavigationContent';
 // import { ROUTES } from '../constants/routes';
 
 import topology from '../images/topology.png';
@@ -23,21 +26,18 @@ import { ListItem, Icon } from 'react-native-elements';
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 const HEADER_EXPANDED_HEIGHT = 200 + getStatusBarHeight();
 const HEADER_COLLAPSED_HEIGHT = 56 + getStatusBarHeight();
+const DRAWER_WIDTH = 350;
 
 import { DrawerContentComponentProps } from 'react-navigation-drawer';
 import { ROUTES } from '../constants/routes';
 
-type Route = {
-    title: string;
-    icon: string;
-    route?: string;
-    iconType?: string;
-    nested?: boolean;
-    onPress?: Function;
-}
 type NavigatorState = {
     scrollY: Animated.Value;
-    currentRoutes: Array<Route>
+    currentRoutes: Array<Route>;
+    activePanel: 0 | 1 | 2;
+    mainLeft: Animated.Value;
+    accountLeft: Animated.Value;
+    helpLeft: Animated.Value;
 };
 
 export class NavigationDrawer extends React.Component<DrawerContentComponentProps, NavigatorState> {
@@ -45,107 +45,35 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
         super(props);
         this.state = {
             scrollY: new Animated.Value(0),
-            currentRoutes: this.mainNavigationItems
+            currentRoutes: NavigationItems[0].data,
+            activePanel: 0,
+            mainLeft: new Animated.Value(0),
+            accountLeft: new Animated.Value(DRAWER_WIDTH),
+            helpLeft: new Animated.Value(DRAWER_WIDTH),
         };
     }
-    mainNavigationItems: Array<Route>  = [
-        {
-            title: 'Home',
-            icon: 'home',
-            route: ROUTES.HOME
-        },
-        {
-            title: 'Your Lessons',
-            icon: 'subscriptions',
-            route: ROUTES.LESSONS
-        },
-        {
-            title: 'Submit Your Swing',
-            icon: 'videocam',
-        },
-        {
-            title: 'Order More',
-            icon: 'shopping-cart',
-        },
-        {
-            title: 'Tip of the Month',
-            iconType: 'material-community',
-            icon: 'calendar-today',
-        },
-        {
-            title: '19th Hole',
-            iconType: 'material-community',
-            icon: 'beer',
-        },
-        {
-            title: 'My Account',
-            icon: 'person',
-            nested: true,
-            onPress: () => this.setState({currentRoutes: this.accountNavigationItems})
-        },
-        {
-            title: 'Help',
-            icon: 'help',
-            nested: true,
-            onPress: () => this.setState({currentRoutes: this.helpNavigationItems})
-        },
-    ];
-    helpNavigationItems: Array<Route>  = [
-        {
-            title: 'About',
-            icon: 'info',
-            route: ROUTES.ABOUT
-        },
-        {
-            title: 'FAQ',
-            icon: 'help',
-            route: ROUTES.HELP
-        },
-        {
-            title: 'Contact Us',
-            icon: 'mail',
-        },
-        {
-            title: 'Back',
-            icon: 'arrow-back',
-            onPress: () => this.setState({currentRoutes: this.mainNavigationItems})
-        },
-    ];
-    accountNavigationItems: Array<Route> = [
-        {
-            title: 'Account Details',
-            icon: 'person',
-            route: ROUTES.ACCOUNT_DETAILS
-        },
-        {
-            title: 'Order History',
-            icon: 'receipt',
-            route: ROUTES.HISTORY
-        },
-        {
-            title: 'Error Logs',
-            icon: 'list',
-            route: ROUTES.LOGS
-        },
-        {
-            title: 'Settings',
-            icon: 'settings',
-            route: ROUTES.SETTINGS
-        },
-        {
-            title: 'Log Out',
-            iconType: 'material-community',
-            icon: 'logout-variant',
-        },
-        {
-            title: 'Back',
-            icon: 'arrow-back',
-            onPress: () => this.setState({currentRoutes: this.mainNavigationItems})
-        },
-    ];
+    componentDidUpdate() {
+        const { activePanel, mainLeft, accountLeft, helpLeft } = this.state
+
+        const mainToValue = activePanel === 0 ? 0 : -1 * DRAWER_WIDTH;
+        Animated.timing(mainLeft, {
+            toValue: mainToValue,
+            duration: 250,
+        }).start()
+        const accountToValue = activePanel === 1 ? 0 : 1 * DRAWER_WIDTH;
+        Animated.timing(accountLeft, {
+            toValue: accountToValue,
+            duration: 250,
+        }).start()
+        const helpToValue = activePanel === 2 ? 0 : 1 * DRAWER_WIDTH;
+        Animated.timing(helpLeft, {
+            toValue: helpToValue,
+            duration: 250,
+        }).start()
+    }
     render() {
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
-
+        const { mainLeft, accountLeft, helpLeft } = this.state;
         return (
             <View style={styles.container}>
                 <StatusBar barStyle={'light-content'} />
@@ -234,29 +162,54 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
                         },
                     ])}
                     scrollEventThrottle={16}>
-                    <FlatList
-                        data={this.state.currentRoutes}
-                        keyExtractor={(item, index) => `${index}`}
-                        renderItem={({ item }) => (
-                            <ListItem
-                                containerStyle={{ paddingHorizontal: 16 }}
-                                bottomDivider
-                                chevron={item.nested}
-                                onPress={item.route ? () => this.props.navigation.navigate(item.route) : (item.onPress ? () => item.onPress() : undefined)}
-                                title={
-                                    <Body font={'regular'} style={{ marginLeft: 16, color: '#231f61' }}>
-                                        {item.title}
-                                    </Body>
-                                }
-                                leftIcon={{
-                                    type: item.iconType || 'material',
-                                    name: item.icon,
-                                    color: '#231f61',
-                                    iconStyle: { marginLeft: 0 },
-                                }}
-                            />
-                        )}
-                    />
+                    <View style={{ flexDirection: 'row', backgroundColor: 'orange', position: 'relative' }}>
+                        {NavigationItems.map((panel, ind) => {
+                            const leftPosition = (ind === 2 ? helpLeft : (ind === 1 ? accountLeft : mainLeft));
+                            return (
+                                <Animated.View
+                                    key={`Panel_${panel.name}`}
+                                    style={{
+                                        position: 'absolute',
+                                        width: DRAWER_WIDTH,
+                                        left: leftPosition,
+                                    }}
+                                >
+                                    <FlatList
+                                        data={panel.data}
+                                        keyExtractor={(item, index) => `${index}`}
+                                        renderItem={({ item }) => (
+                                            <ListItem
+                                                containerStyle={{ paddingHorizontal: 16 }}
+                                                bottomDivider
+                                                chevron={item.nested}
+                                                onPress={item.route ?
+                                                    () => {
+                                                        this.props.navigation.navigate(item.route);
+                                                        // this.setState({ activePanel: 0 });
+                                                    } :
+                                                    (item.activatePanel !== undefined) ? () => {
+                                                        this.setState({ activePanel: item.activatePanel });
+                                                    } :
+                                                    undefined
+                                                }
+                                                title={
+                                                    <Body font={'regular'} style={{ marginLeft: 16, color: '#231f61' }}>
+                                                        {item.title}
+                                                    </Body>
+                                                }
+                                                leftIcon={{
+                                                    type: item.iconType || 'material',
+                                                    name: item.icon,
+                                                    color: '#231f61',
+                                                    iconStyle: { marginLeft: 0 },
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </Animated.View>
+                            )
+                        })}
+                    </View>
                 </ScrollView>
                 <SafeAreaView />
             </View>
