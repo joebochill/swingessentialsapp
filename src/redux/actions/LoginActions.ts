@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export function requestLogin(userCredentials) {
     return (dispatch) => {
+        dispatch({type: ACTIONS.LOGIN.REQUEST});
         return fetch(BASEURL+'login', { 
             headers: {
                 [AUTH]: 'Basic ' + btoa(userCredentials.username) + '.' + btoa(userCredentials.password)
@@ -15,7 +16,6 @@ export function requestLogin(userCredentials) {
         .then((response) => {
             switch(response.status) {
                 case 200:
-                    console.log('200 response');
                     // Keychain.setGenericPassword(userCredentials.username, userCredentials.password);
                     const token = response.headers.get('Token');
                     response.json()
@@ -25,7 +25,6 @@ export function requestLogin(userCredentials) {
                 default:
                     // Keychain.resetGenericPassword();
                     //checkTimeout(response, dispatch);
-                    console.log('bad request')
                     dispatch({type: ACTIONS.LOGIN.FAILURE});
                     break;
             }
@@ -38,7 +37,6 @@ export function requestLogin(userCredentials) {
 }
 /* clears the current authentication token */
 export function requestLogout(token){
-    console.log('logout request');
     return (dispatch) => {
         return fetch(BASEURL+'logout', { 
             headers: {
@@ -48,20 +46,18 @@ export function requestLogout(token){
         .then((response) => {
             switch(response.status) {
                 case 200:
-                    console.log('good response');
                     dispatch(success(ACTIONS.LOGOUT.SUCCESS));
                     AsyncStorage.removeItem(ASYNC_PREFIX+'token');
                     break;
                 default:
                     // checkTimeout(response, dispatch);
-                    console.log('unable to logout');
                     dispatch(failure(ACTIONS.LOGOUT.FAILURE, response));
                     break;
             }
         })
         .catch((error) => {
             // logLocalError('114: Promise Error: logging out');
-            console.log('promise error');
+            console.log('logout fetch failed');
         });
     }
 }

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import { Icon, ListItem } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { Header } from '@pxblue/react-native-components';
@@ -35,7 +35,15 @@ export const Home = withNavigation((props) => {
                 subtitle={'A PGA Pro in your pocket'}
                 actionItems={[
                     token ?
-                        { icon: LogoutIcon, onPress: async () => dispatch(requestLogout(token))}://{ await AsyncStorage.clear(); } } :
+                        {
+                            icon: LogoutIcon,
+                            onPress: () => {
+                                Alert.alert('Log Out', 'Are you sure you want to log out?', [
+                                    { text: 'Log Out', onPress: () => dispatch(requestLogout(token)) },
+                                    { text: 'Cancel' },
+                                ])
+                            }
+                        } :
                         { icon: AccountIcon, onPress: () => props.navigation.push(ROUTES.AUTH_GROUP) }
                 ]}
             />

@@ -1,183 +1,200 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import { View, StyleSheet, Image, Text, Switch, ActivityIndicator } from 'react-native';
-import { Button, Icon, Input } from 'react-native-elements';
-import { white, purple, black, oledBlack, transparent } from '../../../styles/colors';
-import { spaces, unit, sizes, fonts } from '../../../styles/sizes';
-import { SEButton, ErrorBox } from '../../../components';
-import { EmptyState, wrapIcon } from '@pxblue/react-native-components';
-import { withNavigation, NavigationInjectedProps } from 'react-navigation';
-import { ROUTES } from '../../../constants/routes';
-import AsyncStorage from '@react-native-community/async-storage';
-import logo from '../../../images/logo-big.png';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Image, KeyboardAvoidingView, StyleSheet, Switch, Text, View } from 'react-native';
+import { Icon, Input } from 'react-native-elements';
+import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { LOGIN } from '../../../redux/actions/types';
+// Utilities
+import AsyncStorage from '@react-native-community/async-storage';
+import { useCompare } from '../../../utilities/hooks';
+// Styles
+import { white, purple, transparent } from '../../../styles/colors';
+import { spaces, unit, sizes, fonts } from '../../../styles/sizes';
+import logo from '../../../images/logo-big.png';
+// SE Components
+import { SEButton, ErrorBox } from '../../../components';
+// Actions
 import { requestLogin } from '../../../redux/actions';
+import { ScrollView } from 'react-native-gesture-handler';
 
-type LoginProps = NavigationInjectedProps & {}
-
-export const Login = withNavigation((props: LoginProps) => {
+export const Login = withNavigation((props: NavigationInjectedProps) => {
+    // Local Component State
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [remember, setRemember] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [touchFail, setTouchFail] = useState(false);
     const [credentialsStored, setCredentialsStored] = useState(true);
     const [useBiometric, setUseBiometric] = useState(true);
     const [biometricAvailable, setUseBiometricAvailable] = useState(true);
     const [biometricType, setBiometricType] = useState('TouchID');
-    const dispatch = useDispatch();
+    // Redux State
+    const pending = useSelector(state => state.login.pending);
     const token = useSelector(state => state.login.token);
+    const failures = useSelector(state => state.login.failCount);
+    const failuresChanged = useCompare(failures);
+    const dispatch = useDispatch();
+    // Refs
+    const passField = useRef(null);
+
+    const onLogin = useCallback((username, password) => {
+        if (!username || !password) {
+            setError(true);
+            return;
+        }
+        setError(false);
+        dispatch(requestLogin({ username, password }))
+    }, []);
 
     useEffect(() => {
         if (token) {
             props.navigation.pop();
         }
+        if (failuresChanged) { setPassword('') }
     });
 
     return (
-        <View style={styles.container}>
-            {/* LOGO */}
-            <Image source={logo} resizeMethod='resize' style={styles.logo} />
+        <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+                {/* LOGO */}
+                <Image source={logo} resizeMethod='resize' style={styles.logo} />
 
-            {/* Username Field */}
-            <View>
+                {/* Username Field */}
+                <View>
+                    <Input
+                        autoCorrect={false}
+                        autoCapitalize={'none'}
+                        containerStyle={{ paddingHorizontal: 0 }}
+                        editable={!pending}
+                        inputContainerStyle={styles.inputContainer}
+                        inputStyle={styles.input}
+                        label={'Username'}
+                        labelStyle={[styles.formLabel, { color: white[50] }]}
+                        onChangeText={(val: string) => setUsername(val)}
+                        onSubmitEditing={() => { if (passField.current) { passField.current.focus() } }}
+                        placeholder="Please enter your username"
+                        returnKeyType={'next'}
+                        underlineColorAndroid={transparent}
+                        value={username}
+                    />
+                    {biometricAvailable && useBiometric && credentialsStored &&
+                        <View style={{
+                            position: 'absolute',
+                            right: spaces.medium,
+                            bottom: 0,
+                            height: sizes.large,
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <Icon
+                                name={'fingerprint'}
+                                size={sizes.small}
+                                color={purple[500]}
+                                underlayColor={transparent}
+                            // onPress={() => this._showBiometricLogin()}
+                            />
+                        </View>
+                    }
+                </View>
+
+                {/* Password Field */}
                 <Input
-                    autoCorrect={false}
                     autoCapitalize={'none'}
-                    containerStyle={{ paddingHorizontal: 0 }}
-                    editable={!loading}
+                    containerStyle={{ marginTop: spaces.medium, paddingHorizontal: 0 }}
+                    editable={!pending}
                     inputContainerStyle={styles.inputContainer}
                     inputStyle={styles.input}
-                    label={'Username'}
+                    label={'Password'}
                     labelStyle={[styles.formLabel, { color: white[50] }]}
-                    onChangeText={(val: string) => setUsername(val)}
-                    // onSubmitEditing={() => { if (this.pass) { this.pass.focus() } }}
-                    placeholder="Please enter your username"
-                    returnKeyType={'next'}
+                    onChangeText={(val: string) => setPassword(val)}
+                    onSubmitEditing={() => onLogin(username, password)}
+                    placeholder="Please enter your password"
+                    ref={passField}
+                    returnKeyType={'go'}
+                    secureTextEntry
                     underlineColorAndroid={transparent}
-                    value={username}
+                    value={password}
                 />
-                {biometricAvailable && useBiometric && credentialsStored &&
-                    <View style={{
-                        position: 'absolute',
-                        right: spaces.medium,
-                        bottom: 0,
-                        height: sizes.large,
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <Icon
-                            name={'fingerprint'}
-                            size={sizes.small}
-                            color={purple[500]}
-                            underlayColor={transparent}
-                        // onPress={() => this._showBiometricLogin()}
-                        />
-                    </View>
-                }
-            </View>
 
-            {/* Password Field */}
-            <Input
-                autoCapitalize={'none'}
-                containerStyle={{ marginTop: spaces.medium, paddingHorizontal: 0 }}
-                // editable={!waiting}
-                inputContainerStyle={styles.inputContainer}
-                inputStyle={styles.input}
-                label={'Password'}
-                labelStyle={[styles.formLabel, { color: white[50] }]}
-                onChangeText={(val: string) => setPassword(val)}
-                // onSubmitEditing={() => { if (username && password) { this._onLogin() } }}
-                placeholder="Please enter your password"
-                // ref={(ref) => this.pass = ref}
-                returnKeyType={'go'}
-                secureTextEntry
-                underlineColorAndroid={transparent}
-                value={password}
-            />
-
-            {/* Remember Me Row */}
-            <View style={styles.rememberRow}>
-                <View style={styles.toggle}>
-                    <Text style={styles.toggleLabel}>Save Username</Text>
-                    <Switch
-                        value={remember}
-                        onValueChange={(val: boolean) => {
-                            setRemember(val);
-                            AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
-                        }}
-                        ios_backgroundColor={purple[200]}
-                        trackColor={{ false: white[50], true: purple[500] }}
-                    />
-                </View>
-                {biometricAvailable &&
+                {/* Remember Me Row */}
+                <View style={styles.rememberRow}>
                     <View style={styles.toggle}>
-                        <Text style={styles.toggleLabel}>{`Use ${biometricType}`}</Text>
+                        <Text style={styles.toggleLabel}>Save Username</Text>
                         <Switch
-                            value={useBiometric}
+                            value={remember}
                             onValueChange={(val: boolean) => {
-                                setUseBiometric(val);
-                                AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
+                                setRemember(val);
+                                AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
                             }}
                             ios_backgroundColor={purple[200]}
                             trackColor={{ false: white[50], true: purple[500] }}
                         />
                     </View>
+                    {biometricAvailable &&
+                        <View style={styles.toggle}>
+                            <Text style={styles.toggleLabel}>{`Use ${biometricType}`}</Text>
+                            <Switch
+                                value={useBiometric}
+                                onValueChange={(val: boolean) => {
+                                    setUseBiometric(val);
+                                    AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
+                                }}
+                                ios_backgroundColor={purple[200]}
+                                trackColor={{ false: white[50], true: purple[500] }}
+                            />
+                        </View>
+                    }
+                </View>
+
+                {/* Error Messages */}
+                <ErrorBox
+                    show={failures > 0 || error}//={(this.props.loginFails > 0 || this.state.error)}
+                    error={'The username/password you entered was not correct.'}
+                />
+                <ErrorBox
+                    show={touchFail && failures <= 0}//={(this.state.touchFail && this.props.loginFails <= 0)}
+                    error={`Your ${'FaceID'} was not recognized. Please enter your password to sign in.`}
+                />
+
+                {/* Log In Buttons */}
+                {!pending &&
+                    <View style={styles.loginRow}>
+                        <SEButton
+                            title="SIGN IN"
+                            containerStyle={{ flex: 1 }}
+                            onPress={() => onLogin(username, password)}
+                        />
+                        <SEButton link
+                            containerStyle={{ marginLeft: spaces.medium, flex: 0 }}
+                            title="CANCEL"
+                            onPress={() => props.navigation.pop()}
+                        />
+                    </View>
                 }
-            </View>
 
-            {/* Error Messages */}
-            <ErrorBox
-                show={false}//={(this.props.loginFails > 0 || this.state.error)}
-                error={'The username/password you entered was not correct.'}
-            />
-            <ErrorBox
-                show={false}//={(this.state.touchFail && this.props.loginFails <= 0)}
-                error={`Your ${'FaceID'} was not recognized. Please enter your password to sign in.`}
-            />
-
-            {/* Log In Buttons */}
-            {!loading &&
-                <View style={styles.loginRow}>
-                    <SEButton
-                        title="SIGN IN"
-                        containerStyle={{ flex: 1 }}
-                        onPress={async () => {
-                            // await AsyncStorage.setItem('userToken', 'abc');
-                            // props.navigation.pop();
-                            dispatch(requestLogin({username: username, password: password}))
-                        }}
+                {/* Loading Spinner */}
+                {pending &&
+                    <ActivityIndicator
+                        style={{ marginTop: spaces.jumbo }}
+                        size={'large'}
+                        color={white[50]}
                     />
-                    <SEButton link
-                        containerStyle={{ marginLeft: spaces.medium, flex: 0 }}
-                        title="CANCEL"
-                        onPress={() => props.navigation.pop()}
+                }
+
+                {/* Registration Links */}
+                <View style={styles.registerRow}>
+                    <SEButton
+                        link
+                        title="Forgot Password?"
+                        onPress={() => props.navigation.push('Forgot')}
+                    />
+                    <SEButton
+                        link
+                        title="Create Account"
+                        onPress={() => props.navigation.push('Register')}
                     />
                 </View>
-            }
-
-            {/* Loading Spinner */}
-            {loading &&
-                <ActivityIndicator
-                    style={{ marginTop: spaces.jumbo }}
-                    size={'large'}
-                    color={white[50]}
-                />
-            }
-
-            {/* Registration Links */}
-            <View style={styles.registerRow}>
-                <SEButton
-                    link
-                    title="Forgot Password?"
-                    onPress={() => props.navigation.push('Forgot')}
-                />
-                <SEButton
-                    link
-                    title="Create Account"
-                    onPress={() => props.navigation.push('Register')}
-                />
-            </View>
-        </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     )
 });
 
@@ -186,7 +203,6 @@ const styles = StyleSheet.create({
         flex: 1,
         maxWidth: unit(500),
         backgroundColor: purple[400],
-        justifyContent: 'center',
         paddingHorizontal: spaces.medium
     },
     formLabel: {
@@ -232,6 +248,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap'
+    },
+    scrollContainer:{
+        flex: 1,
+        justifyContent: 'center'
     },
     toggle: {
         flexDirection: 'row',
