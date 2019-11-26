@@ -10,6 +10,7 @@ import YouTube from 'react-native-youtube';
 import topology from '../../../images/topology_40.png';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ROUTES } from '../../../constants/routes';
+import AsyncStorage from '@react-native-community/async-storage';
 // import * as Colors from '@pxblue/colors';
 const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
 const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-variant' });
@@ -25,7 +26,7 @@ export const Home = withNavigation((props) => (
             title={'SWING ESSENTIALS'}
             subtitle={'A PGA Pro in your pocket'}
             actionItems={[
-                { icon: LogoutIcon, onPress: () => { } }
+                { icon: LogoutIcon, onPress: async () => {await AsyncStorage.clear(); props.navigation.navigate(ROUTES.LOGIN) } }
             ]}
         />
             <ScrollView

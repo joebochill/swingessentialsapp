@@ -1,11 +1,26 @@
+// import React from 'react';
+// import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
+// import { Transition } from 'react-native-reanimated';
+
+// React-Navigation Components
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import { NavigationDrawer } from './NavigationDrawer';
-// import { NavTest as NavigationDrawer } from './NavTest';
-// Import the different pages for the application
+
+// Constants
 import { ROUTES } from '../constants/routes';
-import { About, Settings, SingleSetting, AccountDetails, OrderHistory, ErrorLogs, FAQ, Contact, Home, Lessons, SingleLesson, Order, Submit, Record, Blogs, SingleBlog, Tips, SingleTip } from './screens';
+
+// Route Components
+import { NavigationDrawer } from './NavigationDrawer';
+import { 
+    AuthLoading, Login, Register, ForgotPassword, 
+    About, FAQ, Contact,
+    Settings, SingleSetting, 
+    AccountDetails, OrderHistory, ErrorLogs, 
+    Home, 
+    Lessons, SingleLesson, Order, Submit, Record, 
+    Blogs, SingleBlog, Tips, SingleTip 
+} from './screens';
 
 const AppStack = createDrawerNavigator(
     {
@@ -26,28 +41,28 @@ const AppStack = createDrawerNavigator(
                 { initialRouteName: ROUTES.LESSONS, headerMode: 'none' },
             ),
         },
-        [ROUTES.ORDER]:{
+        [ROUTES.ORDER]: {
             screen: Order
         },
-        [ROUTES.ABOUT]:{
+        [ROUTES.ABOUT]: {
             screen: About
         },
-        [ROUTES.FAQ]:{
+        [ROUTES.FAQ]: {
             screen: FAQ
         },
-        [ROUTES.CONTACT]:{
+        [ROUTES.CONTACT]: {
             screen: Contact
         },
-        [ROUTES.ACCOUNT_DETAILS]:{
+        [ROUTES.ACCOUNT_DETAILS]: {
             screen: AccountDetails
         },
-        [ROUTES.LOGS]:{
+        [ROUTES.LOGS]: {
             screen: ErrorLogs
         },
-        [ROUTES.HISTORY]:{
+        [ROUTES.HISTORY]: {
             screen: OrderHistory
         },
-        [ROUTES.SUBMIT_GROUP]:{
+        [ROUTES.SUBMIT_GROUP]: {
             screen: createStackNavigator(
                 {
                     [ROUTES.SUBMIT]: Submit,
@@ -56,7 +71,7 @@ const AppStack = createDrawerNavigator(
                 { initialRouteName: ROUTES.SUBMIT, headerMode: 'none' },
             ),
         },
-        [ROUTES.BLOGS_GROUP]:{
+        [ROUTES.BLOGS_GROUP]: {
             screen: createStackNavigator(
                 {
                     [ROUTES.BLOGS]: Blogs,
@@ -65,7 +80,7 @@ const AppStack = createDrawerNavigator(
                 { initialRouteName: ROUTES.BLOGS, headerMode: 'none' },
             ),
         },
-        [ROUTES.TIPS_GROUP]:{
+        [ROUTES.TIPS_GROUP]: {
             screen: createStackNavigator(
                 {
                     [ROUTES.TIPS]: Tips,
@@ -74,7 +89,7 @@ const AppStack = createDrawerNavigator(
                 { initialRouteName: ROUTES.TIPS, headerMode: 'none' },
             ),
         },
-        [ROUTES.SETTINGS_GROUP]:{
+        [ROUTES.SETTINGS_GROUP]: {
             screen: createStackNavigator(
                 {
                     [ROUTES.SETTINGS]: Settings,
@@ -91,13 +106,35 @@ const AppStack = createDrawerNavigator(
     },
 );
 
+const AuthStack = createStackNavigator(
+    {
+        [ROUTES.LOGIN]: Login,
+        [ROUTES.REGISTER]: Register,
+        [ROUTES.RESET_PASSWORD]: ForgotPassword,
+    },
+    { initialRouteName: ROUTES.LOGIN, headerMode: 'none' },
+);
+
 export default createAppContainer(
+    // createAnimatedSwitchNavigator(
     createSwitchNavigator(
         {
+            [ROUTES.AUTH_LOADING]: AuthLoading,
             [ROUTES.APP_GROUP]: AppStack,
+            [ROUTES.AUTH_GROUP]: AuthStack,
         },
         {
-            initialRouteName: ROUTES.APP_GROUP,
+            initialRouteName: ROUTES.AUTH_LOADING,
+            // transition: (
+            //     <Transition.Together>
+            //       <Transition.Out
+            //         type="slide-bottom"
+            //         durationMs={250}
+            //         interpolation="easeIn"
+            //       />
+            //       <Transition.In type="fade" durationMs={250} />
+            //     </Transition.Together>
+            //   ),
         },
     ),
 );

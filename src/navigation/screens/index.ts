@@ -4,4 +4,4 @@ export * from './posts';
 export * from './help';
 export * from './account';
 export * from './settings';
-// export * from './authentication';
+export * from './authentication';

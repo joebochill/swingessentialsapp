@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@pxblue/react-native-components": "^2.0.2",
+    "@react-native-community/async-storage": "^1.6.3",
     "color": "^3.1.2",
     "react": "16.9.0",
     "react-native": "0.61.4",
@@ -25,6 +26,7 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-youtube": "^2.0.0",
     "react-navigation": "^4.0.10",
+    "react-navigation-animated-switch": "^0.3.2",
     "react-navigation-drawer": "^2.3.3",
     "react-navigation-hooks": "^1.1.0",
     "react-navigation-redux-helpers": "^4.0.1",
