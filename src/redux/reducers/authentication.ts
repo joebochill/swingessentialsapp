@@ -1,6 +1,6 @@
 import { LOGIN, LOGOUT } from '../actions/types';
 
-const initialLoginState = {
+const initialState = {
     token: null,
     admin: false,
     modalWarning: false,
@@ -8,7 +8,7 @@ const initialLoginState = {
     pending: false,
 };
 
-export const loginReducer = (state = initialLoginState, action) => {
+export const loginReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN.REQUEST:
             return {

@@ -59,7 +59,10 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <ScrollView 
+                contentContainerStyle={styles.scrollContainer} 
+                keyboardShouldPersistTaps={'always'}
+            >
                 {/* LOGO */}
                 <Image source={logo} resizeMethod="resize" style={styles.logo} />
 

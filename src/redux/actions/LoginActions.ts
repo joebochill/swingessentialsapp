@@ -4,11 +4,12 @@ import * as ACTIONS from './types';
 import { ASYNC_PREFIX, AUTH, BASEURL } from '../../constants';
 // import * as Keychain from 'react-native-keychain';
 import AsyncStorage from '@react-native-community/async-storage';
+import { loadLessons, loadTips } from './index';
 
 export function requestLogin(userCredentials) {
     return (dispatch) => {
         dispatch({type: ACTIONS.LOGIN.REQUEST});
-        return fetch(BASEURL+'/login', { 
+        return fetch(BASEURL+'/' + ACTIONS.LOGIN.API, { 
             headers: {
                 [AUTH]: 'Basic ' + btoa(userCredentials.username) + '.' + btoa(userCredentials.password)
             }
@@ -19,7 +20,13 @@ export function requestLogin(userCredentials) {
                     // Keychain.setGenericPassword(userCredentials.username, userCredentials.password);
                     const token = response.headers.get('Token');
                     response.json()
-                    .then((json) => dispatch(success(ACTIONS.LOGIN.SUCCESS, {...json,token:token})));
+                    .then((json) => {
+                        dispatch(success(ACTIONS.LOGIN.SUCCESS, {...json,token:token}));
+                    })
+                    .then(() => {
+                        dispatch(loadLessons());
+                        dispatch(loadTips());
+                    });
                     AsyncStorage.setItem(ASYNC_PREFIX+'token', token);
                     break;
                 default:
@@ -38,7 +45,7 @@ export function requestLogin(userCredentials) {
 /* clears the current authentication token */
 export function requestLogout(token){
     return (dispatch) => {
-        return fetch(BASEURL+'/logout', { 
+        return fetch(BASEURL+'/'+ ACTIONS.LOGOUT.API, { 
             headers: {
                 [AUTH]: 'Bearer ' + token
             }

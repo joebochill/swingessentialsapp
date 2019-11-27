@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { View, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import { Icon, ListItem } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
-import { Header } from '@pxblue/react-native-components';
-import { wrapIcon } from '@pxblue/react-native-components';
+import { Header, wrapIcon } from '@pxblue/react-native-components';
 import * as Typography from '@pxblue/react-native-components/core/typography';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import YouTube from 'react-native-youtube';
+import { YouTube } from '../../../components';
 import topology from '../../../images/topology_40.png';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ROUTES } from '../../../constants/routes';
 import { useSelector, useDispatch } from 'react-redux';
 import { requestLogout, loadLessons } from '../../../redux/actions';
+import { getDate } from '../../../utilities/general';
 
 // import * as Colors from '@pxblue/colors';
 const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
@@ -20,7 +20,18 @@ const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
 
 export const Home = withNavigation(props => {
     const token = useSelector(state => state.login.token);
+    const lessons = useSelector(state => state.lessons);
+    const tips = useSelector(state => state.tips.tipList);
     const dispatch = useDispatch();
+
+    const latestLesson = lessons.closed.length > 0 ? lessons.closed[0] : {
+        request_date: getDate(Date.now()),
+        response_video: 'l3Y3iJa6DvE',
+        response_notes: 'Welcome to the Swing Essentials family! We\'re super excited to have you aboard.|:::|Upload a video of your golf swing and we\'ll have a PGA-certified professional analyze your swing and provide a custom-tailored breakdown video highlighting what you\'re doing well, as well as areas you can work on to improve your game.',
+        request_notes: '',
+        fo_swing: '',
+        dtl_swing: ''
+    };
 
     return (
         <View style={styles.container}>
@@ -34,41 +45,36 @@ export const Home = withNavigation(props => {
                 actionItems={[
                     token
                         ? {
-                              icon: LogoutIcon,
-                              onPress: () => {
-                                  Alert.alert('Log Out', 'Are you sure you want to log out?', [
-                                      { text: 'Log Out', onPress: () => dispatch(requestLogout(token)) },
-                                      { text: 'Cancel' },
-                                  ]);
-                              },
-                          }
+                            icon: LogoutIcon,
+                            onPress: () => {
+                                Alert.alert('Log Out', 'Are you sure you want to log out?', [
+                                    { text: 'Log Out', onPress: () => dispatch(requestLogout(token)) },
+                                    { text: 'Cancel' },
+                                ]);
+                            },
+                        }
                         : { icon: AccountIcon, onPress: () => props.navigation.push(ROUTES.AUTH_GROUP) },
-                        { icon: MenuIcon, onPress: () => dispatch(loadLessons()) },
+                    { icon: MenuIcon, onPress: () => dispatch(loadLessons()) },
                 ]}
             />
             <ScrollView contentContainerStyle={{ paddingVertical: 16 }}>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'flex-end',
-                        justifyContent: 'space-between',
-                        marginBottom: 8,
-                        marginHorizontal: 16,
-                    }}>
-                    <Typography.H7>Latest Lesson</Typography.H7>
-                    <Typography.Body>05/21/2019</Typography.Body>
-                </View>
-                <YouTube
-                    videoId="l3Y3iJa6DvE" // The YouTube video ID
-                    play={false} // control playback of video with true/false
-                    fullscreen={false} // control whether the video should play in fullscreen or inline
-                    loop={false} // control whether the video should loop when ended
-                    showinfo={false}
-                    modestbranding={true}
-                    controls={2}
-                    rel={false}
-                    style={{ marginHorizontal: 16, width: 382, height: 215 }}
-                />
+                <>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'flex-end',
+                            justifyContent: 'space-between',
+                            marginBottom: 8,
+                            marginHorizontal: 16,
+                        }}>
+                        <Typography.H7>Latest Lesson</Typography.H7>
+                        <Typography.Body>{latestLesson.request_date}</Typography.Body>
+                    </View>
+                    <YouTube
+                        videoId={latestLesson.response_video}
+                        style={{ marginHorizontal: 16, width: 382, height: 215 }}
+                    />
+                </>
                 <View
                     style={{
                         flexDirection: 'row',
@@ -102,7 +108,7 @@ export const Home = withNavigation(props => {
                     containerStyle={{ paddingHorizontal: 16 }}
                     bottomDivider
                     chevron={true}
-                    onPress={() => {}}
+                    onPress={() => { }}
                     title={
                         <Typography.Body font={'regular'} style={{ marginLeft: 16 }}>
                             Activate Unlimited
@@ -130,29 +136,25 @@ export const Home = withNavigation(props => {
                         color: '#231f61',
                     }}
                 />
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'flex-end',
-                        justifyContent: 'space-between',
-                        marginBottom: 8,
-                        marginHorizontal: 16,
-                        marginTop: 32,
-                    }}>
-                    <Typography.H7>Tip of the Month</Typography.H7>
-                    <Typography.Body>August 2019</Typography.Body>
-                </View>
-                <YouTube
-                    videoId="dS2kXtp4bq0" // The YouTube video ID
-                    play={false} // control playback of video with true/false
-                    fullscreen={false} // control whether the video should play in fullscreen or inline
-                    loop={false} // control whether the video should loop when ended
-                    showinfo={false}
-                    modestbranding={true}
-                    controls={2}
-                    rel={false}
-                    style={{ marginHorizontal: 16, width: 382, height: 215 }}
-                />
+
+                {tips.length > 0 && <>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'flex-end',
+                            justifyContent: 'space-between',
+                            marginBottom: 8,
+                            marginHorizontal: 16,
+                            marginTop: 32,
+                        }}>
+                        <Typography.H7>Tip of the Month</Typography.H7>
+                        <Typography.Body>{tips[0].date}</Typography.Body>
+                    </View>
+                    <YouTube
+                        videoId={tips[0].video}
+                        style={{ marginHorizontal: 16, width: 382, height: 215 }}
+                    />
+                </>}
                 <SafeAreaView />
             </ScrollView>
         </View>
