@@ -1,30 +1,19 @@
-import React, { useRef } from 'react';
-import { View, StyleSheet, SafeAreaView, Alert } from 'react-native';
-import { Icon, ListItem } from 'react-native-elements';
-import { withNavigation } from 'react-navigation';
-import { Header, wrapIcon } from '@pxblue/react-native-components';
+import React from 'react';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import * as Typography from '@pxblue/react-native-components/core/typography';
-import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import { YouTube } from '../../../components';
 import topology from '../../../images/topology_40.png';
-// import topology from '../../../images/bg.jpg';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ROUTES } from '../../../constants/routes';
-import { useSelector, useDispatch } from 'react-redux';
-import { requestLogout, loadLessons } from '../../../redux/actions';
+import { useSelector } from 'react-redux';
 import { getDate } from '../../../utilities/general';
+import { SEHeader } from '../../../components/index';
 
-// import * as Colors from '@pxblue/colors';
-const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
-const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-variant' });
-const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
-
-export const Home = withNavigation(props => {
-    const token = useSelector(state => state.login.token);
+export const Home = (props) => {
     const lessons = useSelector(state => state.lessons);
     const tips = useSelector(state => state.tips.tipList);
     const credits = useSelector(state => state.credits);
-    const dispatch = useDispatch();
 
     const latestLesson = lessons.closed.length > 0 ? lessons.closed[0] : {
         request_date: getDate(Date.now()),
@@ -37,27 +26,11 @@ export const Home = withNavigation(props => {
 
     return (
         <View style={styles.container}>
-            <Header
+            <SEHeader
                 expandable
-                navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
                 backgroundImage={topology}
-                // backgroundColor={'#4f4c81'}
                 title={'SWING ESSENTIALS'}
                 subtitle={'A PGA Pro in your pocket'}
-                actionItems={[
-                    token
-                        ? {
-                            icon: LogoutIcon,
-                            onPress: () => {
-                                Alert.alert('Log Out', 'Are you sure you want to log out?', [
-                                    { text: 'Log Out', onPress: () => dispatch(requestLogout(token)) },
-                                    { text: 'Cancel' },
-                                ]);
-                            },
-                        }
-                        : { icon: AccountIcon, onPress: () => props.navigation.push(ROUTES.AUTH_GROUP) },
-                    { icon: MenuIcon, onPress: () => dispatch(loadLessons()) },
-                ]}
             />
             <ScrollView contentContainerStyle={{ paddingVertical: 16 }}>
                 <>
@@ -163,7 +136,7 @@ export const Home = withNavigation(props => {
             </ScrollView>
         </View>
     );
-});
+};
 const styles = StyleSheet.create({
     container: {
         flex: 1,

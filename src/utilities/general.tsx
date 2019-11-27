@@ -13,6 +13,10 @@ export function roundNumber(num, dec) {
 //       <Text key={'par_'+index} style={styles.paragraph}>{val}</Text>
 //     );
 // }
+export function splitParagraphs(text: string){
+    if(!text) { return []}
+    return text.split('|:::|');
+}
 
 export function getDate(unix){
     let day = new Date(unix);
