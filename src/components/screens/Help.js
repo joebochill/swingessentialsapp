@@ -73,13 +73,18 @@ class HelpScreen extends React.Component{
             <Text style={styles.paragraph}>Payment through the app are handled by Google's In-App Payments mechanism. You'll need to have a valid Google account with a connected payment method. If you need to add a payment method, check your device settings.</Text>
           }
           <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, marginBottom: spacing.small}])}>
-            What do I need in order to use Swing Essentials?
+            What do I need in order to use Swing Essentials™?
           </Text>
-          <Text style={styles.paragraph}>All you need to get started with Swing Essentials is an iPhone or Android smartphone with a camera capable of recording video. If you don't have a smartphone, you can also upload your swing videos on our website..</Text>
+          <Text style={styles.paragraph}>All you need to get started with Swing Essentials™ is an iPhone or Android smartphone with a camera capable of recording video. If you don't have a smartphone, you can also upload your swing videos on our website..</Text>
+          <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, marginBottom: spacing.small}])}>
+            Why go I get an error when trying to submit my videos?
+          </Text>
+          <Text style={styles.paragraph}>The most common cause for errors during video submission is oversized videos (our maximum supported file size is 9MB). Make sure your swing video includes only your swing - use the video trimming capabilities of your device to crop extra footage at the beginning or end.</Text>
+          <Text style={styles.paragraph}>Slow-motion videos are not recommended as they take up significantly more space than regular video. If you continue to have problems after these adjustments, please contact us.</Text>
           <Text style={StyleSheet.flatten([styles.formLabel, {marginTop: spacing.normal, marginBottom: spacing.small}])}>
             What if I have technical problems?
           </Text>
-          <Text style={styles.paragraph}>If you experience any problems while using the Swing Essentials app, please reach out to us and let us know. We strive to provide you with the best experience possible and we welcome all of your feedback. We can be reached for questions and comments at info@swingessentials.com.</Text>
+          <Text style={styles.paragraph}>If you experience any problems while using the Swing Essentials™ app, please reach out to us and let us know. We strive to provide you with the best experience possible and we welcome all of your feedback. We can be reached for questions and comments at info@swingessentials.com.</Text>
         </ScrollView>
       </View>
     );

@@ -174,6 +174,7 @@ const initialLessonsState = {
   closed:[],
   redeemPending: false,
   redeemSuccess: false,
+  redeemError: null,
   newURL: null,
   selected: null,
   coupon: {type: '', value: 0, error: ''}
@@ -227,22 +228,26 @@ const lessons = (state = initialLessonsState, action) => {
     case REDEEM_CREDIT.REQUEST:
       return {...state,
         redeemPending: true,
-        redeemSuccess: false
+        redeemSuccess: false,
+        redeemError: null
       };
     case REDEEM_CREDIT.SUCCESS:
       return {...state,
         redeemPending: false,
-        redeemSuccess: true
+        redeemSuccess: true,
+        redeemError: null
       };
     case REDEEM_CREDIT.FAIL:
       return {...state,
         redeemPending: false,
-        redeemSuccess: false
+        redeemSuccess: false,
+        redeemError: action.error
       };
     case 'Navigation/NAVIGATE':
       return {...state,
         redeemPending: false,
         redeemSuccess: false,
+        redeemError: null,
         coupon:{
           type: '',
           value: 0,
