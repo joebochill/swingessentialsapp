@@ -3,7 +3,6 @@ import { View, StyleSheet, SafeAreaView } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import * as Typography from '@pxblue/react-native-components/core/typography';
 import { YouTube } from '../../../components';
-import topology from '../../../images/topology_40.png';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ROUTES } from '../../../constants/routes';
 import { useSelector } from 'react-redux';
@@ -28,7 +27,6 @@ export const Home = (props) => {
         <View style={styles.container}>
             <SEHeader
                 expandable
-                backgroundImage={topology}
                 title={'SWING ESSENTIALS'}
                 subtitle={'A PGA Pro in your pocket'}
             />

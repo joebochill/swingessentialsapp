@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { requestLogout } from '../redux/actions';
 import { HeaderIcon } from '@pxblue/react-native-components/core/header/header';
 
+import topology from '../images/topology_40.png';
+
 const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
 const BackIcon = wrapIcon({ IconClass: Icon, name: 'arrow-back' });
 const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-variant' });
@@ -25,7 +27,7 @@ type HeaderProps = NavigationInjectedProps & {
 }
 
 export const SEHeader = withNavigation((props: HeaderProps) => {
-    const { mainAction='menu', navigation, ...other } = props;
+    const { mainAction='menu', navigation, backgroundImage=topology, ...other } = props;
     const token = useSelector(state => state.login.token);
     const dispatch = useDispatch();
 
@@ -35,6 +37,7 @@ export const SEHeader = withNavigation((props: HeaderProps) => {
                 (mainAction === 'menu') ? { icon: MenuIcon, onPress: () => navigation.openDrawer() } :
                 (mainAction === 'back') ? { icon: BackIcon, onPress: () => navigation.goBack() } : undefined
             }
+            backgroundImage={backgroundImage}
             actionItems={[
                 token
                     ? {
