@@ -1,15 +1,17 @@
 import React from 'react';
 import { ThemeProvider } from '@pxblue/react-native-components';
 import MainNavigator from './src/navigation/MainNavigator';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { AppReducer } from './src/redux/reducers';
 import { saveAuthToken } from './src/api/tokenMiddleware';
+import { loadInitialData } from './src/redux/actions';
 
 const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 
 export const App = () => {
+    store.dispatch(loadInitialData());
     return (
         <Provider store={store}>
             <ThemeProvider

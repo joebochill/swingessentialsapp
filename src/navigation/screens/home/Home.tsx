@@ -7,6 +7,7 @@ import * as Typography from '@pxblue/react-native-components/core/typography';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import { YouTube } from '../../../components';
 import topology from '../../../images/topology_40.png';
+// import topology from '../../../images/bg.jpg';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ROUTES } from '../../../constants/routes';
 import { useSelector, useDispatch } from 'react-redux';

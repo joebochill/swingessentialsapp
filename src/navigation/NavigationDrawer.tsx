@@ -1,5 +1,6 @@
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, View, Platform, FlatList, StyleSheet, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
+import { Alert, Animated, SafeAreaView, StatusBar, View, Platform, FlatList, StyleSheet, ScrollView } from 'react-native';
 import { APP_VERSION } from '../constants/index';
 import { NavigationItems } from './NavigationContent';
 
@@ -16,7 +17,16 @@ const DRAWER_WIDTH = 350;
 import { DrawerContentComponentProps } from 'react-navigation-drawer';
 import { ROUTES } from '../constants/routes';
 import { purple } from '../styles/colors';
+import { getLongDate } from '../utilities/general';
+import { requestLogout, requestLogin } from '../redux/actions';
 
+type NavigatorProps = DrawerContentComponentProps & {
+    username: string;
+    first: string;
+    last: string;
+    token: string;
+    logout: Function;
+}
 type NavigatorState = {
     scrollY: Animated.Value;
     activePanel: 0 | 1 | 2;
@@ -25,7 +35,21 @@ type NavigatorState = {
     helpLeft: Animated.Value;
 };
 
-export class NavigationDrawer extends React.Component<DrawerContentComponentProps, NavigatorState> {
+function mapStateToProps(state) {
+    return {
+        username: state.userData.username,
+        first: state.userData.firstName,
+        last: state.userData.lastName,
+        token: state.login.token,
+        // lessons: state.lessons,
+        // modalWarning: state.login.modalWarning
+    };
+}
+
+const mapDispatchToProps = {
+    logout: requestLogout,
+}
+export class NavigationDrawerClass extends React.Component<NavigatorProps, NavigatorState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -55,9 +79,22 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
             duration: 250,
         }).start();
     }
+    _logout() {
+        Alert.alert('Log Out', 'Are you sure you want to log out?', [
+            { text: 'Log Out', onPress: () => this.props.logout(this.props.token) },
+            { text: 'Cancel' },
+        ]);
+    }
     render() {
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
         const { mainLeft, accountLeft, helpLeft } = this.state;
+        const { username, first, last, token } = this.props;
+
+        const userString = username || 'Welcome!'
+        const nameString = (first && last) ? `${first} ${last}` : 'New User';
+        const initials = (first && last) ? `${first.charAt(0)}${last.charAt(0)}` : 'SE';
+        const memberData = this.props.joinDate || getLongDate(Date.now());
+
         return (
             <View style={styles.container}>
                 <StatusBar barStyle={'light-content'} />
@@ -85,23 +122,24 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
                                         fontSize: this.scaleByHeaderHeight(32, 0),
                                         color: purple[500],
                                     }}>
-                                    JB
+                                    {initials.toUpperCase()}
                                 </Animated.Text>
                             </Animated.View>
                         </View>
                         <Animated.View style={[styles.headerText, { marginLeft: this.scaleByHeaderHeight(16, 0) }]}>
                             <Animated.Text style={this.titleStyle()} numberOfLines={1} ellipsizeMode={'tail'}>
-                                {'joebochill'}
+                                {userString}
                             </Animated.Text>
                             <Animated.Text style={this.subtitleStyle()} numberOfLines={1} ellipsizeMode={'tail'}>
-                                {'Joseph Boyle'}
+                                {nameString}
                             </Animated.Text>
                             <Animated.Text style={this.infoStyle()} numberOfLines={1} ellipsizeMode={'tail'}>
-                                {'Member Since April 5, 1989'}
+                                {`Member Since ${memberData}`}
                             </Animated.Text>
                         </Animated.View>
                         <View style={styles.headerAction}>
-                            <Icon name={'person'} size={24} color={'white'} />
+                            {!token && <Icon onPress={() => this.props.navigation.navigate(ROUTES.LOGIN)} name={'person'} size={24} color={'white'} />}
+                            {token && <Icon onPress={() => this._logout()} type={'material-community'} name={'logout-variant'} size={24} color={'white'} />}
                         </View>
                     </Animated.View>
                     <View style={styles.userInfo}>
@@ -124,12 +162,21 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
                     <View style={styles.drawerBody}>
                         {NavigationItems.map((panel, ind) => {
                             const leftPosition = ind === 2 ? helpLeft : ind === 1 ? accountLeft : mainLeft;
+                            const panelData = [...panel.data];
+                            if (ind === 0) {
+                                panelData.push({
+                                    title: token ? 'Log Out' : 'Log In',
+                                    iconType: token ? 'material-community' : 'material',
+                                    icon: token ? 'logout-variant' : 'person',
+                                    onPress: token ? () => this._logout() : () => this.props.navigation.navigate(ROUTES.LOGIN)
+                                })
+                            }
                             return (
                                 <Animated.View
                                     key={`Panel_${panel.name}`}
                                     style={[styles.panel, { left: leftPosition }]}>
                                     <FlatList
-                                        data={panel.data}
+                                        data={panelData}
                                         keyExtractor={(item, index) => `${index}`}
                                         renderItem={({ item }) => (
                                             <ListItem
@@ -139,14 +186,14 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
                                                 onPress={
                                                     item.route
                                                         ? () => {
-                                                              this.props.navigation.navigate(item.route);
-                                                              // this.setState({ activePanel: 0 });
-                                                          }
+                                                            this.props.navigation.navigate(item.route);
+                                                            // this.setState({ activePanel: 0 });
+                                                        }
                                                         : item.activatePanel !== undefined
-                                                        ? () => {
-                                                              this.setState({ activePanel: item.activatePanel });
-                                                          }
-                                                        : undefined
+                                                            ? () => {
+                                                                this.setState({ activePanel: item.activatePanel });
+                                                            }
+                                                            : (item.onPress ? () => item.onPress() : undefined)
                                                 }
                                                 title={
                                                     <Typography.Body font={'regular'} style={styles.navLabel}>
@@ -215,6 +262,8 @@ export class NavigationDrawer extends React.Component<DrawerContentComponentProp
         ];
     }
 }
+export const NavigationDrawer = connect(mapStateToProps, mapDispatchToProps)(NavigationDrawerClass);
+
 const styles = StyleSheet.create({
     avatarContainer: {
         justifyContent: 'center',

@@ -5,9 +5,10 @@ import { ASYNC_PREFIX, AUTH, BASEURL } from '../../constants';
 // import * as Keychain from 'react-native-keychain';
 import AsyncStorage from '@react-native-community/async-storage';
 import { loadLessons, loadTips } from './index';
+import { ThunkDispatch } from 'redux-thunk';
 
 export function requestLogin(userCredentials) {
-    return (dispatch) => {
+    return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({type: ACTIONS.LOGIN.REQUEST});
         return fetch(BASEURL+'/' + ACTIONS.LOGIN.API, { 
             headers: {
@@ -26,6 +27,10 @@ export function requestLogin(userCredentials) {
                     .then(() => {
                         dispatch(loadLessons());
                         dispatch(loadTips());
+                        // dispatch(loadBlogs());
+                        // dispatch(loadCredits());
+                        // dispatch(loadSettings());
+                        // TODO: Load more stuff
                     });
                     AsyncStorage.setItem(ASYNC_PREFIX+'token', token);
                     break;
@@ -55,6 +60,7 @@ export function requestLogout(token){
                 case 200:
                     dispatch(success(ACTIONS.LOGOUT.SUCCESS));
                     AsyncStorage.removeItem(ASYNC_PREFIX+'token');
+                    dispatch(loadTips());
                     break;
                 default:
                     // checkTimeout(response, dispatch);

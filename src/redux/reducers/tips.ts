@@ -23,7 +23,6 @@ export const tipsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                tipList: []
             }
         default:
             return state;

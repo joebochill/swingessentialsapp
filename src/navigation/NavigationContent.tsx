@@ -10,6 +10,7 @@ type Route = {
     iconType?: string;
     nested?: boolean;
     activatePanel?: number;
+    onPress?: Function;
 };
 
 export const mainNavigationItems: RouteGroup = {
@@ -110,11 +111,6 @@ export const accountNavigationItems: RouteGroup = {
             title: 'Settings',
             icon: 'settings',
             route: ROUTES.SETTINGS,
-        },
-        {
-            title: 'Log Out',
-            iconType: 'material-community',
-            icon: 'logout-variant',
         },
         {
             title: 'Back',

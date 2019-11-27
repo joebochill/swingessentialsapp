@@ -1,3 +1,6 @@
+
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 // Returns a number rounded to the specified number of decimal places
 export function roundNumber(num, dec) {
     return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
@@ -19,6 +22,11 @@ export function getDate(unix){
     if(dd<10){dd='0'+dd;} 
     if(mm<10) {mm='0'+mm;} 
     return (yyyy + '-' + mm + '-' + dd);
+}
+
+export function getLongDate(unix){
+    const day = new Date(unix);
+    return ( `${MONTHS[day.getUTCMonth()]} ${day.getUTCFullYear()}`);
 }
 
 export function getTime(unix){
