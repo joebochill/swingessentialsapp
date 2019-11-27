@@ -187,7 +187,6 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                                     item.route
                                                         ? () => {
                                                             this.props.navigation.navigate(item.route);
-                                                            // this.setState({ activePanel: 0 });
                                                         }
                                                         : item.activatePanel !== undefined
                                                             ? () => {

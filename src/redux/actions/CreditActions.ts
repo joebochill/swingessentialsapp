@@ -3,16 +3,16 @@ import { success, failure } from '../../api/http-helper';
 import { Dispatch } from 'redux';
 import * as ACTIONS from './types';
 
-export function loadTips() {
+export function loadCredits() {
     return (dispatch: Dispatch) => {
-        dispatch({ type: ACTIONS.GET_TIPS.REQUEST });
+        dispatch({ type: ACTIONS.GET_CREDITS.REQUEST });
 
-        HttpRequest.get(ACTIONS.GET_TIPS.API)
+        HttpRequest.get(ACTIONS.GET_CREDITS.API)
             .onSuccess((body: any) => {
-                dispatch(success(ACTIONS.GET_TIPS.SUCCESS, body));
+                dispatch(success(ACTIONS.GET_CREDITS.SUCCESS, body));
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.GET_TIPS.FAILURE, response));
+                dispatch(failure(ACTIONS.GET_CREDITS.FAILURE, response));
                 console.log(response.headers.get('Error'));
             })
             .request();

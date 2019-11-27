@@ -4,7 +4,7 @@ import * as ACTIONS from './types';
 import { ASYNC_PREFIX, AUTH, BASEURL } from '../../constants';
 // import * as Keychain from 'react-native-keychain';
 import AsyncStorage from '@react-native-community/async-storage';
-import { loadLessons, loadTips } from './index';
+import { loadLessons, loadTips, loadCredits } from './index';
 import { ThunkDispatch } from 'redux-thunk';
 
 export function requestLogin(userCredentials) {
@@ -28,7 +28,7 @@ export function requestLogin(userCredentials) {
                         dispatch(loadLessons());
                         dispatch(loadTips());
                         // dispatch(loadBlogs());
-                        // dispatch(loadCredits());
+                        dispatch(loadCredits());
                         // dispatch(loadSettings());
                         // TODO: Load more stuff
                     });

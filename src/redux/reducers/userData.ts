@@ -10,7 +10,6 @@ export const userDataReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_USER_DATA.SUCCESS:
         case LOGIN.SUCCESS:
-            console.log(action.payload.personal);
             return {
                 ...state,
                 username: action.payload.personal.username,

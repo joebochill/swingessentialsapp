@@ -23,6 +23,7 @@ export const Home = withNavigation(props => {
     const token = useSelector(state => state.login.token);
     const lessons = useSelector(state => state.lessons);
     const tips = useSelector(state => state.tips.tipList);
+    const credits = useSelector(state => state.credits);
     const dispatch = useDispatch();
 
     const latestLesson = lessons.closed.length > 0 ? lessons.closed[0] : {
@@ -97,14 +98,16 @@ export const Home = withNavigation(props => {
                             Individual Lessons
                         </Typography.Body>
                     }
-                    rightTitle={'3 Left'}
+                    rightTitle={`${credits.count} Left`}
+                    disabled={credits.count < 1}
+                    disabledStyle={{ opacity: 0.7 }}
                     leftIcon={{
                         name: 'golf-course',
                         color: '#231f61',
                     }}
                 />
                 <ListItem
-                    disabled
+                    disabled={credits.unlimited < 1 || credits.unlimitedActive}
                     disabledStyle={{ opacity: 0.7 }}
                     containerStyle={{ paddingHorizontal: 16 }}
                     bottomDivider
@@ -115,7 +118,7 @@ export const Home = withNavigation(props => {
                             Activate Unlimited
                         </Typography.Body>
                     }
-                    rightTitle={'0 Left'}
+                    rightTitle={`${credits.unlimited} Left`}
                     leftIcon={{
                         type: 'material-community',
                         name: 'infinity',

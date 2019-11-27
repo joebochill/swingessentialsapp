@@ -17,3 +17,6 @@ export const GET_LESSONS = createAction('GET_LESSONS', 'lessons')
 
 /* Tips Actions */
 export const GET_TIPS = createAction('GET_TIPS', 'tips')
+
+/* Credits Actions */
+export const GET_CREDITS = createAction('GET_CREDITS', 'credits')
