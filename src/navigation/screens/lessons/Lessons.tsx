@@ -1,55 +1,45 @@
-import * as React from 'react';
+import React from 'react';
 import { View, StyleSheet, SafeAreaView } from 'react-native';
-import { Icon } from 'react-native-elements';
-import { Header } from '@pxblue/react-native-components';
-import { wrapIcon, ScoreCard } from '@pxblue/react-native-components';
-import { withNavigation } from 'react-navigation';
-import topology from '../../../images/bg.jpg';
-
-import YouTube from 'react-native-youtube';
+import { Icon, ListItem } from 'react-native-elements';
+import { wrapIcon } from '@pxblue/react-native-components';
+import { VideoCard, SEHeader } from '../../../components';
 import { ScrollView } from 'react-native-gesture-handler';
-// import * as Colors from '@pxblue/colors';
-const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
-const FullscreenIcon = wrapIcon({ IconClass: Icon, name: 'open-in-new' });
+import { purple } from '../../../styles/colors';
+import bg from '../../../images/bg.jpg';
+import { withNavigation } from 'react-navigation';
+import { ROUTES } from '../../../constants/routes';
 const MoreIcon = wrapIcon({ IconClass: Icon, name: 'more-vert' });
 
-export const Lessons = withNavigation(props => (
-    <View style={styles.container}>
-        <Header
-            expandable
-            startExpanded={true}
-            navigation={{ icon: MenuIcon, onPress: () => props.navigation.openDrawer() }}
-            title={'Your Lessons'}
-            backgroundImage={topology}
-            subtitle={"...see how far you've come"}
-            actionItems={[{ icon: MoreIcon, onPress: () => {} }]}
-        />
-        <ScrollView contentContainerStyle={{ padding: 16 }}>
-            {[1, 2, 3, 4, 5].map((item, ind) => (
-                <ScoreCard
-                    key={`lessonCard_${ind}`}
-                    headerTitle={'Avoiding the Slice'}
-                    headerSubtitle={'06/25/2019'}
-                    headerInfo={'In-Person Lesson'}
-                    style={{ marginBottom: 16 }}
-                    actionItems={[{ icon: FullscreenIcon, onPress: () => {} }]}>
-                    <YouTube
-                        videoId="l3Y3iJa6DvE" // The YouTube video ID
-                        play={false} // control playback of video with true/false
-                        fullscreen={false} // control whether the video should play in fullscreen or inline
-                        loop={false} // control whether the video should loop when ended
-                        showinfo={false}
-                        modestbranding={true}
-                        controls={2}
-                        rel={false}
-                        style={{ width: 382, height: 215, margin: -16 }}
+export const Lessons = withNavigation(props => {
+    return (
+        <View style={styles.container}>
+            <SEHeader
+                expandable
+                backgroundImage={bg}
+                startExpanded={true}
+                title={'Your Lessons'}
+                subtitle={"...see how far you've come"}
+                actionItems={[{ icon: MoreIcon, onPress: () => { } }]}
+            />
+            <ScrollView contentContainerStyle={{ padding: 16 }}>
+                {[1, 2 , 3].map((item, ind) => (
+                    <VideoCard
+                        key={`lessonCard_${ind}`}
+                        // headerColor={'transparent'}
+                        // headerFontColor={purple[800]}
+                        headerTitle={'06/25/2019'}
+                        headerSubtitle={'In-Person Lesson'}
+                        style={{ marginBottom: 16 }}
+                        video={"l3Y3iJa6DvE"}
+                        onExpand={() => props.navigation.push(ROUTES.LESSON)}
+                        // hiddenContent={<ListItem title={'View Details'} chevron topDivider containerStyle={{paddingVertical: 0}} contentContainerStyle={{height: 56}} />}
                     />
-                </ScoreCard>
-            ))}
-            <SafeAreaView />
-        </ScrollView>
-    </View>
-));
+                ))}
+                <SafeAreaView />
+            </ScrollView>
+        </View>
+    )
+});
 const styles = StyleSheet.create({
     container: {
         flex: 1,

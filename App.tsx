@@ -16,7 +16,7 @@ export const App = () => {
         <Provider store={store}>
             <ThemeProvider
                 theme={{
-                    roundness: 3,
+                    roundness: 8,
                     fonts: {
                         extraBold: {
                             fontFamily: 'SFCompactDisplay-Black',
