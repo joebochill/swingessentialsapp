@@ -34,7 +34,7 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
                         {this.headerText()}
                         {this.actionItems()}
                     </View>
-                    <View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'pink' }}>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
                         {video &&
                             <YouTube
                                 videoId={video}

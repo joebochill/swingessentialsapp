@@ -1,38 +1,25 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button, Icon } from 'react-native-elements';
-import { Header } from '@pxblue/react-native-components';
+import { View } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { EmptyState, wrapIcon } from '@pxblue/react-native-components';
-import { withNavigation } from 'react-navigation';
-// import * as Colors from '@pxblue/colors';
-const BackIcon = wrapIcon({ IconClass: Icon, name: 'arrow-back' });
+import { sharedStyles } from '../../../styles';
+import { SEHeader } from '../../../components';
 const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 
-export const SingleLesson = withNavigation(props => {
+export const SingleLesson = (props) => {
     // const { navigate } = useNavigation();
     return (
-        <View style={styles.container}>
-            <Header
-                navigation={{ icon: BackIcon, onPress: () => props.navigation.goBack() }}
+        <View style={sharedStyles.pageContainer}>
+            <SEHeader
+                expandable
+                mainAction={'back'}
                 title={'08/19/2019'}
                 subtitle={'In-person lesson'}
             />
             <EmptyState
                 IconClass={AccessTime}
                 title={'Coming Soon'}
-                actions={
-                    <Button
-                        icon={<Icon name="add-circle-outline" color={'white'} />}
-                        title="Go Back"
-                        onPress={() => props.navigation.goBack()}
-                    />
-                }
             />
         </View>
     );
-});
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
+};

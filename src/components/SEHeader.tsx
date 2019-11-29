@@ -19,14 +19,15 @@ const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
 
 type SEHeaderProps = HeaderProps & NavigationInjectedProps & {
     mainAction?: 'menu' | 'back';
+    showAuth?: boolean
 }
 
 export const SEHeader = withNavigation((props: SEHeaderProps) => {
-    const { mainAction = 'menu', navigation, backgroundImage = topology, actionItems = [], ...other } = props;
+    const { mainAction = 'menu', showAuth = true, navigation, backgroundImage = topology, actionItems = [], ...other } = props;
     const token = useSelector(state => state.login.token);
     const dispatch = useDispatch();
 
-    const defaultActions: Array<HeaderIcon> = [token
+    const defaultActions: Array<HeaderIcon> = showAuth ? [token
         ? {
             icon: LogoutIcon,
             onPress: () => {
@@ -36,13 +37,13 @@ export const SEHeader = withNavigation((props: SEHeaderProps) => {
                 ]);
             },
         }
-        : { icon: AccountIcon, onPress: () => props.navigation.navigate(ROUTES.AUTH_GROUP) }];
+        : { icon: AccountIcon, onPress: () => props.navigation.navigate(ROUTES.AUTH_GROUP) }] : [];
 
     return (
         <Header
             navigation={
                 (mainAction === 'menu') ? { icon: MenuIcon, onPress: () => navigation.openDrawer() } :
-                    (mainAction === 'back') ? { icon: BackIcon, onPress: () => navigation.goBack() } : undefined
+                    (mainAction === 'back') ? { icon: BackIcon, onPress: () => navigation.popToTop() } : undefined
             }
             backgroundImage={backgroundImage}
             actionItems={defaultActions.concat(actionItems)}

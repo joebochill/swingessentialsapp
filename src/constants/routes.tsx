@@ -19,7 +19,6 @@ export const ROUTES = {
     BLOGS: '@ROUTE/BLOGS',
     BLOG: '@ROUTE/BLOG',
     CONTACT: '@ROUTE/CONTACT',
-    FORGOT: '@ROUTE/FORGOT',
     FAQ: '@ROUTE/FAQ',
     HOME: '@ROUTE/HOME',
     HISTORY: '@ROUTE/HISTORY',

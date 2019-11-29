@@ -51,6 +51,8 @@ const AppStack = createDrawerNavigator(
             screen: createStackNavigator(
                 {
                     [ROUTES.HOME]: Home,
+                    [ROUTES.LESSON]: SingleLesson,
+                    [ROUTES.TIP]: SingleTip,
                     [ROUTES.AUTH_GROUP]: AuthStack,
                 },
                 { initialRouteName: ROUTES.HOME, headerMode: 'none' },

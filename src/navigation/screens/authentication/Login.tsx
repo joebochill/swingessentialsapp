@@ -15,6 +15,7 @@ import { SEButton, ErrorBox } from '../../../components';
 // Actions
 import { requestLogin } from '../../../redux/actions';
 import { ScrollView } from 'react-native-gesture-handler';
+import { ROUTES } from '../../../constants/routes';
 
 export const Login = withNavigation((props: NavigationInjectedProps) => {
     // Local Component State
@@ -190,8 +191,8 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
 
                 {/* Registration Links */}
                 <View style={styles.registerRow}>
-                    <SEButton link title="Forgot Password?" onPress={() => props.navigation.push('Forgot')} />
-                    <SEButton link title="Create Account" onPress={() => props.navigation.push('Register')} />
+                    <SEButton link title="Forgot Password?" onPress={() => props.navigation.push(ROUTES.RESET_PASSWORD)} />
+                    <SEButton link title="Create Account" onPress={() => props.navigation.push(ROUTES.REGISTER)} />
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

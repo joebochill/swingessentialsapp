@@ -6,8 +6,9 @@ import { NavigationItems } from './NavigationContent';
 
 import topology from '../images/topology.png';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import * as Typography from '@pxblue/react-native-components/core/typography';
+import { Body, H7 } from '@pxblue/react-native-components';
 import { ListItem, Icon } from 'react-native-elements';
+import { sharedStyles } from '../styles';
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 const HEADER_EXPANDED_HEIGHT = 200 + getStatusBarHeight();
@@ -143,8 +144,8 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                         </View>
                     </Animated.View>
                     <View style={styles.userInfo}>
-                        <Typography.H7 color={'onPrimary'}>SWING ESSENTIALS</Typography.H7>
-                        <Typography.Body color={'onPrimary'} font={'light'}>{`v${APP_VERSION}`}</Typography.Body>
+                        <H7 color={'onPrimary'}>SWING ESSENTIALS</H7>
+                        <Body color={'onPrimary'} font={'light'}>{`v${APP_VERSION}`}</Body>
                     </View>
                 </AnimatedSafeAreaView>
                 <ScrollView
@@ -180,7 +181,8 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                         keyExtractor={(item, index) => `${index}`}
                                         renderItem={({ item }) => (
                                             <ListItem
-                                                containerStyle={styles.navItem}
+                                                containerStyle={sharedStyles.listItem}
+                                                contentContainerStyle={sharedStyles.listItemContent}
                                                 bottomDivider
                                                 chevron={item.nested}
                                                 onPress={
@@ -195,9 +197,9 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                                             : (item.onPress ? () => item.onPress() : undefined)
                                                 }
                                                 title={
-                                                    <Typography.Body font={'regular'} style={styles.navLabel}>
+                                                    <Body style={styles.navLabel}>
                                                         {item.title}
-                                                    </Typography.Body>
+                                                    </Body>
                                                 }
                                                 leftIcon={{
                                                     type: item.iconType || 'material',
