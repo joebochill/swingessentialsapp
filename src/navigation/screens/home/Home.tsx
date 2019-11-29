@@ -32,6 +32,7 @@ export const Home = (props) => {
         <View style={sharedStyles.pageContainer}>
             <SEHeader
                 expandable
+                startExpanded
                 backgroundImage={bg}
                 title={'SWING ESSENTIALS'}
                 subtitle={'A PGA Pro in your pocket'}

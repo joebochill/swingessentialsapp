@@ -43,7 +43,7 @@ export const Lessons = withNavigation(props => {
             {/* <ScrollView contentContainerStyle={{ paddingHorizontal: 0, paddingVertical: spaces.medium }}> */}
                 <SectionList
                     // scrollEnabled={false
-                    contentContainerStyle={{paddingVertical: spaces.medium}}
+                    contentContainerStyle={{paddingTop: spaces.medium, paddingBottom: spaces.jumbo}}
                     renderSectionHeader={({ section: {title, index} }) => (
                         <View style={[sharedStyles.sectionHeader, index > 0 ? {marginTop: spaces.large} : {}]}>
                             <H7>{title}</H7>
