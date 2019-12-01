@@ -61,3 +61,29 @@ export function checkVersionGreater(test, against){
     }
     return true;
 }
+
+export const makeGroups = (list: Array<any>, bucketExtractor: Function): Array<BucketSection> => {
+    let sections: BucketData = {};
+    let ind = 0;
+    for(let i = 0; i < list.length; i++){
+        const bucket = bucketExtractor(list[i]);
+        if(!sections[bucket]){
+            sections[bucket] = {
+                index: ind++,
+                bucketName: bucket,
+                data: []
+            };
+        }
+        sections[bucket].data.push(list[i]);
+    }
+    return Object.keys(sections).map(i => sections[i]).sort((a,b) => a.index - b.index)
+}
+
+type BucketSection = {
+    index: number,
+    bucketName: string,
+    data: Array<any>
+}
+type BucketData = {
+    [key: string]:BucketSection
+}

@@ -1,21 +1,31 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { Icon } from 'react-native-elements';
-import { EmptyState, wrapIcon } from '@pxblue/react-native-components';
-import { SEHeader } from '../../../components'
-import { sharedStyles } from '../../../styles';
-const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
+import { Body } from '@pxblue/react-native-components';
+import { CollapsibleHeaderLayout, YouTube } from '../../../components/index';
 
-export const SingleBlog = (props) => (
-    <View style={sharedStyles.pageContainer}>
-        <SEHeader
+import { sharedStyles } from '../../../styles';
+
+import { width } from '../../../utilities/dimensions';
+import { spaces, aspectHeight } from '../../../styles/sizes';
+import { splitParagraphs } from '../../../utilities/general';
+
+export const SingleBlog = (props) => {
+    const blog = props.navigation.getParam('blog', null);
+    if (blog === null) props.navigation.popToTop();
+    const videoWidth = width - 2 * spaces.medium;
+    const videoHeight = aspectHeight(videoWidth);
+
+    return blog && (
+        <CollapsibleHeaderLayout
             mainAction={'back'}
-            title={'Blog'}
-            subtitle={'...'}
-        />
-        <EmptyState
-            IconClass={AccessTime}
-            title={'Coming Soon'}
-        />
-    </View>
-);
+            title={blog.date}
+            subtitle={blog.title}
+        >
+            <View style={sharedStyles.paddingHorizontalMedium}>
+                {splitParagraphs(blog.body).map((p, ind) =>
+                    <Body key={`${blog.id}_p_${ind}`} style={sharedStyles.paragraph}>{p}</Body>
+                )}
+            </View>
+        </CollapsibleHeaderLayout >
+    )
+};

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { withNavigation } from 'react-navigation';
 
 import { View, SectionList } from 'react-native';
 import { ListItem } from 'react-native-elements';
@@ -9,9 +8,10 @@ import { CollapsibleHeaderLayout } from '../../../components';
 
 import { ROUTES } from '../../../constants/routes';
 
-import bg from '../../../images/bg_4.jpg';
+import bg from '../../../images/bg_6.jpg';
 import { spaces } from '../../../styles/sizes';
 import { sharedStyles } from '../../../styles';
+import { makeGroups } from '../../../utilities/general';
 
 type Tip = {
     id: number;
@@ -20,31 +20,11 @@ type Tip = {
     title: string;
     video: string;
 }
-type TipSection = {
-    index: number,
-    year: number,
-    data: Array<Tip>
-}
-const makeGroups = (list: Array<Tip>): Array<TipSection> => {
-    let sections = [];
-    const currentYear = (new Date(Date.now())).getUTCFullYear() + 1;
-    let ind = 0;
-    for (let i = 0; i <= currentYear - 2017; i++) {
-        const data = list.filter((item) => new Date(item.date).getUTCFullYear() === currentYear - i);
-        if (data.length > 0) {
-            sections.push({
-                index: ind++,
-                year: currentYear - i,
-                data: data
-            });
-        }
-    }
-    return sections
-}
 
 export const Tips = (props) => {
     const tips = useSelector(state => state.tips.tipList);
-    const sections = makeGroups(tips);
+    // console.log(tips);
+    const sections = makeGroups(tips, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
 
     return (
         <CollapsibleHeaderLayout
@@ -54,9 +34,9 @@ export const Tips = (props) => {
             // renderScroll={false}
         >
             <SectionList
-                renderSectionHeader={({ section: { year, index } }) => (
+                renderSectionHeader={({ section: { bucketName, index } }) => (
                     <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: spaces.large } : {}]}>
-                        <H7>{year}</H7>
+                        <H7>{bucketName}</H7>
                     </View>
                 )}
                 sections={sections}

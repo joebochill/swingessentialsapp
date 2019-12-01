@@ -1,38 +1,66 @@
-import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button, Icon } from 'react-native-elements';
-import { EmptyState, wrapIcon } from '@pxblue/react-native-components';
-import { withNavigation } from 'react-navigation';
-import {SEHeader} from '../../../components';
-import bg from '../../../images/bg_3.jpg';
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+import { View, SectionList } from 'react-native';
+import { ListItem } from 'react-native-elements';
+import { H7, Body} from '@pxblue/react-native-components';
+import { CollapsibleHeaderLayout } from '../../../components';
 
 import { ROUTES } from '../../../constants/routes';
-const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 
-export const Blogs = withNavigation(props => (
-    <View style={styles.container}>
-        <SEHeader
-            expandable
-            startExpanded
-            backgroundImage={bg}
+import bg from '../../../images/bg_4.jpg';
+import { spaces } from '../../../styles/sizes';
+import { sharedStyles } from '../../../styles';
+import { makeGroups } from '../../../utilities/general';
+
+type Blog = {
+    id: number;
+    date: string;
+    body: string;
+    title: string;
+}
+
+export const Blogs = (props) => {
+    const blogs = useSelector(state => state.blogs.blogList);
+    const sections = makeGroups(blogs, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
+
+    return (
+        <CollapsibleHeaderLayout
             title={'19th Hole'}
             subtitle={'...Golf stories and Q&A'}
-        />
-        <EmptyState
-            IconClass={AccessTime}
-            title={'Coming Soon'}
-            actions={
-                <Button
-                    icon={<Icon name="add-circle-outline" color={'white'} />}
-                    title="View Blog"
-                    onPress={() => props.navigation.navigate(ROUTES.BLOG)}
-                />
-            }
-        />
-    </View>
-));
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
+            backgroundImage={bg}
+            // renderScroll={false}
+        >
+            <SectionList
+                renderSectionHeader={({ section: { bucketName, index } }) => (
+                    <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: spaces.large } : {}]}>
+                        <H7>{bucketName}</H7>
+                    </View>
+                )}
+                sections={sections}
+                stickySectionHeadersEnabled={false}
+                ListEmptyComponent={
+                    <ListItem
+                        containerStyle={sharedStyles.listItem}
+                        contentContainerStyle={sharedStyles.listItemContent}
+                        bottomDivider
+                        topDivider
+                        title={<Body>No Posts Yet!</Body>}
+                    />
+                }
+                renderItem={({ item, index }) =>
+                    <ListItem
+                        containerStyle={sharedStyles.listItem}
+                        contentContainerStyle={sharedStyles.listItemContent}
+                        bottomDivider
+                        topDivider={index === 0}
+                        chevron={true}
+                        onPress={() => props.navigation.push(ROUTES.BLOG, {blog: item})}
+                        title={<Body>{item.title}</Body>}
+                    />
+                }
+                keyExtractor={(item, index): string => `blog_${item.id}`}
+            />
+        </CollapsibleHeaderLayout>
+    )
+};

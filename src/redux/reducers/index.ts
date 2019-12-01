@@ -4,6 +4,7 @@ import { lessonsReducer } from './lessons';
 import { tipsReducer } from './tips';
 import { userDataReducer } from './userData';
 import { creditsReducer } from './credits';
+import { blogsReducer } from './blogs';
 
 export const AppReducer = combineReducers({
     login: loginReducer,
@@ -11,4 +12,5 @@ export const AppReducer = combineReducers({
     tips: tipsReducer,
     userData: userDataReducer,
     credits: creditsReducer,
+    blogs: blogsReducer,
 });
