@@ -1,6 +1,5 @@
 import React from 'react';
-import { purple, transparent } from '../styles/colors';
-import { spaces, sizes, unit, fonts } from '../styles/sizes';
+import { purple, transparent, spaces, sizes, unit, fonts } from '../styles';
 import { StyleSheet } from 'react-native';
 import { Button, ButtonProps } from 'react-native-elements';
 

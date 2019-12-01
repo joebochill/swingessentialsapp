@@ -1,6 +1,5 @@
 import React from 'react';
-import { white, red } from '../styles/colors';
-import { spaces, fonts } from '../styles/sizes';
+import { white, red, spaces, fonts } from '../styles';
 import { StyleSheet, Text, StyleProp, ViewStyle } from 'react-native';
 
 const styles = StyleSheet.create({

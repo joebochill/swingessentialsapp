@@ -1,18 +1,12 @@
 import * as React from 'react';
 import { View, Platform, TouchableOpacity } from 'react-native';
 import { Body, H7 } from '@pxblue/react-native-components';
-import { Icon } from 'react-native-elements';
 
 import { CollapsibleHeaderLayout, YouTube, SEVideo } from '../../../components/index';
-import Video from 'react-native-video';
 
-import { sharedStyles } from '../../../styles';
-
-import { width } from '../../../utilities/dimensions';
-import { sizes, spaces, aspectHeight, aspectWidth } from '../../../styles/sizes';
-import { splitParagraphs } from '../../../utilities/general';
+import { width, aspectHeight, aspectWidth, splitParagraphs  } from '../../../utilities';
+import { spaces, sharedStyles } from '../../../styles';
 import { PlaceholderLesson } from '../../../constants/lessons';
-import { transparent, oledBlack } from '../../../styles/colors';
 
 export const SingleLesson = (props) => {
     let lesson = props.navigation.getParam('lesson', null);

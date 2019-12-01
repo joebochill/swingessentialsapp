@@ -8,10 +8,8 @@ import bg from '../../../images/bg_1.jpg';
 
 import Carousel from 'react-native-snap-carousel';
 import { useSelector } from 'react-redux';
-import { getDate, getLongDate } from '../../../utilities/general';
-import { width } from '../../../utilities/dimensions';
-import { spaces } from '../../../styles/sizes';
-import { sharedStyles } from '../../../styles';
+import { getLongDate, width } from '../../../utilities';
+import { spaces, sharedStyles } from '../../../styles';
 import { PlaceholderLesson } from '../../../constants/lessons';
 
 export const Home = (props) => {

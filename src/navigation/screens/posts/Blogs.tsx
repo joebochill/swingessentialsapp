@@ -9,9 +9,8 @@ import { CollapsibleHeaderLayout } from '../../../components';
 import { ROUTES } from '../../../constants/routes';
 
 import bg from '../../../images/bg_4.jpg';
-import { spaces } from '../../../styles/sizes';
-import { sharedStyles } from '../../../styles';
-import { makeGroups } from '../../../utilities/general';
+import { spaces, sharedStyles } from '../../../styles';
+import { makeGroups } from '../../../utilities';
 
 type Blog = {
     id: number;

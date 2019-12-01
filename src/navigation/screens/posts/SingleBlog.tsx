@@ -3,11 +3,9 @@ import { View } from 'react-native';
 import { Body } from '@pxblue/react-native-components';
 import { CollapsibleHeaderLayout, YouTube } from '../../../components/index';
 
-import { sharedStyles } from '../../../styles';
+import { sharedStyles, spaces } from '../../../styles';
 
-import { width } from '../../../utilities/dimensions';
-import { spaces, aspectHeight } from '../../../styles/sizes';
-import { splitParagraphs } from '../../../utilities/general';
+import { width, splitParagraphs, aspectHeight } from '../../../utilities';
 
 export const SingleBlog = (props) => {
     const blog = props.navigation.getParam('blog', null);

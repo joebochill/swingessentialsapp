@@ -8,7 +8,7 @@ import topology from '../images/topology.png';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Body, H7 } from '@pxblue/react-native-components';
 import { ListItem, Icon } from 'react-native-elements';
-import { sharedStyles } from '../styles';
+import { sharedStyles, purple } from '../styles';
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 const HEADER_EXPANDED_HEIGHT = 200 + getStatusBarHeight();
@@ -17,8 +17,7 @@ const DRAWER_WIDTH = 350;
 
 import { DrawerContentComponentProps } from 'react-navigation-drawer';
 import { ROUTES } from '../constants/routes';
-import { purple } from '../styles/colors';
-import { getLongDate } from '../utilities/general';
+import { getLongDate } from '../utilities';
 import { requestLogout, requestLogin } from '../redux/actions';
 
 type NavigatorProps = DrawerContentComponentProps & {

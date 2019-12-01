@@ -2,17 +2,15 @@ import * as React from 'react';
 import { View, StyleSheet, Platform, SafeAreaView } from 'react-native';
 import { SEHeader } from '../../../components';
 import { ScrollView } from 'react-native-gesture-handler';
-import { spaces } from '../../../styles/sizes';
-import { sharedStyles } from '../../../styles';
+import { spaces, sharedStyles } from '../../../styles';
 import { YouTube } from '../../../components';
-import { width } from '../../../utilities/dimensions';
+import { width, splitParagraphs } from '../../../utilities';
 import { Body, H6, H7 } from '@pxblue/react-native-components';
 import { FAQData } from '../../../data/FAQ';
-import { splitParagraphs } from '../../../utilities/general';
 
 export const FAQ = (props) => (
     <View style={sharedStyles.pageContainer}>
-        <SEHeader title={'FAQ'} subtitle={'...common questions'} />
+        <SEHeader title={'FAQ'} subtitle={'...answers to common questions'} />
         <ScrollView contentContainerStyle={sharedStyles.paddingMedium}>
             <H6>Frequently Asked Questions</H6>
             {FAQData.map((faq, ind) => (

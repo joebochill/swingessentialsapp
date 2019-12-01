@@ -1,4 +1,4 @@
-import { getDate } from "../utilities/general";
+import { getDate } from "../utilities";
 
 export const PlaceholderLesson = {
     request_date: getDate(Date.now()),

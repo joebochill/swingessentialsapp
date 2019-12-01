@@ -1,5 +1,5 @@
 import { success, failure } from '../../api/http-helper';
-import { btoa } from '../../utilities/btoa';
+import { btoa } from '../../utilities';
 import * as ACTIONS from './types';
 import { ASYNC_PREFIX, AUTH, BASEURL } from '../../constants';
 // import * as Keychain from 'react-native-keychain';

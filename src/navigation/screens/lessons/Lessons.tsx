@@ -8,9 +8,8 @@ import bg from '../../../images/bg_2.jpg';
 import { withNavigation } from 'react-navigation';
 import { ROUTES } from '../../../constants/routes';
 
-import { spaces } from '../../../styles/sizes';
-import { sharedStyles } from '../../../styles';
-import { getLongDate, makeGroups } from '../../../utilities/general';
+import { spaces, sharedStyles } from '../../../styles';
+import { getLongDate, makeGroups } from '../../../utilities';
 
 type Lesson = {
     request_id: number;

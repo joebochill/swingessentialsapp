@@ -5,9 +5,8 @@ import { CollapsibleHeaderLayout, YouTube } from '../../../components/index';
 
 import { sharedStyles } from '../../../styles';
 
-import { width } from '../../../utilities/dimensions';
-import { spaces, aspectHeight } from '../../../styles/sizes';
-import { splitParagraphs } from '../../../utilities/general';
+import { spaces } from '../../../styles';
+import { splitParagraphs, width, aspectHeight } from '../../../utilities';
 
 export const SingleTip = (props) => {
     const tip = props.navigation.getParam('tip', null);

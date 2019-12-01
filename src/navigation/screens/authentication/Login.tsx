@@ -5,10 +5,9 @@ import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
 // Utilities
 import AsyncStorage from '@react-native-community/async-storage';
-import { useCompare } from '../../../utilities/hooks';
+import { useCompare } from '../../../utilities';
 // Styles
-import { white, purple, transparent } from '../../../styles/colors';
-import { spaces, unit, sizes, fonts } from '../../../styles/sizes';
+import { white, purple, transparent, spaces, unit, sizes, fonts } from '../../../styles';
 import logo from '../../../images/logo-big.png';
 // SE Components
 import { SEButton, ErrorBox } from '../../../components';

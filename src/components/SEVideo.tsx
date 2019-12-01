@@ -1,10 +1,9 @@
 import React, { useRef, useState } from 'react';
 import Video from 'react-native-video';
 import { View, TouchableOpacity, ViewProperties, StyleSheet } from 'react-native';
-import { width } from '../utilities/dimensions';
-import { sizes, spaces, aspectWidth } from '../styles/sizes';
+import { width, aspectWidth } from '../utilities';
+import { sizes, spaces, transparent, oledBlack, white } from '../styles';
 import { Icon } from 'react-native-elements';
-import { transparent, oledBlack, white } from '../styles/colors';
 
 
 type VideoProps = ViewProperties & {

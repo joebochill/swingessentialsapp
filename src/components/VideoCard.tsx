@@ -3,9 +3,11 @@ import { View, StyleSheet, ImageSourcePropType, Image, TouchableOpacity, StylePr
 import * as Typography from '@pxblue/react-native-components/core/typography';
 import { black } from '@pxblue/colors';
 import { YouTube } from './';
-import { withTheme, WithTheme, Theme, Header } from '@pxblue/react-native-components';
+import { withTheme, WithTheme, Theme } from '@pxblue/react-native-components';
 import { $DeepPartial } from '@callstack/react-theme-provider';
 import { Icon } from 'react-native-elements';
+import { width, aspectWidth } from '../utilities';
+import { spaces, unit } from 'src/styles';
 
 export interface VideoCardProps {
     headerColor?: string;
@@ -22,6 +24,9 @@ export interface VideoCardProps {
 class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
     public render() {
         const { video, theme, headerColor = theme.colors.primary, hiddenContent } = this.props;
+        const videoWidth = (width - 3 * spaces.medium) / 2;
+        const videoHeight = aspectWidth(videoWidth);
+        
         return (
             <View style={[this.cardStyle()]}>
                 <View style={this.innerWrapperStyle()}>
@@ -33,7 +38,7 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
                         {video &&
                             <YouTube
                                 videoId={video}
-                                style={{ width: 382, height: 215 }}
+                                style={{ width: videoWidth, height: videoHeight }}
                             />
                         }
                         {hiddenContent}
@@ -79,7 +84,6 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
     }
 
     private actionItems() {
-        // const { actionItems } = this.props;
         const { onExpand } = this.props;
         return onExpand ? (
             <TouchableOpacity onPress={() => onExpand()} style={styles.actionItem}>
@@ -98,7 +102,7 @@ export const VideoCard = withTheme(VideoCardClass);
 
 const styles = StyleSheet.create({
     actionItem: {
-        marginLeft: 12
+        marginLeft: spaces.small
     },
     card: {
         shadowColor: black[900],
@@ -112,8 +116,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     header: {
-        height: 56,
-        paddingHorizontal: 16,
+        height: unit(56),
+        paddingHorizontal: spaces.medium,
         overflow: 'hidden',
         flexDirection: 'row',
         alignItems: 'center',
