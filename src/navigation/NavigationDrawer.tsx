@@ -57,28 +57,42 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
             scrollY: new Animated.Value(0),
             activePanel: 0,
             mainLeft: new Animated.Value(0),
-            accountLeft: new Animated.Value(DRAWER_WIDTH),
-            helpLeft: new Animated.Value(DRAWER_WIDTH),
+            accountLeft: new Animated.Value(0/*DRAWER_WIDTH*/),
+            helpLeft: new Animated.Value(-1*DRAWER_WIDTH),
         };
     }
     componentDidUpdate() {
-        const { activePanel, mainLeft, accountLeft, helpLeft } = this.state;
+        const { activePanel, mainLeft, accountLeft, helpLeft, scrollY } = this.state;
 
-        const mainToValue = activePanel === 0 ? 0 : -1 * DRAWER_WIDTH;
+        const mainToValue = activePanel === 0 ? 0 : -1*DRAWER_WIDTH;//-1 * DRAWER_WIDTH;
+        const accountToValue = activePanel === 1 ? -1*DRAWER_WIDTH : 0;//1 * DRAWER_WIDTH;
+        const helpToValue = activePanel === 2 ? -2*DRAWER_WIDTH : -1*DRAWER_WIDTH;//1 * DRAWER_WIDTH;
+
         Animated.timing(mainLeft, {
             toValue: mainToValue,
             duration: 250,
         }).start();
-        const accountToValue = activePanel === 1 ? 0 : 1 * DRAWER_WIDTH;
         Animated.timing(accountLeft, {
             toValue: accountToValue,
             duration: 250,
         }).start();
-        const helpToValue = activePanel === 2 ? 0 : 1 * DRAWER_WIDTH;
         Animated.timing(helpLeft, {
             toValue: helpToValue,
             duration: 250,
         }).start();
+        Animated.timing(scrollY, {
+            toValue: 0,//HEADER_EXPANDED_HEIGHT-HEADER_COLLAPSED_HEIGHT,
+            duration: 250
+        }).start();
+        // Animated.event([
+        //     {
+        //         nativeEvent: {
+        //             contentOffset: {
+        //                 y: this.state.scrollY,
+        //             },
+        //         },
+        //     },
+        // ])
     }
     _logout() {
         Alert.alert('Log Out', 'Are you sure you want to log out?', [
@@ -87,6 +101,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
         ]);
     }
     render() {
+        console.log(this.state);
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
         const { mainLeft, accountLeft, helpLeft } = this.state;
         const { username, first, last, token } = this.props;
@@ -149,7 +164,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                     </View>
                 </AnimatedSafeAreaView>
                 <ScrollView
-                    contentContainerStyle={styles.scrollContainer}
+                    contentContainerStyle={[styles.scrollContainer, {}]}
                     onScroll={Animated.event([
                         {
                             nativeEvent: {
@@ -160,24 +175,36 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                         },
                     ])}
                     scrollEventThrottle={16}>
-                    <View style={styles.drawerBody}>
+                    <View style={/*styles.drawerBody*/{flexDirection:'row'}}>
+                        {/* <Animated.View style={{backgroundColor: 'blue', flex: 0, left: mainLeft, width: DRAWER_WIDTH, height: 1000}}>
+                            <Body onPress={() => this.setState({activePanel: 1})}>Screen Two</Body>
+                            <Body onPress={() => this.setState({activePanel: 2})}>Screen Three</Body>
+                        </Animated.View>
+                        <Animated.View style={{backgroundColor: 'red', flex: 0, left: accountLeft, width: DRAWER_WIDTH, height: 1000}}>
+                            <Body onPress={() => {this.setState({activePanel: 0}); console.log('back 1 pressed')}}>Back</Body>
+                        </Animated.View>
+                        <Animated.View style={{backgroundColor: 'green', flex: 0, left: helpLeft, width: DRAWER_WIDTH, height: 1000}}>
+                            <Body onPress={() => this.setState({activePanel: 0})}>Back</Body>
+                        </Animated.View> */}
                         {NavigationItems.map((panel, ind) => {
                             const leftPosition = ind === 2 ? helpLeft : ind === 1 ? accountLeft : mainLeft;
                             const panelData = [...panel.data];
                             if (ind === 0) {
-                                panelData.push({
+                                for(let i = 0; i < 5; i++) panelData.push({
                                     title: token ? 'Log Out' : 'Log In',
                                     iconType: token ? 'material-community' : 'material',
                                     icon: token ? 'logout-variant' : 'person',
                                     onPress: token ? () => this._logout() : () => this.props.navigation.navigate(ROUTES.LOGIN)
                                 })
                             }
+                            // if(ind !== 0) return null;
                             return (
                                 <Animated.View
                                     key={`Panel_${panel.name}`}
-                                    style={[styles.panel, { left: leftPosition }]}>
+                                    style={[styles.panel, { left: leftPosition }]}
+                                >
                                     <FlatList
-                                        data={panelData}
+                                        data={ind === this.state.activePanel ? panelData : []}
                                         keyExtractor={(item, index) => `${index}`}
                                         renderItem={({ item }) => (
                                             <ListItem
@@ -316,7 +343,7 @@ const styles = StyleSheet.create({
     },
     drawerBody: {
         flexDirection: 'row',
-        position: 'relative',
+        // position: 'relative',
     },
     scrollContainer: {
         paddingTop: HEADER_EXPANDED_HEIGHT,
@@ -329,7 +356,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     panel: {
-        position: 'absolute',
+        // position: 'absolute',
         width: DRAWER_WIDTH,
     },
     userInfo: {
