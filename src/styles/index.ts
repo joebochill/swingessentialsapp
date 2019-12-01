@@ -26,6 +26,9 @@ export const sharedStyles = StyleSheet.create({
         padding: spaces.medium,
         paddingBottom: spaces.jumbo,
     },
+    paddingHorizontalMedium:{
+        paddingHorizontal: spaces.medium,
+    },
     sectionHeader: {
         flexDirection: 'row',
         alignItems: 'flex-end',

@@ -2,6 +2,9 @@
 import { scale, verticalScale } from '../utilities/dimensions';
 export const unit = (value: number) => value * scale(1);
 export const spaceUnit = (value: number) => value * scale(4);
+export const aspectHeight = (width: number) => (width * 9 / 16);
+export const aspectWidth = (height: number) => (height * 16 / 9);
+
 export const sizes = {
     xSmall: spaceUnit(3),
     small: spaceUnit(6),

@@ -101,7 +101,6 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
         ]);
     }
     render() {
-        console.log(this.state);
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
         const { mainLeft, accountLeft, helpLeft } = this.state;
         const { username, first, last, token } = this.props;
@@ -175,17 +174,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                         },
                     ])}
                     scrollEventThrottle={16}>
-                    <View style={/*styles.drawerBody*/{flexDirection:'row'}}>
-                        {/* <Animated.View style={{backgroundColor: 'blue', flex: 0, left: mainLeft, width: DRAWER_WIDTH, height: 1000}}>
-                            <Body onPress={() => this.setState({activePanel: 1})}>Screen Two</Body>
-                            <Body onPress={() => this.setState({activePanel: 2})}>Screen Three</Body>
-                        </Animated.View>
-                        <Animated.View style={{backgroundColor: 'red', flex: 0, left: accountLeft, width: DRAWER_WIDTH, height: 1000}}>
-                            <Body onPress={() => {this.setState({activePanel: 0}); console.log('back 1 pressed')}}>Back</Body>
-                        </Animated.View>
-                        <Animated.View style={{backgroundColor: 'green', flex: 0, left: helpLeft, width: DRAWER_WIDTH, height: 1000}}>
-                            <Body onPress={() => this.setState({activePanel: 0})}>Back</Body>
-                        </Animated.View> */}
+                    <View style={styles.drawerBody}>
                         {NavigationItems.map((panel, ind) => {
                             const leftPosition = ind === 2 ? helpLeft : ind === 1 ? accountLeft : mainLeft;
                             const panelData = [...panel.data];
@@ -197,7 +186,6 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                     onPress: token ? () => this._logout() : () => this.props.navigation.navigate(ROUTES.LOGIN)
                                 })
                             }
-                            // if(ind !== 0) return null;
                             return (
                                 <Animated.View
                                     key={`Panel_${panel.name}`}
@@ -343,7 +331,6 @@ const styles = StyleSheet.create({
     },
     drawerBody: {
         flexDirection: 'row',
-        // position: 'relative',
     },
     scrollContainer: {
         paddingTop: HEADER_EXPANDED_HEIGHT,

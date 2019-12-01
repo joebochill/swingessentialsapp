@@ -64,6 +64,7 @@ export function requestLogout(token){
                     break;
                 default:
                     // checkTimeout(response, dispatch);
+                    AsyncStorage.removeItem(ASYNC_PREFIX+'token');
                     dispatch(failure(ACTIONS.LOGOUT.FAILURE, response));
                     break;
             }

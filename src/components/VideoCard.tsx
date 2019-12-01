@@ -7,11 +7,6 @@ import { withTheme, WithTheme, Theme, Header } from '@pxblue/react-native-compon
 import { $DeepPartial } from '@callstack/react-theme-provider';
 import { Icon } from 'react-native-elements';
 
-export interface HeaderIcon {
-    icon: ComponentType<{ size: number, color: string }>;
-    onPress: () => void;
-}
-
 export interface VideoCardProps {
     headerColor?: string;
     headerTitle: string;
