@@ -6,6 +6,10 @@ import { sharedStyles } from '../../../styles';
 import { SEHeader } from '../../../components';
 const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 
+// TODO: Implement logging functionality
+// TODO: Implement screen
+// TODO: Implement sending logs
+
 export const ErrorLogs = (props) => (
     <View style={sharedStyles.pageContainer}>
         <SEHeader

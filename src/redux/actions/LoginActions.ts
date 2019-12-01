@@ -7,6 +7,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { loadLessons, loadTips, loadCredits } from './index';
 import { ThunkDispatch } from 'redux-thunk';
 
+// TODO: Implement the token timeout warning
+
 export function requestLogin(userCredentials) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({type: ACTIONS.LOGIN.REQUEST});

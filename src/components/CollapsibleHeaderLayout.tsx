@@ -14,6 +14,7 @@ type CollapsibleHeaderLayoutProps = Exclude<PXBHeaderProps, "headerHeight"> & {
     renderScroll?: boolean;
 }
 
+// TODO: Allow long titles to wrap to a second line?
 
 export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLayoutProps, HeaderLayoutState> {
     constructor(props) {

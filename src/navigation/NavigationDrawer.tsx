@@ -46,6 +46,8 @@ function mapStateToProps(state) {
     };
 }
 
+// TODO: Do not make this menu collapsible?
+
 const mapDispatchToProps = {
     logout: requestLogout,
 }

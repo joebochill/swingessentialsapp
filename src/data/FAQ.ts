@@ -7,6 +7,9 @@ type FAQ = {
     answer_ios: string;
     video: string;
 }
+
+//TODO: Build a FAQ API to fetch this data from the DB
+
 export const FAQData: Array<FAQ> = [
     {
         id: 1,

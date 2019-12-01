@@ -5,6 +5,8 @@ import { EmptyState, wrapIcon } from '@pxblue/react-native-components';
 import { sharedStyles } from '../../../styles';
 const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 
+// TODO: Implement 
+
 export const Record = (props) => (
     <View style={sharedStyles.pageContainer}>
         <EmptyState

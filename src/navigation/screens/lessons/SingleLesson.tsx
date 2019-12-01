@@ -19,6 +19,7 @@ export const SingleLesson = (props) => {
     // TODO: mark viewed
     // TODO: handle deep linking via URL
     // TODO: Lesson type API
+    // TODO: Route back if we log out / lose the token
 
     return lesson && (
         <CollapsibleHeaderLayout

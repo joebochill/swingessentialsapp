@@ -8,6 +8,10 @@ import { ROUTES } from '../../../constants/routes';
 import { sharedStyles } from '../../../styles';
 const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 
+// TODO: Implement
+// TODO: Determine any additional settings (app-level?)
+
+
 export const Settings = withNavigation(props => (
     <View style={sharedStyles.pageContainer}>
         <SEHeader

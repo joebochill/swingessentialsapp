@@ -1,17 +1,15 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { Body } from '@pxblue/react-native-components';
-import { CollapsibleHeaderLayout, YouTube } from '../../../components/index';
+import { CollapsibleHeaderLayout } from '../../../components/index';
 
-import { sharedStyles, spaces } from '../../../styles';
+import { sharedStyles } from '../../../styles';
 
-import { width, splitParagraphs, aspectHeight } from '../../../utilities';
+import { splitParagraphs } from '../../../utilities';
 
 export const SingleBlog = (props) => {
     const blog = props.navigation.getParam('blog', null);
     if (blog === null) props.navigation.popToTop();
-    const videoWidth = width - 2 * spaces.medium;
-    const videoHeight = aspectHeight(videoWidth);
 
     return blog && (
         <CollapsibleHeaderLayout

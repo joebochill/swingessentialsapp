@@ -10,6 +10,8 @@ type VideoProps = ViewProperties & {
     source: string;
 }
 
+// TODO: Verify that the video stuff works on Android as expected
+
 export const SEVideo = (props: VideoProps) => {
     const { source, style } = props;
     const vid = useRef(null)

@@ -6,6 +6,9 @@ import { sharedStyles } from '../../../styles';
 import { SEHeader } from '../../../components';
 const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 
+// TODO: Implement screens
+// TODO: Build API
+
 export const OrderHistory = (props) => (
     <View style={sharedStyles.pageContainer}>
         <SEHeader

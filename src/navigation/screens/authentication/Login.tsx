@@ -16,6 +16,8 @@ import { requestLogin } from '../../../redux/actions';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ROUTES } from '../../../constants/routes';
 
+// TODO: Implement biometric login
+
 export const Login = withNavigation((props: NavigationInjectedProps) => {
     // Local Component State
     const [username, setUsername] = useState('');

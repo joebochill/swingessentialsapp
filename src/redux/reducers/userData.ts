@@ -1,5 +1,6 @@
 import { LOGIN, LOGOUT, GET_USER_DATA } from '../actions/types';
 
+// TODO: put a join date in the DB and API
 const initialState = {
     username: '',
     firstName: '',

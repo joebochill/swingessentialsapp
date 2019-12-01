@@ -24,6 +24,8 @@ type Lesson = {
     viewed: boolean;
 }
 
+// TODO: Implement lazy loading (Lessons, Tips, Blogs) on scroll
+
 export const Lessons = withNavigation(props => {
     const lessons = useSelector(state => state.lessons);
     const myLessons = lessons.pending.concat(lessons.closed);

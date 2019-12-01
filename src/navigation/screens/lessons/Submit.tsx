@@ -7,6 +7,8 @@ import { SEHeader } from '../../../components';
 import { sharedStyles } from '../../../styles';
 const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 
+// TODO: Implement from camera Roll
+
 export const Submit = (props) => (
     <View style={sharedStyles.pageContainer}>
         <SEHeader

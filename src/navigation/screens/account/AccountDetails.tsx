@@ -6,6 +6,9 @@ import { sharedStyles } from '../../../styles';
 import { SEHeader } from '../../../components';
 const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 
+// TODO: Implement basic view
+// TODO: Implement editing
+
 export const AccountDetails = (props) => (
     <View style={sharedStyles.pageContainer}>
         <SEHeader
