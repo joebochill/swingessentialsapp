@@ -26,6 +26,7 @@
     "react-native-status-bar-height": "^2.4.0",
     "react-native-thumbnail-video": "^0.1.2",
     "react-native-vector-icons": "^6.6.0",
+    "react-native-video": "^5.0.2",
     "react-native-youtube": "^2.0.0",
     "react-navigation": "^4.0.10",
     "react-navigation-animated-switch": "^0.3.2",

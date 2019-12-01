@@ -23,7 +23,6 @@ type Tip = {
 
 export const Tips = (props) => {
     const tips = useSelector(state => state.tips.tipList);
-    // console.log(tips);
     const sections = makeGroups(tips, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
 
     return (

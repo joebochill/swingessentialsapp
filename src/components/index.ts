@@ -6,3 +6,4 @@ export * from './SEHeader';
 export * from './VideoCard';
 export * from './CollapsibleHeaderLayout';
 export * from './PXBHeader';
+export * from './SEVideo';
