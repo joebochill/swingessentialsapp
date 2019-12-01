@@ -72,29 +72,29 @@
 		42C9DEDB1193C098B6727B7C /* Pods-swingessentialsappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsappTests.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsappTests/Pods-swingessentialsappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4732BFE0A089E2DA091FA8AF /* Pods-swingessentialsapp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOS/Pods-swingessentialsapp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		4C2B7339F853FD2DBF524B91 /* libPods-swingessentialsappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		584692C02743414B86789A0A /* SFCompactDisplay-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Thin.otf"; path = "../assets/fonts/SFCompactDisplay-Thin.otf"; sourceTree = "<group>"; };
-		5875D4D15729454DB8F70C50 /* SFCompactDisplay-Ultralight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Ultralight.otf"; path = "../assets/fonts/SFCompactDisplay-Ultralight.otf"; sourceTree = "<group>"; };
-		5CF6E0D23E9C491CA3124613 /* SFCompactDisplay-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Regular.otf"; path = "../assets/fonts/SFCompactDisplay-Regular.otf"; sourceTree = "<group>"; };
+		584692C02743414B86789A0A /* SFCompactDisplay-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Thin.otf"; path = "../assets/fonts/SFCompactDisplay-Thin.otf"; sourceTree = "<group>"; };
+		5875D4D15729454DB8F70C50 /* SFCompactDisplay-Ultralight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Ultralight.otf"; path = "../assets/fonts/SFCompactDisplay-Ultralight.otf"; sourceTree = "<group>"; };
+		5CF6E0D23E9C491CA3124613 /* SFCompactDisplay-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Regular.otf"; path = "../assets/fonts/SFCompactDisplay-Regular.otf"; sourceTree = "<group>"; };
 		652E45594726434BA4D46CD5 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		684D0E0DCCF84DC7B993319C /* SFCompactDisplay-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Black.otf"; path = "../assets/fonts/SFCompactDisplay-Black.otf"; sourceTree = "<group>"; };
+		684D0E0DCCF84DC7B993319C /* SFCompactDisplay-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Black.otf"; path = "../assets/fonts/SFCompactDisplay-Black.otf"; sourceTree = "<group>"; };
 		6FAB31A55F769CA39D8AB369 /* libPods-swingessentialsapp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		756598F37F46742BC620A44D /* libPods-swingessentialsapp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A917961D94D4DDF9C520FA7 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		853186997CFC4ECD8AC1B709 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		8ED6357265DD401688DDAC5B /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		92A29B2E8009424DB55C9C4D /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		95BACF34B6EB44749D0F9CEA /* SFCompactDisplay-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Medium.otf"; path = "../assets/fonts/SFCompactDisplay-Medium.otf"; sourceTree = "<group>"; };
-		98E6EC2F2B8545959F310C0A /* SFCompactDisplay-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Bold.otf"; path = "../assets/fonts/SFCompactDisplay-Bold.otf"; sourceTree = "<group>"; };
+		95BACF34B6EB44749D0F9CEA /* SFCompactDisplay-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Medium.otf"; path = "../assets/fonts/SFCompactDisplay-Medium.otf"; sourceTree = "<group>"; };
+		98E6EC2F2B8545959F310C0A /* SFCompactDisplay-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Bold.otf"; path = "../assets/fonts/SFCompactDisplay-Bold.otf"; sourceTree = "<group>"; };
 		9B06C63438824B49A5BCCF18 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		A29D659D66E2092548978AA2 /* Pods-swingessentialsapp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOSTests/Pods-swingessentialsapp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		AC0C22B21B8A4679816682EB /* SFCompactDisplay-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Light.otf"; path = "../assets/fonts/SFCompactDisplay-Light.otf"; sourceTree = "<group>"; };
+		AC0C22B21B8A4679816682EB /* SFCompactDisplay-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Light.otf"; path = "../assets/fonts/SFCompactDisplay-Light.otf"; sourceTree = "<group>"; };
 		AE0C748F07DE48B58E100349 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		BB54AF7A1BBA432E8702BC85 /* SFCompactDisplayHeavy.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = SFCompactDisplayHeavy.otf; path = ../assets/fonts/SFCompactDisplayHeavy.otf; sourceTree = "<group>"; };
+		BB54AF7A1BBA432E8702BC85 /* SFCompactDisplayHeavy.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SFCompactDisplayHeavy.otf; path = ../assets/fonts/SFCompactDisplayHeavy.otf; sourceTree = "<group>"; };
 		C76E373055A3DEA7080BCCBB /* Pods-swingessentialsapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp.release.xcconfig"; sourceTree = "<group>"; };
 		D359F6FC018547ECA5E63D47 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		DD8A543EDEFB479A9B566EFA /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		E2C4A7780167977D95760A22 /* Pods-swingessentialsapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp.debug.xcconfig"; sourceTree = "<group>"; };
-		E6C1958251084AD28D49AF33 /* SFCompactDisplay-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Semibold.otf"; path = "../assets/fonts/SFCompactDisplay-Semibold.otf"; sourceTree = "<group>"; };
+		E6C1958251084AD28D49AF33 /* SFCompactDisplay-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Semibold.otf"; path = "../assets/fonts/SFCompactDisplay-Semibold.otf"; sourceTree = "<group>"; };
 		E9742FE9438A4EFBBF33C3C6 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -358,6 +358,9 @@
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 4KFCFX93VP;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -755,14 +758,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = 4KFCFX93VP;
 				INFOPLIST_FILE = swingessentialsapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 3.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.swingessentialsapp;
 				PRODUCT_NAME = swingessentialsapp;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -774,14 +779,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4KFCFX93VP;
 				INFOPLIST_FILE = swingessentialsapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 3.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.swingessentialsapp;
 				PRODUCT_NAME = swingessentialsapp;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
