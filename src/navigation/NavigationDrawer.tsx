@@ -180,7 +180,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                             const leftPosition = ind === 2 ? helpLeft : ind === 1 ? accountLeft : mainLeft;
                             const panelData = [...panel.data];
                             if (ind === 0) {
-                                for(let i = 0; i < 5; i++) panelData.push({
+                                panelData.push({
                                     title: token ? 'Log Out' : 'Log In',
                                     iconType: token ? 'material-community' : 'material',
                                     icon: token ? 'logout-variant' : 'person',

@@ -39,7 +39,7 @@ export const Home = (props) => {
                             headerSubtitle={'Remote Lesson'}
                             style={{ marginBottom: 16 }}
                             video={item.response_video}
-                            onExpand={() => props.navigation.push(ROUTES.LESSON)}
+                            onExpand={() => props.navigation.push(ROUTES.LESSON, {lesson: item})}
                         />
                     )
                     }
@@ -117,7 +117,7 @@ export const Home = (props) => {
                                 headerSubtitle={item.title}
                                 style={{ marginBottom: 16 }}
                                 video={item.video}
-                                onExpand={() => props.navigation.push(ROUTES.TIP)}
+                                onExpand={() => props.navigation.push(ROUTES.TIP, {tip: item})}
                             />
                         )}
                         sliderWidth={width}

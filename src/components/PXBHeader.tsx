@@ -1,4 +1,4 @@
-import React, { createRef, Component, ComponentType } from 'react';
+import React, { Component, ComponentType } from 'react';
 import {
     Animated,
     ImageSourcePropType,
@@ -6,43 +6,20 @@ import {
     StyleSheet,
     StatusBar,
     Platform,
-    TextInput,
     TouchableOpacity,
-    TouchableWithoutFeedback,
     View
 } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import color from 'color';
-import { HeaderIcon } from './';
-// import createAnimatedComponent = Animated.createAnimatedComponent;
-import { wrapIcon, withTheme, Theme, WithTheme, ThemeProvider } from '@pxblue/react-native-components';
+import { HeaderIcon } from './types';
+import { wrapIcon, withTheme, Theme, WithTheme } from '@pxblue/react-native-components';
 import { $DeepPartial } from '@callstack/react-theme-provider';
 
 const ClearIcon = wrapIcon({ IconClass: Icon, name: 'clear' })
 const SearchIcon = wrapIcon({ IconClass: Icon, name: 'search' })
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
-
-// export interface SearchableConfig {
-//   /** Icon to override default search icon */
-//   icon?: ComponentType<{ size: number, color: string }>;
-
-//   /** TextInput Prop. Placeholder text for the search input */
-//   placeholder?: string;
-
-//   /** TextInput Prop. Determines whether the search input will be focused on when it is rendered */
-//   autoFocus?: boolean;
-
-//   /** TextInput Prop. Callback for when the text in the search input changes */
-//   onChangeText?: (text: string) => void;
-
-//   /** TextInput Prop. Determines how the search input will be capitalized */
-//   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
-
-//   /** TextInput Prop. Determines whether auto-correct is enabled in the search input */
-//   autoCorrect?: boolean;
-// }
 
 export interface PXBHeaderProps {
     /** Header title */
@@ -60,12 +37,6 @@ export interface PXBHeaderProps {
     /** List of up to three action items on the right of the header */
     actionItems?: Array<HeaderIcon>;
 
-    /** Determines whether the header can be expanded by being pressed */
-    //   expandable?: boolean;
-
-    /** Determines whether the header should start in the expanded state */
-    //   startExpanded?: boolean;
-
     /** Background color of the header */
     backgroundColor?: string;
 
@@ -74,9 +45,6 @@ export interface PXBHeaderProps {
 
     /** Background image to render when header is expanded */
     backgroundImage?: ImageSourcePropType;
-
-    /** Configuration object that determines whether the Header can have a search bar */
-    //   searchableConfig?: SearchableConfig;
 
     /** Height of the header */
     headerHeight: Animated.AnimatedInterpolation
@@ -87,56 +55,21 @@ export interface PXBHeaderProps {
     theme?: $DeepPartial<Theme>;
 }
 
-interface HeaderState {
-    //   expanded: boolean;
-    //   searching: boolean;
-    //   query: string;
-    //   headerHeight: Animated.Value;
-}
+interface HeaderState { }
 
-class HeaderClass extends Component<WithTheme<HeaderProps>, HeaderState> {
+class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
     static readonly REGULAR_HEIGHT = 56 + getStatusBarHeight(true);
     static readonly EXTENDED_HEIGHT = 200 + getStatusBarHeight(true);
     static readonly ICON_SIZE = 24;
     static readonly ICON_SPACING = 16;
-    //   static readonly ANIMATION_LENGTH = 300;
-
-    //   private expand: Animated.CompositeAnimation;
-    //   private contract: Animated.CompositeAnimation;
-
-    //   private searchRef = createRef<TextInput>();
-
-    constructor(props: WithTheme<HeaderProps>) {
-        super(props);
-
-        this.state = {
-            //   expanded: props.startExpanded || false,
-            //   searching: false,
-            //   query: '',
-            //   headerHeight: props.headerHeight || (props.startExpanded ? new Animated.Value(HeaderClass.EXTENDED_HEIGHT) : new Animated.Value(HeaderClass.REGULAR_HEIGHT))
-        };
-
-        // this.expand = Animated.timing(this.state.headerHeight, {
-        //   toValue: HeaderClass.EXTENDED_HEIGHT,
-        //   duration: HeaderClass.ANIMATION_LENGTH
-        // });
-
-        // this.contract = Animated.timing(this.state.headerHeight, {
-        //   toValue: HeaderClass.REGULAR_HEIGHT,
-        //   duration: HeaderClass.ANIMATION_LENGTH
-        // });
-    }
 
     render() {
-        // const { expandable = false } = this.props;
-        // const { searching } = this.state;
         const barStyle = this.barStyle();
         const contentStyle = this.contentStyle();
 
         return (
             <View style={styles.bar}>
                 <StatusBar barStyle={this.statusBarStyle()} />
-                {/* <TouchableWithoutFeedback onPress={() => this.onPress()} disabled={!expandable || searching}> */}
                 <AnimatedSafeAreaView style={barStyle}>
                     {this.backgroundImage()}
                     <Animated.View style={contentStyle}>
@@ -145,30 +78,13 @@ class HeaderClass extends Component<WithTheme<HeaderProps>, HeaderState> {
                         {this.actionItems()}
                     </Animated.View>
                 </AnimatedSafeAreaView>
-                {/* </TouchableWithoutFeedback> */}
             </View>
         )
     }
 
-    //   private onPress() {
-    //     const { expanded } = this.state;
-    //     if (expanded) {
-    //       this.contract.start();
-    //       this.setState({
-    //         expanded: false
-    //       });
-    //     } else {
-    //       this.expand.start();
-    //       this.setState({
-    //         expanded: true
-    //       });
-    //     }
-    //   }
-
     private backgroundImage() {
         const { backgroundImage, headerHeight } = this.props;
-        // const { searching } = this.state;
-        if (backgroundImage/* && !searching*/) {
+        if (backgroundImage) {
             return (
                 <Animated.Image
                     testID={'header-background-image'}
@@ -178,9 +94,8 @@ class HeaderClass extends Component<WithTheme<HeaderProps>, HeaderState> {
                         position: 'absolute',
                         width: '100%',
                         resizeMode: 'cover',
-                        height: /*this.state.*/headerHeight,
-                        // opacity: 0.3
-                        opacity: /*this.state.*/headerHeight.interpolate({
+                        height: headerHeight,
+                        opacity: headerHeight.interpolate({
                             inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
                             outputRange: [0.2, 0.3]
                         })
@@ -192,17 +107,6 @@ class HeaderClass extends Component<WithTheme<HeaderProps>, HeaderState> {
 
     private navigation() {
         const { navigation } = this.props;
-        // const { searching } = this.state;
-
-        // if (searching) {
-        //   return (
-        //     <View>
-        //       <TouchableOpacity testID={'header-search-close'} onPress={() => this.onPressSearchClose()} style={styles.navigation}>
-        //         <Icon name={'arrow-back'} size={HeaderClass.ICON_SIZE} color={this.fontColor()} />
-        //       </TouchableOpacity>
-        //     </View>
-        //   )
-        // }
         if (navigation) {
             return (
                 <View>
@@ -221,19 +125,12 @@ class HeaderClass extends Component<WithTheme<HeaderProps>, HeaderState> {
     }
 
     private content() {
-        // const { searchableConfig } = this.props;
         const { headerHeight } = this.props;
-        // const { searching } = this.state;
-        let content = [];
+        let content = [this.title(), this.info(), this.subtitle()];
 
-        // if (searchableConfig && searching) {
-        //   content = [this.search(searchableConfig)];
-        // } else {
-        content = [this.title(), this.info(), this.subtitle()];
-        // }
         return (
             <Animated.View style={[styles.titleContainer, {
-                marginRight: /*this.state.*/headerHeight.interpolate({
+                marginRight: headerHeight.interpolate({
                     inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
                     outputRange: [this.actionPanelWidth(), 0]
                 })
@@ -294,60 +191,9 @@ class HeaderClass extends Component<WithTheme<HeaderProps>, HeaderState> {
         }
     }
 
-    //   private search(config: SearchableConfig) {
-    //     const placeholderTextColor = color(this.fontColor()).fade(0.4).string();
-    //     const onChangeText = (text: string) => {
-    //       this.setState({ query: text });
-    //       config.onChangeText && config.onChangeText(text);
-    //     };
-
-    //     return (
-    //       <TextInput
-    //         key={'search-input'}
-    //         ref={this.searchRef}
-    //         style={this.searchStyle()}
-    //         autoCapitalize={config.autoCapitalize || 'none'}
-    //         autoCorrect={config.autoCorrect || false}
-    //         autoFocus={config.autoFocus}
-    //         numberOfLines={1}
-    //         onChangeText={onChangeText}
-    //         placeholder={config.placeholder || 'Search'}
-    //         placeholderTextColor={placeholderTextColor}
-    //         returnKeyType={'search'}
-    //         selectionColor={placeholderTextColor}
-    //         underlineColorAndroid={'transparent'}
-    //       />
-    //     )
-    //   }
-
     private actionItems() {
-        const { actionItems/*, searchableConfig*/ } = this.props;
-        // const { searching, query } = this.state;
+        const { actionItems } = this.props;
         let items: HeaderIcon[] = actionItems || [];
-
-        // if (searching) {
-        //   if (query) {
-        //     items = [
-        //       {
-        //         icon: ClearIcon,
-        //         onPress: () => this.onPressSearchClear()
-        //       }
-        //     ]
-        //   } else {
-        //     items = [];
-        //   }
-        // }
-        // else if (searchableConfig) {
-        //   items = [
-        //     {
-        //       icon: SearchIcon,
-        //       onPress: () => this.onPressSearch()
-        //     }
-        //   ];
-        //   if (actionItems) {
-        //     items = items.concat(actionItems)
-        //   }
-        // }
 
         if (items) {
             return (
@@ -367,16 +213,16 @@ class HeaderClass extends Component<WithTheme<HeaderProps>, HeaderState> {
     private barStyle() {
         const { headerHeight } = this.props;
         return [styles.bar, {
-            height: /*this.state.*/headerHeight,
+            height: headerHeight,
             backgroundColor: this.backgroundColor()
         }];
     }
 
     private contentStyle() {
-        const {headerHeight} = this.props;
-        const contractedPadding = this.props.subtitle /*&& !this.state.searching*/ ? 12 : 16;
+        const { headerHeight } = this.props;
+        const contractedPadding = this.props.subtitle ? 12 : 16;
         return [styles.content, {
-            paddingBottom: /*this.state.*/headerHeight.interpolate({
+            paddingBottom: headerHeight.interpolate({
                 inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
                 outputRange: [contractedPadding, 28]
             })
@@ -387,12 +233,12 @@ class HeaderClass extends Component<WithTheme<HeaderProps>, HeaderState> {
         const { theme, headerHeight } = this.props;
         return {
             color: this.fontColor(),
-            lineHeight: /*this.state.*/headerHeight.interpolate({
+            lineHeight: headerHeight.interpolate({
                 inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
                 outputRange: [theme.sizes.large, 30]
             }),
             fontFamily: theme.fonts.semiBold.fontFamily,
-            fontSize: /*this.state.*/headerHeight.interpolate({
+            fontSize: headerHeight.interpolate({
                 inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
                 outputRange: [theme.sizes.large, 30]
             })
@@ -413,32 +259,21 @@ class HeaderClass extends Component<WithTheme<HeaderProps>, HeaderState> {
         const { theme, headerHeight } = this.props;
         return {
             color: this.fontColor(),
-            lineHeight: /*this.state.*/headerHeight.interpolate({
+            lineHeight: headerHeight.interpolate({
                 inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
                 outputRange: [0.1, theme.sizes.large * 1.05] // Avoid clipping top of CAP letters
             }),
-            opacity: /*this.state.*/headerHeight.interpolate({
+            opacity: headerHeight.interpolate({
                 inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
                 outputRange: [0, 1]
             }),
             fontFamily: theme.fonts.regular.fontFamily,
-            fontSize: /*this.state.*/headerHeight.interpolate({
+            fontSize: headerHeight.interpolate({
                 inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
                 outputRange: [0.1, theme.sizes.large]
             })
         };
     }
-
-    // private searchStyle() {
-    //     const { theme } = this.props;
-    //     return {
-    //         padding: 0, // TextInput on Android has some default padding, so this needs to be explicitly set to 0
-    //         color: this.fontColor(),
-    //         fontFamily: theme.fonts.light.fontFamily,
-    //         fontSize: theme.sizes.large,
-    //         ...theme.fonts.light
-    //     }
-    // }
 
     private statusBarStyle() {
         return color(this.backgroundColor()).isDark() ? 'light-content' : 'dark-content';
@@ -446,59 +281,17 @@ class HeaderClass extends Component<WithTheme<HeaderProps>, HeaderState> {
 
     private fontColor() {
         const { fontColor, theme } = this.props;
-        // const { searching } = this.state;
-
-        // if (searching) {
-        //     return theme.colors.text;
-        // } else {
-            return fontColor || theme.colors.onPrimary;
-        // }
+        return fontColor || theme.colors.onPrimary;
     }
 
     private backgroundColor() {
         const { backgroundColor, theme } = this.props;
-        // const { searching } = this.state;
-
-        // if (searching) {
-        //     return theme.colors.surface;
-        // } else {
-            return backgroundColor || theme.colors.primary;
-        // }
+        return backgroundColor || theme.colors.primary;
     }
 
-    // private onPressSearch() {
-    //     this.contract.start(() => this.setState({ searching: true }));
-    //     this.setState({
-    //         expanded: false
-    //     });
-    // }
-
-    // private onPressSearchClose() {
-    //     const searchInput = this.searchRef.current;
-    //     if (searchInput) {
-    //         searchInput.props.onChangeText && searchInput.props.onChangeText('');
-    //     }
-    //     this.setState({
-    //         searching: false,
-    //         query: ''
-    //     });
-    // }
-
-    // private onPressSearchClear() {
-    //     const searchInput = this.searchRef.current;
-    //     if (searchInput) {
-    //         searchInput.clear();
-    //         searchInput.props.onChangeText && searchInput.props.onChangeText('');
-    //     }
-    //     this.setState({
-    //         query: ''
-    //     });
-    // }
-
     private actionPanelWidth() {
-        const { actionItems/*, searchableConfig*/ } = this.props;
+        const { actionItems } = this.props;
         let length = actionItems ? actionItems.length : 0;
-        // if (searchableConfig) length++;
         if (length < 1) return 0;
         length = Math.min(3, length);
         return (length * (HeaderClass.ICON_SIZE + HeaderClass.ICON_SPACING))
@@ -516,7 +309,7 @@ export const PXBHeader = withTheme(HeaderClass);
 const styles = StyleSheet.create({
     bar: {
         width: '100%',
-        top: 0, 
+        top: 0,
         left: 0,
         paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         position: 'absolute',
@@ -532,17 +325,6 @@ const styles = StyleSheet.create({
         elevation: 0,
         backgroundColor: '#4f4c81',
     },
-    // bar: {
-    //     width: '100%',
-    //     shadowColor: 'rgba(0, 0, 0, 0.3)',
-    //     shadowOffset: {
-    //         width: 0,
-    //         height: 1
-    //     },
-    //     shadowRadius: 2,
-    //     shadowOpacity: 1,
-    //     elevation: 0
-    // },
     content: {
         flex: 1,
         paddingTop: 16,

@@ -68,14 +68,32 @@ const AppStack = createDrawerNavigator(
                 { initialRouteName: ROUTES.LESSONS, headerMode: 'none' },
             ),
         },
-        [ROUTES.ORDER]: {
-            screen: Order,
+        [ROUTES.ORDER_GROUP]: {
+            screen: createStackNavigator(
+                {
+                    [ROUTES.ORDER]: Order,
+                    [ROUTES.AUTH_GROUP]: AuthStack,
+                },
+                { initialRouteName: ROUTES.ORDER, headerMode: 'none' },
+            ),
         },
-        [ROUTES.ABOUT]: {
-            screen: About,
+        [ROUTES.ABOUT_GROUP]: {
+            screen: createStackNavigator(
+                {
+                    [ROUTES.ABOUT]: About,
+                    [ROUTES.AUTH_GROUP]: AuthStack,
+                },
+                { initialRouteName: ROUTES.ABOUT, headerMode: 'none' },
+            ),
         },
-        [ROUTES.FAQ]: {
-            screen: FAQ,
+        [ROUTES.FAQ_GROUP]: {
+            screen: createStackNavigator(
+                {
+                    [ROUTES.FAQ]: FAQ,
+                    [ROUTES.AUTH_GROUP]: AuthStack,
+                },
+                { initialRouteName: ROUTES.FAQ, headerMode: 'none' },
+            ),
         },
         [ROUTES.CONTACT]: {
             screen: Contact,
@@ -94,6 +112,7 @@ const AppStack = createDrawerNavigator(
                 {
                     [ROUTES.SUBMIT]: Submit,
                     [ROUTES.RECORD]: Record,
+                    [ROUTES.AUTH_GROUP]: AuthStack,
                 },
                 { initialRouteName: ROUTES.SUBMIT, headerMode: 'none' },
             ),
@@ -103,6 +122,7 @@ const AppStack = createDrawerNavigator(
                 {
                     [ROUTES.BLOGS]: Blogs,
                     [ROUTES.BLOG]: SingleBlog,
+                    [ROUTES.AUTH_GROUP]: AuthStack,
                 },
                 { initialRouteName: ROUTES.BLOGS, headerMode: 'none' },
             ),
@@ -112,6 +132,7 @@ const AppStack = createDrawerNavigator(
                 {
                     [ROUTES.TIPS]: Tips,
                     [ROUTES.TIP]: SingleTip,
+                    [ROUTES.AUTH_GROUP]: AuthStack,
                 },
                 { initialRouteName: ROUTES.TIPS, headerMode: 'none' },
             ),

@@ -73,8 +73,14 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
         .then(async (response) => {
             switch(response.status){
                 case 200:
-                    const responseBody = await response.json();
-                    if(this.successCallback) this.successCallback(responseBody);
+                    let reply = {};
+                    if(this.method === HttpMethod.PUT){
+                        reply = response;
+                    }
+                    else if(this.method === HttpMethod.GET){
+                        reply = await response.json();
+                    }
+                    if(this.successCallback) this.successCallback(reply);
                     break;
                 default:
                     if(this.failureCallback) this.failureCallback(response);

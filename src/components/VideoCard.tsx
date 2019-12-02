@@ -1,13 +1,13 @@
-import React, { Component, ComponentType } from 'react';
-import { View, StyleSheet, ImageSourcePropType, Image, TouchableOpacity, StyleProp, ViewStyle, Text } from 'react-native';
+import React, { Component } from 'react';
+import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import * as Typography from '@pxblue/react-native-components/core/typography';
 import { black } from '@pxblue/colors';
-import { YouTube } from './';
+import { YouTube } from './Youtube';
 import { withTheme, WithTheme, Theme } from '@pxblue/react-native-components';
 import { $DeepPartial } from '@callstack/react-theme-provider';
 import { Icon } from 'react-native-elements';
-import { width, aspectWidth } from '../utilities';
-import { spaces, unit } from 'src/styles';
+import { width, aspectHeight } from '../utilities';
+import { spaces, unit } from '../styles';
 
 export interface VideoCardProps {
     headerColor?: string;
@@ -24,8 +24,8 @@ export interface VideoCardProps {
 class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
     public render() {
         const { video, theme, headerColor = theme.colors.primary, hiddenContent } = this.props;
-        const videoWidth = (width - 3 * spaces.medium) / 2;
-        const videoHeight = aspectWidth(videoWidth);
+        const videoWidth = (width - 2 * spaces.medium);
+        const videoHeight = aspectHeight(videoWidth);
         
         return (
             <View style={[this.cardStyle()]}>

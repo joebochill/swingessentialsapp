@@ -1,4 +1,4 @@
-import { GET_CREDITS, LOGOUT } from '../actions/types';
+import { GET_CREDITS, LOGOUT, PURCHASE_CREDITS } from '../actions/types';
 
 const initialState = {
     count: 0,
@@ -33,27 +33,27 @@ export const creditsReducer = (state = initialState, action) => {
                 unlimited: 0,
                 unlimitedExpires: 0
             };
-        // case EXECUTE_PAYMENT.REQUEST:
-        //     return {
-        //         ...state,
-        //         inProgress: true,
-        //         success: false,
-        //         fail: false
-        //     }
-        // case EXECUTE_PAYMENT.SUCCESS:
-        //     return {
-        //         ...state,
-        //         inProgress: false,
-        //         success: true,
-        //         fail: false
-        //     }
-        // case EXECUTE_PAYMENT.FAIL:
-        //     return {
-        //         ...state,
-        //         inProgress: false,
-        //         success: false,
-        //         fail: true
-        //     }
+        case PURCHASE_CREDITS.REQUEST:
+            return {
+                ...state,
+                inProgress: true,
+                success: false,
+                fail: false
+            }
+        case PURCHASE_CREDITS.SUCCESS:
+            return {
+                ...state,
+                inProgress: false,
+                success: true,
+                fail: false
+            }
+        case PURCHASE_CREDITS.FAILURE:
+            return {
+                ...state,
+                inProgress: false,
+                success: false,
+                fail: true
+            }
         // case 'Navigation/NAVIGATE':
         //     return {
         //         ...state,

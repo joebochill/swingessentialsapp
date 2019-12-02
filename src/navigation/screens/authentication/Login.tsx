@@ -164,10 +164,12 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
                 <ErrorBox
                     show={failures > 0 || error} //={(this.props.loginFails > 0 || this.state.error)}
                     error={'The username/password you entered was not correct.'}
+                    style={{marginTop: spaces.xLarge}}
                 />
                 <ErrorBox
                     show={touchFail && failures <= 0} //={(this.state.touchFail && this.props.loginFails <= 0)}
                     error={`Your ${'FaceID'} was not recognized. Please enter your password to sign in.`}
+                    style={{marginTop: spaces.xLarge}}
                 />
 
                 {/* Log In Buttons */}

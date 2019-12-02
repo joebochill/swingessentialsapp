@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from '@pxblue/react-native-components';
 import MainNavigator from './src/navigation/MainNavigator';
+import { RNIAPCallbacks } from './src/navigation/screens/lessons';
 import { Provider, useDispatch } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -58,6 +59,7 @@ export const App = () => {
                         giant: 34,
                     },
                 }}>
+                <RNIAPCallbacks/>
                 <MainNavigator />
             </ThemeProvider>
         </Provider>

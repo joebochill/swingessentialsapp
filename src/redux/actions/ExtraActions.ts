@@ -1,6 +1,8 @@
 import { ThunkDispatch } from 'redux-thunk';
 import * as ACTIONS from './types';
-import { loadTips, loadBlogs/*, loadPackages*/ } from './index';
+import { loadTips } from './TipActions';
+import { loadBlogs } from './BlogActions';
+import { loadPackages } from './PackageActions';
 
 // TODO: Remove the Albatross Package from everything
 // TODO: Implement Splashscreen
@@ -12,12 +14,13 @@ import { loadTips, loadBlogs/*, loadPackages*/ } from './index';
 // TODO: Implement requesting app permissions on Android
 // TODO: Remove unused fonts
 // TODO: Implement App banners on web
+// TODO: Implement Tutorials
 
 export function loadInitialData() {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({ type: ACTIONS.INITIAL_LOAD });
         dispatch(loadTips());
         dispatch(loadBlogs());
-        // dispatch(loadPackages());
+        dispatch(loadPackages());
     }
 }

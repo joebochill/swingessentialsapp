@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements';
 import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 import { Header, wrapIcon } from '@pxblue/react-native-components';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import { PXBHeader } from '../components';
+import { PXBHeader } from '../components/PXBHeader';
 
 import { ROUTES } from '../constants/routes';
 import { useSelector, useDispatch } from 'react-redux';
@@ -47,7 +47,7 @@ export const SEHeader = withNavigation((props: SEHeaderProps) => {
         <Component
             navigation={
                 (mainAction === 'menu') ? { icon: MenuIcon, onPress: () => navigation.openDrawer() } :
-                    (mainAction === 'back') ? { icon: BackIcon, onPress: () => navigation.popToTop() } : undefined
+                    (mainAction === 'back') ? { icon: BackIcon, onPress: () => navigation.pop() } : undefined
             }
             backgroundImage={backgroundImage}
             actionItems={defaultActions.concat(actionItems)}

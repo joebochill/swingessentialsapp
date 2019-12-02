@@ -4,7 +4,9 @@ import * as ACTIONS from './types';
 import { ASYNC_PREFIX, AUTH, BASEURL } from '../../constants';
 // import * as Keychain from 'react-native-keychain';
 import AsyncStorage from '@react-native-community/async-storage';
-import { loadLessons, loadTips, loadCredits } from './index';
+import { loadLessons} from './LessonActions';
+import { loadTips } from './TipActions';
+import { loadCredits } from './CreditActions';
 import { ThunkDispatch } from 'redux-thunk';
 
 // TODO: Implement the token timeout warning

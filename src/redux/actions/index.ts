@@ -4,3 +4,4 @@ export * from './TipActions';
 export * from './ExtraActions';
 export * from './CreditActions';
 export * from './BlogActions';
+export * from './PackageActions';

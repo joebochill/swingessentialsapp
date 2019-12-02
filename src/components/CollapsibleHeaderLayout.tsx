@@ -1,7 +1,8 @@
 import React from 'react';
 import { Animated, SafeAreaView, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { SEHeader, PXBHeaderProps } from './';
+import { SEHeader } from './SEHeader';
+import { PXBHeaderProps } from './PXBHeader';
 import { sharedStyles, spaces } from '../styles';
 
 const HEADER_EXPANDED_HEIGHT = 200 + getStatusBarHeight();

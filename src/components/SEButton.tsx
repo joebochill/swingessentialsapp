@@ -11,9 +11,6 @@ const styles = StyleSheet.create({
         borderWidth: unit(2),
         borderRadius: unit(5),
     },
-    // buttonContainer:{
-    //     flex: 1
-    // },
     linkButton: {
         backgroundColor: transparent,
         paddingLeft: 0,

@@ -1,20 +1,20 @@
 import * as React from 'react';
-import { View, Platform, TouchableOpacity } from 'react-native';
+import { View, Platform } from 'react-native';
 import { Body, H7 } from '@pxblue/react-native-components';
 
-import { CollapsibleHeaderLayout, YouTube, SEVideo } from '../../../components/index';
+import { CollapsibleHeaderLayout, YouTube, SEVideo, VideoCard } from '../../../components';
+import Carousel from 'react-native-snap-carousel';
 
-import { width, aspectHeight, aspectWidth, splitParagraphs  } from '../../../utilities';
+import { width, aspectHeight, splitParagraphs, getLongDate } from '../../../utilities';
 import { spaces, sharedStyles } from '../../../styles';
 import { PlaceholderLesson } from '../../../constants/lessons';
+import { ROUTES } from '../../../constants/routes';
 
 export const SingleLesson = (props) => {
     let lesson = props.navigation.getParam('lesson', null);
     if (lesson === null) lesson = PlaceholderLesson;
     const videoWidth = width - 2 * spaces.medium;
     const videoHeight = aspectHeight(videoWidth);
-    const portraitWidth = (width - 3 * spaces.medium) / 2;
-    const portraitHeight = aspectWidth(portraitWidth);
 
     // TODO: mark viewed
     // TODO: handle deep linking via URL
@@ -43,6 +43,31 @@ export const SingleLesson = (props) => {
                         )}
                     </>
                 }
+                {lesson.tips && lesson.tips.length > 0 &&
+                    <>
+                        <View
+                            style={sharedStyles.sectionHeader}>
+                            <H7>Recommended Tips</H7>
+                        </View>
+
+                        <Carousel
+                            data={lesson.tips.slice(0, 3)}
+                            renderItem={({ item, index }) => (
+                                <VideoCard
+                                    headerTitle={getLongDate(item.date)}
+                                    headerSubtitle={item.title}
+                                    style={{ marginBottom: 16 }}
+                                    video={item.video}
+                                    onExpand={() => props.navigation.push(ROUTES.TIP, { tip: item })}
+                                />
+                            )}
+                            sliderWidth={width}
+                            itemWidth={width - 2 * spaces.medium}
+                            inactiveSlideScale={0.95}
+                        />
+                    </>
+                }
+
                 {(Platform.OS === 'ios' && lesson.fo_swing !== '' && lesson.dtl_swing !== '') &&
                     <>
                         <View style={[sharedStyles.sectionHeader, { marginTop: spaces.large, marginHorizontal: 0 }]}>

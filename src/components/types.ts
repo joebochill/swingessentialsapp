@@ -1,4 +1,4 @@
-import React, { Component, ComponentType } from 'react';
+import React, { ComponentType } from 'react';
 
 export interface HeaderIcon {
     icon: ComponentType<{ size: number, color: string }>;

@@ -29,6 +29,7 @@
 		C52CBA7324AC4DF89AF38BE2 /* SFCompactDisplay-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5CF6E0D23E9C491CA3124613 /* SFCompactDisplay-Regular.otf */; };
 		D99CC4B5D9BC491FB8215F38 /* SFCompactDisplay-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = AC0C22B21B8A4679816682EB /* SFCompactDisplay-Light.otf */; };
 		E11B75CEC8264181A02DFFEA /* SFCompactDisplay-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 95BACF34B6EB44749D0F9CEA /* SFCompactDisplay-Medium.otf */; };
+		F2029B212394862C0053EBE9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2029B202394862C0053EBE9 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +100,8 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F18D0EE95EC64ECBB4ACE7F9 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		F2029B202394862C0053EBE9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F2029B222394863A0053EBE9 /* swingessentialsapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = swingessentialsapp.entitlements; path = swingessentialsapp/swingessentialsapp.entitlements; sourceTree = "<group>"; };
 		FA0BC020B7BB4374ABF22BAB /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		FA19E2465B274786BB308C8D /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +120,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				64E0A68079477B13463CA669 /* libPods-swingessentialsapp.a in Frameworks */,
+				F2029B212394862C0053EBE9 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,6 +163,7 @@
 		13B07FAE1A68108700A75B9A /* swingessentialsapp */ = {
 			isa = PBXGroup;
 			children = (
+				F2029B222394863A0053EBE9 /* swingessentialsapp.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -173,6 +178,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F2029B202394862C0053EBE9 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				024D3C573F21EBE2E13EE062 /* libPods-swingessentialsapp.a */,
@@ -756,6 +762,7 @@
 			baseConfigurationReference = E2C4A7780167977D95760A22 /* Pods-swingessentialsapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = swingessentialsapp/swingessentialsapp.entitlements;
 				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 4KFCFX93VP;
@@ -778,6 +785,7 @@
 			baseConfigurationReference = C76E373055A3DEA7080BCCBB /* Pods-swingessentialsapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = swingessentialsapp/swingessentialsapp.entitlements;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 4KFCFX93VP;
 				INFOPLIST_FILE = swingessentialsapp/Info.plist;
