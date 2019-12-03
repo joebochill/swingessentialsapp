@@ -13,6 +13,8 @@ export const creditsReducer = (state = initialState, action) => {
         case GET_CREDITS.REQUEST:
             return {
                 ...state,
+                success: false,
+                fail: false,
                 inProgress: true
             };
         case GET_CREDITS.SUCCESS:

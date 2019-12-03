@@ -1,25 +1,26 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, StyleSheet, Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { Body, H7 } from '@pxblue/react-native-components';
+import { Body, H7, Label, H4 } from '@pxblue/react-native-components';
 import { CollapsibleHeaderLayout, ErrorBox, SEButton } from '../../../components';
 import bg from '../../../images/bg_5.jpg';
 import * as RNIap from 'react-native-iap';
-import { sharedStyles, spaces, purple } from '../../../styles';
+import { sharedStyles, spaces, purple, sizes, unit, red } from '../../../styles';
 import { useSelector, useDispatch } from 'react-redux';
+import { loadCredits, loadPackages } from '../../../redux/actions';
+import { ROUTES } from '../../../constants/routes';
 
-// TODO: Implement
+// TODO: Implement Tutorials
 
 export const Order = (props) => {
     const packages = useSelector(state => state.packages.list);
+    const credits = useSelector(state => state.credits);
+    const packagesProcessing = useSelector(state => state.packages.loading);
     const role = useSelector(state => state.login.role);
-
     const dispatch = useDispatch();
 
     const [selected, setSelected] = useState(-1);
     const [products, setProducts] = useState<RNIap.Product[]>([]);
-    const [error, setError] = useState('');
-    // const [active, setActive] = useState(false);
 
     const roleError = (role === 'anonymous') ? 'You must be signed in to purchase lessons.' : (role === 'pending') ? 'You must validate your email address before you can purchase lessons' : '';
 
@@ -49,6 +50,26 @@ export const Order = (props) => {
 
     }, [packages]);
 
+    useEffect(() => {
+        if (credits.success) {
+            Alert.alert(
+                'Purchase Complete',
+                'Thank you for your purchase',
+                [
+                    {
+                        text: 'Submit Your Swing Now',
+                        onPress: () => {
+                            props.navigation.navigate(ROUTES.SUBMIT);
+                        }
+                    },
+                    { text: 'Cancel' },
+
+                ]
+            )
+        }
+
+    }, [credits.success])
+
     const onPurchase = useCallback(
         async (sku, shortcode) => {
             if (error.length > 0) {
@@ -66,11 +87,10 @@ export const Order = (props) => {
                 // logLocalError('138: Purchase: missing data');
                 return;
             }
-            // TODO: Set up progress variables in the store
-            try{
+            try {
                 await RNIap.requestPurchase(sku, false);
             }
-            catch(error){
+            catch (error) {
                 console.error('promise error with RNIAP');
             }
             // Purchase response is handled in RNIAPCallbacks.tsx
@@ -78,26 +98,32 @@ export const Order = (props) => {
         [dispatch, role],
     );
 
-    // console.log(packages);
-
     return (
         <CollapsibleHeaderLayout
             title={'Order Lessons'}
             subtitle={'...multiple package options'}
             backgroundImage={bg}
+            refreshing={credits.inProgress}
+            onRefresh={() => {
+                dispatch(loadCredits());
+                dispatch(loadPackages());
+            }}
         >
-            <ErrorBox
-                show={error !== ''}
-                error={error}
-                style={{ marginHorizontal: spaces.medium, marginBottom: spaces.medium }}
-            />
             <ErrorBox
                 show={roleError !== ''}
                 error={roleError}
                 style={{ marginHorizontal: spaces.medium, marginBottom: spaces.medium }}
             />
-            <View style={sharedStyles.sectionHeader}>
-                <H7>{'Available Packages: ' + role}</H7>
+            {roleError.length === 0 &&
+                <View
+                    style={styles.callout}
+                >
+                    <H4 style={{ lineHeight: 32 }}>{credits.count}</H4>
+                    <Label>{`Credit${credits.count !== 1 ? 's' : ''} Remaining`}</Label>
+                </View>
+            }
+            <View style={[sharedStyles.sectionHeader]}>
+                <H7>{'Available Purchases'}</H7>
             </View>
             <FlatList
                 scrollEnabled={false}
@@ -126,238 +152,45 @@ export const Order = (props) => {
                 }
                 keyExtractor={(item, index) => ('package_' + item.app_sku)}
             />
-            {error.length === 0 && roleError.length === 0 &&
+            {roleError.length === 0 && !packagesProcessing && !credits.inProgress &&
                 <SEButton
-                    containerStyle={{ margin: spaces.medium, marginTop: spaces.jumbo }}
+                    containerStyle={{ margin: spaces.medium, marginTop: spaces.large }}
                     buttonStyle={{ backgroundColor: purple[400] }}
                     title={<H7 color={'onPrimary'}>PURCHASE</H7>}
                     // TODO: Update to production
-                    onPress={() => onPurchase(packages[selected].app_sku.replace('swingessentials','swingessentialsbeta'), packages[selected].shortcode)}
+                    onPress={() => onPurchase(packages[selected].app_sku.replace('swingessentials', 'swingessentialsbeta'), packages[selected].shortcode)}
                 />
             }
-            <SEButton
-                    containerStyle={{ margin: spaces.medium, marginTop: spaces.jumbo }}
-                    buttonStyle={{ backgroundColor: purple[400] }}
-                    title={<H7 color={'onPrimary'}>RESET</H7>}
-                    // TODO: Update to production
-                    onPress={async () => {
-                        console.log('press');
-                        const available = await RNIap.getAvailablePurchases();
-                        // console.log(available);
-                        for(let i = 0; i < available.length; i++){
-                            console.log(available[i].transactionId);
-                            RNIap.finishTransactionIOS(available[i].transactionId);
-                        }
-                    }}
-                />
-
+            {/* <SEButton
+                containerStyle={{ margin: spaces.medium, marginTop: 0 }}
+                buttonStyle={{ backgroundColor: red[400] }}
+                title={<H7 color={'onPrimary'}>RESET</H7>}
+                // TODO: Update to production
+                onPress={async () => {
+                    const available = await RNIap.getAvailablePurchases();
+                    for (let i = 0; i < available.length; i++) {
+                        console.log(available[i].transactionId);
+                        RNIap.finishTransactionIOS(available[i].transactionId);
+                    }
+                }}
+            /> */}
         </CollapsibleHeaderLayout>
     )
 };
 
-// import React from 'react';
-// import {connect} from 'react-redux';
-
-// import {Alert, ActivityIndicator, Text, View, ScrollView, FlatList, StyleSheet, Platform} from 'react-native';
-// import styles, {colors, spacing} from '../../styles/index';
-// import {scale} from '../../styles/dimension';
-
-// import Header from '../Header/Header';
-// import {Button} from 'react-native-elements';
-// import {executePayment, checkCoupon, activateUnlimited} from '../../actions/LessonActions';
-
-// import CardRow from '../Card/CardRow';
-// import KeyboardView from '../Keyboard/KeyboardView';
-// import {atob} from '../../utils/base64.js';
-// import * as RNIap from 'react-native-iap';
-
-// import Tutorial from '../Tutorial/Order';
-// import {TUTORIALS} from '../../constants/index';
-// import { tutorialViewed } from '../../actions/TutorialActions';
-// import { logLocalError } from '../../utils/utils';
-
-// function mapStateToProps(state){
-//     return {
-//         token: state.login.token,
-//         packages: state.packages.list,
-//         coupon: state.lessons.coupon,
-//         purchaseInProgress: state.credits.inProgress,
-//         purchaseSuccess: state.credits.success,
-//         purchaseFail: state.credits.fail,
-//         lessons: state.lessons,
-//         credits: state.credits,
-//         showTutorial: state.tutorial[TUTORIALS.ORDER]
-//     };
-// }
-// function mapDispatchToProps(dispatch){
-//     return {
-//         checkCoupon: (code) => {dispatch(checkCoupon(code))},
-//         executePayment: (data, token, platform) => {dispatch(executePayment(data,token, platform))},
-//         activateUnlimited: (token) => {dispatch(activateUnlimited(token))},
-//         closeTutorial: () => {dispatch(tutorialViewed(TUTORIALS.ORDER))}
-//     };
-// }
-
-// class Order_OLD extends React.Component{
-
-
-
-//     render(){
-//         return(
-//             <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
-//                 <Header title={'Order Lessons'} navigation={this.props.navigation}/>
-//                 {(this.props.purchaseFail || this.state.iap_error) && 
-//                     <ScrollView style={{padding: spacing.normal}}>
-//                         <Text style={StyleSheet.flatten([styles.paragraph, {marginTop: 0, marginBottom: 0}])}>There was an error processing your purchase. Please try again later or contact info@swingessentials.com for more information.</Text>
-//                         <Button
-//                             title="BACK TO LESSONS"
-//                             fontSize={scale(14)}
-//                             onPress={()=> this.props.navigation.navigate('Lessons')}
-//                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
-//                             containerViewStyle={styles.buttonContainer}
-//                             fontSize={scale(14)}
-//                         />
-//                     </ScrollView>
-//                 }
-//                 {this.props.purchaseSuccess && 
-//                     <ScrollView style={{padding: spacing.normal}}>
-//                         <Text style={StyleSheet.flatten([styles.paragraph, {marginTop: 0, marginBottom: 0}])}>Thank you for your purchase!</Text>
-//                         {this.state.selected.shortcode !== 'albatross' &&
-//                             <Button
-//                                 title="REDEEM NOW"
-//                                 fontSize={scale(14)}
-//                                 onPress={()=> {
-//                                     if(this.props.lessons.pending.length < 1){
-//                                         this.props.navigation.navigate('RedeemTop');
-//                                     }
-//                                     else{
-//                                         Alert.alert(
-//                                             'Swing Analysis Pending',
-//                                             'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
-//                                             [{text: 'OK'}]
-//                                         );
-//                                     }
-//                                 }}
-//                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
-//                                 containerViewStyle={styles.buttonContainer}
-//                             />
-//                         }
-//                         {this.state.selected.shortcode === 'albatross' &&
-//                             this.props.credits.unlimitedExpires <= Date.now()/1000 &&
-//                             <Button
-//                                 title="ACTIVATE NOW"
-//                                 fontSize={scale(14)}
-//                                 onPress={()=> {
-//                                     Alert.alert(
-//                                         'Activate Unlimited',
-//                                         'Activating your unlimited lessons deal will give you access to unlimited lessons for 30 days. The clock starts when you click Activate.',
-//                                         [
-//                                             {text: 'Cancel'},
-//                                             {text: 'Activate', 
-//                                                 onPress: () => {
-//                                                     this.props.activateUnlimited(this.props.token);
-//                                                     this.props.navigation.navigate('Lessons');
-//                                                 }
-//                                             }
-//                                         ]
-//                                     )
-//                                 }}
-//                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
-//                                 containerViewStyle={styles.buttonContainer}
-//                             />
-//                         }
-//                         {this.state.selected.shortcode === 'albatross' &&
-//                             this.props.credits.unlimitedExpires > Date.now()/1000 &&
-//                             <Button
-//                                 title="SUBMIT A SWING"
-//                                 fontSize={scale(14)}
-//                                 onPress={()=> {
-//                                     if(this.props.lessons.pending.length < 1){
-//                                         this.props.navigation.navigate('RedeemTop');
-//                                     }
-//                                     else{
-//                                         Alert.alert(
-//                                             'Swing Analysis Pending',
-//                                             'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.',
-//                                             [{text: 'OK'}]
-//                                         );
-//                                     }
-//                                 }}
-//                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
-//                                 containerViewStyle={styles.buttonContainer}
-//                             />
-//                         }
-//                         <Button
-//                             title={"BACK TO LESSONS"}
-//                             fontSize={scale(14)}
-//                             onPress={()=> this.props.navigation.navigate('Lessons')}
-//                             buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
-//                             containerViewStyle={styles.buttonContainer}
-//                         />
-//                     </ScrollView>
-//                 }
-//                 {!this.props.purchaseFail && !this.props.purchaseSuccess && !this.state.iap_error &&
-//                     <KeyboardView
-//                         fixed={
-//                             (!this.props.purchaseInProgress && !this.state.paymentActive) ?
-//                             <Button
-//                                 title={'PURCHASE'}
-//                                 fontSize={scale(14)}
-//                                 disabled={this.state.role === 'pending' || this.state.role === 'anonymous' || this.props.purchaseInProgress || this.state.paymentActive || this.state.products.length < 1}
-//                                 disabledStyle={styles.disabledButton}
-//                                 onPress={()=>this._purchaseLesson({
-//                                     package: this.state.selected.shortcode,
-//                                     sku: this.state.products[this.state.selectedIndex].productId
-//                                 })}
-//                                 buttonStyle={StyleSheet.flatten([styles.purpleButton, {marginTop: spacing.normal}])}
-//                                 containerViewStyle={styles.buttonContainer}
-//                             /> 
-//                             :
-//                             <ActivityIndicator 
-//                                 style={{marginTop: spacing.normal}} 
-//                                 size={'large'} 
-//                                 color={colors.purple}
-//                             />
-//                         }
-//                     >
-//                         <ScrollView ref={(ref) =>this.scroller=ref} 
-//                             keyboardShouldPersistTaps={'always'}
-//                         >
-//                             {this.state.error !== '' && 
-//                                 <Text style={StyleSheet.flatten([styles.formValidation, {marginBottom: spacing.normal}])}>
-//                                     {this.state.error}
-//                                 </Text>
-//                             }
-//                             <FlatList
-//                                 scrollEnabled= {false}
-//                                 keyboardShouldPersistTaps = {'always'}
-//                                 ListHeaderComponent={
-//                                     <View style={styles.cardHeader}>
-//                                         <Text style={{fontSize: scale(14), color: colors.white}}>Select a Package</Text>
-//                                     </View>
-//                                 }
-//                                 data={this.props.packages}
-//                                 extraData={this.state.products}
-//                                 renderItem={({item, index}) => 
-//                                     <CardRow 
-//                                         primary={item.name} 
-//                                         subtitle={item.description}
-//                                         secondary={this.state.products.length > 0 ? `$${this.state.products[index].price}` : '--'}
-//                                         action={this.props.purchaseInProgress ? null : ()=>this.setState({selected: item, selectedIndex: index})}
-//                                         menuItem
-//                                         selected={this.state.selected.shortcode === item.shortcode}
-//                                     />
-//                                 }
-//                                 keyExtractor={(item, index) => ('package_'+item.id)}
-//                             />
-//                         </ScrollView>   
-//                         <Tutorial isVisible={this.props.showTutorial} close={()=>this.props.closeTutorial()}/>        
-//                     </KeyboardView> 
-//                 }           
-//             </View>
-
-//         );
-//     }
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Order_OLD);
+const styles = StyleSheet.create({
+    callout: {
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: purple[50],
+        padding: spaces.medium,
+        marginBottom: spaces.large,
+        // borderLeftWidth: unit(2),
+        // borderTopWidth: unit(2),
+        borderWidth: unit(1),
+        borderRadius: unit(5),
+        borderColor: purple[200],
+        // width: '50%'
+    }
+})

@@ -49,7 +49,7 @@ export const Home = (props) => {
                 />
             </>
             <View style={[sharedStyles.sectionHeader, { marginTop: spaces.large }]}>
-                <H7>Redeem Credits</H7>
+                <H7>Your Credits</H7>
             </View>
             <ListItem
                 containerStyle={sharedStyles.listItem}
@@ -66,7 +66,7 @@ export const Home = (props) => {
                     color: '#231f61',
                 }}
             />
-            <ListItem
+            {/* <ListItem
                 disabled={credits.unlimited < 1 || credits.unlimitedActive}
                 disabledStyle={sharedStyles.disabled}
                 containerStyle={sharedStyles.listItem}
@@ -85,7 +85,7 @@ export const Home = (props) => {
                     name: 'infinity',
                     color: '#231f61',
                 }}
-            />
+            /> */}
             <ListItem
                 containerStyle={sharedStyles.listItem}
                 contentContainerStyle={sharedStyles.listItemContent}

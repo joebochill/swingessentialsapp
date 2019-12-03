@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, SafeAreaView, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
+import { Animated, SafeAreaView, ScrollView, StatusBar, StyleSheet, View, RefreshControl, ActivityIndicator } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { SEHeader } from './SEHeader';
 import { PXBHeaderProps } from './PXBHeader';
@@ -13,6 +13,8 @@ type HeaderLayoutState = {
 };
 type CollapsibleHeaderLayoutProps = Exclude<PXBHeaderProps, "headerHeight"> & {
     renderScroll?: boolean;
+    onRefresh?: Function;
+    refreshing?: boolean;
 }
 
 // TODO: Allow long titles to wrap to a second line?
@@ -25,7 +27,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
         };
     }
     render() {
-        const { renderScroll = true, children } = this.props;
+        const { renderScroll = true, children, refreshing = false, onRefresh = () => { } } = this.props;
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
 
         return (
@@ -39,6 +41,12 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                 {renderScroll &&
                     <ScrollView
                         contentContainerStyle={styles.scrollContainer}
+                        refreshControl={onRefresh ?
+                            <RefreshControl 
+                                refreshing={refreshing} 
+                                onRefresh={() => onRefresh()} 
+                            /> : undefined
+                        }
                         onScroll={Animated.event([
                             {
                                 nativeEvent: {
@@ -49,6 +57,9 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                             },
                         ])}
                         scrollEventThrottle={16}>
+                        {refreshing && 
+                            <ActivityIndicator size={'large'} style={{marginBottom: spaces.medium, marginTop: -1*spaces.jumbo}}/>
+                        }
                         {children}
                     </ScrollView>
                 }
@@ -76,5 +87,5 @@ const styles = StyleSheet.create({
     nonScrollContainer: {
         marginTop: HEADER_EXPANDED_HEIGHT,
         flex: 1
-    }
+    },
 });
