@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { View, SectionList } from 'react-native';
 import { ListItem } from 'react-native-elements';
@@ -11,6 +11,7 @@ import { ROUTES } from '../../../constants/routes';
 import bg from '../../../images/bg_6.jpg';
 import { spaces, sharedStyles } from '../../../styles';
 import { makeGroups } from '../../../utilities';
+import { loadTips } from '../../../redux/actions';
 
 type Tip = {
     id: number;
@@ -21,15 +22,19 @@ type Tip = {
 }
 
 export const Tips = (props) => {
-    const tips = useSelector(state => state.tips.tipList);
-    const sections = makeGroups(tips, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
+    const tips = useSelector(state => state.tips);
+    const sections = makeGroups(tips.tipList, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
+    const dispatch = useDispatch();
 
     return (
         <CollapsibleHeaderLayout
             title={'Tip of the Month'}
-            subtitle={'...small adjustments, big difference'}
+            subtitle={'small adjustments, big difference'}
             backgroundImage={bg}
-            // renderScroll={false}
+            refreshing={tips.loading}
+            onRefresh={() => {
+                dispatch(loadTips());
+            }}
         >
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (

@@ -54,7 +54,7 @@ export const Order = (props) => {
         if (credits.success) {
             Alert.alert(
                 'Purchase Complete',
-                'Thank you for your purchase',
+                'Your order has finished processing. Thank you for your purchase!',
                 [
                     {
                         text: 'Submit Your Swing Now',
@@ -62,7 +62,7 @@ export const Order = (props) => {
                             props.navigation.navigate(ROUTES.SUBMIT);
                         }
                     },
-                    { text: 'Cancel' },
+                    { text: 'Later' },
 
                 ]
             )
@@ -72,18 +72,15 @@ export const Order = (props) => {
 
     const onPurchase = useCallback(
         async (sku, shortcode) => {
-            if (error.length > 0) {
-                console.log('error');
+            if (roleError.length > 0) {
                 // logLocalError('137: Purchase request not sent: ' + this.state.error);
                 return;
             }
             if (role !== 'customer' && role !== 'administrator') {
-                console.log('invalid customer: ', role);
                 // logLocalError('137XX: Purchase request not sent: ' + this.state.error);
                 return;
             }
             if (!sku || !shortcode) {
-                console.log('missing information');
                 // logLocalError('138: Purchase: missing data');
                 return;
             }
@@ -91,7 +88,7 @@ export const Order = (props) => {
                 await RNIap.requestPurchase(sku, false);
             }
             catch (error) {
-                console.error('promise error with RNIAP');
+                console.log('promise error with RNIAP');
             }
             // Purchase response is handled in RNIAPCallbacks.tsx
         },
@@ -101,7 +98,7 @@ export const Order = (props) => {
     return (
         <CollapsibleHeaderLayout
             title={'Order Lessons'}
-            subtitle={'...multiple package options'}
+            subtitle={'multiple package options'}
             backgroundImage={bg}
             refreshing={credits.inProgress}
             onRefresh={() => {
@@ -169,7 +166,6 @@ export const Order = (props) => {
                 onPress={async () => {
                     const available = await RNIap.getAvailablePurchases();
                     for (let i = 0; i < available.length; i++) {
-                        console.log(available[i].transactionId);
                         RNIap.finishTransactionIOS(available[i].transactionId);
                     }
                 }}

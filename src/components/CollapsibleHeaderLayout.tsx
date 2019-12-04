@@ -42,9 +42,9 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                     <ScrollView
                         contentContainerStyle={styles.scrollContainer}
                         refreshControl={onRefresh ?
-                            <RefreshControl 
-                                refreshing={refreshing} 
-                                onRefresh={() => onRefresh()} 
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={() => onRefresh()}
                             /> : undefined
                         }
                         onScroll={Animated.event([
@@ -57,8 +57,8 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                             },
                         ])}
                         scrollEventThrottle={16}>
-                        {refreshing && 
-                            <ActivityIndicator size={'large'} style={{marginBottom: spaces.medium, marginTop: -1*spaces.jumbo}}/>
+                        {refreshing &&
+                            <ActivityIndicator size={'large'} style={{ marginBottom: spaces.medium, marginTop: -1 * spaces.jumbo }} />
                         }
                         {children}
                     </ScrollView>

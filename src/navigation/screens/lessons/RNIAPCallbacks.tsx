@@ -8,17 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { purchaseCredits } from '../../../redux/actions';
 
 export const RNIAPCallbacks = (props) => {
-    console.log('Callbacks baby');
     const dispatch = useDispatch();
     const packages = useSelector(state => state.packages.list);
 
     useEffect(() => {
         const purchaseUpdateSubscription = purchaseUpdatedListener((purchase: any) => {
-            // console.log('purchaseUpdatedListener', purchase);
             const receipt = purchase.transactionReceipt;
             if (receipt) {
-                console.log('purchase completed on device');
-                // TODO: Call to API to process credits
                 const paidPackage = packages.filter((pack) => pack.app_sku === purchase.productId);
                 let shortcode;
                 if (paidPackage.length > 0) shortcode = paidPackage[0].shortcode;
@@ -27,8 +23,7 @@ export const RNIAPCallbacks = (props) => {
                     receipt,
                     package: shortcode
                 }, (response) => {
-                    // If API call is a success
-                    console.log('purchase completed in API');
+                    // API call is a success
                     if (Platform.OS === 'ios') {
                         RNIap.finishTransactionIOS(purchase.transactionId);
                     }
@@ -40,7 +35,6 @@ export const RNIAPCallbacks = (props) => {
                     }
                     RNIap.finishTransaction(purchase);
                 }, (response) => {
-                    console.log('Failure', response.headers.get('Error'), response.headers.get('Message'));
                     if (response.headers.get('Error') == '400607') {
                         if (Platform.OS === 'ios') {
                             RNIap.finishTransactionIOS(purchase.transactionId);

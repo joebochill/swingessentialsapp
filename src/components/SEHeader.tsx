@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { requestLogout } from '../redux/actions';
 import { HeaderIcon, HeaderProps } from '@pxblue/react-native-components/core/header/header';
 
-import topology from '../images/topology_40.png';
+import topology from '../images/topology_20.png';
 
 const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
 const BackIcon = wrapIcon({ IconClass: Icon, name: 'arrow-back' });

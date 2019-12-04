@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { View, SectionList } from 'react-native';
 import { ListItem } from 'react-native-elements';
@@ -11,6 +11,7 @@ import { ROUTES } from '../../../constants/routes';
 import bg from '../../../images/bg_4.jpg';
 import { spaces, sharedStyles } from '../../../styles';
 import { makeGroups } from '../../../utilities';
+import { loadBlogs } from '../../../redux/actions';
 
 type Blog = {
     id: number;
@@ -20,15 +21,19 @@ type Blog = {
 }
 
 export const Blogs = (props) => {
-    const blogs = useSelector(state => state.blogs.blogList);
-    const sections = makeGroups(blogs, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
+    const blogs = useSelector(state => state.blogs);
+    const sections = makeGroups(blogs.blogList, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
+    const dispatch = useDispatch();
 
     return (
         <CollapsibleHeaderLayout
             title={'19th Hole'}
-            subtitle={'...Golf stories and Q&A'}
+            subtitle={'golf stories and Q&A'}
             backgroundImage={bg}
-            // renderScroll={false}
+            refreshing={blogs.loading}
+            onRefresh={() => {
+                dispatch(loadBlogs());
+            }}
         >
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (

@@ -34,7 +34,7 @@ export const Lessons = withNavigation(props => {
     return (
         <CollapsibleHeaderLayout
             title={'Your Lessons'}
-            subtitle={"...see how far you've come"}
+            subtitle={"see how far you've come"}
             backgroundImage={bg}
         >
             <SectionList

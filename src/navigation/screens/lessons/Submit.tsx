@@ -16,7 +16,7 @@ export const Submit = (props) => (
             startExpanded
             backgroundImage={bg}
             title={'Submit Your Swing'}
-            subtitle={'...create a new lesson'}
+            subtitle={'create a new lesson'}
         />
         <EmptyState
             IconClass={AccessTime}
