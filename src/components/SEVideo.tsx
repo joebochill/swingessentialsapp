@@ -2,33 +2,37 @@ import React, { useRef, useState } from 'react';
 import Video from 'react-native-video';
 import { View, TouchableOpacity, ViewProperties, StyleSheet } from 'react-native';
 import { width, aspectWidth } from '../utilities';
-import { sizes, spaces, transparent, oledBlack, white } from '../styles';
+import { sizes, spaces, transparent, oledBlack, white, sharedStyles } from '../styles';
 import { Icon } from 'react-native-elements';
+import { H7 } from '@pxblue/react-native-components';
 
+const portraitWidth = (width - 3 * spaces.medium) / 2;
+const portraitHeight = aspectWidth(portraitWidth);
 
 type VideoProps = ViewProperties & {
     source: string;
+    editable?: boolean;
+    onEdit?: Function;
+    editIcon?: JSX.Element;
+}
+type PlaceholderProps = ViewProperties & {
+    title?: string;
+    onPress?: Function;
+    icon?: JSX.Element;
+    editIcon?: JSX.Element;
 }
 
 // TODO: Verify that the video stuff works on Android as expected
 
 export const SEVideo = (props: VideoProps) => {
-    const { source, style } = props;
+    const { source, style, editable = false, onEdit = () => { } } = props;
     const vid = useRef(null)
     const [playing, setPlaying] = useState(false);
 
-    const portraitWidth = (width - 3 * spaces.medium) / 2;
-    const portraitHeight = aspectWidth(portraitWidth);
-
     return (
-        <View style={[
-            {
-                width: portraitWidth,
-                height: portraitHeight,
-                backgroundColor: oledBlack[900],
-            }, style]
-        }>
-            <TouchableOpacity 
+        <View style={[styles.portrait, { backgroundColor: oledBlack[900] }, style]}>
+            <TouchableOpacity
+                activeOpacity={0.8}
                 style={{ height: '100%', width: '100%' }}
                 onPress={() => setPlaying(!playing)}
             >
@@ -47,7 +51,7 @@ export const SEVideo = (props: VideoProps) => {
                     ignoreSilentSwitch={"ignore"}
                     style={{ height: '100%', width: '100%' }}
                 />
-                <View style={styles.fullCentered}>
+                <View style={[styles.fullCentered, {opacity: playing ? 0 : 1} ]}>
                     <Icon
                         name={'play-arrow'}
                         size={sizes.large}
@@ -55,12 +59,50 @@ export const SEVideo = (props: VideoProps) => {
                         underlayColor={transparent}
                     />
                 </View>
+                {editable &&
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        style={[sharedStyles.centered, styles.bottomPanel, {
+                            backgroundColor: 'rgba(0,0,0,0.2)',
+                        }]}
+                        onPress={() => onEdit()}
+                    >
+                        <Icon
+                            name={'edit'}
+                            color={white[50]}
+                            underlayColor={transparent}
+                        />
+                    </TouchableOpacity>
+                }
+            </TouchableOpacity>
+        </View>
+    )
+}
+export const SEVideoPlaceholder = (props: PlaceholderProps) => {
+    const { icon, editIcon, style, onPress = () => { } } = props;
+
+    return (
+        <View style={[styles.portrait, sharedStyles.dashed,
+        { backgroundColor: 'rgba(35,31,97,0.2)' }, style]
+        }>
+            <TouchableOpacity
+                activeOpacity={0.8}
+                style={{ height: '100%', width: '100%', alignItems: 'center' }}
+                onPress={() => onPress()}
+            >
+                <H7 font={'regular'} style={{ marginTop: spaces.medium }}>{props.title}</H7>
+                <View style={styles.fullCentered}>
+                    {icon}
+                </View>
+                <View style={[sharedStyles.centered, styles.bottomPanel]}>
+                    {editIcon}
+                </View>
             </TouchableOpacity>
         </View>
     )
 }
 const styles = StyleSheet.create({
-    fullCentered:{
+    fullCentered: {
         position: 'absolute',
         top: 0,
         left: 0,
@@ -68,7 +110,20 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
+    portrait: {
+        width: portraitWidth,
+        height: portraitHeight,
+    },
+    bottomPanel: {
+        backgroundColor: transparent,
+        padding: spaces.medium,
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        left: 0,
+        zIndex: 100
+    },
 })
 
 

@@ -1,18 +1,34 @@
 import { StyleSheet } from 'react-native';
-import { spaces, spaceUnit } from './sizes';
+import { unit, spaces, spaceUnit } from './sizes';
+import { purple, white } from './colors';
 
 export const sharedStyles = StyleSheet.create({
+    centered: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    dashed: {
+        borderWidth: unit(2),
+        borderRadius: unit(5),
+        borderStyle: 'dashed',
+        borderColor: purple[800],
+    },
+    image: {
+        height: '100%',
+        width: '100%',
+        resizeMode: 'contain',
+    },
     textTitle: {
         marginTop: spaces.medium,
     },
-    listItem:{
-        paddingHorizontal: spaces.medium, 
+    listItem: {
+        paddingHorizontal: spaces.medium,
         paddingVertical: 0,
     },
-    listItemContent:{
+    listItemContent: {
         height: spaceUnit(14),
     },
-    disabled:{
+    disabled: {
         opacity: 0.7,
     },
     pageContainer: {
@@ -26,7 +42,7 @@ export const sharedStyles = StyleSheet.create({
         padding: spaces.medium,
         paddingBottom: spaces.jumbo,
     },
-    paddingHorizontalMedium:{
+    paddingHorizontalMedium: {
         paddingHorizontal: spaces.medium,
     },
     sectionHeader: {
