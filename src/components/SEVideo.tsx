@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import Video from 'react-native-video';
 import { View, TouchableOpacity, ViewProperties, StyleSheet } from 'react-native';
 import { width, aspectWidth } from '../utilities';
-import { sizes, spaces, transparent, oledBlack, white, sharedStyles } from '../styles';
+import { sizes, spaces, transparent, oledBlack, white, sharedStyles, purpleOpacity } from '../styles';
 import { Icon } from 'react-native-elements';
 import { H7 } from '@pxblue/react-native-components';
 
@@ -83,7 +83,7 @@ export const SEVideoPlaceholder = (props: PlaceholderProps) => {
 
     return (
         <View style={[styles.portrait, sharedStyles.dashed,
-        { backgroundColor: 'rgba(35,31,97,0.2)' }, style]
+        { backgroundColor: purpleOpacity(0.05) }, style]
         }>
             <TouchableOpacity
                 activeOpacity={0.8}

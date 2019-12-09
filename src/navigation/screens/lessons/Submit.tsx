@@ -1,17 +1,24 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { View, KeyboardAvoidingView, Image, TextInput, StyleSheet, Alert } from 'react-native';
 import { H7, Label } from '@pxblue/react-native-components';
 import { SEHeader, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox } from '../../../components';
-import { sharedStyles, spaces, sizes, purple, fonts, white, unit, transparent } from '../../../styles';
+import { sharedStyles, spaces, sizes, purple, fonts, white, unit, transparent, purpleOpacity } from '../../../styles';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import bg from '../../../images/golf_bg.png';
 import dtl from '../../../images/down-the-line.png';
 import fo from '../../../images/face-on.png';
 import { Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
+import ImagePicker from 'react-native-image-picker';
+import { ROUTES } from '../../../constants/routes';
+
 // TODO: Implement from camera Roll
 
+// Shows the picker option for recording a new swing video or choosing one from the library
+
+
 export const Submit = (props) => {
+    const { navigation } = props;
     const [fo_video, setFO] = useState('');
     const [dtl_video, setDTL] = useState('');
     const [useNotes, setUseNotes] = useState(false);
@@ -27,6 +34,49 @@ export const Submit = (props) => {
             input.current.focus();
         }
     }, [input.current])
+
+    const _setVideoURI = useCallback((swing: 'fo' | 'dtl', uri: string) => {
+        if (swing === 'fo') setFO(uri);
+        else if (swing === 'dtl') setDTL(uri);
+        else console.log('Error, invalid video selection');
+    }, [setFO, setDTL]);
+
+    const _showPicker = useCallback((swing: 'fo' | 'dtl') => {
+        ImagePicker.showImagePicker(
+            {
+                title: undefined,
+                takePhotoButtonTitle: undefined,
+                chooseFromLibraryButtonTitle: 'Choose From Library',
+                customButtons: [
+                    { name: 'record', title: 'Record a New Video' },
+                ],
+                videoQuality: 'high',
+                mediaType: 'video',
+                durationLimit: 10,
+                storageOptions: {
+                    skipBackup: true,
+                    path: 'images'
+                }
+            },
+            (response) => {
+                if (response.didCancel) { /*do nothing*/ }
+                else if (response.error) {
+                    Alert.alert('There was an error choosing a video. Try again later.');
+                }
+                else if (response.customButton === 'record') {
+                    navigation.push(ROUTES.RECORD,
+                        {
+                            swing,
+                            onReturn: (uri: string) => _setVideoURI(swing, uri)
+                        }
+                    );
+                }
+                else {
+                    _setVideoURI(swing, response.uri);
+                }
+            }
+        );
+    }, [ImagePicker, navigation]);
 
     return (
         <View style={sharedStyles.pageContainer}>
@@ -45,7 +95,7 @@ export const Submit = (props) => {
                 title={'Submit Your Swing'}
                 subtitle={'create a new lesson'}
             />
-            <KeyboardAvoidingView  style={sharedStyles.pageContainer} behavior={'padding'}>
+            <KeyboardAvoidingView style={[sharedStyles.pageContainer, { backgroundColor: transparent }]} behavior={'padding'}>
                 <ScrollView contentContainerStyle={sharedStyles.paddingMedium}>
                     <ErrorBox
                         show={roleError !== ''}
@@ -61,10 +111,10 @@ export const Submit = (props) => {
                                 title={'Face-On'}
                                 icon={<Image source={fo} resizeMethod={'resize'} style={sharedStyles.image} />}
                                 editIcon={<Icon name={'add-a-photo'} color={purple[500]} />}
-                                onPress={() => setFO(`https://www.swingessentials.com/video_links/${'QQrqvgtD'}/${'fo_swing.mov'}`)}
+                                onPress={() => _showPicker('fo')}
                             /> :
                             <SEVideo editable source={fo_video}
-                                onEdit={() => setFO('')}
+                                onEdit={() => _showPicker('fo')}
                             />
                         }
                         {!dtl_video ?
@@ -72,10 +122,10 @@ export const Submit = (props) => {
                                 title={'Down-the-Line'}
                                 icon={<Image source={dtl} resizeMethod={'resize'} style={sharedStyles.image} />}
                                 editIcon={<Icon name={'add-a-photo'} color={purple[500]} />}
-                                onPress={() => setDTL(`https://www.swingessentials.com/video_links/${'QQrqvgtD'}/${'dtl_swing.mov'}`)}
+                                onPress={() => _showPicker('dtl')}
                             /> :
                             <SEVideo editable source={dtl_video} style={{ marginLeft: spaces.medium }}
-                                onEdit={() => setDTL('')}
+                                onEdit={() => _showPicker('dtl')}
                             />
                         }
                     </View>
@@ -131,7 +181,7 @@ const styles = StyleSheet.create({
         padding: spaces.medium,
         minHeight: sizes.xLarge,
         justifyContent: 'center',
-        backgroundColor: 'rgba(35,31,97,0.2)'
+        backgroundColor: purpleOpacity(.1)
     },
     input: {
         minHeight: sizes.xLarge,

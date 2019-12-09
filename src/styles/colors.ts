@@ -1,5 +1,10 @@
 export const transparent = 'transparent';
 
+export const purpleOpacity = (opacity: number): string => {
+    const op = Math.max(0, Math.min(1, opacity));
+    return `rgba(35,31,97,${op})`;
+}
+
 export const purple = {
     50: '#e5e4ec',
     100: '#bdbcd0',
