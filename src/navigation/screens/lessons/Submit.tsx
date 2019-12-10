@@ -12,10 +12,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { ROUTES } from '../../../constants/routes';
 
-// TODO: Implement from camera Roll
-
-// Shows the picker option for recording a new swing video or choosing one from the library
-
+// TODO: Integrate the API call
+// TODO: Fix the NPM monkeypatch for camera roll
 
 export const Submit = (props) => {
     const { navigation } = props;
@@ -73,6 +71,7 @@ export const Submit = (props) => {
                 }
                 else {
                     _setVideoURI(swing, response.uri);
+                    // Alert.alert('New Video Connected')
                 }
             }
         );
@@ -181,7 +180,7 @@ const styles = StyleSheet.create({
         padding: spaces.medium,
         minHeight: sizes.xLarge,
         justifyContent: 'center',
-        backgroundColor: purpleOpacity(.1)
+        backgroundColor: purpleOpacity(.15)
     },
     input: {
         minHeight: sizes.xLarge,
