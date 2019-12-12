@@ -3,6 +3,13 @@ import { unit, spaces, spaceUnit } from './sizes';
 import { purple, white } from './colors';
 
 export const sharedStyles = StyleSheet.create({
+    absoluteFull:{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
     centered: {
         alignItems: 'center',
         justifyContent: 'center',

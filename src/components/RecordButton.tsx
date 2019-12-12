@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         borderRadius: unit(2)
     },
-    backLabel: {
+    label: {
         fontSize: fonts[16],
         color: white[50],
     },
@@ -64,44 +64,67 @@ export const RecordButton = ({ recording, onPress, style, ...props }: RecordButt
     )
 };
 
-type RecordRowProps = ViewProps & {
-    recording: boolean;
-    onRecordPress: Function;
+type VideoControlRowProps = ViewProps & {
+    mode: 'record' | 'play';
+    active: boolean;
+    onAction: Function;
     onBack: Function;
-    onCameraChange: Function;
+    onNext: Function;
 }
-export const RecordRow = ({ recording, onRecordPress, onBack, onCameraChange, ...props }: RecordRowProps) => {
+export const VideoControls = ({ mode, active, onAction, onBack, onNext, ...props }: VideoControlRowProps) => {
     const insets = useSafeArea();
     return (
         <View style={[styles.recordRow, {
             bottom: insets.bottom,
-            backgroundColor: recording ? transparent : blackOpacity(0.5)
+            backgroundColor: active ? transparent : blackOpacity(0.5)
         }]} {...props}>
             <TouchableOpacity
                 onPress={() => onBack()}
-                disabled={recording}
+                disabled={active}
                 style={{ flex: 1 }}
             >
-                {!recording &&
-                    <Body style={styles.backLabel}>Cancel</Body>
+                {!active &&
+                    <Body style={styles.label}>
+                        {mode === 'record' ? 'Cancel' : 'Retake'}
+                    </Body>
                 }
             </TouchableOpacity>
-            <RecordButton style={{ flex: 0 }}
-                recording={recording}
-                onPress={() => onRecordPress()}
-            />
-            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                {!recording &&
+            {mode === 'play' &&
+                <Icon
+                    name={active ? 'pause' : 'play-arrow'}
+                    size={sizes.xLarge}
+                    underlayColor={transparent}
+                    color={white[50]}
+                    style={{ flex: 0 }}
+                    onPress={() => onAction()}
+                />
+            }
+            {mode === 'record' &&
+                <RecordButton style={{ flex: 0 }}
+                    recording={active}
+                    onPress={() => onAction()}
+                />
+            }
+            <TouchableOpacity
+                onPress={() => onNext()}
+                disabled={active}
+                style={{ flex: 1, alignItems: 'flex-end' }}
+            >
+                {!active && mode === 'play' &&
+                    <Body style={styles.label}>Use Video</Body>
+                }
+                {!active && mode === 'record' &&
                     <Icon
                         type={'ionicon'}
                         name={'ios-reverse-camera'}
                         size={sizes.medium}
                         underlayColor={transparent}
                         color={white[50]}
-                        onPress={() => onCameraChange()}
+                        onPress={() => onNext()}
                     />
                 }
-            </View>
+            </TouchableOpacity>
+
         </View >
     );
 }

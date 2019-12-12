@@ -23,7 +23,7 @@ export const Home = (props) => {
         <CollapsibleHeaderLayout
             backgroundImage={bg}
             title={'SWING ESSENTIALS'}
-            subtitle={'a PGA pro in your pocket'}
+            subtitle={'a pro in your pocket'}
         >
             <>
                 <View
