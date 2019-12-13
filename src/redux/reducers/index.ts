@@ -6,6 +6,7 @@ import { userDataReducer } from './userData';
 import { creditsReducer } from './credits';
 import { blogsReducer } from './blogs';
 import { packagesReducer } from './packages';
+import { settingsReducer } from './settings';
 
 export const AppReducer = combineReducers({
     login: loginReducer,
@@ -15,4 +16,5 @@ export const AppReducer = combineReducers({
     credits: creditsReducer,
     blogs: blogsReducer,
     packages: packagesReducer,
+    settings: settingsReducer,
 });

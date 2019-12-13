@@ -1,13 +1,14 @@
 import { LOGIN, LOGOUT, GET_USER_DATA } from '../actions/types';
+import { UserDataState } from '../../__types__';
 
 // TODO: put a join date in the DB and API
-const initialState = {
+const initialState: UserDataState = {
     username: '',
     firstName: '',
     lastName: '',
     email: ''
 };
-export const userDataReducer = (state = initialState, action) => {
+export const userDataReducer = (state = initialState, action): UserDataState => {
     switch (action.type) {
         case GET_USER_DATA.SUCCESS:
         case LOGIN.SUCCESS:

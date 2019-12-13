@@ -1,44 +1,43 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { View, Platform, Image } from 'react-native';
-import { sharedStyles } from '../../../styles';
+import { View, TouchableOpacity, StatusBar, Platform, Image, StyleSheet, SafeAreaView } from 'react-native';
+import { useSelector } from 'react-redux';
+
+import { sharedStyles, oledBlack, blackOpacity, transparent, spaces, purple, white } from '../../../styles';
 import { RNCamera } from 'react-native-camera';
-import { VideoControls, CountDown, VideoTimer } from '../../../components';
+import { HandednessType, SwingType, CameraType } from '../../../__types__';
+import { VideoControls, CountDown, VideoTimer, SEHeader } from '../../../components';
 import Video from 'react-native-video';
+import { ApplicationState } from '../../../__types__';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 // Overlay images
 import faceonLH from '../../../images/overlay-fo-lh.png';
 import faceonRH from '../../../images/overlay-fo-rh.png';
 import downthelineLH from '../../../images/overlay-dtl-lh.png';
 import downthelineRH from '../../../images/overlay-dtl-rh.png';
+import { ROUTES } from '../../../constants/routes';
+import { Icon } from 'react-native-elements';
 
 const DESIRED_RATIO = "16:9";
 
-// TODO: Fix the flash mode
-// TODO: Delay/Duration from settings
-type CameraType = 'front' | 'back';
-type HandednessType = 'left' | 'right';
-type SwingType = 'dtl' | 'fo';
 
 const getOverlayImage = (swing: SwingType, handedness: HandednessType, camera: CameraType) => {
     let options = (swing === 'dtl') ? [downthelineRH, downthelineLH] : [faceonRH, faceonLH];
     let index = 0;
 
-    if((handedness === 'left' && camera === 'back') || (handedness === 'right' && camera === 'front')){
+    if ((handedness === 'left' && camera === 'back') || (handedness === 'right' && camera === 'front')) {
         index = 1;
     }
     return options[index];
 }
 
 export const Record = (props) => {
+    const { navigation } = props;
     const cameraRef = useRef(null);
     const onReturn = props.navigation.getParam('onReturn', () => { });
     const swing: SwingType = props.navigation.getParam('swing', () => { });
 
-    // TODO: get these from the API
-    const overlay = true;
-    const delay = 3;
-    const duration = 5;
-    const handedness: HandednessType = 'right';
+    const settings = useSelector((state: ApplicationState) => state.settings);
 
     const cameras: CameraType[] = ['back', 'front'];
     const [cameraType, setCameraType] = useState(0);
@@ -60,7 +59,7 @@ export const Record = (props) => {
         }
         const options = {
             maxFileSize: 9.5 * 1024 * 1024,
-            maxDuration: duration,
+            maxDuration: settings.duration,
             quality: RNCamera.Constants.VideoQuality['720p']
         };
 
@@ -69,7 +68,7 @@ export const Record = (props) => {
         setRecordedVideo(_video.uri);
         setIsRecording(false);
         setRecordingMode(false);
-    }, [cameraRef, delay, duration]);
+    }, [cameraRef, settings]);
 
     const _endRecording = useCallback(() => {
         setCountdownStarted(false);
@@ -136,24 +135,39 @@ export const Record = (props) => {
         />
     );
     return (
-        <View style={{ flex: 1, alignItems: 'stretch' }}>
+        <View style={{ flex: 1, alignItems: 'stretch', backgroundColor: oledBlack[900] }}>
             {recordingMode && VideoRecorder}
             {!recordingMode && VideoPlayer}
-            {overlay &&
+            {recordingMode && settings.overlay &&
                 <View style={[sharedStyles.absoluteFull, sharedStyles.centered]}>
                     <Image
                         resizeMethod='resize'
                         style={{ height: '100%', width: '100%', opacity: 0.35, resizeMode: 'contain' }}
-                        source={getOverlayImage(swing, handedness, cameras[cameraType])}
+                        source={getOverlayImage(swing, settings.handedness, cameras[cameraType])}
                     />
                 </View>
             }
-            {isRecording && !showCountDown &&
-                <VideoTimer visible={isRecording} />
-            }
+            <View style={styles.bar}>
+                <StatusBar barStyle={'light-content'} />
+                <SafeAreaView style={{ height: 56 + getStatusBarHeight(true) }}>
+                    <View style={styles.content}>
+                        {recordingMode && !isRecording && <View style={{ flex: 1 }} />}
+                        {isRecording && !showCountDown &&
+                            <VideoTimer visible={isRecording} />
+                        }
+                        {recordingMode && !isRecording &&
+                            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                                <TouchableOpacity onPress={(): void => navigation.push(ROUTES.SETTINGS_GROUP, { navType: 'back' })}>
+                                    <Icon name={'settings'} color={white[50]} />
+                                </TouchableOpacity>
+                            </View>
+                        }
+                    </View>
+                </SafeAreaView>
+            </View>
             {showCountDown &&
                 <CountDown
-                    startValue={delay}
+                    startValue={settings.delay}
                     onFinish={() => _startRecording()}
                 />
             }
@@ -194,3 +208,24 @@ export const Record = (props) => {
         </View >
     );
 }
+
+const styles = StyleSheet.create({
+    bar: {
+        width: '100%',
+        top: 0,
+        left: 0,
+        paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
+        position: 'absolute',
+        justifyContent: 'flex-end',
+        zIndex: 1000,
+        backgroundColor: blackOpacity(0.5),
+    },
+    content: {
+        flex: 1,
+        position: 'relative',
+        paddingHorizontal: spaces.medium,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+})

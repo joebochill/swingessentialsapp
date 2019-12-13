@@ -11,9 +11,11 @@ import { Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { ROUTES } from '../../../constants/routes';
+import { ApplicationState } from '../../../__types__';
 
 // TODO: Integrate the API call
 // TODO: Fix the NPM monkeypatch for camera roll
+// TODO: Fix the broken focus & scroll-to behavior
 
 export const Submit = (props) => {
     const { navigation } = props;
@@ -21,8 +23,8 @@ export const Submit = (props) => {
     const [dtl_video, setDTL] = useState('');
     const [useNotes, setUseNotes] = useState(false);
     const [notes, setNotes] = useState('');
-    const pending = useSelector(state => state.lessons.redeemPending);
-    const role = useSelector(state => state.login.role);
+    const pending = useSelector((state:ApplicationState) => state.lessons.redeemPending);
+    const role = useSelector((state:ApplicationState) => state.login.role);
     const input = useRef(null);
     const dispatch = useDispatch();
     const roleError = (role === 'anonymous') ? 'You must be signed in to submit lessons.' : (role === 'pending') ? 'You must validate your email address before you can submit lessons' : '';

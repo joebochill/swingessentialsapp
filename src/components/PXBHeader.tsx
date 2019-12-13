@@ -10,14 +10,11 @@ import {
     View
 } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import color from 'color';
 import { HeaderIcon } from './types';
-import { wrapIcon, withTheme, Theme, WithTheme } from '@pxblue/react-native-components';
+import { withTheme, Theme, WithTheme } from '@pxblue/react-native-components';
 import { $DeepPartial } from '@callstack/react-theme-provider';
-
-const ClearIcon = wrapIcon({ IconClass: Icon, name: 'clear' })
-const SearchIcon = wrapIcon({ IconClass: Icon, name: 'search' })
+import { purple, blackOpacity } from '../styles';
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 
@@ -315,7 +312,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         justifyContent: 'flex-end',
         zIndex: 1000,
-        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        shadowColor: blackOpacity(0.3),
         shadowOffset: {
             width: 0,
             height: 1,
@@ -323,7 +320,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         shadowOpacity: 1,
         elevation: 0,
-        backgroundColor: '#4f4c81',
+        backgroundColor: purple[400],
     },
     content: {
         flex: 1,

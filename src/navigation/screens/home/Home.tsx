@@ -11,11 +11,12 @@ import { useSelector } from 'react-redux';
 import { getLongDate, width } from '../../../utilities';
 import { spaces, sharedStyles } from '../../../styles';
 import { PlaceholderLesson } from '../../../constants/lessons';
+import { ApplicationState } from '../../../__types__';
 
 export const Home = (props) => {
-    const lessons = useSelector(state => state.lessons);
-    const tips = useSelector(state => state.tips.tipList);
-    const credits = useSelector(state => state.credits);
+    const lessons = useSelector((state: ApplicationState) => state.lessons);
+    const tips = useSelector((state: ApplicationState) => state.tips.tipList);
+    const credits = useSelector((state: ApplicationState) => state.credits);
 
     const latestLessons = lessons.closed.length > 0 ? lessons.closed : [PlaceholderLesson];
 

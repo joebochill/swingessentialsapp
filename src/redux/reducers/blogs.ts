@@ -1,10 +1,11 @@
 import { GET_BLOGS, LOGOUT } from "../actions/types";
+import { BlogsState } from "../../__types__";
 
-const initialState = {
+const initialState:BlogsState = {
     loading: false,
     blogList: []
 }
-export const blogsReducer = (state = initialState, action) => {
+export const blogsReducer = (state = initialState, action): BlogsState => {
     switch (action.type) {
         case GET_BLOGS.REQUEST:
             return {

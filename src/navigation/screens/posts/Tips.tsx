@@ -12,6 +12,7 @@ import bg from '../../../images/bg_6.jpg';
 import { spaces, sharedStyles } from '../../../styles';
 import { makeGroups } from '../../../utilities';
 import { loadTips } from '../../../redux/actions';
+import { ApplicationState } from '../../../__types__';
 
 type Tip = {
     id: number;
@@ -22,7 +23,7 @@ type Tip = {
 }
 
 export const Tips = (props) => {
-    const tips = useSelector(state => state.tips);
+    const tips = useSelector((state: ApplicationState) => state.tips);
     const sections = makeGroups(tips.tipList, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
 

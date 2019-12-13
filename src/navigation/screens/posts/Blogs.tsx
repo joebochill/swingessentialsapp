@@ -12,6 +12,7 @@ import bg from '../../../images/bg_4.jpg';
 import { spaces, sharedStyles } from '../../../styles';
 import { makeGroups } from '../../../utilities';
 import { loadBlogs } from '../../../redux/actions';
+import { ApplicationState } from '../../../__types__';
 
 type Blog = {
     id: number;
@@ -21,7 +22,7 @@ type Blog = {
 }
 
 export const Blogs = (props) => {
-    const blogs = useSelector(state => state.blogs);
+    const blogs = useSelector((state: ApplicationState) => state.blogs);
     const sections = makeGroups(blogs.blogList, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
 

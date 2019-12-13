@@ -1,7 +1,8 @@
 import { LOGIN, LOGOUT } from '../actions/types';
 import { getUserRole } from '../../utilities';
+import { LoginState } from '../../__types__';
 
-const initialState = {
+const initialState: LoginState = {
     token: null,
     admin: false,
     role: 'anonymous',
@@ -10,7 +11,7 @@ const initialState = {
     pending: false,
 };
 
-export const loginReducer = (state = initialState, action) => {
+export const loginReducer = (state = initialState, action): LoginState => {
     switch (action.type) {
         case LOGIN.REQUEST:
             return {

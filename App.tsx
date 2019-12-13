@@ -9,7 +9,9 @@ import { AppReducer } from './src/redux/reducers';
 import { saveAuthToken } from './src/api/tokenMiddleware';
 import { loadInitialData } from './src/redux/actions';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { white, purple, red } from './src/styles';
 
+// TODO: Organize all imports
 
 const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 
@@ -44,13 +46,13 @@ export const App = () => {
                             },
                         },
                         colors: {
-                            primary: '#4F4C81',
-                            background: '#F2F2F2',
-                            surface: '#FFFFFF',
-                            accent: '#4F4C81',
-                            error: '#FF3333',
-                            text: '#231F61',
-                            onPrimary: '#FFFFFF',
+                            primary: purple[400],
+                            background: white[400],
+                            surface: white[50],
+                            accent: purple[400],
+                            error: red['A100'],
+                            text: purple[500],
+                            onPrimary: white[50],
                         },
                         sizes: {
                             tiny: 10,

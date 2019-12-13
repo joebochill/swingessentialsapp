@@ -10,6 +10,7 @@ import { ROUTES } from '../../../constants/routes';
 
 import { spaces, sharedStyles } from '../../../styles';
 import { getLongDate, makeGroups } from '../../../utilities';
+import { ApplicationState } from '../../../__types__';
 
 type Lesson = {
     request_id: number;
@@ -27,7 +28,7 @@ type Lesson = {
 // TODO: Implement lazy loading (Lessons, Tips, Blogs) on scroll
 
 export const Lessons = withNavigation(props => {
-    const lessons = useSelector(state => state.lessons);
+    const lessons = useSelector((state: ApplicationState) => state.lessons);
     const myLessons = lessons.pending.concat(lessons.closed);
     const sections = makeGroups(myLessons, (lesson: Lesson) => getLongDate(lesson.request_date));
 

@@ -13,6 +13,10 @@ export const LOGOUT = createAction('LOGOUT', 'logout');
 /* User Actions */
 export const GET_USER_DATA = createAction('GET_USER_DATA', 'user');
 
+/* Settings Actions */
+export const GET_SETTINGS = createAction('GET_SETTINGS', 'settings');
+export const PUT_SETTINGS = createAction('PUT_SETTINGS', 'settings');
+
 /* Lesson Actions */
 export const GET_LESSONS = createAction('GET_LESSONS', 'lessons');
 

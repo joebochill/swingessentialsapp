@@ -5,6 +5,7 @@ import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 import { Header, wrapIcon } from '@pxblue/react-native-components';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import { PXBHeader } from '../components/PXBHeader';
+import { ApplicationState, NavType } from '../__types__';
 
 import { ROUTES } from '../constants/routes';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,14 +20,14 @@ const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-varian
 const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
 
 type SEHeaderProps = HeaderProps & NavigationInjectedProps & {
-    mainAction?: 'menu' | 'back';
+    mainAction?: NavType;
     showAuth?: boolean,
     dynamic?: boolean,
 }
 
 export const SEHeader = withNavigation((props: SEHeaderProps) => {
     const { mainAction = 'menu', showAuth = true, navigation, backgroundImage = topology, actionItems = [], ...other } = props;
-    const token = useSelector(state => state.login.token);
+    const token = useSelector((state: ApplicationState) => state.login.token);
     const dispatch = useDispatch();
 
     const defaultActions: Array<HeaderIcon> = showAuth ? [token

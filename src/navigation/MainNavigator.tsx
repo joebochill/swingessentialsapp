@@ -45,6 +45,13 @@ const AuthStack = createStackNavigator(
     },
     { initialRouteName: ROUTES.LOGIN, headerMode: 'none' },
 );
+const SettingsStack = createStackNavigator(
+    {
+        [ROUTES.SETTINGS]: Settings,
+        [ROUTES.SETTING]: SingleSetting,
+    },
+    { initialRouteName: ROUTES.SETTINGS, headerMode: 'none' },
+)
 const AppStack = createDrawerNavigator(
     {
         [ROUTES.HOME_GROUP]: {
@@ -113,6 +120,7 @@ const AppStack = createDrawerNavigator(
                     [ROUTES.SUBMIT]: Submit,
                     [ROUTES.RECORD]: Record,
                     [ROUTES.AUTH_GROUP]: AuthStack,
+                    [ROUTES.SETTINGS_GROUP]: SettingsStack,
                 },
                 { initialRouteName: ROUTES.SUBMIT, headerMode: 'none' },
             ),
@@ -137,15 +145,9 @@ const AppStack = createDrawerNavigator(
                 { initialRouteName: ROUTES.TIPS, headerMode: 'none' },
             ),
         },
-        [ROUTES.SETTINGS_GROUP]: {
-            screen: createStackNavigator(
-                {
-                    [ROUTES.SETTINGS]: Settings,
-                    [ROUTES.SETTING]: SingleSetting,
-                },
-                { initialRouteName: ROUTES.SETTINGS, headerMode: 'none' },
-            ),
-        },
+        // [ROUTES.SETTINGS_GROUP]: {
+        //     screen: SettingsStack,
+        // },
     },
     {
         initialRouteName: ROUTES.HOME_GROUP,

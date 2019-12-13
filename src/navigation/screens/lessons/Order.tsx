@@ -9,14 +9,15 @@ import { sharedStyles, spaces, purple, sizes, unit, red } from '../../../styles'
 import { useSelector, useDispatch } from 'react-redux';
 import { loadCredits, loadPackages } from '../../../redux/actions';
 import { ROUTES } from '../../../constants/routes';
+import { ApplicationState } from '../../../__types__';
 
 // TODO: Implement Tutorials
 
 export const Order = (props) => {
-    const packages = useSelector(state => state.packages.list);
-    const credits = useSelector(state => state.credits);
-    const packagesProcessing = useSelector(state => state.packages.loading);
-    const role = useSelector(state => state.login.role);
+    const packages = useSelector((state: ApplicationState) => state.packages.list);
+    const credits = useSelector((state: ApplicationState) => state.credits);
+    const packagesProcessing = useSelector((state: ApplicationState) => state.packages.loading);
+    const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
 
     const [selected, setSelected] = useState(-1);

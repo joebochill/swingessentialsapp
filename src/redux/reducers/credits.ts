@@ -1,14 +1,15 @@
 import { GET_CREDITS, LOGOUT, PURCHASE_CREDITS } from '../actions/types';
+import { CreditsState } from '../../__types__';
 
-const initialState = {
+const initialState: CreditsState = {
     count: 0,
-    unlimited: 0,
-    unlimitedExpires: 0,
+    // unlimited: 0,
+    // unlimitedExpires: 0,
     inProgress: false,
     success: false,
     fail: false
 };
-export const creditsReducer = (state = initialState, action) => {
+export const creditsReducer = (state = initialState, action): CreditsState => {
     switch (action.type) {
         case GET_CREDITS.REQUEST:
             return {
@@ -22,8 +23,8 @@ export const creditsReducer = (state = initialState, action) => {
                 ...state,
                 inProgress: false,
                 count: parseInt(action.payload.count, 10) || 0,
-                unlimited: action.payload.unlimited_count,
-                unlimitedExpires: parseInt(action.payload.unlimited_expires, 10) || 0
+                // unlimited: action.payload.unlimited_count,
+                // unlimitedExpires: parseInt(action.payload.unlimited_expires, 10) || 0
             };
         case GET_CREDITS.FAILURE:
         case LOGOUT.SUCCESS:
@@ -32,8 +33,8 @@ export const creditsReducer = (state = initialState, action) => {
                 ...state,
                 inProgress: false,
                 count: 0,
-                unlimited: 0,
-                unlimitedExpires: 0
+                // unlimited: 0,
+                // unlimitedExpires: 0
             };
         case PURCHASE_CREDITS.REQUEST:
             return {

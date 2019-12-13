@@ -1,16 +1,15 @@
 import { GET_LESSONS, LOGOUT } from "../actions/types";
+import { LessonsState } from "../../__types__";
 
-const initialState = {
+const initialState: LessonsState = {
     loading: false,
     pending: [],
     closed: [],
     redeemPending: false,
     redeemSuccess: false,
-    // newURL: null,
-    // selected: null,
 }
 
-export const lessonsReducer = (state = initialState, action) => {
+export const lessonsReducer = (state = initialState, action): LessonsState => {
     switch (action.type) {
         case GET_LESSONS.REQUEST:
             return {

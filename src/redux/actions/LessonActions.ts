@@ -3,6 +3,8 @@ import { success, failure } from '../../api/http-helper';
 import { Dispatch } from 'redux';
 import * as ACTIONS from './types';
 
+// TODO: Mark lessons as viewed
+
 export function loadLessons() {
     return (dispatch: Dispatch) => {
         dispatch({ type: ACTIONS.GET_LESSONS.REQUEST });

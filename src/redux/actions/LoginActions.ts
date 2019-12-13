@@ -7,11 +7,14 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { loadLessons} from './LessonActions';
 import { loadTips } from './TipActions';
 import { loadCredits } from './CreditActions';
+import { loadBlogs } from './BlogActions';
+import { loadSettings } from './SettingsActions';
 import { ThunkDispatch } from 'redux-thunk';
+import { Credentials } from '../../__types__';
 
 // TODO: Implement the token timeout warning
 
-export function requestLogin(userCredentials) {
+export function requestLogin(userCredentials: Credentials) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({type: ACTIONS.LOGIN.REQUEST});
         return fetch(BASEURL+'/' + ACTIONS.LOGIN.API, { 
@@ -31,9 +34,9 @@ export function requestLogin(userCredentials) {
                     .then(() => {
                         dispatch(loadLessons());
                         dispatch(loadTips());
-                        // dispatch(loadBlogs());
+                        dispatch(loadBlogs());
                         dispatch(loadCredits());
-                        // dispatch(loadSettings());
+                        dispatch(loadSettings());
                         // TODO: Load more stuff
                     });
                     AsyncStorage.setItem(ASYNC_PREFIX+'token', token);
@@ -52,8 +55,8 @@ export function requestLogin(userCredentials) {
     }
 }
 /* clears the current authentication token */
-export function requestLogout(token){
-    return (dispatch) => {
+export function requestLogout(token: string){
+    return (dispatch: ThunkDispatch<any, void, any>) => {
         return fetch(BASEURL+'/'+ ACTIONS.LOGOUT.API, { 
             headers: {
                 [AUTH]: 'Bearer ' + token

@@ -8,7 +8,7 @@ import topology from '../images/topology.png';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Body, H7 } from '@pxblue/react-native-components';
 import { ListItem, Icon } from 'react-native-elements';
-import { sharedStyles, purple } from '../styles';
+import { sharedStyles, purple, white, blackOpacity } from '../styles';
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 const HEADER_EXPANDED_HEIGHT = 200 + getStatusBarHeight();
@@ -287,13 +287,13 @@ const styles = StyleSheet.create({
     },
     avatar: {
         borderRadius: 100,
-        backgroundColor: 'white',
+        backgroundColor: white[50],
         justifyContent: 'center',
         alignItems: 'center',
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: white[50],
     },
     bar: {
         width: '100%',
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         justifyContent: 'flex-end',
         zIndex: 1000,
-        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        shadowColor: blackOpacity(0.3),
         shadowOffset: {
             width: 0,
             height: 1,
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         shadowOpacity: 1,
         elevation: 0,
-        backgroundColor: '#4f4c81',
+        backgroundColor: purple[400],
     },
     content: {
         flex: 1,
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     },
     navLabel: {
         marginLeft: 16,
-        color: '#231f61',
+        color: purple[500],
     },
     drawerBody: {
         flexDirection: 'row',

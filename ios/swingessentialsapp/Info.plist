@@ -37,8 +37,16 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Swing Essentials needs access to your camera to record new swing videos.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Swing Essentials needs access to your microphone to capture audio in your swing videos.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Swing Essentials needs access to your photo library to save swing videos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Swing Essentials needs access to your photo library to upload swing videos.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -80,13 +88,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Swing Essentials needs access to your photo library to upload swing videos.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Swing Essentials needs access to your camera to record new swing videos.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Swing Essentials needs access to your photo library to save swing videos.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Swing Essentials needs access to your microphone to capture audio in your swing videos.</string>
 </dict>
 </plist>

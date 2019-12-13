@@ -1,4 +1,5 @@
 import { atob } from './base64';
+import { UserRole } from '../__types__';
 
 
 export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -16,7 +17,7 @@ export function roundNumber(num, dec) {
 //     );
 // }
 
-export const getUserRole = (token: string): string => {
+export const getUserRole = (token: string): UserRole => {
     if (!token) {
         return 'anonymous';
     }

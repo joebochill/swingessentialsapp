@@ -1,5 +1,7 @@
 export const transparent = 'transparent';
 
+// TODO: Update all styles to use variable definitions
+
 export const purpleOpacity = (opacity: number): string => {
     const op = Math.max(0, Math.min(1, opacity));
     return `rgba(35,31,97,${op})`;
@@ -29,14 +31,14 @@ export const purple = {
 export const white = {
     50: '#ffffff',
     100: '#fdfdfd',
-    200: '#f7f8f8',
-    300: '#f3f5f5',
-    400: '#f1f2f2',
-    500: '#eef0f0',
-    600: '#eceeee',
-    700: '#e9ecec',
-    800: '#e7e9e9',
-    900: '#e2e5e5',
+    200: '#f8f8f8',
+    300: '#f5f5f5',
+    400: '#f2f2f2',
+    500: '#f0f0f0',
+    600: '#eeeeee',
+    700: '#ececec',
+    800: '#e9e9e9',
+    900: '#e5e5e5',
     'contrastDefaultColor': 'dark'
 };
 export const red = {
@@ -50,7 +52,7 @@ export const red = {
     700: '#bd2e2f',
     800: '#b72727',
     900: '#ab1a1a',
-    A100: '#da7777',
+    A100: '#ff3333',
     A200: '#ca3c3d',
     A400: '#bd2e2f',
     A700: '#ab1a1a',

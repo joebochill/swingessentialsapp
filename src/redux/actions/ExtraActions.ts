@@ -16,7 +16,7 @@ import { loadPackages } from './PackageActions';
 // TODO: Implement App banners on web
 // TODO: Implement Tutorials
 
-export function loadInitialData() {
+export function loadInitialData(): Function {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({ type: ACTIONS.INITIAL_LOAD });
         dispatch(loadTips());

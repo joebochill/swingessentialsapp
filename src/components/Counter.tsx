@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { white, fonts, unit, sharedStyles, blackOpacity } from '../styles';
 import { View, ViewProps } from 'react-native';
 import { Body } from '@pxblue/react-native-components';
-import { useSafeArea } from 'react-native-safe-area-context';
 
 export type CountDownProps = ViewProps & {
     startValue: number;
@@ -38,8 +37,8 @@ export type VideoTimerProps = ViewProps & {
     startValue?: number;
     offset?: number;
 }
+
 export const VideoTimer = (props: VideoTimerProps) => {
-    const insets = useSafeArea();
     const { visible, startValue = 0, offset = -1 } = props;
     const [seconds, setSeconds] = useState(startValue);
 
@@ -53,7 +52,7 @@ export const VideoTimer = (props: VideoTimerProps) => {
     const displaySeconds = Math.max(0, seconds + offset);
 
     return (visible ?
-        <View style={{ marginTop: insets.top, alignSelf: 'center' }}>
+        <View {...props}>
             <View style={{
                 alignItems: 'flex-start',
                 justifyContent: 'center',

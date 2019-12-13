@@ -15,6 +15,7 @@ import { SEButton, ErrorBox } from '../../../components';
 import { requestLogin } from '../../../redux/actions';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ROUTES } from '../../../constants/routes';
+import { ApplicationState } from '../../../__types__';
 
 // TODO: Implement biometric login
 
@@ -30,9 +31,9 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
     const [biometricAvailable] = useState(true);
     const [biometricType] = useState('TouchID');
     // Redux State
-    const pending = useSelector(state => state.login.pending);
-    const token = useSelector(state => state.login.token);
-    const failures = useSelector(state => state.login.failCount);
+    const pending = useSelector((state: ApplicationState) => state.login.pending);
+    const token = useSelector((state: ApplicationState) => state.login.token);
+    const failures = useSelector((state: ApplicationState) => state.login.failCount);
     const failuresChanged = useCompare(failures);
     const dispatch = useDispatch();
     // Refs

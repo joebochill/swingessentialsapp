@@ -6,10 +6,11 @@ import RNIap, {
 } from 'react-native-iap';
 import { useDispatch, useSelector } from 'react-redux';
 import { purchaseCredits } from '../../../redux/actions';
+import { ApplicationState } from '../../../__types__';
 
 export const RNIAPCallbacks = (props) => {
     const dispatch = useDispatch();
-    const packages = useSelector(state => state.packages.list);
+    const packages = useSelector((state: ApplicationState) => state.packages.list);
 
     useEffect(() => {
         const purchaseUpdateSubscription = purchaseUpdatedListener((purchase: any) => {
