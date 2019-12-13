@@ -17,7 +17,7 @@ type Optionals = Partial<{
 }>;
 type GeneralResponseMapping = {
     [key: number]: (...args: Array<any>) => any;
-  };
+};
 
 export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
     public static get(endpoint: string) {
@@ -51,15 +51,15 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
         }
         return this;
     }
-    public withBody<TBody>(body: TBody): HttpRequest<TResponses> {
-        this.body = body;
+    public withBody<TBody>(body: TBody, stringify:boolean = true): HttpRequest<TResponses> {
+        this.body = stringify ? JSON.stringify(body) : body;
         return this;
     }
-    public onSuccess(callback: Function){
+    public onSuccess(callback: Function) {
         this.successCallback = callback;
         return this;
     }
-    public onFailure(callback: Function){
+    public onFailure(callback: Function) {
         this.failureCallback = callback;
         return this;
     }
@@ -70,27 +70,61 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                 { 'Content-Type': 'application/json' },
                 TOKEN ? { [AUTH]: `Bearer ${TOKEN}` } : {}
             ),
-            body: JSON.stringify(this.body)
+            body: this.body
         })
-        .then(async (response) => {
-            switch(response.status){
-                case 200:
-                    let reply = {};
-                    if(this.method === HttpMethod.PUT){
-                        reply = response;
-                    }
-                    else if(this.method === HttpMethod.GET){
-                        reply = await response.json();
-                    }
-                    if(this.successCallback) this.successCallback(reply);
-                    break;
-                default:
-                    if(this.failureCallback) this.failureCallback(response);
-                    break;
+            .then(async (response) => {
+                switch (response.status) {
+                    case 200:
+                        let reply = {};
+                        if (this.method === HttpMethod.PUT) {
+                            reply = response;
+                        }
+                        else if (this.method === HttpMethod.GET) {
+                            reply = await response.json();
+                        }
+                        if (this.successCallback) this.successCallback(reply);
+                        break;
+                    default:
+                        if (this.failureCallback) this.failureCallback(response);
+                        break;
+                }
+            })
+            .catch((error) => {
+                console.log('FETCH ERROR', error.message);
+            })
+    }
+    public requestWithProgress(onProgress: (this: XMLHttpRequest, ev: ProgressEvent) => any) {
+        return new Promise((res, rej) => {
+            var xhr = new XMLHttpRequest();
+            xhr.open(this.method, `${BASEURL}/${this.endpoint}`);
+            if (TOKEN) {
+                xhr.setRequestHeader(AUTH, `Bearer ${TOKEN}`);
             }
+            xhr.onload = e => res(xhr);
+            xhr.onerror = rej;
+            if (xhr.upload && onProgress)
+                xhr.upload.onprogress = onProgress; // event.loaded / event.total * 100 ; //event.lengthComputable
+            xhr.send(this.body);
         })
-        .catch((error) => {
-            console.log('FETCH ERROR', error.message);
-        })
+            .then(async (response) => {
+                switch (response.status) {
+                    case 200:
+                        let reply = {};
+                        if (this.method === HttpMethod.PUT) {
+                            reply = response;
+                        }
+                        else if (this.method === HttpMethod.GET) {
+                            reply = await response.json();
+                        }
+                        if (this.successCallback) this.successCallback(reply);
+                        break;
+                    default:
+                        if (this.failureCallback) this.failureCallback(response);
+                        break;
+                }
+            })
+            .catch((error) => {
+                console.log('FUTCH ERROR', error.message);
+            })
     }
 }

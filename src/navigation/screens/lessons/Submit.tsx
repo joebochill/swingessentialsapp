@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { View, KeyboardAvoidingView, Image, TextInput, StyleSheet, Alert } from 'react-native';
+import { Platform, View, KeyboardAvoidingView, Image, TextInput, StyleSheet, Alert } from 'react-native';
 import { H7, Label } from '@pxblue/react-native-components';
-import { SEHeader, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox } from '../../../components';
+import { SEHeader, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox, UploadProgressModal } from '../../../components';
 import { sharedStyles, spaces, sizes, purple, fonts, white, unit, transparent, purpleOpacity } from '../../../styles';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import bg from '../../../images/golf_bg.png';
@@ -12,8 +12,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { ROUTES } from '../../../constants/routes';
 import { ApplicationState } from '../../../__types__';
+import { submitLesson } from '../../../redux/actions';
+import { usePrevious } from '../../../utilities';
 
-// TODO: Integrate the API call
 // TODO: Fix the NPM monkeypatch for camera roll
 // TODO: Fix the broken focus & scroll-to behavior
 
@@ -23,17 +24,90 @@ export const Submit = (props) => {
     const [dtl_video, setDTL] = useState('');
     const [useNotes, setUseNotes] = useState(false);
     const [notes, setNotes] = useState('');
-    const pending = useSelector((state:ApplicationState) => state.lessons.redeemPending);
-    const role = useSelector((state:ApplicationState) => state.login.role);
-    const input = useRef(null);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const lessons = useSelector((state: ApplicationState) => state.lessons);
+    // const pending = useSelector((state:ApplicationState) => state.lessons.redeemPending);
+    // const lessonInProgress = useSelector((state: ApplicationState) => state.lessons.pending.length > 0);
+    const role = useSelector((state: ApplicationState) => state.login.role);
+    const scroller = useRef(null);
     const dispatch = useDispatch();
     const roleError = (role === 'anonymous') ? 'You must be signed in to submit lessons.' : (role === 'pending') ? 'You must validate your email address before you can submit lessons' : '';
 
-    useEffect(() => {
-        if (input.current) {
-            input.current.focus();
+    const previousPendingStatus = usePrevious(lessons.redeemPending);
+
+    const _clearFields = useCallback(() => {
+        setFO('');
+        setDTL('');
+        setNotes('');
+        setUseNotes(false);
+        setUploadProgress(0);
+    }, [setFO, setDTL, setNotes, setUseNotes, setUploadProgress]);
+
+    useEffect(() => { // Submission finished
+        if (previousPendingStatus && !lessons.redeemPending) {
+            if (lessons.redeemSuccess) { // Successful redeem
+                _clearFields();
+                setTimeout(() => {
+                    Alert.alert(
+                        'Success!',
+                        'Your lesson request was submitted successfully. We are working on your analysis.',
+                        [
+                            { text: 'OK', onPress: () => navigation.navigate(ROUTES.LESSONS) },
+                        ],
+                        { cancelable: false }
+                    )
+                }, 700);
+            }
+            else { // Fail redeem
+                console.log('TODO: failed redeem');
+                // 400701 means files were stripped for size
+                // 400702 too large
+                setUploadProgress(0);
+                setTimeout(() => {
+                    Alert.alert(
+                        'Oops:',
+                        (lessons.redeemError === 400701 || lessons.redeemError === 400703) ?
+                            'The videos you have submitted are too large. Please edit the videos to be smaller and/or avoid the use of slow-motion video. If this error persists, please contact us.' :
+                            'There was an unexpected error while submitting your swing videos. Please try again later or contact us if the problem persists.',
+                        [{ text: 'OK' }]
+                    )
+                }, 700);
+            }
         }
-    }, [input.current])
+
+    }, [lessons.redeemPending, previousPendingStatus, lessons.redeemError])
+
+    const _submitLesson = useCallback(() => {
+        // TODO: Dismiss keyboard
+        if (role !== 'customer' && role !== 'administrator') {
+            console.log('Invalid user trying to redeem');
+            return;
+        }
+        if (lessons.pending.length > 0) {
+            console.log('Lesson already in progress');
+            return;
+        }
+        if (!fo_video || !dtl_video) {
+            console.log('missing required video');
+            return;
+        }
+        const data = new FormData();
+        data.append('fo', {
+            name: 'fo.mov',
+            uri: fo_video,
+            type: (Platform.OS === 'android' ? 'video/mp4' : 'video/mov')
+        });
+        data.append('dtl', {
+            name: 'dtl.mov',
+            uri: dtl_video,
+            type: (Platform.OS === 'android' ? 'video/mp4' : 'video/mov')
+        });
+        data.append('notes', notes);
+
+        dispatch(submitLesson(data, (event: ProgressEvent) => {
+            setUploadProgress((event.loaded / event.total) * 100);
+        }))
+    }, [role, roleError, fo_video, dtl_video, notes, lessons.pending]);
 
     const _setVideoURI = useCallback((swing: 'fo' | 'dtl', uri: string) => {
         if (swing === 'fo') setFO(uri);
@@ -97,10 +171,15 @@ export const Submit = (props) => {
                 subtitle={'create a new lesson'}
             />
             <KeyboardAvoidingView style={[sharedStyles.pageContainer, { backgroundColor: transparent }]} behavior={'padding'}>
-                <ScrollView contentContainerStyle={sharedStyles.paddingMedium}>
+                <ScrollView contentContainerStyle={sharedStyles.paddingMedium} ref={scroller}>
                     <ErrorBox
                         show={roleError !== ''}
                         error={roleError}
+                        style={{ marginBottom: spaces.medium }}
+                    />
+                    <ErrorBox
+                        show={lessons.pending.length > 0}
+                        error={'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.'}
                         style={{ marginBottom: spaces.medium }}
                     />
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
@@ -146,13 +225,16 @@ export const Submit = (props) => {
                         <>
                             <TextInput
                                 autoCapitalize={'sentences'}
+                                autoFocus
                                 blurOnSubmit={true}
                                 caretHidden
-                                editable={!pending}
+                                editable={!lessons.redeemPending}
                                 maxLength={500}
                                 multiline
                                 onChangeText={(val) => setNotes(val)}
-                                ref={input}
+                                onFocus={() => {
+                                    if(scroller.current) scroller.current.scrollTo({ x: 0, y: 350, animated: true })
+                                }}
                                 returnKeyType={'done'}
                                 spellCheck
                                 textAlignVertical={'top'}
@@ -163,16 +245,26 @@ export const Submit = (props) => {
                             <Label style={{ alignSelf: 'flex-end' }}>{`${500 - notes.length} Characters Left`}</Label>
                         </>
                     }
-                    {roleError.length === 0 && !pending && fo_video !== '' && dtl_video !== '' &&
+                    {(roleError.length === 0 &&
+                        !lessons.redeemPending &&
+                        fo_video !== '' &&
+                        dtl_video !== '' &&
+                        lessons.pending.length <= 0) &&
                         <SEButton
                             containerStyle={{ marginTop: spaces.large }}
                             buttonStyle={{ backgroundColor: purple[400] }}
                             title={<H7 color={'onPrimary'}>SUBMIT</H7>}
-                            onPress={() => Alert.alert('TODO: Submit the videos')}
+                            onPress={() => _submitLesson()}
                         />
                     }
                 </ScrollView>
             </KeyboardAvoidingView>
+            {lessons.redeemPending &&
+                <UploadProgressModal
+                    progress={uploadProgress}
+                    visible={lessons.redeemPending}
+                />
+            }
         </View>
     )
 };

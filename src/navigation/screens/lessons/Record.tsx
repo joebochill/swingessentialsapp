@@ -60,6 +60,7 @@ export const Record = (props) => {
         const options = {
             maxFileSize: 9.5 * 1024 * 1024,
             maxDuration: settings.duration,
+            orientation: 'portrait',
             quality: RNCamera.Constants.VideoQuality['720p']
         };
 
@@ -147,24 +148,26 @@ export const Record = (props) => {
                     />
                 </View>
             }
-            <View style={styles.bar}>
-                <StatusBar barStyle={'light-content'} />
-                <SafeAreaView style={{ height: 56 + getStatusBarHeight(true) }}>
-                    <View style={styles.content}>
-                        {recordingMode && !isRecording && <View style={{ flex: 1 }} />}
-                        {isRecording && !showCountDown &&
-                            <VideoTimer visible={isRecording} />
-                        }
-                        {recordingMode && !isRecording &&
-                            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                <TouchableOpacity onPress={(): void => navigation.push(ROUTES.SETTINGS_GROUP, { navType: 'back' })}>
-                                    <Icon name={'settings'} color={white[50]} />
-                                </TouchableOpacity>
-                            </View>
-                        }
-                    </View>
-                </SafeAreaView>
-            </View>
+            {recordingMode &&
+                <View style={styles.bar}>
+                    <StatusBar barStyle={'light-content'} />
+                    <SafeAreaView style={{ height: 56 + getStatusBarHeight(true) }}>
+                        <View style={styles.content}>
+                            {recordingMode && !isRecording && <View style={{ flex: 1 }} />}
+                            {isRecording && !showCountDown &&
+                                <VideoTimer visible={isRecording} />
+                            }
+                            {recordingMode && !isRecording &&
+                                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                                    <TouchableOpacity onPress={(): void => navigation.push(ROUTES.SETTINGS_GROUP, { navType: 'back' })}>
+                                        <Icon name={'settings'} color={white[50]} />
+                                    </TouchableOpacity>
+                                </View>
+                            }
+                        </View>
+                    </SafeAreaView>
+                </View>
+            }
             {showCountDown &&
                 <CountDown
                     startValue={settings.delay}

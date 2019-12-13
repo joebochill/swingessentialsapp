@@ -3,7 +3,11 @@ export const YOUTUBE_API_KEY = 'AIzaSyBLUJUqz7E3Z5XNcXbMYO9gVmXd0zYAR4U';
 export const APP_VERSION = '3.0.0';
 export const ASYNC_PREFIX = '@SwingEssentials:';
 
-export const BASEURL = 'https://www.swingessentials.com/apis/swingessentials.php';
+export const BASEURL_DEV = 'https://www.swingessentials.com/apis/dev/dev.php';
+export const BASEURL_PROD = 'https://www.swingessentials.com/apis/swingessentials.php';
+
+
+export const BASEURL = BASEURL_DEV;
 export const AUTH = 'Message';
 
 export const TUTORIAL_KEYS = {

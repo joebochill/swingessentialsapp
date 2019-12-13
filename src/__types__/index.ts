@@ -36,6 +36,7 @@ export type LessonsState = {
     closed: Lesson[],
     redeemPending: boolean;
     redeemSuccess: boolean;
+    redeemError: number | null;
 }
 export type TipsState = {
     loading: boolean;

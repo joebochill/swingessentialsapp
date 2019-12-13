@@ -10,6 +10,11 @@ export const sharedStyles = StyleSheet.create({
         right: 0,
         bottom: 0,
     },
+    border: {
+        borderWidth: unit(2),
+        borderRadius: unit(5),
+        borderColor: purple[800],
+    },
     centered: {
         alignItems: 'center',
         justifyContent: 'center',

@@ -1,4 +1,4 @@
-import { GET_LESSONS, LOGOUT } from "../actions/types";
+import { GET_LESSONS, LOGOUT, SUBMIT_LESSON } from "../actions/types";
 import { LessonsState } from "../../__types__";
 
 const initialState: LessonsState = {
@@ -7,6 +7,7 @@ const initialState: LessonsState = {
     closed: [],
     redeemPending: false,
     redeemSuccess: false,
+    redeemError: null,
 }
 
 export const lessonsReducer = (state = initialState, action): LessonsState => {
@@ -27,7 +28,6 @@ export const lessonsReducer = (state = initialState, action): LessonsState => {
             return {
                 ...state,
                 loading: false,
-                selected: null
             };
         case LOGOUT.SUCCESS:
             // case TOKEN_TIMEOUT:
@@ -36,26 +36,28 @@ export const lessonsReducer = (state = initialState, action): LessonsState => {
                 loading: false,
                 pending: [],
                 closed: [],
-                selected: null
             };
-        // case REDEEM_CREDIT.REQUEST:
-        //     return {
-        //         ...state,
-        //         redeemPending: true,
-        //         redeemSuccess: false
-        //     };
-        // case REDEEM_CREDIT.SUCCESS:
-        //     return {
-        //         ...state,
-        //         redeemPending: false,
-        //         redeemSuccess: true
-        //     };
-        // case REDEEM_CREDIT.FAIL:
-        //     return {
-        //         ...state,
-        //         redeemPending: false,
-        //         redeemSuccess: false
-        //     };
+        case SUBMIT_LESSON.REQUEST:
+            return {
+                ...state,
+                redeemPending: true,
+                redeemSuccess: false,
+                redeemError: null,
+            };
+        case SUBMIT_LESSON.SUCCESS:
+            return {
+                ...state,
+                redeemPending: false,
+                redeemSuccess: true,
+                redeemError: null,
+            };
+        case SUBMIT_LESSON.FAILURE:
+            return {
+                ...state,
+                redeemPending: false,
+                redeemSuccess: false,
+                redeemError: parseInt(action.error, 10),
+            };
         // case 'Navigation/NAVIGATE':
         //     return {
         //         ...state,

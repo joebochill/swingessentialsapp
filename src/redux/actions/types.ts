@@ -19,6 +19,7 @@ export const PUT_SETTINGS = createAction('PUT_SETTINGS', 'settings');
 
 /* Lesson Actions */
 export const GET_LESSONS = createAction('GET_LESSONS', 'lessons');
+export const SUBMIT_LESSON = createAction('SUBMIT_LESSON', 'redeem');
 
 /* Tips Actions */
 export const GET_TIPS = createAction('GET_TIPS', 'tips');

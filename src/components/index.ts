@@ -9,3 +9,4 @@ export * from './PXBHeader';
 export * from './SEVideo';
 export * from './RecordButton';
 export * from './Counter';
+export * from './UploadProgressModal';
