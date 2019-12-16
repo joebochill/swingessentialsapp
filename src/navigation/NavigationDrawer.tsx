@@ -159,6 +159,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
             console.log('link to register');
             this.props.navigation.navigate(ROUTES.REGISTER);
         }
+        // TODO: Reset Password (needs to be added to app site association first)
     }
     render() {
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);

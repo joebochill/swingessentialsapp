@@ -82,29 +82,20 @@ export function verifyEmail(code: string) {
     };
 }
 
-// /* Requests a password reset for the account linked to the supplied email address */
-// export function requestReset(data){
-//     return (dispatch) => {
-//         fetch(BASEURL+'reset', {
-//             method: 'PUT',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(data)
-//         })
-//         .then((response) => {
-//             switch(response.status) {
-//                 case 200:
-//                     dispatch(success(REQUEST_RESET.SUCCESS));
-//                     break;
-//                 default:
-//                     checkTimeout(response, dispatch);
-//                     dispatch(failure(REQUEST_RESET.FAIL, response));
-//                     break;
-//             }
-//         })
-//         .catch((error) => {
-//             logLocalError('121: Promise Error: resetting password');
-//         });
-//     }
-// }
+export function requestPasswordReset(data: {email: string}) {
+    return (dispatch: Dispatch) => {
+        dispatch({ type: ACTIONS.RESET_PASSWORD_EMAIL.REQUEST });
+        HttpRequest.put(ACTIONS.RESET_PASSWORD_EMAIL.API)
+            .withBody(data)
+            .onSuccess((response: any) => {
+                console.log(response);
+                dispatch(success(ACTIONS.RESET_PASSWORD_EMAIL.SUCCESS, response));
+            })
+            .onFailure((response: Response) => {
+                console.log(response);
+                dispatch(failure(ACTIONS.RESET_PASSWORD_EMAIL.FAILURE, response));
+                console.log(response.headers.get('Error'));
+            })
+            .request();
+    };
+}

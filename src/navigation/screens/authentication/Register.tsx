@@ -4,7 +4,6 @@ import {
     View,
     KeyboardAvoidingView,
     ScrollView,
-    StyleSheet,
     NativeSyntheticEvent,
     TextInputFocusEventData,
     TextInputSubmitEditingEventData,
@@ -15,6 +14,7 @@ import {
 } from 'react-native';
 import { Input, Icon } from 'react-native-elements';
 import { H7 } from '@pxblue/react-native-components';
+import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { SEHeader, ErrorBox, SEButton } from '../../../components';
 import {
     sharedStyles,
@@ -33,9 +33,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../../__types__';
 import { checkUsernameAvailability, checkEmailAvailability, createAccount, verifyEmail } from '../../../redux/actions';
 import { usePrevious, height } from '../../../utilities';
+import { EMAIL_REGEX } from '../../../constants';
 import { ROUTES } from '../../../constants/routes';
-
-const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
 type RegistrationKeys = {
     firstName: string;
@@ -72,12 +71,15 @@ type RegistrationProperty = {
     items?: Item[];
 };
 
-export const Register = props => {
+export const Register = (props:NavigationStackScreenProps) => {
     const code = props.navigation.getParam('code', null);
     return code ? <VerifyForm {...props} code={code} /> : <RegisterForm {...props} />;
 };
 
-const VerifyForm = props => {
+type VerifyProps =  NavigationStackScreenProps & {
+    code: string;
+}
+const VerifyForm = (props: VerifyProps) => {
     const { code, navigation } = props;
     const verification = useSelector((state: ApplicationState) => state.registration);
     const dispatch = useDispatch();
@@ -126,7 +128,7 @@ const VerifyForm = props => {
     );
 };
 
-const RegisterForm = props => {
+const RegisterForm = (props: NavigationStackScreenProps) => {
     const [fields, setFields] = useState(defaultKeys);
     const firstRef = useRef(null);
     const lastRef = useRef(null);
@@ -287,10 +289,10 @@ const RegisterForm = props => {
                                             paddingHorizontal: 0,
                                             marginTop: index > 0 ? spaces.medium : 0,
                                         }}
-                                        inputContainerStyle={styles.inputContainer}
-                                        inputStyle={styles.input}
+                                        inputContainerStyle={sharedStyles.inputContainer}
+                                        inputStyle={sharedStyles.input}
                                         label={field.label}
-                                        labelStyle={[styles.formLabel]}
+                                        labelStyle={[sharedStyles.formLabel]}
                                         underlineColorAndroid={transparent}
                                         value={fields[field.property]}
                                     />
@@ -303,11 +305,11 @@ const RegisterForm = props => {
                                     autoCapitalize={'none'}
                                     containerStyle={{ paddingHorizontal: 0, marginTop: index > 0 ? spaces.medium : 0 }}
                                     editable={!registration.pending}
-                                    inputContainerStyle={styles.inputContainer}
-                                    inputStyle={styles.input}
+                                    inputContainerStyle={sharedStyles.inputContainer}
+                                    inputStyle={sharedStyles.input}
                                     keyboardType={field.keyboard}
                                     label={field.label}
-                                    labelStyle={[styles.formLabel]}
+                                    labelStyle={[sharedStyles.formLabel]}
                                     onChangeText={
                                         field.onChange
                                             ? field.onChange
@@ -360,7 +362,7 @@ const RegisterForm = props => {
     );
 };
 
-const _getRegistrationErrorMessage = code => {
+const _getRegistrationErrorMessage = (code: number): string => {
     switch (code) {
         case 400302:
             return 'Oops! Your verification link is invalid. Please check your registration email and try again. If you continue to have problems, please contact us.';
@@ -373,30 +375,3 @@ const _getRegistrationErrorMessage = code => {
             return 'Unknown Error: ' + code;
     }
 };
-
-const styles = StyleSheet.create({
-    formLabel: {
-        fontFamily: 'SFCompactDisplay-Regular',
-        color: purple[500],
-        marginLeft: 0,
-        marginTop: 0,
-        fontSize: fonts[14],
-        fontWeight: '500',
-    },
-    input: {
-        color: purple[500],
-        fontSize: fonts[14],
-        textAlignVertical: 'center',
-        paddingHorizontal: spaces.small,
-    },
-    inputContainer: {
-        height: sizes.large,
-        backgroundColor: white[50],
-        marginTop: spaces.small,
-        padding: spaces.small,
-        borderColor: purple[800],
-        borderWidth: unit(1),
-        borderBottomWidth: unit(1),
-        borderRadius: unit(5),
-    },
-});

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { unit, spaces, spaceUnit } from './sizes';
+import { unit, spaces, spaceUnit, fonts, sizes } from './sizes';
 import { purple, white } from './colors';
 
 export const sharedStyles = StyleSheet.create({
@@ -25,10 +25,34 @@ export const sharedStyles = StyleSheet.create({
         borderStyle: 'dashed',
         borderColor: purple[800],
     },
+    formLabel: {
+        fontFamily: 'SFCompactDisplay-Regular',
+        color: purple[500],
+        marginLeft: 0,
+        marginTop: 0,
+        fontSize: fonts[14],
+        fontWeight: '500',
+    },
     image: {
         height: '100%',
         width: '100%',
         resizeMode: 'contain',
+    },
+    input: {
+        color: purple[500],
+        fontSize: fonts[14],
+        textAlignVertical: 'center',
+        paddingHorizontal: spaces.small,
+    },
+    inputContainer: {
+        height: sizes.large,
+        backgroundColor: white[50],
+        marginTop: spaces.small,
+        padding: spaces.small,
+        borderColor: purple[800],
+        borderWidth: unit(1),
+        borderBottomWidth: unit(1),
+        borderRadius: unit(5),
     },
     textTitle: {
         marginTop: spaces.medium,

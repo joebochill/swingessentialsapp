@@ -9,6 +9,8 @@ export const BASEURL_PROD = 'https://www.swingessentials.com/apis/swingessential
 export const BASEURL = BASEURL_DEV;
 export const AUTH = 'Message';
 
+export const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
 export const TUTORIAL_KEYS = {
     LESSON_LIST: 'LESSON_LIST',
     LESSON: 'LESSON',
