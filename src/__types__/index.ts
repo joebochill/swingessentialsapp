@@ -70,6 +70,16 @@ export type SettingsState = {
     overlay: boolean;
     handedness: HandednessType;
 };
+export type RegistrationState = {
+    pending: boolean;
+    userAvailable: boolean;
+    // lastUserChecked: string;
+    emailAvailable: boolean;
+    // lastEmailChecked: string;
+    success: boolean;
+    emailVerified: boolean;
+    error: number;
+}
 
 export type ApplicationState = {
     login: LoginState,
@@ -80,4 +90,5 @@ export type ApplicationState = {
     blogs: BlogsState,
     packages: PackagesState,
     settings: SettingsState,
+    registration: RegistrationState,
 }

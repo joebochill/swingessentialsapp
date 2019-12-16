@@ -8,7 +8,7 @@ import topology from '../images/topology.png';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Body, H7 } from '@pxblue/react-native-components';
 import { ListItem, Icon } from 'react-native-elements';
-import { sharedStyles, purple, white, blackOpacity } from '../styles';
+import { sharedStyles, purple, white, blackOpacity, spaces, sizes, unit } from '../styles';
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 const HEADER_EXPANDED_HEIGHT = 200 + getStatusBarHeight();
@@ -17,7 +17,7 @@ const DRAWER_WIDTH = 350;
 
 import { DrawerContentComponentProps } from 'react-navigation-drawer';
 import { ROUTES } from '../constants/routes';
-import { getLongDate } from '../utilities';
+import { getLongDate, height } from '../utilities';
 import { requestLogout, requestLogin } from '../redux/actions';
 
 type NavigatorProps = DrawerContentComponentProps & {
@@ -47,6 +47,8 @@ function mapStateToProps(state) {
 }
 
 // TODO: Do not make this menu collapsible?
+// TODO: Give enough bottom padding so that it can be fully collapsed
+// Fix the scroll reset when changing tabs and closing
 
 const mapDispatchToProps = {
     logout: requestLogout,
@@ -164,7 +166,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                     </View>
                 </AnimatedSafeAreaView>
                 <ScrollView
-                    contentContainerStyle={[styles.scrollContainer, {}]}
+                    contentContainerStyle={[styles.scrollContainer]}
                     onScroll={Animated.event([
                         {
                             nativeEvent: {
@@ -230,6 +232,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                             );
                         })}
                     </View>
+                        <View style={{height: height*.6}}/>
                 </ScrollView>
                 <SafeAreaView />
             </View>

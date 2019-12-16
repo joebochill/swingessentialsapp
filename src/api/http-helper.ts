@@ -28,7 +28,7 @@ export function xhrfailure(type, response){
 }
 
 /* Dispatch a success action for the supplied action type */
-export function success(type, data = null) {
+export function success(type, data:any = null) {
     return {
         type: type,
         payload: data

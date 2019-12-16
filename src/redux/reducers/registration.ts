@@ -1,0 +1,72 @@
+import { LOGIN, LOGOUT, GET_USER_DATA, CREATE_ACCOUNT, CHECK_USERNAME, CHECK_EMAIL, VERIFY_EMAIL } from '../actions/types';
+import { RegistrationState } from '../../__types__';
+
+// TODO: put a join date in the DB and API
+const initialState: RegistrationState = {
+    pending: false,
+    userAvailable: true,
+    // lastUserChecked: '',
+    emailAvailable: true,
+    // lastEmailChecked: '',
+    success: false,
+    emailVerified: false,
+    error: 0,
+};
+export const registrationReducer = (state = initialState, action): RegistrationState => {
+    switch (action.type) {
+        case CREATE_ACCOUNT.REQUEST:
+            return {
+                ...state,
+                pending: true,
+                success: false,
+            }
+        case CREATE_ACCOUNT.SUCCESS:
+            return {
+                ...state,
+                pending: false,
+                success: true,
+            };
+        case CREATE_ACCOUNT.FAILURE:
+            console.log('reducing failure');
+            return {
+                ...state,
+                pending: false,
+                success: false,
+            };
+        case CHECK_USERNAME.SUCCESS:
+            return {
+                ...state,
+                userAvailable: action.payload.available,
+                // lastUserChecked: action.data.lastChecked
+            }
+        case CHECK_EMAIL.SUCCESS:
+            return {
+                ...state,
+                emailAvailable: action.payload.available,
+                // lastEmailChecked: action.data.lastChecked
+            }
+        // case VERIFY_EMAIL.REQUEST:
+        //     return {
+        //         ...state,
+        //         pendingRegistration: true,
+        //         registrationActivated: false,
+        //         registrationError: 0
+        //     }
+        // case VERIFY_EMAIL.SUCCESS:
+        //     return {
+        //         ...state,
+        //         pendingRegistration: false,
+        //         registrationActivated: true,
+        //         registrationError: 0
+        //     }
+        // case VERIFY_EMAIL.FAILURE:
+        //     return {
+        //         ...state,
+        //         pendingRegistration: false,
+        //         registrationActivated: false,
+        //         registrationError: isNaN(parseInt(action.error, 10)) ? -1 : parseInt(action.error, 10)
+        //     }
+        default:
+            return state;
+    }
+}

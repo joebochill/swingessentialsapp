@@ -1,7 +1,7 @@
 import React from 'react';
 import { Animated, SafeAreaView, ScrollView, StatusBar, StyleSheet, View, RefreshControl, ActivityIndicator } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { SEHeader } from './SEHeader';
+import { SEHeader, SEHeaderProps } from './SEHeader';
 import { PXBHeaderProps } from './PXBHeader';
 import { sharedStyles, spaces } from '../styles';
 
@@ -11,7 +11,7 @@ const HEADER_COLLAPSED_HEIGHT = 56 + getStatusBarHeight();
 type HeaderLayoutState = {
     scrollY: Animated.Value;
 };
-type CollapsibleHeaderLayoutProps = Exclude<PXBHeaderProps, "headerHeight"> & {
+type CollapsibleHeaderLayoutProps = SEHeaderProps & Exclude<PXBHeaderProps, "headerHeight"> & {
     renderScroll?: boolean;
     onRefresh?: Function;
     refreshing?: boolean;

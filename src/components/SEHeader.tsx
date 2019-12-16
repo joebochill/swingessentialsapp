@@ -19,7 +19,7 @@ const BackIcon = wrapIcon({ IconClass: Icon, name: 'arrow-back' });
 const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-variant' });
 const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
 
-type SEHeaderProps = HeaderProps & NavigationInjectedProps & {
+export type SEHeaderProps = HeaderProps & NavigationInjectedProps & {
     mainAction?: NavType;
     showAuth?: boolean,
     dynamic?: boolean,
@@ -40,7 +40,7 @@ export const SEHeader = withNavigation((props: SEHeaderProps) => {
                 ]);
             },
         }
-        : { icon: AccountIcon, onPress: () => props.navigation.navigate(ROUTES.AUTH_GROUP) }] : [];
+        : { icon: AccountIcon, onPress: () => props.navigation.navigate({routeName: ROUTES.AUTH_GROUP, key: ROUTES.AUTH_GROUP}) }] : [];
 
     const Component = props.dynamic ? PXBHeader : Header;
 

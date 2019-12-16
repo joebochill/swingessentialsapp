@@ -33,3 +33,10 @@ export const GET_PACKAGES = createAction('GET_PACKAGES', 'packages');
 /* Credits Actions */
 export const GET_CREDITS = createAction('GET_CREDITS', 'credits');
 export const PURCHASE_CREDITS = createAction('PURCHASE_CREDITS', Platform.OS === 'android' ? 'executeandroidpayment' : 'executeiospayment');
+
+/* Registration Actions */
+export const CHECK_USERNAME = createAction('CHECK_USERNAME', 'checkUser');
+export const CHECK_EMAIL = createAction('CHECK_EMAIL', 'checkEmail');
+export const CREATE_ACCOUNT = createAction('CREATE_ACCOUNT', 'user');
+export const RESET_PASSWORD_EMAIL = createAction('RESET_PASSWORD_EMAIL', 'reset');
+export const VERIFY_EMAIL = createAction('VERIFY_EMAIL', 'verify');

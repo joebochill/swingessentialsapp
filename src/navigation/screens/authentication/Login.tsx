@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: spaces.medium,
     },
     formLabel: {
+        fontFamily: 'SFCompactDisplay-Regular',
         color: purple[500],
         marginLeft: 0,
         marginTop: 0,
