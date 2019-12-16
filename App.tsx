@@ -52,7 +52,7 @@ export const App = () => {
                             background: white[400],
                             surface: white[50],
                             accent: purple[400],
-                            error: red['A100'],
+                            error: red.A100,
                             text: purple[500],
                             onPrimary: white[50],
                         },

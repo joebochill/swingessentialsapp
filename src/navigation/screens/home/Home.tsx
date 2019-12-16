@@ -13,7 +13,7 @@ import { spaces, sharedStyles } from '../../../styles';
 import { PlaceholderLesson } from '../../../constants/lessons';
 import { ApplicationState } from '../../../__types__';
 
-export const Home = (props) => {
+export const Home = props => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
     const tips = useSelector((state: ApplicationState) => state.tips.tipList);
     const credits = useSelector((state: ApplicationState) => state.credits);
@@ -21,29 +21,23 @@ export const Home = (props) => {
     const latestLessons = lessons.closed.length > 0 ? lessons.closed : [PlaceholderLesson];
 
     return (
-        <CollapsibleHeaderLayout
-            backgroundImage={bg}
-            title={'SWING ESSENTIALS'}
-            subtitle={'a pro in your pocket'}
-        >
+        <CollapsibleHeaderLayout backgroundImage={bg} title={'SWING ESSENTIALS'} subtitle={'a pro in your pocket'}>
             <>
-                <View
-                    style={sharedStyles.sectionHeader}>
+                <View style={sharedStyles.sectionHeader}>
                     <H7>Latest Lessons</H7>
                     <Body onPress={() => props.navigation.navigate(ROUTES.LESSONS)}>View All</Body>
                 </View>
                 <Carousel
                     data={latestLessons.slice(0, 5)}
-                    renderItem={({ item, index }) => (
+                    renderItem={({ item }) => (
                         <VideoCard
                             headerTitle={item.request_date}
                             headerSubtitle={'Remote Lesson'}
                             style={{ marginBottom: 16 }}
                             video={item.response_video}
-                            onExpand={() => props.navigation.push(ROUTES.LESSON, {lesson: item})}
+                            onExpand={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                         />
-                    )
-                    }
+                    )}
                     sliderWidth={width}
                     itemWidth={width - 2 * spaces.medium}
                     inactiveSlideScale={0.95}
@@ -96,7 +90,7 @@ export const Home = (props) => {
                 title={
                     <Body font={'regular'} style={{ marginLeft: 16 }}>
                         Order More
-                        </Body>
+                    </Body>
                 }
                 leftIcon={{
                     name: 'shopping-cart',
@@ -104,7 +98,7 @@ export const Home = (props) => {
                 }}
             />
 
-            {tips.length > 0 &&
+            {tips.length > 0 && (
                 <>
                     <View style={[sharedStyles.sectionHeader, { marginTop: 32 }]}>
                         <H7>Tip of the Month</H7>
@@ -112,13 +106,13 @@ export const Home = (props) => {
                     </View>
                     <Carousel
                         data={tips.slice(0, 5)}
-                        renderItem={({ item, index }) => (
+                        renderItem={({ item }) => (
                             <VideoCard
                                 headerTitle={getLongDate(item.date)}
                                 headerSubtitle={item.title}
                                 style={{ marginBottom: 16 }}
                                 video={item.video}
-                                onExpand={() => props.navigation.push(ROUTES.TIP, {tip: item})}
+                                onExpand={() => props.navigation.push(ROUTES.TIP, { tip: item })}
                             />
                         )}
                         sliderWidth={width}
@@ -126,7 +120,7 @@ export const Home = (props) => {
                         inactiveSlideScale={0.95}
                     />
                 </>
-            }
+            )}
         </CollapsibleHeaderLayout>
     );
 };

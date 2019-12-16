@@ -22,5 +22,5 @@ export function loadInitialData(): Function {
         dispatch(loadTips());
         dispatch(loadBlogs());
         dispatch(loadPackages());
-    }
+    };
 }

@@ -1,5 +1,5 @@
-import { GET_LESSONS, LOGOUT, SUBMIT_LESSON } from "../actions/types";
-import { LessonsState } from "../../__types__";
+import { GET_LESSONS, LOGOUT, SUBMIT_LESSON } from '../actions/types';
+import { LessonsState } from '../../__types__';
 
 const initialState: LessonsState = {
     loading: false,
@@ -8,21 +8,21 @@ const initialState: LessonsState = {
     redeemPending: false,
     redeemSuccess: false,
     redeemError: null,
-}
+};
 
 export const lessonsReducer = (state = initialState, action): LessonsState => {
     switch (action.type) {
         case GET_LESSONS.REQUEST:
             return {
                 ...state,
-                loading: true
+                loading: true,
             };
         case GET_LESSONS.SUCCESS:
             return {
                 ...state,
                 loading: false,
                 pending: action.payload.pending,
-                closed: action.payload.closed
+                closed: action.payload.closed,
             };
         case GET_LESSONS.FAILURE:
             return {
@@ -67,4 +67,4 @@ export const lessonsReducer = (state = initialState, action): LessonsState => {
         default:
             return state;
     }
-}
+};

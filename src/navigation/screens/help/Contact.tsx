@@ -8,16 +8,9 @@ const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 
 // TODO: Implement
 
-export const Contact = (props) => (
+export const Contact = () => (
     <View style={sharedStyles.pageContainer}>
-        <SEHeader
-            expandable
-            title={'Contact Us'}
-            subtitle={'...questions, comments, feedback'}
-        />
-        <EmptyState
-            IconClass={AccessTime}
-            title={'Coming Soon'}
-        />
+        <SEHeader expandable title={'Contact Us'} subtitle={'...questions, comments, feedback'} />
+        <EmptyState IconClass={AccessTime} title={'Coming Soon'} />
     </View>
 );

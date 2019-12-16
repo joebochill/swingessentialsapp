@@ -3,7 +3,7 @@ import { unit, spaces, spaceUnit } from './sizes';
 import { purple, white } from './colors';
 
 export const sharedStyles = StyleSheet.create({
-    absoluteFull:{
+    absoluteFull: {
         position: 'absolute',
         top: 0,
         left: 0,
@@ -63,5 +63,5 @@ export const sharedStyles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: spaces.small,
         marginHorizontal: spaces.medium,
-    }
+    },
 });

@@ -20,7 +20,7 @@ type YouTubeProps = ViewProperties & {
     rel?: boolean;
     resumePlayAndroid?: boolean;
     onError?: Function;
-}
+};
 
 const openStandaloneAndroidPlayer = (id: string): void => {
     YouTubeStandaloneAndroid.playVideo({
@@ -28,12 +28,11 @@ const openStandaloneAndroidPlayer = (id: string): void => {
         videoId: id,
         autoplay: true,
         startTime: 0,
-    })
-        .catch((errorMessage: string) => {
-            // logLocalError('136: Youtube Player Error (Tip): ' + errorMessage);
-            console.log('YOUTUBE Player Error: ' + errorMessage);
-        });
-}
+    }).catch((errorMessage: string) => {
+        // logLocalError('136: Youtube Player Error (Tip): ' + errorMessage);
+        console.log('YOUTUBE Player Error: ' + errorMessage);
+    });
+};
 
 export const YouTube = (props: YouTubeProps) => {
     const {
@@ -58,23 +57,20 @@ export const YouTube = (props: YouTubeProps) => {
                 showPlayIcon={true}
                 type="maximum"
             />
-        </View>) : (
-            <YT
-                key={videoId + Date.now()}
-                apiKey={apiKey}
-                videoId={props.videoId}
-                play={play}
-                fullscreen={fullscreen}
-                loop={loop}
-                showinfo={showinfo}
-                modestbranding={modestbranding}
-                controls={controls}
-                rel={rel}
-                {...props}
-            />
-        );
-}
-
-
-
-
+        </View>
+    ) : (
+        <YT
+            key={videoId + Date.now()}
+            apiKey={apiKey}
+            videoId={props.videoId}
+            play={play}
+            fullscreen={fullscreen}
+            loop={loop}
+            showinfo={showinfo}
+            modestbranding={modestbranding}
+            controls={controls}
+            rel={rel}
+            {...props}
+        />
+    );
+};

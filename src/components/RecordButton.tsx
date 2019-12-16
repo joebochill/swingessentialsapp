@@ -1,6 +1,13 @@
 import React from 'react';
 import { transparent, spaces, sizes, unit, fonts, blackOpacity, white } from '../styles';
-import { StyleSheet, View, ViewProps, TouchableOpacityProps, GestureResponderEvent, SafeAreaView, TouchableOpacity } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    ViewProps,
+    TouchableOpacityProps,
+    GestureResponderEvent,
+    TouchableOpacity,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Body } from '@pxblue/react-native-components';
 import { useSafeArea } from 'react-native-safe-area-context';
@@ -8,7 +15,8 @@ import { useSafeArea } from 'react-native-safe-area-context';
 const styles = StyleSheet.create({
     recordRow: {
         position: 'absolute',
-        left: 0, right: 0,
+        left: 0,
+        right: 0,
         flexDirection: 'row',
         alignItems: 'center',
         padding: spaces.medium,
@@ -30,13 +38,13 @@ const styles = StyleSheet.create({
         height: '100%',
         alignSelf: 'stretch',
         backgroundColor: 'red',
-        borderRadius: sizes.xLarge
+        borderRadius: sizes.xLarge,
     },
     innerStop: {
         height: sizes.small,
         width: sizes.small,
         backgroundColor: 'red',
-        borderRadius: unit(2)
+        borderRadius: unit(2),
     },
     label: {
         fontSize: fonts[16],
@@ -47,21 +55,12 @@ type RecordButtonProps = TouchableOpacityProps & {
     recording: boolean;
     onPress: Function;
 };
-export const RecordButton = ({ recording, onPress, style, ...props }: RecordButtonProps) => {
-
+export const RecordButton = ({ recording, onPress, ...props }: RecordButtonProps) => {
     return (
-        <TouchableOpacity
-            onPress={(evt: GestureResponderEvent) => onPress(evt)}
-            style={styles.recordButton}
-            {...props}
-        >
-            {!recording ?
-                <View style={styles.innerRecord} />
-                :
-                <View style={styles.innerStop} />
-            }
+        <TouchableOpacity onPress={(evt: GestureResponderEvent) => onPress(evt)} style={styles.recordButton} {...props}>
+            {!recording ? <View style={styles.innerRecord} /> : <View style={styles.innerStop} />}
         </TouchableOpacity>
-    )
+    );
 };
 
 type VideoControlRowProps = ViewProps & {
@@ -70,26 +69,23 @@ type VideoControlRowProps = ViewProps & {
     onAction: Function;
     onBack: Function;
     onNext: Function;
-}
+};
 export const VideoControls = ({ mode, active, onAction, onBack, onNext, ...props }: VideoControlRowProps) => {
     const insets = useSafeArea();
     return (
-        <View style={[styles.recordRow, {
-            bottom: insets.bottom,
-            backgroundColor: active ? transparent : blackOpacity(0.5)
-        }]} {...props}>
-            <TouchableOpacity
-                onPress={() => onBack()}
-                disabled={active}
-                style={{ flex: 1 }}
-            >
-                {!active &&
-                    <Body style={styles.label}>
-                        {mode === 'record' ? 'Cancel' : 'Retake'}
-                    </Body>
-                }
+        <View
+            style={[
+                styles.recordRow,
+                {
+                    bottom: insets.bottom,
+                    backgroundColor: active ? transparent : blackOpacity(0.5),
+                },
+            ]}
+            {...props}>
+            <TouchableOpacity onPress={() => onBack()} disabled={active} style={{ flex: 1 }}>
+                {!active && <Body style={styles.label}>{mode === 'record' ? 'Cancel' : 'Retake'}</Body>}
             </TouchableOpacity>
-            {mode === 'play' &&
+            {mode === 'play' && (
                 <Icon
                     name={active ? 'pause' : 'play-arrow'}
                     size={sizes.xLarge}
@@ -98,22 +94,11 @@ export const VideoControls = ({ mode, active, onAction, onBack, onNext, ...props
                     style={{ flex: 0 }}
                     onPress={() => onAction()}
                 />
-            }
-            {mode === 'record' &&
-                <RecordButton style={{ flex: 0 }}
-                    recording={active}
-                    onPress={() => onAction()}
-                />
-            }
-            <TouchableOpacity
-                onPress={() => onNext()}
-                disabled={active}
-                style={{ flex: 1, alignItems: 'flex-end' }}
-            >
-                {!active && mode === 'play' &&
-                    <Body style={styles.label}>Use Video</Body>
-                }
-                {!active && mode === 'record' &&
+            )}
+            {mode === 'record' && <RecordButton style={{ flex: 0 }} recording={active} onPress={() => onAction()} />}
+            <TouchableOpacity onPress={() => onNext()} disabled={active} style={{ flex: 1, alignItems: 'flex-end' }}>
+                {!active && mode === 'play' && <Body style={styles.label}>Use Video</Body>}
+                {!active && mode === 'record' && (
                     <Icon
                         type={'ionicon'}
                         name={'ios-reverse-camera'}
@@ -122,9 +107,8 @@ export const VideoControls = ({ mode, active, onAction, onBack, onNext, ...props
                         color={white[50]}
                         onPress={() => onNext()}
                     />
-                }
+                )}
             </TouchableOpacity>
-
-        </View >
+        </View>
     );
-}
+};

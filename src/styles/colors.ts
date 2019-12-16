@@ -5,22 +5,22 @@ export const transparent = 'transparent';
 export const purpleOpacity = (opacity: number): string => {
     const op = Math.max(0, Math.min(1, opacity));
     return `rgba(35,31,97,${op})`;
-}
+};
 export const blackOpacity = (opacity: number): string => {
     const op = Math.max(0, Math.min(1, opacity));
     return `rgba(0,0,0,${op})`;
-}
+};
 export const whiteOpacity = (opacity: number): string => {
     const op = Math.max(0, Math.min(1, opacity));
     return `rgba(255,255,255,${op})`;
-}
+};
 
 export const purple = {
     50: '#e5e4ec',
     100: '#bdbcd0',
     200: '#918fb0',
     300: '#656290',
-    400: '#4F4C81',//'#444179',
+    400: '#4F4C81', //'#444179',
     500: '#231f61',
     600: '#1f1b59',
     700: '#1a174f',
@@ -30,7 +30,7 @@ export const purple = {
     A200: '#413bff',
     A400: '#0f08ff',
     A700: '#0700ed',
-    'contrastDefaultColor': 'light',
+    contrastDefaultColor: 'light',
 };
 export const white = {
     50: '#ffffff',
@@ -43,7 +43,7 @@ export const white = {
     700: '#ececec',
     800: '#e9e9e9',
     900: '#e5e5e5',
-    'contrastDefaultColor': 'dark'
+    contrastDefaultColor: 'dark',
 };
 export const red = {
     50: '#f9e8e8',
@@ -60,7 +60,7 @@ export const red = {
     A200: '#ca3c3d',
     A400: '#bd2e2f',
     A700: '#ab1a1a',
-    'contrastDefaultColor': 'light'
+    contrastDefaultColor: 'light',
 };
 export const black = {
     50: '#e8eaea',
@@ -77,7 +77,7 @@ export const black = {
     A200: '#181f22',
     A400: '#0b0e10',
     A700: '#000000',
-    'contrastDefaultColor': 'light'
+    contrastDefaultColor: 'light',
 };
 
 export const gray = {
@@ -95,7 +95,7 @@ export const gray = {
     A200: '#c2dafe',
     A400: '#268fca',
     A700: '#007bc1',
-    'contrastDefaultColor': 'light'
+    contrastDefaultColor: 'light',
 };
 export const oledBlack = {
     50: '#202224',
@@ -108,5 +108,5 @@ export const oledBlack = {
     700: '#0b0e0f',
     800: '#000000',
     900: '#000000',
-    'contrastDefaultColor': 'light'
+    contrastDefaultColor: 'light',
 };

@@ -51,7 +51,7 @@ const SettingsStack = createStackNavigator(
         [ROUTES.SETTING]: SingleSetting,
     },
     { initialRouteName: ROUTES.SETTINGS, headerMode: 'none' },
-)
+);
 const AppStack = createDrawerNavigator(
     {
         [ROUTES.HOME_GROUP]: {

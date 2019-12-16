@@ -16,5 +16,5 @@ export function loadTips() {
                 console.log(response.headers.get('Error'));
             })
             .request();
-    }
+    };
 }

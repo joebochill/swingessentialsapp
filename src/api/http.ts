@@ -8,7 +8,7 @@ export enum HttpMethod {
     PUT = 'PUT',
     PATCH = 'PATCH',
     GET = 'GET',
-    DELETE = 'DELETE'
+    DELETE = 'DELETE',
 }
 type Optionals = Partial<{
     body: any;
@@ -51,7 +51,7 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
         }
         return this;
     }
-    public withBody<TBody>(body: TBody, stringify:boolean = true): HttpRequest<TResponses> {
+    public withBody<TBody>(body: TBody, stringify: boolean = true): HttpRequest<TResponses> {
         this.body = stringify ? JSON.stringify(body) : body;
         return this;
     }
@@ -66,20 +66,16 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
     public request() {
         return fetch(`${BASEURL}/${this.endpoint}`, {
             method: this.method,
-            headers: Object.assign(
-                { 'Content-Type': 'application/json' },
-                TOKEN ? { [AUTH]: `Bearer ${TOKEN}` } : {}
-            ),
-            body: this.body
+            headers: Object.assign({ 'Content-Type': 'application/json' }, TOKEN ? { [AUTH]: `Bearer ${TOKEN}` } : {}),
+            body: this.body,
         })
-            .then(async (response) => {
+            .then(async response => {
                 switch (response.status) {
                     case 200:
                         let reply = {};
                         if (this.method === HttpMethod.PUT) {
                             reply = response;
-                        }
-                        else if (this.method === HttpMethod.GET) {
+                        } else if (this.method === HttpMethod.GET) {
                             reply = await response.json();
                         }
                         if (this.successCallback) this.successCallback(reply);
@@ -89,9 +85,9 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                         break;
                 }
             })
-            .catch((error) => {
+            .catch(error => {
                 console.log('FETCH ERROR', error.message);
-            })
+            });
     }
     public requestWithProgress(onProgress: (this: XMLHttpRequest, ev: ProgressEvent) => any) {
         return new Promise((res, rej) => {
@@ -102,18 +98,16 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
             }
             xhr.onload = e => res(xhr);
             xhr.onerror = rej;
-            if (xhr.upload && onProgress)
-                xhr.upload.onprogress = onProgress; // event.loaded / event.total * 100 ; //event.lengthComputable
+            if (xhr.upload && onProgress) xhr.upload.onprogress = onProgress; // event.loaded / event.total * 100 ; //event.lengthComputable
             xhr.send(this.body);
         })
-            .then(async (response) => {
+            .then(async response => {
                 switch (response.status) {
                     case 200:
                         let reply = {};
                         if (this.method === HttpMethod.PUT) {
                             reply = response;
-                        }
-                        else if (this.method === HttpMethod.GET) {
+                        } else if (this.method === HttpMethod.GET) {
                             reply = await response.json();
                         }
                         if (this.successCallback) this.successCallback(reply);
@@ -123,8 +117,8 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                         break;
                 }
             })
-            .catch((error) => {
+            .catch(error => {
                 console.log('FUTCH ERROR', error.message);
-            })
+            });
     }
 }

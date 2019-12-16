@@ -7,7 +7,7 @@ const initialState: CreditsState = {
     // unlimitedExpires: 0,
     inProgress: false,
     success: false,
-    fail: false
+    fail: false,
 };
 export const creditsReducer = (state = initialState, action): CreditsState => {
     switch (action.type) {
@@ -16,7 +16,7 @@ export const creditsReducer = (state = initialState, action): CreditsState => {
                 ...state,
                 success: false,
                 fail: false,
-                inProgress: true
+                inProgress: true,
             };
         case GET_CREDITS.SUCCESS:
             return {
@@ -28,7 +28,7 @@ export const creditsReducer = (state = initialState, action): CreditsState => {
             };
         case GET_CREDITS.FAILURE:
         case LOGOUT.SUCCESS:
-        // case TOKEN_TIMEOUT:
+            // case TOKEN_TIMEOUT:
             return {
                 ...state,
                 inProgress: false,
@@ -41,22 +41,22 @@ export const creditsReducer = (state = initialState, action): CreditsState => {
                 ...state,
                 inProgress: true,
                 success: false,
-                fail: false
-            }
+                fail: false,
+            };
         case PURCHASE_CREDITS.SUCCESS:
             return {
                 ...state,
                 inProgress: false,
                 success: true,
-                fail: false
-            }
+                fail: false,
+            };
         case PURCHASE_CREDITS.FAILURE:
             return {
                 ...state,
                 inProgress: false,
                 success: false,
-                fail: true
-            }
+                fail: true,
+            };
         // case 'Navigation/NAVIGATE':
         //     return {
         //         ...state,

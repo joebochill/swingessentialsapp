@@ -6,7 +6,7 @@ type FAQ = {
     answer_android: string;
     answer_ios: string;
     video: string;
-}
+};
 
 //TODO: Build a FAQ API to fetch this data from the DB
 
@@ -18,7 +18,7 @@ export const FAQData: Array<FAQ> = [
         answer: `Once you have downloaded the app, head over to the Redeem page from the menu. There you will be able to use your device's camera to record two videos of your swing (one face-on view and one down-the-line view). Once you are satisfied with the recording, you can submit your videos for expert analysis. Our PGA professional will build a custom swing analysis video for you comparing your swing side by side with a professional golfer. This analysis will highlight some of the things you are doing well and give you some things to work on in your next session to help you continue to improve your game.`,
         answer_android: '',
         answer_ios: '',
-        video: 'e8QozoBJfF8'
+        video: 'e8QozoBJfF8',
     },
     {
         id: 2,
@@ -84,11 +84,3 @@ export const FAQData: Array<FAQ> = [
         video: '',
     },
 ];
-
-
-
-
-
-
-
-

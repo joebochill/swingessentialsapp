@@ -7,7 +7,7 @@ import {
     StatusBar,
     Platform,
     TouchableOpacity,
-    View
+    View,
 } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import color from 'color';
@@ -44,7 +44,7 @@ export interface PXBHeaderProps {
     backgroundImage?: ImageSourcePropType;
 
     /** Height of the header */
-    headerHeight: Animated.AnimatedInterpolation
+    headerHeight: Animated.AnimatedInterpolation;
 
     /**
      * Overrides for theme
@@ -52,7 +52,7 @@ export interface PXBHeaderProps {
     theme?: $DeepPartial<Theme>;
 }
 
-interface HeaderState { }
+interface HeaderState {}
 
 class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
     static readonly REGULAR_HEIGHT = 56 + getStatusBarHeight(true);
@@ -76,7 +76,7 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
                     </Animated.View>
                 </AnimatedSafeAreaView>
             </View>
-        )
+        );
     }
 
     private backgroundImage() {
@@ -94,8 +94,8 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
                         height: headerHeight,
                         opacity: headerHeight.interpolate({
                             inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                            outputRange: [0.2, 0.3]
-                        })
+                            outputRange: [0.2, 0.3],
+                        }),
                     }}
                 />
             );
@@ -107,17 +107,20 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
         if (navigation) {
             return (
                 <View>
-                    <TouchableOpacity testID={'header-navigation'} onPress={navigation.onPress} style={styles.navigation}>
+                    <TouchableOpacity
+                        testID={'header-navigation'}
+                        onPress={navigation.onPress}
+                        style={styles.navigation}>
                         {this.icon(navigation.icon)}
                     </TouchableOpacity>
                 </View>
-            )
+            );
         }
     }
 
-    private icon(IconClass: ComponentType<{ size: number, color: string }>) {
+    private icon(IconClass: ComponentType<{ size: number; color: string }>) {
         if (IconClass) {
-            return <IconClass size={HeaderClass.ICON_SIZE} color={this.fontColor()} />
+            return <IconClass size={HeaderClass.ICON_SIZE} color={this.fontColor()} />;
         }
     }
 
@@ -126,15 +129,17 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
         let content = [this.title(), this.info(), this.subtitle()];
 
         return (
-            <Animated.View style={[styles.titleContainer, {
-                marginRight: headerHeight.interpolate({
-                    inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                    outputRange: [this.actionPanelWidth(), 0]
-                })
-            }]}>
-                <View style={{ flex: 0, justifyContent: 'center' }}>
-                    {content}
-                </View>
+            <Animated.View
+                style={[
+                    styles.titleContainer,
+                    {
+                        marginRight: headerHeight.interpolate({
+                            inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
+                            outputRange: [this.actionPanelWidth(), 0],
+                        }),
+                    },
+                ]}>
+                <View style={{ flex: 0, justifyContent: 'center' }}>{content}</View>
             </Animated.View>
         );
     }
@@ -147,11 +152,10 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
                 testID={'header-title'}
                 style={this.titleStyle()}
                 numberOfLines={1}
-                ellipsizeMode={'tail'}
-            >
+                ellipsizeMode={'tail'}>
                 {title}
             </Animated.Text>
-        )
+        );
     }
 
     private subtitle() {
@@ -163,8 +167,7 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
                     testID={'header-subtitle'}
                     style={this.subtitleStyle()}
                     numberOfLines={1}
-                    ellipsizeMode={'tail'}
-                >
+                    ellipsizeMode={'tail'}>
                     {subtitle}
                 </Animated.Text>
             );
@@ -180,8 +183,7 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
                     testID={'header-info'}
                     style={this.infoStyle()}
                     numberOfLines={1}
-                    ellipsizeMode={'tail'}
-                >
+                    ellipsizeMode={'tail'}>
                     {info}
                 </Animated.Text>
             );
@@ -197,33 +199,42 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
                 <View style={styles.actionPanel}>
                     {items.slice(0, 3).map((actionItem, index) => (
                         <View key={`action_${index}`}>
-                            <TouchableOpacity testID={`header-action-item${index}`} onPress={actionItem.onPress} style={index !== 0 ? styles.actionItem : {}}>
+                            <TouchableOpacity
+                                testID={`header-action-item${index}`}
+                                onPress={actionItem.onPress}
+                                style={index !== 0 ? styles.actionItem : {}}>
                                 {this.icon(actionItem.icon)}
                             </TouchableOpacity>
                         </View>
                     ))}
                 </View>
-            )
+            );
         }
     }
 
     private barStyle() {
         const { headerHeight } = this.props;
-        return [styles.bar, {
-            height: headerHeight,
-            backgroundColor: this.backgroundColor()
-        }];
+        return [
+            styles.bar,
+            {
+                height: headerHeight,
+                backgroundColor: this.backgroundColor(),
+            },
+        ];
     }
 
     private contentStyle() {
         const { headerHeight } = this.props;
         const contractedPadding = this.props.subtitle ? 12 : 16;
-        return [styles.content, {
-            paddingBottom: headerHeight.interpolate({
-                inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                outputRange: [contractedPadding, 28]
-            })
-        }];
+        return [
+            styles.content,
+            {
+                paddingBottom: headerHeight.interpolate({
+                    inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
+                    outputRange: [contractedPadding, 28],
+                }),
+            },
+        ];
     }
 
     private titleStyle() {
@@ -232,13 +243,13 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
             color: this.fontColor(),
             lineHeight: headerHeight.interpolate({
                 inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                outputRange: [theme.sizes.large, 30]
+                outputRange: [theme.sizes.large, 30],
             }),
             fontFamily: theme.fonts.semiBold.fontFamily,
             fontSize: headerHeight.interpolate({
                 inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                outputRange: [theme.sizes.large, 30]
-            })
+                outputRange: [theme.sizes.large, 30],
+            }),
         };
     }
 
@@ -258,17 +269,17 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
             color: this.fontColor(),
             lineHeight: headerHeight.interpolate({
                 inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                outputRange: [0.1, theme.sizes.large * 1.05] // Avoid clipping top of CAP letters
+                outputRange: [0.1, theme.sizes.large * 1.05], // Avoid clipping top of CAP letters
             }),
             opacity: headerHeight.interpolate({
                 inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                outputRange: [0, 1]
+                outputRange: [0, 1],
             }),
             fontFamily: theme.fonts.regular.fontFamily,
             fontSize: headerHeight.interpolate({
                 inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                outputRange: [0.1, theme.sizes.large]
-            })
+                outputRange: [0.1, theme.sizes.large],
+            }),
         };
     }
 
@@ -289,11 +300,13 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
     private actionPanelWidth() {
         const { actionItems } = this.props;
         let length = actionItems ? actionItems.length : 0;
-        if (length < 1) return 0;
+        if (length < 1) {
+            return 0;
+        }
         length = Math.min(3, length);
-        return (length * (HeaderClass.ICON_SIZE + HeaderClass.ICON_SPACING))
+        return length * (HeaderClass.ICON_SIZE + HeaderClass.ICON_SPACING);
     }
-};
+}
 
 /**
  * Header component
@@ -329,21 +342,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     navigation: {
-        marginRight: 32
+        marginRight: 32,
     },
     titleContainer: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     actionPanel: {
         flexDirection: 'row',
         alignItems: 'center',
         position: 'absolute',
         right: 16,
-        height: 56
+        height: 56,
     },
     actionItem: {
-        marginLeft: 16
-    }
+        marginLeft: 16,
+    },
 });

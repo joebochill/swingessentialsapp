@@ -2,10 +2,10 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { View, TouchableOpacity, StatusBar, Platform, Image, StyleSheet, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { sharedStyles, oledBlack, blackOpacity, transparent, spaces, purple, white } from '../../../styles';
+import { sharedStyles, oledBlack, blackOpacity, spaces, white } from '../../../styles';
 import { RNCamera } from 'react-native-camera';
 import { HandednessType, SwingType, CameraType } from '../../../__types__';
-import { VideoControls, CountDown, VideoTimer, SEHeader } from '../../../components';
+import { VideoControls, CountDown, VideoTimer } from '../../../components';
 import Video from 'react-native-video';
 import { ApplicationState } from '../../../__types__';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -18,24 +18,23 @@ import downthelineRH from '../../../images/overlay-dtl-rh.png';
 import { ROUTES } from '../../../constants/routes';
 import { Icon } from 'react-native-elements';
 
-const DESIRED_RATIO = "16:9";
-
+const DESIRED_RATIO = '16:9';
 
 const getOverlayImage = (swing: SwingType, handedness: HandednessType, camera: CameraType) => {
-    let options = (swing === 'dtl') ? [downthelineRH, downthelineLH] : [faceonRH, faceonLH];
+    let options = swing === 'dtl' ? [downthelineRH, downthelineLH] : [faceonRH, faceonLH];
     let index = 0;
 
     if ((handedness === 'left' && camera === 'back') || (handedness === 'right' && camera === 'front')) {
         index = 1;
     }
     return options[index];
-}
+};
 
-export const Record = (props) => {
+export const Record = props => {
     const { navigation } = props;
     const cameraRef = useRef(null);
-    const onReturn = props.navigation.getParam('onReturn', () => { });
-    const swing: SwingType = props.navigation.getParam('swing', () => { });
+    const onReturn = props.navigation.getParam('onReturn', () => {});
+    const swing: SwingType = props.navigation.getParam('swing', () => {});
 
     const settings = useSelector((state: ApplicationState) => state.settings);
 
@@ -61,7 +60,7 @@ export const Record = (props) => {
             maxFileSize: 9.5 * 1024 * 1024,
             maxDuration: settings.duration,
             orientation: 'portrait',
-            quality: RNCamera.Constants.VideoQuality['720p']
+            quality: RNCamera.Constants.VideoQuality['720p'],
         };
 
         const _video = await cameraRef.current.recordAsync(options);
@@ -77,18 +76,20 @@ export const Record = (props) => {
             console.log('camera error');
             return;
         }
-        if (isRecording) cameraRef.current.stopRecording();
+        if (isRecording) {
+            cameraRef.current.stopRecording();
+        }
 
         setRecordedVideo('');
         setIsRecording(false);
-    }, []);
+    }, [isRecording]);
 
     useEffect(() => {
         if (Platform.OS === 'android' && cameraRef.current) {
             const getAvailableRatios = async () => {
                 const ratios = await cameraRef.current.getSupportedRatiosAsync();
                 setCameraRatios(ratios);
-            }
+            };
             getAvailableRatios();
         }
     }, [cameraRef]);
@@ -96,15 +97,21 @@ export const Record = (props) => {
     const VideoRecorder = (
         <RNCamera
             ref={cameraRef}
-            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: 'orange' }}
+            style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'orange',
+            }}
             type={RNCamera.Constants.Type[cameras[cameraType]]}
             // onCameraReady={() => setRecordingMode(true)}
-            flashMode={showCountDown ?
-                RNCamera.Constants.FlashMode['torch'] :
-                RNCamera.Constants.FlashMode['off']
-            }
+            flashMode={showCountDown ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
             captureAudio={false}
-            ratio={cameraRatios.find((ratio) => ratio === DESIRED_RATIO) || cameraRatios[cameraRatios.length - 1]}
+            ratio={cameraRatios.find(ratio => ratio === DESIRED_RATIO) || cameraRatios[cameraRatios.length - 1]}
             androidCameraPermissionOptions={{
                 title: 'Permission to use camera',
                 message: 'We need your permission to use your camera',
@@ -131,7 +138,7 @@ export const Record = (props) => {
             repeat={true}
             playInBackground={false}
             playWhenInactive={false}
-            ignoreSilentSwitch={"ignore"}
+            ignoreSilentSwitch={'ignore'}
             style={{ height: '100%', width: '100%' }}
         />
     );
@@ -139,78 +146,80 @@ export const Record = (props) => {
         <View style={{ flex: 1, alignItems: 'stretch', backgroundColor: oledBlack[900] }}>
             {recordingMode && VideoRecorder}
             {!recordingMode && VideoPlayer}
-            {recordingMode && settings.overlay &&
+            {recordingMode && settings.overlay && (
                 <View style={[sharedStyles.absoluteFull, sharedStyles.centered]}>
                     <Image
-                        resizeMethod='resize'
+                        resizeMethod="resize"
                         style={{ height: '100%', width: '100%', opacity: 0.35, resizeMode: 'contain' }}
                         source={getOverlayImage(swing, settings.handedness, cameras[cameraType])}
                     />
                 </View>
-            }
-            {recordingMode &&
+            )}
+            {recordingMode && (
                 <View style={styles.bar}>
                     <StatusBar barStyle={'light-content'} />
                     <SafeAreaView style={{ height: 56 + getStatusBarHeight(true) }}>
                         <View style={styles.content}>
                             {recordingMode && !isRecording && <View style={{ flex: 1 }} />}
-                            {isRecording && !showCountDown &&
-                                <VideoTimer visible={isRecording} />
-                            }
-                            {recordingMode && !isRecording &&
+                            {isRecording && !showCountDown && <VideoTimer visible={isRecording} />}
+                            {recordingMode && !isRecording && (
                                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                    <TouchableOpacity onPress={(): void => navigation.push(ROUTES.SETTINGS_GROUP, { navType: 'back' })}>
+                                    <TouchableOpacity
+                                        onPress={(): void =>
+                                            navigation.push(ROUTES.SETTINGS_GROUP, { navType: 'back' })
+                                        }>
                                         <Icon name={'settings'} color={white[50]} />
                                     </TouchableOpacity>
                                 </View>
-                            }
+                            )}
                         </View>
                     </SafeAreaView>
                 </View>
-            }
-            {showCountDown &&
-                <CountDown
-                    startValue={settings.delay}
-                    onFinish={() => _startRecording()}
-                />
-            }
+            )}
+            {showCountDown && <CountDown startValue={settings.delay} onFinish={() => _startRecording()} />}
             <VideoControls
                 mode={recordingMode ? 'record' : 'play'}
                 active={isRecording || isPlaying}
-                onAction={recordingMode ?
-                    () => { // Start / End recording
-                        if (!isRecording) {
-                            setCountdownStarted(true);
-                            setIsRecording(true);
-                        }
-                        else _endRecording();
-                    } :
-                    () => { // Play / Pause the video
-                        setIsPlaying(!isPlaying);
-                    }
+                onAction={
+                    recordingMode
+                        ? () => {
+                              // Start / End recording
+                              if (!isRecording) {
+                                  setCountdownStarted(true);
+                                  setIsRecording(true);
+                              } else {
+                                  _endRecording();
+                              }
+                          }
+                        : () => {
+                              // Play / Pause the video
+                              setIsPlaying(!isPlaying);
+                          }
                 }
-                onBack={recordingMode ?
-                    () => props.navigation.pop() // Go Back
-                    :
-                    () => {
-                        setRecordingMode(true);
-                        setRecordedVideo('');
-                    }
+                onBack={
+                    recordingMode
+                        ? () => props.navigation.pop() // Go Back
+                        : () => {
+                              setRecordingMode(true);
+                              setRecordedVideo('');
+                          }
                 }
-                onNext={recordingMode ?
-                    () => { // Toggle Camera
-                        setCameraType((cameraType + 1) % cameras.length)
-                    }
-                    :
-                    () => { // Use-Video
-                        onReturn(recordedVideo);
-                        props.navigation.pop();
-                    }
+                onNext={
+                    recordingMode
+                        ? () => {
+                              // Toggle Camera
+                              setCameraType((cameraType + 1) % cameras.length);
+                          }
+                        : () => {
+                              // Use-Video
+                              onReturn(recordedVideo);
+                              props.navigation.pop();
+                          }
                 }
             />
-        </View >
+        </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     bar: {
@@ -230,5 +239,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-    }
-})
+    },
+});

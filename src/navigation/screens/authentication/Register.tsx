@@ -1,9 +1,33 @@
 import React, { useState, useRef, RefObject, useCallback, useEffect } from 'react';
-import { Alert, View, KeyboardAvoidingView, ScrollView, StyleSheet, NativeSyntheticEvent, TextInputFocusEventData, TextInputSubmitEditingEventData, Keyboard, KeyboardType, Platform, ActivityIndicator } from 'react-native';
+import {
+    Alert,
+    View,
+    KeyboardAvoidingView,
+    ScrollView,
+    StyleSheet,
+    NativeSyntheticEvent,
+    TextInputFocusEventData,
+    TextInputSubmitEditingEventData,
+    Keyboard,
+    KeyboardType,
+    Platform,
+    ActivityIndicator,
+} from 'react-native';
 import { Input, Icon } from 'react-native-elements';
 import { H7 } from '@pxblue/react-native-components';
 import { SEHeader, ErrorBox, SEButton } from '../../../components';
-import { sharedStyles, transparent, unit, red, sizes, spaces, fonts, white, purple, blackOpacity } from '../../../styles';
+import {
+    sharedStyles,
+    transparent,
+    unit,
+    red,
+    sizes,
+    spaces,
+    fonts,
+    white,
+    purple,
+    blackOpacity,
+} from '../../../styles';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../../__types__';
@@ -21,7 +45,7 @@ type RegistrationKeys = {
     password: string;
     confirm: string;
     heard: string;
-}
+};
 const defaultKeys: RegistrationKeys = {
     firstName: '',
     lastName: '',
@@ -38,7 +62,7 @@ type RegistrationProperty = {
     ref?: RefObject<Input>;
     label: string;
     type?: 'text' | 'select';
-    keyboard?: KeyboardType,
+    keyboard?: KeyboardType;
     secure?: boolean;
     onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
     onChange?: (value: string) => void;
@@ -46,80 +70,63 @@ type RegistrationProperty = {
     hasError?: boolean;
     errorMessage?: string;
     items?: Item[];
-}
+};
 
-export const Register = (props) => {
+export const Register = props => {
     const code = props.navigation.getParam('code', null);
     return code ? <VerifyForm {...props} code={code} /> : <RegisterForm {...props} />;
-}
+};
 
-const VerifyForm = (props) => {
+const VerifyForm = props => {
     const { code, navigation } = props;
     const verification = useSelector((state: ApplicationState) => state.registration);
-    const previousPendingState = usePrevious(verification.pending);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (code) {
-            console.log('registration code: ' + code);
             dispatch(verifyEmail(code));
         }
-    }, [code]);
-
-    useEffect(() => { // Verification finished
-        if (previousPendingState && !verification.pending) {
-            if (verification.emailVerified) { // Successful
-                // props.navigation.goBack(ROUTES.AUTH_GROUP);
-                console.log('verified successfully');
-                // TODO
-            }
-            else {
-                // TODO: Log error
-                console.log('verification failed');
-                console.log(verification.error);
-                // Alert.alert(
-                //     'Oops:',
-                //     'Your account registration has failed. Please try again later and contact us if the problem continues.',
-                //     [{ text: 'OK' }]
-                // );
-            }
-        }
-    }, [previousPendingState, verification])
+    }, [code, dispatch]);
 
     return (
         <View style={sharedStyles.pageContainer}>
-            <SEHeader
-                title={'Sign Up'}
-                subtitle={'confirm your email'}
-                mainAction={'back'}
-                showAuth={false}
-            />
+            <SEHeader title={'Sign Up'} subtitle={'confirm your email'} mainAction={'back'} showAuth={false} />
             <View style={[sharedStyles.paddingMedium, { flex: 1, justifyContent: 'center' }]}>
-                {verification.pending &&
+                {verification.pending && (
                     <>
                         <ActivityIndicator size={'large'} color={purple[800]} />
-                        <H7 font={'regular'} style={{ textAlign: 'center' }}>Verifying your email address...</H7>
+                        <H7 font={'regular'} style={{ textAlign: 'center' }}>
+                            Verifying your email address...
+                        </H7>
                     </>
-                }
-                {!verification.pending &&
+                )}
+                {!verification.pending && (
                     <>
-                        <Icon name={verification.emailVerified ? 'check-circle' : 'error'} size={sizes.jumbo} color={verification.emailVerified ? purple[400] : red[500]} />
-                        <H7 font={'regular'} style={{ textAlign: 'center' }}>{verification.emailVerified ? 'Your email address has been confirmed. Please sign in to view your account.' : _getRegistrationErrorMessage(verification.error)}</H7>
-                        {verification.emailVerified &&
+                        <Icon
+                            name={verification.emailVerified ? 'check-circle' : 'error'}
+                            size={sizes.jumbo}
+                            color={verification.emailVerified ? purple[400] : red[500]}
+                        />
+                        <H7 font={'regular'} style={{ textAlign: 'center' }}>
+                            {verification.emailVerified
+                                ? 'Your email address has been confirmed. Please sign in to view your account.'
+                                : _getRegistrationErrorMessage(verification.error)}
+                        </H7>
+                        {verification.emailVerified && (
                             <SEButton
                                 style={{ marginTop: spaces.medium }}
                                 title={'Sign In'}
                                 onPress={() => navigation.popToTop()}
                             />
-                        }
+                        )}
                     </>
-                }
+                )}
             </View>
         </View>
-    )
-}
+    );
+};
 
-const RegisterForm = (props) => {
+const RegisterForm = props => {
     const [fields, setFields] = useState(defaultKeys);
     const firstRef = useRef(null);
     const lastRef = useRef(null);
@@ -136,43 +143,55 @@ const RegisterForm = (props) => {
 
     const dispatch = useDispatch();
 
-    useEffect(() => { // Registration finished
+    useEffect(() => {
+        // Registration finished
         if (previousPendingState && !registration.pending) {
-            if (registration.success) { // Successful
+            if (registration.success) {
+                // Successful
                 props.navigation.goBack(ROUTES.AUTH_GROUP);
-            }
-            else {
+            } else {
                 // TODO: Log error
                 Alert.alert(
                     'Oops:',
                     'Your account registration has failed. Please try again later and contact us if the problem continues.',
-                    [{ text: 'OK' }]
+                    [{ text: 'OK' }],
                 );
             }
         }
-    }, [previousPendingState, registration])
+    }, [previousPendingState, props.navigation, registration]);
 
     const _canSubmit = useCallback((): boolean => {
         const keys: RegistrationKey[] = Object.keys(fields) as RegistrationKey[];
         for (let i = 0; i < keys.length; i++) {
-            if (fields[keys[i]].length <= 0) return false
+            if (fields[keys[i]].length <= 0) {
+                return false;
+            }
         }
-        if (fields.password !== fields.confirm) return false;
-        if (!fields.email.match(EMAIL_REGEX)) return false;
-        if (!registration.emailAvailable) return false;
+        if (fields.password !== fields.confirm) {
+            return false;
+        }
+        if (!fields.email.match(EMAIL_REGEX)) {
+            return false;
+        }
+        if (!registration.emailAvailable) {
+            return false;
+        }
         return true;
-
-    }, [fields, registration])
+    }, [fields, registration]);
 
     const _submitRegistration = useCallback((): void => {
         console.log('button clicked');
-        if (!_canSubmit()) return;
-        dispatch(createAccount({
-            ...fields,
-            phone: '',
-            platform: Platform.OS
-        }));
-    }, [dispatch, _canSubmit])
+        if (!_canSubmit()) {
+            return;
+        }
+        dispatch(
+            createAccount({
+                ...fields,
+                phone: '',
+                platform: Platform.OS,
+            }),
+        );
+    }, [_canSubmit, dispatch, fields]);
 
     const regProperties: RegistrationProperty[] = [
         { property: 'firstName', label: 'First Name' },
@@ -182,15 +201,18 @@ const RegisterForm = (props) => {
             label: 'Email Address',
             keyboard: 'email-address',
             errorMessage:
-                (fields.email.length > 0 && !fields.email.match(EMAIL_REGEX)) ? 'Invalid Email Address' :
-                    !registration.emailAvailable ? 'Email Address is already registered' : '',
-            onChange: (value) => {
+                fields.email.length > 0 && !fields.email.match(EMAIL_REGEX)
+                    ? 'Invalid Email Address'
+                    : !registration.emailAvailable
+                    ? 'Email Address is already registered'
+                    : '',
+            onChange: value => {
                 setFields({
                     ...fields,
-                    email: value.substr(0, 128)
-                })
+                    email: value.substr(0, 128),
+                });
             },
-            onBlur: () => dispatch(checkEmailAvailability(fields.email))
+            onBlur: () => dispatch(checkEmailAvailability(fields.email)),
         },
         {
             property: 'username',
@@ -199,18 +221,18 @@ const RegisterForm = (props) => {
             onChange: (value: string) => {
                 setFields({
                     ...fields,
-                    username: value.replace(/[^A-Z0-9-_.$#@!+]/gi, "").substr(0, 32)
+                    username: value.replace(/[^A-Z0-9-_.$#@!+]/gi, '').substr(0, 32),
                 });
             },
-            onBlur: () => dispatch(checkUsernameAvailability(fields.username))
+            onBlur: () => dispatch(checkUsernameAvailability(fields.username)),
         },
         { property: 'password', label: 'Password', secure: true },
         {
             property: 'confirm',
             label: 'Confirm Password',
             secure: true,
-            errorMessage: (fields.password !== fields.confirm) ? 'Passwords do not match' : '',
-            onSubmit: () => Keyboard.dismiss()
+            errorMessage: fields.password !== fields.confirm ? 'Passwords do not match' : '',
+            onSubmit: () => Keyboard.dismiss(),
         },
         {
             property: 'heard',
@@ -224,49 +246,47 @@ const RegisterForm = (props) => {
                 { label: 'Golf Course Ad', value: 'Golf Course Ad' },
                 { label: 'Social Media', value: 'Social Media' },
                 { label: 'Youtube', value: 'Youtube' },
-                { label: 'Other', value: 'Other' }
+                { label: 'Other', value: 'Other' },
             ],
         },
     ];
 
     return (
         <View style={sharedStyles.pageContainer}>
-            <SEHeader
-                title={'Sign Up'}
-                subtitle={'create an account'}
-                mainAction={'back'}
-                showAuth={false}
-            />
-            <KeyboardAvoidingView style={[sharedStyles.pageContainer, { backgroundColor: transparent }]} behavior={'padding'}>
+            <SEHeader title={'Sign Up'} subtitle={'create an account'} mainAction={'back'} showAuth={false} />
+            <KeyboardAvoidingView
+                style={[sharedStyles.pageContainer, { backgroundColor: transparent }]}
+                behavior={'padding'}>
                 <ScrollView
                     ref={scroller}
-                    contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * .5 }]}
-                    keyboardShouldPersistTaps={'always'}
-                >
+                    contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
+                    keyboardShouldPersistTaps={'always'}>
                     {registration.pending && <ActivityIndicator size={'large'} />}
                     {regProperties.map((field: RegistrationProperty, index: number) => (
                         <React.Fragment key={`registration_property_${field.property}`}>
-                            {field.type === 'select' ?
+                            {field.type === 'select' ? (
                                 <RNPickerSelect
                                     ref={refs[index]}
                                     placeholder={{ label: 'Choose One...', value: '', color: blackOpacity(0.25) }}
                                     items={field.items || []}
-                                    onValueChange={field.onChange ? field.onChange :
-                                        (value: string) => {
-                                            setFields(
-                                                {
-                                                    ...fields,
-                                                    [field.property]: value.replace(/[^A-Z- .]/gi, "").substr(0, 32)
-                                                }
-                                            )
-                                        }
+                                    onValueChange={
+                                        field.onChange
+                                            ? field.onChange
+                                            : (value: string) => {
+                                                  setFields({
+                                                      ...fields,
+                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
+                                                  });
+                                              }
                                     }
                                     value={fields[field.property]}
-                                    useNativeAndroidPickerStyle={false}
-                                >
+                                    useNativeAndroidPickerStyle={false}>
                                     <Input
                                         editable={false}
-                                        containerStyle={{ paddingHorizontal: 0, marginTop: index > 0 ? spaces.medium : 0 }}
+                                        containerStyle={{
+                                            paddingHorizontal: 0,
+                                            marginTop: index > 0 ? spaces.medium : 0,
+                                        }}
                                         inputContainerStyle={styles.inputContainer}
                                         inputStyle={styles.input}
                                         label={field.label}
@@ -275,7 +295,7 @@ const RegisterForm = (props) => {
                                         value={fields[field.property]}
                                     />
                                 </RNPickerSelect>
-                                :
+                            ) : (
                                 <Input
                                     ref={refs[index]}
                                     secureTextEntry={field.secure}
@@ -288,29 +308,31 @@ const RegisterForm = (props) => {
                                     keyboardType={field.keyboard}
                                     label={field.label}
                                     labelStyle={[styles.formLabel]}
-                                    onChangeText={field.onChange ? field.onChange :
-                                        (value: string) => {
-                                            setFields(
-                                                {
-                                                    ...fields,
-                                                    [field.property]: value.replace(/[^A-Z- .]/gi, "").substr(0, 32)
-                                                }
-                                            )
-                                        }
+                                    onChangeText={
+                                        field.onChange
+                                            ? field.onChange
+                                            : (value: string) => {
+                                                  setFields({
+                                                      ...fields,
+                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
+                                                  });
+                                              }
                                     }
                                     onBlur={field.onBlur}
-                                    onSubmitEditing={field.onSubmit ? field.onSubmit :
-                                        () => {
-                                            if (refs[(index + 1) % refs.length].current) {
-                                                refs[(index + 1) % refs.length].current.focus();
-                                            }
-                                        }
+                                    onSubmitEditing={
+                                        field.onSubmit
+                                            ? field.onSubmit
+                                            : () => {
+                                                  if (refs[(index + 1) % refs.length].current) {
+                                                      refs[(index + 1) % refs.length].current.focus();
+                                                  }
+                                              }
                                     }
                                     returnKeyType={'next'}
                                     underlineColorAndroid={transparent}
                                     value={fields[field.property]}
                                 />
-                            }
+                            )}
                             <ErrorBox
                                 style={{ marginTop: spaces.small }}
                                 show={field.errorMessage !== undefined && field.errorMessage.length > 0}
@@ -318,7 +340,7 @@ const RegisterForm = (props) => {
                             />
                         </React.Fragment>
                     ))}
-                    {_canSubmit() && !registration.pending &&
+                    {_canSubmit() && !registration.pending && (
                         <SEButton
                             // disabled={!_canSubmit()}
                             containerStyle={{ marginTop: spaces.large }}
@@ -326,17 +348,19 @@ const RegisterForm = (props) => {
                             title={<H7 color={'onPrimary'}>SUBMIT</H7>}
                             onPress={() => {
                                 _submitRegistration();
-                                if (scroller.current) scroller.current.scrollTo({ x: 0, y: 0, animated: true });
+                                if (scroller.current) {
+                                    scroller.current.scrollTo({ x: 0, y: 0, animated: true });
+                                }
                             }}
                         />
-                    }
+                    )}
                 </ScrollView>
             </KeyboardAvoidingView>
         </View>
-    )
+    );
 };
 
-const _getRegistrationErrorMessage = (code) => {
+const _getRegistrationErrorMessage = code => {
     switch (code) {
         case 400302:
             return 'Oops! Your verification link is invalid. Please check your registration email and try again. If you continue to have problems, please contact us.';
@@ -348,7 +372,7 @@ const _getRegistrationErrorMessage = (code) => {
         default:
             return 'Unknown Error: ' + code;
     }
-}
+};
 
 const styles = StyleSheet.create({
     formLabel: {
@@ -375,4 +399,4 @@ const styles = StyleSheet.create({
         borderBottomWidth: unit(1),
         borderRadius: unit(5),
     },
-})
+});

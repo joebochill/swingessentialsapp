@@ -7,7 +7,7 @@ import { creditsReducer } from './credits';
 import { blogsReducer } from './blogs';
 import { packagesReducer } from './packages';
 import { settingsReducer } from './settings';
-import {registrationReducer } from './registration';
+import { registrationReducer } from './registration';
 
 export const AppReducer = combineReducers({
     login: loginReducer,

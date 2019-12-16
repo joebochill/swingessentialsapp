@@ -6,7 +6,6 @@ export const ASYNC_PREFIX = '@SwingEssentials:';
 export const BASEURL_DEV = 'https://www.swingessentials.com/apis/dev/dev.php';
 export const BASEURL_PROD = 'https://www.swingessentials.com/apis/swingessentials.php';
 
-
 export const BASEURL = BASEURL_DEV;
 export const AUTH = 'Message';
 

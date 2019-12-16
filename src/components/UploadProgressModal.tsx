@@ -20,17 +20,16 @@ type ProgressModalProps = ModalProps & {
 export const UploadProgressModal = (props: ProgressModalProps) => {
     const { visible, progress, ...other } = props;
     return (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={visible}
-            {...other}
-        >
+        <Modal animationType="slide" transparent={true} visible={visible} {...other}>
             <View style={styles.modalBackground}>
-                <View style={[sharedStyles.border, {
-                    backgroundColor: purple[50],
-                    padding: spaces.medium
-                }]}>
+                <View
+                    style={[
+                        sharedStyles.border,
+                        {
+                            backgroundColor: purple[50],
+                            padding: spaces.medium,
+                        },
+                    ]}>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ flex: 1, marginRight: spaces.medium }}>
                             <View style={{ flexDirection: 'row', marginBottom: spaces.medium }}>
@@ -38,9 +37,7 @@ export const UploadProgressModal = (props: ProgressModalProps) => {
                                 <H7>Submitting Your Lesson</H7>
                             </View>
                             <Body>{`Uploading Videos... ${progress.toFixed(0)}%`}</Body>
-                            {progress >= 100 &&
-                                <Body>{`Creating Lesson...`}</Body>
-                            }
+                            {progress >= 100 && <Body>{'Creating Lesson...'}</Body>}
                         </View>
                         <View style={{ flex: 0, justifyContent: 'center' }}>
                             <ActivityIndicator color={purple[500]} size={'large'} />
@@ -50,5 +47,4 @@ export const UploadProgressModal = (props: ProgressModalProps) => {
             </View>
         </Modal>
     );
-}
-
+};

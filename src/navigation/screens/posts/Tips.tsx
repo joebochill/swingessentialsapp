@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { View, SectionList } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { H7, Body} from '@pxblue/react-native-components';
+import { H7, Body } from '@pxblue/react-native-components';
 import { CollapsibleHeaderLayout } from '../../../components';
 
 import { ROUTES } from '../../../constants/routes';
@@ -20,9 +20,9 @@ type Tip = {
     comments: string;
     title: string;
     video: string;
-}
+};
 
-export const Tips = (props) => {
+export const Tips = props => {
     const tips = useSelector((state: ApplicationState) => state.tips);
     const sections = makeGroups(tips.tipList, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
@@ -35,8 +35,7 @@ export const Tips = (props) => {
             refreshing={tips.loading}
             onRefresh={() => {
                 dispatch(loadTips());
-            }}
-        >
+            }}>
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (
                     <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: spaces.large } : {}]}>
@@ -54,19 +53,19 @@ export const Tips = (props) => {
                         title={<Body>No Tips Yet!</Body>}
                     />
                 }
-                renderItem={({ item, index }) =>
+                renderItem={({ item, index }) => (
                     <ListItem
                         containerStyle={sharedStyles.listItem}
                         contentContainerStyle={sharedStyles.listItemContent}
                         bottomDivider
                         topDivider={index === 0}
                         chevron={true}
-                        onPress={() => props.navigation.push(ROUTES.TIP, {tip: item})}
+                        onPress={() => props.navigation.push(ROUTES.TIP, { tip: item })}
                         title={<Body>{item.title}</Body>}
                     />
-                }
-                keyExtractor={(item, index): string => `tip_${item.id}`}
+                )}
+                keyExtractor={(item): string => `tip_${item.id}`}
             />
         </CollapsibleHeaderLayout>
-    )
+    );
 };

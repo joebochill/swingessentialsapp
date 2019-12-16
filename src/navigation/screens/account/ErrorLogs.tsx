@@ -10,15 +10,9 @@ const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 // TODO: Implement screen
 // TODO: Implement sending logs
 
-export const ErrorLogs = (props) => (
+export const ErrorLogs = () => (
     <View style={sharedStyles.pageContainer}>
-        <SEHeader
-            title={'Error Logs'}
-            subtitle={'...what went wrong'}
-        />
-        <EmptyState
-            IconClass={AccessTime}
-            title={'Coming Soon'}
-        />
+        <SEHeader title={'Error Logs'} subtitle={'...what went wrong'} />
+        <EmptyState IconClass={AccessTime} title={'Coming Soon'} />
     </View>
 );

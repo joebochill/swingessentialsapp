@@ -19,40 +19,59 @@ const BackIcon = wrapIcon({ IconClass: Icon, name: 'arrow-back' });
 const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-variant' });
 const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
 
-export type SEHeaderProps = HeaderProps & NavigationInjectedProps & {
-    mainAction?: NavType;
-    showAuth?: boolean,
-    dynamic?: boolean,
-}
+export type SEHeaderProps = HeaderProps &
+    NavigationInjectedProps & {
+        mainAction?: NavType;
+        showAuth?: boolean;
+        dynamic?: boolean;
+    };
 
 export const SEHeader = withNavigation((props: SEHeaderProps) => {
-    const { mainAction = 'menu', showAuth = true, navigation, backgroundImage = topology, actionItems = [], ...other } = props;
+    const {
+        mainAction = 'menu',
+        showAuth = true,
+        navigation,
+        backgroundImage = topology,
+        actionItems = [],
+        ...other
+    } = props;
     const token = useSelector((state: ApplicationState) => state.login.token);
     const dispatch = useDispatch();
 
-    const defaultActions: Array<HeaderIcon> = showAuth ? [token
-        ? {
-            icon: LogoutIcon,
-            onPress: () => {
-                Alert.alert('Log Out', 'Are you sure you want to log out?', [
-                    { text: 'Log Out', onPress: () => dispatch(requestLogout(token)) },
-                    { text: 'Cancel' },
-                ]);
-            },
-        }
-        : { icon: AccountIcon, onPress: () => props.navigation.navigate({routeName: ROUTES.AUTH_GROUP, key: ROUTES.AUTH_GROUP}) }] : [];
+    const defaultActions: Array<HeaderIcon> = showAuth
+        ? [
+              token
+                  ? {
+                        icon: LogoutIcon,
+                        onPress: () => {
+                            Alert.alert('Log Out', 'Are you sure you want to log out?', [
+                                { text: 'Log Out', onPress: () => dispatch(requestLogout(token)) },
+                                { text: 'Cancel' },
+                            ]);
+                        },
+                    }
+                  : {
+                        icon: AccountIcon,
+                        onPress: () =>
+                            props.navigation.navigate({ routeName: ROUTES.AUTH_GROUP, key: ROUTES.AUTH_GROUP }),
+                    },
+          ]
+        : [];
 
     const Component = props.dynamic ? PXBHeader : Header;
 
     return (
         <Component
             navigation={
-                (mainAction === 'menu') ? { icon: MenuIcon, onPress: () => navigation.openDrawer() } :
-                    (mainAction === 'back') ? { icon: BackIcon, onPress: () => navigation.pop() } : undefined
+                mainAction === 'menu'
+                    ? { icon: MenuIcon, onPress: () => navigation.openDrawer() }
+                    : mainAction === 'back'
+                    ? { icon: BackIcon, onPress: () => navigation.pop() }
+                    : undefined
             }
             backgroundImage={backgroundImage}
             actionItems={defaultActions.concat(actionItems)}
             {...other}
         />
-    )
-})
+    );
+});

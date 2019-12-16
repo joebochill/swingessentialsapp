@@ -18,7 +18,7 @@ import { usePrevious } from '../../../utilities';
 // TODO: Fix the NPM monkeypatch for camera roll
 // TODO: Fix the broken focus & scroll-to behavior
 
-export const Submit = (props) => {
+export const Submit = props => {
     const { navigation } = props;
     const [fo_video, setFO] = useState('');
     const [dtl_video, setDTL] = useState('');
@@ -31,7 +31,12 @@ export const Submit = (props) => {
     const role = useSelector((state: ApplicationState) => state.login.role);
     const scroller = useRef(null);
     const dispatch = useDispatch();
-    const roleError = (role === 'anonymous') ? 'You must be signed in to submit lessons.' : (role === 'pending') ? 'You must validate your email address before you can submit lessons' : '';
+    const roleError =
+        role === 'anonymous'
+            ? 'You must be signed in to submit lessons.'
+            : role === 'pending'
+            ? 'You must validate your email address before you can submit lessons'
+            : '';
 
     const previousPendingStatus = usePrevious(lessons.redeemPending);
 
@@ -43,22 +48,22 @@ export const Submit = (props) => {
         setUploadProgress(0);
     }, [setFO, setDTL, setNotes, setUseNotes, setUploadProgress]);
 
-    useEffect(() => { // Submission finished
+    useEffect(() => {
+        // Submission finished
         if (previousPendingStatus && !lessons.redeemPending) {
-            if (lessons.redeemSuccess) { // Successful redeem
+            if (lessons.redeemSuccess) {
+                // Successful redeem
                 _clearFields();
                 setTimeout(() => {
                     Alert.alert(
                         'Success!',
                         'Your lesson request was submitted successfully. We are working on your analysis.',
-                        [
-                            { text: 'OK', onPress: () => navigation.navigate(ROUTES.LESSONS) },
-                        ],
-                        { cancelable: false }
-                    )
+                        [{ text: 'OK', onPress: () => navigation.navigate(ROUTES.LESSONS) }],
+                        { cancelable: false },
+                    );
                 }, 700);
-            }
-            else { // Fail redeem
+            } else {
+                // Fail redeem
                 console.log('TODO: failed redeem');
                 // 400701 means files were stripped for size
                 // 400702 too large
@@ -66,16 +71,22 @@ export const Submit = (props) => {
                 setTimeout(() => {
                     Alert.alert(
                         'Oops:',
-                        (lessons.redeemError === 400701 || lessons.redeemError === 400703) ?
-                            'The videos you have submitted are too large. Please edit the videos to be smaller and/or avoid the use of slow-motion video. If this error persists, please contact us.' :
-                            'There was an unexpected error while submitting your swing videos. Please try again later or contact us if the problem persists.',
-                        [{ text: 'OK' }]
-                    )
+                        lessons.redeemError === 400701 || lessons.redeemError === 400703
+                            ? 'The videos you have submitted are too large. Please edit the videos to be smaller and/or avoid the use of slow-motion video. If this error persists, please contact us.'
+                            : 'There was an unexpected error while submitting your swing videos. Please try again later or contact us if the problem persists.',
+                        [{ text: 'OK' }],
+                    );
                 }, 700);
             }
         }
-
-    }, [lessons.redeemPending, previousPendingStatus, lessons.redeemError])
+    }, [
+        lessons.redeemPending,
+        previousPendingStatus,
+        lessons.redeemError,
+        lessons.redeemSuccess,
+        _clearFields,
+        navigation,
+    ]);
 
     const _submitLesson = useCallback(() => {
         // TODO: Dismiss keyboard
@@ -95,63 +106,70 @@ export const Submit = (props) => {
         data.append('fo', {
             name: 'fo.mov',
             uri: fo_video,
-            type: (Platform.OS === 'android' ? 'video/mp4' : 'video/mov')
+            type: Platform.OS === 'android' ? 'video/mp4' : 'video/mov',
         });
         data.append('dtl', {
             name: 'dtl.mov',
             uri: dtl_video,
-            type: (Platform.OS === 'android' ? 'video/mp4' : 'video/mov')
+            type: Platform.OS === 'android' ? 'video/mp4' : 'video/mov',
         });
         data.append('notes', notes);
 
-        dispatch(submitLesson(data, (event: ProgressEvent) => {
-            setUploadProgress((event.loaded / event.total) * 100);
-        }))
-    }, [role, roleError, fo_video, dtl_video, notes, lessons.pending]);
-
-    const _setVideoURI = useCallback((swing: 'fo' | 'dtl', uri: string) => {
-        if (swing === 'fo') setFO(uri);
-        else if (swing === 'dtl') setDTL(uri);
-        else console.log('Error, invalid video selection');
-    }, [setFO, setDTL]);
-
-    const _showPicker = useCallback((swing: 'fo' | 'dtl') => {
-        ImagePicker.showImagePicker(
-            {
-                title: undefined,
-                takePhotoButtonTitle: undefined,
-                chooseFromLibraryButtonTitle: 'Choose From Library',
-                customButtons: [
-                    { name: 'record', title: 'Record a New Video' },
-                ],
-                videoQuality: 'high',
-                mediaType: 'video',
-                durationLimit: 10,
-                storageOptions: {
-                    skipBackup: true,
-                    path: 'images'
-                }
-            },
-            (response) => {
-                if (response.didCancel) { /*do nothing*/ }
-                else if (response.error) {
-                    Alert.alert('There was an error choosing a video. Try again later.');
-                }
-                else if (response.customButton === 'record') {
-                    navigation.push(ROUTES.RECORD,
-                        {
-                            swing,
-                            onReturn: (uri: string) => _setVideoURI(swing, uri)
-                        }
-                    );
-                }
-                else {
-                    _setVideoURI(swing, response.uri);
-                    // Alert.alert('New Video Connected')
-                }
-            }
+        dispatch(
+            submitLesson(data, (event: ProgressEvent) => {
+                setUploadProgress((event.loaded / event.total) * 100);
+            }),
         );
-    }, [ImagePicker, navigation]);
+    }, [role, lessons.pending.length, fo_video, dtl_video, notes, dispatch]);
+
+    const _setVideoURI = useCallback(
+        (swing: 'fo' | 'dtl', uri: string) => {
+            if (swing === 'fo') {
+                setFO(uri);
+            } else if (swing === 'dtl') {
+                setDTL(uri);
+            } else {
+                console.log('Error, invalid video selection');
+            }
+        },
+        [setFO, setDTL],
+    );
+
+    const _showPicker = useCallback(
+        (swing: 'fo' | 'dtl') => {
+            ImagePicker.showImagePicker(
+                {
+                    title: undefined,
+                    takePhotoButtonTitle: undefined,
+                    chooseFromLibraryButtonTitle: 'Choose From Library',
+                    customButtons: [{ name: 'record', title: 'Record a New Video' }],
+                    videoQuality: 'high',
+                    mediaType: 'video',
+                    durationLimit: 10,
+                    storageOptions: {
+                        skipBackup: true,
+                        path: 'images',
+                    },
+                },
+                response => {
+                    if (response.didCancel) {
+                        /*do nothing*/
+                    } else if (response.error) {
+                        Alert.alert('There was an error choosing a video. Try again later.');
+                    } else if (response.customButton === 'record') {
+                        navigation.push(ROUTES.RECORD, {
+                            swing,
+                            onReturn: (uri: string) => _setVideoURI(swing, uri),
+                        });
+                    } else {
+                        _setVideoURI(swing, response.uri);
+                        // Alert.alert('New Video Connected')
+                    }
+                },
+            );
+        },
+        [_setVideoURI, navigation],
+    );
 
     return (
         <View style={sharedStyles.pageContainer}>
@@ -163,65 +181,64 @@ export const Submit = (props) => {
                     width: '100%',
                     resizeMode: 'cover',
                     height: '100%',
-                    opacity: 0.15
+                    opacity: 0.15,
                 }}
             />
-            <SEHeader
-                title={'Submit Your Swing'}
-                subtitle={'create a new lesson'}
-            />
-            <KeyboardAvoidingView style={[sharedStyles.pageContainer, { backgroundColor: transparent }]} behavior={'padding'}>
+            <SEHeader title={'Submit Your Swing'} subtitle={'create a new lesson'} />
+            <KeyboardAvoidingView
+                style={[sharedStyles.pageContainer, { backgroundColor: transparent }]}
+                behavior={'padding'}>
                 <ScrollView contentContainerStyle={sharedStyles.paddingMedium} ref={scroller}>
-                    <ErrorBox
-                        show={roleError !== ''}
-                        error={roleError}
-                        style={{ marginBottom: spaces.medium }}
-                    />
+                    <ErrorBox show={roleError !== ''} error={roleError} style={{ marginBottom: spaces.medium }} />
                     <ErrorBox
                         show={lessons.pending.length > 0}
-                        error={'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.'}
+                        error={
+                            'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.'
+                        }
                         style={{ marginBottom: spaces.medium }}
                     />
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                         <H7>Your Swing Videos</H7>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        {!fo_video ?
+                        {!fo_video ? (
                             <SEVideoPlaceholder
                                 title={'Face-On'}
                                 icon={<Image source={fo} resizeMethod={'resize'} style={sharedStyles.image} />}
                                 editIcon={<Icon name={'add-a-photo'} color={purple[500]} />}
                                 onPress={() => _showPicker('fo')}
-                            /> :
-                            <SEVideo editable source={fo_video}
-                                onEdit={() => _showPicker('fo')}
                             />
-                        }
-                        {!dtl_video ?
+                        ) : (
+                            <SEVideo editable source={fo_video} onEdit={() => _showPicker('fo')} />
+                        )}
+                        {!dtl_video ? (
                             <SEVideoPlaceholder
                                 title={'Down-the-Line'}
                                 icon={<Image source={dtl} resizeMethod={'resize'} style={sharedStyles.image} />}
                                 editIcon={<Icon name={'add-a-photo'} color={purple[500]} />}
                                 onPress={() => _showPicker('dtl')}
-                            /> :
-                            <SEVideo editable source={dtl_video} style={{ marginLeft: spaces.medium }}
+                            />
+                        ) : (
+                            <SEVideo
+                                editable
+                                source={dtl_video}
+                                style={{ marginLeft: spaces.medium }}
                                 onEdit={() => _showPicker('dtl')}
                             />
-                        }
+                        )}
                     </View>
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0, marginTop: spaces.large }]}>
                         <H7>Special Requests / Comments</H7>
                     </View>
-                    {!useNotes &&
+                    {!useNotes && (
                         <TouchableOpacity
                             activeOpacity={0.8}
                             style={[sharedStyles.dashed, styles.dashButton]}
-                            onPress={() => setUseNotes(true)}
-                        >
+                            onPress={() => setUseNotes(true)}>
                             <Icon name={'add-circle'} color={purple[500]} size={24} />
                         </TouchableOpacity>
-                    }
-                    {useNotes &&
+                    )}
+                    {useNotes && (
                         <>
                             <TextInput
                                 autoCapitalize={'sentences'}
@@ -231,9 +248,11 @@ export const Submit = (props) => {
                                 editable={!lessons.redeemPending}
                                 maxLength={500}
                                 multiline
-                                onChangeText={(val) => setNotes(val)}
+                                onChangeText={val => setNotes(val)}
                                 onFocus={() => {
-                                    if(scroller.current) scroller.current.scrollTo({ x: 0, y: 350, animated: true })
+                                    if (scroller.current) {
+                                        scroller.current.scrollTo({ x: 0, y: 350, animated: true });
+                                    }
                                 }}
                                 returnKeyType={'done'}
                                 spellCheck
@@ -244,29 +263,24 @@ export const Submit = (props) => {
                             />
                             <Label style={{ alignSelf: 'flex-end' }}>{`${500 - notes.length} Characters Left`}</Label>
                         </>
-                    }
-                    {(roleError.length === 0 &&
+                    )}
+                    {roleError.length === 0 &&
                         !lessons.redeemPending &&
                         fo_video !== '' &&
                         dtl_video !== '' &&
-                        lessons.pending.length <= 0) &&
-                        <SEButton
-                            containerStyle={{ marginTop: spaces.large }}
-                            buttonStyle={{ backgroundColor: purple[400] }}
-                            title={<H7 color={'onPrimary'}>SUBMIT</H7>}
-                            onPress={() => _submitLesson()}
-                        />
-                    }
+                        lessons.pending.length <= 0 && (
+                            <SEButton
+                                containerStyle={{ marginTop: spaces.large }}
+                                buttonStyle={{ backgroundColor: purple[400] }}
+                                title={<H7 color={'onPrimary'}>SUBMIT</H7>}
+                                onPress={() => _submitLesson()}
+                            />
+                        )}
                 </ScrollView>
             </KeyboardAvoidingView>
-            {lessons.redeemPending &&
-                <UploadProgressModal
-                    progress={uploadProgress}
-                    visible={lessons.redeemPending}
-                />
-            }
+            {lessons.redeemPending && <UploadProgressModal progress={uploadProgress} visible={lessons.redeemPending} />}
         </View>
-    )
+    );
 };
 
 const styles = StyleSheet.create({
@@ -274,7 +288,7 @@ const styles = StyleSheet.create({
         padding: spaces.medium,
         minHeight: sizes.xLarge,
         justifyContent: 'center',
-        backgroundColor: purpleOpacity(.15)
+        backgroundColor: purpleOpacity(0.15),
     },
     input: {
         minHeight: sizes.xLarge,
@@ -292,8 +306,8 @@ const styles = StyleSheet.create({
         borderRadius: unit(5),
         borderColor: purple[800],
         borderWidth: unit(2),
-    }
-})
+    },
+});
 
 // import React from 'react';
 // import { connect } from 'react-redux';
@@ -604,10 +618,10 @@ const styles = StyleSheet.create({
 //                                                 source={faceon}
 //                                             />
 //                                             {/* {Platform.OS === 'android' && this.state.foSource &&
-//                                                 <Icon 
+//                                                 <Icon
 //                                                     containerStyle={{position: 'absolute', bottom: spacing.tiny, left: spacing.tiny}}
-//                                                     name={'check-circle'} 
-//                                                     size={sizes.normal} 
+//                                                     name={'check-circle'}
+//                                                     size={sizes.normal}
 //                                                     color={'#4caf50'}
 //                                                 />
 //                                             } */}
@@ -666,10 +680,10 @@ const styles = StyleSheet.create({
 //                                                 source={downtheline}
 //                                             />
 //                                             {/* {Platform.OS === 'android' && this.state.dtlSource &&
-//                                                 <Icon 
+//                                                 <Icon
 //                                                     containerStyle={{position: 'absolute', bottom: spacing.tiny, left: spacing.tiny}}
-//                                                     name={'check-circle'} 
-//                                                     size={sizes.normal} 
+//                                                     name={'check-circle'}
+//                                                     size={sizes.normal}
 //                                                     color={'#4caf50'}
 //                                                 />
 //                                             } */}

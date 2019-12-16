@@ -9,15 +9,9 @@ const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 // TODO: Implement screens
 // TODO: Build API
 
-export const OrderHistory = (props) => (
+export const OrderHistory = () => (
     <View style={sharedStyles.pageContainer}>
-        <SEHeader
-            title={'Order History'}
-            subtitle={'...track your purchases'}
-        />
-        <EmptyState
-            IconClass={AccessTime}
-            title={'Coming Soon'}
-        />
+        <SEHeader title={'Order History'} subtitle={'...track your purchases'} />
+        <EmptyState IconClass={AccessTime} title={'Coming Soon'} />
     </View>
 );

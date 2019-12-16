@@ -7,36 +7,42 @@ export type CountDownProps = ViewProps & {
     startValue: number;
     endValue?: number;
     onFinish?: Function;
-}
+};
 export const CountDown = (props: CountDownProps) => {
-    const { startValue, endValue = 0, onFinish = () => { } } = props;
+    const { startValue, endValue = 0, onFinish = () => {} } = props;
     const [seconds, setSeconds] = useState(startValue);
 
     useEffect(() => {
         let interval: number = 0;
         if (seconds > endValue) {
             interval = setInterval(() => {
-                setSeconds(seconds => seconds - 1);
+                setSeconds(sec => sec - 1);
             }, 1000);
+        } else {
+            onFinish();
         }
-        else { onFinish(); }
 
         return () => clearInterval(interval);
-    }, [seconds]);
+    }, [endValue, onFinish, seconds]);
 
-    return (seconds > endValue ?
-        <View style={[sharedStyles.absoluteFull, sharedStyles.centered, { backgroundColor: blackOpacity(0.25) }, props.style]}>
+    return seconds > endValue ? (
+        <View
+            style={[
+                sharedStyles.absoluteFull,
+                sharedStyles.centered,
+                { backgroundColor: blackOpacity(0.25) },
+                props.style,
+            ]}>
             <Body style={{ color: white[50], fontSize: unit(128) }}>{seconds}</Body>
         </View>
-        : null
-    );
+    ) : null;
 };
 
 export type VideoTimerProps = ViewProps & {
     visible: boolean;
     startValue?: number;
     offset?: number;
-}
+};
 
 export const VideoTimer = (props: VideoTimerProps) => {
     const { visible, startValue = 0, offset = -1 } = props;
@@ -44,30 +50,37 @@ export const VideoTimer = (props: VideoTimerProps) => {
 
     useEffect(() => {
         let interval = setInterval(() => {
-            setSeconds(seconds => seconds + 1);
+            setSeconds(sec => sec + 1);
         }, 1000);
         return () => clearInterval(interval);
     }, [seconds]);
 
     const displaySeconds = Math.max(0, seconds + offset);
 
-    return (visible ?
+    return visible ? (
         <View {...props}>
-            <View style={{
-                alignItems: 'flex-start',
-                justifyContent: 'center',
-                position: 'absolute',
-                top: 0, left: -2 * unit(5), bottom: 0, right: 0
-            }}>
-                <View style={{
-                    height: unit(5),
-                    width: unit(5),
-                    borderRadius: unit(5),
-                    backgroundColor: 'red'
-                }} />
+            <View
+                style={{
+                    alignItems: 'flex-start',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    top: 0,
+                    left: -2 * unit(5),
+                    bottom: 0,
+                    right: 0,
+                }}>
+                <View
+                    style={{
+                        height: unit(5),
+                        width: unit(5),
+                        borderRadius: unit(5),
+                        backgroundColor: 'red',
+                    }}
+                />
             </View>
-            <Body style={{ fontSize: fonts[14], color: white[50] }}>{'00:00:' + (displaySeconds < 10 ? '0' : '') + displaySeconds}</Body>
+            <Body style={{ fontSize: fonts[14], color: white[50] }}>
+                {'00:00:' + (displaySeconds < 10 ? '0' : '') + displaySeconds}
+            </Body>
         </View>
-        : null
-    );
-}
+    ) : null;
+};

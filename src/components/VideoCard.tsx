@@ -19,14 +19,14 @@ export interface VideoCardProps {
     hiddenContent?: JSX.Element;
     onExpand?: Function;
     theme?: $DeepPartial<Theme>;
-};
+}
 
 class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
     public render() {
         const { video, theme, headerColor = theme.colors.primary, hiddenContent } = this.props;
-        const videoWidth = (width - 2 * spaces.medium);
+        const videoWidth = width - 2 * spaces.medium;
         const videoHeight = aspectHeight(videoWidth);
-        
+
         return (
             <View style={[this.cardStyle()]}>
                 <View style={this.innerWrapperStyle()}>
@@ -35,12 +35,7 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
                         {this.actionItems()}
                     </View>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
-                        {video &&
-                            <YouTube
-                                videoId={video}
-                                style={{ width: videoWidth, height: videoHeight }}
-                            />
-                        }
+                        {video && <YouTube videoId={video} style={{ width: videoWidth, height: videoHeight }} />}
                         {hiddenContent}
                     </View>
                 </View>
@@ -52,17 +47,12 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
         const { headerTitle, headerSubtitle } = this.props;
         return (
             <View style={{ flex: 1 }}>
-                <Typography.Label style={{ color: this.fontColor() }}>
-                    {headerTitle}
-                </Typography.Label>
-                {headerSubtitle ?
-                    <Typography.Subtitle
-                        style={{ color: this.fontColor() }}
-                        font={'regular'}
-                    >
+                <Typography.Label style={{ color: this.fontColor() }}>{headerTitle}</Typography.Label>
+                {headerSubtitle ? (
+                    <Typography.Subtitle style={{ color: this.fontColor() }} font={'regular'}>
                         {headerSubtitle}
-                    </Typography.Subtitle> : null
-                }
+                    </Typography.Subtitle>
+                ) : null}
             </View>
         );
     }
@@ -72,7 +62,7 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
         const newStyle = {
             backgroundColor: theme.colors.surface,
             borderRadius: theme.roundness,
-        }
+        };
         return [styles.card, newStyle, style];
     }
     private innerWrapperStyle(): StyleProp<ViewStyle> {
@@ -80,7 +70,7 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
         return {
             borderRadius: theme.roundness,
             overflow: 'hidden',
-        }
+        };
     }
 
     private actionItems() {
@@ -102,7 +92,7 @@ export const VideoCard = withTheme(VideoCardClass);
 
 const styles = StyleSheet.create({
     actionItem: {
-        marginLeft: spaces.small
+        marginLeft: spaces.small,
     },
     card: {
         shadowColor: black[900],
@@ -110,10 +100,10 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         shadowOffset: {
             width: 0,
-            height: 1
+            height: 1,
         },
         elevation: 1,
-        flex: 1
+        flex: 1,
     },
     header: {
         height: unit(56),

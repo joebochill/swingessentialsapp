@@ -40,13 +40,13 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
     const passField = useRef(null);
 
     const onLogin = useCallback(
-        (username, password) => {
-            if (!username || !password) {
+        (user, pass) => {
+            if (!user || !pass) {
                 setError(true);
                 return;
             }
             setError(false);
-            dispatch(requestLogin({ username, password }));
+            dispatch(requestLogin({ username: user, password: pass }));
         },
         [dispatch],
     );
@@ -62,10 +62,7 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
-            <ScrollView 
-                contentContainerStyle={styles.scrollContainer} 
-                keyboardShouldPersistTaps={'always'}
-            >
+            <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps={'always'}>
                 {/* LOGO */}
                 <Image source={logo} resizeMethod="resize" style={styles.logo} />
 
@@ -165,12 +162,12 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
                 <ErrorBox
                     show={failures > 0 || error} //={(this.props.loginFails > 0 || this.state.error)}
                     error={'The username/password you entered was not correct.'}
-                    style={{marginTop: spaces.xLarge}}
+                    style={{ marginTop: spaces.xLarge }}
                 />
                 <ErrorBox
                     show={touchFail && failures <= 0} //={(this.state.touchFail && this.props.loginFails <= 0)}
                     error={`Your ${'FaceID'} was not recognized. Please enter your password to sign in.`}
-                    style={{marginTop: spaces.xLarge}}
+                    style={{ marginTop: spaces.xLarge }}
                 />
 
                 {/* Log In Buttons */}
@@ -195,7 +192,11 @@ export const Login = withNavigation((props: NavigationInjectedProps) => {
 
                 {/* Registration Links */}
                 <View style={styles.registerRow}>
-                    <SEButton link title="Forgot Password?" onPress={() => props.navigation.push(ROUTES.RESET_PASSWORD)} />
+                    <SEButton
+                        link
+                        title="Forgot Password?"
+                        onPress={() => props.navigation.push(ROUTES.RESET_PASSWORD)}
+                    />
                     <SEButton link title="Create Account" onPress={() => props.navigation.push(ROUTES.REGISTER)} />
                 </View>
             </ScrollView>

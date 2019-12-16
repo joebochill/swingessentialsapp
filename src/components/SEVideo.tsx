@@ -14,19 +14,19 @@ type VideoProps = ViewProperties & {
     editable?: boolean;
     onEdit?: Function;
     editIcon?: JSX.Element;
-}
+};
 type PlaceholderProps = ViewProperties & {
     title?: string;
     onPress?: Function;
     icon?: JSX.Element;
     editIcon?: JSX.Element;
-}
+};
 
 // TODO: Verify that the video stuff works on Android as expected
 
 export const SEVideo = (props: VideoProps) => {
-    const { source, style, editable = false, onEdit = () => { } } = props;
-    const vid = useRef(null)
+    const { source, style, editable = false, onEdit = () => {} } = props;
+    const vid = useRef(null);
     const [playing, setPlaying] = useState(false);
 
     return (
@@ -34,8 +34,7 @@ export const SEVideo = (props: VideoProps) => {
             <TouchableOpacity
                 activeOpacity={0.8}
                 style={{ height: '100%', width: '100%' }}
-                onPress={() => setPlaying(!playing)}
-            >
+                onPress={() => setPlaying(!playing)}>
                 <Video
                     source={{ uri: source }}
                     ref={vid}
@@ -48,59 +47,48 @@ export const SEVideo = (props: VideoProps) => {
                     repeat={true}
                     playInBackground={false}
                     playWhenInactive={false}
-                    ignoreSilentSwitch={"ignore"}
+                    ignoreSilentSwitch={'ignore'}
                     style={{ height: '100%', width: '100%' }}
                 />
-                <View style={[styles.fullCentered, {opacity: playing ? 0 : 1} ]}>
-                    <Icon
-                        name={'play-arrow'}
-                        size={sizes.large}
-                        color={white[50]}
-                        underlayColor={transparent}
-                    />
+                <View style={[styles.fullCentered, { opacity: playing ? 0 : 1 }]}>
+                    <Icon name={'play-arrow'} size={sizes.large} color={white[50]} underlayColor={transparent} />
                 </View>
-                {editable &&
+                {editable && (
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        style={[sharedStyles.centered, styles.bottomPanel, {
-                            backgroundColor: blackOpacity(0.2),
-                        }]}
-                        onPress={() => onEdit()}
-                    >
-                        <Icon
-                            name={'edit'}
-                            color={white[50]}
-                            underlayColor={transparent}
-                        />
+                        style={[
+                            sharedStyles.centered,
+                            styles.bottomPanel,
+                            {
+                                backgroundColor: blackOpacity(0.2),
+                            },
+                        ]}
+                        onPress={() => onEdit()}>
+                        <Icon name={'edit'} color={white[50]} underlayColor={transparent} />
                     </TouchableOpacity>
-                }
+                )}
             </TouchableOpacity>
         </View>
-    )
-}
+    );
+};
 export const SEVideoPlaceholder = (props: PlaceholderProps) => {
-    const { icon, editIcon, style, onPress = () => { } } = props;
+    const { icon, editIcon, style, onPress = () => {} } = props;
 
     return (
-        <View style={[styles.portrait, sharedStyles.dashed,
-        { backgroundColor: purpleOpacity(0.15) }, style]
-        }>
+        <View style={[styles.portrait, sharedStyles.dashed, { backgroundColor: purpleOpacity(0.15) }, style]}>
             <TouchableOpacity
                 activeOpacity={0.8}
                 style={{ height: '100%', width: '100%', alignItems: 'center' }}
-                onPress={() => onPress()}
-            >
-                <H7 font={'regular'} style={{ marginTop: spaces.medium }}>{props.title}</H7>
-                <View style={styles.fullCentered}>
-                    {icon}
-                </View>
-                <View style={[sharedStyles.centered, styles.bottomPanel]}>
-                    {editIcon}
-                </View>
+                onPress={() => onPress()}>
+                <H7 font={'regular'} style={{ marginTop: spaces.medium }}>
+                    {props.title}
+                </H7>
+                <View style={styles.fullCentered}>{icon}</View>
+                <View style={[sharedStyles.centered, styles.bottomPanel]}>{editIcon}</View>
             </TouchableOpacity>
         </View>
-    )
-}
+    );
+};
 const styles = StyleSheet.create({
     fullCentered: {
         position: 'absolute',
@@ -122,10 +110,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         right: 0,
         left: 0,
-        zIndex: 100
+        zIndex: 100,
     },
-})
-
-
-
-
+});

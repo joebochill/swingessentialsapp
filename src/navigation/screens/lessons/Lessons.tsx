@@ -23,7 +23,7 @@ type Lesson = {
     response_status: string; //TODO: update to enum
     username: string;
     viewed: boolean;
-}
+};
 
 // TODO: Implement lazy loading (Lessons, Tips, Blogs) on scroll
 
@@ -33,11 +33,7 @@ export const Lessons = withNavigation(props => {
     const sections = makeGroups(myLessons, (lesson: Lesson) => getLongDate(lesson.request_date));
 
     return (
-        <CollapsibleHeaderLayout
-            title={'Your Lessons'}
-            subtitle={"see how far you've come"}
-            backgroundImage={bg}
-        >
+        <CollapsibleHeaderLayout title={'Your Lessons'} subtitle={"see how far you've come"} backgroundImage={bg}>
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (
                     <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: spaces.large } : {}]}>
@@ -58,7 +54,7 @@ export const Lessons = withNavigation(props => {
                     />
                 }
                 renderItem={({ item, index }) =>
-                    item.response_video ?
+                    item.response_video ? (
                         <ListItem
                             containerStyle={sharedStyles.listItem}
                             contentContainerStyle={sharedStyles.listItemContent}
@@ -69,7 +65,7 @@ export const Lessons = withNavigation(props => {
                             title={<Body>{item.request_date}</Body>}
                             rightTitle={!item.viewed ? <H7>NEW</H7> : undefined}
                         />
-                        :
+                    ) : (
                         <ListItem
                             containerStyle={sharedStyles.listItem}
                             contentContainerStyle={sharedStyles.listItemContent}
@@ -78,9 +74,10 @@ export const Lessons = withNavigation(props => {
                             title={<Body>{item.request_date}</Body>}
                             rightTitle={<H7>IN PROGRESS</H7>}
                         />
+                    )
                 }
-                keyExtractor={(item, index): string => ('complete_' + item.request_id)}
+                keyExtractor={(item): string => 'complete_' + item.request_id}
             />
         </CollapsibleHeaderLayout>
-    )
+    );
 });

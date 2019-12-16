@@ -16,5 +16,5 @@ export function loadPackages() {
                 console.log(response.headers.get('Error'));
             })
             .request();
-    }
+    };
 }

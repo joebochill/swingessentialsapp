@@ -1,6 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState, AppStateStatus, Linking, Alert, Animated, SafeAreaView, StatusBar, View, Platform, FlatList, StyleSheet, ScrollView, AppStateStatic } from 'react-native';
+import {
+    AppState,
+    AppStateStatus,
+    Linking,
+    Alert,
+    Animated,
+    SafeAreaView,
+    StatusBar,
+    View,
+    Platform,
+    FlatList,
+    StyleSheet,
+    ScrollView,
+} from 'react-native';
 import { APP_VERSION } from '../constants/index';
 import { NavigationItems } from './NavigationContent';
 
@@ -8,7 +21,7 @@ import topology from '../images/topology.png';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Body, H7 } from '@pxblue/react-native-components';
 import { ListItem, Icon } from 'react-native-elements';
-import { sharedStyles, purple, white, blackOpacity, spaces, sizes, unit } from '../styles';
+import { sharedStyles, purple, white, blackOpacity } from '../styles';
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 const HEADER_EXPANDED_HEIGHT = 200 + getStatusBarHeight();
@@ -18,7 +31,7 @@ const DRAWER_WIDTH = 350;
 import { DrawerContentComponentProps } from 'react-navigation-drawer';
 import { ROUTES } from '../constants/routes';
 import { getLongDate, height } from '../utilities';
-import { requestLogout, requestLogin } from '../redux/actions';
+import { requestLogout } from '../redux/actions';
 
 type NavigatorProps = DrawerContentComponentProps & {
     username: string;
@@ -26,7 +39,7 @@ type NavigatorProps = DrawerContentComponentProps & {
     last: string;
     token: string;
     logout: Function;
-}
+};
 type NavigatorState = {
     scrollY: Animated.Value;
     activePanel: 0 | 1 | 2;
@@ -53,7 +66,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
     logout: requestLogout,
-}
+};
 export class NavigationDrawerClass extends React.Component<NavigatorProps, NavigatorState> {
     constructor(props) {
         super(props);
@@ -61,25 +74,27 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
             scrollY: new Animated.Value(0),
             activePanel: 0,
             mainLeft: new Animated.Value(0),
-            accountLeft: new Animated.Value(0/*DRAWER_WIDTH*/),
-            helpLeft: new Animated.Value(-1*DRAWER_WIDTH),
+            accountLeft: new Animated.Value(0 /*DRAWER_WIDTH*/),
+            helpLeft: new Animated.Value(-1 * DRAWER_WIDTH),
             appState: AppState.currentState,
         };
     }
-    componentDidMount(){
+    componentDidMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
         Linking.addEventListener('url', this._wakeupByLink);
 
         // Handle the case where the application is opened from a Universal Link
-        if(Platform.OS !== 'ios'){
+        if (Platform.OS !== 'ios') {
             Linking.getInitialURL()
-            .then((url) => {
-            if (url) {
-                let path = url.split('/').filter((el) => el.length > 0);
-                this._linkRoute(url, path);
-            }
-            })
-            .catch((e) => {});
+                .then(url => {
+                    if (url) {
+                        let path = url.split('/').filter(el => el.length > 0);
+                        this._linkRoute(url, path);
+                    }
+                })
+                .catch((): void => {
+                    console.log('TODO: Error with universal link');
+                });
         }
     }
     componentWillUnmount() {
@@ -89,9 +104,9 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
     componentDidUpdate() {
         const { activePanel, mainLeft, accountLeft, helpLeft, scrollY } = this.state;
 
-        const mainToValue = activePanel === 0 ? 0 : -1*DRAWER_WIDTH;//-1 * DRAWER_WIDTH;
-        const accountToValue = activePanel === 1 ? -1*DRAWER_WIDTH : 0;//1 * DRAWER_WIDTH;
-        const helpToValue = activePanel === 2 ? -2*DRAWER_WIDTH : -1*DRAWER_WIDTH;//1 * DRAWER_WIDTH;
+        const mainToValue = activePanel === 0 ? 0 : -1 * DRAWER_WIDTH; //-1 * DRAWER_WIDTH;
+        const accountToValue = activePanel === 1 ? -1 * DRAWER_WIDTH : 0; //1 * DRAWER_WIDTH;
+        const helpToValue = activePanel === 2 ? -2 * DRAWER_WIDTH : -1 * DRAWER_WIDTH; //1 * DRAWER_WIDTH;
 
         Animated.timing(mainLeft, {
             toValue: mainToValue,
@@ -106,18 +121,9 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
             duration: 250,
         }).start();
         Animated.timing(scrollY, {
-            toValue: 0,//HEADER_EXPANDED_HEIGHT-HEADER_COLLAPSED_HEIGHT,
-            duration: 250
+            toValue: 0, //HEADER_EXPANDED_HEIGHT-HEADER_COLLAPSED_HEIGHT,
+            duration: 250,
         }).start();
-        // Animated.event([
-        //     {
-        //         nativeEvent: {
-        //             contentOffset: {
-        //                 y: this.state.scrollY,
-        //             },
-        //         },
-        //     },
-        // ])
     }
     _logout() {
         Alert.alert('Log Out', 'Are you sure you want to log out?', [
@@ -127,33 +133,29 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
     }
     // Handle the app coming into the foreground after being backgrounded
     _handleAppStateChange = (nextAppState: AppStateStatus) => {
-        console.log('stateChange: ', nextAppState);
         if (this.state.appState.match(/inactive|background/) && nextAppState === 'active' && this.props.token) {
             // TODO: Refresh data from the token
         }
-        this.setState({appState: nextAppState});
-    }
+        this.setState({ appState: nextAppState });
+    };
 
     // Handles activating a deep link while the app is in the background
-    _wakeupByLink = (event) => {
-        console.log('waking up by link');
-        let path = event.url.split('/').filter((el) => el.length > 0);
-        this._linkRoute(event.url, path)
-    }
+    _wakeupByLink = event => {
+        let path = event.url.split('/').filter(el => el.length > 0);
+        this._linkRoute(event.url, path);
+    };
 
-    _linkRoute(url: string, path: string){
+    _linkRoute(url: string, path: string) {
         console.log('linking route:', url, path);
-        if(url.match(/\/lessons\/?/gi)){
+        if (url.match(/\/lessons\/?/gi)) {
             console.log('link to lessons');
-            if(this.props.token) {
-                this.props.navigation.navigate(ROUTES.LESSONS)
+            if (this.props.token) {
+                this.props.navigation.navigate(ROUTES.LESSONS);
             }
-        }
-        else if(url.match(/\/register\/[A-Z0-9]+\/?$/gi)){
+        } else if (url.match(/\/register\/[A-Z0-9]+\/?$/gi)) {
             console.log('link to verify');
-            this.props.navigation.navigate(ROUTES.REGISTER, {code: path[path.length - 1]});
-        }
-        else if(url.match(/\/register\/?$/gi)){
+            this.props.navigation.navigate(ROUTES.REGISTER, { code: path[path.length - 1] });
+        } else if (url.match(/\/register\/?$/gi)) {
             console.log('link to register');
             this.props.navigation.navigate(ROUTES.REGISTER);
         }
@@ -163,9 +165,9 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
         const { mainLeft, accountLeft, helpLeft } = this.state;
         const { username, first, last, token } = this.props;
 
-        const userString = username || 'Welcome!'
-        const nameString = (first && last) ? `${first} ${last}` : 'New User';
-        const initials = (first && last) ? `${first.charAt(0)}${last.charAt(0)}` : 'SE';
+        const userString = username || 'Welcome!';
+        const nameString = first && last ? `${first} ${last}` : 'New User';
+        const initials = first && last ? `${first.charAt(0)}${last.charAt(0)}` : 'SE';
         const memberData = this.props.joinDate || getLongDate(Date.now());
 
         return (
@@ -211,8 +213,23 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                             </Animated.Text>
                         </Animated.View>
                         <View style={styles.headerAction}>
-                            {!token && <Icon onPress={() => this.props.navigation.navigate(ROUTES.LOGIN)} name={'person'} size={24} color={'white'} />}
-                            {token && <Icon onPress={() => this._logout()} type={'material-community'} name={'logout-variant'} size={24} color={'white'} />}
+                            {!token && (
+                                <Icon
+                                    onPress={() => this.props.navigation.navigate(ROUTES.LOGIN)}
+                                    name={'person'}
+                                    size={24}
+                                    color={'white'}
+                                />
+                            )}
+                            {token && (
+                                <Icon
+                                    onPress={() => this._logout()}
+                                    type={'material-community'}
+                                    name={'logout-variant'}
+                                    size={24}
+                                    color={'white'}
+                                />
+                            )}
                         </View>
                     </Animated.View>
                     <View style={styles.userInfo}>
@@ -241,14 +258,15 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                     title: token ? 'Log Out' : 'Log In',
                                     iconType: token ? 'material-community' : 'material',
                                     icon: token ? 'logout-variant' : 'person',
-                                    onPress: token ? () => this._logout() : () => this.props.navigation.navigate(ROUTES.LOGIN)
-                                })
+                                    onPress: token
+                                        ? () => this._logout()
+                                        : () => this.props.navigation.navigate(ROUTES.LOGIN),
+                                });
                             }
                             return (
                                 <Animated.View
                                     key={`Panel_${panel.name}`}
-                                    style={[styles.panel, { left: leftPosition }]}
-                                >
+                                    style={[styles.panel, { left: leftPosition }]}>
                                     <FlatList
                                         data={ind === this.state.activePanel ? panelData : []}
                                         keyExtractor={(item, index) => `${index}`}
@@ -261,19 +279,17 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                                 onPress={
                                                     item.route
                                                         ? () => {
-                                                            this.props.navigation.navigate(item.route);
-                                                        }
+                                                              this.props.navigation.navigate(item.route);
+                                                          }
                                                         : item.activatePanel !== undefined
-                                                            ? () => {
-                                                                this.setState({ activePanel: item.activatePanel });
-                                                            }
-                                                            : (item.onPress ? () => item.onPress() : undefined)
+                                                        ? () => {
+                                                              this.setState({ activePanel: item.activatePanel });
+                                                          }
+                                                        : item.onPress
+                                                        ? () => item.onPress()
+                                                        : undefined
                                                 }
-                                                title={
-                                                    <Body style={styles.navLabel}>
-                                                        {item.title}
-                                                    </Body>
-                                                }
+                                                title={<Body style={styles.navLabel}>{item.title}</Body>}
                                                 leftIcon={{
                                                     type: item.iconType || 'material',
                                                     name: item.icon,
@@ -287,7 +303,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                             );
                         })}
                     </View>
-                        <View style={{height: height*.6}}/>
+                    <View style={{ height: height * 0.6 }} />
                 </ScrollView>
                 <SafeAreaView />
             </View>

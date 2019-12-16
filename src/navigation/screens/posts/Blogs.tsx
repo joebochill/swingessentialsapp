@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { View, SectionList } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { H7, Body} from '@pxblue/react-native-components';
+import { H7, Body } from '@pxblue/react-native-components';
 import { CollapsibleHeaderLayout } from '../../../components';
 
 import { ROUTES } from '../../../constants/routes';
@@ -19,9 +19,9 @@ type Blog = {
     date: string;
     body: string;
     title: string;
-}
+};
 
-export const Blogs = (props) => {
+export const Blogs = props => {
     const blogs = useSelector((state: ApplicationState) => state.blogs);
     const sections = makeGroups(blogs.blogList, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
@@ -34,8 +34,7 @@ export const Blogs = (props) => {
             refreshing={blogs.loading}
             onRefresh={() => {
                 dispatch(loadBlogs());
-            }}
-        >
+            }}>
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (
                     <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: spaces.large } : {}]}>
@@ -53,19 +52,19 @@ export const Blogs = (props) => {
                         title={<Body>No Posts Yet!</Body>}
                     />
                 }
-                renderItem={({ item, index }) =>
+                renderItem={({ item, index }) => (
                     <ListItem
                         containerStyle={sharedStyles.listItem}
                         contentContainerStyle={sharedStyles.listItemContent}
                         bottomDivider
                         topDivider={index === 0}
                         chevron={true}
-                        onPress={() => props.navigation.push(ROUTES.BLOG, {blog: item})}
+                        onPress={() => props.navigation.push(ROUTES.BLOG, { blog: item })}
                         title={<Body>{item.title}</Body>}
                     />
-                }
-                keyExtractor={(item, index): string => `blog_${item.id}`}
+                )}
+                keyExtractor={(item): string => `blog_${item.id}`}
             />
         </CollapsibleHeaderLayout>
-    )
+    );
 };

@@ -26,7 +26,7 @@ export const loginReducer = (state = initialState, action): LoginState => {
                 failCount: 0,
                 token: action.payload.token,
                 pending: false,
-                role: getUserRole(action.payload.token)
+                role: getUserRole(action.payload.token),
                 //admin: (JSON.parse(atob(action.data.token.split('.')[1]))['role'].toLowerCase() === 'administrator')
             };
         case LOGIN.FAILURE:
@@ -36,7 +36,7 @@ export const loginReducer = (state = initialState, action): LoginState => {
                 admin: false,
                 pending: false,
                 role: 'anonymous',
-                failCount: state.failCount + 1
+                failCount: state.failCount + 1,
             };
         case LOGOUT.SUCCESS:
             return {
@@ -45,9 +45,9 @@ export const loginReducer = (state = initialState, action): LoginState => {
                 admin: false,
                 pending: false,
                 role: 'anonymous',
-                failCount: 0
-            }
+                failCount: 0,
+            };
         default:
             return state;
     }
-}
+};

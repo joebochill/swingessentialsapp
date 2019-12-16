@@ -1,4 +1,3 @@
-
 import { scale, verticalScale } from '../utilities';
 export const unit = (value: number) => value * scale(1);
 export const spaceUnit = (value: number) => value * scale(4);
@@ -10,7 +9,7 @@ export const sizes = {
     large: spaceUnit(12),
     xLarge: spaceUnit(16),
     jumbo: spaceUnit(24),
-}
+};
 export const fonts = {
     10: unit(10),
     12: unit(12),
@@ -19,7 +18,7 @@ export const fonts = {
     18: unit(18),
     20: unit(20),
     24: unit(24),
-}
+};
 export const spaces = {
     xSmall: spaceUnit(1),
     small: spaceUnit(2),
@@ -27,4 +26,4 @@ export const spaces = {
     large: spaceUnit(6),
     xLarge: spaceUnit(8),
     jumbo: spaceUnit(12),
-}
+};

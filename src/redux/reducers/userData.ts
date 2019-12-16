@@ -6,7 +6,7 @@ const initialState: UserDataState = {
     username: '',
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
 };
 export const userDataReducer = (state = initialState, action): UserDataState => {
     switch (action.type) {
@@ -21,15 +21,15 @@ export const userDataReducer = (state = initialState, action): UserDataState => 
             };
         case GET_USER_DATA.FAILURE:
         case LOGOUT.SUCCESS:
-        // case TOKEN_TIMEOUT:
+            // case TOKEN_TIMEOUT:
             return {
                 ...state,
                 username: '',
                 firstName: '',
                 lastName: '',
-                email: ''
+                email: '',
             };
         default:
             return state;
     }
-}
+};

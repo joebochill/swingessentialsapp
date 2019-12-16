@@ -32,7 +32,10 @@ export const GET_PACKAGES = createAction('GET_PACKAGES', 'packages');
 
 /* Credits Actions */
 export const GET_CREDITS = createAction('GET_CREDITS', 'credits');
-export const PURCHASE_CREDITS = createAction('PURCHASE_CREDITS', Platform.OS === 'android' ? 'executeandroidpayment' : 'executeiospayment');
+export const PURCHASE_CREDITS = createAction(
+    'PURCHASE_CREDITS',
+    Platform.OS === 'android' ? 'executeandroidpayment' : 'executeiospayment',
+);
 
 /* Registration Actions */
 export const CHECK_USERNAME = createAction('CHECK_USERNAME', 'checkUser');

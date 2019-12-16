@@ -21,14 +21,14 @@ export function loadLessons() {
                 console.log(response.headers.get('Error'));
             })
             .request();
-    }
+    };
 }
 
 /* Lets a user redeem a credit and submit a new lesson request */
 export function submitLesson(data: FormData, onUpdateProgress: (this: XMLHttpRequest, ev: ProgressEvent) => any) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({ type: ACTIONS.SUBMIT_LESSON.REQUEST });
-        
+
         HttpRequest.post(ACTIONS.SUBMIT_LESSON.API)
             .withBody(data, false)
             .onSuccess((body: any) => {
@@ -38,8 +38,8 @@ export function submitLesson(data: FormData, onUpdateProgress: (this: XMLHttpReq
             })
             .onFailure((response: Response) => {
                 dispatch(xhrfailure(ACTIONS.SUBMIT_LESSON.FAILURE, response));
-                console.log((response && response.getResponseHeader) ? response.getResponseHeader('Error') : 'N/A');
+                console.log(response && response.getResponseHeader ? response.getResponseHeader('Error') : 'N/A');
             })
             .requestWithProgress(onUpdateProgress);
-    }
+    };
 }

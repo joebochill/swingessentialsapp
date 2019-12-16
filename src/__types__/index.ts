@@ -1,4 +1,3 @@
-
 export type HandednessType = 'right' | 'left';
 export type CameraType = 'front' | 'back';
 export type SwingType = 'dtl' | 'fo';
@@ -10,12 +9,12 @@ export type UserSettingsType = {
     delay?: number;
     overlay?: boolean;
     handedness?: HandednessType;
-}
+};
 
 export type Credentials = {
     username: string;
     password: string;
-}
+};
 export type Blog = any; // TODO
 export type Lesson = any; // TODO
 export type Package = any; // TODO
@@ -29,25 +28,25 @@ export type LoginState = {
     modalWarning: boolean;
     failCount: number;
     pending: boolean;
-}
+};
 export type LessonsState = {
     loading: boolean;
-    pending: Lesson[],
-    closed: Lesson[],
+    pending: Lesson[];
+    closed: Lesson[];
     redeemPending: boolean;
     redeemSuccess: boolean;
     redeemError: number | null;
-}
+};
 export type TipsState = {
     loading: boolean;
     tipList: Tip[];
-}
+};
 export type UserDataState = {
     username: string;
     firstName: string;
     lastName: string;
     email: string;
-}
+};
 export type CreditsState = {
     count: number;
     // unlimited: number,
@@ -55,15 +54,15 @@ export type CreditsState = {
     inProgress: boolean;
     success: boolean;
     fail: boolean;
-}
+};
 export type BlogsState = {
     loading: boolean;
     blogList: Blog[];
-}
+};
 export type PackagesState = {
     list: Package[];
     loading: boolean;
-}
+};
 export type SettingsState = {
     duration: number;
     delay: number;
@@ -79,16 +78,16 @@ export type RegistrationState = {
     success: boolean;
     emailVerified: boolean;
     error: number;
-}
+};
 
 export type ApplicationState = {
-    login: LoginState,
-    lessons: LessonsState,
-    tips: TipsState,
-    userData: UserDataState,
-    credits: CreditsState,
-    blogs: BlogsState,
-    packages: PackagesState,
-    settings: SettingsState,
-    registration: RegistrationState,
-}
+    login: LoginState;
+    lessons: LessonsState;
+    tips: TipsState;
+    userData: UserDataState;
+    credits: CreditsState;
+    blogs: BlogsState;
+    packages: PackagesState;
+    settings: SettingsState;
+    registration: RegistrationState;
+};

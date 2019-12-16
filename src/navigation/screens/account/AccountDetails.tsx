@@ -9,15 +9,9 @@ const AccessTime = wrapIcon({ IconClass: Icon, name: 'access-time' });
 // TODO: Implement basic view
 // TODO: Implement editing
 
-export const AccountDetails = (props) => (
+export const AccountDetails = () => (
     <View style={sharedStyles.pageContainer}>
-        <SEHeader
-            title={'Account Details'}
-            subtitle={'...all about you'}
-        />
-        <EmptyState
-            IconClass={AccessTime}
-            title={'Coming Soon'}
-        />
+        <SEHeader title={'Account Details'} subtitle={'...all about you'} />
+        <EmptyState IconClass={AccessTime} title={'Coming Soon'} />
     </View>
 );

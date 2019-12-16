@@ -17,7 +17,7 @@ export function checkUsernameAvailability(username: string) {
                 console.log(response.headers.get('Error'));
             })
             .request();
-    }
+    };
 }
 
 export function checkEmailAvailability(email: string) {
@@ -32,7 +32,7 @@ export function checkEmailAvailability(email: string) {
                 console.log(response.headers.get('Error'));
             })
             .request();
-    }
+    };
 }
 
 type NewAccountDetails = {
@@ -44,7 +44,7 @@ type NewAccountDetails = {
     phone: string;
     password: string;
     platform: PlatformOSType;
-}
+};
 export function createAccount(data: NewAccountDetails) {
     return (dispatch: Dispatch) => {
         dispatch({ type: ACTIONS.CREATE_ACCOUNT.REQUEST });
@@ -52,7 +52,7 @@ export function createAccount(data: NewAccountDetails) {
             .withBody(data)
             .onSuccess((response: any) => {
                 const token = response.headers.get('Token');
-                dispatch(success(ACTIONS.CREATE_ACCOUNT.SUCCESS, { token }))
+                dispatch(success(ACTIONS.CREATE_ACCOUNT.SUCCESS, { token }));
                 // dispatch(getUserData(token)); // TODO
                 // dispatch(getLessons(token));
                 // dispatch(getCredits(token));
@@ -63,29 +63,29 @@ export function createAccount(data: NewAccountDetails) {
                 console.log(response.headers.get('Error'));
             })
             .request();
-    }
+    };
 }
 
-export function verifyEmail(code: string){
+export function verifyEmail(code: string) {
     return (dispatch: Dispatch) => {
         dispatch({ type: ACTIONS.VERIFY_EMAIL.REQUEST });
         HttpRequest.put(ACTIONS.VERIFY_EMAIL.API)
-            .withBody({type:'email', code: code})
+            .withBody({ type: 'email', code: code })
             .onSuccess((response: any) => {
-                dispatch(success(ACTIONS.VERIFY_EMAIL.SUCCESS, response))
+                dispatch(success(ACTIONS.VERIFY_EMAIL.SUCCESS, response));
             })
             .onFailure((response: Response) => {
                 dispatch(failure(ACTIONS.VERIFY_EMAIL.FAILURE, response));
                 console.log(response.headers.get('Error'));
             })
             .request();
-    }
+    };
 }
 
 // /* Requests a password reset for the account linked to the supplied email address */
 // export function requestReset(data){
 //     return (dispatch) => {
-//         fetch(BASEURL+'reset', { 
+//         fetch(BASEURL+'reset', {
 //             method: 'PUT',
 //             headers: {
 //                 'Content-Type': 'application/json'
@@ -108,4 +108,3 @@ export function verifyEmail(code: string){
 //         });
 //     }
 // }
-

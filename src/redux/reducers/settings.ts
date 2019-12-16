@@ -1,12 +1,12 @@
-import { GET_SETTINGS, LOGOUT } from "../actions/types";
+import { GET_SETTINGS, LOGOUT } from '../actions/types';
 import { SettingsState } from '../../__types__';
 
 const initialState: SettingsState = {
     duration: 5,
     delay: 5,
     overlay: true,
-    handedness: 'right'
-}
+    handedness: 'right',
+};
 
 export const settingsReducer = (state = initialState, action): SettingsState => {
     switch (action.type) {
@@ -24,4 +24,4 @@ export const settingsReducer = (state = initialState, action): SettingsState => 
         default:
             return state;
     }
-}
+};
