@@ -45,27 +45,27 @@ export const registrationReducer = (state = initialState, action): RegistrationS
                 emailAvailable: action.payload.available,
                 // lastEmailChecked: action.data.lastChecked
             }
-        // case VERIFY_EMAIL.REQUEST:
-        //     return {
-        //         ...state,
-        //         pendingRegistration: true,
-        //         registrationActivated: false,
-        //         registrationError: 0
-        //     }
-        // case VERIFY_EMAIL.SUCCESS:
-        //     return {
-        //         ...state,
-        //         pendingRegistration: false,
-        //         registrationActivated: true,
-        //         registrationError: 0
-        //     }
-        // case VERIFY_EMAIL.FAILURE:
-        //     return {
-        //         ...state,
-        //         pendingRegistration: false,
-        //         registrationActivated: false,
-        //         registrationError: isNaN(parseInt(action.error, 10)) ? -1 : parseInt(action.error, 10)
-        //     }
+        case VERIFY_EMAIL.REQUEST:
+            return {
+                ...state,
+                pending: true,
+                emailVerified: false,
+                error: 0
+            }
+        case VERIFY_EMAIL.SUCCESS:
+            return {
+                ...state,
+                pending: false,
+                emailVerified: true,
+                error: 0
+            }
+        case VERIFY_EMAIL.FAILURE:
+            return {
+                ...state,
+                pending: false,
+                emailVerified: false,
+                error: isNaN(parseInt(action.error, 10)) ? -1 : parseInt(action.error, 10)
+            }
         default:
             return state;
     }

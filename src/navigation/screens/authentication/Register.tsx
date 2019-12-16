@@ -1,13 +1,13 @@
 import React, { useState, useRef, RefObject, useCallback, useEffect } from 'react';
 import { Alert, View, KeyboardAvoidingView, ScrollView, StyleSheet, NativeSyntheticEvent, TextInputFocusEventData, TextInputSubmitEditingEventData, Keyboard, KeyboardType, Platform, ActivityIndicator } from 'react-native';
-import { Input } from 'react-native-elements';
+import { Input, Icon } from 'react-native-elements';
 import { H7 } from '@pxblue/react-native-components';
 import { SEHeader, ErrorBox, SEButton } from '../../../components';
-import { sharedStyles, transparent, unit, sizes, spaces, fonts, white, purple, blackOpacity } from '../../../styles';
+import { sharedStyles, transparent, unit, red, sizes, spaces, fonts, white, purple, blackOpacity } from '../../../styles';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../../__types__';
-import { checkUsernameAvailability, checkEmailAvailability, createAccount } from '../../../redux/actions';
+import { checkUsernameAvailability, checkEmailAvailability, createAccount, verifyEmail } from '../../../redux/actions';
 import { usePrevious, height } from '../../../utilities';
 import { ROUTES } from '../../../constants/routes';
 
@@ -49,6 +49,77 @@ type RegistrationProperty = {
 }
 
 export const Register = (props) => {
+    const code = props.navigation.getParam('code', null);
+    return code ? <VerifyForm {...props} code={code} /> : <RegisterForm {...props} />;
+}
+
+const VerifyForm = (props) => {
+    const { code, navigation } = props;
+    const verification = useSelector((state: ApplicationState) => state.registration);
+    const previousPendingState = usePrevious(verification.pending);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (code) {
+            console.log('registration code: ' + code);
+            dispatch(verifyEmail(code));
+        }
+    }, [code]);
+
+    useEffect(() => { // Verification finished
+        if (previousPendingState && !verification.pending) {
+            if (verification.emailVerified) { // Successful
+                // props.navigation.goBack(ROUTES.AUTH_GROUP);
+                console.log('verified successfully');
+                // TODO
+            }
+            else {
+                // TODO: Log error
+                console.log('verification failed');
+                console.log(verification.error);
+                // Alert.alert(
+                //     'Oops:',
+                //     'Your account registration has failed. Please try again later and contact us if the problem continues.',
+                //     [{ text: 'OK' }]
+                // );
+            }
+        }
+    }, [previousPendingState, verification])
+
+    return (
+        <View style={sharedStyles.pageContainer}>
+            <SEHeader
+                title={'Sign Up'}
+                subtitle={'confirm your email'}
+                mainAction={'back'}
+                showAuth={false}
+            />
+            <View style={[sharedStyles.paddingMedium, { flex: 1, justifyContent: 'center' }]}>
+                {verification.pending &&
+                    <>
+                        <ActivityIndicator size={'large'} color={purple[800]} />
+                        <H7 font={'regular'} style={{ textAlign: 'center' }}>Verifying your email address...</H7>
+                    </>
+                }
+                {!verification.pending &&
+                    <>
+                        <Icon name={verification.emailVerified ? 'check-circle' : 'error'} size={sizes.jumbo} color={verification.emailVerified ? purple[400] : red[500]} />
+                        <H7 font={'regular'} style={{ textAlign: 'center' }}>{verification.emailVerified ? 'Your email address has been confirmed. Please sign in to view your account.' : _getRegistrationErrorMessage(verification.error)}</H7>
+                        {verification.emailVerified &&
+                            <SEButton
+                                style={{ marginTop: spaces.medium }}
+                                title={'Sign In'}
+                                onPress={() => navigation.popToTop()}
+                            />
+                        }
+                    </>
+                }
+            </View>
+        </View>
+    )
+}
+
+const RegisterForm = (props) => {
     const [fields, setFields] = useState(defaultKeys);
     const firstRef = useRef(null);
     const lastRef = useRef(null);
@@ -64,7 +135,6 @@ export const Register = (props) => {
     const previousPendingState = usePrevious(registration.pending);
 
     const dispatch = useDispatch();
-
 
     useEffect(() => { // Registration finished
         if (previousPendingState && !registration.pending) {
@@ -162,8 +232,8 @@ export const Register = (props) => {
     return (
         <View style={sharedStyles.pageContainer}>
             <SEHeader
-                title={'Submit Your Swing'}
-                subtitle={'create a new lesson'}
+                title={'Sign Up'}
+                subtitle={'create an account'}
                 mainAction={'back'}
                 showAuth={false}
             />
@@ -265,6 +335,20 @@ export const Register = (props) => {
         </View>
     )
 };
+
+const _getRegistrationErrorMessage = (code) => {
+    switch (code) {
+        case 400302:
+            return 'Oops! Your verification link is invalid. Please check your registration email and try again. If you continue to have problems, please contact us.';
+        case 400303:
+            return 'Your verification link has expired. You will need to re-register.';
+        case 400304:
+        case -1:
+            return 'Your your email address has already been verified. Sign in to view your account.';
+        default:
+            return 'Unknown Error: ' + code;
+    }
+}
 
 const styles = StyleSheet.create({
     formLabel: {

@@ -12,6 +12,7 @@ import { ROUTES } from '../../../constants/routes';
 import { ApplicationState } from '../../../__types__';
 
 // TODO: Implement Tutorials
+// TODO: List item dividers sometimes missing in simulator
 
 export const Order = (props) => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
@@ -31,8 +32,6 @@ export const Order = (props) => {
             for (let i = 0; i < packages.length; i++) {
                 skus.push(packages[i].app_sku);
             }
-            // TODO: Use the real SKUs
-            skus = ['com.swingessentialsbeta.par', 'com.swingessentialsbeta.eagle'];
             const loadProducts = async () => {
                 try {
                     await RNIap.initConnection();
@@ -126,13 +125,14 @@ export const Order = (props) => {
             <FlatList
                 scrollEnabled={false}
                 keyboardShouldPersistTaps={'always'}
-                data={packages.slice(0, 2)}//TODO: Remove this
+                data={packages}
                 extraData={products}
                 renderItem={({ item, index }) =>
                     <ListItem
                         containerStyle={sharedStyles.listItem}
                         contentContainerStyle={sharedStyles.listItemContent}
-                        bottomDivider
+                        topDivider
+                        bottomDivider={index === packages.length - 1}
                         onPress={() => setSelected(index)}
                         leftIcon={{
                             name: parseInt(item.count, 10) === 1 ? 'filter-1' : 'filter-5',
@@ -155,22 +155,9 @@ export const Order = (props) => {
                     containerStyle={{ margin: spaces.medium, marginTop: spaces.large }}
                     buttonStyle={{ backgroundColor: purple[400] }}
                     title={<H7 color={'onPrimary'}>PURCHASE</H7>}
-                    // TODO: Update to production
-                    onPress={() => onPurchase(packages[selected].app_sku.replace('swingessentials', 'swingessentialsbeta'), packages[selected].shortcode)}
+                    onPress={() => onPurchase(packages[selected].app_sku, packages[selected].shortcode)}
                 />
             }
-            {/* <SEButton
-                containerStyle={{ margin: spaces.medium, marginTop: 0 }}
-                buttonStyle={{ backgroundColor: red[400] }}
-                title={<H7 color={'onPrimary'}>RESET</H7>}
-                // TODO: Update to production
-                onPress={async () => {
-                    const available = await RNIap.getAvailablePurchases();
-                    for (let i = 0; i < available.length; i++) {
-                        RNIap.finishTransactionIOS(available[i].transactionId);
-                    }
-                }}
-            /> */}
         </CollapsibleHeaderLayout>
     )
 };
@@ -183,11 +170,8 @@ const styles = StyleSheet.create({
         backgroundColor: purple[50],
         padding: spaces.medium,
         marginBottom: spaces.large,
-        // borderLeftWidth: unit(2),
-        // borderTopWidth: unit(2),
         borderWidth: unit(1),
         borderRadius: unit(5),
         borderColor: purple[200],
-        // width: '50%'
     }
 })

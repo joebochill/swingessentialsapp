@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Alert, Animated, SafeAreaView, StatusBar, View, Platform, FlatList, StyleSheet, ScrollView } from 'react-native';
+import { AppState, AppStateStatus, Linking, Alert, Animated, SafeAreaView, StatusBar, View, Platform, FlatList, StyleSheet, ScrollView, AppStateStatic } from 'react-native';
 import { APP_VERSION } from '../constants/index';
 import { NavigationItems } from './NavigationContent';
 
@@ -33,6 +33,7 @@ type NavigatorState = {
     mainLeft: Animated.Value;
     accountLeft: Animated.Value;
     helpLeft: Animated.Value;
+    appState: AppStateStatus;
 };
 
 function mapStateToProps(state) {
@@ -62,7 +63,28 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
             mainLeft: new Animated.Value(0),
             accountLeft: new Animated.Value(0/*DRAWER_WIDTH*/),
             helpLeft: new Animated.Value(-1*DRAWER_WIDTH),
+            appState: AppState.currentState,
         };
+    }
+    componentDidMount(){
+        AppState.addEventListener('change', this._handleAppStateChange);
+        Linking.addEventListener('url', this._wakeupByLink);
+
+        // Handle the case where the application is opened from a Universal Link
+        if(Platform.OS !== 'ios'){
+            Linking.getInitialURL()
+            .then((url) => {
+            if (url) {
+                let path = url.split('/').filter((el) => el.length > 0);
+                this._linkRoute(url, path);
+            }
+            })
+            .catch((e) => {});
+        }
+    }
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
+        Linking.removeEventListener('url', this._wakeupByLink);
     }
     componentDidUpdate() {
         const { activePanel, mainLeft, accountLeft, helpLeft, scrollY } = this.state;
@@ -102,6 +124,39 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
             { text: 'Log Out', onPress: () => this.props.logout(this.props.token) },
             { text: 'Cancel' },
         ]);
+    }
+    // Handle the app coming into the foreground after being backgrounded
+    _handleAppStateChange = (nextAppState: AppStateStatus) => {
+        console.log('stateChange: ', nextAppState);
+        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active' && this.props.token) {
+            // TODO: Refresh data from the token
+        }
+        this.setState({appState: nextAppState});
+    }
+
+    // Handles activating a deep link while the app is in the background
+    _wakeupByLink = (event) => {
+        console.log('waking up by link');
+        let path = event.url.split('/').filter((el) => el.length > 0);
+        this._linkRoute(event.url, path)
+    }
+
+    _linkRoute(url: string, path: string){
+        console.log('linking route:', url, path);
+        if(url.match(/\/lessons\/?/gi)){
+            console.log('link to lessons');
+            if(this.props.token) {
+                this.props.navigation.navigate(ROUTES.LESSONS)
+            }
+        }
+        else if(url.match(/\/register\/[A-Z0-9]+\/?$/gi)){
+            console.log('link to verify');
+            this.props.navigation.navigate(ROUTES.REGISTER, {code: path[path.length - 1]});
+        }
+        else if(url.match(/\/register\/?$/gi)){
+            console.log('link to register');
+            this.props.navigation.navigate(ROUTES.REGISTER);
+        }
     }
     render() {
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);

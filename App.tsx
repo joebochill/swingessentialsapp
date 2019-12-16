@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeProvider } from '@pxblue/react-native-components';
 import MainNavigator from './src/navigation/MainNavigator';
 import { RNIAPCallbacks } from './src/navigation/screens/lessons';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { AppReducer } from './src/redux/reducers';
@@ -14,7 +14,6 @@ import { white, purple, red } from './src/styles';
 // TODO: Organize all imports
 // TODO: Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
 // TODO: Check camera roll video size using RNFetchBlob
-
 
 const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 
@@ -68,7 +67,7 @@ export const App = () => {
                         },
                     }}>
                     <RNIAPCallbacks />
-                    <MainNavigator />
+                    <MainNavigator enableURLHandling={false} />
                 </ThemeProvider>
             </SafeAreaProvider>
         </Provider>
