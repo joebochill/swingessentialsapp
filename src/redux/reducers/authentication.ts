@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, CREATE_ACCOUNT } from '../actions/types';
+import { LOGIN, LOGOUT, CREATE_ACCOUNT, SET_TOKEN } from '../actions/types';
 import { getUserRole } from '../../utilities';
 import { LoginState } from '../../__types__';
 
@@ -20,6 +20,7 @@ export const loginReducer = (state = initialState, action): LoginState => {
             };
         case LOGIN.SUCCESS:
         case CREATE_ACCOUNT.SUCCESS:
+        case SET_TOKEN.REQUEST:
             return {
                 ...state,
                 modalWarning: false,

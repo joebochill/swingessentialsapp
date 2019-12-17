@@ -9,6 +9,7 @@ export const INITIAL_LOAD = 'INITIAL_LOAD';
 /* Login Actions */
 export const LOGIN = createAction('LOGIN', 'login');
 export const LOGOUT = createAction('LOGOUT', 'logout');
+export const SET_TOKEN = createAction('SET_TOKEN', '');
 
 /* User Actions */
 export const GET_USER_DATA = createAction('GET_USER_DATA', 'user');

@@ -16,6 +16,7 @@ import { white, purple, red } from './src/styles';
 // TODO: Check camera roll video size using RNFetchBlob
 // TODO: Update production API with new handlers for user settings
 // TODO: Update production API with FAQ implementation
+// TODO: Update prod API with lesson types
 
 const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 

@@ -4,6 +4,9 @@ import { loadTips } from './TipActions';
 import { loadBlogs } from './BlogActions';
 import { loadPackages } from './PackageActions';
 import { loadFAQ } from './FAQActions';
+import AsyncStorage from '@react-native-community/async-storage';
+import { ASYNC_PREFIX } from '../../constants';
+import { setToken } from './LoginActions';
 
 // TODO: Remove the Albatross Package from everything
 // TODO: Implement Splashscreen
@@ -18,7 +21,11 @@ import { loadFAQ } from './FAQActions';
 // TODO: Implement Tutorials
 
 export function loadInitialData(): Function {
-    return (dispatch: ThunkDispatch<any, void, any>) => {
+    return async (dispatch: ThunkDispatch<any, void, any>) => {
+        const token = await AsyncStorage.getItem(ASYNC_PREFIX + 'token');
+        if(token) dispatch(setToken(token));
+        // loadTutorials(store.dispatch); //TODO
+
         dispatch({ type: ACTIONS.INITIAL_LOAD });
         dispatch(loadTips());
         dispatch(loadBlogs());

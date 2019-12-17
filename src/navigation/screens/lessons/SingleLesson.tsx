@@ -25,7 +25,7 @@ export const SingleLesson = props => {
 
     return (
         lesson && (
-            <CollapsibleHeaderLayout mainAction={'back'} title={lesson.request_date} subtitle={'Remote Lesson'}>
+            <CollapsibleHeaderLayout mainAction={'back'} title={lesson.request_date} subtitle={lesson.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson'}>
                 <View style={sharedStyles.paddingHorizontalMedium}>
                     {lesson.response_video && (
                         <>

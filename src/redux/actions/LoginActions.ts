@@ -1,5 +1,5 @@
 import { success, failure } from '../../api/http-helper';
-import { btoa } from '../../utilities';
+import { btoa, atob } from '../../utilities';
 import * as ACTIONS from './types';
 import { ASYNC_PREFIX, AUTH, BASEURL } from '../../constants';
 // import * as Keychain from 'react-native-keychain';
@@ -33,11 +33,8 @@ export function requestLogin(userCredentials: Credentials) {
                                 dispatch(success(ACTIONS.LOGIN.SUCCESS, { ...json, token: token }));
                             })
                             .then(() => {
-                                dispatch(loadLessons());
-                                dispatch(loadTips());
-                                dispatch(loadBlogs());
-                                dispatch(loadCredits());
-                                dispatch(loadSettings());
+                                dispatch(loadUserContent());
+
                                 // TODO: Load more stuff
                             });
                         AsyncStorage.setItem(ASYNC_PREFIX + 'token', token);
@@ -82,4 +79,29 @@ export function requestLogout(token: string) {
                 console.log('logout fetch failed');
             });
     };
+}
+
+export function setToken(token: string) {
+    return (dispatch: ThunkDispatch<any, void, any>) => {
+
+        let exp = JSON.parse(atob(token.split('.')[1])).exp;
+        if (exp < Date.now() / 1000) {
+            AsyncStorage.removeItem(ASYNC_PREFIX + 'token');
+            // logLocalError('112: Local token expired');
+            console.log('Local token expired');
+        }
+        dispatch({ type: ACTIONS.SET_TOKEN.REQUEST, payload: { token } });
+        dispatch(loadUserContent());
+    }
+}
+
+export function loadUserContent() {
+    return (dispatch: ThunkDispatch<any, void, any>) => {
+        // dispatch({type:DATA_FROM_TOKEN.REQUEST});
+        dispatch(loadLessons());
+        dispatch(loadCredits());
+        dispatch(loadSettings());
+        dispatch(loadTips());
+        dispatch(loadBlogs());
+    }
 }
