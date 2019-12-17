@@ -3,6 +3,7 @@ import * as ACTIONS from './types';
 import { loadTips } from './TipActions';
 import { loadBlogs } from './BlogActions';
 import { loadPackages } from './PackageActions';
+import { loadFAQ } from './FAQActions';
 
 // TODO: Remove the Albatross Package from everything
 // TODO: Implement Splashscreen
@@ -22,5 +23,6 @@ export function loadInitialData(): Function {
         dispatch(loadTips());
         dispatch(loadBlogs());
         dispatch(loadPackages());
+        dispatch(loadFAQ());
     };
 }

@@ -37,6 +37,9 @@ export const PURCHASE_CREDITS = createAction(
     Platform.OS === 'android' ? 'executeandroidpayment' : 'executeiospayment',
 );
 
+/* FAQ Actions */
+export const GET_FAQ = createAction('GET_FAQ', 'faq');
+
 /* Registration Actions */
 export const CHECK_USERNAME = createAction('CHECK_USERNAME', 'checkUser');
 export const CHECK_EMAIL = createAction('CHECK_EMAIL', 'checkEmail');

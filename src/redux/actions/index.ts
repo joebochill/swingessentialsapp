@@ -6,3 +6,4 @@ export * from './CreditActions';
 export * from './BlogActions';
 export * from './PackageActions';
 export * from './RegistrationActions';
+export * from './FAQActions';

@@ -80,6 +80,19 @@ export type RegistrationState = {
     emailVerified: boolean;
     error: number;
 };
+export type FAQ = {
+    id: number;
+    question: string;
+    platform_specific: boolean;
+    answer: string;
+    answer_android: string;
+    answer_ios: string;
+    video: string;
+}
+export type FAQState = {
+    loading: boolean;
+    questions: FAQ[];
+}
 
 export type ApplicationState = {
     login: LoginState;
@@ -91,4 +104,5 @@ export type ApplicationState = {
     packages: PackagesState;
     settings: SettingsState;
     registration: RegistrationState;
+    faq: FAQState;
 };

@@ -15,6 +15,7 @@ import { white, purple, red } from './src/styles';
 // TODO: Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
 // TODO: Check camera roll video size using RNFetchBlob
 // TODO: Update production API with new handlers for user settings
+// TODO: Update production API with FAQ implementation
 
 const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 
