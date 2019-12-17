@@ -23,8 +23,10 @@ export function loadSettings() {
     };
 }
 
+type SettingsUpdateType = Exclude<UserSettingsType, 'loading'>;
+
 /* Updates the user app settings in the database */
-export function putSettings(data: UserSettingsType) {
+export function putSettings(data: Partial<SettingsUpdateType>) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({ type: ACTIONS.PUT_SETTINGS.REQUEST });
 

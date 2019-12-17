@@ -24,6 +24,7 @@ export type SEHeaderProps = HeaderProps &
         mainAction?: NavType;
         showAuth?: boolean;
         dynamic?: boolean;
+        onNavigate?: Function;
     };
 
 export const SEHeader = withNavigation((props: SEHeaderProps) => {
@@ -33,6 +34,7 @@ export const SEHeader = withNavigation((props: SEHeaderProps) => {
         navigation,
         backgroundImage = topology,
         actionItems = [],
+        onNavigate,
         ...other
     } = props;
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -64,9 +66,15 @@ export const SEHeader = withNavigation((props: SEHeaderProps) => {
         <Component
             navigation={
                 mainAction === 'menu'
-                    ? { icon: MenuIcon, onPress: () => navigation.openDrawer() }
+                    ? { icon: MenuIcon, onPress: () => {
+                        navigation.openDrawer();
+                        if(onNavigate) onNavigate();
+                    }}
                     : mainAction === 'back'
-                    ? { icon: BackIcon, onPress: () => navigation.pop() }
+                    ? { icon: BackIcon, onPress: () => {
+                        navigation.pop();
+                        if(onNavigate) onNavigate();
+                    }}
                     : undefined
             }
             backgroundImage={backgroundImage}

@@ -10,17 +10,15 @@ export const RNIAPCallbacks = () => {
     const dispatch = useDispatch();
     const packages = useSelector((state: ApplicationState) => state.packages.list);
 
+    // TODO: Fix the count issue when using in production
+
     useEffect(() => {
         purchaseUpdatedListener((purchase: any) => {
             const receipt = purchase.transactionReceipt;
             if (receipt) {
                 const paidPackage = packages.filter(pack => pack.app_sku === purchase.productId);
-                let shortcode;
-                if (paidPackage.length > 0) {
-                    shortcode = paidPackage[0].shortcode;
-                } else {
-                    shortcode = 'par';
-                } // TODO : remove this
+                let shortcode = paidPackage.length > 0 ? paidPackage[0].shortcode : '';
+                if(shortcode === '') return;
                 dispatch(
                     purchaseCredits(
                         {

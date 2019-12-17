@@ -48,11 +48,16 @@ export const mainNavigationItems: RouteGroup = {
             icon: 'beer',
             route: ROUTES.BLOGS_GROUP,
         },
+        // {
+        //     title: 'My Account',
+        //     icon: 'person',
+        //     nested: true,
+        //     activatePanel: 1,
+        // },
         {
-            title: 'My Account',
-            icon: 'person',
-            nested: true,
-            activatePanel: 1,
+            title: 'Settings',
+            icon: 'settings',
+            route: ROUTES.SETTINGS_GROUP,
         },
         {
             title: 'Help',
@@ -76,11 +81,11 @@ export const helpNavigationItems: RouteGroup = {
             icon: 'help',
             route: ROUTES.FAQ,
         },
-        {
-            title: 'Contact Us',
-            icon: 'mail',
-            route: ROUTES.CONTACT,
-        },
+        // {
+        //     title: 'Contact Us',
+        //     icon: 'mail',
+        //     route: ROUTES.CONTACT,
+        // },
         {
             title: 'Back',
             icon: 'arrow-back',

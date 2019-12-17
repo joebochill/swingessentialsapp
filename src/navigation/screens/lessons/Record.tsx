@@ -20,6 +20,8 @@ import { Icon } from 'react-native-elements';
 
 const DESIRED_RATIO = '16:9';
 
+// TODO: Only show settings icon if logged in
+
 const getOverlayImage = (swing: SwingType, handedness: HandednessType, camera: CameraType) => {
     let options = swing === 'dtl' ? [downthelineRH, downthelineLH] : [faceonRH, faceonLH];
     let index = 0;

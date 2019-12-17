@@ -64,6 +64,7 @@ export type PackagesState = {
     loading: boolean;
 };
 export type SettingsState = {
+    loading: boolean;
     duration: number;
     delay: number;
     overlay: boolean;
