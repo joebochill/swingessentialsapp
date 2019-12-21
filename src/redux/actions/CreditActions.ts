@@ -10,7 +10,6 @@ export function loadCredits() {
 
         HttpRequest.get(ACTIONS.GET_CREDITS.API)
             .onSuccess((body: any) => {
-                console.log('success');
                 dispatch(success(ACTIONS.GET_CREDITS.SUCCESS, body));
             })
             .onFailure((response: Response) => {

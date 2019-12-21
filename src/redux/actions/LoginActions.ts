@@ -11,8 +11,11 @@ import { loadBlogs } from './BlogActions';
 import { loadSettings } from './SettingsActions';
 import { ThunkDispatch } from 'redux-thunk';
 import { Credentials } from '../../__types__';
+import { HttpRequest } from '../../api/http';
 
 // TODO: Implement the token timeout warning
+// TODO: Handle fetch failure (on login esp) more gracefully
+// TODO: timer to check pending users registration status update
 
 export function requestLogin(userCredentials: Credentials) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
@@ -78,6 +81,24 @@ export function requestLogout(token: string) {
                 // logLocalError('114: Promise Error: logging out');
                 console.log('logout fetch failed');
             });
+    };
+}
+
+export function refreshToken(){
+    return (dispatch: ThunkDispatch<any, void, any>) => {
+        dispatch({ type: ACTIONS.REFRESH_TOKEN.REQUEST });
+        HttpRequest.get(ACTIONS.REFRESH_TOKEN.API)
+            .withFullResponse()
+            .onSuccess((response: any) => {
+                const token = response.headers.get('Token');
+                dispatch(success(ACTIONS.REFRESH_TOKEN.SUCCESS, {token}));
+                AsyncStorage.setItem(ASYNC_PREFIX+'token', token);
+            })
+            .onFailure((response: Response) => {
+                dispatch(failure(ACTIONS.REFRESH_TOKEN.FAILURE, response));
+                console.log(response.headers.get('Error'));
+            })
+            .request();
     };
 }
 

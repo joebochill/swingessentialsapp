@@ -35,7 +35,7 @@ import {
     SingleBlog,
     Tips,
     SingleTip,
-} from './screens';
+} from '../screens';
 
 const AuthStack = createStackNavigator(
     {

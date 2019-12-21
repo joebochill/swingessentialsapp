@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from '@pxblue/react-native-components';
 import MainNavigator from './src/navigation/MainNavigator';
-import { RNIAPCallbacks } from './src/navigation/screens/lessons';
+import { RNIAPCallbacks } from './src/screens/lessons';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -17,6 +17,8 @@ import { white, purple, red } from './src/styles';
 // TODO: Update production API with new handlers for user settings
 // TODO: Update production API with FAQ implementation
 // TODO: Update prod API with lesson types
+// TODO: Optimize components and library usage
+// TODO: Optimize image assets and bundle size
 
 const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 

@@ -35,7 +35,6 @@ export const registrationReducer = (state = initialState, action): RegistrationS
                 success: true,
             };
         case CREATE_ACCOUNT.FAILURE:
-            console.log('reducing failure');
             return {
                 ...state,
                 pending: false,

@@ -35,10 +35,12 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
     private failureCallback?: Function;
     private body?: any;
     private queryParams?: string;
+    private parseResponse?: boolean;
 
     private constructor(method: HttpMethod, endpoint: string, optionals: Optionals = {}) {
         this.method = method;
         this.endpoint = endpoint;
+        this.parseResponse = true;
         if (optionals) {
             this.body = optionals.body;
             this.queryParams = optionals.queryParams;
@@ -63,6 +65,10 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
         this.failureCallback = callback;
         return this;
     }
+    public withFullResponse(){
+        this.parseResponse = false;
+        return this;
+    }
     public request() {
         return fetch(`${BASEURL}/${this.endpoint}`, {
             method: this.method,
@@ -73,7 +79,7 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                 switch (response.status) {
                     case 200:
                         let reply = {};
-                        if (this.method === HttpMethod.PUT) {
+                        if (this.method === HttpMethod.PUT || this.parseResponse === false) {
                             reply = response;
                         } else if (this.method === HttpMethod.GET) {
                             reply = await response.json();

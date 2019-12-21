@@ -32,6 +32,7 @@ import { DrawerContentComponentProps } from 'react-navigation-drawer';
 import { ROUTES } from '../constants/routes';
 import { getLongDate, height } from '../utilities';
 import { requestLogout } from '../redux/actions';
+import { TokenModal } from '../components';
 
 type NavigatorProps = DrawerContentComponentProps & {
     username: string;
@@ -146,17 +147,13 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
     };
 
     _linkRoute(url: string, path: string) {
-        console.log('linking route:', url, path);
         if (url.match(/\/lessons\/?/gi)) {
-            console.log('link to lessons');
             if (this.props.token) {
                 this.props.navigation.navigate(ROUTES.LESSONS);
             }
         } else if (url.match(/\/register\/[A-Z0-9]+\/?$/gi)) {
-            console.log('link to verify');
             this.props.navigation.navigate(ROUTES.REGISTER, { code: path[path.length - 1] });
         } else if (url.match(/\/register\/?$/gi)) {
-            console.log('link to register');
             this.props.navigation.navigate(ROUTES.REGISTER);
         }
         // TODO: Reset Password (needs to be added to app site association first)
@@ -307,6 +304,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                     <View style={{ height: height * 0.6 }} />
                 </ScrollView>
                 <SafeAreaView />
+                <TokenModal/>
             </View>
         );
     }

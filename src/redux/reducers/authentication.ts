@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, CREATE_ACCOUNT, SET_TOKEN } from '../actions/types';
+import { LOGIN, LOGOUT, CREATE_ACCOUNT, SET_TOKEN, REFRESH_TOKEN } from '../actions/types';
 import { getUserRole } from '../../utilities';
 import { LoginState } from '../../__types__';
 
@@ -21,6 +21,7 @@ export const loginReducer = (state = initialState, action): LoginState => {
         case LOGIN.SUCCESS:
         case CREATE_ACCOUNT.SUCCESS:
         case SET_TOKEN.REQUEST:
+        case REFRESH_TOKEN.SUCCESS:
             return {
                 ...state,
                 modalWarning: false,
@@ -40,6 +41,7 @@ export const loginReducer = (state = initialState, action): LoginState => {
                 failCount: state.failCount + 1,
             };
         case LOGOUT.SUCCESS:
+        case LOGOUT.FAILURE:
             return {
                 ...state,
                 token: null,

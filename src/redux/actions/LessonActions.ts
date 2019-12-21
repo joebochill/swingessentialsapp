@@ -32,7 +32,6 @@ export function submitLesson(data: FormData, onUpdateProgress: (this: XMLHttpReq
         HttpRequest.post(ACTIONS.SUBMIT_LESSON.API)
             .withBody(data, false)
             .onSuccess((body: any) => {
-                console.log('submitted successfully');
                 dispatch(success(ACTIONS.SUBMIT_LESSON.SUCCESS, body));
                 dispatch(loadLessons());
             })
