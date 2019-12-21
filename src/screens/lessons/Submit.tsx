@@ -14,6 +14,7 @@ import { ROUTES } from '../../constants/routes';
 import { ApplicationState } from '../../__types__';
 import { submitLesson } from '../../redux/actions';
 import { usePrevious } from '../../utilities';
+import { Logger } from '../../utilities/logging';
 
 // TODO: Fix the NPM monkeypatch for camera roll
 // TODO: Fix the broken focus & scroll-to behavior
@@ -64,7 +65,11 @@ export const Submit = props => {
                 }, 700);
             } else {
                 // Fail redeem
-                console.log('TODO: failed redeem');
+                Logger.logError({
+                    code: 'SUB100',
+                    description: `Failed to submit lesson.`,
+                    rawErrorCode: lessons.redeemError,
+                })
                 // 400701 means files were stripped for size
                 // 400702 too large
                 setUploadProgress(0);
@@ -91,15 +96,24 @@ export const Submit = props => {
     const _submitLesson = useCallback(() => {
         // TODO: Dismiss keyboard
         if (role !== 'customer' && role !== 'administrator') {
-            console.log('Invalid user trying to redeem');
+            Logger.logError({
+                code: 'SUB200',
+                description: `Unverified users cannot submit lessons.`,
+            });
             return;
         }
         if (lessons.pending.length > 0) {
-            console.log('Lesson already in progress');
+            Logger.logError({
+                code: 'SUB300',
+                description: `You may not submit a new lesson with a current lesson pending.`,
+            });
             return;
         }
         if (!fo_video || !dtl_video) {
-            console.log('missing required video');
+            Logger.logError({
+                code: 'SUB400',
+                description: `Missing required video in lesson submission.`,
+            });
             return;
         }
         const data = new FormData();
@@ -129,7 +143,10 @@ export const Submit = props => {
             } else if (swing === 'dtl') {
                 setDTL(uri);
             } else {
-                console.log('Error, invalid video selection');
+                Logger.logError({
+                    code: 'SUB500',
+                    description: `Invalid video type selection.`,
+                });
             }
         },
         [setFO, setDTL],

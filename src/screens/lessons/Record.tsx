@@ -17,6 +17,7 @@ import downthelineLH from '../../images/overlay-dtl-lh.png';
 import downthelineRH from '../../images/overlay-dtl-rh.png';
 import { ROUTES } from '../../constants/routes';
 import { Icon } from 'react-native-elements';
+import { Logger } from '../../utilities/logging';
 
 const DESIRED_RATIO = '16:9';
 
@@ -55,7 +56,10 @@ export const Record = props => {
         setCountdownStarted(false);
 
         if (!cameraRef.current) {
-            console.log('no camera object');
+            Logger.logError({
+                code: 'REC100',
+                description: `No camera object was found.`,
+            })
             return;
         }
         const options = {
@@ -75,7 +79,10 @@ export const Record = props => {
     const _endRecording = useCallback(() => {
         setCountdownStarted(false);
         if (!cameraRef.current) {
-            console.log('camera error');
+            Logger.logError({
+                code: 'REC200',
+                description: `No camera object was found.`,
+            })
             return;
         }
         if (isRecording) {

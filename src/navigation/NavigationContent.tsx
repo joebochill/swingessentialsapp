@@ -48,12 +48,12 @@ export const mainNavigationItems: RouteGroup = {
             icon: 'beer',
             route: ROUTES.BLOGS_GROUP,
         },
-        // {
-        //     title: 'My Account',
-        //     icon: 'person',
-        //     nested: true,
-        //     activatePanel: 1,
-        // },
+        {
+            title: 'My Account',
+            icon: 'person',
+            nested: true,
+            activatePanel: 1,
+        },
         {
             title: 'Settings',
             icon: 'settings',

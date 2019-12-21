@@ -12,8 +12,7 @@ export function loadFAQ() {
                 dispatch(success(ACTIONS.GET_FAQ.SUCCESS, body));
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.GET_FAQ.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.GET_FAQ.FAILURE, response, 'LoadFAQ'));
             })
             .request();
     };

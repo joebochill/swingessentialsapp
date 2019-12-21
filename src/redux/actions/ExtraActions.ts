@@ -7,6 +7,10 @@ import { loadFAQ } from './FAQActions';
 import AsyncStorage from '@react-native-community/async-storage';
 import { ASYNC_PREFIX } from '../../constants';
 import { setToken } from './LoginActions';
+import { HttpRequest } from '../../api/http';
+import { Logger, LOG_TYPE } from '../../utilities/logging';
+import { success, failure } from '../../api/http-helper';
+import { Platform } from 'react-native';
 
 // TODO: Remove the Albatross Package from everything
 // TODO: Implement Splashscreen
@@ -31,5 +35,27 @@ export function loadInitialData(): Function {
         dispatch(loadBlogs());
         dispatch(loadPackages());
         dispatch(loadFAQ());
+    };
+}
+
+// Send report with log data to swingessentials
+export function sendLogReport(log: string, type: LOG_TYPE){
+    return (dispatch: ThunkDispatch<any, void, any>) => {
+        dispatch({ type: ACTIONS.SEND_LOGS.REQUEST });
+        HttpRequest.post(ACTIONS.SEND_LOGS.API)
+            .withBody({platform: Platform.OS, data: log})
+            .onSuccess((body: any) => {
+                Logger.clear(type);
+                AsyncStorage.setItem(ASYNC_PREFIX+'logs_sent', ('' + Math.floor(Date.now()/1000)));
+                dispatch(success(ACTIONS.SEND_LOGS.SUCCESS, body));
+            })
+            .onFailure((response: Response) => {
+                dispatch(failure(ACTIONS.SEND_LOGS.FAILURE, response, 'SendLogs'));
+                Logger.logError({
+                    code: 'ACTEXT100',
+                    description: `Automatic sending of logs failed unexpectedly.`,
+                })
+            })
+            .request();
     };
 }

@@ -17,8 +17,7 @@ export function loadLessons() {
                 dispatch(success(ACTIONS.GET_LESSONS.SUCCESS, body));
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.GET_LESSONS.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.GET_LESSONS.FAILURE, response, 'LoadLessons'));
             })
             .request();
     };
@@ -37,7 +36,6 @@ export function submitLesson(data: FormData, onUpdateProgress: (this: XMLHttpReq
             })
             .onFailure((response: Response) => {
                 dispatch(xhrfailure(ACTIONS.SUBMIT_LESSON.FAILURE, response));
-                console.log(response && response.getResponseHeader ? response.getResponseHeader('Error') : 'N/A');
             })
             .requestWithProgress(onUpdateProgress);
     };

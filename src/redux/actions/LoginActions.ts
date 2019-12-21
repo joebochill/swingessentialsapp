@@ -12,6 +12,7 @@ import { loadSettings } from './SettingsActions';
 import { ThunkDispatch } from 'redux-thunk';
 import { Credentials } from '../../__types__';
 import { HttpRequest } from '../../api/http';
+import { Logger } from '../../utilities/logging';
 
 // TODO: Implement the token timeout warning
 // TODO: Handle fetch failure (on login esp) more gracefully
@@ -45,58 +46,52 @@ export function requestLogin(userCredentials: Credentials) {
                     default:
                         // Keychain.resetGenericPassword();
                         //checkTimeout(response, dispatch);
-                        dispatch({ type: ACTIONS.LOGIN.FAILURE });
+                        dispatch(failure(ACTIONS.LOGIN.FAILURE, response, 'Login'));
                         break;
                 }
             })
             .catch(error => {
-                // logLocalError('113: Promise Error: logging in');
-                console.log('login fetch failed');
+                Logger.logError({
+                    code: 'ACTLGN100',
+                    description: `Exception encountered while executing login request.`,
+                    rawErrorCode: error.code,
+                    rawErrorMessage: error.error
+                })
             });
     };
 }
 /* clears the current authentication token */
 export function requestLogout(token: string) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
-        return fetch(BASEURL + '/' + ACTIONS.LOGOUT.API, {
-            headers: {
-                [AUTH]: 'Bearer ' + token,
-            },
-        })
-            .then(response => {
-                switch (response.status) {
-                    case 200:
-                        dispatch(success(ACTIONS.LOGOUT.SUCCESS));
-                        AsyncStorage.removeItem(ASYNC_PREFIX + 'token');
-                        dispatch(loadTips());
-                        break;
-                    default:
-                        // checkTimeout(response, dispatch);
-                        AsyncStorage.removeItem(ASYNC_PREFIX + 'token');
-                        dispatch(failure(ACTIONS.LOGOUT.FAILURE, response));
-                        break;
-                }
+        dispatch({ type: ACTIONS.LOGOUT.REQUEST });
+        HttpRequest.get(ACTIONS.LOGOUT.API)
+            .withFullResponse()
+            .onSuccess((response: any) => {
+                dispatch(success(ACTIONS.LOGOUT.SUCCESS));
+                AsyncStorage.removeItem(ASYNC_PREFIX + 'token');
+                dispatch(loadTips());
             })
-            .catch(error => {
-                // logLocalError('114: Promise Error: logging out');
-                console.log('logout fetch failed');
-            });
+            .onFailure((response: Response) => {
+                // checkTimeout(response, dispatch);
+                AsyncStorage.removeItem(ASYNC_PREFIX + 'token');
+                dispatch(failure(ACTIONS.LOGOUT.FAILURE, response, 'Logout'));
+            })
+            .request();
     };
 }
 
-export function refreshToken(){
+export function refreshToken() {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({ type: ACTIONS.REFRESH_TOKEN.REQUEST });
         HttpRequest.get(ACTIONS.REFRESH_TOKEN.API)
             .withFullResponse()
             .onSuccess((response: any) => {
                 const token = response.headers.get('Token');
-                dispatch(success(ACTIONS.REFRESH_TOKEN.SUCCESS, {token}));
-                AsyncStorage.setItem(ASYNC_PREFIX+'token', token);
+                dispatch(success(ACTIONS.REFRESH_TOKEN.SUCCESS, { token }));
+                AsyncStorage.setItem(ASYNC_PREFIX + 'token', token);
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.REFRESH_TOKEN.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.REFRESH_TOKEN.FAILURE, response, 'TokenRefresh'));
             })
             .request();
     };
@@ -108,8 +103,7 @@ export function setToken(token: string) {
         let exp = JSON.parse(atob(token.split('.')[1])).exp;
         if (exp < Date.now() / 1000) {
             AsyncStorage.removeItem(ASYNC_PREFIX + 'token');
-            // logLocalError('112: Local token expired');
-            console.log('Local token expired');
+            Logger.logMessage(`Local token has expired.`);
         }
         dispatch({ type: ACTIONS.SET_TOKEN.REQUEST, payload: { token } });
         dispatch(loadUserContent());

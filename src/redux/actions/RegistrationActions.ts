@@ -13,8 +13,7 @@ export function checkUsernameAvailability(username: string) {
                 dispatch(success(ACTIONS.CHECK_USERNAME.SUCCESS, body)); // {...json, lastChecked: username}
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.CHECK_USERNAME.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.CHECK_USERNAME.FAILURE, response, 'CheckUsername'));
             })
             .request();
     };
@@ -28,8 +27,7 @@ export function checkEmailAvailability(email: string) {
                 dispatch(success(ACTIONS.CHECK_EMAIL.SUCCESS, body)); // {...json, lastChecked: email}
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.CHECK_EMAIL.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.CHECK_EMAIL.FAILURE, response, 'CheckEmail'));
             })
             .request();
     };
@@ -59,8 +57,7 @@ export function createAccount(data: NewAccountDetails) {
                 // dispatch(getSettings(token));
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.CREATE_ACCOUNT.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.CREATE_ACCOUNT.FAILURE, response, 'CreateAccount'));
             })
             .request();
     };
@@ -75,8 +72,7 @@ export function verifyEmail(code: string) {
                 dispatch(success(ACTIONS.VERIFY_EMAIL.SUCCESS, response));
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.VERIFY_EMAIL.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.VERIFY_EMAIL.FAILURE, response, 'VerifyEmail'));
             })
             .request();
     };
@@ -88,13 +84,10 @@ export function requestPasswordReset(data: {email: string}) {
         HttpRequest.put(ACTIONS.RESET_PASSWORD_EMAIL.API)
             .withBody(data)
             .onSuccess((response: any) => {
-                console.log(response);
                 dispatch(success(ACTIONS.RESET_PASSWORD_EMAIL.SUCCESS, response));
             })
             .onFailure((response: Response) => {
-                console.log(response);
-                dispatch(failure(ACTIONS.RESET_PASSWORD_EMAIL.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.RESET_PASSWORD_EMAIL.FAILURE, response, 'ResetRequest'));
             })
             .request();
     };

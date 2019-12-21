@@ -9,6 +9,7 @@ import { packagesReducer } from './packages';
 import { settingsReducer } from './settings';
 import { registrationReducer } from './registration';
 import { faqReducer } from './faq';
+import { logsReducer } from './logs';
 
 export const AppReducer = combineReducers({
     login: loginReducer,
@@ -21,4 +22,5 @@ export const AppReducer = combineReducers({
     settings: settingsReducer,
     registration: registrationReducer,
     faq: faqReducer,
+    logs: logsReducer,
 });

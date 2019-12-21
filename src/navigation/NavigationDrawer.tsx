@@ -33,6 +33,7 @@ import { ROUTES } from '../constants/routes';
 import { getLongDate, height } from '../utilities';
 import { requestLogout } from '../redux/actions';
 import { TokenModal } from '../components';
+import { Logger } from '../utilities/logging';
 
 type NavigatorProps = DrawerContentComponentProps & {
     username: string;
@@ -94,7 +95,11 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                     }
                 })
                 .catch((): void => {
-                    console.log('TODO: Error with universal link');
+                    // TODO: Do something more here
+                    Logger.logError({
+                        code: 'DRW100',
+                        description: 'Deep link failed to load'
+                    })
                 });
         }
     }

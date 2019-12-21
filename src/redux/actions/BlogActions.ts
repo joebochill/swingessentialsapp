@@ -12,8 +12,7 @@ export function loadBlogs() {
                 dispatch(success(ACTIONS.GET_BLOGS.SUCCESS, body));
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.GET_BLOGS.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.GET_BLOGS.FAILURE, response, 'Load19Hole'));
             })
             .request();
     };

@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loadCredits, loadPackages } from '../../redux/actions';
 import { ROUTES } from '../../constants/routes';
 import { ApplicationState } from '../../__types__';
+import { Logger } from '../../utilities/logging';
 
 // TODO: Implement Tutorials
 // TODO: List item dividers sometimes missing in simulator
@@ -44,8 +45,12 @@ export const Order = props => {
                     setProducts(verifiedProducts.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)));
                     setSelected(0);
                 } catch (err) {
-                    // logLocalError('132: RNIAP Error: ' + err.code + ' ' + err.message);
-                    console.log('FAILED TO FETCH IAP');
+                    Logger.logError({
+                        code: 'IAP100',
+                        description: `Failed to load in-app purchases.`,
+                        rawErrorCode: err.code,
+                        rawErrorMessage: err.message,
+                    });
                 }
             };
             loadProducts();
@@ -83,7 +88,12 @@ export const Order = props => {
             try {
                 await RNIap.requestPurchase(sku, false);
             } catch (error) {
-                console.log('promise error with RNIAP');
+                Logger.logError({
+                    code: 'IAP200',
+                    description: `Failed to request in-app purchase.`,
+                    rawErrorCode: error.code,
+                    rawErrorMessage: error.message,
+                })
             }
             // Purchase response is handled in RNIAPCallbacks.tsx
         },

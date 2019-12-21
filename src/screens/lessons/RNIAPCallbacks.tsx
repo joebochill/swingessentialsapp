@@ -4,6 +4,7 @@ import RNIap, { purchaseErrorListener, purchaseUpdatedListener } from 'react-nat
 import { useDispatch, useSelector } from 'react-redux';
 import { purchaseCredits } from '../../redux/actions';
 import { ApplicationState } from '../../__types__';
+import { Logger } from '../../utilities/logging';
 
 // TODO: confirm this is still working
 export const RNIAPCallbacks = () => {
@@ -62,11 +63,20 @@ export const RNIAPCallbacks = () => {
                 // From react-native-iap@4.1.0 you can simplify above `method`. Try to wrap the statement with `try` and `catch` to also grab the `error` message.
             } else {
                 // Retry / conclude the purchase is fraudulent, etc...
-                console.log('bad purchase');
+                Logger.logError({
+                    code: 'IAP999',
+                    description: `Invalid purchase detected.`,
+                    rawErrorMessage: receipt,
+                })
             }
         });
         const pel = purchaseErrorListener((error: any) => {
-            console.warn('purchaseErrorListener', error);
+            Logger.logError({
+                code: 'IAP800',
+                description: `In-App purchase error.`,
+                rawErrorCode: error.code,
+                rawErrorMessage: error.message,
+            })
         });
     }, [dispatch, packages]);
     return null;

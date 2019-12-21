@@ -94,6 +94,10 @@ export type FAQState = {
     questions: FAQ[];
 }
 
+export type LogsState = {
+    loading: boolean;
+}
+
 export type ApplicationState = {
     login: LoginState;
     lessons: LessonsState;
@@ -105,4 +109,5 @@ export type ApplicationState = {
     settings: SettingsState;
     registration: RegistrationState;
     faq: FAQState;
+    logs: LogsState;
 };

@@ -12,8 +12,7 @@ export function loadPackages() {
                 dispatch(success(ACTIONS.GET_PACKAGES.SUCCESS, body));
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.GET_PACKAGES.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.GET_PACKAGES.FAILURE, response, 'LoadPackages'));
             })
             .request();
     };

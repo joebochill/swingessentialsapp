@@ -4,6 +4,7 @@ import { Thumbnail } from 'react-native-thumbnail-video';
 
 import { View, ViewProperties, Platform } from 'react-native';
 import { YOUTUBE_API_KEY } from '../../constants';
+import { Logger } from '../../utilities/logging';
 
 type YouTubeProps = ViewProperties & {
     apiKey?: string;
@@ -29,8 +30,11 @@ const openStandaloneAndroidPlayer = (id: string): void => {
         autoplay: true,
         startTime: 0,
     }).catch((errorMessage: string) => {
-        // logLocalError('136: Youtube Player Error (Tip): ' + errorMessage);
-        console.log('YOUTUBE Player Error: ' + errorMessage);
+        Logger.logError({
+            code: 'YT100',
+            description: `YouTube Player error.`,
+            rawErrorMessage: errorMessage,
+        })
     });
 };
 

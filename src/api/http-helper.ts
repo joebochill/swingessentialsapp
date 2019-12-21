@@ -1,8 +1,14 @@
+import { Logger } from "../utilities/logging";
+
 /* Dispatch a failure action for the supplied action type */
-export function failure(type, response) {
+export function failure(type, response, api='--') {
     if (response && response.headers && response.headers.get) {
-        // logLocalError('102: Error ' + response.headers.get('Error') + ': ' + response.headers.get('Message'));
-        console.log('ERROR: request failure, fetch');
+        Logger.logError({
+            code: 'HTH100',
+            description: `API Failure response (${api}).`,
+            rawErrorCode: response.headers.get('Error'),
+            rawErrorMessage: response.headers.get('Message'),
+        })
     }
 
     return {
@@ -15,8 +21,12 @@ export function failure(type, response) {
 /* Dispatch a failure action for the supplied action type, XMLHTTPRequest variant */
 export function xhrfailure(type, response) {
     if (response && response.getResponseHeader) {
-        // logLocalError('103: Error ' + response.getResponseHeader('Error') + ': ' + response.getResponseHeader('Message'));
-        console.log('ERROR: request failure, XMLHTTP');
+        Logger.logError({
+            code: 'HTH200',
+            description: `XHR Failure response`,
+            rawErrorCode: response.getResponseHeader('Error'),
+            rawErrorMessage: response.getResponseHeader('Message'),
+        })
     }
 
     return {

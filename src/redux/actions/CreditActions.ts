@@ -13,8 +13,7 @@ export function loadCredits() {
                 dispatch(success(ACTIONS.GET_CREDITS.SUCCESS, body));
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.GET_CREDITS.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.GET_CREDITS.FAILURE, response, 'LoadCredits'));
             })
             .request();
     };
@@ -32,9 +31,8 @@ export function purchaseCredits(data, onSuccess, onFailure) {
                 dispatch(loadCredits());
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.PURCHASE_CREDITS.FAILURE, response));
+                dispatch(failure(ACTIONS.PURCHASE_CREDITS.FAILURE, response, 'PurchaseCredits'));
                 onFailure(response);
-                console.log(response.headers.get('Error'));
             })
             .request();
     };

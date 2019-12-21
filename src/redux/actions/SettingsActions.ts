@@ -16,8 +16,7 @@ export function loadSettings() {
                 dispatch(success(ACTIONS.GET_SETTINGS.SUCCESS, body));
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.GET_SETTINGS.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.GET_SETTINGS.FAILURE, response, 'LoadSettings'));
             })
             .request();
     };
@@ -37,8 +36,7 @@ export function putSettings(data: Partial<SettingsUpdateType>) {
                 dispatch(loadSettings());
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.PUT_SETTINGS.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.PUT_SETTINGS.FAILURE, response, 'SaveSettings'));
             })
             .request();
     };

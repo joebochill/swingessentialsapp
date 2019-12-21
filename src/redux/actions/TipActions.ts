@@ -12,8 +12,7 @@ export function loadTips() {
                 dispatch(success(ACTIONS.GET_TIPS.SUCCESS, body));
             })
             .onFailure((response: Response) => {
-                dispatch(failure(ACTIONS.GET_TIPS.FAILURE, response));
-                console.log(response.headers.get('Error'));
+                dispatch(failure(ACTIONS.GET_TIPS.FAILURE, response, 'LoadTips'));
             })
             .request();
     };

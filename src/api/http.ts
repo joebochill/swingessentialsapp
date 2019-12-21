@@ -1,5 +1,6 @@
 import { TOKEN } from './tokenMiddleware';
 import { BASEURL, AUTH } from '../constants';
+import { Logger } from '../utilities/logging';
 
 // TODO: Check token expiration on every failed request
 
@@ -12,7 +13,6 @@ export enum HttpMethod {
 }
 type Optionals = Partial<{
     body: any;
-    queryParams: string;
     autoRefresh: boolean;
 }>;
 type GeneralResponseMapping = {
@@ -34,7 +34,6 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
     private successCallback?: Function;
     private failureCallback?: Function;
     private body?: any;
-    private queryParams?: string;
     private parseResponse?: boolean;
 
     private constructor(method: HttpMethod, endpoint: string, optionals: Optionals = {}) {
@@ -43,15 +42,7 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
         this.parseResponse = true;
         if (optionals) {
             this.body = optionals.body;
-            this.queryParams = optionals.queryParams;
         }
-    }
-    public withQueryParams(params: { [k: string]: string | number }): HttpRequest<TResponses> {
-        const keys = Object.keys(params);
-        if (keys.length) {
-            this.queryParams = '?' + keys.map(key => `${key}=${params[key]}`).join('&');
-        }
-        return this;
     }
     public withBody<TBody>(body: TBody, stringify: boolean = true): HttpRequest<TResponses> {
         this.body = stringify ? JSON.stringify(body) : body;
@@ -70,7 +61,7 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
         return this;
     }
     public request() {
-        return fetch(`${BASEURL}/${this.endpoint}`, {
+        return fetch(`${BASEURL}/${this.endpoint}xx`, {
             method: this.method,
             headers: Object.assign({ 'Content-Type': 'application/json' }, TOKEN ? { [AUTH]: `Bearer ${TOKEN}` } : {}),
             body: this.body,
@@ -92,7 +83,12 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                 }
             })
             .catch(error => {
-                console.log('FETCH ERROR', error.message);
+                Logger.logError({
+                    code: 'HTP100',
+                    description: `Fetch call failed for ${this.endpoint}.`,
+                    rawErrorCode: error.code,
+                    rawErrorMessage: error.message,
+                })
             });
     }
     public requestWithProgress(onProgress: (this: XMLHttpRequest, ev: ProgressEvent) => any) {
@@ -124,7 +120,12 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                 }
             })
             .catch(error => {
-                console.log('FUTCH ERROR', error.message);
+                Logger.logError({
+                    code: 'HTP200',
+                    description: `XHR call failed for ${this.endpoint}.`,
+                    rawErrorCode: error.code,
+                    rawErrorMessage: error.message,
+                })
             });
     }
 }
