@@ -1,29 +1,32 @@
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, Animated } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { withNavigation, NavigationInjectedProps } from 'react-navigation';
-import { Header, wrapIcon } from '@pxblue/react-native-components';
+import { wrapIcon } from '@pxblue/react-native-components';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import { PXBHeader } from './PXBHeader';
+import { ResizableHeader } from './ResizableHeader';
 import { ApplicationState, NavType } from '../../__types__';
 
 import { ROUTES } from '../../constants/routes';
 import { useSelector, useDispatch } from 'react-redux';
 import { requestLogout } from '../../redux/actions';
-import { HeaderIcon, HeaderProps } from '@pxblue/react-native-components/core/header/header';
+import { HeaderIcon } from '@pxblue/react-native-components/core/header/header';
 
 import topology from '../../images/topology_20.png';
+import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
+import { ResizableHeaderProps } from './ResizableHeader';
 
 const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
 const BackIcon = wrapIcon({ IconClass: Icon, name: 'arrow-back' });
 const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-variant' });
 const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
 
-export type SEHeaderProps = HeaderProps &
+export type SEHeaderProps = ResizableHeaderProps &
     NavigationInjectedProps & {
         mainAction?: NavType;
         showAuth?: boolean;
         dynamic?: boolean;
+        headerHeight?: Animated.AnimatedInterpolation;
         onNavigate?: Function;
     };
 
@@ -60,10 +63,8 @@ export const SEHeader = withNavigation((props: SEHeaderProps) => {
           ]
         : [];
 
-    const Component = props.dynamic ? PXBHeader : Header;
-
     return (
-        <Component
+        <ResizableHeader
             navigation={
                 mainAction === 'menu'
                     ? { icon: MenuIcon, onPress: () => {
@@ -77,6 +78,7 @@ export const SEHeader = withNavigation((props: SEHeaderProps) => {
                     }}
                     : undefined
             }
+            headerHeight={props.headerHeight || HEADER_COLLAPSED_HEIGHT}
             backgroundImage={backgroundImage}
             actionItems={defaultActions.concat(actionItems)}
             {...other}

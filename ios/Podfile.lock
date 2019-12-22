@@ -245,13 +245,13 @@ PODS:
     - React
   - RNFS (2.16.2):
     - React
-  - RNGestureHandler (1.5.1):
+  - RNGestureHandler (1.5.2):
     - React
   - RNIap (4.3.0):
     - React
   - RNReanimated (1.4.0):
     - React
-  - RNScreens (2.0.0-alpha.12):
+  - RNScreens (1.0.0-alpha.23):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -422,10 +422,10 @@ SPEC CHECKSUMS:
   ReactCommon: a6a294e7028ed67b926d29551aa9394fd989c24c
   RNCAsyncStorage: 3c304d1adfaea02ec732ac218801cb13897aa8c0
   RNFS: 0d4191b1052bef9ce70deff00a5b4169c62bbd9b
-  RNGestureHandler: 7add966bb5d90ee8cf38d4341f87814474357972
+  RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
   RNIap: e75200c18ed318479a52db633dc2db2facce77ea
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
-  RNScreens: 254da4b84f25971cbb30ed3ddc84131f23cac812
+  RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
   YoutubePlayer-in-WKWebView: af2f5929fc78882d94bfdfeea999b661b78d9717

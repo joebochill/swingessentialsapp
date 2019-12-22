@@ -14,25 +14,24 @@ import {
     StyleSheet,
     ScrollView,
 } from 'react-native';
-import { APP_VERSION } from '../constants/index';
+import { 
+    APP_VERSION, 
+    HEADER_COLLAPSED_HEIGHT_NO_STATUS, 
+    HEADER_EXPANDED_HEIGHT_NO_STATUS, 
+    DRAWER_WIDTH 
+} from '../constants/index';
 import { NavigationItems } from './NavigationContent';
 
 import topology from '../images/topology.png';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Body, H7 } from '@pxblue/react-native-components';
 import { ListItem, Icon } from 'react-native-elements';
 import { sharedStyles, purple, white, blackOpacity, unit } from '../styles';
 import { DrawerContentComponentProps } from 'react-navigation-drawer';
 import { ROUTES } from '../constants/routes';
-import { getLongDate, height, width, getDate } from '../utilities';
+import { getLongDate, height } from '../utilities';
 import { requestLogout } from '../redux/actions';
-import { TokenModal } from '../components';
+import { TokenModal, AnimatedSafeAreaView } from '../components';
 import { Logger } from '../utilities/logging';
-
-const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
-const HEADER_EXPANDED_HEIGHT = 200;// + getStatusBarHeight();
-const HEADER_COLLAPSED_HEIGHT = 56;// + getStatusBarHeight();
-const DRAWER_WIDTH = width * 0.9;
 
 type NavigatorProps = DrawerContentComponentProps & {
     username: string;
@@ -64,6 +63,7 @@ function mapStateToProps(state) {
 // TODO: Do not make this menu collapsible?
 // TODO: Fix the scroll reset when changing tabs and closing
 // TODO: When token expires, make sure all data is cleared
+// TODO: Fix pull to refresh on android
 
 const mapDispatchToProps = {
     logout: requestLogout,
@@ -126,7 +126,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
             duration: 250,
         }).start();
         Animated.timing(scrollY, {
-            toValue: 0, //HEADER_EXPANDED_HEIGHT-HEADER_COLLAPSED_HEIGHT,
+            toValue: 0,
             duration: 250,
         }).start();
     }
@@ -163,7 +163,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
         // TODO: Reset Password (needs to be added to app site association first)
     }
     render() {
-        const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
+        const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT_NO_STATUS, HEADER_COLLAPSED_HEIGHT_NO_STATUS);
         const { mainLeft, accountLeft, helpLeft } = this.state;
         const { username, first, last, joined, token } = this.props;
 
@@ -315,7 +315,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
     }
     scaleByHeaderHeight(atLarge: number, atSmall: number) {
         return this.state.scrollY.interpolate({
-            inputRange: [0, HEADER_EXPANDED_HEIGHT - HEADER_COLLAPSED_HEIGHT],
+            inputRange: [0, HEADER_EXPANDED_HEIGHT_NO_STATUS - HEADER_COLLAPSED_HEIGHT_NO_STATUS],
             outputRange: [atLarge, atSmall],
             extrapolate: 'clamp',
         });
@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     scrollContainer: {
-        paddingTop: HEADER_EXPANDED_HEIGHT,
+        paddingTop: HEADER_EXPANDED_HEIGHT_NO_STATUS,
     },
     image: {
         position: 'absolute',

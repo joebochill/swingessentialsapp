@@ -2,14 +2,14 @@ import React from 'react';
 import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { Body, H7 } from '@pxblue/react-native-components';
-import { VideoCard, CollapsibleHeaderLayout } from '../../components';
+import { VideoCard, CollapsibleHeaderLayout, ResizableHeader } from '../../components';
 import { ROUTES } from '../../constants/routes';
 import bg from '../../images/bg_1.jpg';
 
 import Carousel from 'react-native-snap-carousel';
 import { useSelector, useDispatch } from 'react-redux';
 import { getLongDate, width } from '../../utilities';
-import { spaces, sharedStyles } from '../../styles';
+import { spaces, sharedStyles, unit, purple } from '../../styles';
 import { PlaceholderLesson } from '../../constants/lessons';
 import { ApplicationState } from '../../__types__';
 import { loadUserContent } from '../../redux/actions';
@@ -21,12 +21,11 @@ export const Home = props => {
     const dispatch = useDispatch();
 
     const latestLessons = lessons.closed.length > 0 ? lessons.closed : [PlaceholderLesson];
-    console.log(lessons.closed);
     return (
         <CollapsibleHeaderLayout 
             backgroundImage={bg} 
             title={'SWING ESSENTIALS'} 
-            subtitle={'a pro in your pocket'}
+            subtitle={'a pro in your pocket™'}
             refreshing={lessons.loading || credits.inProgress || tips.loading}
             onRefresh={() => {
                 dispatch(loadUserContent());
@@ -57,18 +56,20 @@ export const Home = props => {
                 <H7>Your Credits</H7>
             </View>
             <ListItem
-                containerStyle={sharedStyles.listItem}
-                contentContainerStyle={sharedStyles.listItemContent}
+                containerStyle={[sharedStyles.listItem]}
+                contentContainerStyle={[sharedStyles.listItemContent]}
                 bottomDivider
                 chevron={true}
+                pad={spaces.medium}
                 onPress={() => props.navigation.navigate(ROUTES.SUBMIT)}
-                title={<Body style={{ marginLeft: 16 }}>Individual Lessons</Body>}
+                title={<Body style={{ marginLeft: spaces.medium}}>Individual Lessons</Body>}
                 rightTitle={`${credits.count} Left`}
                 disabled={credits.count < 1}
                 disabledStyle={sharedStyles.disabled}
                 leftIcon={{
                     name: 'golf-course',
-                    color: '#231f61',
+                    color: purple[500],
+                    size: unit(24),
                 }}
             />
             <ListItem
@@ -76,15 +77,17 @@ export const Home = props => {
                 contentContainerStyle={sharedStyles.listItemContent}
                 bottomDivider
                 chevron={true}
+                pad={spaces.medium}
                 onPress={() => props.navigation.navigate(ROUTES.ORDER)}
                 title={
-                    <Body font={'regular'} style={{ marginLeft: 16 }}>
+                    <Body style={{ marginLeft: spaces.medium }}>
                         Order More
                     </Body>
                 }
                 leftIcon={{
                     name: 'shopping-cart',
-                    color: '#231f61',
+                    color: purple[500],
+                    size: unit(24),
                 }}
             />
 

@@ -1,3 +1,3 @@
 export * from './SEHeader';
 export * from './CollapsibleHeaderLayout';
-export * from './PXBHeader';
+export * from './ResizableHeader';

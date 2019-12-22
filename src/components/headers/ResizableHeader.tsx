@@ -2,24 +2,21 @@ import React, { Component, ComponentType } from 'react';
 import {
     Animated,
     ImageSourcePropType,
-    SafeAreaView,
     StyleSheet,
     StatusBar,
-    Platform,
     TouchableOpacity,
     View,
 } from 'react-native';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import color from 'color';
 import { HeaderIcon } from '../types';
 import { withTheme, Theme, WithTheme } from '@pxblue/react-native-components';
 import { $DeepPartial } from '@callstack/react-theme-provider';
 import { purple, blackOpacity, unit } from '../../styles';
-import { Icon } from 'react-native-elements';
+import { AnimatedSafeAreaView } from '../../components';
+import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT_NO_STATUS } from '../../constants';
+import { interpolate } from '../../utilities';
 
-const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
-
-export interface PXBHeaderProps {
+export interface ResizableHeaderProps {
     /** Header title */
     title: string;
 
@@ -46,6 +43,7 @@ export interface PXBHeaderProps {
 
     /** Height of the header */
     headerHeight: Animated.AnimatedInterpolation;
+    // headerHeight: number;
 
     /**
      * Overrides for theme
@@ -53,11 +51,9 @@ export interface PXBHeaderProps {
     theme?: $DeepPartial<Theme>;
 }
 
-interface HeaderState {}
+interface HeaderState { }
 
-class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
-    static readonly REGULAR_HEIGHT = 56 + getStatusBarHeight(true);
-    static readonly EXTENDED_HEIGHT = 200 + getStatusBarHeight(true);
+class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState> {
     static readonly ICON_SIZE = unit(24);
     static readonly ICON_SPACING = unit(16);
 
@@ -85,7 +81,6 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
         if (backgroundImage) {
             return (
                 <Animated.Image
-                    testID={'header-background-image'}
                     source={backgroundImage}
                     resizeMethod={'resize'}
                     style={{
@@ -93,10 +88,7 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
                         width: '100%',
                         resizeMode: 'cover',
                         height: headerHeight,
-                        opacity: headerHeight.interpolate({
-                            inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                            outputRange: [0.2, 0.3],
-                        }),
+                        opacity: this.scaleByHeaderHeight(0.3, 0.2),
                     }}
                 />
             );
@@ -109,7 +101,6 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
             return (
                 <View>
                     <TouchableOpacity
-                        testID={'header-navigation'}
                         onPress={navigation.onPress}
                         style={[styles.navigation]}>
                         {this.icon(navigation.icon)}
@@ -121,23 +112,18 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
 
     private icon(IconClass: ComponentType<{ size: number; color: string }>) {
         if (IconClass) {
-            return <IconClass size={HeaderClass.ICON_SIZE} color={this.fontColor()} />;
+            return <IconClass size={unit(24)} color={this.fontColor()} />;
         }
     }
 
     private content() {
-        const { headerHeight } = this.props;
         let content = [this.title(), this.info(), this.subtitle()];
-
         return (
             <Animated.View
                 style={[
                     styles.titleContainer,
                     {
-                        marginRight: headerHeight.interpolate({
-                            inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                            outputRange: [this.actionPanelWidth(), 0],
-                        }),
+                        marginRight: this.scaleByHeaderHeight(0, this.actionPanelWidth()),
                     },
                 ]}>
                 <View style={{ flex: 0, justifyContent: 'center' }}>{content}</View>
@@ -149,8 +135,6 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
         const { title } = this.props;
         return (
             <Animated.Text
-                key="title_key"
-                testID={'header-title'}
                 style={this.titleStyle()}
                 numberOfLines={1}
                 ellipsizeMode={'tail'}>
@@ -164,8 +148,6 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
         if (subtitle) {
             return (
                 <Animated.Text
-                    key="subtitle_key"
-                    testID={'header-subtitle'}
                     style={this.subtitleStyle()}
                     numberOfLines={1}
                     ellipsizeMode={'tail'}>
@@ -180,8 +162,6 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
         if (info) {
             return (
                 <Animated.Text
-                    key="info_key"
-                    testID={'header-info'}
                     style={this.infoStyle()}
                     numberOfLines={1}
                     ellipsizeMode={'tail'}>
@@ -201,7 +181,6 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
                     {items.slice(0, 3).map((actionItem, index) => (
                         <View key={`action_${index}`}>
                             <TouchableOpacity
-                                testID={`header-action-item${index}`}
                                 onPress={actionItem.onPress}
                                 style={index !== 0 ? styles.actionItem : {}}>
                                 {this.icon(actionItem.icon)}
@@ -225,32 +204,23 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
     }
 
     private contentStyle() {
-        const { headerHeight } = this.props;
-        const contractedPadding = this.props.subtitle ? 8 : 16;
+        const { theme } = this.props;
+        const contractedPadding = this.props.subtitle ?
+            (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.sizes.large + 18)) / 2 :
+            (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.sizes.large)) / 2;
         return [
             styles.content,
-            {
-                paddingBottom: headerHeight.interpolate({
-                    inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                    outputRange: [contractedPadding, 28],
-                }),
-            },
+            { paddingBottom: this.scaleByHeaderHeight(unit(28), contractedPadding) }
         ];
     }
 
     private titleStyle() {
-        const { theme, headerHeight } = this.props;
+        const { theme } = this.props;
         return {
             color: this.fontColor(),
-            lineHeight: headerHeight.interpolate({
-                inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                outputRange: [theme.sizes.large, 30],
-            }),
+            lineHeight: this.scaleByHeaderHeight(30, theme.sizes.large),
             fontFamily: theme.fonts.semiBold.fontFamily,
-            fontSize: headerHeight.interpolate({
-                inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                outputRange: [theme.sizes.large, 30],
-            }),
+            fontSize: this.scaleByHeaderHeight(30, theme.sizes.large),
         };
     }
 
@@ -265,22 +235,13 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
     }
 
     private infoStyle() {
-        const { theme, headerHeight } = this.props;
+        const { theme } = this.props;
         return {
             color: this.fontColor(),
-            lineHeight: headerHeight.interpolate({
-                inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                outputRange: [0.1, theme.sizes.large * 1.05], // Avoid clipping top of CAP letters
-            }),
-            opacity: headerHeight.interpolate({
-                inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                outputRange: [0, 1],
-            }),
+            lineHeight: this.scaleByHeaderHeight(theme.sizes.large * 1.05, 0.1),
+            opacity: this.scaleByHeaderHeight(1, 0),
             fontFamily: theme.fonts.regular.fontFamily,
-            fontSize: headerHeight.interpolate({
-                inputRange: [HeaderClass.REGULAR_HEIGHT, HeaderClass.EXTENDED_HEIGHT],
-                outputRange: [0.1, theme.sizes.large],
-            }),
+            fontSize: this.scaleByHeaderHeight(theme.sizes.large, 0.1),
         };
     }
 
@@ -307,6 +268,28 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
         length = Math.min(3, length);
         return length * (HeaderClass.ICON_SIZE + HeaderClass.ICON_SPACING);
     }
+
+    private scaleByHeaderHeight(atLarge: number, atSmall: number) {
+        const { headerHeight } = this.props;
+        if (typeof headerHeight === 'number') {
+            return interpolate(
+                headerHeight,
+                {
+                    min: HEADER_COLLAPSED_HEIGHT,
+                    max: HEADER_EXPANDED_HEIGHT
+                },
+                {
+                    min: atSmall,
+                    max: atLarge
+                }
+            );
+        }
+        return headerHeight.interpolate({
+            inputRange: [HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT],
+            outputRange: [atSmall, atLarge]
+        })
+
+    }
 }
 
 /**
@@ -315,12 +298,11 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
  * This component is used to display a title and navigation and action items on the top of a screen.
  * It can be tapped to expand or contract.
  */
-export const PXBHeader = withTheme(HeaderClass);
+export const ResizableHeader = withTheme(HeaderClass);
 
 const styles = StyleSheet.create({
     bar: {
         width: '100%',
-        // top: 0,
         left: 0,
         position: 'absolute',
         justifyContent: 'flex-end',
@@ -337,11 +319,14 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        paddingTop: 16,
         paddingHorizontal: unit(16),
         flexDirection: 'row',
     },
     navigation: {
+        height: HeaderClass.ICON_SIZE,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: unit(16),
         marginRight: unit(32),
     },
     titleContainer: {
@@ -353,10 +338,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'absolute',
-        right: unit(16),
-        height: 56,
+        right: HeaderClass.ICON_SPACING,
+        height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
     },
     actionItem: {
-        marginLeft: unit(16),
+        height: HeaderClass.ICON_SIZE,
+        marginLeft: HeaderClass.ICON_SPACING,
     },
 });

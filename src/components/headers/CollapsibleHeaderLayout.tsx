@@ -9,23 +9,18 @@ import {
     RefreshControl,
     ActivityIndicator,
 } from 'react-native';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { SEHeader, SEHeaderProps } from './SEHeader';
-import { PXBHeaderProps } from './PXBHeader';
 import { sharedStyles, spaces } from '../../styles';
-
-const HEADER_EXPANDED_HEIGHT = 200 + getStatusBarHeight();
-const HEADER_COLLAPSED_HEIGHT = 56 + getStatusBarHeight();
+import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT } from '../../constants';
 
 type HeaderLayoutState = {
     scrollY: Animated.Value;
 };
-type CollapsibleHeaderLayoutProps = SEHeaderProps &
-    Exclude<PXBHeaderProps, 'headerHeight'> & {
-        renderScroll?: boolean;
-        onRefresh?: Function;
-        refreshing?: boolean;
-    };
+type CollapsibleHeaderLayoutProps = SEHeaderProps & {
+    renderScroll?: boolean;
+    onRefresh?: Function;
+    refreshing?: boolean;
+};
 
 // TODO: Allow long titles to wrap to a second line?
 
@@ -37,13 +32,12 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
         };
     }
     render() {
-        const { renderScroll = true, children, refreshing = false, onRefresh = () => {} } = this.props;
+        const { renderScroll = true, children, refreshing = false, onRefresh = () => { } } = this.props;
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
-
         return (
             <View style={sharedStyles.pageContainer}>
                 <StatusBar barStyle={'light-content'} />
-                <SEHeader {...this.props} dynamic headerHeight={headerHeight} />
+                <SEHeader {...this.props} headerHeight={headerHeight} />
                 {renderScroll && (
                     <ScrollView
                         contentContainerStyle={styles.scrollContainer}
@@ -51,8 +45,8 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                             onRefresh ? (
                                 <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()} />
                             ) : (
-                                undefined
-                            )
+                                    undefined
+                                )
                         }
                         onScroll={Animated.event([
                             {

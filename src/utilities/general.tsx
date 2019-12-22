@@ -119,6 +119,18 @@ export const makeGroups = (list: Array<any>, bucketExtractor: Function): Array<B
         .sort((a, b) => a.index - b.index);
 };
 
+type Range = {
+    min: number;
+    max: number;
+}
+export const interpolate = (value: number, inputRange:Range, outputRange:Range) => {
+    const ranges = [value, inputRange.max, inputRange.min];
+    ranges.sort((b, a) => b - a);
+    const rangedValue = ranges[1];
+    const percent = (rangedValue - inputRange.min) / (inputRange.max - inputRange.min);
+    return ((outputRange.max - outputRange.min) * percent ) + outputRange.min;
+}
+
 type BucketSection = {
     index: number;
     bucketName: string;

@@ -6,8 +6,9 @@ import { spaces, sizes, sharedStyles, transparent, purple } from '../../styles';
 import { SEHeader, SEButton } from '../../components';
 import { height } from '../../utilities';
 import { requestPasswordReset } from '../../redux/actions';
-import { EMAIL_REGEX } from '../../constants';
+import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { useDispatch } from 'react-redux';
+
 
 export const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -23,10 +24,15 @@ export const ForgotPassword = () => {
 
     return (
         <View style={sharedStyles.pageContainer}>
-            <SEHeader title={'Forgot Password'} subtitle={'request a reset'} mainAction={'back'} showAuth={false} />
+            <SEHeader 
+                title={'Forgot Password'} 
+                subtitle={'request a reset'} 
+                mainAction={'back'} 
+                showAuth={false} 
+            />
             <KeyboardAvoidingView
                 style={[sharedStyles.pageContainer, {
-                    backgroundColor: transparent
+                    paddingTop: HEADER_COLLAPSED_HEIGHT
                 }]}
                 behavior={'padding'}>
                 {!complete &&
