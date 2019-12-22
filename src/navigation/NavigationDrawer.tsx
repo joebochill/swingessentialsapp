@@ -21,7 +21,7 @@ import topology from '../images/topology.png';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Body, H7 } from '@pxblue/react-native-components';
 import { ListItem, Icon } from 'react-native-elements';
-import { sharedStyles, purple, white, blackOpacity } from '../styles';
+import { sharedStyles, purple, white, blackOpacity, unit } from '../styles';
 import { DrawerContentComponentProps } from 'react-navigation-drawer';
 import { ROUTES } from '../constants/routes';
 import { getLongDate, height, width, getDate } from '../utilities';
@@ -30,8 +30,8 @@ import { TokenModal } from '../components';
 import { Logger } from '../utilities/logging';
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
-const HEADER_EXPANDED_HEIGHT = 200 + getStatusBarHeight();
-const HEADER_COLLAPSED_HEIGHT = 56 + getStatusBarHeight();
+const HEADER_EXPANDED_HEIGHT = 200;// + getStatusBarHeight();
+const HEADER_COLLAPSED_HEIGHT = 56;// + getStatusBarHeight();
 const DRAWER_WIDTH = width * 0.9;
 
 type NavigatorProps = DrawerContentComponentProps & {
@@ -203,7 +203,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                 </Animated.Text>
                             </Animated.View>
                         </View>
-                        <Animated.View style={[styles.headerText, { marginLeft: this.scaleByHeaderHeight(16, 0) }]}>
+                        <Animated.View style={[styles.headerText, { marginLeft: this.scaleByHeaderHeight(unit(16), 0) }]}>
                             <Animated.Text style={this.titleStyle()} numberOfLines={1} ellipsizeMode={'tail'}>
                                 {userString}
                             </Animated.Text>
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
     },
     bar: {
         width: '100%',
-        paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
+        // paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         position: 'absolute',
         justifyContent: 'flex-end',
         zIndex: 1000,
@@ -391,21 +391,22 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        padding: 16,
+        paddingVertical: 16,
+        paddingHorizontal: unit(16),
         flexDirection: 'row',
     },
     navItem: {
-        paddingHorizontal: 16,
+        paddingHorizontal: unit(16),
     },
     headerText: {
         flex: 1,
         justifyContent: 'center',
     },
     headerAction: {
-        marginLeft: 16,
+        marginLeft: unit(16),
     },
     navLabel: {
-        marginLeft: 16,
+        marginLeft: unit(16),
         color: purple[500],
     },
     drawerBody: {
@@ -431,6 +432,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 16,
+        padding: unit(16),
     },
 });

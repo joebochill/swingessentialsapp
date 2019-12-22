@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* swingessentialsappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* swingessentialsappTests.m */; };
 		0421067FDCF64DE6B6A5887B /* SFCompactDisplayHeavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = BB54AF7A1BBA432E8702BC85 /* SFCompactDisplayHeavy.otf */; };
@@ -765,7 +766,7 @@
 				CODE_SIGN_ENTITLEMENTS = swingessentialsapp/swingessentialsapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 4KFCFX93VP;
 				INFOPLIST_FILE = swingessentialsapp/Info.plist;
@@ -791,7 +792,7 @@
 				CODE_SIGN_ENTITLEMENTS = swingessentialsapp/swingessentialsapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = 4KFCFX93VP;
 				INFOPLIST_FILE = swingessentialsapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

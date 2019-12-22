@@ -14,7 +14,8 @@ import color from 'color';
 import { HeaderIcon } from '../types';
 import { withTheme, Theme, WithTheme } from '@pxblue/react-native-components';
 import { $DeepPartial } from '@callstack/react-theme-provider';
-import { purple, blackOpacity } from '../../styles';
+import { purple, blackOpacity, unit } from '../../styles';
+import { Icon } from 'react-native-elements';
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 
@@ -57,17 +58,17 @@ interface HeaderState {}
 class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
     static readonly REGULAR_HEIGHT = 56 + getStatusBarHeight(true);
     static readonly EXTENDED_HEIGHT = 200 + getStatusBarHeight(true);
-    static readonly ICON_SIZE = 24;
-    static readonly ICON_SPACING = 16;
+    static readonly ICON_SIZE = unit(24);
+    static readonly ICON_SPACING = unit(16);
 
     render() {
         const barStyle = this.barStyle();
         const contentStyle = this.contentStyle();
 
         return (
-            <View style={styles.bar}>
+            <Animated.View style={[barStyle]}>
                 <StatusBar barStyle={this.statusBarStyle()} />
-                <AnimatedSafeAreaView style={barStyle}>
+                <AnimatedSafeAreaView style={[barStyle]}>
                     {this.backgroundImage()}
                     <Animated.View style={contentStyle}>
                         {this.navigation()}
@@ -75,7 +76,7 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
                         {this.actionItems()}
                     </Animated.View>
                 </AnimatedSafeAreaView>
-            </View>
+            </Animated.View>
         );
     }
 
@@ -110,7 +111,7 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
                     <TouchableOpacity
                         testID={'header-navigation'}
                         onPress={navigation.onPress}
-                        style={styles.navigation}>
+                        style={[styles.navigation]}>
                         {this.icon(navigation.icon)}
                     </TouchableOpacity>
                 </View>
@@ -225,7 +226,7 @@ class HeaderClass extends Component<WithTheme<PXBHeaderProps>, HeaderState> {
 
     private contentStyle() {
         const { headerHeight } = this.props;
-        const contractedPadding = this.props.subtitle ? 12 : 16;
+        const contractedPadding = this.props.subtitle ? 8 : 16;
         return [
             styles.content,
             {
@@ -319,9 +320,8 @@ export const PXBHeader = withTheme(HeaderClass);
 const styles = StyleSheet.create({
     bar: {
         width: '100%',
-        top: 0,
+        // top: 0,
         left: 0,
-        paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         position: 'absolute',
         justifyContent: 'flex-end',
         zIndex: 1000,
@@ -338,11 +338,11 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         paddingTop: 16,
-        paddingHorizontal: 16,
+        paddingHorizontal: unit(16),
         flexDirection: 'row',
     },
     navigation: {
-        marginRight: 32,
+        marginRight: unit(32),
     },
     titleContainer: {
         flex: 1,
@@ -353,10 +353,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'absolute',
-        right: 16,
+        right: unit(16),
         height: 56,
     },
     actionItem: {
-        marginLeft: 16,
+        marginLeft: unit(16),
     },
 });

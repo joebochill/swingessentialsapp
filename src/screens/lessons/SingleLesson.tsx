@@ -22,13 +22,13 @@ export const SingleLesson = props => {
     const videoHeight = aspectHeight(videoWidth);
 
     useEffect(() => {
-        if(!token) props.navigation.pop(); // TODO: test this
-    }, [token])
+        if(!token && lesson.request_id !== -1) props.navigation.pop(); // TODO: test this
+    }, [token, lesson])
 
     // TODO: mark viewed
     // TODO: handle deep linking via URL
 
-    return !token ? null : (
+    return (!token && lesson.request_id !== -1) ? null : (
         lesson && (
             <CollapsibleHeaderLayout mainAction={'back'} title={lesson.request_date} subtitle={lesson.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson'}>
                 <View style={sharedStyles.paddingHorizontalMedium}>

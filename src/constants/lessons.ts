@@ -1,6 +1,9 @@
 import { getDate } from '../utilities';
+import { LessonType, Lesson } from '../__types__';
 
-export const PlaceholderLesson = {
+export const PlaceholderLesson:Lesson = {
+    request_id: -1,
+    request_url: '',
     request_date: getDate(Date.now()),
     response_video: 'l3Y3iJa6DvE',
     response_notes:
@@ -8,4 +11,7 @@ export const PlaceholderLesson = {
     request_notes: '',
     fo_swing: '',
     dtl_swing: '',
+    response_status: 'good',
+    type: 'single',
+    viewed: 0,
 };

@@ -22,6 +22,7 @@ import SplashScreen from 'react-native-splash-screen';
 // TODO: Update prod API with lesson types
 // TODO: Optimize components and library usage
 // TODO: Optimize image assets and bundle size
+// TODO: Fix all alignments (sizes using units)
 
 export const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 
