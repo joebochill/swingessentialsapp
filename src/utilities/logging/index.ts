@@ -1,7 +1,9 @@
-import { LOG_FILE, ERROR_FILE } from '../../constants';
+import { LOG_FILE, ERROR_FILE, ERROR_LIMIT, LOG_LIMIT } from '../../constants';
 import { getDate, getTime } from '../general';
-import { useDispatch } from 'react-redux';
 import { sendLogReport } from '../../redux/actions';
+import Mailer from 'react-native-mail';
+import { store } from '../../../App';
+import { Platform, Alert } from 'react-native';
 
 const RNFS = require('react-native-fs');
 const error_path = `${RNFS.DocumentDirectoryPath}/${ERROR_FILE}`;
@@ -29,6 +31,9 @@ export class Logger {
             message +
             '\r\n\r\n', 'utf8'
         );
+        if (currentLog.length + message.length > LOG_LIMIT) {
+            this.sendEmail('LOGS');
+        }
     }
     public static async logError(error: LOG_ERROR) {
         const errorMessage = `(${error.rawErrorCode || '--'}: ${error.rawErrorMessage || '--'})`;
@@ -36,6 +41,7 @@ export class Logger {
 
         const timestamp = Date.now();
         const currentLog = await this.readMessages('ERROR');
+
         await RNFS.writeFile(error_path,
             currentLog +
             getDate(timestamp) + ' ' +
@@ -45,6 +51,9 @@ export class Logger {
             composedMessage +
             '\r\n\r\n', 'utf8'
         );
+        if (currentLog.length + composedMessage.length > ERROR_LIMIT) {
+            this.autoSendEmail('ERROR');
+        }
     }
     public static async clear(type: LOG_TYPE) {
         const path = (type === 'ERROR') ? error_path : log_path;
@@ -55,10 +64,54 @@ export class Logger {
         const fileExists = await RNFS.exists(path);
         return fileExists ? RNFS.readFile(path, 'utf8') : '';
     }
-    public static async sendEmail(type: LOG_TYPE) {
-        const dispatch = useDispatch();
+    private static async autoSendEmail(type: LOG_TYPE) {
         const currentErrors = await this.readMessages(type);
-        dispatch(sendLogReport(currentErrors, type));
+        store.dispatch(sendLogReport(currentErrors, type));
+    }
+    public static async sendEmail(type: LOG_TYPE, onDone: Function, username: string = '') {
+        const currentLogs = await this.readMessages(type);
+
+        Mailer.mail({
+            subject: `Swing Essentials Error Report (${username})`,
+            recipients: ['info@swingessentials.com'],
+            body: `My Swing Essentials app has been encountering errors. ${Platform.OS === 'ios' ? 'Please see the attached error log.' : 'Please see the following:\r\n\r\n\r\n' + currentLogs}`,
+            isHTML: false,
+            attachment: Platform.OS === 'ios' ? {
+                path: type === 'ERROR' ? error_path : log_path,
+                type: 'doc',
+                name: 'Logs.txt'
+            } : null
+        }, (error, event) => {
+            if (error && error === 'canceled') {
+                // Do nothing
+            }
+            else if (error) {
+                this.logError({
+                    code: 'LOGS100',
+                    description: 'Error sending error logs',
+                    rawErrorMessage: error
+                })
+            }
+            else if (event && event === 'sent') {
+                // message sent successfully
+                this.clear(type);
+                Alert.alert(
+                    'Error Report Sent',
+                    'Your error report has been submitted successfully. Thank you for helping us improve the app!',
+                    [{ text: 'DONE', onPress: onDone ? () => onDone() : () => {} }]
+                );
+            }
+            else if (event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')) {
+                // do nothing
+            }
+            else if (event) {
+                this.logError({
+                    code: 'LOGS900',
+                    description: 'Error sending error logs',
+                    rawErrorMessage: event
+                })
+            }
+        });
     }
     private constructor() { }
 

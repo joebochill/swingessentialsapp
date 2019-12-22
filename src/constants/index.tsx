@@ -4,6 +4,8 @@ export const APP_VERSION = '3.0.0';
 export const ASYNC_PREFIX = '@SwingEssentials:';
 export const ERROR_FILE = 'error_log.txt';
 export const LOG_FILE = 'message_log.txt';
+export const ERROR_LIMIT = 1500; // characters
+export const LOG_LIMIT = 12000; // characters
 
 export const BASEURL_DEV = 'https://www.swingessentials.com/apis/dev/dev.php';
 export const BASEURL_PROD = 'https://www.swingessentials.com/apis/swingessentials.php';

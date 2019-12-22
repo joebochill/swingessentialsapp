@@ -1,4 +1,4 @@
-import { GET_LESSONS, LOGOUT, SUBMIT_LESSON } from '../actions/types';
+import { GET_LESSONS, LOGOUT, SUBMIT_LESSON, TOKEN_TIMEOUT } from '../actions/types';
 import { LessonsState } from '../../__types__';
 
 const initialState: LessonsState = {
@@ -30,7 +30,8 @@ export const lessonsReducer = (state = initialState, action): LessonsState => {
                 loading: false,
             };
         case LOGOUT.SUCCESS:
-            // case TOKEN_TIMEOUT:
+        case LOGOUT.FAILURE:
+        case TOKEN_TIMEOUT:
             return {
                 ...state,
                 loading: false,

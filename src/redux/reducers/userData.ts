@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, GET_USER_DATA } from '../actions/types';
+import { LOGIN, LOGOUT, GET_USER_DATA, TOKEN_TIMEOUT } from '../actions/types';
 import { UserDataState } from '../../__types__';
 
 // TODO: put a join date in the DB and API
@@ -21,6 +21,7 @@ export const userDataReducer = (state = initialState, action): UserDataState => 
             };
         case GET_USER_DATA.FAILURE:
         case LOGOUT.SUCCESS:
+        case TOKEN_TIMEOUT:
             // case TOKEN_TIMEOUT:
             return {
                 ...state,

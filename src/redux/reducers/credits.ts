@@ -1,4 +1,4 @@
-import { GET_CREDITS, LOGOUT, PURCHASE_CREDITS } from '../actions/types';
+import { GET_CREDITS, LOGOUT, PURCHASE_CREDITS, TOKEN_TIMEOUT } from '../actions/types';
 import { CreditsState } from '../../__types__';
 
 const initialState: CreditsState = {
@@ -28,6 +28,7 @@ export const creditsReducer = (state = initialState, action): CreditsState => {
             };
         case GET_CREDITS.FAILURE:
         case LOGOUT.SUCCESS:
+        case TOKEN_TIMEOUT:
             // case TOKEN_TIMEOUT:
             return {
                 ...state,

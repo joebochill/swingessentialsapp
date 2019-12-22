@@ -51,10 +51,6 @@ export function sendLogReport(log: string, type: LOG_TYPE){
             })
             .onFailure((response: Response) => {
                 dispatch(failure(ACTIONS.SEND_LOGS.FAILURE, response, 'SendLogs'));
-                Logger.logError({
-                    code: 'ACTEXT100',
-                    description: `Automatic sending of logs failed unexpectedly.`,
-                })
             })
             .request();
     };

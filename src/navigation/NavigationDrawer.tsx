@@ -255,7 +255,8 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                     <View style={styles.drawerBody}>
                         {NavigationItems.map((panel, ind) => {
                             const leftPosition = ind === 2 ? helpLeft : ind === 1 ? accountLeft : mainLeft;
-                            const panelData = [...panel.data];
+                            let panelData = [...panel.data];
+                            panelData = token ? panelData : panelData.filter((item) => !item.private);
                             if (ind === 0) {
                                 panelData.push({
                                     title: token ? 'Log Out' : 'Log In',

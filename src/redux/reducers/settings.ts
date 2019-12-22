@@ -1,4 +1,4 @@
-import { GET_SETTINGS, LOGOUT } from '../actions/types';
+import { GET_SETTINGS, LOGOUT, TOKEN_TIMEOUT } from '../actions/types';
 import { SettingsState } from '../../__types__';
 
 const initialState: SettingsState = {
@@ -32,6 +32,7 @@ export const settingsReducer = (state = initialState, action): SettingsState => 
             }
         case LOGOUT.SUCCESS:
         case LOGOUT.FAILURE:
+        case TOKEN_TIMEOUT:
             return initialState;
         default:
             return state;

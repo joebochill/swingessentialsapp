@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, CREATE_ACCOUNT, SET_TOKEN, REFRESH_TOKEN } from '../actions/types';
+import { LOGIN, LOGOUT, CREATE_ACCOUNT, SET_TOKEN, REFRESH_TOKEN, TOKEN_TIMEOUT } from '../actions/types';
 import { getUserRole } from '../../utilities';
 import { LoginState } from '../../__types__';
 
@@ -42,6 +42,7 @@ export const loginReducer = (state = initialState, action): LoginState => {
             };
         case LOGOUT.SUCCESS:
         case LOGOUT.FAILURE:
+        case TOKEN_TIMEOUT:
             return {
                 ...state,
                 token: null,

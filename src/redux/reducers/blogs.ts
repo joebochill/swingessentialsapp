@@ -1,4 +1,4 @@
-import { GET_BLOGS, LOGOUT } from '../actions/types';
+import { GET_BLOGS, LOGOUT, TOKEN_TIMEOUT } from '../actions/types';
 import { BlogsState } from '../../__types__';
 
 const initialState: BlogsState = {
@@ -19,6 +19,7 @@ export const blogsReducer = (state = initialState, action): BlogsState => {
             };
         case LOGOUT.SUCCESS:
         case LOGOUT.FAILURE:
+        case TOKEN_TIMEOUT:
         case GET_BLOGS.FAILURE:
             // case TOKEN_TIMEOUT:
             return {

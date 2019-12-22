@@ -1,7 +1,9 @@
 import { Logger } from "../utilities/logging";
+import { TOKEN_TIMEOUT } from "../redux/actions/types";
+import { store } from '../../App';
 
 /* Dispatch a failure action for the supplied action type */
-export function failure(type, response, api='--') {
+export function failure(type, response, api = '--') {
     if (response && response.headers && response.headers.get) {
         Logger.logError({
             code: 'HTH100',
@@ -42,4 +44,12 @@ export function success(type, data: any = null) {
         type: type,
         payload: data,
     };
+}
+
+export function checkTimeout(response, dispatch) {
+    // If we get a failed API call, check if our authentication needs to be re-upped
+    const error = (response && response.headers && response.headers.get) ? parseInt(response.headers.get('Error'), 10) : 999;
+    if (error && (error === 400100) && dispatch) {
+        store.dispatch({ type: TOKEN_TIMEOUT });
+    }
 }

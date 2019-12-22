@@ -1,4 +1,4 @@
-import { LOGOUT, GET_FAQ } from '../actions/types';
+import { LOGOUT, GET_FAQ, TOKEN_TIMEOUT } from '../actions/types';
 import { FAQState } from '../../__types__';
 
 const initialState: FAQState = {
@@ -20,6 +20,7 @@ export const faqReducer = (state = initialState, action): FAQState => {
         case LOGOUT.SUCCESS:
         case LOGOUT.FAILURE:
         case GET_FAQ.FAILURE:
+        case TOKEN_TIMEOUT:
             // case TOKEN_TIMEOUT:
             return {
                 ...state,

@@ -9,6 +9,7 @@ type Route = {
     route?: string;
     iconType?: string;
     nested?: boolean;
+    private?: boolean;
     activatePanel?: number;
     onPress?: Function;
 };
@@ -52,11 +53,13 @@ export const mainNavigationItems: RouteGroup = {
             title: 'My Account',
             icon: 'person',
             nested: true,
+            private: true,
             activatePanel: 1,
         },
         {
             title: 'Settings',
             icon: 'settings',
+            private: true,
             route: ROUTES.SETTINGS_GROUP,
         },
         {
@@ -81,11 +84,11 @@ export const helpNavigationItems: RouteGroup = {
             icon: 'help',
             route: ROUTES.FAQ,
         },
-        // {
-        //     title: 'Contact Us',
-        //     icon: 'mail',
-        //     route: ROUTES.CONTACT,
-        // },
+        {
+            title: 'Contact Us',
+            icon: 'mail',
+            route: ROUTES.CONTACT,
+        },
         {
             title: 'Back',
             icon: 'arrow-back',
@@ -100,21 +103,25 @@ export const accountNavigationItems: RouteGroup = {
         {
             title: 'Account Details',
             icon: 'person',
+            private: true,
             route: ROUTES.ACCOUNT_DETAILS,
         },
         {
             title: 'Order History',
             icon: 'receipt',
+            private: true,
             route: ROUTES.HISTORY,
         },
         {
             title: 'Error Logs',
             icon: 'list',
+            private: true,
             route: ROUTES.LOGS,
         },
         {
             title: 'Settings',
             icon: 'settings',
+            private: true,
             route: ROUTES.SETTINGS,
         },
         {

@@ -20,7 +20,7 @@ import { white, purple, red } from './src/styles';
 // TODO: Optimize components and library usage
 // TODO: Optimize image assets and bundle size
 
-const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
+export const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 
 export const App = () => {
     store.dispatch(loadInitialData());

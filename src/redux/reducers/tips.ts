@@ -1,4 +1,4 @@
-import { GET_TIPS, LOGOUT } from '../actions/types';
+import { GET_TIPS, LOGOUT, TOKEN_TIMEOUT } from '../actions/types';
 import { TipsState } from '../../__types__';
 
 const initialState: TipsState = {
@@ -20,6 +20,7 @@ export const tipsReducer = (state = initialState, action): TipsState => {
         case LOGOUT.SUCCESS:
         case LOGOUT.FAILURE:
         case GET_TIPS.FAILURE:
+        case TOKEN_TIMEOUT:
             // case TOKEN_TIMEOUT:
             return {
                 ...state,

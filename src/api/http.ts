@@ -61,7 +61,7 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
         return this;
     }
     public request() {
-        return fetch(`${BASEURL}/${this.endpoint}xx`, {
+        return fetch(`${BASEURL}/${this.endpoint}`, {
             method: this.method,
             headers: Object.assign({ 'Content-Type': 'application/json' }, TOKEN ? { [AUTH]: `Bearer ${TOKEN}` } : {}),
             body: this.body,
