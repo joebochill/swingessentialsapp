@@ -40,7 +40,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Swing Essentials needs access to your camera to record new swing videos.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Swing Essentials needs access to your microphone to capture audio in your swing videos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

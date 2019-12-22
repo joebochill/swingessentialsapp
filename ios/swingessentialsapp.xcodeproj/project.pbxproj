@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* swingessentialsappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* swingessentialsappTests.m */; };
 		0421067FDCF64DE6B6A5887B /* SFCompactDisplayHeavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = BB54AF7A1BBA432E8702BC85 /* SFCompactDisplayHeavy.otf */; };
