@@ -7,6 +7,7 @@ const initialState: UserDataState = {
     firstName: '',
     lastName: '',
     email: '',
+    joined: 0,
 };
 export const userDataReducer = (state = initialState, action): UserDataState => {
     switch (action.type) {
@@ -18,6 +19,7 @@ export const userDataReducer = (state = initialState, action): UserDataState => 
                 firstName: action.payload.personal.first_name,
                 lastName: action.payload.personal.last_name,
                 email: action.payload.personal.email,
+                joined: action.payload.personal.joined,
             };
         case GET_USER_DATA.FAILURE:
         case LOGOUT.SUCCESS:
@@ -29,6 +31,7 @@ export const userDataReducer = (state = initialState, action): UserDataState => 
                 firstName: '',
                 lastName: '',
                 email: '',
+                joined: 0,
             };
         default:
             return state;

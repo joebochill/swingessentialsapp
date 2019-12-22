@@ -9,7 +9,6 @@ import {
 } from '../actions/types';
 import { RegistrationState } from '../../__types__';
 
-// TODO: put a join date in the DB and API
 const initialState: RegistrationState = {
     pending: false,
     userAvailable: true,

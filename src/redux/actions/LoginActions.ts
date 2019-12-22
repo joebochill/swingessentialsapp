@@ -14,7 +14,6 @@ import { Credentials } from '../../__types__';
 import { HttpRequest } from '../../api/http';
 import { Logger } from '../../utilities/logging';
 
-// TODO: Implement the token timeout warning
 // TODO: Handle fetch failure (on login esp) more gracefully
 // TODO: timer to check pending users registration status update
 

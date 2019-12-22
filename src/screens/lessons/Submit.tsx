@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Platform, View, KeyboardAvoidingView, Image, TextInput, StyleSheet, Alert } from 'react-native';
+import { Platform, View, KeyboardAvoidingView, Image, TextInput, StyleSheet, Alert, Keyboard } from 'react-native';
 import { H7, Label } from '@pxblue/react-native-components';
 import { SEHeader, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox, UploadProgressModal } from '../../components';
 import { sharedStyles, spaces, sizes, purple, fonts, white, unit, transparent, purpleOpacity } from '../../styles';
@@ -17,7 +17,6 @@ import { usePrevious } from '../../utilities';
 import { Logger } from '../../utilities/logging';
 
 // TODO: Fix the NPM monkeypatch for camera roll
-// TODO: Fix the broken focus & scroll-to behavior
 
 export const Submit = props => {
     const { navigation } = props;
@@ -94,7 +93,7 @@ export const Submit = props => {
     ]);
 
     const _submitLesson = useCallback(() => {
-        // TODO: Dismiss keyboard
+        Keyboard.dismiss();
         if (role !== 'customer' && role !== 'administrator') {
             Logger.logError({
                 code: 'SUB200',

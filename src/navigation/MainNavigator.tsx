@@ -36,6 +36,7 @@ import {
     Tips,
     SingleTip,
 } from '../screens';
+import { width } from '../utilities';
 
 const AuthStack = createStackNavigator(
     {
@@ -151,7 +152,7 @@ const AppStack = createDrawerNavigator(
     },
     {
         initialRouteName: ROUTES.HOME_GROUP,
-        drawerWidth: 350, //TODO: scale
+        drawerWidth: width * 0.9,
         contentComponent: NavigationDrawer,
     },
 );

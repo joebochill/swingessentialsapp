@@ -10,7 +10,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { NavigationInjectedProps } from 'react-navigation';
 import { loadSettings } from '../../redux/actions/SettingsActions';
 
-// TODO: Implement
 // TODO: Determine any additional settings (app-level?)
 
 export const Settings = (props: NavigationInjectedProps) => {

@@ -22,23 +22,23 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Body, H7 } from '@pxblue/react-native-components';
 import { ListItem, Icon } from 'react-native-elements';
 import { sharedStyles, purple, white, blackOpacity } from '../styles';
+import { DrawerContentComponentProps } from 'react-navigation-drawer';
+import { ROUTES } from '../constants/routes';
+import { getLongDate, height, width, getDate } from '../utilities';
+import { requestLogout } from '../redux/actions';
+import { TokenModal } from '../components';
+import { Logger } from '../utilities/logging';
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 const HEADER_EXPANDED_HEIGHT = 200 + getStatusBarHeight();
 const HEADER_COLLAPSED_HEIGHT = 56 + getStatusBarHeight();
-const DRAWER_WIDTH = 350;
-
-import { DrawerContentComponentProps } from 'react-navigation-drawer';
-import { ROUTES } from '../constants/routes';
-import { getLongDate, height } from '../utilities';
-import { requestLogout } from '../redux/actions';
-import { TokenModal } from '../components';
-import { Logger } from '../utilities/logging';
+const DRAWER_WIDTH = width * 0.9;
 
 type NavigatorProps = DrawerContentComponentProps & {
     username: string;
     first: string;
     last: string;
+    joined: number;
     token: string;
     logout: Function;
 };
@@ -56,15 +56,14 @@ function mapStateToProps(state) {
         username: state.userData.username,
         first: state.userData.firstName,
         last: state.userData.lastName,
+        joined: state.userData.joined,
         token: state.login.token,
-        // lessons: state.lessons,
-        // modalWarning: state.login.modalWarning
     };
 }
 
 // TODO: Do not make this menu collapsible?
-// TODO: Give enough bottom padding so that it can be fully collapsed
-// Fix the scroll reset when changing tabs and closing
+// TODO: Fix the scroll reset when changing tabs and closing
+// TODO: When token expires, make sure all data is cleared
 
 const mapDispatchToProps = {
     logout: requestLogout,
@@ -166,7 +165,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
     render() {
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
         const { mainLeft, accountLeft, helpLeft } = this.state;
-        const { username, first, last, token } = this.props;
+        const { username, first, last, joined, token } = this.props;
 
         const userString = username || 'Welcome!';
         const nameString = first && last ? `${first} ${last}` : 'New User';
@@ -212,7 +211,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                 {nameString}
                             </Animated.Text>
                             <Animated.Text style={this.infoStyle()} numberOfLines={1} ellipsizeMode={'tail'}>
-                                {`Member Since ${memberData}`}
+                                {`Member Since ${joined ? getLongDate(joined*1000) : getLongDate(Date.now())}`}
                             </Animated.Text>
                         </Animated.View>
                         <View style={styles.headerAction}>
@@ -283,15 +282,15 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                                 onPress={
                                                     item.route
                                                         ? () => {
-                                                              this.props.navigation.navigate(item.route);
-                                                          }
+                                                            this.props.navigation.navigate(item.route);
+                                                        }
                                                         : item.activatePanel !== undefined
-                                                        ? () => {
-                                                              this.setState({ activePanel: item.activatePanel });
-                                                          }
-                                                        : item.onPress
-                                                        ? () => item.onPress()
-                                                        : undefined
+                                                            ? () => {
+                                                                this.setState({ activePanel: item.activatePanel });
+                                                            }
+                                                            : item.onPress
+                                                                ? () => item.onPress()
+                                                                : undefined
                                                 }
                                                 title={<Body style={styles.navLabel}>{item.title}</Body>}
                                                 leftIcon={{
@@ -310,7 +309,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                     <View style={{ height: height * 0.6 }} />
                 </ScrollView>
                 <SafeAreaView />
-                <TokenModal/>
+                <TokenModal />
             </View>
         );
     }

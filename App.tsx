@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { StatusBar } from 'react-native';
 import { ThemeProvider } from '@pxblue/react-native-components';
 import MainNavigator from './src/navigation/MainNavigator';
 import { RNIAPCallbacks } from './src/screens/lessons';
@@ -10,11 +11,13 @@ import { saveAuthToken } from './src/api/tokenMiddleware';
 import { loadInitialData } from './src/redux/actions';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { white, purple, red } from './src/styles';
+import SplashScreen from 'react-native-splash-screen';
 
 // TODO: Organize all imports
 // TODO: Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
 // TODO: Check camera roll video size using RNFetchBlob
 // TODO: Update production API with new handlers for user settings
+// TODO: Update prod api with joined date
 // TODO: Update production API with FAQ implementation
 // TODO: Update prod API with lesson types
 // TODO: Optimize components and library usage
@@ -23,7 +26,13 @@ import { white, purple, red } from './src/styles';
 export const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 
 export const App = () => {
-    store.dispatch(loadInitialData());
+    useEffect(() => {
+        SplashScreen.hide();
+        // SplashScreen.show();
+        StatusBar.setBarStyle('light-content', true);
+        store.dispatch(loadInitialData());
+    }, []);
+
     return (
         <Provider store={store}>
             <SafeAreaProvider>

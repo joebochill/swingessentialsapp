@@ -27,28 +27,29 @@ export const ErrorLogs = () => {
 
     const sendMail = useCallback(() => {
         Logger.sendEmail('ERROR', () => getLogs(), username)
-    },[getLogs, username]);
+    }, [getLogs, username]);
 
     useEffect(() => {
         getLogs();
     }, []);
-
+    const actionItems = [{
+        icon: RefreshIcon,
+        onPress: () => sendMail()
+    }];
+    if (logs.length > 0) actionItems.push(
+        {
+            icon: MailIcon,
+            onPress: () => getLogs()
+        }
+    );
+    actionItems.reverse();
     return (
         <CollapsibleHeaderLayout
             title={'Error Logs'}
             subtitle={'what went wrong'}
             refreshing={loading}
             showAuth={false}
-            actionItems={[
-                {
-                    icon: MailIcon,
-                    onPress: () => sendMail()
-                },
-                {
-                    icon: RefreshIcon,
-                    onPress: () => getLogs()
-                },
-            ]}
+            actionItems={actionItems}
             onRefresh={() => {
                 getLogs();
             }}
@@ -79,6 +80,6 @@ export const ErrorLogs = () => {
                     onPress={() => Logger.clear('ERROR')}
                 />
             </View>
-        </CollapsibleHeaderLayout>
+        </CollapsibleHeaderLayout >
     )
 };

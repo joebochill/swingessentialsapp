@@ -2,8 +2,6 @@ import { TOKEN } from './tokenMiddleware';
 import { BASEURL, AUTH } from '../constants';
 import { Logger } from '../utilities/logging';
 
-// TODO: Check token expiration on every failed request
-
 export enum HttpMethod {
     POST = 'POST',
     PUT = 'PUT',

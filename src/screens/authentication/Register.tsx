@@ -152,7 +152,6 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                 // Successful
                 props.navigation.goBack(ROUTES.AUTH_GROUP);
             } else {
-                // TODO: Log error
                 Alert.alert(
                     'Oops:',
                     'Your account registration has failed. Please try again later and contact us if the problem continues.',

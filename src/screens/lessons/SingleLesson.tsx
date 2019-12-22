@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { View, Platform } from 'react-native';
 import { Body, H7 } from '@pxblue/react-native-components';
 
@@ -9,8 +9,11 @@ import { width, aspectHeight, splitParagraphs, getLongDate } from '../../utiliti
 import { spaces, sharedStyles } from '../../styles';
 import { PlaceholderLesson } from '../../constants/lessons';
 import { ROUTES } from '../../constants/routes';
+import { useSelector } from 'react-redux';
+import { ApplicationState } from 'src/__types__';
 
 export const SingleLesson = props => {
+    const token = useSelector((state: ApplicationState) => state.login.token);
     let lesson = props.navigation.getParam('lesson', null);
     if (lesson === null) {
         lesson = PlaceholderLesson;
@@ -18,12 +21,14 @@ export const SingleLesson = props => {
     const videoWidth = width - 2 * spaces.medium;
     const videoHeight = aspectHeight(videoWidth);
 
+    useEffect(() => {
+        if(!token) props.navigation.pop(); // TODO: test this
+    }, [token])
+
     // TODO: mark viewed
     // TODO: handle deep linking via URL
-    // TODO: Lesson type API
-    // TODO: Route back if we log out / lose the token
 
-    return (
+    return !token ? null : (
         lesson && (
             <CollapsibleHeaderLayout mainAction={'back'} title={lesson.request_date} subtitle={lesson.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson'}>
                 <View style={sharedStyles.paddingHorizontalMedium}>

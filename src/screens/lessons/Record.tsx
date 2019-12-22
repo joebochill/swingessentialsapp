@@ -21,8 +21,6 @@ import { Logger } from '../../utilities/logging';
 
 const DESIRED_RATIO = '16:9';
 
-// TODO: Only show settings icon if logged in
-
 const getOverlayImage = (swing: SwingType, handedness: HandednessType, camera: CameraType) => {
     let options = swing === 'dtl' ? [downthelineRH, downthelineLH] : [faceonRH, faceonLH];
     let index = 0;
@@ -40,6 +38,7 @@ export const Record = props => {
     const swing: SwingType = props.navigation.getParam('swing', () => {});
 
     const settings = useSelector((state: ApplicationState) => state.settings);
+    const token = useSelector((state: ApplicationState) => state.login.token);
 
     const cameras: CameraType[] = ['back', 'front'];
     const [cameraType, setCameraType] = useState(0);
@@ -171,7 +170,7 @@ export const Record = props => {
                         <View style={styles.content}>
                             {recordingMode && !isRecording && <View style={{ flex: 1 }} />}
                             {isRecording && !showCountDown && <VideoTimer visible={isRecording} />}
-                            {recordingMode && !isRecording && (
+                            {recordingMode && !isRecording && token && (
                                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                     <TouchableOpacity
                                         onPress={(): void =>

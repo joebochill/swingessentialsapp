@@ -69,7 +69,7 @@ export const TokenModal = (props: ModalProps) => {
             transparent={true}
             onRequestClose={() => { }}
             onDismiss={() => { }}
-            visible={token !== null && timeRemaining < 29 * 60 /*&& (timeRemaining < (3 * 60))*/} // TODO update
+            visible={token !== null && (timeRemaining < (3 * 60))}
             {...other}
         >
             <View style={styles.modalBackground}>

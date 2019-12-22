@@ -21,7 +21,7 @@ export const Home = props => {
     const dispatch = useDispatch();
 
     const latestLessons = lessons.closed.length > 0 ? lessons.closed : [PlaceholderLesson];
-
+    console.log(lessons.closed);
     return (
         <CollapsibleHeaderLayout 
             backgroundImage={bg} 

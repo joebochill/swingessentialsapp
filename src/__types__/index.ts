@@ -3,6 +3,7 @@ export type CameraType = 'front' | 'back';
 export type SwingType = 'dtl' | 'fo';
 export type UserRole = 'administrator' | 'anonymous' | 'customer' | 'pending';
 export type NavType = 'menu' | 'back';
+export type LessonType = 'in-person' | 'single';
 
 export type UserSettingsType = {
     duration?: number;
@@ -15,10 +16,43 @@ export type Credentials = {
     username: string;
     password: string;
 };
-export type Blog = any; // TODO
-export type Lesson = any; // TODO
-export type Package = any; // TODO
-export type Tip = any; // TODO
+export type Blog = {
+    id: string | number;
+    date: string;
+    title: string;
+    body: string;
+};
+export type Lesson = {
+    dtl_swing: string;
+    fo_swing: string;
+    request_date: string;
+    request_id: number;
+    request_notes: string;
+    request_url: string;
+    response_notes: string;
+    response_status: 'good' | 'bad';
+    response_video: string;
+    type: LessonType;
+    username?: string;
+    viewed: number | boolean;
+};
+export type Package = { // TODO: update API to return proper types for numbers
+    id: string | number;
+    name: string;
+    description: string;
+    shortcode: string;
+    count: string | number;
+    duration: string | number;
+    price: string | number;
+    app_sku: string;
+}; 
+export type Tip = {
+    id: string | number;
+    date: string;
+    title: string;
+    video: string;
+    comments: string;
+};
 
 // Redux State Types
 export type LoginState = {
@@ -46,6 +80,7 @@ export type UserDataState = {
     firstName: string;
     lastName: string;
     email: string;
+    joined: number;
 };
 export type CreditsState = {
     count: number;
