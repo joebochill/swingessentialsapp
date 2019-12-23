@@ -2,7 +2,7 @@ export type HandednessType = 'right' | 'left';
 export type CameraType = 'front' | 'back';
 export type SwingType = 'dtl' | 'fo';
 export type UserRole = 'administrator' | 'anonymous' | 'customer' | 'pending';
-export type NavType = 'menu' | 'back';
+export type NavType = 'menu' | 'back' | 'none';
 export type LessonType = 'in-person' | 'single';
 
 export type UserSettingsType = {

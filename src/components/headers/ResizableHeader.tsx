@@ -57,6 +57,9 @@ export interface ResizableHeaderProps {
     headerHeight: Animated.AnimatedInterpolation | number;
     // headerHeight: number;
 
+    /** Custom content for the header */
+    headerContent?: JSX.Element;
+
     /**
      * Overrides for theme
      */
@@ -127,6 +130,10 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
     }
 
     private content() {
+        const {headerContent} = this.props;
+        if(headerContent){
+            return headerContent;
+        }
         let content = [this.title(), this.info(), this.subtitle()];
         return (
             <Animated.View
@@ -207,11 +214,11 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
     }
 
     private contentStyle() {
-        const { theme } = this.props;
+        const { theme, headerContent } = this.props;
         const contractedPadding = this.props.subtitle
             ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.sizes.large + 18)) / 2
             : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - theme.sizes.large) / 2;
-        return [styles.content, { paddingBottom: this.scaleByHeaderHeight(unit(28), contractedPadding) }];
+        return [styles.content, headerContent ? {} : { paddingHorizontal: unit(16), paddingBottom: this.scaleByHeaderHeight(unit(28), contractedPadding) }];
     }
 
     private titleStyle() {
@@ -318,7 +325,6 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        paddingHorizontal: unit(16),
         flexDirection: 'row',
     },
     navigation: {

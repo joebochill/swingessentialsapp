@@ -217,7 +217,7 @@ export const Submit = props => {
             />
             <SEHeader title={'Submit Your Swing'} subtitle={'create a new lesson'} />
             <KeyboardAvoidingView
-                style={[sharedStyles.pageContainer, { marginTop: HEADER_COLLAPSED_HEIGHT }]}
+                style={[sharedStyles.pageContainer, { marginTop: HEADER_COLLAPSED_HEIGHT, backgroundColor: transparent }]}
                 behavior={'padding'}>
                 <ScrollView contentContainerStyle={sharedStyles.paddingMedium} ref={scroller}>
                     <ErrorBox show={roleError !== ''} error={roleError} style={{ marginBottom: spaces.medium }} />

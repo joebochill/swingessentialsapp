@@ -29,6 +29,7 @@ type HeaderLayoutState = {
 type CollapsibleHeaderLayoutProps = SEHeaderProps & {
     renderScroll?: boolean;
     onRefresh?: Function;
+    onResize?: Function;
     refreshing?: boolean;
     bottomPad?: boolean;
     pageBackground?: ImageSourcePropType;
@@ -82,7 +83,11 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                                         },
                                     },
                                 },
-                            ])}
+                            ], {
+                                listener: event => {
+                                    if (this.props.onResize) this.props.onResize(this.state.scrollY);
+                                }
+                            })}
                             scrollEventThrottle={16}>
                             {refreshing && (
                                 <ActivityIndicator
