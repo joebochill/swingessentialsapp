@@ -1,8 +1,13 @@
 import React from 'react';
-import { spaces, whiteOpacity, purple, sharedStyles } from '../../styles';
-import { ActivityIndicator, Modal, StyleSheet, View, ModalProps } from 'react-native';
+// Components
+import { ActivityIndicator, Modal, ModalProps, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { H7, Body } from '@pxblue/react-native-components';
+
+// Styles
+import { sharedStyles } from '../../styles';
+import { whiteOpacity, purple } from '../../styles/colors';
+import { spaces } from '../../styles/sizes';
 
 const styles = StyleSheet.create({
     modalBackground: {
@@ -33,7 +38,11 @@ export const UploadProgressModal = (props: ProgressModalProps) => {
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ flex: 1, marginRight: spaces.medium }}>
                             <View style={{ flexDirection: 'row', marginBottom: spaces.medium }}>
-                                <Icon name={'file-upload'} color={purple[500]} containerStyle={{ marginRight: spaces.small }} />
+                                <Icon
+                                    name={'file-upload'}
+                                    color={purple[500]}
+                                    containerStyle={{ marginRight: spaces.small }}
+                                />
                                 <H7>Submitting Your Lesson</H7>
                             </View>
                             <Body>{`Uploading Videos... ${progress.toFixed(0)}%`}</Body>

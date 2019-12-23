@@ -1,12 +1,24 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { spaces, whiteOpacity, purple, sharedStyles } from '../../styles';
-import { Modal, StyleSheet, View, ModalProps } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+
+// Components
+import { Modal, ModalProps, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { H7, Body } from '@pxblue/react-native-components';
 import { SEButton } from '../SEButton';
-import { useSelector, useDispatch } from 'react-redux';
+
+// Styles
+import { whiteOpacity, purple } from '../../styles/colors';
+import { spaces } from '../../styles/sizes';
+import { sharedStyles } from '../../styles';
+
+// Types
 import { ApplicationState } from '../../__types__';
+
+// Utilities
 import { atob } from '../../utilities';
+
+// Redux
 import { requestLogout, refreshToken } from '../../redux/actions';
 
 const styles = StyleSheet.create({
@@ -32,8 +44,7 @@ export const TokenModal = (props: ModalProps) => {
             const exp = JSON.parse(atob(token.split('.')[1])).exp;
             setTimeRemaining(exp - Date.now() / 1000);
             setEngageCountdown(true);
-        }
-        else {
+        } else {
             setTimeRemaining(0);
             setEngageCountdown(false);
         }
@@ -49,7 +60,7 @@ export const TokenModal = (props: ModalProps) => {
             }, updateRate * 1000);
             updateRefreshRate();
         } else {
-            dispatch(requestLogout(token || ''))
+            dispatch(requestLogout(token || ''));
         }
 
         return () => clearInterval(interval);
@@ -62,16 +73,14 @@ export const TokenModal = (props: ModalProps) => {
         else setUpdateRate(30 * 60);
     }, [timeRemaining, setTimeRemaining]);
 
-
     return (
         <Modal
             animationType="slide"
             transparent={true}
-            onRequestClose={() => { }}
-            onDismiss={() => { }}
-            visible={token !== null && (timeRemaining < (3 * 60))}
-            {...other}
-        >
+            onRequestClose={() => {}}
+            onDismiss={() => {}}
+            visible={token !== null && timeRemaining < 3 * 60}
+            {...other}>
             <View style={styles.modalBackground}>
                 <View
                     style={[
@@ -82,7 +91,12 @@ export const TokenModal = (props: ModalProps) => {
                         },
                     ]}>
                     <View style={{ flexDirection: 'row', marginBottom: spaces.medium }}>
-                        <Icon name={'clock-alert-outline'} type={'material-community'} color={purple[500]} containerStyle={{ marginRight: spaces.small }} />
+                        <Icon
+                            name={'clock-alert-outline'}
+                            type={'material-community'}
+                            color={purple[500]}
+                            containerStyle={{ marginRight: spaces.small }}
+                        />
                         <H7 style={{ flex: 1 }}>{`Session Expiring`}</H7>
                         <Body>{_formatTime(timeRemaining)}</Body>
                     </View>
@@ -107,9 +121,8 @@ const _formatTime = (remaining: number): string => {
     const min = Math.floor(remaining / 60);
     const sec = Math.floor(remaining - min * 60);
 
-    return ((min < 10 ? '0' + min : min) + ':' + (sec < 10 ? '0' + sec : sec));
-}
-
+    return (min < 10 ? '0' + min : min) + ':' + (sec < 10 ? '0' + sec : sec);
+};
 
 // import React from 'react';
 // import { Text, View, TouchableHighlight, StyleSheet, Modal } from 'react-native';
@@ -193,15 +206,15 @@ const _formatTime = (remaining: number): string => {
 //                 onRequestClose={this._cancel.bind(this)}
 //             >
 //                 <View style={{
-//                     flex: 1, 
-//                     padding: spacing.normal, 
-//                     alignItems: 'center', 
+//                     flex: 1,
+//                     padding: spacing.normal,
+//                     alignItems: 'center',
 //                     justifyContent: 'center',
 //                     backgroundColor: 'rgba(255,255,255,0.55)'
 //                 }}>
 //                     <View style={{
-//                         flex: 0, 
-//                         alignItems: 'stretch', 
+//                         flex: 0,
+//                         alignItems: 'stretch',
 //                         backgroundColor: colors.backgroundGrey,
 //                         borderWidth: 1,
 //                         borderColor: colors.purple

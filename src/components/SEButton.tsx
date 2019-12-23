@@ -1,7 +1,10 @@
 import React from 'react';
-import { purple, transparent, spaces, sizes, unit, fonts } from '../styles';
+// Components
 import { StyleSheet } from 'react-native';
 import { Button, ButtonProps } from 'react-native-elements';
+// Styles
+import { purple, transparent } from '../styles/colors';
+import { spaces, sizes, unit, fonts } from '../styles/sizes';
 
 const styles = StyleSheet.create({
     purpleButton: {

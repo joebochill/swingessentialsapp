@@ -1,5 +1,5 @@
 import React from 'react';
-import { transparent, spaces, sizes, unit, fonts, blackOpacity, white } from '../../styles';
+// Components
 import {
     StyleSheet,
     View,
@@ -10,6 +10,12 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Body } from '@pxblue/react-native-components';
+
+// Styles
+import { transparent, blackOpacity, white } from '../../styles/colors';
+import { spaces, sizes, unit, fonts } from '../../styles/sizes';
+
+// Utilities
 import { useSafeArea } from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({

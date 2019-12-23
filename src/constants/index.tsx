@@ -1,6 +1,6 @@
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { width } from '../utilities';
-import { unit } from '../styles';
+import { width } from '../utilities/dimensions';
+import { unit } from '../styles/sizes';
 
 export const YOUTUBE_API_KEY = 'AIzaSyBLUJUqz7E3Z5XNcXbMYO9gVmXd0zYAR4U';
 

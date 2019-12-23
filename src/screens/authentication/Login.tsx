@@ -1,46 +1,62 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, KeyboardAvoidingView, StyleSheet, Switch, Text, View } from 'react-native';
-import { Icon, Input } from 'react-native-elements';
-import { NavigationInjectedProps } from 'react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
+// Components
+import { 
+    ActivityIndicator, 
+    Image, 
+    KeyboardAvoidingView, 
+    StyleSheet, 
+    Switch, 
+    Text, 
+    View 
+} from 'react-native';
+import { Icon, Input } from 'react-native-elements';
+
 // Utilities
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
 import { useCompare } from '../../utilities';
+
+// Types
+import { NavigationInjectedProps } from 'react-navigation';
+
 // Styles
-import { white, purple, transparent, spaces, unit, sizes, fonts } from '../../styles';
+import { white, purple, transparent } from '../../styles/colors';
+import {spaces, unit, sizes, fonts } from '../../styles/sizes';
 import logo from '../../images/logo-big.png';
+
 // SE Components
 import { SEButton, ErrorBox } from '../../components';
+
 // Actions
 import { requestLogin } from '../../redux/actions';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ROUTES } from '../../constants/routes';
 import { ApplicationState } from '../../__types__';
 
-// TODO: Implement biometric login
-
 type BiometryState = {
     available: boolean;
     type: 'FaceID' | 'TouchID' | 'Fingerprint' | 'None';
-}
+};
 type CredentialsState = {
     stored: boolean;
-    savedCredentials: {
-        username: string;
-        password: string;
-        service?: string;
-    } | undefined;
-}
+    savedCredentials:
+        | {
+              username: string;
+              password: string;
+              service?: string;
+          }
+        | undefined;
+};
 const initialBiometry: BiometryState = {
     available: false,
     type: 'None',
-}
+};
 const initialCredentials: CredentialsState = {
     stored: false,
     savedCredentials: undefined,
-}
+};
 
 export const Login = (props: NavigationInjectedProps) => {
     // Local Component State
@@ -69,9 +85,9 @@ export const Login = (props: NavigationInjectedProps) => {
             const use = await AsyncStorage.getItem('@SwingEssentials:useTouch');
             setRemember(save === 'yes');
             setUseBiometry(use === 'yes');
-        }
+        };
         loadSavedSettings();
-    }, [])
+    }, []);
 
     useEffect(() => {
         // Load biometric type
@@ -81,13 +97,12 @@ export const Login = (props: NavigationInjectedProps) => {
                 setBiometry({
                     ...biometry,
                     type: biometricType === true ? 'Fingerprint' : biometricType,
-                    available: true
-                })
-            }
-            catch (err) {
+                    available: true,
+                });
+            } catch (err) {
                 setBiometry({ ...biometry, available: false });
             }
-        }
+        };
         touchCheck();
     }, []);
 
@@ -101,17 +116,23 @@ export const Login = (props: NavigationInjectedProps) => {
                     stored: true,
                     savedCredentials: _credentials,
                 });
-            }
-            else {
+            } else {
                 setCredentials({
                     ...credentials,
                     stored: false,
                     savedCredentials: undefined,
-                })
+                });
             }
-        }
+        };
         loadKeychainCredentials();
-    }, [token, error])
+    }, [token, error]);
+
+    useEffect(() => {
+        // Show biometric login on load
+        if (useBiometry && biometry.available && credentials.stored) {
+            showBiometricLogin();
+        }
+    }, [biometry.available, credentials.stored]);
 
     useEffect(() => {
         // handle successful login
@@ -136,13 +157,20 @@ export const Login = (props: NavigationInjectedProps) => {
     );
 
     const showBiometricLogin = useCallback(async () => {
-        if (!credentials.stored || !credentials.savedCredentials || !useBiometry || !biometry.available || !biometry.type) { return }
+        if (
+            !credentials.stored ||
+            !credentials.savedCredentials ||
+            !useBiometry ||
+            !biometry.available ||
+            !biometry.type
+        ) {
+            return;
+        }
         try {
             await TouchID.authenticate('Secure Sign In');
             onLogin(credentials.savedCredentials.username, credentials.savedCredentials.password);
-        }
-        catch (err) {
-            const label = biometry.type === 'None' ? "Biometric authentication" : biometry.type;
+        } catch (err) {
+            const label = biometry.type === 'None' ? 'Biometric authentication' : biometry.type;
             switch (err.name) {
                 case 'LAErrorAuthenticationFailed':
                 case 'RCTTouchIDUnknownError':
@@ -158,7 +186,7 @@ export const Login = (props: NavigationInjectedProps) => {
                 case 'LAErrorUserCancel':
                 case 'LAErrorUserFallback':
                 case 'LAErrorSystemCancel':
-                    // user canceled touch id - fallback to password
+                // user canceled touch id - fallback to password
                 default:
                     break;
             }

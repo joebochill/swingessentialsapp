@@ -1,17 +1,25 @@
 import React, { useEffect } from 'react';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+
+// Components
 import { StatusBar } from 'react-native';
 import { ThemeProvider } from '@pxblue/react-native-components';
 import MainNavigator from './src/navigation/MainNavigator';
 import { RNIAPCallbacks } from './src/screens/lessons';
+import SplashScreen from 'react-native-splash-screen';
+
+// Redux
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 import { AppReducer } from './src/redux/reducers';
 import { saveAuthToken } from './src/api/tokenMiddleware';
 import { loadInitialData } from './src/redux/actions';
+
+// Utilities
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { white, purple, red } from './src/styles';
-import SplashScreen from 'react-native-splash-screen';
+
+// Styles
+import { white, purple, red } from './src/styles/colors';
 
 // TODO: Organize all imports
 // TODO: Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs

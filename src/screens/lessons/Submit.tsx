@@ -1,19 +1,33 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { usePrevious } from '../../utilities';
+import { useSelector, useDispatch } from 'react-redux';
+
+// Components
 import { Platform, View, KeyboardAvoidingView, Image, TextInput, StyleSheet, Alert, Keyboard } from 'react-native';
 import { H7, Label } from '@pxblue/react-native-components';
 import { SEHeader, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox, UploadProgressModal } from '../../components';
-import { sharedStyles, spaces, sizes, purple, fonts, white, unit, transparent, purpleOpacity } from '../../styles';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { Icon } from 'react-native-elements';
+import ImagePicker from 'react-native-image-picker';
+
+// Styles
+import { sharedStyles } from '../../styles';
+import { purple, white, transparent, purpleOpacity } from '../../styles/colors';
+import { spaces, sizes, fonts, unit } from '../../styles/sizes';
 import bg from '../../images/golf_bg.png';
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
-import { Icon } from 'react-native-elements';
-import { useSelector, useDispatch } from 'react-redux';
-import ImagePicker from 'react-native-image-picker';
+
+// Constants
 import { ROUTES } from '../../constants/routes';
+
+// Types
 import { ApplicationState } from '../../__types__';
+
+// Redux
 import { submitLesson } from '../../redux/actions';
-import { usePrevious } from '../../utilities';
+
+// Utilities
 import { Logger } from '../../utilities/logging';
 
 // TODO: Fix the NPM monkeypatch for camera roll
@@ -68,7 +82,7 @@ export const Submit = props => {
                     code: 'SUB100',
                     description: `Failed to submit lesson.`,
                     rawErrorCode: lessons.redeemError,
-                })
+                });
                 // 400701 means files were stripped for size
                 // 400702 too large
                 setUploadProgress(0);

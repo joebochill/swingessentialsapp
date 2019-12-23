@@ -1,14 +1,31 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { View, TouchableOpacity, StatusBar, Platform, Image, StyleSheet, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { sharedStyles, oledBlack, blackOpacity, spaces, white } from '../../styles';
+// Components
+import { 
+    Image, 
+    Platform, 
+    SafeAreaView,
+    StatusBar, 
+    StyleSheet, 
+    TouchableOpacity, 
+    View, 
+} from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import { HandednessType, SwingType, CameraType } from '../../__types__';
 import { VideoControls, CountDown, VideoTimer } from '../../components';
 import Video from 'react-native-video';
-import { ApplicationState } from '../../__types__';
+
+// Styles
+import { sharedStyles } from '../../styles';
+import { oledBlack, blackOpacity, white } from '../../styles/colors';
+import { spaces } from '../../styles/sizes';
+
+// Utilities
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+
+// Types
+import { HandednessType, SwingType, CameraType } from '../../__types__';
+import { ApplicationState } from '../../__types__';
 
 // Overlay images
 import faceonLH from '../../images/overlay-fo-lh.png';
@@ -58,7 +75,7 @@ export const Record = props => {
             Logger.logError({
                 code: 'REC100',
                 description: `No camera object was found.`,
-            })
+            });
             return;
         }
         const options = {
@@ -81,7 +98,7 @@ export const Record = props => {
             Logger.logError({
                 code: 'REC200',
                 description: `No camera object was found.`,
-            })
+            });
             return;
         }
         if (isRecording) {

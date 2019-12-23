@@ -54,7 +54,7 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
         this.failureCallback = callback;
         return this;
     }
-    public withFullResponse(){
+    public withFullResponse() {
         this.parseResponse = false;
         return this;
     }
@@ -86,7 +86,7 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                     description: `Fetch call failed for ${this.endpoint}.`,
                     rawErrorCode: error.code,
                     rawErrorMessage: error.message,
-                })
+                });
             });
     }
     public requestWithProgress(onProgress: (this: XMLHttpRequest, ev: ProgressEvent) => any) {
@@ -123,7 +123,7 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                     description: `XHR call failed for ${this.endpoint}.`,
                     rawErrorCode: error.code,
                     rawErrorMessage: error.message,
-                })
+                });
             });
     }
 }

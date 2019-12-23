@@ -18,7 +18,7 @@ import * as Keychain from 'react-native-keychain';
 // TODO: Handle fetch failure (on login esp) more gracefully
 // TODO: timer to check pending users registration status update
 
-export function requestLogin(userCredentials: Credentials) {
+export function requestLogin(userCredentials: Credentials, useTouch: boolean = false) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({ type: ACTIONS.LOGIN.REQUEST });
         return fetch(BASEURL + '/' + ACTIONS.LOGIN.API, {
@@ -29,7 +29,9 @@ export function requestLogin(userCredentials: Credentials) {
             .then(response => {
                 switch (response.status) {
                     case 200:
-                        Keychain.setGenericPassword(userCredentials.username, userCredentials.password);
+                        if (useTouch) Keychain.setGenericPassword(userCredentials.username, userCredentials.password);
+                        else Keychain.resetGenericPassword();
+
                         const token = response.headers.get('Token');
                         response
                             .json()
@@ -48,12 +50,13 @@ export function requestLogin(userCredentials: Credentials) {
                 }
             })
             .catch(error => {
+                Keychain.resetGenericPassword();
                 Logger.logError({
                     code: 'ACTLGN100',
                     description: `Exception encountered while executing login request.`,
                     rawErrorCode: error.code,
-                    rawErrorMessage: error.error
-                })
+                    rawErrorMessage: error.error,
+                });
             });
     };
 }
@@ -96,7 +99,6 @@ export function refreshToken() {
 
 export function setToken(token: string) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
-
         let exp = JSON.parse(atob(token.split('.')[1])).exp;
         if (exp < Date.now() / 1000) {
             AsyncStorage.removeItem(ASYNC_PREFIX + 'token');
@@ -104,7 +106,7 @@ export function setToken(token: string) {
         }
         dispatch({ type: ACTIONS.SET_TOKEN.REQUEST, payload: { token } });
         dispatch(loadUserContent());
-    }
+    };
 }
 
 export function loadUserContent() {
@@ -115,5 +117,5 @@ export function loadUserContent() {
         dispatch(loadSettings());
         dispatch(loadTips());
         dispatch(loadBlogs());
-    }
+    };
 }

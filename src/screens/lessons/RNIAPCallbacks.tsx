@@ -1,9 +1,17 @@
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+// Components
 import { Platform, Alert } from 'react-native';
 import RNIap, { purchaseErrorListener, purchaseUpdatedListener } from 'react-native-iap';
-import { useDispatch, useSelector } from 'react-redux';
+
+// Redux
 import { purchaseCredits } from '../../redux/actions';
+
+// Types
 import { ApplicationState } from '../../__types__';
+
+// Utilities
 import { Logger } from '../../utilities/logging';
 
 // TODO: confirm this is still working
@@ -22,7 +30,7 @@ export const RNIAPCallbacks = () => {
                 const paidPackage = packages.filter(pack => pack.app_sku === purchase.productId);
                 let shortcode = paidPackage.length > 0 ? paidPackage[0].shortcode : '';
                 Alert.alert('have receipt: ' + shortcode);
-                if(shortcode === '') return;
+                if (shortcode === '') return;
                 dispatch(
                     purchaseCredits(
                         {
@@ -67,7 +75,7 @@ export const RNIAPCallbacks = () => {
                     code: 'IAP999',
                     description: `Invalid purchase detected.`,
                     rawErrorMessage: receipt,
-                })
+                });
             }
         });
         const pel = purchaseErrorListener((error: any) => {
@@ -76,7 +84,7 @@ export const RNIAPCallbacks = () => {
                 description: `In-App purchase error.`,
                 rawErrorCode: error.code,
                 rawErrorMessage: error.message,
-            })
+            });
         });
     }, [dispatch, packages]);
     return null;

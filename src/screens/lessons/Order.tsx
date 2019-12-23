@@ -1,15 +1,29 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+// Components
 import { View, FlatList, StyleSheet, Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { Body, H7, Label, H4 } from '@pxblue/react-native-components';
 import { CollapsibleHeaderLayout, ErrorBox, SEButton } from '../../components';
-import bg from '../../images/bg_5.jpg';
 import * as RNIap from 'react-native-iap';
-import { sharedStyles, spaces, purple, unit } from '../../styles';
-import { useSelector, useDispatch } from 'react-redux';
+
+// Styles
+import bg from '../../images/bg_5.jpg';
+import { sharedStyles } from '../../styles';
+import { spaces, unit } from '../../styles/sizes';
+import { purple } from '../../styles/colors';
+
+// Redux
 import { loadCredits, loadPackages } from '../../redux/actions';
+
+// Constants
 import { ROUTES } from '../../constants/routes';
+
+// Types
 import { ApplicationState } from '../../__types__';
+
+// Utilities
 import { Logger } from '../../utilities/logging';
 
 // TODO: Implement Tutorials
@@ -93,7 +107,7 @@ export const Order = props => {
                     description: `Failed to request in-app purchase.`,
                     rawErrorCode: error.code,
                     rawErrorMessage: error.message,
-                })
+                });
             }
             // Purchase response is handled in RNIAPCallbacks.tsx
         },

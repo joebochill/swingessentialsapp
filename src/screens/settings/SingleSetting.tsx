@@ -1,13 +1,19 @@
 import React, { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+// Components
 import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { Body } from '@pxblue/react-native-components';
 import { SEHeader } from '../../components/index';
-
-import { sharedStyles, spaces, purple } from '../../styles';
+// Styles
+import { sharedStyles } from '../../styles';
+import { purple } from '../../styles/colors';
+import { spaces } from '../../styles/sizes';
+// Types
 import { SettingsState, ApplicationState } from '../../__types__';
-import { useSelector, useDispatch } from 'react-redux';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
+// Redux
 import { putSettings } from '../../redux/actions/SettingsActions';
 
 type SettingType = {
@@ -15,31 +21,31 @@ type SettingType = {
     label: string;
     description: string;
     values: number[] | string[] | boolean[];
-}
+};
 const SETTINGS: SettingType[] = [
     {
         name: 'handedness',
         label: 'Handedness',
         description: 'Your dominant hand for golfing',
-        values: ['Right', 'Left']
+        values: ['Right', 'Left'],
     },
     {
         name: 'duration',
         label: 'Camera Duration',
         description: 'How long to record for each swing',
-        values: [5, 8, 10]
+        values: [5, 8, 10],
     },
     {
         name: 'delay',
         label: 'Camera Delay',
         description: 'How long to wait between pressing record and the start of the recording',
-        values: [0, 5, 10]
+        values: [0, 5, 10],
     },
     {
         name: 'overlay',
         label: 'Camera Overlay',
         description: 'Overlay shows an image of how you should stand while recording your swing',
-        values: [true, false]
+        values: [true, false],
     },
 ];
 const caseSame = (val1: string | number, val2: string | number): boolean => {
@@ -47,7 +53,7 @@ const caseSame = (val1: string | number, val2: string | number): boolean => {
         return val1.toLowerCase() === val2.toLowerCase();
     }
     return val1 === val2;
-}
+};
 
 export const SingleSetting = (props: NavigationStackScreenProps) => {
     const { navigation } = props;
@@ -60,14 +66,16 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
         navigation.pop();
         return null;
     }
-    const currentSetting: SettingType = SETTINGS.filter((setting) => setting.name === currentSettingName)[0];
+    const currentSetting: SettingType = SETTINGS.filter(setting => setting.name === currentSettingName)[0];
 
     const [value, setValue]: [any, Function] = useState(settings[currentSettingName]);
 
     const _updateSetting = useCallback(() => {
-        dispatch(putSettings({
-            [currentSettingName]: value
-        }))
+        dispatch(
+            putSettings({
+                [currentSettingName]: value,
+            }),
+        );
     }, [value, dispatch]);
 
     return (
@@ -87,25 +95,27 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                         bottomDivider
                         topDivider={index === 0}
                         onPress={(): void => setValue(val)}
-                        title={<Body>{`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${typeof val === 'number' ? 's' : ''}`}</Body>}
-                        rightIcon={caseSame(value, val)
-                            ? { name: 'check', color: purple[500] }
-                            : undefined
+                        title={
+                            <Body>{`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
+                                typeof val === 'number' ? 's' : ''
+                            }`}</Body>
                         }
+                        rightIcon={caseSame(value, val) ? { name: 'check', color: purple[500] } : undefined}
                     />
                 ))}
-                <Body style={[sharedStyles.paddingHorizontalMedium, { marginTop: spaces.medium }]}>{currentSetting.description}</Body>
+                <Body style={[sharedStyles.paddingHorizontalMedium, { marginTop: spaces.medium }]}>
+                    {currentSetting.description}
+                </Body>
             </View>
         </View>
-    )
+    );
 };
-
 
 // import React from 'react';
 // import {connect} from 'react-redux';
 
-// import { 
-//   View, 
+// import {
+//   View,
 //   Text,
 //   ScrollView,
 //   StyleSheet,
@@ -150,7 +160,6 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
 //     };
 //   }
 
-
 //   _getNewSettingsObject(){
 //     switch(this.state.setting){
 //       case 'Handedness':
@@ -166,24 +175,23 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
 //     }
 //   }
 
-
 //   render(){
 //     return (
 //       <View style={{backgroundColor: colors.backgroundGrey, flexDirection: 'column', flex: 1}}>
 //         <Header
 //             style={{flex: 0}}
-//             outerContainerStyles={{ 
-//               backgroundColor: colors.lightPurple, 
-//               height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24), 
+//             outerContainerStyles={{
+//               backgroundColor: colors.lightPurple,
+//               height: verticalScale(Platform.OS === 'ios' ? 70 :  70 - 24),
 //               padding: verticalScale(Platform.OS === 'ios' ? 15 : 10)
 //             }}
 //             //innerContainerStyles={{alignItems: Platform.OS === 'ios' ? 'flex-end' : 'center'}}
-//             leftComponent={{ 
+//             leftComponent={{
 //               icon: 'arrow-back',
 //               size: verticalScale(26),
 //               underlayColor:colors.transparent,
-//               containerStyle:styles.headerIcon, 
-//               color: colors.white, 
+//               containerStyle:styles.headerIcon,
+//               color: colors.white,
 //               onPress: () => {
 //                 this.props.updateSettings(this._getNewSettingsObject(),this.props.token);
 //                 this.props.navigation.pop();
@@ -192,36 +200,36 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
 //             centerComponent={{ text: this.state.setting, style: { color: colors.white, fontSize: verticalScale(18) } }}
 //         />
 //         <ScrollView contentContainerStyle={{alignItems: 'stretch'}}>
-//           {this.state.setting === 'Overlay' && 
+//           {this.state.setting === 'Overlay' &&
 //             <View style={{paddingTop: spacing.normal}}>
-//               <CardRow 
+//               <CardRow
 //                 customStyle={{borderTopWidth: 1}}
-//                 primary={this.state.setting} 
+//                 primary={this.state.setting}
 //                 secondaryInput={
-//                   <Switch 
-//                     value={this.state.value} 
+//                   <Switch
+//                     value={this.state.value}
 //                     onValueChange={(val) => this.setState({value: val})}
 //                     trackColor={colors.lightPurple}
 //                     onTintColor={colors.lightPurple}
 //                   />
-//                 } 
+//                 }
 //               />
 //               <Text style={StyleSheet.flatten([styles.paragraph, {
 //                   marginTop: spacing.small,
-//                   paddingLeft: spacing.normal, 
+//                   paddingLeft: spacing.normal,
 //                   paddingRight: spacing.normal
 //                 }])}>
 //                 {this.descriptions[this.state.setting]}
 //               </Text>
 //             </View>
 //           }
-//           {this.state.setting === 'Duration' && 
+//           {this.state.setting === 'Duration' &&
 //             <View style={{paddingTop: spacing.normal}}>
-//               {this.durations.map((item,index) => 
+//               {this.durations.map((item,index) =>
 //                 <CardRow key={'row_'+index}
 //                   customStyle={
 //                     index === 0 ? {borderTopWidth: 1} : {}}
-//                   primary={item+'s'} 
+//                   primary={item+'s'}
 //                   menuItem
 //                   selected={this.state.value === item}
 //                   action={()=>this.setState({value: item})}
@@ -229,20 +237,20 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
 //               )}
 //               <Text style={StyleSheet.flatten([styles.paragraph, {
 //                   marginTop: spacing.small,
-//                   paddingLeft: spacing.normal, 
+//                   paddingLeft: spacing.normal,
 //                   paddingRight: spacing.normal
 //                 }])}>
 //                 {this.descriptions[this.state.setting]}
 //               </Text>
 //             </View>
 //           }
-//           {this.state.setting === 'Delay' && 
+//           {this.state.setting === 'Delay' &&
 //             <View style={{paddingTop: spacing.normal}}>
-//               {this.delays.map((item,index) => 
+//               {this.delays.map((item,index) =>
 //                 <CardRow key={'row_'+index}
 //                   customStyle={
 //                     index === 0 ? {borderTopWidth: 1} : {}}
-//                   primary={item+'s'} 
+//                   primary={item+'s'}
 //                   menuItem
 //                   selected={this.state.value === item}
 //                   action={()=>this.setState({value: item})}
@@ -250,20 +258,20 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
 //               )}
 //               <Text style={StyleSheet.flatten([styles.paragraph, {
 //                   marginTop: spacing.small,
-//                   paddingLeft: spacing.normal, 
+//                   paddingLeft: spacing.normal,
 //                   paddingRight: spacing.normal
 //                 }])}>
 //                 {this.descriptions[this.state.setting]}
 //               </Text>
 //             </View>
 //           }
-//           {this.state.setting === 'Handedness' && 
+//           {this.state.setting === 'Handedness' &&
 //             <View style={{paddingTop: spacing.normal}}>
-//               {this.hands.map((item,index) => 
+//               {this.hands.map((item,index) =>
 //                 <CardRow key={'row_'+index}
 //                   customStyle={
 //                     index === 0 ? {borderTopWidth: 1} : {}}
-//                   primary={item} 
+//                   primary={item}
 //                   menuItem
 //                   selected={this.state.value === item}
 //                   action={()=>this.setState({value: item})}
@@ -271,7 +279,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
 //               )}
 //               <Text style={StyleSheet.flatten([styles.paragraph, {
 //                   marginTop: spacing.small,
-//                   paddingLeft: spacing.normal, 
+//                   paddingLeft: spacing.normal,
 //                   paddingRight: spacing.normal
 //                 }])}>
 //                 {this.descriptions[this.state.setting]}

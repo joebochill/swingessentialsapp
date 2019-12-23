@@ -1,13 +1,24 @@
 import * as React from 'react';
-import { View, StyleSheet, Platform, SafeAreaView } from 'react-native';
-import { SEHeader, CollapsibleHeaderLayout } from '../../components';
-import { ScrollView } from 'react-native-gesture-handler';
-import { spaces, sharedStyles } from '../../styles';
-import { YouTube } from '../../components';
-import { width, splitParagraphs } from '../../utilities';
-import { Body, H6, H7 } from '@pxblue/react-native-components';
 import { useSelector, useDispatch } from 'react-redux';
+
+// Components
+import { View, StyleSheet, Platform } from 'react-native';
+import { CollapsibleHeaderLayout } from '../../components';
+import { YouTube } from '../../components';
+import { Body, H6, H7 } from '@pxblue/react-native-components';
+
+// Styles
+import { sharedStyles } from '../../styles';
+import { spaces } from '../../styles/sizes';
+import { width } from '../../utilities/dimensions';
+
+// Utilities
+import { splitParagraphs } from '../../utilities';
+
+// Types
 import { ApplicationState } from '../../__types__';
+
+// Redux
 import { loadFAQ } from '../../redux/actions';
 
 export const FAQ = () => {
@@ -21,9 +32,7 @@ export const FAQ = () => {
             refreshing={faqState.loading}
             onRefresh={() => {
                 dispatch(loadFAQ());
-            }}
-        >
-
+            }}>
             <View style={[sharedStyles.pageContainer, sharedStyles.paddingHorizontalMedium]}>
                 <H6>Frequently Asked Questions</H6>
                 {faqState.questions.map((faq, ind) => (
@@ -36,27 +45,27 @@ export const FAQ = () => {
                                 </Body>
                             ))
                         ) : (
-                                <>
-                                    {Platform.OS === 'ios' &&
-                                        splitParagraphs(faq.answer_ios).map((p: string, pInd: number) => (
-                                            <Body key={`faq-${ind}-${pInd}`} style={sharedStyles.paragraph}>
-                                                {p}
-                                            </Body>
-                                        ))}
-                                    {Platform.OS === 'android' &&
-                                        splitParagraphs(faq.answer_android).map((p: string, pInd: number) => (
-                                            <Body key={`faq-${ind}-${pInd}`} style={sharedStyles.paragraph}>
-                                                {p}
-                                            </Body>
-                                        ))}
-                                </>
-                            )}
+                            <>
+                                {Platform.OS === 'ios' &&
+                                    splitParagraphs(faq.answer_ios).map((p: string, pInd: number) => (
+                                        <Body key={`faq-${ind}-${pInd}`} style={sharedStyles.paragraph}>
+                                            {p}
+                                        </Body>
+                                    ))}
+                                {Platform.OS === 'android' &&
+                                    splitParagraphs(faq.answer_android).map((p: string, pInd: number) => (
+                                        <Body key={`faq-${ind}-${pInd}`} style={sharedStyles.paragraph}>
+                                            {p}
+                                        </Body>
+                                    ))}
+                            </>
+                        )}
                         {faq.video === '' ? null : <YouTube videoId={faq.video} style={styles.video} />}
                     </React.Fragment>
                 ))}
             </View>
         </CollapsibleHeaderLayout>
-    )
+    );
 };
 const styles = StyleSheet.create({
     video: {

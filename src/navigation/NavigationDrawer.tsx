@@ -1,37 +1,51 @@
 import React from 'react';
 import { connect } from 'react-redux';
+// Components
 import {
-    AppState,
-    AppStateStatus,
-    Linking,
     Alert,
     Animated,
-    SafeAreaView,
-    StatusBar,
-    View,
-    Platform,
+    AppState,
+    AppStateStatus,
     FlatList,
-    StyleSheet,
+    Linking,
+    Platform,
+    SafeAreaView,
     ScrollView,
+    StatusBar,
+    StyleSheet,
+    View,
 } from 'react-native';
-import { 
-    APP_VERSION, 
-    HEADER_COLLAPSED_HEIGHT_NO_STATUS, 
-    HEADER_EXPANDED_HEIGHT_NO_STATUS, 
-    DRAWER_WIDTH 
-} from '../constants/index';
 import { NavigationItems } from './NavigationContent';
-
-import topology from '../images/topology.png';
 import { Body, H7 } from '@pxblue/react-native-components';
 import { ListItem, Icon } from 'react-native-elements';
-import { sharedStyles, purple, white, blackOpacity, unit } from '../styles';
-import { DrawerContentComponentProps } from 'react-navigation-drawer';
-import { ROUTES } from '../constants/routes';
-import { getLongDate, height } from '../utilities';
-import { requestLogout } from '../redux/actions';
 import { TokenModal, AnimatedSafeAreaView } from '../components';
+
+// Constants
+import {
+    APP_VERSION,
+    HEADER_COLLAPSED_HEIGHT_NO_STATUS,
+    HEADER_EXPANDED_HEIGHT_NO_STATUS,
+    DRAWER_WIDTH,
+} from '../constants';
+import { ROUTES } from '../constants/routes';
+
+
+// Styles
+import { sharedStyles } from '../styles';
+import { purple, white, blackOpacity } from '../styles/colors';
+import { unit } from '../styles/sizes';
+import topology from '../images/topology.png';
+
+// Types
+import { DrawerContentComponentProps } from 'react-navigation-drawer';
+
+// Utilities
+import { getLongDate } from '../utilities';
+import { height } from '../utilities/dimensions';
 import { Logger } from '../utilities/logging';
+
+// Redux
+import { requestLogout } from '../redux/actions';
 
 type NavigatorProps = DrawerContentComponentProps & {
     username: string;
@@ -97,8 +111,8 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                     // TODO: Do something more here
                     Logger.logError({
                         code: 'DRW100',
-                        description: 'Deep link failed to load'
-                    })
+                        description: 'Deep link failed to load',
+                    });
                 });
         }
     }
@@ -163,14 +177,16 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
         // TODO: Reset Password (needs to be added to app site association first)
     }
     render() {
-        const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT_NO_STATUS, HEADER_COLLAPSED_HEIGHT_NO_STATUS);
+        const headerHeight = this.scaleByHeaderHeight(
+            HEADER_EXPANDED_HEIGHT_NO_STATUS,
+            HEADER_COLLAPSED_HEIGHT_NO_STATUS,
+        );
         const { mainLeft, accountLeft, helpLeft } = this.state;
         const { username, first, last, joined, token } = this.props;
 
         const userString = username || 'Welcome!';
         const nameString = first && last ? `${first} ${last}` : 'New User';
         const initials = first && last ? `${first.charAt(0)}${last.charAt(0)}` : 'SE';
-        const memberData = this.props.joinDate || getLongDate(Date.now());
 
         return (
             <View style={styles.container}>
@@ -203,7 +219,8 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                 </Animated.Text>
                             </Animated.View>
                         </View>
-                        <Animated.View style={[styles.headerText, { marginLeft: this.scaleByHeaderHeight(unit(16), 0) }]}>
+                        <Animated.View
+                            style={[styles.headerText, { marginLeft: this.scaleByHeaderHeight(unit(16), 0) }]}>
                             <Animated.Text style={this.titleStyle()} numberOfLines={1} ellipsizeMode={'tail'}>
                                 {userString}
                             </Animated.Text>
@@ -211,7 +228,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                 {nameString}
                             </Animated.Text>
                             <Animated.Text style={this.infoStyle()} numberOfLines={1} ellipsizeMode={'tail'}>
-                                {`Member Since ${joined ? getLongDate(joined*1000) : getLongDate(Date.now())}`}
+                                {`Member Since ${joined ? getLongDate(joined * 1000) : getLongDate(Date.now())}`}
                             </Animated.Text>
                         </Animated.View>
                         <View style={styles.headerAction}>
@@ -255,7 +272,7 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                         {NavigationItems.map((panel, ind) => {
                             const leftPosition = ind === 2 ? helpLeft : ind === 1 ? accountLeft : mainLeft;
                             let panelData = [...panel.data];
-                            panelData = token ? panelData : panelData.filter((item) => !item.private);
+                            panelData = token ? panelData : panelData.filter(item => !item.private);
                             if (ind === 0) {
                                 panelData.push({
                                     title: token ? 'Log Out' : 'Log In',
@@ -282,15 +299,15 @@ export class NavigationDrawerClass extends React.Component<NavigatorProps, Navig
                                                 onPress={
                                                     item.route
                                                         ? () => {
-                                                            this.props.navigation.navigate(item.route);
-                                                        }
+                                                              this.props.navigation.navigate(item.route);
+                                                          }
                                                         : item.activatePanel !== undefined
-                                                            ? () => {
-                                                                this.setState({ activePanel: item.activatePanel });
-                                                            }
-                                                            : item.onPress
-                                                                ? () => item.onPress()
-                                                                : undefined
+                                                        ? () => {
+                                                              this.setState({ activePanel: item.activatePanel });
+                                                          }
+                                                        : item.onPress
+                                                        ? () => item.onPress()
+                                                        : undefined
                                                 }
                                                 title={<Body style={styles.navLabel}>{item.title}</Body>}
                                                 leftIcon={{

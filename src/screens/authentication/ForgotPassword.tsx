@@ -1,14 +1,23 @@
 import React, { useState, useCallback } from 'react';
+
+// Components
 import { View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
 import { Body, H7 } from '@pxblue/react-native-components';
-import { spaces, sizes, sharedStyles, transparent, purple } from '../../styles';
 import { SEHeader, SEButton } from '../../components';
-import { height } from '../../utilities';
+
+// Styles
+import { spaces, sizes } from '../../styles/sizes';
+import { transparent, purple } from '../../styles/colors';
+import { sharedStyles } from '../../styles';
+import { height } from '../../utilities/dimensions';
+
+// Redux
 import { requestPasswordReset } from '../../redux/actions';
-import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { useDispatch } from 'react-redux';
 
+// Constants
+import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
 export const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -31,19 +40,26 @@ export const ForgotPassword = () => {
                 showAuth={false} 
             />
             <KeyboardAvoidingView
-                style={[sharedStyles.pageContainer, {
-                    paddingTop: HEADER_COLLAPSED_HEIGHT
-                }]}
+                style={[
+                    sharedStyles.pageContainer,
+                    {
+                        paddingTop: HEADER_COLLAPSED_HEIGHT,
+                    },
+                ]}
                 behavior={'padding'}>
-                {!complete &&
+                {!complete && (
                     <ScrollView
-                        contentContainerStyle={[sharedStyles.paddingMedium, {
-                            paddingBottom: height * 0.5,
-                        }]}
-                        keyboardShouldPersistTaps={'always'}
-                    >
+                        contentContainerStyle={[
+                            sharedStyles.paddingMedium,
+                            {
+                                paddingBottom: height * 0.5,
+                            },
+                        ]}
+                        keyboardShouldPersistTaps={'always'}>
                         <Body>
-                            {'Enter your email address below and we will send you instructions for resetting your password.'}
+                            {
+                                'Enter your email address below and we will send you instructions for resetting your password.'
+                            }
                         </Body>
                         <Input
                             autoCorrect={false}
@@ -60,29 +76,25 @@ export const ForgotPassword = () => {
                             underlineColorAndroid={transparent}
                             value={email}
                         />
-                        {email.match(EMAIL_REGEX) &&
+                        {email.match(EMAIL_REGEX) && (
                             <SEButton
                                 containerStyle={{ marginTop: spaces.medium }}
                                 buttonStyle={{ backgroundColor: purple[400] }}
                                 title={<H7 color={'onPrimary'}>REQUEST RESET</H7>}
                                 onPress={(): void => _sendPasswordReset()}
                             />
-                        }
+                        )}
                     </ScrollView>
-                }
-                {complete &&
-                    <View style={[sharedStyles.paddingMedium, sharedStyles.centered, {flex: 1}]}>
-                        <Icon
-                            name={'check-circle'}
-                            size={sizes.jumbo}
-                            color={purple[400]}
-                        />
+                )}
+                {complete && (
+                    <View style={[sharedStyles.paddingMedium, sharedStyles.centered, { flex: 1 }]}>
+                        <Icon name={'check-circle'} size={sizes.jumbo} color={purple[400]} />
                         <H7 font={'regular'} style={{ textAlign: 'center' }}>
                             {'Your password reset request was received. Check your email for further instructions.'}
                         </H7>
                     </View>
-                }
+                )}
             </KeyboardAvoidingView>
         </View>
-    )
+    );
 };

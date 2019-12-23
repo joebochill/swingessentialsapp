@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
+import { withTheme, WithTheme, Theme } from '@pxblue/react-native-components';
+
+// Components
 import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import * as Typography from '@pxblue/react-native-components/core/typography';
-import { black } from '@pxblue/colors';
 import { YouTube } from './Youtube';
-import { withTheme, WithTheme, Theme } from '@pxblue/react-native-components';
-import { $DeepPartial } from '@callstack/react-theme-provider';
 import { Icon } from 'react-native-elements';
-import { width, aspectHeight } from '../../utilities';
-import { spaces, unit } from '../../styles';
+
+// Styles
+import { width, aspectHeight } from '../../utilities/dimensions';
+import { spaces, unit } from '../../styles/sizes';
+import { black } from '../../styles/colors';
+
+// Types
+import { $DeepPartial } from '@callstack/react-theme-provider';
 
 export interface VideoCardProps {
     headerColor?: string;

@@ -1,7 +1,3 @@
-// import React from 'react';
-// import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
-// import { Transition } from 'react-native-reanimated';
-
 // React-Navigation Components
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -13,30 +9,29 @@ import { ROUTES } from '../constants/routes';
 // Route Components
 import { NavigationDrawer } from './NavigationDrawer';
 import {
-    // AuthLoading,
-    Login,
-    Register,
-    ForgotPassword,
     About,
-    FAQ,
-    Contact,
-    Settings,
-    SingleSetting,
     AccountDetails,
-    OrderHistory,
+    Blogs,
+    Contact,
     ErrorLogs,
+    FAQ,
+    ForgotPassword,
     Home,
     Lessons,
-    SingleLesson,
+    Login,
     Order,
-    Submit,
+    OrderHistory,
     Record,
-    Blogs,
+    Register,
+    Settings,
     SingleBlog,
-    Tips,
+    SingleLesson,
+    SingleSetting,
     SingleTip,
+    Submit,
+    Tips,
 } from '../screens';
-import { width } from '../utilities';
+import { width } from '../utilities/dimensions';
 
 const AuthStack = createStackNavigator(
     {

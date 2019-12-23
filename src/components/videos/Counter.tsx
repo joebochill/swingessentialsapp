@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { white, fonts, unit, sharedStyles, blackOpacity } from '../../styles';
+// Components
 import { View, ViewProps } from 'react-native';
 import { Body } from '@pxblue/react-native-components';
+// Styles
+import { sharedStyles } from '../../styles';
+import { white, blackOpacity } from '../../styles/colors';
+import { fonts, unit } from '../../styles/sizes';
 
 export type CountDownProps = ViewProps & {
     startValue: number;

@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { View, SafeAreaView } from 'react-native';
+
+// Components
+import { View, SafeAreaView, ScrollView } from 'react-native';
 import { SEHeader } from '../../components';
-import { ScrollView } from 'react-native-gesture-handler';
-import { sharedStyles } from '../../styles';
 import { Body, H6, H7 } from '@pxblue/react-native-components';
+
+// Styles
+import { sharedStyles } from '../../styles';
 
 export const About = () => (
     <View style={sharedStyles.pageContainer}>

@@ -1,4 +1,4 @@
-import { scale, verticalScale } from '../utilities';
+import { scale, verticalScale } from '../utilities/dimensions';
 export const unit = (value: number) => value * scale(1);
 export const spaceUnit = (value: number) => value * scale(4);
 

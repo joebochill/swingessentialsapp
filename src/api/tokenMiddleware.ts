@@ -8,8 +8,7 @@ function _setToken(newToken) {
 export const saveAuthToken = store => next => action => {
     if (action.type === LOGIN.SUCCESS || action.type === SET_TOKEN.REQUEST) {
         _setToken(action.payload.token);
-    }
-    else if (
+    } else if (
         action.type === LOGOUT.SUCCESS ||
         action.type === LOGOUT.FAILURE ||
         action.type === LOGIN.FAILURE ||

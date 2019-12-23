@@ -1,5 +1,5 @@
-import { Logger } from "../utilities/logging";
-import { TOKEN_TIMEOUT } from "../redux/actions/types";
+import { Logger } from '../utilities/logging';
+import { TOKEN_TIMEOUT } from '../redux/actions/types';
 import { store } from '../../App';
 
 /* Dispatch a failure action for the supplied action type */
@@ -10,7 +10,7 @@ export function failure(type, response, api = '--') {
             description: `API Failure response (${api}).`,
             rawErrorCode: response.headers.get('Error'),
             rawErrorMessage: response.headers.get('Message'),
-        })
+        });
     }
 
     return {
@@ -28,7 +28,7 @@ export function xhrfailure(type, response) {
             description: `XHR Failure response`,
             rawErrorCode: response.getResponseHeader('Error'),
             rawErrorMessage: response.getResponseHeader('Message'),
-        })
+        });
     }
 
     return {
@@ -48,8 +48,9 @@ export function success(type, data: any = null) {
 
 export function checkTimeout(response, dispatch) {
     // If we get a failed API call, check if our authentication needs to be re-upped
-    const error = (response && response.headers && response.headers.get) ? parseInt(response.headers.get('Error'), 10) : 999;
-    if (error && (error === 400100) && dispatch) {
+    const error =
+        response && response.headers && response.headers.get ? parseInt(response.headers.get('Error'), 10) : 999;
+    if (error && error === 400100 && dispatch) {
         store.dispatch({ type: TOKEN_TIMEOUT });
     }
 }

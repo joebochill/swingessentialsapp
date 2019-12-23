@@ -78,7 +78,7 @@ export function verifyEmail(code: string) {
     };
 }
 
-export function requestPasswordReset(data: {email: string}) {
+export function requestPasswordReset(data: { email: string }) {
     return (dispatch: Dispatch) => {
         dispatch({ type: ACTIONS.RESET_PASSWORD_EMAIL.REQUEST });
         HttpRequest.put(ACTIONS.RESET_PASSWORD_EMAIL.API)

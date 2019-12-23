@@ -1,20 +1,32 @@
 import React, { Component, ComponentType } from 'react';
-import {
-    Animated,
-    ImageSourcePropType,
-    StyleSheet,
-    StatusBar,
-    TouchableOpacity,
-    View,
+
+// Components
+import { 
+    Animated, 
+    ImageSourcePropType, 
+    StatusBar, 
+    StyleSheet, 
+    TouchableOpacity, 
+    View 
 } from 'react-native';
-import color from 'color';
-import { HeaderIcon } from '../types';
 import { withTheme, Theme, WithTheme } from '@pxblue/react-native-components';
-import { $DeepPartial } from '@callstack/react-theme-provider';
-import { purple, blackOpacity, unit } from '../../styles';
 import { AnimatedSafeAreaView } from '../../components';
-import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT_NO_STATUS } from '../../constants';
+
+// Styles
+import { purple, blackOpacity } from '../../styles/colors';
+import { unit } from '../../styles/sizes';
+
+// Utilities
+import color from 'color';
 import { interpolate } from '../../utilities';
+
+// Types
+import { HeaderIcon } from '../types';
+import { $DeepPartial } from '@callstack/react-theme-provider';
+
+// Constants
+import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT_NO_STATUS } from '../../constants';
+
 
 export interface ResizableHeaderProps {
     /** Header title */
@@ -51,7 +63,7 @@ export interface ResizableHeaderProps {
     theme?: $DeepPartial<Theme>;
 }
 
-interface HeaderState { }
+interface HeaderState {}
 
 class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState> {
     static readonly ICON_SIZE = unit(24);
@@ -100,9 +112,7 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         if (navigation) {
             return (
                 <View>
-                    <TouchableOpacity
-                        onPress={navigation.onPress}
-                        style={[styles.navigation]}>
+                    <TouchableOpacity onPress={navigation.onPress} style={[styles.navigation]}>
                         {this.icon(navigation.icon)}
                     </TouchableOpacity>
                 </View>
@@ -134,11 +144,7 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
     private title() {
         const { title } = this.props;
         return (
-            <Animated.Text
-                key={'header-title'}
-                style={this.titleStyle()}
-                numberOfLines={1}
-                ellipsizeMode={'tail'}>
+            <Animated.Text key={'header-title'} style={this.titleStyle()} numberOfLines={1} ellipsizeMode={'tail'}>
                 {title}
             </Animated.Text>
         );
@@ -163,11 +169,7 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         const { info } = this.props;
         if (info) {
             return (
-                <Animated.Text
-                    key={'header-info'}
-                    style={this.infoStyle()}
-                    numberOfLines={1}
-                    ellipsizeMode={'tail'}>
+                <Animated.Text key={'header-info'} style={this.infoStyle()} numberOfLines={1} ellipsizeMode={'tail'}>
                     {info}
                 </Animated.Text>
             );
@@ -183,9 +185,7 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
                 <View style={styles.actionPanel}>
                     {items.slice(0, 3).map((actionItem, index) => (
                         <View key={`action_${index}`}>
-                            <TouchableOpacity
-                                onPress={actionItem.onPress}
-                                style={index !== 0 ? styles.actionItem : {}}>
+                            <TouchableOpacity onPress={actionItem.onPress} style={index !== 0 ? styles.actionItem : {}}>
                                 {this.icon(actionItem.icon)}
                             </TouchableOpacity>
                         </View>
@@ -208,13 +208,10 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
 
     private contentStyle() {
         const { theme } = this.props;
-        const contractedPadding = this.props.subtitle ?
-            (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.sizes.large + 18)) / 2 :
-            (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.sizes.large)) / 2;
-        return [
-            styles.content,
-            { paddingBottom: this.scaleByHeaderHeight(unit(28), contractedPadding) }
-        ];
+        const contractedPadding = this.props.subtitle
+            ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.sizes.large + 18)) / 2
+            : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - theme.sizes.large) / 2;
+        return [styles.content, { paddingBottom: this.scaleByHeaderHeight(unit(28), contractedPadding) }];
     }
 
     private titleStyle() {
@@ -279,19 +276,18 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
                 headerHeight,
                 {
                     min: HEADER_COLLAPSED_HEIGHT,
-                    max: HEADER_EXPANDED_HEIGHT
+                    max: HEADER_EXPANDED_HEIGHT,
                 },
                 {
                     min: atSmall,
-                    max: atLarge
-                }
+                    max: atLarge,
+                },
             );
         }
         return headerHeight.interpolate({
             inputRange: [HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT],
-            outputRange: [atSmall, atLarge]
-        })
-
+            outputRange: [atSmall, atLarge],
+        });
     }
 }
 

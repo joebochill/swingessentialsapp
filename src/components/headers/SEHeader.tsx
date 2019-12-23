@@ -1,27 +1,37 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { withNavigation, NavigationInjectedProps } from 'react-navigation';
+
+// Components
 import { Alert, Animated } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { withNavigation, NavigationInjectedProps } from 'react-navigation';
-import { wrapIcon } from '@pxblue/react-native-components';
-import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ResizableHeader } from './ResizableHeader';
-import { ApplicationState, NavType } from '../../__types__';
 
-import { ROUTES } from '../../constants/routes';
-import { useSelector, useDispatch } from 'react-redux';
-import { requestLogout } from '../../redux/actions';
+// Utilities
+import { wrapIcon } from '@pxblue/react-native-components';
+
+// Icons
+import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import { HeaderIcon } from '@pxblue/react-native-components/core/header/header';
-
 import topology from '../../images/topology_20.png';
-import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
+
+// Types
+import { ApplicationState, NavType } from '../../__types__';
 import { ResizableHeaderProps } from './ResizableHeader';
+
+// Constants
+import { ROUTES } from '../../constants/routes';
+import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
+
+// Redux
+import { requestLogout } from '../../redux/actions';
 
 const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
 const BackIcon = wrapIcon({ IconClass: Icon, name: 'arrow-back' });
 const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-variant' });
 const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
 
-export type SEHeaderProps = ResizableHeaderProps &
+export type SEHeaderProps = Omit<ResizableHeaderProps, 'headerHeight'> &
     NavigationInjectedProps & {
         mainAction?: NavType;
         showAuth?: boolean;
@@ -45,38 +55,44 @@ export const SEHeader = withNavigation((props: SEHeaderProps) => {
 
     const defaultActions: Array<HeaderIcon> = showAuth
         ? [
-              token
-                  ? {
-                        icon: LogoutIcon,
-                        onPress: () => {
-                            Alert.alert('Log Out', 'Are you sure you want to log out?', [
-                                { text: 'Log Out', onPress: () => dispatch(requestLogout(token)) },
-                                { text: 'Cancel' },
-                            ]);
-                        },
-                    }
-                  : {
-                        icon: AccountIcon,
-                        onPress: () =>
-                            props.navigation.navigate({ routeName: ROUTES.AUTH_GROUP, key: ROUTES.AUTH_GROUP }),
+            token
+                ? {
+                    icon: LogoutIcon,
+                    onPress: () => {
+                        Alert.alert('Log Out', 'Are you sure you want to log out?', [
+                            { text: 'Log Out', onPress: () => dispatch(requestLogout(token)) },
+                            { text: 'Cancel' },
+                        ]);
                     },
-          ]
+                }
+                : {
+                    icon: AccountIcon,
+                    onPress: () =>
+                        props.navigation.navigate({ routeName: ROUTES.AUTH_GROUP, key: ROUTES.AUTH_GROUP }),
+                },
+        ]
         : [];
 
     return (
         <ResizableHeader
             navigation={
                 mainAction === 'menu'
-                    ? { icon: MenuIcon, onPress: () => {
-                        navigation.openDrawer();
-                        if(onNavigate) onNavigate();
-                    }}
+                    ? {
+                        icon: MenuIcon,
+                        onPress: () => {
+                            navigation.openDrawer();
+                            if (onNavigate) onNavigate();
+                        },
+                    }
                     : mainAction === 'back'
-                    ? { icon: BackIcon, onPress: () => {
-                        navigation.pop();
-                        if(onNavigate) onNavigate();
-                    }}
-                    : undefined
+                        ? {
+                            icon: BackIcon,
+                            onPress: () => {
+                                navigation.pop();
+                                if (onNavigate) onNavigate();
+                            },
+                        }
+                        : undefined
             }
             headerHeight={props.headerHeight || HEADER_COLLAPSED_HEIGHT}
             backgroundImage={backgroundImage}

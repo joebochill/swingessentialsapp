@@ -15,7 +15,7 @@ export const settingsReducer = (state = initialState, action): SettingsState => 
             return {
                 ...state,
                 loading: true,
-            }
+            };
         case GET_SETTINGS.SUCCESS:
             return {
                 ...state,
@@ -29,7 +29,7 @@ export const settingsReducer = (state = initialState, action): SettingsState => 
             return {
                 ...state,
                 loading: false,
-            }
+            };
         case LOGOUT.SUCCESS:
         case LOGOUT.FAILURE:
         case TOKEN_TIMEOUT:

@@ -1,12 +1,15 @@
 import * as React from 'react';
+// Components
 import { View } from 'react-native';
 import { Body } from '@pxblue/react-native-components';
 import { CollapsibleHeaderLayout, YouTube } from '../../components/index';
-
+// Styles
 import { sharedStyles } from '../../styles';
+import { spaces } from '../../styles/sizes';
+import { width, aspectHeight } from '../../utilities/dimensions';
 
-import { spaces } from '../../styles';
-import { splitParagraphs, width, aspectHeight } from '../../utilities';
+// Utilities
+import { splitParagraphs} from '../../utilities';
 
 export const SingleTip = props => {
     const tip = props.navigation.getParam('tip', null);

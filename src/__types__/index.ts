@@ -36,7 +36,8 @@ export type Lesson = {
     username?: string;
     viewed: number | boolean;
 };
-export type Package = { // TODO: update API to return proper types for numbers
+export type Package = {
+    // TODO: update API to return proper types for numbers
     id: string | number;
     name: string;
     description: string;
@@ -45,7 +46,7 @@ export type Package = { // TODO: update API to return proper types for numbers
     duration: string | number;
     price: string | number;
     app_sku: string;
-}; 
+};
 export type Tip = {
     id: string | number;
     date: string;
@@ -123,15 +124,15 @@ export type FAQ = {
     answer_android: string;
     answer_ios: string;
     video: string;
-}
+};
 export type FAQState = {
     loading: boolean;
     questions: FAQ[];
-}
+};
 
 export type LogsState = {
     loading: boolean;
-}
+};
 
 export type ApplicationState = {
     login: LoginState;

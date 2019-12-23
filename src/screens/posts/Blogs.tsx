@@ -1,17 +1,21 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+// Components
 import { View, SectionList } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { H7, Body } from '@pxblue/react-native-components';
 import { CollapsibleHeaderLayout } from '../../components';
-
+// Constants
 import { ROUTES } from '../../constants/routes';
-
+// Styles
 import bg from '../../images/bg_4.jpg';
-import { spaces, sharedStyles } from '../../styles';
+import { sharedStyles } from '../../styles';
+import { spaces } from '../../styles/sizes';
+// Utilities
 import { makeGroups } from '../../utilities';
+// Redux
 import { loadBlogs } from '../../redux/actions';
+// Types
 import { ApplicationState } from '../../__types__';
 
 type Blog = {

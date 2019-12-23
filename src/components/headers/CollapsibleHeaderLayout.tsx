@@ -1,16 +1,22 @@
 import React from 'react';
+// Components
 import {
+    ActivityIndicator,
     Animated,
+    RefreshControl,
     SafeAreaView,
     ScrollView,
     StatusBar,
     StyleSheet,
     View,
-    RefreshControl,
-    ActivityIndicator,
 } from 'react-native';
 import { SEHeader, SEHeaderProps } from './SEHeader';
-import { sharedStyles, spaces } from '../../styles';
+
+// Styles
+import { sharedStyles } from '../../styles';
+import { spaces } from '../../styles/sizes';
+
+// Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT } from '../../constants';
 
 type HeaderLayoutState = {
@@ -32,7 +38,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
         };
     }
     render() {
-        const { renderScroll = true, children, refreshing = false, onRefresh = () => { } } = this.props;
+        const { renderScroll = true, children, refreshing = false, onRefresh = () => {} } = this.props;
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
         return (
             <View style={sharedStyles.pageContainer}>
@@ -45,8 +51,8 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                             onRefresh ? (
                                 <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()} />
                             ) : (
-                                    undefined
-                                )
+                                undefined
+                            )
                         }
                         onScroll={Animated.event([
                             {

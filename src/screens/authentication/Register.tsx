@@ -1,38 +1,42 @@
 import React, { useState, useRef, RefObject, useCallback, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { usePrevious } from '../../utilities';
+
+// Components
 import {
+    ActivityIndicator,
     Alert,
-    View,
+    Keyboard,
     KeyboardAvoidingView,
-    ScrollView,
+    KeyboardType,
     NativeSyntheticEvent,
+    Platform,
+    ScrollView,
     TextInputFocusEventData,
     TextInputSubmitEditingEventData,
-    Keyboard,
-    KeyboardType,
-    Platform,
-    ActivityIndicator,
+    View,
 } from 'react-native';
-import { Input, Icon } from 'react-native-elements';
+import { Icon, Input } from 'react-native-elements';
 import { H7 } from '@pxblue/react-native-components';
-import { NavigationStackScreenProps } from 'react-navigation-stack';
-import { SEHeader, ErrorBox, SEButton } from '../../components';
-import {
-    sharedStyles,
-    transparent,
-    unit,
-    red,
-    sizes,
-    spaces,
-    fonts,
-    white,
-    purple,
-    blackOpacity,
-} from '../../styles';
+import { ErrorBox, SEButton, SEHeader } from '../../components';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
-import { useSelector, useDispatch } from 'react-redux';
+
+// Types
+import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { ApplicationState } from '../../__types__';
+
+// Styles
+import { sharedStyles } from '../../styles';
+import { transparent, red, purple, blackOpacity } from '../../styles/colors';
+import { sizes, spaces } from '../../styles/sizes';
+
+// Utilities
+import { height } from '../../utilities/dimensions';
+
+// Redux
 import { checkUsernameAvailability, checkEmailAvailability, createAccount, verifyEmail } from '../../redux/actions';
-import { usePrevious, height } from '../../utilities';
+
+// Constants
 import { EMAIL_REGEX } from '../../constants';
 import { ROUTES } from '../../constants/routes';
 
@@ -71,14 +75,14 @@ type RegistrationProperty = {
     items?: Item[];
 };
 
-export const Register = (props:NavigationStackScreenProps) => {
+export const Register = (props: NavigationStackScreenProps) => {
     const code = props.navigation.getParam('code', null);
     return code ? <VerifyForm {...props} code={code} /> : <RegisterForm {...props} />;
 };
 
-type VerifyProps =  NavigationStackScreenProps & {
+type VerifyProps = NavigationStackScreenProps & {
     code: string;
-}
+};
 const VerifyForm = (props: VerifyProps) => {
     const { code, navigation } = props;
     const verification = useSelector((state: ApplicationState) => state.registration);

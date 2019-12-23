@@ -1,6 +1,10 @@
 import React from 'react';
-import { white, red, spaces, fonts } from '../../styles';
+// Components
 import { StyleSheet, Text, ViewProps } from 'react-native';
+
+// Styles
+import { spaces, fonts } from '../../styles/sizes';
+import { white, red } from '../../styles/colors';
 
 const styles = StyleSheet.create({
     error: {

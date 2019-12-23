@@ -1,10 +1,15 @@
 import React, { useRef, useState } from 'react';
+// Components
+import { StyleSheet, TouchableOpacity, ViewProperties, View } from 'react-native';
 import Video from 'react-native-video';
-import { View, TouchableOpacity, ViewProperties, StyleSheet } from 'react-native';
-import { width, aspectWidth } from '../../utilities';
-import { sizes, spaces, transparent, oledBlack, white, sharedStyles, purpleOpacity, blackOpacity } from '../../styles';
 import { Icon } from 'react-native-elements';
 import { H7 } from '@pxblue/react-native-components';
+
+// Styles
+import { width, aspectWidth } from '../../utilities/dimensions';
+import { sharedStyles } from '../../styles';
+import { transparent, oledBlack, white, purpleOpacity, blackOpacity } from '../../styles/colors';
+import { sizes, spaces } from '../../styles/sizes';
 
 const portraitWidth = (width - 3 * spaces.medium) / 2;
 const portraitHeight = aspectWidth(portraitWidth);

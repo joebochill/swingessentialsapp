@@ -1,7 +1,7 @@
 import { getDate } from '../utilities';
-import { LessonType, Lesson } from '../__types__';
+import { Lesson } from '../__types__';
 
-export const PlaceholderLesson:Lesson = {
+export const PlaceholderLesson: Lesson = {
     request_id: -1,
     request_url: '',
     request_date: getDate(Date.now()),

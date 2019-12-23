@@ -1,9 +1,13 @@
 import React from 'react';
+// Components
+import { Platform, View, ViewProperties } from 'react-native';
 import YT, { YouTubeStandaloneAndroid } from 'react-native-youtube';
 import { Thumbnail } from 'react-native-thumbnail-video';
 
-import { View, ViewProperties, Platform } from 'react-native';
+// Constants
 import { YOUTUBE_API_KEY } from '../../constants';
+
+// Utilities
 import { Logger } from '../../utilities/logging';
 
 type YouTubeProps = ViewProperties & {
@@ -34,7 +38,7 @@ const openStandaloneAndroidPlayer = (id: string): void => {
             code: 'YT100',
             description: `YouTube Player error.`,
             rawErrorMessage: errorMessage,
-        })
+        });
     });
 };
 

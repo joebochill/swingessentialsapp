@@ -1,17 +1,31 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+// Components
 import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { Body, H7 } from '@pxblue/react-native-components';
-import { VideoCard, CollapsibleHeaderLayout, ResizableHeader } from '../../components';
+import { VideoCard, CollapsibleHeaderLayout } from '../../components';
+import Carousel from 'react-native-snap-carousel';
+
+// Constants
 import { ROUTES } from '../../constants/routes';
+import { PlaceholderLesson } from '../../constants/lessons';
+
+// Styles
+import { sharedStyles} from '../../styles';
+import { purple } from '../../styles/colors';
+import { spaces, unit } from '../../styles/sizes';
+import { width } from '../../utilities/dimensions';
 import bg from '../../images/bg_1.jpg';
 
-import Carousel from 'react-native-snap-carousel';
-import { useSelector, useDispatch } from 'react-redux';
-import { getLongDate, width } from '../../utilities';
-import { spaces, sharedStyles, unit, purple } from '../../styles';
-import { PlaceholderLesson } from '../../constants/lessons';
+// Utilities
+import { getLongDate } from '../../utilities';
+
+// Types
 import { ApplicationState } from '../../__types__';
+
+// Redux
 import { loadUserContent } from '../../redux/actions';
 
 export const Home = props => {
@@ -22,15 +36,14 @@ export const Home = props => {
 
     const latestLessons = lessons.closed.length > 0 ? lessons.closed : [PlaceholderLesson];
     return (
-        <CollapsibleHeaderLayout 
-            backgroundImage={bg} 
-            title={'SWING ESSENTIALS'} 
+        <CollapsibleHeaderLayout
+            backgroundImage={bg}
+            title={'SWING ESSENTIALS'}
             subtitle={'a pro in your pocket™'}
             refreshing={lessons.loading || credits.inProgress || tips.loading}
             onRefresh={() => {
                 dispatch(loadUserContent());
-            }}
-        >
+            }}>
             <>
                 <View style={sharedStyles.sectionHeader}>
                     <H7>Latest Lessons</H7>
@@ -62,7 +75,7 @@ export const Home = props => {
                 chevron={true}
                 pad={spaces.medium}
                 onPress={() => props.navigation.navigate(ROUTES.SUBMIT)}
-                title={<Body style={{ marginLeft: spaces.medium}}>Individual Lessons</Body>}
+                title={<Body style={{ marginLeft: spaces.medium }}>Individual Lessons</Body>}
                 rightTitle={`${credits.count} Left`}
                 disabled={credits.count < 1}
                 disabledStyle={sharedStyles.disabled}
@@ -79,11 +92,7 @@ export const Home = props => {
                 chevron={true}
                 pad={spaces.medium}
                 onPress={() => props.navigation.navigate(ROUTES.ORDER)}
-                title={
-                    <Body style={{ marginLeft: spaces.medium }}>
-                        Order More
-                    </Body>
-                }
+                title={<Body style={{ marginLeft: spaces.medium }}>Order More</Body>}
                 leftIcon={{
                     name: 'shopping-cart',
                     color: purple[500],

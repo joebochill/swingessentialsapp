@@ -1,15 +1,24 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
+// Components
 import { View, SectionList } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { H7, Body } from '@pxblue/react-native-components';
 import { CollapsibleHeaderLayout } from '../../components';
+
+// Styles
+import { sharedStyles } from '../../styles';
+import { spaces } from '../../styles/sizes';
 import bg from '../../images/bg_2.jpg';
-import { withNavigation } from 'react-navigation';
+
+// Constants
 import { ROUTES } from '../../constants/routes';
 
-import { spaces, sharedStyles } from '../../styles';
+// Utilities
 import { getLongDate, makeGroups } from '../../utilities';
+
+// Types
 import { ApplicationState } from '../../__types__';
 
 type Lesson = {
@@ -27,7 +36,7 @@ type Lesson = {
 
 // TODO: Implement lazy loading (Lessons, Tips, Blogs) on scroll
 
-export const Lessons = withNavigation(props => {
+export const Lessons = props => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
     const myLessons = lessons.pending.concat(lessons.closed);
     const sections = makeGroups(myLessons, (lesson: Lesson) => getLongDate(lesson.request_date));
@@ -80,4 +89,4 @@ export const Lessons = withNavigation(props => {
             />
         </CollapsibleHeaderLayout>
     );
-});
+};
