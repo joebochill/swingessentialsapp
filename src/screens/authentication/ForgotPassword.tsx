@@ -36,7 +36,7 @@ export const ForgotPassword = () => {
             <SEHeader 
                 title={'Forgot Password'} 
                 subtitle={'request a reset'} 
-                mainAction={'back'} 
+                mainAction={'back'}
                 showAuth={false} 
             />
             <KeyboardAvoidingView
@@ -46,7 +46,8 @@ export const ForgotPassword = () => {
                         paddingTop: HEADER_COLLAPSED_HEIGHT,
                     },
                 ]}
-                behavior={'padding'}>
+                behavior={'padding'}
+            >
                 {!complete && (
                     <ScrollView
                         contentContainerStyle={[

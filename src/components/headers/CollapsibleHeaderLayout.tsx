@@ -3,6 +3,9 @@ import React from 'react';
 import {
     ActivityIndicator,
     Animated,
+    Image,
+    ImageSourcePropType,
+    KeyboardAvoidingView,
     RefreshControl,
     SafeAreaView,
     ScrollView,
@@ -15,6 +18,7 @@ import { SEHeader, SEHeaderProps } from './SEHeader';
 // Styles
 import { sharedStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
+import { height } from '../../utilities/dimensions';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT } from '../../constants';
@@ -26,6 +30,8 @@ type CollapsibleHeaderLayoutProps = SEHeaderProps & {
     renderScroll?: boolean;
     onRefresh?: Function;
     refreshing?: boolean;
+    bottomPad?: boolean;
+    pageBackground?: ImageSourcePropType;
 };
 
 // TODO: Allow long titles to wrap to a second line?
@@ -38,43 +44,58 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
         };
     }
     render() {
-        const { renderScroll = true, children, refreshing = false, onRefresh = () => {} } = this.props;
+        const { renderScroll = true, children, refreshing = false, onRefresh = () => { }, bottomPad = true } = this.props;
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
         return (
             <View style={sharedStyles.pageContainer}>
                 <StatusBar barStyle={'light-content'} />
+                {this.props.pageBackground &&
+                    <Image
+                        source={this.props.pageBackground}
+                        resizeMethod={'resize'}
+                        style={{
+                            position: 'absolute',
+                            width: '100%',
+                            resizeMode: 'cover',
+                            height: '100%',
+                            opacity: 0.15,
+                        }}
+                    />
+                }
                 <SEHeader {...this.props} headerHeight={headerHeight} />
-                {renderScroll && (
-                    <ScrollView
-                        contentContainerStyle={styles.scrollContainer}
-                        refreshControl={
-                            onRefresh ? (
-                                <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()} />
-                            ) : (
-                                undefined
-                            )
-                        }
-                        onScroll={Animated.event([
-                            {
-                                nativeEvent: {
-                                    contentOffset: {
-                                        y: this.state.scrollY,
+                <KeyboardAvoidingView behavior={'padding'}>
+                    {renderScroll && (
+                        <ScrollView
+                            contentContainerStyle={[styles.scrollContainer, bottomPad ? { paddingBottom: height * 0.5 } : {}]}
+                            refreshControl={
+                                onRefresh ? (
+                                    <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()} />
+                                ) : (
+                                        undefined
+                                    )
+                            }
+                            onScroll={Animated.event([
+                                {
+                                    nativeEvent: {
+                                        contentOffset: {
+                                            y: this.state.scrollY,
+                                        },
                                     },
                                 },
-                            },
-                        ])}
-                        scrollEventThrottle={16}>
-                        {refreshing && (
-                            <ActivityIndicator
-                                size={'large'}
-                                style={{ marginBottom: spaces.medium, marginTop: -1 * spaces.jumbo }}
-                            />
-                        )}
-                        {children}
-                    </ScrollView>
-                )}
-                {!renderScroll && <View style={[styles.nonScrollContainer]}>{children}</View>}
-                <SafeAreaView />
+                            ])}
+                            scrollEventThrottle={16}>
+                            {refreshing && (
+                                <ActivityIndicator
+                                    size={'large'}
+                                    style={{ marginBottom: spaces.medium, marginTop: -1 * spaces.jumbo }}
+                                />
+                            )}
+                            {children}
+                        </ScrollView>
+                    )}
+                    {!renderScroll && <View style={[styles.nonScrollContainer]}>{children}</View>}
+                    <SafeAreaView />
+                </KeyboardAvoidingView>
             </View>
         );
     }

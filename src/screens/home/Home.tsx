@@ -43,7 +43,9 @@ export const Home = props => {
             refreshing={lessons.loading || credits.inProgress || tips.loading}
             onRefresh={() => {
                 dispatch(loadUserContent());
-            }}>
+            }}
+            bottomPad={false}
+        >
             <>
                 <View style={sharedStyles.sectionHeader}>
                     <H7>Latest Lessons</H7>

@@ -54,7 +54,7 @@ export interface ResizableHeaderProps {
     backgroundImage?: ImageSourcePropType;
 
     /** Height of the header */
-    headerHeight: Animated.AnimatedInterpolation;
+    headerHeight: Animated.AnimatedInterpolation | number;
     // headerHeight: number;
 
     /**

@@ -20,6 +20,7 @@ import fo from '../../images/face-on.png';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
+import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
 // Types
 import { ApplicationState } from '../../__types__';
@@ -216,7 +217,7 @@ export const Submit = props => {
             />
             <SEHeader title={'Submit Your Swing'} subtitle={'create a new lesson'} />
             <KeyboardAvoidingView
-                style={[sharedStyles.pageContainer, { backgroundColor: transparent }]}
+                style={[sharedStyles.pageContainer, { marginTop: HEADER_COLLAPSED_HEIGHT }]}
                 behavior={'padding'}>
                 <ScrollView contentContainerStyle={sharedStyles.paddingMedium} ref={scroller}>
                     <ErrorBox show={roleError !== ''} error={roleError} style={{ marginBottom: spaces.medium }} />

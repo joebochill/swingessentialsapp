@@ -31,8 +31,7 @@ const BackIcon = wrapIcon({ IconClass: Icon, name: 'arrow-back' });
 const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-variant' });
 const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
 
-export type SEHeaderProps = Omit<ResizableHeaderProps, 'headerHeight'> &
-    NavigationInjectedProps & {
+export type SEHeaderProps = Omit<ResizableHeaderProps, 'headerHeight'> & {
         mainAction?: NavType;
         showAuth?: boolean;
         dynamic?: boolean;
@@ -40,7 +39,7 @@ export type SEHeaderProps = Omit<ResizableHeaderProps, 'headerHeight'> &
         onNavigate?: Function;
     };
 
-export const SEHeader = withNavigation((props: SEHeaderProps) => {
+export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjectedProps) => {
     const {
         mainAction = 'menu',
         showAuth = true,
