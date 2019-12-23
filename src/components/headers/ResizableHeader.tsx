@@ -135,6 +135,7 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         const { title } = this.props;
         return (
             <Animated.Text
+                key={'header-title'}
                 style={this.titleStyle()}
                 numberOfLines={1}
                 ellipsizeMode={'tail'}>
@@ -148,6 +149,7 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         if (subtitle) {
             return (
                 <Animated.Text
+                    key={'header-subtitle'}
                     style={this.subtitleStyle()}
                     numberOfLines={1}
                     ellipsizeMode={'tail'}>
@@ -162,6 +164,7 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         if (info) {
             return (
                 <Animated.Text
+                    key={'header-info'}
                     style={this.infoStyle()}
                     numberOfLines={1}
                     ellipsizeMode={'tail'}>

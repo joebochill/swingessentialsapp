@@ -1,0 +1,38 @@
+TODO:
+
+Remove Albatross Package
+    test how this affects existing app
+API for single Blog/Tip
+Lazy loading for lists
+Account Details Screen + Edit
+Order History API
+Order History Screen
+Biometric Login
+Contact Us Screen
+Update App Icons
+Store data locally (Async)
+Pull to refresh all - verify on android
+Linting (Remove inline style warnings)
+Unit tests
+Android permissions request
+Deep linking - verify ios and android
+App Banners on web
+Remove unused fonts and images
+Optimize shared styles
+Optimize imports
+Optimize component inclusion
+Tutorials
+Verify IAP works
+Final device testing
+Update all headers usage
+Allow header to accept custom content
+Update Nav Drawer (use header, use logo)
+All routes on a single stack
+Add theme to components
+Yarn audit
+Branch API Changes
+Configure full scaling and set to 1
+Admins - show 5 latest lessons with username
+
+
+DONE:

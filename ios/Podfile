@@ -22,6 +22,7 @@ target 'swingessentialsapp' do
   pod 'React-RCTText', :path => '../node_modules/react-native/Libraries/Text'
   pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
   pod 'React-Core/RCTWebSocket', :path => '../node_modules/react-native/'
+  pod 'TouchID', :path => "../node_modules/react-native-touch-id"
   pod 'RNFS', :path => '../node_modules/react-native-fs'
   
   pod 'React-cxxreact', :path => '../node_modules/react-native/ReactCommon/cxxreact'

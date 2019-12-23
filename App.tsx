@@ -23,13 +23,13 @@ import SplashScreen from 'react-native-splash-screen';
 // TODO: Optimize components and library usage
 // TODO: Optimize image assets and bundle size
 // TODO: Fix all alignments (sizes using units)
+// TODO: Catch blocks around all awaits
 
 export const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 
 export const App = () => {
     useEffect(() => {
         SplashScreen.hide();
-        // SplashScreen.show();
         StatusBar.setBarStyle('light-content', true);
         store.dispatch(loadInitialData());
     }, []);

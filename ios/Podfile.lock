@@ -249,11 +249,15 @@ PODS:
     - React
   - RNIap (4.3.0):
     - React
+  - RNKeychain (4.0.4):
+    - React
   - RNReanimated (1.4.0):
     - React
   - RNScreens (1.0.0-alpha.23):
     - React
   - RNVectorIcons (6.6.0):
+    - React
+  - TouchID (4.4.1):
     - React
   - Yoga (1.14.0)
   - YoutubePlayer-in-WKWebView (0.3.4)
@@ -297,9 +301,11 @@ DEPENDENCIES:
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNIap (from `../node_modules/react-native-iap`)
+  - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - TouchID (from `../node_modules/react-native-touch-id`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -378,12 +384,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNIap:
     :path: "../node_modules/react-native-iap"
+  RNKeychain:
+    :path: "../node_modules/react-native-keychain"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  TouchID:
+    :path: "../node_modules/react-native-touch-id"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -424,12 +434,14 @@ SPEC CHECKSUMS:
   RNFS: 0d4191b1052bef9ce70deff00a5b4169c62bbd9b
   RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
   RNIap: e75200c18ed318479a52db633dc2db2facce77ea
+  RNKeychain: 79cfca6cd5030bbabcd1a2c009531b84e358116d
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
   YoutubePlayer-in-WKWebView: af2f5929fc78882d94bfdfeea999b661b78d9717
 
-PODFILE CHECKSUM: a46aa417209d9adb2b3e02a922c491141ccf759b
+PODFILE CHECKSUM: 0dbbcc2194bc1abbacffbd427253bda1347be41e
 
 COCOAPODS: 1.8.4

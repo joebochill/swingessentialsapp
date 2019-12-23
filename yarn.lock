@@ -1095,6 +1095,13 @@
   dependencies:
     react-native-elements "*"
 
+"@types/react-native-keychain@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-keychain/-/react-native-keychain-3.1.0.tgz#68e3bcb12b6037d8e5da57cb39830a4ec32676b8"
+  integrity sha512-L2YWEAESxivmuCnipXepK3kv/SCJ2mcekWwfc8AoKcZb+BVOWMQgabPovuLacf3xcbN10kbF7MEvfRTH9FZaaw==
+  dependencies:
+    react-native-keychain "*"
+
 "@types/react-native-snap-carousel@^3.7.4":
   version "3.7.4"
   resolved "https://registry.yarnpkg.com/@types/react-native-snap-carousel/-/react-native-snap-carousel-3.7.4.tgz#1e1ad5b5314715d538f6785b4f3a6590a036a6bd"
@@ -5613,6 +5620,11 @@ react-native-keyboard-aware-scroll-view@^0.8.0:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
+react-native-keychain@*, react-native-keychain@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-4.0.4.tgz#099ce546d893fcc6503adf686507eb045584b7a6"
+  integrity sha512-FoxVpjaztOM9BLoZLourPDVhe7g2UoKogIvyiL0M4BMjQdX4uL8vutnJLDzRENAMdUlhmhkDPzTHi3/OjL8A+Q==
+
 react-native-mail@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/react-native-mail/-/react-native-mail-4.1.0.tgz#2ebe2df2211a84862a3aea77316736189e23435b"
@@ -5679,6 +5691,11 @@ react-native-thumbnail-video@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/react-native-thumbnail-video/-/react-native-thumbnail-video-0.1.2.tgz#a50e3c665ce987d641da43d2528e372cac111322"
   integrity sha512-+dD8dIUxiZz/QaL+gOtmb3Co/VE0MK5s8el9fYXpuEZbQu882voz7ALJmEn5o7A62sDTT3mpR2UF1V0ioXTFKA==
+
+react-native-touch-id@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-touch-id/-/react-native-touch-id-4.4.1.tgz#8b1bb2d04c30bac36bb9696d2d723e719c4a8b08"
+  integrity sha512-1jTl8fC+0fxvqegy/XXTyo6vMvPhjzkoDdaqoYZx0OH8AT250NuXnNPyKktvigIcys3+2acciqOeaCall7lrvg==
 
 react-native-vector-icons@^6.6.0:
   version "6.6.0"

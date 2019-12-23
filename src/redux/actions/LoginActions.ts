@@ -13,6 +13,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Credentials } from '../../__types__';
 import { HttpRequest } from '../../api/http';
 import { Logger } from '../../utilities/logging';
+import * as Keychain from 'react-native-keychain';
 
 // TODO: Handle fetch failure (on login esp) more gracefully
 // TODO: timer to check pending users registration status update
@@ -28,7 +29,7 @@ export function requestLogin(userCredentials: Credentials) {
             .then(response => {
                 switch (response.status) {
                     case 200:
-                        // Keychain.setGenericPassword(userCredentials.username, userCredentials.password);
+                        Keychain.setGenericPassword(userCredentials.username, userCredentials.password);
                         const token = response.headers.get('Token');
                         response
                             .json()
@@ -37,14 +38,11 @@ export function requestLogin(userCredentials: Credentials) {
                             })
                             .then(() => {
                                 dispatch(loadUserContent());
-
-                                // TODO: Load more stuff
                             });
                         AsyncStorage.setItem(ASYNC_PREFIX + 'token', token);
                         break;
                     default:
-                        // Keychain.resetGenericPassword();
-                        //checkTimeout(response, dispatch);
+                        Keychain.resetGenericPassword();
                         dispatch(failure(ACTIONS.LOGIN.FAILURE, response, 'Login'));
                         break;
                 }
