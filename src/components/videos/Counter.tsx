@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // Components
 import { View, ViewProps } from 'react-native';
-import { Body } from '@pxblue/react-native-components';
+import { Body } from '../';
 // Styles
 import { sharedStyles } from '../../styles';
 import { white, blackOpacity } from '../../styles/colors';

@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 // Components
 import {
-    Alert,
     Animated,
     AppState,
     AppStateStatus,
@@ -15,9 +14,8 @@ import {
     View,
 } from 'react-native';
 import { NavigationItems } from './NavigationContent';
-import { Body, H7 } from '@pxblue/react-native-components';
 import { ListItem } from 'react-native-elements';
-import { TokenModal, CollapsibleHeaderLayout } from '../components';
+import { Body, H7, TokenModal, CollapsibleHeaderLayout } from '../components';
 
 // Constants
 import {
@@ -25,14 +23,14 @@ import {
     HEADER_COLLAPSED_HEIGHT_NO_STATUS,
     HEADER_EXPANDED_HEIGHT_NO_STATUS,
     DRAWER_WIDTH,
-    HEADER_EXPANDED_HEIGHT,
-    HEADER_COLLAPSED_HEIGHT,
 } from '../constants';
 import { ROUTES } from '../constants/routes';
 
 // Styles
 import { sharedStyles } from '../styles';
-import { purple, white } from '../styles/colors';
+// import { white } from '../styles/colors';
+import { useTheme } from '../styles/theme';
+
 import { unit, spaces } from '../styles/sizes';
 
 // Utilities
@@ -41,16 +39,16 @@ import { height } from '../utilities/dimensions';
 import { Logger } from '../utilities/logging';
 
 // Redux
-import { requestLogout } from '../redux/actions';
 import { ApplicationState } from 'src/__types__';
 
 // Icons
 import se from '../images/logo-small.png';
 
 export const NavigationDrawer = (props) => {
-    const [scrollY, setScrollY] = useState(new Animated.Value(0));
+    const theme = useTheme();
+    const [scrollY] = useState(new Animated.Value(0));
     const [activePanel, setActivePanel] = useState(0);
-    const [left, setLeft] = useState({
+    const [left] = useState({
         main: new Animated.Value(0),
         account: new Animated.Value(0),
         help: new Animated.Value(-1 * DRAWER_WIDTH),
@@ -104,9 +102,9 @@ export const NavigationDrawer = (props) => {
 
     useEffect(() => {
         // animate drawer panels
-        const mainToValue = activePanel === 0 ? 0 : -1 * DRAWER_WIDTH; //-1 * DRAWER_WIDTH;
-        const accountToValue = activePanel === 1 ? -1 * DRAWER_WIDTH : 0; //1 * DRAWER_WIDTH;
-        const helpToValue = activePanel === 2 ? -2 * DRAWER_WIDTH : -1 * DRAWER_WIDTH; //1 * DRAWER_WIDTH;
+        const mainToValue = activePanel === 0 ? 0 : -1 * DRAWER_WIDTH;
+        const accountToValue = activePanel === 1 ? -1 * DRAWER_WIDTH : 0;
+        const helpToValue = activePanel === 2 ? -2 * DRAWER_WIDTH : -1 * DRAWER_WIDTH;
 
         Animated.timing(left.main, {
             toValue: mainToValue,
@@ -170,6 +168,7 @@ export const NavigationDrawer = (props) => {
                                 style={[
                                     styles.avatar,
                                     {
+                                        backgroundColor: theme.colors.background,
                                         height: scaleByHeight(80, 0),
                                         width: scaleByHeight(80, 0),
                                     },
@@ -180,7 +179,7 @@ export const NavigationDrawer = (props) => {
                                         allowFontScaling
                                         style={{
                                             fontSize: scaleByHeight(40, 0),
-                                            color: purple[500],
+                                            color: theme.colors.text[500],
                                         }}>
                                         {initials.toUpperCase()}
                                     </Animated.Text>
@@ -231,9 +230,9 @@ export const NavigationDrawer = (props) => {
 
                     </Animated.View>
                     <View style={[styles.userInfo]}>
-                        <H7 color={'onPrimary'}>SWING ESSENTIALS</H7>
+                        <H7 style={{color: theme.colors.onPrimary[500]}}>SWING ESSENTIALS</H7>
                         <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
-                            <Body color={'onPrimary'} font={'light'} >{`v${APP_VERSION}`}</Body>
+                            <Body style={{color: theme.colors.onPrimary[500]}} font={'light'} >{`v${APP_VERSION}`}</Body>
                         </Animated.View>
                     </View>
                 </View>
@@ -280,11 +279,11 @@ export const NavigationDrawer = (props) => {
                                                         ? () => item.onPress()
                                                         : undefined
                                         }
-                                        title={<Body style={styles.navLabel}>{item.title}</Body>}
+                                        title={<Body style={[styles.navLabel]}>{item.title}</Body>}
                                         leftIcon={{
                                             type: item.iconType || 'material',
                                             name: item.icon,
-                                            color: purple[500],
+                                            color: theme.colors.text[500],
                                             iconStyle: { marginLeft: 0 },
                                         }}
                                     />
@@ -307,7 +306,6 @@ const styles = StyleSheet.create({
     },
     avatar: {
         borderRadius: 100,
-        backgroundColor: white[50],
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -323,7 +321,6 @@ const styles = StyleSheet.create({
     },
     navLabel: {
         marginLeft: unit(16),
-        color: purple[500],
     },
     drawerBody: {
         flexDirection: 'row',

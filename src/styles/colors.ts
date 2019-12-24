@@ -1,11 +1,13 @@
+import { ColorDef } from "src/__types__";
+
 export const transparent = 'transparent';
 
 // TODO: Update all styles to use variable definitions
 
-export const purpleOpacity = (opacity: number): string => {
-    const op = Math.max(0, Math.min(1, opacity));
-    return `rgba(35,31,97,${op})`;
-};
+// export const purpleOpacity = (opacity: number): string => {
+//     const op = Math.max(0, Math.min(1, opacity));
+//     return `rgba(35,31,97,${op})`;
+// };
 export const blackOpacity = (opacity: number): string => {
     const op = Math.max(0, Math.min(1, opacity));
     return `rgba(0,0,0,${op})`;
@@ -15,7 +17,7 @@ export const whiteOpacity = (opacity: number): string => {
     return `rgba(255,255,255,${op})`;
 };
 
-export const purple = {
+export const purple : ColorDef = {
     50: '#e5e4ec',
     100: '#bdbcd0',
     200: '#918fb0',
@@ -32,7 +34,7 @@ export const purple = {
     A700: '#0700ed',
     contrastDefaultColor: 'light',
 };
-export const white = {
+export const white : ColorDef = {
     50: '#ffffff',
     100: '#fdfdfd',
     200: '#f8f8f8',
@@ -45,7 +47,7 @@ export const white = {
     900: '#e5e5e5',
     contrastDefaultColor: 'dark',
 };
-export const red = {
+export const red : ColorDef = {
     50: '#f9e8e8',
     100: '#efc5c5',
     200: '#e59e9e',
@@ -62,7 +64,7 @@ export const red = {
     A700: '#ab1a1a',
     contrastDefaultColor: 'light',
 };
-export const black = {
+export const black : ColorDef = {
     50: '#e8eaea',
     100: '#c6cacc',
     200: '#a1a7aa',
@@ -80,7 +82,7 @@ export const black = {
     contrastDefaultColor: 'light',
 };
 
-export const gray = {
+export const gray : ColorDef = {
     50: '#eef0f0',
     100: '#d5d8da',
     200: '#b9bfc2',
@@ -97,7 +99,7 @@ export const gray = {
     A700: '#007bc1',
     contrastDefaultColor: 'light',
 };
-export const oledBlack = {
+export const oledBlack : ColorDef = {
     50: '#202224',
     100: '#202224',
     200: '#182022',
@@ -109,4 +111,39 @@ export const oledBlack = {
     800: '#000000',
     900: '#000000',
     contrastDefaultColor: 'light',
+};
+export const green : ColorDef = {
+    50: '#e7f6e4',
+    100: '#c4e9bc',
+    200: '#9cdb90',
+    300: '#74cc63',
+    400: '#57c141',
+    500: '#39b620',
+    600: '#33af1c',
+    700: '#2ca618',
+    800: '#249e13',
+    900: '#178e0b',
+    A100: '#e8fff1',
+    A200: '#9bffc4',
+    A400: '#4dff96',
+    A700: '#00ff69',
+    'contrastDefaultColor': 'light'
+};
+
+export const orange : ColorDef = {
+    50: '#feefe4',
+    100: '#fcd6bc',
+    200: '#fabb90',
+    300: '#f7a064',
+    400: '#f68b42',
+    500: '#f47721',
+    600: '#f36f1d',
+    700: '#f16418',
+    800: '#ef5a14',
+    900: '#ec470b',
+    A100: '#ffefed',
+    A200: '#ffd8d1',
+    A400: '#ffc0b6',
+    A700: '#ffa99a',
+    'contrastDefaultColor': 'light'
 };

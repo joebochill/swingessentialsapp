@@ -22,8 +22,9 @@ import { useCompare } from '../../utilities';
 import { NavigationInjectedProps } from 'react-navigation';
 
 // Styles
-import { white, purple, transparent } from '../../styles/colors';
+import { transparent } from '../../styles/colors';
 import {spaces, unit, sizes, fonts } from '../../styles/sizes';
+import { useTheme } from '../../styles/theme';
 import logo from '../../images/logo-big.png';
 
 // SE Components
@@ -59,6 +60,7 @@ const initialCredentials: CredentialsState = {
 };
 
 export const Login = (props: NavigationInjectedProps) => {
+    const theme = useTheme();
     // Local Component State
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -197,7 +199,7 @@ export const Login = (props: NavigationInjectedProps) => {
     }, [biometry, credentials, useBiometry]);
 
     return (
-        <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
+        <KeyboardAvoidingView style={[styles.container, {backgroundColor: theme.colors.primary[400]}]} behavior={'padding'}>
             <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps={'always'}>
                 {/* LOGO */}
                 <Image source={logo} resizeMethod="resize" style={styles.logo} />
@@ -209,10 +211,10 @@ export const Login = (props: NavigationInjectedProps) => {
                         autoCapitalize={'none'}
                         containerStyle={{ paddingHorizontal: 0 }}
                         editable={!pending}
-                        inputContainerStyle={styles.inputContainer}
-                        inputStyle={styles.input}
+                        inputContainerStyle={[styles.inputContainer,{ backgroundColor: theme.colors.background, borderColor: theme.colors.primary[800],}]}
+                        inputStyle={[styles.input, {color: theme.colors.text[500]}]}
                         label={'Username'}
-                        labelStyle={[styles.formLabel, { color: white[50] }]}
+                        labelStyle={[styles.formLabel, { color: theme.colors.onPrimary[50] }]}
                         onChangeText={(val: string) => setUsername(val)}
                         onSubmitEditing={() => {
                             if (passField.current) {
@@ -237,7 +239,7 @@ export const Login = (props: NavigationInjectedProps) => {
                             <Icon
                                 name={'fingerprint'}
                                 size={sizes.small}
-                                color={purple[500]}
+                                color={theme.colors.text[500]}
                                 underlayColor={transparent}
                                 onPress={() => showBiometricLogin()}
                             />
@@ -250,10 +252,10 @@ export const Login = (props: NavigationInjectedProps) => {
                     autoCapitalize={'none'}
                     containerStyle={{ marginTop: spaces.medium, paddingHorizontal: 0 }}
                     editable={!pending}
-                    inputContainerStyle={styles.inputContainer}
-                    inputStyle={styles.input}
+                    inputContainerStyle={[styles.inputContainer,{ backgroundColor: theme.colors.background, borderColor: theme.colors.primary[800],}]}
+                    inputStyle={[styles.input, {color: theme.colors.text[500]}]}
                     label={'Password'}
-                    labelStyle={[styles.formLabel, { color: white[50] }]}
+                    labelStyle={[styles.formLabel, { color: theme.colors.onPrimary[50] }]}
                     onChangeText={(val: string) => setPassword(val)}
                     onSubmitEditing={() => onLogin(username, password)}
                     placeholder="Please enter your password"
@@ -267,28 +269,28 @@ export const Login = (props: NavigationInjectedProps) => {
                 {/* Remember Me Row */}
                 <View style={styles.rememberRow}>
                     <View style={styles.toggle}>
-                        <Text style={styles.toggleLabel}>Save Username</Text>
+                        <Text style={[styles.toggleLabel, {color: theme.colors.onPrimary[50]}]}>Save Username</Text>
                         <Switch
                             value={remember}
                             onValueChange={(val: boolean) => {
                                 setRemember(val);
                                 AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
                             }}
-                            ios_backgroundColor={purple[200]}
-                            trackColor={{ false: white[50], true: purple[500] }}
+                            ios_backgroundColor={theme.colors.primary[200]}
+                            trackColor={{ false: theme.colors.onPrimary[50], true: theme.colors.primary[500] }}
                         />
                     </View>
                     {biometry.available && (
                         <View style={styles.toggle}>
-                            <Text style={styles.toggleLabel}>{`Use ${biometry.type}`}</Text>
+                            <Text style={[styles.toggleLabel, {color: theme.colors.onPrimary[50]}]}>{`Use ${biometry.type}`}</Text>
                             <Switch
                                 value={useBiometry}
                                 onValueChange={(val: boolean) => {
                                     setUseBiometry(val);
                                     AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
                                 }}
-                                ios_backgroundColor={purple[200]}
-                                trackColor={{ false: white[50], true: purple[500] }}
+                                ios_backgroundColor={theme.colors.primary[200]}
+                                trackColor={{ false: theme.colors.onPrimary[50], true: theme.colors.primary[500] }}
                             />
                         </View>
                     )}
@@ -324,7 +326,7 @@ export const Login = (props: NavigationInjectedProps) => {
                 )}
 
                 {/* Loading Spinner */}
-                {pending && <ActivityIndicator style={{ marginTop: spaces.jumbo }} size={'large'} color={white[50]} />}
+                {pending && <ActivityIndicator style={{ marginTop: spaces.jumbo }} size={'large'} color={theme.colors.onPrimary[50]} />}
 
                 {/* Registration Links */}
                 <View style={styles.registerRow}>
@@ -344,29 +346,24 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         maxWidth: unit(500),
-        backgroundColor: purple[400],
         paddingHorizontal: spaces.medium,
     },
     formLabel: {
         fontFamily: 'SFCompactDisplay-Regular',
-        color: purple[500],
         marginLeft: 0,
         marginTop: 0,
         fontSize: fonts[14],
         fontWeight: 'bold',
     },
     input: {
-        color: purple[500],
         fontSize: fonts[14],
         textAlignVertical: 'center',
         paddingHorizontal: spaces.small,
     },
     inputContainer: {
         height: sizes.large,
-        backgroundColor: white[50],
         marginTop: spaces.small,
         padding: spaces.small,
-        borderColor: purple[800],
         borderWidth: unit(1),
     },
     loginRow: {
@@ -401,5 +398,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end',
     },
-    toggleLabel: { fontSize: fonts[14], color: white[50], marginRight: spaces.small },
+    toggleLabel: { fontSize: fonts[14], marginRight: spaces.small },
 });

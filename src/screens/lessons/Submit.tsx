@@ -12,8 +12,9 @@ import ImagePicker from 'react-native-image-picker';
 
 // Styles
 import { sharedStyles } from '../../styles';
-import { purple, white, transparent, purpleOpacity } from '../../styles/colors';
+import { transparent } from '../../styles/colors';
 import { spaces, sizes, fonts, unit } from '../../styles/sizes';
+import { useTheme } from '../../styles/theme';
 import bg from '../../images/golf_bg.png';
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
@@ -30,6 +31,7 @@ import { submitLesson } from '../../redux/actions';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
+import color from 'color';
 
 
 
@@ -46,12 +48,13 @@ export const Submit = props => {
     const role = useSelector((state: ApplicationState) => state.login.role);
     const scroller = useRef(null);
     const dispatch = useDispatch();
+    const theme = useTheme();
     const roleError =
         role === 'anonymous'
             ? 'You must be signed in to submit lessons.'
             : role === 'pending'
-            ? 'You must validate your email address before you can submit lessons'
-            : '';
+                ? 'You must validate your email address before you can submit lessons'
+                : '';
 
     const previousPendingStatus = usePrevious(lessons.redeemPending);
 
@@ -236,27 +239,27 @@ export const Submit = props => {
                             <SEVideoPlaceholder
                                 title={'Face-On'}
                                 icon={<Image source={fo} resizeMethod={'resize'} style={sharedStyles.image} />}
-                                editIcon={<Icon name={'add-a-photo'} color={purple[500]} />}
+                                editIcon={<Icon name={'add-a-photo'} color={theme.colors.primary[500]} />}
                                 onPress={() => _showPicker('fo')}
                             />
                         ) : (
-                            <SEVideo editable source={fo_video} onEdit={() => _showPicker('fo')} />
-                        )}
+                                <SEVideo editable source={fo_video} onEdit={() => _showPicker('fo')} />
+                            )}
                         {!dtl_video ? (
                             <SEVideoPlaceholder
                                 title={'Down-the-Line'}
                                 icon={<Image source={dtl} resizeMethod={'resize'} style={sharedStyles.image} />}
-                                editIcon={<Icon name={'add-a-photo'} color={purple[500]} />}
+                                editIcon={<Icon name={'add-a-photo'} color={theme.colors.primary[500]} />}
                                 onPress={() => _showPicker('dtl')}
                             />
                         ) : (
-                            <SEVideo
-                                editable
-                                source={dtl_video}
-                                style={{ marginLeft: spaces.medium }}
-                                onEdit={() => _showPicker('dtl')}
-                            />
-                        )}
+                                <SEVideo
+                                    editable
+                                    source={dtl_video}
+                                    style={{ marginLeft: spaces.medium }}
+                                    onEdit={() => _showPicker('dtl')}
+                                />
+                            )}
                     </View>
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0, marginTop: spaces.large }]}>
                         <H7>Special Requests / Comments</H7>
@@ -264,9 +267,9 @@ export const Submit = props => {
                     {!useNotes && (
                         <TouchableOpacity
                             activeOpacity={0.8}
-                            style={[sharedStyles.dashed, styles.dashButton]}
+                            style={[sharedStyles.dashed, styles.dashButton, { backgroundColor: color(theme.colors.primary[500]).fade(.85) }]}
                             onPress={() => setUseNotes(true)}>
-                            <Icon name={'add-circle'} color={purple[500]} size={24} />
+                            <Icon name={'add-circle'} color={theme.colors.primary[500]} size={24} />
                         </TouchableOpacity>
                     )}
                     {useNotes && (
@@ -290,7 +293,14 @@ export const Submit = props => {
                                 textAlignVertical={'top'}
                                 underlineColorAndroid={transparent}
                                 value={notes}
-                                style={[styles.input]}
+                                style={[
+                                    styles.input,
+                                    {
+                                        backgroundColor: theme.colors.background[50],
+                                        color: theme.colors.text[500],
+                                        borderColor: theme.colors.primary[800]
+                                    }
+                                ]}
                             />
                             <Label style={{ alignSelf: 'flex-end' }}>{`${500 - notes.length} Characters Left`}</Label>
                         </>
@@ -302,7 +312,7 @@ export const Submit = props => {
                         lessons.pending.length <= 0 && (
                             <SEButton
                                 containerStyle={{ marginTop: spaces.large }}
-                                buttonStyle={{ backgroundColor: purple[400] }}
+                                buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
                                 title={<H7 color={'onPrimary'}>SUBMIT</H7>}
                                 onPress={() => _submitLesson()}
                             />
@@ -319,23 +329,15 @@ const styles = StyleSheet.create({
         padding: spaces.medium,
         minHeight: sizes.xLarge,
         justifyContent: 'center',
-        backgroundColor: purpleOpacity(0.15),
     },
     input: {
         minHeight: sizes.xLarge,
-
         paddingHorizontal: spaces.medium,
         paddingTop: spaces.medium,
         paddingBottom: spaces.medium,
-
         fontFamily: 'SFCompactDisplay-Regular',
         fontSize: fonts[14],
-
-        backgroundColor: white[50],
-        color: purple[500],
-
         borderRadius: unit(5),
-        borderColor: purple[800],
         borderWidth: unit(2),
     },
 });

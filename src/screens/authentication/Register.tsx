@@ -17,8 +17,7 @@ import {
     View,
 } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
-import { H7 } from '@pxblue/react-native-components';
-import { ErrorBox, SEButton, SEHeader } from '../../components';
+import { H7, ErrorBox, SEButton, SEHeader } from '../../components';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
 
 // Types
@@ -27,8 +26,9 @@ import { ApplicationState } from '../../__types__';
 
 // Styles
 import { sharedStyles } from '../../styles';
-import { transparent, red, purple, blackOpacity } from '../../styles/colors';
+import { transparent, blackOpacity } from '../../styles/colors';
 import { sizes, spaces } from '../../styles/sizes';
+import { useTheme } from '../../styles/theme';
 
 // Utilities
 import { height } from '../../utilities/dimensions';
@@ -39,6 +39,8 @@ import { checkUsernameAvailability, checkEmailAvailability, createAccount, verif
 // Constants
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { ROUTES } from '../../constants/routes';
+import { ThemeColors } from 'react-navigation';
+
 
 type RegistrationKeys = {
     firstName: string;
@@ -87,6 +89,7 @@ const VerifyForm = (props: VerifyProps) => {
     const { code, navigation } = props;
     const verification = useSelector((state: ApplicationState) => state.registration);
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     useEffect(() => {
         if (code) {
@@ -105,7 +108,7 @@ const VerifyForm = (props: VerifyProps) => {
             <View style={[sharedStyles.paddingMedium, { flex: 1, justifyContent: 'center', paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
                 {verification.pending && (
                     <>
-                        <ActivityIndicator size={'large'} color={purple[800]} />
+                        <ActivityIndicator size={'large'} color={theme.colors.primary[800]} />
                         <H7 font={'regular'} style={{ textAlign: 'center' }}>
                             Verifying your email address...
                         </H7>
@@ -116,7 +119,7 @@ const VerifyForm = (props: VerifyProps) => {
                         <Icon
                             name={verification.emailVerified ? 'check-circle' : 'error'}
                             size={sizes.jumbo}
-                            color={verification.emailVerified ? purple[400] : red[500]}
+                            color={verification.emailVerified ? theme.colors.primary[400] : theme.colors.error[500]}
                         />
                         <H7 font={'regular'} style={{ textAlign: 'center' }}>
                             {verification.emailVerified
@@ -126,7 +129,8 @@ const VerifyForm = (props: VerifyProps) => {
                         {verification.emailVerified && (
                             <SEButton
                                 style={{ marginTop: spaces.medium }}
-                                title={'Sign In'}
+                                buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
+                                title={'SIGN IN'}
                                 onPress={() => navigation.popToTop()}
                             />
                         )}
@@ -153,6 +157,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
     const previousPendingState = usePrevious(registration.pending);
 
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     useEffect(() => {
         // Registration finished
@@ -351,10 +356,9 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                     ))}
                     {_canSubmit() && !registration.pending && (
                         <SEButton
-                            // disabled={!_canSubmit()}
                             containerStyle={{ marginTop: spaces.large }}
-                            buttonStyle={{ backgroundColor: purple[400] }}
-                            title={<H7 color={'onPrimary'}>SUBMIT</H7>}
+                            buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
+                            title={<H7 style={{color: theme.colors.onPrimary[50]}}>SUBMIT</H7>}
                             onPress={() => {
                                 _submitRegistration();
                                 if (scroller.current) {

@@ -4,12 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { Body } from '@pxblue/react-native-components';
-import { SEHeader } from '../../components/index';
+import { Body, SEHeader } from '../../components/index';
 // Styles
 import { sharedStyles } from '../../styles';
-import { purple } from '../../styles/colors';
 import { spaces } from '../../styles/sizes';
+import { useTheme } from '../../styles/theme';
+
 // Types
 import { SettingsState, ApplicationState } from '../../__types__';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
@@ -63,6 +63,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
     const currentSettingName: keyof SettingsState = navigation.getParam('setting', null);
 
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     if (!currentSettingName) {
         navigation.pop();
@@ -107,7 +108,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                                 typeof val === 'number' ? 's' : ''
                                 }`}</Body>
                         }
-                        rightIcon={caseSame(value, val) ? { name: 'check', color: purple[500] } : undefined}
+                        rightIcon={caseSame(value, val) ? { name: 'check', color: theme.colors.text[500] } : undefined}
                     />
                 ))}
                 <Body style={[sharedStyles.paddingHorizontalMedium, { marginTop: spaces.medium }]}>

@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { unit, spaces, spaceUnit, fonts, sizes } from './sizes';
-import { purple, white } from './colors';
+import { white } from './colors';
+import { defaultTheme } from './theme';
 
 export const sharedStyles = StyleSheet.create({
     absoluteFull: {
@@ -13,7 +14,7 @@ export const sharedStyles = StyleSheet.create({
     border: {
         borderWidth: unit(2),
         borderRadius: unit(5),
-        borderColor: purple[800],
+        borderColor: defaultTheme.colors.primary[800],
     },
     centered: {
         alignItems: 'center',
@@ -23,11 +24,11 @@ export const sharedStyles = StyleSheet.create({
         borderWidth: unit(2),
         borderRadius: unit(5),
         borderStyle: 'dashed',
-        borderColor: purple[800],
+        borderColor: defaultTheme.colors.primary[800],
     },
     formLabel: {
         fontFamily: 'SFCompactDisplay-Regular',
-        color: purple[500],
+        color: defaultTheme.colors.primary[500],
         marginLeft: 0,
         marginTop: 0,
         fontSize: fonts[14],
@@ -39,7 +40,7 @@ export const sharedStyles = StyleSheet.create({
         resizeMode: 'contain',
     },
     input: {
-        color: purple[500],
+        color: defaultTheme.colors.primary[500],
         fontSize: fonts[14],
         textAlignVertical: 'center',
         paddingHorizontal: spaces.small,
@@ -49,7 +50,7 @@ export const sharedStyles = StyleSheet.create({
         backgroundColor: white[50],
         marginTop: spaces.small,
         padding: spaces.small,
-        borderColor: purple[800],
+        borderColor: defaultTheme.colors.primary[800],
         borderWidth: unit(1),
         borderBottomWidth: unit(1),
         borderRadius: unit(5),
@@ -69,7 +70,7 @@ export const sharedStyles = StyleSheet.create({
     },
     pageContainer: {
         flex: 1,
-        backgroundColor: '#F2F2F2',
+        backgroundColor: defaultTheme.colors.background,
     },
     paragraph: {
         marginTop: spaces.small,

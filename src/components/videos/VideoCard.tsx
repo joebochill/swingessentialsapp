@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { withTheme, WithTheme, Theme } from '@pxblue/react-native-components';
+import { withTheme, WithTheme, Theme } from '../../styles/theme';
 
 // Components
 import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
-import * as Typography from '@pxblue/react-native-components/core/typography';
+import { Label, Subtitle } from '../';
 import { YouTube } from './Youtube';
 import { Icon } from 'react-native-elements';
 
@@ -29,12 +29,12 @@ export interface VideoCardProps {
 
 class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
     public render() {
-        const { video, theme, headerColor = theme.colors.primary, hiddenContent } = this.props;
+        const { video, theme, headerColor = theme.colors.primary[400], hiddenContent } = this.props;
         const videoWidth = width - 2 * spaces.medium;
         const videoHeight = aspectHeight(videoWidth);
 
         return (
-            <View style={[this.cardStyle()]}>
+            <View style={this.cardStyle()}>
                 <View style={this.innerWrapperStyle()}>
                     <View style={[styles.header, { backgroundColor: headerColor }]}>
                         {this.headerText()}
@@ -53,23 +53,23 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
         const { headerTitle, headerSubtitle } = this.props;
         return (
             <View style={{ flex: 1 }}>
-                <Typography.Label style={{ color: this.fontColor() }}>{headerTitle}</Typography.Label>
+                <Label style={{ color: this.fontColor() }}>{headerTitle}</Label>
                 {headerSubtitle ? (
-                    <Typography.Subtitle style={{ color: this.fontColor() }} font={'regular'}>
+                    <Subtitle style={{ color: this.fontColor() }} font={'regular'}>
                         {headerSubtitle}
-                    </Typography.Subtitle>
+                    </Subtitle>
                 ) : null}
             </View>
         );
     }
 
-    private cardStyle(): StyleProp<ViewStyle> {
+    private cardStyle() {
         const { style, theme } = this.props;
         const newStyle = {
             backgroundColor: theme.colors.surface,
             borderRadius: theme.roundness,
         };
-        return [styles.card, newStyle, style];
+        return StyleSheet.flatten([styles.card, newStyle, style]);
     }
     private innerWrapperStyle(): StyleProp<ViewStyle> {
         const { theme } = this.props;
@@ -90,7 +90,7 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
 
     private fontColor() {
         const { headerFontColor, theme } = this.props;
-        return headerFontColor || theme.colors.onPrimary;
+        return headerFontColor || theme.colors.onPrimary[500];
     }
 }
 

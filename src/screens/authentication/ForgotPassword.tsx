@@ -3,14 +3,14 @@ import React, { useState, useCallback } from 'react';
 // Components
 import { View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
-import { Body, H7 } from '@pxblue/react-native-components';
-import { SEHeader, SEButton } from '../../components';
+import { Body, H7, SEHeader, SEButton } from '../../components';
 
 // Styles
 import { spaces, sizes } from '../../styles/sizes';
-import { transparent, purple } from '../../styles/colors';
+import { transparent } from '../../styles/colors';
 import { sharedStyles } from '../../styles';
 import { height } from '../../utilities/dimensions';
+import { useTheme } from '../../styles/theme';
 
 // Redux
 import { requestPasswordReset } from '../../redux/actions';
@@ -19,10 +19,12 @@ import { useDispatch } from 'react-redux';
 // Constants
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
+
 export const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [complete, setComplete] = useState(false);
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     const _sendPasswordReset = useCallback(() => {
         if (email.match(EMAIL_REGEX)) {
@@ -80,8 +82,8 @@ export const ForgotPassword = () => {
                         {email.match(EMAIL_REGEX) && (
                             <SEButton
                                 containerStyle={{ marginTop: spaces.medium }}
-                                buttonStyle={{ backgroundColor: purple[400] }}
-                                title={<H7 color={'onPrimary'}>REQUEST RESET</H7>}
+                                buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
+                                title={<H7 style={{color: theme.colors.onPrimary[500]}}>REQUEST RESET</H7>}
                                 onPress={(): void => _sendPasswordReset()}
                             />
                         )}
@@ -89,7 +91,7 @@ export const ForgotPassword = () => {
                 )}
                 {complete && (
                     <View style={[sharedStyles.paddingMedium, sharedStyles.centered, { flex: 1 }]}>
-                        <Icon name={'check-circle'} size={sizes.jumbo} color={purple[400]} />
+                        <Icon name={'check-circle'} size={sizes.jumbo} color={theme.colors.primary[400]} />
                         <H7 font={'regular'} style={{ textAlign: 'center' }}>
                             {'Your password reset request was received. Check your email for further instructions.'}
                         </H7>

@@ -3,14 +3,13 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, ButtonProps } from 'react-native-elements';
 // Styles
-import { purple, transparent } from '../styles/colors';
+import { transparent } from '../styles/colors';
 import { spaces, sizes, unit, fonts } from '../styles/sizes';
+import { useTheme } from '../styles/theme'
 
 const styles = StyleSheet.create({
     purpleButton: {
-        backgroundColor: purple[500],
         height: sizes.large,
-        borderColor: purple[800],
         borderWidth: unit(2),
         borderRadius: unit(5),
     },
@@ -25,10 +24,20 @@ const styles = StyleSheet.create({
 type SEButtonProps = ButtonProps & {
     link?: boolean;
 };
-export const SEButton = ({ link, buttonStyle, titleStyle, ...props }: SEButtonProps) => (
-    <Button
-        titleStyle={[{ fontSize: fonts[14] }, titleStyle]}
-        buttonStyle={[link ? styles.linkButton : styles.purpleButton, buttonStyle]}
-        {...props}
-    />
-);
+export const SEButton = (props: SEButtonProps) => {
+    const { link, buttonStyle, titleStyle, ...other } = props;
+    const theme = useTheme();
+    return (
+        <Button
+            titleStyle={StyleSheet.flatten([{ fontSize: fonts[14], color: theme.colors.onPrimary[50] }, titleStyle])}
+            buttonStyle={StyleSheet.flatten([
+                link ? styles.linkButton : [styles.purpleButton, {
+                    backgroundColor: theme.colors.primary[500],
+                    borderColor: theme.colors.primary[800],
+                }], 
+                buttonStyle
+            ])}
+            {...other}
+        />
+    )
+};

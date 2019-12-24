@@ -9,11 +9,11 @@ import {
     TouchableOpacity, 
     View 
 } from 'react-native';
-import { withTheme, Theme, WithTheme } from '@pxblue/react-native-components';
+import { withTheme, Theme, WithTheme } from '../../styles/theme';
 import { AnimatedSafeAreaView } from '../../components';
 
 // Styles
-import { purple, blackOpacity } from '../../styles/colors';
+import { blackOpacity } from '../../styles/colors';
 import { unit } from '../../styles/sizes';
 
 // Utilities
@@ -258,12 +258,12 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
 
     private fontColor() {
         const { fontColor, theme } = this.props;
-        return fontColor || theme.colors.onPrimary;
+        return fontColor || theme.colors.onPrimary[500];
     }
 
     private backgroundColor() {
         const { backgroundColor, theme } = this.props;
-        return backgroundColor || theme.colors.primary;
+        return backgroundColor || theme.colors.primary[400];
     }
 
     private actionPanelWidth() {
@@ -321,7 +321,6 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         shadowOpacity: 1,
         elevation: 0,
-        backgroundColor: purple[400],
     },
     content: {
         flex: 1,

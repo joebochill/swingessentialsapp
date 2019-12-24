@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { Body } from '@pxblue/react-native-components';
+import { Body } from '../';
 
 // Styles
 import { transparent, blackOpacity, white } from '../../styles/colors';

@@ -1,8 +1,7 @@
 import * as React from 'react';
 // Components
 import { View } from 'react-native';
-import { Body } from '@pxblue/react-native-components';
-import { CollapsibleHeaderLayout } from '../../components/index';
+import { Body, CollapsibleHeaderLayout } from '../../components/index';
 // Styles
 import { sharedStyles } from '../../styles';
 // Utilities

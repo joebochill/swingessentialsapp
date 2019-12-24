@@ -3,13 +3,18 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, ViewProperties, View } from 'react-native';
 import Video from 'react-native-video';
 import { Icon } from 'react-native-elements';
-import { H7 } from '@pxblue/react-native-components';
+import { H7 } from '../';
 
 // Styles
 import { width, aspectWidth } from '../../utilities/dimensions';
 import { sharedStyles } from '../../styles';
-import { transparent, oledBlack, white, purpleOpacity, blackOpacity } from '../../styles/colors';
+import { transparent, oledBlack, white, blackOpacity } from '../../styles/colors';
 import { sizes, spaces } from '../../styles/sizes';
+import { useTheme } from '../../styles/theme';
+
+// Utilities
+import color from 'color';
+
 
 const portraitWidth = (width - 3 * spaces.medium) / 2;
 const portraitHeight = aspectWidth(portraitWidth);
@@ -33,7 +38,7 @@ export const SEVideo = (props: VideoProps) => {
     const [playing, setPlaying] = useState(false);
 
     return (
-        <View style={[styles.portrait, { backgroundColor: oledBlack[900] }, style]}>
+        <View style={StyleSheet.flatten([styles.portrait, { backgroundColor: oledBlack[900] }, style])}>
             <TouchableOpacity
                 activeOpacity={0.8}
                 style={{ height: '100%', width: '100%' }}
@@ -76,9 +81,9 @@ export const SEVideo = (props: VideoProps) => {
 };
 export const SEVideoPlaceholder = (props: PlaceholderProps) => {
     const { icon, editIcon, style, onPress = () => {} } = props;
-
+    const theme = useTheme();
     return (
-        <View style={[styles.portrait, sharedStyles.dashed, { backgroundColor: purpleOpacity(0.15) }, style]}>
+        <View style={StyleSheet.flatten([styles.portrait, sharedStyles.dashed, { backgroundColor: color(theme.colors.primary[500]).fade(.85) }, style])}>
             <TouchableOpacity
                 activeOpacity={0.8}
                 style={{ height: '100%', width: '100%', alignItems: 'center' }}

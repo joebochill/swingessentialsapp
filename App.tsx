@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 
 // Components
 import { StatusBar } from 'react-native';
-import { ThemeProvider } from '@pxblue/react-native-components';
+import { ThemeProvider } from './src/styles/theme';
 import MainNavigator from './src/navigation/MainNavigator';
 import { RNIAPCallbacks } from './src/screens/lessons';
 import SplashScreen from 'react-native-splash-screen';
@@ -18,10 +18,9 @@ import { loadInitialData } from './src/redux/actions';
 // Utilities
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-// Styles
-import { white, purple, red } from './src/styles/colors';
-
+// Redux
 export const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
+
 
 export const App = () => {
     useEffect(() => {
@@ -33,50 +32,7 @@ export const App = () => {
     return (
         <Provider store={store}>
             <SafeAreaProvider>
-                <ThemeProvider
-                    theme={{
-                        roundness: 8,
-                        fonts: {
-                            extraBold: {
-                                fontFamily: 'SFCompactDisplay-Black',
-                                // fontWeight: '800'
-                            },
-                            bold: {
-                                fontFamily: 'SFCompactDisplay-Bold',
-                                // fontWeight: '700'
-                            },
-                            semiBold: {
-                                fontFamily: 'SFCompactDisplay-Semibold',
-                                // fontWeight: '600'
-                            },
-                            regular: {
-                                fontFamily: 'SFCompactDisplay-Regular',
-                                // fontWeight: '400'
-                            },
-                            light: {
-                                fontFamily: 'SFCompactDisplay-Thin',
-                                // fontWeight: '300'
-                            },
-                        },
-                        colors: {
-                            primary: purple[400],
-                            background: white[400],
-                            surface: white[50],
-                            accent: purple[400],
-                            error: red.A100,
-                            text: purple[500],
-                            onPrimary: white[50],
-                        },
-                        sizes: {
-                            tiny: 10,
-                            extraSmall: 12,
-                            small: 14,
-                            medium: 16,
-                            large: 20,
-                            extraLarge: 24,
-                            giant: 34,
-                        },
-                    }}>
+                <ThemeProvider>
                     <RNIAPCallbacks />
                     <MainNavigator enableURLHandling={false} />
                 </ThemeProvider>

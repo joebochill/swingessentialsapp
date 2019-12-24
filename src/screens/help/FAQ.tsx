@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View, StyleSheet, Platform } from 'react-native';
 import { CollapsibleHeaderLayout } from '../../components';
-import { YouTube } from '../../components';
-import { Body, H6, H7 } from '@pxblue/react-native-components';
+import { Body, H6, H7, YouTube } from '../../components';
 
 // Styles
 import { sharedStyles } from '../../styles';

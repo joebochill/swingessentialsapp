@@ -2,12 +2,13 @@ import React from 'react';
 // Components
 import { ActivityIndicator, Modal, ModalProps, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { H7, Body } from '@pxblue/react-native-components';
+import { H7, Body } from '../../components';
 
 // Styles
 import { sharedStyles } from '../../styles';
-import { whiteOpacity, purple } from '../../styles/colors';
+import { whiteOpacity } from '../../styles/colors';
 import { spaces } from '../../styles/sizes';
+import { useTheme } from '../../styles/theme';
 
 const styles = StyleSheet.create({
     modalBackground: {
@@ -24,6 +25,7 @@ type ProgressModalProps = ModalProps & {
 };
 export const UploadProgressModal = (props: ProgressModalProps) => {
     const { visible, progress, ...other } = props;
+    const theme = useTheme();
     return (
         <Modal animationType="slide" transparent={true} visible={visible} {...other}>
             <View style={styles.modalBackground}>
@@ -31,7 +33,7 @@ export const UploadProgressModal = (props: ProgressModalProps) => {
                     style={[
                         sharedStyles.border,
                         {
-                            backgroundColor: purple[50],
+                            backgroundColor: theme.colors.surface,
                             padding: spaces.medium,
                         },
                     ]}>
@@ -40,7 +42,7 @@ export const UploadProgressModal = (props: ProgressModalProps) => {
                             <View style={{ flexDirection: 'row', marginBottom: spaces.medium }}>
                                 <Icon
                                     name={'file-upload'}
-                                    color={purple[500]}
+                                    color={theme.colors.text[500]}
                                     containerStyle={{ marginRight: spaces.small }}
                                 />
                                 <H7>Submitting Your Lesson</H7>
@@ -49,7 +51,7 @@ export const UploadProgressModal = (props: ProgressModalProps) => {
                             {progress >= 100 && <Body>{'Creating Lesson...'}</Body>}
                         </View>
                         <View style={{ flex: 0, justifyContent: 'center' }}>
-                            <ActivityIndicator color={purple[500]} size={'large'} />
+                            <ActivityIndicator color={theme.colors.primary[500]} size={'large'} />
                         </View>
                     </View>
                 </View>

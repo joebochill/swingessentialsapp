@@ -2,8 +2,7 @@ import * as React from 'react';
 
 // Components
 import { View } from 'react-native';
-import { CollapsibleHeaderLayout } from '../../components';
-import { Body, H6, H7 } from '@pxblue/react-native-components';
+import { Body, H6, H7, CollapsibleHeaderLayout } from '../../components';
 
 // Styles
 import { sharedStyles } from '../../styles';

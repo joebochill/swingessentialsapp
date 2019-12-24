@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { Body, H7 } from '@pxblue/react-native-components';
-import { VideoCard, CollapsibleHeaderLayout } from '../../components';
+import { Body, H7, VideoCard, CollapsibleHeaderLayout } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Constants
@@ -14,9 +13,9 @@ import { PlaceholderLesson } from '../../constants/lessons';
 
 // Styles
 import { sharedStyles} from '../../styles';
-import { purple } from '../../styles/colors';
 import { spaces, unit } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
+import { useTheme } from '../../styles/theme';
 import bg from '../../images/bg_1.jpg';
 
 // Utilities
@@ -34,6 +33,7 @@ export const Home = props => {
     const credits = useSelector((state: ApplicationState) => state.credits);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     const latestLessons = lessons.closed.length > 0 ? lessons.closed : [PlaceholderLesson];
     return (
@@ -80,11 +80,12 @@ export const Home = props => {
                 onPress={() => props.navigation.navigate(ROUTES.SUBMIT)}
                 title={<Body style={{ marginLeft: spaces.medium }}>Individual Lessons</Body>}
                 rightTitle={`${credits.count} Left`}
+                rightTitleStyle={{color: theme.colors.text[500]}}
                 disabled={credits.count < 1}
                 disabledStyle={sharedStyles.disabled}
                 leftIcon={{
                     name: 'golf-course',
-                    color: purple[500],
+                    color: theme.colors.text[500],
                     size: unit(24),
                 }}
             />
@@ -93,12 +94,13 @@ export const Home = props => {
                 contentContainerStyle={sharedStyles.listItemContent}
                 bottomDivider
                 chevron={true}
+                rightTitleStyle={{color: 'red'}}
                 pad={spaces.medium}
                 onPress={() => props.navigation.navigate(ROUTES.ORDER)}
                 title={<Body style={{ marginLeft: spaces.medium }}>Order More</Body>}
                 leftIcon={{
                     name: 'shopping-cart',
-                    color: purple[500],
+                    color: theme.colors.text[500],
                     size: unit(24),
                 }}
             />

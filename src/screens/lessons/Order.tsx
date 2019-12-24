@@ -4,15 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View, FlatList, StyleSheet, Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { Body, H7, Label, H4 } from '@pxblue/react-native-components';
-import { CollapsibleHeaderLayout, ErrorBox, SEButton } from '../../components';
+import { Body, H7, Label, H4, CollapsibleHeaderLayout, ErrorBox, SEButton } from '../../components';
 import * as RNIap from 'react-native-iap';
 
 // Styles
 import bg from '../../images/bg_5.jpg';
 import { sharedStyles } from '../../styles';
 import { spaces, unit } from '../../styles/sizes';
-import { purple } from '../../styles/colors';
+import { useTheme } from '../../styles/theme';
 
 // Redux
 import { loadCredits, loadPackages } from '../../redux/actions';
@@ -25,6 +24,7 @@ import { ApplicationState } from '../../__types__';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
+import { ThemeColors } from 'react-navigation';
 
 export const Order = props => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
@@ -32,6 +32,7 @@ export const Order = props => {
     const packagesProcessing = useSelector((state: ApplicationState) => state.packages.loading);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     const [selected, setSelected] = useState(-1);
     const [products, setProducts] = useState<RNIap.Product[]>([]);
@@ -127,7 +128,7 @@ export const Order = props => {
                 style={{ marginHorizontal: spaces.medium, marginBottom: spaces.medium }}
             />
             {roleError.length === 0 && (
-                <View style={styles.callout}>
+                <View style={[styles.callout, {backgroundColor: theme.colors.surface, borderColor: theme.colors.primary[200]}]}>
                     <H4 style={{ lineHeight: 32 }}>{credits.count}</H4>
                     <Label>{`Credit${credits.count !== 1 ? 's' : ''} Remaining`}</Label>
                 </View>
@@ -149,17 +150,18 @@ export const Order = props => {
                         onPress={() => setSelected(index)}
                         leftIcon={{
                             name: parseInt(item.count, 10) === 1 ? 'filter-1' : 'filter-5',
-                            color: purple[500],
+                            color: theme.colors.text[500],
                             iconStyle: { marginLeft: 0 },
                         }}
                         title={<Body font={'semiBold'}>{item.name}</Body>}
                         subtitle={<Body>{item.description}</Body>}
                         rightTitle={products.length > 0 ? `$${products[index].price}` : '--'}
+                        rightTitleStyle={{color: theme.colors.text[500]}}
                         rightIcon={
                             selected === index
                                 ? {
                                       name: 'check',
-                                      color: purple[500],
+                                      color: theme.colors.text[500],
                                   }
                                 : undefined
                         }
@@ -170,8 +172,8 @@ export const Order = props => {
             {roleError.length === 0 && !packagesProcessing && !credits.inProgress && (
                 <SEButton
                     containerStyle={{ margin: spaces.medium, marginTop: spaces.large }}
-                    buttonStyle={{ backgroundColor: purple[400] }}
-                    title={<H7 color={'onPrimary'}>PURCHASE</H7>}
+                    buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
+                    title={<H7 style={{color: theme.colors.onPrimary[50]}}>PURCHASE</H7>}
                     onPress={() => onPurchase(packages[selected].app_sku, packages[selected].shortcode)}
                 />
             )}
@@ -184,11 +186,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: purple[50],
         padding: spaces.medium,
         marginBottom: spaces.large,
         borderWidth: unit(1),
         borderRadius: unit(5),
-        borderColor: purple[200],
+        
     },
 });

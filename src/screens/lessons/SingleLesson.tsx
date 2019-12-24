@@ -3,8 +3,7 @@ import { useSelector } from 'react-redux';
 
 // Components
 import { View, Platform } from 'react-native';
-import { Body, H7 } from '@pxblue/react-native-components';
-import { CollapsibleHeaderLayout, YouTube, SEVideo, VideoCard } from '../../components';
+import { Body, H7, CollapsibleHeaderLayout, YouTube, SEVideo, VideoCard } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Styles

@@ -4,8 +4,7 @@ import { useSelector } from 'react-redux';
 // Components
 import { View, SectionList } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { H7, Body } from '@pxblue/react-native-components';
-import { CollapsibleHeaderLayout } from '../../components';
+import { H7, Body, CollapsibleHeaderLayout } from '../../components';
 
 // Styles
 import { sharedStyles } from '../../styles';
