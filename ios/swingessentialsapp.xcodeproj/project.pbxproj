@@ -8,12 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* swingessentialsappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* swingessentialsappTests.m */; };
-		0421067FDCF64DE6B6A5887B /* SFCompactDisplayHeavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = BB54AF7A1BBA432E8702BC85 /* SFCompactDisplayHeavy.otf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		19A902C99F3C47FF94CB4766 /* SFCompactDisplay-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5875D4D15729454DB8F70C50 /* SFCompactDisplay-Ultralight.otf */; };
 		1C324908141246928E1BDEBD /* SFCompactDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 98E6EC2F2B8545959F310C0A /* SFCompactDisplay-Bold.otf */; };
 		1F113A67488DBEF79D6E8404 /* libPods-swingessentialsapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 756598F37F46742BC620A44D /* libPods-swingessentialsapp-tvOSTests.a */; };
 		27234B8D7EF8483EBD90DDF5 /* SFCompactDisplay-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 584692C02743414B86789A0A /* SFCompactDisplay-Thin.otf */; };
@@ -27,8 +25,6 @@
 		998B6E03906486D13ACCB3FE /* libPods-swingessentialsappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B7339F853FD2DBF524B91 /* libPods-swingessentialsappTests.a */; };
 		A8EA8D9DF720439EBAF6FEB7 /* SFCompactDisplay-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E6C1958251084AD28D49AF33 /* SFCompactDisplay-Semibold.otf */; };
 		C52CBA7324AC4DF89AF38BE2 /* SFCompactDisplay-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5CF6E0D23E9C491CA3124613 /* SFCompactDisplay-Regular.otf */; };
-		D99CC4B5D9BC491FB8215F38 /* SFCompactDisplay-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = AC0C22B21B8A4679816682EB /* SFCompactDisplay-Light.otf */; };
-		E11B75CEC8264181A02DFFEA /* SFCompactDisplay-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 95BACF34B6EB44749D0F9CEA /* SFCompactDisplay-Medium.otf */; };
 		F2029B212394862C0053EBE9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2029B202394862C0053EBE9 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -418,13 +414,9 @@
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				90754342EA6C44AA99EB47E7 /* SFCompactDisplay-Black.otf in Resources */,
 				1C324908141246928E1BDEBD /* SFCompactDisplay-Bold.otf in Resources */,
-				D99CC4B5D9BC491FB8215F38 /* SFCompactDisplay-Light.otf in Resources */,
-				E11B75CEC8264181A02DFFEA /* SFCompactDisplay-Medium.otf in Resources */,
 				C52CBA7324AC4DF89AF38BE2 /* SFCompactDisplay-Regular.otf in Resources */,
 				A8EA8D9DF720439EBAF6FEB7 /* SFCompactDisplay-Semibold.otf in Resources */,
 				27234B8D7EF8483EBD90DDF5 /* SFCompactDisplay-Thin.otf in Resources */,
-				19A902C99F3C47FF94CB4766 /* SFCompactDisplay-Ultralight.otf in Resources */,
-				0421067FDCF64DE6B6A5887B /* SFCompactDisplayHeavy.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,7 +450,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
