@@ -3,8 +3,6 @@ import { CreditsState } from '../../__types__';
 
 const initialState: CreditsState = {
     count: 0,
-    // unlimited: 0,
-    // unlimitedExpires: 0,
     inProgress: false,
     success: false,
     fail: false,
@@ -23,19 +21,14 @@ export const creditsReducer = (state = initialState, action): CreditsState => {
                 ...state,
                 inProgress: false,
                 count: parseInt(action.payload.count, 10) || 0,
-                // unlimited: action.payload.unlimited_count,
-                // unlimitedExpires: parseInt(action.payload.unlimited_expires, 10) || 0
             };
         case GET_CREDITS.FAILURE:
         case LOGOUT.SUCCESS:
         case TOKEN_TIMEOUT:
-            // case TOKEN_TIMEOUT:
             return {
                 ...state,
                 inProgress: false,
                 count: 0,
-                // unlimited: 0,
-                // unlimitedExpires: 0
             };
         case PURCHASE_CREDITS.REQUEST:
             return {
@@ -58,12 +51,6 @@ export const creditsReducer = (state = initialState, action): CreditsState => {
                 success: false,
                 fail: true,
             };
-        // case 'Navigation/NAVIGATE':
-        //     return {
-        //         ...state,
-        //         success: false,
-        //         fail: false
-        //     };
         default:
             return state;
     }

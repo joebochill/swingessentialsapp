@@ -29,7 +29,6 @@ export const loginReducer = (state = initialState, action): LoginState => {
                 token: action.payload.token,
                 pending: false,
                 role: getUserRole(action.payload.token),
-                //admin: (JSON.parse(atob(action.data.token.split('.')[1]))['role'].toLowerCase() === 'administrator')
             };
         case LOGIN.FAILURE:
             return {

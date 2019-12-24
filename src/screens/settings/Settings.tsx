@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
@@ -16,15 +16,20 @@ import { useTheme } from '../../styles/theme';
 
 // Types
 import { NavType, ApplicationState } from '../../__types__';
-import { NavigationInjectedProps } from 'react-navigation';
 // Redux
 import { loadSettings } from '../../redux/actions/SettingsActions';
+import { NavigationStackScreenProps } from 'react-navigation-stack';
 
-export const Settings = (props: NavigationInjectedProps) => {
+export const Settings = (props: NavigationStackScreenProps) => {
     const settings = useSelector((state: ApplicationState) => state.settings);
+    const token = useSelector((state: ApplicationState) => state.login.token);
     const dispatch = useDispatch();
     let type: NavType = props.navigation.getParam('navType', 'menu');
     const theme = useTheme();
+
+    useEffect(() => {
+        if (!token) props.navigation.pop();
+    }, [token]);
 
     return (
         <CollapsibleHeaderLayout

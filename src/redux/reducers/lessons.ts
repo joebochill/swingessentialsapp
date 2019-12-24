@@ -59,12 +59,6 @@ export const lessonsReducer = (state = initialState, action): LessonsState => {
                 redeemSuccess: false,
                 redeemError: parseInt(action.error, 10),
             };
-        // case 'Navigation/NAVIGATE':
-        //     return {
-        //         ...state,
-        //         redeemPending: false,
-        //         redeemSuccess: false,
-        //     };
         default:
             return state;
     }

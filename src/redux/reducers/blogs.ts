@@ -21,7 +21,6 @@ export const blogsReducer = (state = initialState, action): BlogsState => {
         case LOGOUT.FAILURE:
         case TOKEN_TIMEOUT:
         case GET_BLOGS.FAILURE:
-            // case TOKEN_TIMEOUT:
             return {
                 ...state,
                 loading: false,

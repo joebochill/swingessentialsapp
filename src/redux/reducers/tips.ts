@@ -21,7 +21,6 @@ export const tipsReducer = (state = initialState, action): TipsState => {
         case LOGOUT.FAILURE:
         case GET_TIPS.FAILURE:
         case TOKEN_TIMEOUT:
-            // case TOKEN_TIMEOUT:
             return {
                 ...state,
                 loading: false,

@@ -21,7 +21,6 @@ export const faqReducer = (state = initialState, action): FAQState => {
         case LOGOUT.FAILURE:
         case GET_FAQ.FAILURE:
         case TOKEN_TIMEOUT:
-            // case TOKEN_TIMEOUT:
             return {
                 ...state,
                 loading: false,

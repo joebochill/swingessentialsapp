@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
@@ -60,6 +60,7 @@ const caseSame = (val1: string | number, val2: string | number): boolean => {
 export const SingleSetting = (props: NavigationStackScreenProps) => {
     const { navigation } = props;
     const settings = useSelector((state: ApplicationState) => state.settings);
+    const token = useSelector((state: ApplicationState) => state.login.token);
     const currentSettingName: keyof SettingsState = navigation.getParam('setting', null);
 
     const dispatch = useDispatch();
@@ -80,6 +81,10 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
             }),
         );
     }, [value, dispatch]);
+
+    useEffect(() => {
+        if (!token) props.navigation.popToTop();
+    }, [token]);
 
     return (
         <View style={sharedStyles.pageContainer}>

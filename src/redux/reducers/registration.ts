@@ -12,9 +12,7 @@ import { RegistrationState } from '../../__types__';
 const initialState: RegistrationState = {
     pending: false,
     userAvailable: true,
-    // lastUserChecked: '',
     emailAvailable: true,
-    // lastEmailChecked: '',
     success: false,
     emailVerified: false,
     error: 0,
@@ -43,13 +41,11 @@ export const registrationReducer = (state = initialState, action): RegistrationS
             return {
                 ...state,
                 userAvailable: action.payload.available,
-                // lastUserChecked: action.data.lastChecked
             };
         case CHECK_EMAIL.SUCCESS:
             return {
                 ...state,
                 emailAvailable: action.payload.available,
-                // lastEmailChecked: action.data.lastChecked
             };
         case VERIFY_EMAIL.REQUEST:
             return {

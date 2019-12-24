@@ -1,6 +1,7 @@
 import { Logger } from '../utilities/logging';
 import { TOKEN_TIMEOUT } from '../redux/actions/types';
 import { store } from '../../App';
+import { loadUserContent } from '../redux/actions';
 
 /* Dispatch a failure action for the supplied action type */
 export function failure(type, response, api = '--') {
@@ -52,5 +53,6 @@ export function checkTimeout(response, dispatch) {
         response && response.headers && response.headers.get ? parseInt(response.headers.get('Error'), 10) : 999;
     if (error && error === 400100 && dispatch) {
         store.dispatch({ type: TOKEN_TIMEOUT });
+        store.dispatch(loadUserContent())
     }
 }

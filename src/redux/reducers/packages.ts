@@ -1,4 +1,4 @@
-import { GET_PACKAGES, LOGOUT } from '../actions/types';
+import { GET_PACKAGES, LOGOUT, TOKEN_TIMEOUT } from '../actions/types';
 import { PackagesState } from '../../__types__';
 
 const initialState: PackagesState = {
@@ -18,7 +18,7 @@ export const packagesReducer = (state = initialState, action): PackagesState => 
                 list: action.payload,
             };
         case GET_PACKAGES.FAILURE:
-            // case TOKEN_TIMEOUT:
+        case TOKEN_TIMEOUT:
             return {
                 ...state,
                 loading: false,

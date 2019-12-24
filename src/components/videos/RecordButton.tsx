@@ -61,9 +61,10 @@ type RecordButtonProps = TouchableOpacityProps & {
     recording: boolean;
     onPress: Function;
 };
-export const RecordButton = ({ recording, onPress, ...props }: RecordButtonProps) => {
+export const RecordButton = (props: RecordButtonProps) => {
+    const { recording, style, onPress, ...other } = props;
     return (
-        <TouchableOpacity onPress={(evt: GestureResponderEvent) => onPress(evt)} style={styles.recordButton} {...props}>
+        <TouchableOpacity onPress={(evt: GestureResponderEvent) => onPress(evt)} style={StyleSheet.flatten([styles.recordButton, style])} {...other}>
             {!recording ? <View style={styles.innerRecord} /> : <View style={styles.innerStop} />}
         </TouchableOpacity>
     );
@@ -76,7 +77,8 @@ type VideoControlRowProps = ViewProps & {
     onBack: Function;
     onNext: Function;
 };
-export const VideoControls = ({ mode, active, onAction, onBack, onNext, ...props }: VideoControlRowProps) => {
+export const VideoControls = (props: VideoControlRowProps) => {
+    const { mode, active, onAction, onBack, onNext, ...other } = props;
     const insets = useSafeArea();
     return (
         <View
@@ -87,7 +89,7 @@ export const VideoControls = ({ mode, active, onAction, onBack, onNext, ...props
                     backgroundColor: active ? transparent : blackOpacity(0.5),
                 },
             ]}
-            {...props}>
+            {...other}>
             <TouchableOpacity onPress={() => onBack()} disabled={active} style={{ flex: 1 }}>
                 {!active && <Body style={styles.label}>{mode === 'record' ? 'Cancel' : 'Retake'}</Body>}
             </TouchableOpacity>
@@ -106,8 +108,8 @@ export const VideoControls = ({ mode, active, onAction, onBack, onNext, ...props
                 {!active && mode === 'play' && <Body style={styles.label}>Use Video</Body>}
                 {!active && mode === 'record' && (
                     <Icon
-                        type={'ionicon'}
-                        name={'ios-reverse-camera'}
+                        type={'material-community'}
+                        name={'camera-switch'}
                         size={sizes.medium}
                         underlayColor={transparent}
                         color={white[50]}
