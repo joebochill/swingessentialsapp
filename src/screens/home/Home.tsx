@@ -32,6 +32,7 @@ export const Home = props => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
     const tips = useSelector((state: ApplicationState) => state.tips);
     const credits = useSelector((state: ApplicationState) => state.credits);
+    const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
 
     const latestLessons = lessons.closed.length > 0 ? lessons.closed : [PlaceholderLesson];
@@ -52,11 +53,11 @@ export const Home = props => {
                     <Body onPress={() => props.navigation.navigate(ROUTES.LESSONS)}>View All</Body>
                 </View>
                 <Carousel
-                    data={latestLessons.slice(0, 3)}
+                    data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)}
                     renderItem={({ item }) => (
                         <VideoCard
                             headerTitle={item.request_date}
-                            headerSubtitle={item.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson'}
+                            headerSubtitle={role === 'administrator' ? item.username : (item.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson')}
                             style={{ marginBottom: 16 }}
                             video={item.response_video}
                             onExpand={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
