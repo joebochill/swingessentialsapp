@@ -270,7 +270,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
             <SEHeader title={'Sign Up'} subtitle={'create an account'} mainAction={'back'} showAuth={false} />
             <KeyboardAvoidingView
                 style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}
-                behavior={'padding'}>
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView
                     ref={scroller}
                     contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * 0.5 }]}

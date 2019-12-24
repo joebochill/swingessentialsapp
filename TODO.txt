@@ -46,5 +46,7 @@ Only allow submission if they have credits available
 Only allow submission if no pending lessons
 Fix list dividers missing
 Fix the NPM monkeypatch for camera roll
+Fix the keyboardavoidingview on android
+Disabled Android Landscape
 
 DONE:

@@ -6,6 +6,7 @@ import {
     Image,
     ImageSourcePropType,
     KeyboardAvoidingView,
+    Platform,
     RefreshControl,
     SafeAreaView,
     ScrollView,
@@ -62,7 +63,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                     />
                 }
                 <SEHeader {...this.props} headerHeight={headerHeight} />
-                <KeyboardAvoidingView behavior={'padding'}>
+                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                     {renderScroll && (
                         <ScrollView
                             contentContainerStyle={[styles.scrollContainer, bottomPad ? { paddingBottom: height * 0.5 } : {}]}

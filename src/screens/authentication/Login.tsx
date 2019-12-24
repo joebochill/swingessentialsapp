@@ -1,10 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useCompare } from '../../utilities';
+
 // Components
 import { 
     ActivityIndicator, 
     Image, 
     KeyboardAvoidingView, 
+    Platform,
+    ScrollView,
     StyleSheet, 
     Switch, 
     Text, 
@@ -16,25 +20,28 @@ import { Icon, Input } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
-import { useCompare } from '../../utilities';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 // Types
 import { NavigationInjectedProps } from 'react-navigation';
+import { ApplicationState } from '../../__types__';
 
 // Styles
 import { transparent } from '../../styles/colors';
 import {spaces, unit, sizes, fonts } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
+import { height } from '../../utilities/dimensions';
+
 import logo from '../../images/logo-big.png';
 
 // SE Components
 import { SEButton, ErrorBox } from '../../components';
 
+// Constants
+import { ROUTES } from '../../constants/routes';
+
 // Actions
 import { requestLogin } from '../../redux/actions';
-import { ScrollView } from 'react-native-gesture-handler';
-import { ROUTES } from '../../constants/routes';
-import { ApplicationState } from '../../__types__';
 
 type BiometryState = {
     available: boolean;
@@ -199,8 +206,8 @@ export const Login = (props: NavigationInjectedProps) => {
     }, [biometry, credentials, useBiometry]);
 
     return (
-        <KeyboardAvoidingView style={[styles.container, {backgroundColor: theme.colors.primary[400]}]} behavior={'padding'}>
-            <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps={'always'}>
+        <KeyboardAvoidingView style={[styles.container, {backgroundColor: theme.colors.primary[400]}]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+            <ScrollView style={{flex: 1}} contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps={'always'}>
                 {/* LOGO */}
                 <Image source={logo} resizeMethod="resize" style={styles.logo} />
 
@@ -345,8 +352,9 @@ export const Login = (props: NavigationInjectedProps) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'orange',
         maxWidth: unit(500),
-        paddingHorizontal: spaces.medium,
+        // paddingHorizontal: spaces.medium,
     },
     formLabel: {
         fontFamily: 'SFCompactDisplay-Regular',
@@ -389,14 +397,18 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexWrap: 'wrap',
     },
-    scrollContainer: {
-        flex: 1,
-        justifyContent: 'center',
+    scrollContainer:{
+        minHeight: height - getStatusBarHeight(), 
+        justifyContent: 'center', 
+        paddingHorizontal: spaces.medium,
     },
     toggle: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
     },
-    toggleLabel: { fontSize: fonts[14], marginRight: spaces.small },
+    toggleLabel: { 
+        fontSize: fonts[14], 
+        marginRight: spaces.small 
+    },
 });

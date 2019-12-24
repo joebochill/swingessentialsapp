@@ -3,9 +3,8 @@ import { usePrevious } from '../../utilities';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { Platform, View, KeyboardAvoidingView, Image, TextInput, StyleSheet, Alert, Keyboard } from 'react-native';
+import { Platform, View, KeyboardAvoidingView, ScrollView, TouchableOpacity, Image, TextInput, StyleSheet, Alert, Keyboard } from 'react-native';
 import { H7, Label, SEHeader, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox, UploadProgressModal } from '../../components';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 
@@ -220,7 +219,7 @@ export const Submit = props => {
             <SEHeader title={'Submit Your Swing'} subtitle={'create a new lesson'} />
             <KeyboardAvoidingView
                 style={[sharedStyles.pageContainer, { marginTop: HEADER_COLLAPSED_HEIGHT, backgroundColor: transparent }]}
-                behavior={'padding'}>
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView contentContainerStyle={sharedStyles.paddingMedium} ref={scroller}>
                     <ErrorBox show={roleError !== ''} error={roleError} style={{ marginBottom: spaces.medium }} />
                     <ErrorBox

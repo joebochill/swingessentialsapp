@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 
 // Components
-import { View, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, Platform, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
 import { Body, H7, SEHeader, SEButton } from '../../components';
 
@@ -48,7 +48,7 @@ export const ForgotPassword = () => {
                         paddingTop: HEADER_COLLAPSED_HEIGHT,
                     },
                 ]}
-                behavior={'padding'}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             >
                 {!complete && (
                     <ScrollView
