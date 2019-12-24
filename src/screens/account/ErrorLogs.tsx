@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
-import { Body, wrapIcon } from '@pxblue/react-native-components';
-import { SEButton, CollapsibleHeaderLayout } from '../../components';
+import { wrapIcon } from '@pxblue/react-native-components';
+import { Body, SEButton, CollapsibleHeaderLayout } from '../../components';
 import { Icon } from 'react-native-elements';
 
 // Styles

@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { Platform, View, KeyboardAvoidingView, Image, TextInput, StyleSheet, Alert, Keyboard } from 'react-native';
-import { H7, Label } from '@pxblue/react-native-components';
-import { SEHeader, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox, UploadProgressModal } from '../../components';
+import { H7, Label, SEHeader, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox, UploadProgressModal } from '../../components';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
