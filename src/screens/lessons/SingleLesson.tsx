@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Platform } from 'react-native';
@@ -19,11 +19,18 @@ import { PlaceholderLesson } from '../../constants/lessons';
 import { ROUTES } from '../../constants/routes';
 
 // Types
-import { ApplicationState } from 'src/__types__';
+import { ApplicationState, Lesson } from 'src/__types__';
+
+// Actions
+import { markLessonViewed } from '../../redux/actions';
+
 
 export const SingleLesson = props => {
     const token = useSelector((state: ApplicationState) => state.login.token);
-    let lesson = props.navigation.getParam('lesson', null);
+    const role = useSelector((state: ApplicationState) => state.login.role);
+    const dispatch = useDispatch();
+    
+    let lesson:Lesson = props.navigation.getParam('lesson', null);
     if (lesson === null) {
         lesson = PlaceholderLesson;
     }
@@ -33,6 +40,14 @@ export const SingleLesson = props => {
     useEffect(() => {
         if (!token && lesson.request_id !== -1) props.navigation.pop();
     }, [token, lesson]);
+
+    useEffect(() => {
+        if(lesson.request_id === -1) return;
+        const viewed = (typeof lesson.viewed === 'string') ? parseInt(lesson.viewed, 10) === 1 : (lesson.viewed === 1);
+        if(!viewed && token && role !== 'administrator'){
+            dispatch(markLessonViewed(lesson.request_id));
+        }
+    },[lesson]);
 
     return !token && lesson.request_id !== -1
         ? null

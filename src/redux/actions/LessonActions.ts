@@ -36,3 +36,21 @@ export function submitLesson(data: FormData, onUpdateProgress: (this: XMLHttpReq
             .requestWithProgress(onUpdateProgress);
     };
 }
+
+/* Marks a new lesson as viewed by the user */
+export function markLessonViewed(lesson_id: number) {
+    return (dispatch: ThunkDispatch<any, void, any>) => {
+        dispatch({ type: ACTIONS.MARK_VIEWED.REQUEST });
+
+        HttpRequest.put(ACTIONS.MARK_VIEWED.API)
+            .withBody({id: lesson_id})
+            .onSuccess((body: any) => {
+                dispatch(success(ACTIONS.MARK_VIEWED.SUCCESS, body));
+                dispatch(loadLessons());
+            })
+            .onFailure((response: Response) => {
+                dispatch(failure(ACTIONS.MARK_VIEWED.FAILURE, response));
+            })
+            .request();
+    };
+}
