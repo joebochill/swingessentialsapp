@@ -41,6 +41,7 @@ export const Home = props => {
             backgroundImage={bg}
             title={'SWING ESSENTIALS'}
             subtitle={'a pro in your pocket™'}
+            mainAction={'menu'}
             refreshing={lessons.loading || credits.inProgress || tips.loading}
             onRefresh={() => {
                 dispatch(loadUserContent());

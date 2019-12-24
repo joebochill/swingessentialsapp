@@ -103,6 +103,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
             ]}>
                 {currentSetting.values.map((val, index) => (
                     <ListItem
+                        key={`Setting-Option-${index}`}
                         containerStyle={[sharedStyles.listItem]}
                         contentContainerStyle={sharedStyles.listItemContent}
                         bottomDivider

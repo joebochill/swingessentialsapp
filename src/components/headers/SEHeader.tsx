@@ -41,7 +41,7 @@ export type SEHeaderProps = Omit<ResizableHeaderProps, 'headerHeight'> & {
 
 export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjectedProps) => {
     const {
-        mainAction = 'menu',
+        mainAction = 'back',
         showAuth = true,
         navigation,
         backgroundImage = topology,

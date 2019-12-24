@@ -41,13 +41,13 @@ export const mainNavigationItems: RouteGroup = {
             title: 'Tip of the Month',
             iconType: 'material-community',
             icon: 'calendar-today',
-            route: ROUTES.TIPS_GROUP,
+            route: ROUTES.TIPS,
         },
         {
             title: '19th Hole',
             iconType: 'material-community',
             icon: 'beer',
-            route: ROUTES.BLOGS_GROUP,
+            route: ROUTES.BLOGS,
         },
         {
             title: 'My Account',
