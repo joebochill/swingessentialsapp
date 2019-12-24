@@ -1,20 +1,16 @@
 TODO:
 
-// Bug Fixes
-    Disabled Android Landscape
-
 // Additional Functionality
-    Mark lessons as viewed
     Tutorials
     Check camera roll video size using RNFetchBlob
-    
+    Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
+    Disable Android Landscape
 
 // Performance
     Remove unused libraries
     Optimize image assets 
     Remove unused images
     Optimize bundle size
-    Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
     
 
 // Testing
@@ -37,6 +33,8 @@ TODO:
     Fix the NPM monkeypatch for camera roll
     Publish API Changes
     Linting (Remove inline style warnings)
+
+
 
 
 // Future Functionality

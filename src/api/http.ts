@@ -87,6 +87,7 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                     rawErrorCode: error.code,
                     rawErrorMessage: error.message,
                 });
+                if (this.failureCallback) this.failureCallback(null)
             });
     }
     public requestWithProgress(onProgress: (this: XMLHttpRequest, ev: ProgressEvent) => any) {
