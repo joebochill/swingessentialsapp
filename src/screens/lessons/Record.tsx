@@ -2,14 +2,14 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
 // Components
-import { 
-    Image, 
-    Platform, 
+import {
+    Image,
+    Platform,
     SafeAreaView,
-    StatusBar, 
-    StyleSheet, 
-    TouchableOpacity, 
-    View, 
+    StatusBar,
+    StyleSheet,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { VideoControls, CountDown, VideoTimer } from '../../components';
@@ -53,8 +53,8 @@ const getOverlayImage = (swing: SwingType, handedness: HandednessType, camera: C
 export const Record = props => {
     const { navigation } = props;
     const cameraRef = useRef(null);
-    const onReturn = props.navigation.getParam('onReturn', () => {});
-    const swing: SwingType = props.navigation.getParam('swing', () => {});
+    const onReturn = props.navigation.getParam('onReturn', () => { });
+    const swing: SwingType = props.navigation.getParam('swing', () => { });
 
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -87,11 +87,21 @@ export const Record = props => {
             quality: RNCamera.Constants.VideoQuality['720p'],
         };
 
-        const _video = await cameraRef.current.recordAsync(options);
+        try {
+            const _video = await cameraRef.current.recordAsync(options);
 
-        setRecordedVideo(_video.uri);
-        setIsRecording(false);
-        setRecordingMode(false);
+            setRecordedVideo(_video.uri);
+            setIsRecording(false);
+            setRecordingMode(false);
+        }
+        catch (error) {
+            Logger.logError({
+                code: 'REC150',
+                description: `Async Video Recording failed.`,
+                rawErrorCode: error.code,
+                rawErrorMessage: error.message,
+            });
+        }
     }, [cameraRef, settings]);
 
     const _endRecording = useCallback(() => {
@@ -210,38 +220,38 @@ export const Record = props => {
                 onAction={
                     recordingMode
                         ? () => {
-                              // Start / End recording
-                              if (!isRecording) {
-                                  setCountdownStarted(true);
-                                  setIsRecording(true);
-                              } else {
-                                  _endRecording();
-                              }
-                          }
+                            // Start / End recording
+                            if (!isRecording) {
+                                setCountdownStarted(true);
+                                setIsRecording(true);
+                            } else {
+                                _endRecording();
+                            }
+                        }
                         : () => {
-                              // Play / Pause the video
-                              setIsPlaying(!isPlaying);
-                          }
+                            // Play / Pause the video
+                            setIsPlaying(!isPlaying);
+                        }
                 }
                 onBack={
                     recordingMode
                         ? () => props.navigation.pop() // Go Back
                         : () => {
-                              setRecordingMode(true);
-                              setRecordedVideo('');
-                          }
+                            setRecordingMode(true);
+                            setRecordedVideo('');
+                        }
                 }
                 onNext={
                     recordingMode
                         ? () => {
-                              // Toggle Camera
-                              setCameraType((cameraType + 1) % cameras.length);
-                          }
+                            // Toggle Camera
+                            setCameraType((cameraType + 1) % cameras.length);
+                        }
                         : () => {
-                              // Use-Video
-                              onReturn(recordedVideo);
-                              props.navigation.pop();
-                          }
+                            // Use-Video
+                            onReturn(recordedVideo);
+                            props.navigation.pop();
+                        }
                 }
             />
         </View>

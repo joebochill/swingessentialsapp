@@ -1,20 +1,10 @@
 TODO:
 
 // Bug Fixes
-    Fix list dividers missing
     Disabled Android Landscape
-    Token timeout not counting down
-    Token refresh not always working
-    Make sure all data is cleared when token expires (tips and 19 too)
-    Don't flash the token dialog if the token is expired on loading
-    Catch blocks around all awaits
-    Right title font size in  list items
-
 
 // Additional Functionality
     Mark lessons as viewed
-    Only allow submission if they have credits available
-    Only allow submission if no pending lessons
     Tutorials
     All routes on a single stack
     Check camera roll video size using RNFetchBlob
@@ -29,6 +19,8 @@ TODO:
     
 
 // Testing
+    Fix list dividers missing
+    Test - Don't flash the token dialog if the token is expired on loading
     Remove Albatross Package
         test how this affects existing app
     Pull to refresh all - verify on android

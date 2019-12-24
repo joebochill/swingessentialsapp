@@ -21,6 +21,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { Logger } from '../../utilities/logging';
 
 // Types
 import { NavigationInjectedProps } from 'react-navigation';
@@ -90,10 +91,20 @@ export const Login = (props: NavigationInjectedProps) => {
     useEffect(() => {
         // Load saved settings
         const loadSavedSettings = async () => {
-            const save = await AsyncStorage.getItem('@SwingEssentials:saveUser');
-            const use = await AsyncStorage.getItem('@SwingEssentials:useTouch');
-            setRemember(save === 'yes');
-            setUseBiometry(use === 'yes');
+            try {
+                const save = await AsyncStorage.getItem('@SwingEssentials:saveUser');
+                const use = await AsyncStorage.getItem('@SwingEssentials:useTouch');
+                setRemember(save === 'yes');
+                setUseBiometry(use === 'yes');
+            }
+            catch (error) {
+                Logger.logError({
+                    code: 'LGN100',
+                    description: `Failed to load stored settings.`,
+                    rawErrorCode: error.code,
+                    rawErrorMessage: error.message,
+                });
+            }
         };
         loadSavedSettings();
     }, []);
@@ -118,21 +129,32 @@ export const Login = (props: NavigationInjectedProps) => {
     useEffect(() => {
         // Load stored credentials
         const loadKeychainCredentials = async () => {
-            const _credentials = await Keychain.getGenericPassword();
-            if (_credentials) {
-                setCredentials({
-                    ...credentials,
-                    stored: true,
-                    savedCredentials: _credentials,
-                });
-                if (remember) {
-                    setUsername(_credentials.username);
+            try {
+                const _credentials = await Keychain.getGenericPassword();
+
+                if (_credentials) {
+                    setCredentials({
+                        ...credentials,
+                        stored: true,
+                        savedCredentials: _credentials,
+                    });
+                    if (remember) {
+                        setUsername(_credentials.username);
+                    }
+                } else {
+                    setCredentials({
+                        ...credentials,
+                        stored: false,
+                        savedCredentials: undefined,
+                    });
                 }
-            } else {
-                setCredentials({
-                    ...credentials,
-                    stored: false,
-                    savedCredentials: undefined,
+            }
+            catch(error){
+                Logger.logError({
+                    code: 'LGN200',
+                    description: `Failed to load stored credentials.`,
+                    rawErrorCode: error.code,
+                    rawErrorMessage: error.message,
                 });
             }
         };

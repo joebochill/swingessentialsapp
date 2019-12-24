@@ -40,13 +40,13 @@ export const Submit = props => {
     const [useNotes, setUseNotes] = useState(false);
     const [notes, setNotes] = useState('');
     const [uploadProgress, setUploadProgress] = useState(0);
+    const credits = useSelector((state: ApplicationState) => state.credits.count);
     const lessons = useSelector((state: ApplicationState) => state.lessons);
-    // const pending = useSelector((state:ApplicationState) => state.lessons.redeemPending);
-    // const lessonInProgress = useSelector((state: ApplicationState) => state.lessons.pending.length > 0);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const scroller = useRef(null);
     const dispatch = useDispatch();
     const theme = useTheme();
+
     const roleError =
         role === 'anonymous'
             ? 'You must be signed in to submit lessons.'
@@ -121,6 +121,13 @@ export const Submit = props => {
             Logger.logError({
                 code: 'SUB300',
                 description: `You may not submit a new lesson with a current lesson pending.`,
+            });
+            return;
+        }
+        if (credits < 1) {
+            Logger.logError({
+                code: 'SUB350',
+                description: `You may not submit a new lesson without any credits.`,
             });
             return;
         }
@@ -226,6 +233,13 @@ export const Submit = props => {
                         show={lessons.pending.length > 0}
                         error={
                             'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.'
+                        }
+                        style={{ marginBottom: spaces.medium }}
+                    />
+                    <ErrorBox
+                        show={roleError.length === 0 && lessons.pending.length === 0 && credits < 1}
+                        error={
+                            'You don\'t have any credits left. Head over to the Order page to get more.'
                         }
                         style={{ marginBottom: spaces.medium }}
                     />
