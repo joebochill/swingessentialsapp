@@ -26,6 +26,8 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 // Types
 import { HandednessType, SwingType, CameraType } from '../../__types__';
 import { ApplicationState } from '../../__types__';
+// Constants
+import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
 // Overlay images
 import faceonLH from '../../images/overlay-fo-lh.png';
@@ -183,7 +185,7 @@ export const Record = props => {
             {recordingMode && (
                 <View style={styles.bar}>
                     <StatusBar barStyle={'light-content'} />
-                    <SafeAreaView style={{ height: 56 + getStatusBarHeight(true) }}>
+                    <SafeAreaView style={{ height: HEADER_COLLAPSED_HEIGHT }}>
                         <View style={styles.content}>
                             {recordingMode && !isRecording && <View style={{ flex: 1 }} />}
                             {isRecording && !showCountDown && <VideoTimer visible={isRecording} />}

@@ -13,7 +13,7 @@ import { PlaceholderLesson } from '../../constants/lessons';
 
 // Styles
 import { sharedStyles} from '../../styles';
-import { spaces, unit } from '../../styles/sizes';
+import { spaces, unit, sizes } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 import { useTheme } from '../../styles/theme';
 import bg from '../../images/bg_1.jpg';
@@ -58,7 +58,7 @@ export const Home = props => {
                         <VideoCard
                             headerTitle={item.request_date}
                             headerSubtitle={role === 'administrator' ? item.username : (item.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson')}
-                            style={{ marginBottom: 16 }}
+                            style={{ marginBottom: spaces.medium }}
                             video={item.response_video}
                             onExpand={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                         />
@@ -86,7 +86,7 @@ export const Home = props => {
                 leftIcon={{
                     name: 'golf-course',
                     color: theme.colors.text[500],
-                    size: unit(24),
+                    size: sizes.small,
                 }}
             />
             <ListItem
@@ -101,13 +101,13 @@ export const Home = props => {
                 leftIcon={{
                     name: 'shopping-cart',
                     color: theme.colors.text[500],
-                    size: unit(24),
+                    size: sizes.small,
                 }}
             />
 
             {tips.tipList.length > 0 && (
                 <>
-                    <View style={[sharedStyles.sectionHeader, { marginTop: 32 }]}>
+                    <View style={[sharedStyles.sectionHeader, { marginTop: spaces.xLarge }]}>
                         <H7>Tip of the Month</H7>
                         <Body onPress={() => props.navigation.navigate(ROUTES.TIPS)}>View All</Body>
                     </View>
@@ -117,7 +117,7 @@ export const Home = props => {
                             <VideoCard
                                 headerTitle={getLongDate(item.date)}
                                 headerSubtitle={item.title}
-                                style={{ marginBottom: 16 }}
+                                style={{ marginBottom: spaces.medium }}
                                 video={item.video}
                                 onExpand={() => props.navigation.push(ROUTES.TIP, { tip: item })}
                             />

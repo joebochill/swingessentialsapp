@@ -8,7 +8,7 @@ import Carousel from 'react-native-snap-carousel';
 
 // Styles
 import { sharedStyles } from '../../styles';
-import { spaces } from '../../styles/sizes';
+import { spaces, unit } from '../../styles/sizes';
 import { width, aspectHeight } from '../../utilities/dimensions';
 
 // Utilities
@@ -71,7 +71,7 @@ export const SingleLesson = props => {
                                       <VideoCard
                                           headerTitle={getLongDate(item.date)}
                                           headerSubtitle={item.title}
-                                          style={{ marginBottom: 16 }}
+                                          style={{ marginBottom: spaces.medium }}
                                           video={item.video}
                                           onExpand={() => props.navigation.push(ROUTES.TIP, { tip: item })}
                                       />

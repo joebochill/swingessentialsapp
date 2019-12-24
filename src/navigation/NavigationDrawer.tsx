@@ -193,7 +193,7 @@ export const NavigationDrawer = (props) => {
                             </Animated.View>
                         </View>
                         <Animated.View
-                            style={[styles.headerText, { marginLeft: scaleByHeight(unit(16), 0) }]}>
+                            style={[styles.headerText, { marginLeft: scaleByHeight(spaces.medium, 0) }]}>
                             <Animated.Text
                                 style={{
                                     color: 'white',
@@ -229,7 +229,7 @@ export const NavigationDrawer = (props) => {
                         </Animated.View>
 
                     </Animated.View>
-                    <View style={[styles.userInfo]}>
+                    <View style={[styles.footer]}>
                         <H7 style={{color: theme.colors.onPrimary[500]}}>SWING ESSENTIALS</H7>
                         <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
                             <Body style={{color: theme.colors.onPrimary[500]}} font={'light'} >{`v${APP_VERSION}`}</Body>
@@ -311,8 +311,8 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        paddingVertical: 16,
-        paddingHorizontal: unit(16),
+        paddingVertical: spaces.medium,
+        paddingHorizontal: spaces.medium,
         flexDirection: 'row',
     },
     headerText: {
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     navLabel: {
-        marginLeft: unit(16),
+        marginLeft: spaces.medium,
     },
     drawerBody: {
         flexDirection: 'row',
@@ -328,12 +328,12 @@ const styles = StyleSheet.create({
     panel: {
         width: DRAWER_WIDTH,
     },
-    userInfo: {
+    footer: {
         flex: 0,
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: unit(16),
+        padding: spaces.medium,
     },
 });

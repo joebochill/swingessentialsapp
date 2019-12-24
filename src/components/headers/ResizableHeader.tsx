@@ -14,7 +14,7 @@ import { AnimatedSafeAreaView } from '../../components';
 
 // Styles
 import { blackOpacity } from '../../styles/colors';
-import { unit } from '../../styles/sizes';
+import { unit, sizes, spaces } from '../../styles/sizes';
 
 // Utilities
 import color from 'color';
@@ -69,8 +69,8 @@ export interface ResizableHeaderProps {
 interface HeaderState {}
 
 class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState> {
-    static readonly ICON_SIZE = unit(24);
-    static readonly ICON_SPACING = unit(16);
+    static readonly ICON_SIZE = sizes.small;;
+    static readonly ICON_SPACING = spaces.medium;
 
     render() {
         const barStyle = this.barStyle();
@@ -125,7 +125,7 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
 
     private icon(IconClass: ComponentType<{ size: number; color: string }>) {
         if (IconClass) {
-            return <IconClass size={unit(24)} color={this.fontColor()} />;
+            return <IconClass size={HeaderClass.ICON_SIZE} color={this.fontColor()} />;
         }
     }
 
@@ -218,7 +218,7 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         const contractedPadding = this.props.subtitle
             ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.sizes.large + 18)) / 2
             : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - theme.sizes.large) / 2;
-        return [styles.content, headerContent ? {} : { paddingHorizontal: unit(16), paddingBottom: this.scaleByHeaderHeight(unit(28), contractedPadding) }];
+        return [styles.content, headerContent ? {} : { paddingHorizontal: spaces.medium, paddingBottom: this.scaleByHeaderHeight(spaces.xLarge, contractedPadding) }];
     }
 
     private titleStyle() {
@@ -330,8 +330,8 @@ const styles = StyleSheet.create({
         height: HeaderClass.ICON_SIZE,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: unit(16),
-        marginRight: unit(32),
+        marginTop: spaces.medium,
+        marginRight: spaces.xLarge,
     },
     titleContainer: {
         flex: 1,
