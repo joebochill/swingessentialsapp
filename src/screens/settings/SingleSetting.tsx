@@ -15,6 +15,8 @@ import { SettingsState, ApplicationState } from '../../__types__';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 // Redux
 import { putSettings } from '../../redux/actions/SettingsActions';
+// Constants
+import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
 type SettingType = {
     name: keyof Exclude<SettingsState, 'loading'>;
@@ -87,7 +89,12 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                 showAuth={false}
                 onNavigate={() => _updateSetting()}
             />
-            <View style={{ marginTop: spaces.medium }}>
+            <View style={[
+                sharedStyles.pageContainer,
+                {
+                    paddingTop: HEADER_COLLAPSED_HEIGHT + spaces.medium,
+                },
+            ]}>
                 {currentSetting.values.map((val, index) => (
                     <ListItem
                         containerStyle={[sharedStyles.listItem]}
@@ -98,7 +105,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                         title={
                             <Body>{`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
                                 typeof val === 'number' ? 's' : ''
-                            }`}</Body>
+                                }`}</Body>
                         }
                         rightIcon={caseSame(value, val) ? { name: 'check', color: purple[500] } : undefined}
                     />

@@ -6,6 +6,7 @@ import {
     Animated,
     AppState,
     AppStateStatus,
+    Image,
     FlatList,
     Linking,
     Platform,
@@ -29,13 +30,10 @@ import {
 } from '../constants';
 import { ROUTES } from '../constants/routes';
 
-
 // Styles
 import { sharedStyles } from '../styles';
 import { purple, white } from '../styles/colors';
 import { unit, spaces } from '../styles/sizes';
-
-// Types
 
 // Utilities
 import { getLongDate } from '../utilities';
@@ -45,6 +43,9 @@ import { Logger } from '../utilities/logging';
 // Redux
 import { requestLogout } from '../redux/actions';
 import { ApplicationState } from 'src/__types__';
+
+// Icons
+import se from '../images/logo-small.png';
 
 // TODO: Do not make this menu collapsible?
 // TODO: Fix the scroll reset when changing tabs and closing
@@ -85,7 +86,7 @@ export const NavigationDrawer = (props) => {
             // TODO: Refresh data from the token
         }
         setAppState(nextAppState);
-    },[appState, token]);
+    }, [appState, token]);
 
     const _linkRoute = useCallback((url: string, path: string) => {
         if (url.match(/\/lessons\/?/gi)) {
@@ -98,13 +99,13 @@ export const NavigationDrawer = (props) => {
             navigation.navigate(ROUTES.REGISTER);
         }
         // TODO: Reset Password (needs to be added to app site association first)
-    },[token, navigation]);
+    }, [token, navigation]);
 
     // Handles activating a deep link while the app is in the background
-    const _wakeupByLink = useCallback( (event) => {
+    const _wakeupByLink = useCallback((event) => {
         let path = event.url.split('/').filter(el => el.length > 0);
         _linkRoute(event.url, path);
-    },[_linkRoute]);
+    }, [_linkRoute]);
 
     useEffect(() => {
         // animate drawer panels
@@ -170,7 +171,7 @@ export const NavigationDrawer = (props) => {
                             overflow: 'hidden',
                         },
                     ]}>
-                        <View style={styles.avatarContainer}>
+                        <View style={[styles.avatarContainer]}>
                             <Animated.View
                                 style={[
                                     styles.avatar,
@@ -179,15 +180,23 @@ export const NavigationDrawer = (props) => {
                                         width: scaleByHeight(80, 0),
                                     },
                                 ]}>
-                                <Animated.Text
-                                    adjustsFontSizeToFit
-                                    allowFontScaling
-                                    style={{
-                                        fontSize: scaleByHeight(32, 0),
-                                        color: purple[500],
-                                    }}>
-                                    {initials.toUpperCase()}
-                                </Animated.Text>
+                                {token ?
+                                    <Animated.Text
+                                        adjustsFontSizeToFit
+                                        allowFontScaling
+                                        style={{
+                                            fontSize: scaleByHeight(40, 0),
+                                            color: purple[500],
+                                        }}>
+                                        {initials.toUpperCase()}
+                                    </Animated.Text>
+                                    :
+                                    <Image
+                                        resizeMethod='resize'
+                                        style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+                                        source={se}
+                                    />
+                                }
                             </Animated.View>
                         </View>
                         <Animated.View
