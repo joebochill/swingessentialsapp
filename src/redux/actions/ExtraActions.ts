@@ -12,16 +12,6 @@ import { Logger, LOG_TYPE } from '../../utilities/logging';
 import { success, failure } from '../../api/http-helper';
 import { Platform } from 'react-native';
 
-// TODO: Remove the Albatross Package from everything
-// TODO: Implement Splashscreen
-// TODO: Add the correct app icons
-// TODO: Implement pull to refresh (home, lessons, tips, blogs, packages)
-// TODO: Implement APP PERMISSIONS
-// TODO: Implement requesting app permissions on Android
-// TODO: Remove unused fonts
-// TODO: Implement App banners on web
-// TODO: Implement Tutorials
-
 export function loadInitialData(): Function {
     return async (dispatch: ThunkDispatch<any, void, any>) => {
         const token = await AsyncStorage.getItem(ASYNC_PREFIX + 'token');

@@ -35,8 +35,6 @@ type CollapsibleHeaderLayoutProps = SEHeaderProps & {
     pageBackground?: ImageSourcePropType;
 };
 
-// TODO: Allow long titles to wrap to a second line?
-
 export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLayoutProps, HeaderLayoutState> {
     constructor(props) {
         super(props);

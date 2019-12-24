@@ -14,12 +14,9 @@ import { ApplicationState } from '../../__types__';
 // Utilities
 import { Logger } from '../../utilities/logging';
 
-// TODO: confirm this is still working
 export const RNIAPCallbacks = () => {
     const dispatch = useDispatch();
     const packages = useSelector((state: ApplicationState) => state.packages.list);
-
-    // TODO: Fix the count issue when using in production (double redeem)
 
     useEffect(() => {
         const pil = purchaseUpdatedListener((purchase: any) => {

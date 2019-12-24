@@ -26,9 +26,6 @@ import { ApplicationState } from '../../__types__';
 // Utilities
 import { Logger } from '../../utilities/logging';
 
-// TODO: Implement Tutorials
-// TODO: List item dividers sometimes missing in simulator
-
 export const Order = props => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
     const credits = useSelector((state: ApplicationState) => state.credits);

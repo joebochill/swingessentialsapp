@@ -32,11 +32,8 @@ export const SingleLesson = props => {
     const videoHeight = aspectHeight(videoWidth);
 
     useEffect(() => {
-        if (!token && lesson.request_id !== -1) props.navigation.pop(); // TODO: test this
+        if (!token && lesson.request_id !== -1) props.navigation.pop();
     }, [token, lesson]);
-
-    // TODO: mark viewed
-    // TODO: handle deep linking via URL
 
     return !token && lesson.request_id !== -1
         ? null

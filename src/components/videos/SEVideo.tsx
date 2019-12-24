@@ -27,8 +27,6 @@ type PlaceholderProps = ViewProperties & {
     editIcon?: JSX.Element;
 };
 
-// TODO: Verify that the video stuff works on Android as expected
-
 export const SEVideo = (props: VideoProps) => {
     const { source, style, editable = false, onEdit = () => {} } = props;
     const vid = useRef(null);

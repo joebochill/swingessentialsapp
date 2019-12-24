@@ -33,6 +33,18 @@ Yarn audit
 Branch API Changes
 Configure full scaling and set to 1
 Admins - show 5 latest lessons with username
-
+Remove unused libraries
+Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
+Check camera roll video size using RNFetchBlob
+Optimize image assets and bundle size
+Catch blocks around all awaits
+Verify All Videos and recording on android
+Make sure all data is cleared when token expires
+Don't flash the token dialog if the token is expired on loading
+Mark lessons as viewed
+Only allow submission if they have credits available
+Only allow submission if no pending lessons
+Fix list dividers missing
+Fix the NPM monkeypatch for camera roll
 
 DONE:

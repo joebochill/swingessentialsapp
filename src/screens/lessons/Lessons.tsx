@@ -29,12 +29,10 @@ type Lesson = {
     request_notes: string;
     request_url: string;
     response_notes: string;
-    response_status: string; //TODO: update to enum
+    response_status: 'good' | 'rejected' | 'other';
     username: string;
     viewed: boolean;
 };
-
-// TODO: Implement lazy loading (Lessons, Tips, Blogs) on scroll
 
 export const Lessons = props => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);

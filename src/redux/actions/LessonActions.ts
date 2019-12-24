@@ -4,10 +4,6 @@ import { Dispatch } from 'redux';
 import * as ACTIONS from './types';
 import { ThunkDispatch } from 'redux-thunk';
 
-// TODO: Mark lessons as viewed
-// TODO: Only allow submission if they have credits available
-// TODO: Only allow submission if no pending lessons
-
 export function loadLessons() {
     return (dispatch: Dispatch) => {
         dispatch({ type: ACTIONS.GET_LESSONS.REQUEST });

@@ -21,18 +21,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 // Styles
 import { white, purple, red } from './src/styles/colors';
 
-// TODO: Organize all imports
-// TODO: Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
-// TODO: Check camera roll video size using RNFetchBlob
-// TODO: Update production API with new handlers for user settings
-// TODO: Update prod api with joined date
-// TODO: Update production API with FAQ implementation
-// TODO: Update prod API with lesson types
-// TODO: Optimize components and library usage
-// TODO: Optimize image assets and bundle size
-// TODO: Fix all alignments (sizes using units)
-// TODO: Catch blocks around all awaits
-
 export const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 
 export const App = () => {

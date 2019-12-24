@@ -47,11 +47,6 @@ import { ApplicationState } from 'src/__types__';
 // Icons
 import se from '../images/logo-small.png';
 
-// TODO: Do not make this menu collapsible?
-// TODO: Fix the scroll reset when changing tabs and closing
-// TODO: When token expires, make sure all data is cleared
-// TODO: Fix pull to refresh on android
-
 export const NavigationDrawer = (props) => {
     const [scrollY, setScrollY] = useState(new Animated.Value(0));
     const [activePanel, setActivePanel] = useState(0);
@@ -142,7 +137,6 @@ export const NavigationDrawer = (props) => {
                     }
                 })
                 .catch((): void => {
-                    // TODO: Do something more here
                     Logger.logError({
                         code: 'DRW100',
                         description: 'Deep link failed to load',
@@ -290,7 +284,7 @@ export const NavigationDrawer = (props) => {
                                         leftIcon={{
                                             type: item.iconType || 'material',
                                             name: item.icon,
-                                            color: '#231f61',
+                                            color: purple[500],
                                             iconStyle: { marginLeft: 0 },
                                         }}
                                     />

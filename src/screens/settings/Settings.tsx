@@ -19,8 +19,6 @@ import { NavigationInjectedProps } from 'react-navigation';
 // Redux
 import { loadSettings } from '../../redux/actions/SettingsActions';
 
-// TODO: Determine any additional settings (app-level?)
-
 export const Settings = (props: NavigationInjectedProps) => {
     const settings = useSelector((state: ApplicationState) => state.settings);
     const dispatch = useDispatch();
