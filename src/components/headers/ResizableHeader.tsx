@@ -1,20 +1,20 @@
 import React, { Component, ComponentType } from 'react';
 
 // Components
-import { 
-    Animated, 
-    ImageSourcePropType, 
-    StatusBar, 
-    StyleSheet, 
-    TouchableOpacity, 
-    View 
+import {
+    Animated,
+    ImageSourcePropType,
+    StatusBar,
+    StyleSheet,
+    TouchableOpacity,
+    View
 } from 'react-native';
 import { withTheme, Theme, WithTheme } from '../../styles/theme';
 import { AnimatedSafeAreaView } from '../../components';
 
 // Styles
 import { blackOpacity } from '../../styles/colors';
-import { unit, sizes, spaces } from '../../styles/sizes';
+import { sizes, spaces } from '../../styles/sizes';
 
 // Utilities
 import color from 'color';
@@ -66,7 +66,7 @@ export interface ResizableHeaderProps {
     theme?: $DeepPartial<Theme>;
 }
 
-interface HeaderState {}
+interface HeaderState { }
 
 class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState> {
     static readonly ICON_SIZE = sizes.small;;
@@ -115,7 +115,7 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         if (navigation) {
             return (
                 <View>
-                    <TouchableOpacity onPress={navigation.onPress} style={[styles.navigation]}>
+                    <TouchableOpacity onPress={navigation.onPress} style={[styles.actionIcon, {marginRight: spaces.large}]}>
                         {this.icon(navigation.icon)}
                     </TouchableOpacity>
                 </View>
@@ -130,8 +130,8 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
     }
 
     private content() {
-        const {headerContent} = this.props;
-        if(headerContent){
+        const { headerContent } = this.props;
+        if (headerContent) {
             return headerContent;
         }
         let content = [this.title(), this.info(), this.subtitle()];
@@ -192,7 +192,7 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
                 <View style={styles.actionPanel}>
                     {items.slice(0, 3).map((actionItem, index) => (
                         <View key={`action_${index}`}>
-                            <TouchableOpacity onPress={actionItem.onPress} style={index !== 0 ? styles.actionItem : {}}>
+                            <TouchableOpacity onPress={actionItem.onPress} style={[styles.actionIcon, ,index !== 0 ? styles.notFirst : {}]}>
                                 {this.icon(actionItem.icon)}
                             </TouchableOpacity>
                         </View>
@@ -214,11 +214,11 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
     }
 
     private contentStyle() {
-        const { theme, headerContent } = this.props;
+        const { theme, headerContent, navigation } = this.props;
         const contractedPadding = this.props.subtitle
             ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.sizes.large + 18)) / 2
             : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - theme.sizes.large) / 2;
-        return [styles.content, headerContent ? {} : { paddingHorizontal: spaces.medium, paddingBottom: this.scaleByHeaderHeight(spaces.xLarge, contractedPadding) }];
+        return [styles.content, headerContent ? {} : { paddingHorizontal: navigation ? spaces.small : spaces.medium, paddingBottom: this.scaleByHeaderHeight(spaces.xLarge, contractedPadding) }];
     }
 
     private titleStyle() {
@@ -326,12 +326,11 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
     },
-    navigation: {
-        height: HeaderClass.ICON_SIZE,
+    actionIcon: {
+        height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
+        paddingHorizontal: spaces.small,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: spaces.medium,
-        marginRight: spaces.xLarge,
     },
     titleContainer: {
         flex: 1,
@@ -342,11 +341,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'absolute',
-        right: HeaderClass.ICON_SPACING,
+        right: spaces.small,
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
     },
-    actionItem: {
-        height: HeaderClass.ICON_SIZE,
-        marginLeft: HeaderClass.ICON_SPACING,
-    },
+    notFirst:{
+        marginLeft: spaces.small
+    }
 });
