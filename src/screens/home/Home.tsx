@@ -75,7 +75,6 @@ export const Home = props => {
                 containerStyle={[sharedStyles.listItem]}
                 contentContainerStyle={[sharedStyles.listItemContent]}
                 bottomDivider
-                chevron={true}
                 pad={spaces.medium}
                 onPress={() => props.navigation.navigate(ROUTES.SUBMIT)}
                 title={<Body style={{ marginLeft: spaces.medium }}>Individual Lessons</Body>}
@@ -88,12 +87,15 @@ export const Home = props => {
                     color: theme.colors.text[500],
                     size: sizes.small,
                 }}
+                rightIcon={{
+                    name: 'chevron-right',
+                    color: theme.colors.text[500],
+                }}
             />
             <ListItem
                 containerStyle={sharedStyles.listItem}
                 contentContainerStyle={sharedStyles.listItemContent}
                 bottomDivider
-                chevron={true}
                 rightTitleStyle={{color: 'red'}}
                 pad={spaces.medium}
                 onPress={() => props.navigation.navigate(ROUTES.ORDER)}
@@ -102,6 +104,10 @@ export const Home = props => {
                     name: 'shopping-cart',
                     color: theme.colors.text[500],
                     size: sizes.small,
+                }}
+                rightIcon={{
+                    name: 'chevron-right',
+                    color: theme.colors.text[500],
                 }}
             />
 

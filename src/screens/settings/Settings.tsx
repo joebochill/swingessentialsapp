@@ -12,6 +12,8 @@ import { ROUTES } from '../../constants/routes';
 // Styles
 import { sharedStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
+import { useTheme } from '../../styles/theme';
+
 // Types
 import { NavType, ApplicationState } from '../../__types__';
 import { NavigationInjectedProps } from 'react-navigation';
@@ -22,6 +24,7 @@ export const Settings = (props: NavigationInjectedProps) => {
     const settings = useSelector((state: ApplicationState) => state.settings);
     const dispatch = useDispatch();
     let type: NavType = props.navigation.getParam('navType', 'menu');
+    const theme = useTheme();
 
     return (
         <CollapsibleHeaderLayout
@@ -40,10 +43,13 @@ export const Settings = (props: NavigationInjectedProps) => {
                 contentContainerStyle={sharedStyles.listItemContent}
                 bottomDivider
                 topDivider
-                chevron={true}
                 onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
                 title={<Body>Handedness</Body>}
                 rightTitle={settings.handedness.charAt(0).toUpperCase() + settings.handedness.substr(1)}
+                rightIcon={{
+                    name: 'chevron-right',
+                    color: theme.colors.text[500],
+                }}
             />
             <View style={[sharedStyles.sectionHeader, { marginTop: spaces.large }]}>
                 <H7>Camera Settings</H7>
@@ -53,28 +59,37 @@ export const Settings = (props: NavigationInjectedProps) => {
                 contentContainerStyle={sharedStyles.listItemContent}
                 bottomDivider
                 topDivider
-                chevron={true}
                 onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'duration' })}
                 title={<Body>Duration</Body>}
                 rightTitle={`${settings.duration}s`}
+                rightIcon={{
+                    name: 'chevron-right',
+                    color: theme.colors.text[500],
+                }}
             />
             <ListItem
                 containerStyle={sharedStyles.listItem}
                 contentContainerStyle={sharedStyles.listItemContent}
                 bottomDivider
-                chevron={true}
                 onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'delay' })}
                 title={<Body>Delay</Body>}
                 rightTitle={`${settings.delay}s`}
+                rightIcon={{
+                    name: 'chevron-right',
+                    color: theme.colors.text[500],
+                }}
             />
             <ListItem
                 containerStyle={sharedStyles.listItem}
                 contentContainerStyle={sharedStyles.listItemContent}
                 bottomDivider
-                chevron={true}
                 onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'overlay' })}
                 title={<Body>Overlay</Body>}
                 rightTitle={`${settings.overlay ? 'On' : 'Off'}`}
+                rightIcon={{
+                    name: 'chevron-right',
+                    color: theme.colors.text[500],
+                }}
             />
         </CollapsibleHeaderLayout>
     );

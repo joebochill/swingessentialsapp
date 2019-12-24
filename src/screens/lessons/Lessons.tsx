@@ -9,6 +9,7 @@ import { H7, Body, CollapsibleHeaderLayout } from '../../components';
 // Styles
 import { sharedStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
+import { useTheme } from '../../styles/theme';
 import bg from '../../images/bg_2.jpg';
 
 // Constants
@@ -19,6 +20,7 @@ import { getLongDate, makeGroups } from '../../utilities';
 
 // Types
 import { ApplicationState } from '../../__types__';
+
 
 type Lesson = {
     request_id: number;
@@ -37,6 +39,7 @@ export const Lessons = props => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
     const myLessons = lessons.pending.concat(lessons.closed);
     const sections = makeGroups(myLessons, (lesson: Lesson) => getLongDate(lesson.request_date));
+    const theme = useTheme();
 
     return (
         <CollapsibleHeaderLayout title={'Your Lessons'} subtitle={"see how far you've come"} backgroundImage={bg}>
@@ -54,9 +57,12 @@ export const Lessons = props => {
                         contentContainerStyle={sharedStyles.listItemContent}
                         bottomDivider
                         topDivider
-                        chevron={true}
                         onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: null })}
                         title={<Body>Welcome to Swing Essentials!</Body>}
+                        rightIcon={{
+                            name: 'chevron-right',
+                            color: theme.colors.text[500],
+                        }}
                     />
                 }
                 renderItem={({ item, index }) =>
@@ -66,10 +72,13 @@ export const Lessons = props => {
                             contentContainerStyle={sharedStyles.listItemContent}
                             bottomDivider
                             topDivider={index === 0}
-                            chevron={true}
                             onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                             title={<Body>{item.request_date}</Body>}
                             rightTitle={!item.viewed ? <H7>NEW</H7> : undefined}
+                            rightIcon={{
+                                name: 'chevron-right',
+                                color: theme.colors.text[500],
+                            }}
                         />
                     ) : (
                         <ListItem

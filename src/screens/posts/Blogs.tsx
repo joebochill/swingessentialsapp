@@ -10,6 +10,8 @@ import { ROUTES } from '../../constants/routes';
 import bg from '../../images/bg_4.jpg';
 import { sharedStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
+import { useTheme } from '../../styles/theme';
+
 // Utilities
 import { makeGroups } from '../../utilities';
 // Redux
@@ -28,6 +30,7 @@ export const Blogs = props => {
     const blogs = useSelector((state: ApplicationState) => state.blogs);
     const sections = makeGroups(blogs.blogList, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     return (
         <CollapsibleHeaderLayout
@@ -61,9 +64,12 @@ export const Blogs = props => {
                         contentContainerStyle={sharedStyles.listItemContent}
                         bottomDivider
                         topDivider={index === 0}
-                        chevron={true}
                         onPress={() => props.navigation.push(ROUTES.BLOG, { blog: item })}
                         title={<Body>{item.title}</Body>}
+                        rightIcon={{
+                            name: 'chevron-right',
+                            color: theme.colors.text[500],
+                        }}
                     />
                 )}
                 keyExtractor={(item): string => `blog_${item.id}`}

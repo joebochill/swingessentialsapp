@@ -265,7 +265,6 @@ export const NavigationDrawer = (props) => {
                                         containerStyle={sharedStyles.listItem}
                                         contentContainerStyle={sharedStyles.listItemContent}
                                         bottomDivider
-                                        chevron={item.nested}
                                         onPress={
                                             item.route
                                                 ? () => {
@@ -286,6 +285,10 @@ export const NavigationDrawer = (props) => {
                                             color: theme.colors.text[500],
                                             iconStyle: { marginLeft: 0 },
                                         }}
+                                        rightIcon={item.nested ? {
+                                            name: 'chevron-right',
+                                            color: theme.colors.text[500],
+                                        } : undefined}
                                     />
                                 )}
                             />

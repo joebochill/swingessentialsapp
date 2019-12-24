@@ -10,6 +10,8 @@ import { ROUTES } from '../../constants/routes';
 import bg from '../../images/bg_6.jpg';
 import { sharedStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
+import { useTheme } from '../../styles/theme';
+
 // Utilities
 import { makeGroups } from '../../utilities';
 // Redux
@@ -29,6 +31,7 @@ export const Tips = props => {
     const tips = useSelector((state: ApplicationState) => state.tips);
     const sections = makeGroups(tips.tipList, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     return (
         <CollapsibleHeaderLayout
@@ -62,9 +65,12 @@ export const Tips = props => {
                         contentContainerStyle={sharedStyles.listItemContent}
                         bottomDivider
                         topDivider={index === 0}
-                        chevron={true}
                         onPress={() => props.navigation.push(ROUTES.TIP, { tip: item })}
                         title={<Body>{item.title}</Body>}
+                        rightIcon={{
+                            name: 'chevron-right',
+                            color: theme.colors.text[500],
+                        }}
                     />
                 )}
                 keyExtractor={(item): string => `tip_${item.id}`}
