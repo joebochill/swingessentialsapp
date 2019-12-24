@@ -9,6 +9,8 @@ import { Icon } from 'react-native-elements';
 
 // Styles
 import { sharedStyles } from '../../styles';
+import { useTheme } from '../../styles/theme';
+
 
 // Utilities
 import { Logger } from '../../utilities/logging';
@@ -24,6 +26,7 @@ const MailIcon = wrapIcon({ IconClass: Icon, name: 'mail' });
 export const ErrorLogs = () => {
     const [logs, setLogs] = useState('');
     const dispatch = useDispatch();
+    const theme = useTheme();
     const loading = useSelector((state: ApplicationState) => state.logs.loading);
     const username = useSelector((state: ApplicationState) => state.userData.username);
 
