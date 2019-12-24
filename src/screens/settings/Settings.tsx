@@ -50,7 +50,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 topDivider
                 onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
                 title={<Body>Handedness</Body>}
-                rightTitle={settings.handedness.charAt(0).toUpperCase() + settings.handedness.substr(1)}
+                rightTitle={<Body>{settings.handedness.charAt(0).toUpperCase() + settings.handedness.substr(1)}</Body>}
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
@@ -66,7 +66,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 topDivider
                 onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'duration' })}
                 title={<Body>Duration</Body>}
-                rightTitle={`${settings.duration}s`}
+                rightTitle={<Body>{`${settings.duration}s`}</Body>}
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
@@ -78,7 +78,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 bottomDivider
                 onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'delay' })}
                 title={<Body>Delay</Body>}
-                rightTitle={`${settings.delay}s`}
+                rightTitle={<Body>{`${settings.delay}s`}</Body>}
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
@@ -90,7 +90,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 bottomDivider
                 onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'overlay' })}
                 title={<Body>Overlay</Body>}
-                rightTitle={`${settings.overlay ? 'On' : 'Off'}`}
+                rightTitle={<Body>{`${settings.overlay ? 'On' : 'Off'}`}</Body>}
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],

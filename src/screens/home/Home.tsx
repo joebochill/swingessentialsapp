@@ -78,8 +78,7 @@ export const Home = props => {
                 pad={spaces.medium}
                 onPress={() => props.navigation.navigate(ROUTES.SUBMIT)}
                 title={<Body style={{ marginLeft: spaces.medium }}>Individual Lessons</Body>}
-                rightTitle={`${credits.count} Left`}
-                rightTitleStyle={{color: theme.colors.text[500]}}
+                rightTitle={<Body>{`${credits.count} Left`}</Body>}
                 disabled={credits.count < 1}
                 disabledStyle={sharedStyles.disabled}
                 leftIcon={{
@@ -96,7 +95,6 @@ export const Home = props => {
                 containerStyle={sharedStyles.listItem}
                 contentContainerStyle={sharedStyles.listItemContent}
                 bottomDivider
-                rightTitleStyle={{color: 'red'}}
                 pad={spaces.medium}
                 onPress={() => props.navigation.navigate(ROUTES.ORDER)}
                 title={<Body style={{ marginLeft: spaces.medium }}>Order More</Body>}

@@ -59,6 +59,7 @@ export const Lessons = props => {
                         topDivider
                         onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: null })}
                         title={<Body>Welcome to Swing Essentials!</Body>}
+                        rightTitle={<H7>NEW</H7>}
                         rightIcon={{
                             name: 'chevron-right',
                             color: theme.colors.text[500],
