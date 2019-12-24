@@ -1,7 +1,6 @@
 import { LOGIN, LOGOUT, GET_USER_DATA, TOKEN_TIMEOUT } from '../actions/types';
 import { UserDataState } from '../../__types__';
 
-// TODO: put a join date in the DB and API
 const initialState: UserDataState = {
     username: '',
     firstName: '',
