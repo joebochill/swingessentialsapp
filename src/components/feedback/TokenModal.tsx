@@ -42,6 +42,7 @@ export const TokenModal = (props: ModalProps) => {
     const theme = useTheme();
 
     useEffect(() => {
+        // set the time remaining on login/logout
         if (token) {
             const exp = JSON.parse(atob(token.split('.')[1])).exp;
             setTimeRemaining(exp - Date.now() / 1000);
@@ -53,8 +54,8 @@ export const TokenModal = (props: ModalProps) => {
     }, [token]);
 
     useEffect(() => {
+        // Update the timer
         if (!token || !engageCountdown) return;
-
         let interval: number = 0;
         if (timeRemaining > 0) {
             interval = setInterval(() => {
@@ -66,12 +67,12 @@ export const TokenModal = (props: ModalProps) => {
         }
 
         return () => clearInterval(interval);
-    }, [timeRemaining, engageCountdown, token]);
+    }, [timeRemaining, engageCountdown, token, updateRate]);
 
     const updateRefreshRate = useCallback(() => {
         if (timeRemaining <= 3 * 60) setUpdateRate(1);
         else if (timeRemaining <= 10 * 60) setUpdateRate(1 * 60);
-        else if (timeRemaining <= 20 * 60) setUpdateRate(3 * 60);
+        else if (timeRemaining <= 20 * 60) setUpdateRate(5 * 60);
         else setUpdateRate(30 * 60);
     }, [timeRemaining, setTimeRemaining]);
 
@@ -81,7 +82,7 @@ export const TokenModal = (props: ModalProps) => {
             transparent={true}
             onRequestClose={() => {}}
             onDismiss={() => {}}
-            visible={token !== null && timeRemaining < 3 * 60}
+            visible={token !== null && timeRemaining <= 3 * 60 && timeRemaining > 0}
             {...other}>
             <View style={styles.modalBackground}>
                 <View

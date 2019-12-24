@@ -1,9 +1,7 @@
 import { success, failure } from '../../api/http-helper';
 import { btoa, atob } from '../../utilities';
 import * as ACTIONS from './types';
-import { ASYNC_PREFIX, AUTH, BASEURL } from '../../constants';
-// import * as Keychain from 'react-native-keychain';
-import AsyncStorage from '@react-native-community/async-storage';
+import { AUTH, BASEURL } from '../../constants';
 import { loadLessons } from './LessonActions';
 import { loadTips } from './TipActions';
 import { loadCredits } from './CreditActions';
@@ -41,7 +39,6 @@ export function requestLogin(userCredentials: Credentials, useTouch: boolean = f
                             .then(() => {
                                 dispatch(loadUserContent());
                             });
-                        AsyncStorage.setItem(ASYNC_PREFIX + 'token', token);
                         break;
                     default:
                         Keychain.resetGenericPassword();
@@ -68,12 +65,10 @@ export function requestLogout(token: string) {
             .withFullResponse()
             .onSuccess((response: any) => {
                 dispatch(success(ACTIONS.LOGOUT.SUCCESS));
-                AsyncStorage.removeItem(ASYNC_PREFIX + 'token');
                 dispatch(loadTips());
             })
             .onFailure((response: Response) => {
                 // checkTimeout(response, dispatch);
-                AsyncStorage.removeItem(ASYNC_PREFIX + 'token');
                 dispatch(failure(ACTIONS.LOGOUT.FAILURE, response, 'Logout'));
             })
             .request();
@@ -88,7 +83,6 @@ export function refreshToken() {
             .onSuccess((response: any) => {
                 const token = response.headers.get('Token');
                 dispatch(success(ACTIONS.REFRESH_TOKEN.SUCCESS, { token }));
-                AsyncStorage.setItem(ASYNC_PREFIX + 'token', token);
             })
             .onFailure((response: Response) => {
                 dispatch(failure(ACTIONS.REFRESH_TOKEN.FAILURE, response, 'TokenRefresh'));
@@ -99,12 +93,12 @@ export function refreshToken() {
 
 export function setToken(token: string) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
-        let exp = JSON.parse(atob(token.split('.')[1])).exp;
-        if (exp < Date.now() / 1000) {
-            AsyncStorage.removeItem(ASYNC_PREFIX + 'token');
+        const exp = JSON.parse(atob(token.split('.')[1])).exp;
+        const expired = exp < Date.now() / 1000;
+        if (expired) {
             Logger.logMessage(`Local token has expired.`);
         }
-        dispatch({ type: ACTIONS.SET_TOKEN.REQUEST, payload: { token } });
+        dispatch({ type: ACTIONS.SET_TOKEN.REQUEST, payload: { token: expired ? null : token } });
         dispatch(loadUserContent());
     };
 }

@@ -1,52 +1,60 @@
 TODO:
 
-Remove Albatross Package
-    test how this affects existing app
-API for single Blog/Tip
-Lazy loading for lists
-Account Details Screen + Edit
-Order History API
-Order History Screen
-Biometric Login
-Contact Us Screen
-Update App Icons
-Store data locally (Async)
-Pull to refresh all - verify on android
-Linting (Remove inline style warnings)
-Unit tests
-Android permissions request
-Deep linking - verify ios and android
-App Banners on web
-Remove unused fonts and images
-Optimize shared styles
-Optimize imports
-Optimize component inclusion
-Tutorials
-Verify IAP works
-Final device testing
-Update all headers usage
-Allow header to accept custom content
-Update Nav Drawer (use header, use logo)
-All routes on a single stack
-Add theme to components
-Yarn audit
-Branch API Changes
-Configure full scaling and set to 1
-Admins - show 5 latest lessons with username
-Remove unused libraries
-Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
-Check camera roll video size using RNFetchBlob
-Optimize image assets and bundle size
-Catch blocks around all awaits
-Verify All Videos and recording on android
-Make sure all data is cleared when token expires
-Don't flash the token dialog if the token is expired on loading
-Mark lessons as viewed
-Only allow submission if they have credits available
-Only allow submission if no pending lessons
-Fix list dividers missing
-Fix the NPM monkeypatch for camera roll
-Fix the keyboardavoidingview on android
-Disabled Android Landscape
+// Bug Fixes
+    Fix list dividers missing
+    Disabled Android Landscape
+    Token timeout not counting down
+    Token refresh not always working
+    Make sure all data is cleared when token expires (tips and 19 too)
+    Don't flash the token dialog if the token is expired on loading
+    Catch blocks around all awaits
+    Right title font size in  list items
 
-DONE:
+
+// Additional Functionality
+    Mark lessons as viewed
+    Only allow submission if they have credits available
+    Only allow submission if no pending lessons
+    Tutorials
+    All routes on a single stack
+    Check camera roll video size using RNFetchBlob
+    
+
+// Performance
+    Remove unused libraries
+    Optimize image assets 
+    Remove unused images
+    Optimize bundle size
+    Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
+    
+
+// Testing
+    Remove Albatross Package
+        test how this affects existing app
+    Pull to refresh all - verify on android
+    Deep linking - verify ios and android
+    Verify IAP works
+    Verify All Videos and recording on android
+    Final device testing
+
+// Misc
+    New screenshots and documentation
+    New itunes screenshots
+    Android permissions request
+    Optimize component inclusion
+    Yarn audit
+    Fix the NPM monkeypatch for camera roll
+    Publish API Changes
+    Linting (Remove inline style warnings)
+
+
+// Future Functionality
+    API for single Blog/Tip
+    Lazy loading for lists
+    Account Details Screen + Edit
+    Order History API
+    Order History Screen
+    Contact Us Screen
+    Store data locally (Async)
+    Unit tests
+    App Banners on web
