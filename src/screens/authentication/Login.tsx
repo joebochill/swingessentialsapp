@@ -151,9 +151,9 @@ export const Login = (props: NavigationInjectedProps) => {
                 return;
             }
             setError(false);
-            dispatch(requestLogin({ username: user, password: pass }));
+            dispatch(requestLogin({ username: user, password: pass }, useBiometry));
         },
-        [dispatch],
+        [dispatch, useBiometry],
     );
 
     const showBiometricLogin = useCallback(async () => {
