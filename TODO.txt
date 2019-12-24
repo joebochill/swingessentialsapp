@@ -6,7 +6,6 @@ TODO:
 // Additional Functionality
     Mark lessons as viewed
     Tutorials
-    All routes on a single stack (see settings from record)
     Check camera roll video size using RNFetchBlob
     
 

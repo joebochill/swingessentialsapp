@@ -24,7 +24,6 @@ export const Settings = (props: NavigationStackScreenProps) => {
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
     const dispatch = useDispatch();
-    let type: NavType = props.navigation.getParam('navType', 'menu');
     const theme = useTheme();
 
     useEffect(() => {
@@ -35,7 +34,6 @@ export const Settings = (props: NavigationStackScreenProps) => {
         <CollapsibleHeaderLayout
             title={'Settings'}
             subtitle={'customize your experience'}
-            mainAction={type}
             refreshing={settings.loading}
             onRefresh={() => {
                 dispatch(loadSettings());

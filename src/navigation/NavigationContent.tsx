@@ -57,12 +57,6 @@ export const mainNavigationItems: RouteGroup = {
             activatePanel: 1,
         },
         {
-            title: 'Settings',
-            icon: 'settings',
-            private: true,
-            route: ROUTES.SETTINGS_GROUP,
-        },
-        {
             title: 'Help',
             icon: 'help',
             nested: true,

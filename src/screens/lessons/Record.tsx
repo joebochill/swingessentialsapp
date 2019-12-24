@@ -203,7 +203,7 @@ export const Record = props => {
                                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                     <TouchableOpacity
                                         onPress={(): void =>
-                                            navigation.push(ROUTES.SETTINGS_GROUP, { navType: 'back' })
+                                            navigation.push(ROUTES.SETTINGS_GROUP)
                                         }>
                                         <Icon name={'settings'} color={white[50]} />
                                     </TouchableOpacity>
