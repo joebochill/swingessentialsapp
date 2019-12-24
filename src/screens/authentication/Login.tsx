@@ -116,6 +116,9 @@ export const Login = (props: NavigationInjectedProps) => {
                     stored: true,
                     savedCredentials: _credentials,
                 });
+                if(remember){
+                    setUsername(_credentials.username);
+                }
             } else {
                 setCredentials({
                     ...credentials,
@@ -125,7 +128,7 @@ export const Login = (props: NavigationInjectedProps) => {
             }
         };
         loadKeychainCredentials();
-    }, [token, error]);
+    }, [token, error, remember]);
 
     useEffect(() => {
         // Show biometric login on load
