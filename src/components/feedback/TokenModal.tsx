@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { Modal, ModalProps, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Modal, ModalProps, StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { H7, Body, SEButton } from '../';
 
@@ -35,10 +35,13 @@ const styles = StyleSheet.create({
 export const TokenModal = (props: ModalProps) => {
     const { ...other } = props;
     const token = useSelector((state: ApplicationState) => state.login.token);
+    const refreshing = useSelector((state: ApplicationState) => state.login.pending);
+
     const [timeRemaining, setTimeRemaining] = useState(-1);
     const [engageCountdown, setEngageCountdown] = useState(false);
-    const dispatch = useDispatch();
     const [updateRate, setUpdateRate] = useState(1);
+
+    const dispatch = useDispatch();
     const theme = useTheme();
 
     useEffect(() => {
@@ -59,7 +62,9 @@ export const TokenModal = (props: ModalProps) => {
         let interval: number = 0;
         if (timeRemaining > 0) {
             interval = setInterval(() => {
-                setTimeRemaining(timeRemaining => timeRemaining - updateRate);
+                // setTimeRemaining(timeRemaining => timeRemaining - updateRate);
+                const exp = JSON.parse(atob(token.split('.')[1])).exp;
+                setTimeRemaining(exp - Date.now() / 1000);
             }, updateRate * 1000);
             updateRefreshRate();
         } else {
@@ -80,8 +85,8 @@ export const TokenModal = (props: ModalProps) => {
         <Modal
             animationType="slide"
             transparent={true}
-            onRequestClose={() => {}}
-            onDismiss={() => {}}
+            onRequestClose={() => { }}
+            onDismiss={() => { }}
             visible={token !== null && timeRemaining <= 3 * 60 && timeRemaining > 0}
             {...other}>
             <View style={styles.modalBackground}>
@@ -105,11 +110,15 @@ export const TokenModal = (props: ModalProps) => {
                     </View>
                     <Body>{`Your current session is about to expire. Click below to stay signed in.`}</Body>
 
-                    <SEButton
-                        title="KEEP ME SIGNED IN"
-                        style={{ marginTop: spaces.medium }}
-                        onPress={() => dispatch(refreshToken())}
-                    />
+                    {!refreshing &&
+                        <SEButton
+                            title="KEEP ME SIGNED IN"
+                            style={{ marginTop: spaces.medium }}
+                            onPress={() => dispatch(refreshToken())}
+                        />
+                    }
+                    {refreshing && <ActivityIndicator style={{ marginTop: spaces.xLarge }} size={'large'} color={theme.colors.primary[500]} />}
+
                 </View>
             </View>
         </Modal>

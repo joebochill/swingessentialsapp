@@ -18,6 +18,7 @@ import { Logger } from '../../utilities/logging';
 // Types
 import { LOAD_LOGS } from '../../redux/actions/types';
 import { ApplicationState } from 'src/__types__';
+import { HeaderIcon } from '@pxblue/react-native-components/core/header/header';
 
 // Icons
 const RefreshIcon = wrapIcon({ IconClass: Icon, name: 'refresh' });
@@ -26,7 +27,6 @@ const MailIcon = wrapIcon({ IconClass: Icon, name: 'mail' });
 export const ErrorLogs = () => {
     const [logs, setLogs] = useState('');
     const dispatch = useDispatch();
-    const theme = useTheme();
     const loading = useSelector((state: ApplicationState) => state.logs.loading);
     const username = useSelector((state: ApplicationState) => state.userData.username);
 
@@ -44,16 +44,16 @@ export const ErrorLogs = () => {
     useEffect(() => {
         getLogs();
     }, []);
-    const actionItems = [
+    const actionItems:HeaderIcon[] = [
         {
             icon: RefreshIcon,
-            onPress: () => sendMail(),
+            onPress: () => getLogs(),
         },
     ];
     if (logs.length > 0)
         actionItems.push({
             icon: MailIcon,
-            onPress: () => getLogs(),
+            onPress: () => sendMail(),
         });
     actionItems.reverse();
     return (

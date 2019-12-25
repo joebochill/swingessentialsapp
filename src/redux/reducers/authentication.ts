@@ -14,6 +14,7 @@ const initialState: LoginState = {
 export const loginReducer = (state = initialState, action): LoginState => {
     switch (action.type) {
         case LOGIN.REQUEST:
+        case REFRESH_TOKEN.REQUEST:
             return {
                 ...state,
                 pending: true,
@@ -38,6 +39,11 @@ export const loginReducer = (state = initialState, action): LoginState => {
                 pending: false,
                 role: 'anonymous',
                 failCount: state.failCount + 1,
+            };
+        case REFRESH_TOKEN.FAILURE:
+            return {
+                ...state,
+                pending: false
             };
         case LOGOUT.SUCCESS:
         case LOGOUT.FAILURE:

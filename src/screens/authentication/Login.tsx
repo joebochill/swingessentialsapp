@@ -162,21 +162,26 @@ export const Login = (props: NavigationInjectedProps) => {
     }, [token, error, remember]);
 
     useEffect(() => {
-        // Show biometric login on load
-        if (useBiometry && biometry.available && credentials.stored) {
-            showBiometricLogin();
-        }
-    }, [biometry.available, credentials.stored]);
-
-    useEffect(() => {
         // handle successful login
         if (token) {
             props.navigation.pop();
         }
         if (failuresChanged) {
             setPassword('');
+            if(failures > 0){
+                setCredentials({...credentials, stored: false})
+                Keychain.resetGenericPassword();
+            }
         }
     }, [token, failuresChanged, props.navigation]);
+
+    useEffect(() => {
+        // Show biometric login on load
+        console.log(token, useBiometry, biometry.available, credentials.stored);
+        if (!token && useBiometry && biometry.available && credentials.stored) {
+            showBiometricLogin();
+        }
+    }, [token, useBiometry, biometry.available, credentials.stored]);
 
     const onLogin = useCallback(
         (user, pass) => {

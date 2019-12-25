@@ -1,22 +1,24 @@
 TODO:
 // Bugs
-    Send and Refresh buttons reversed on Logs screen
     Banner images for all main screens
-    Clear stored credentials after a failed login (no bio)
-    Re-opening app after token expires shows the token dialog
-    Disable the refresh token button while token is refreshing
-    Text color on SE buttons
-    Countdown gets messed up when it's in the background
+        Home-standing
+        Pros-Glove
+        19-Grass
+        Tip-Swing
+        Sign-In - Bunker
+
+    Verify Fix on these
+        Re-opening app after token expires shows the token dialog
+        Countdown gets messed up when it's in the background
+    
     Add refresh indicator to refreshable screens
     Remove those pesky unused icon fonts ios
 
     
 // Additional Functionality
     Tutorials
-    Check camera roll video size using RNFetchBlob
     Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
     Disable Android Landscape
-    Loading/Empty states
     Build the refresh indicator into the header component
 
 
@@ -56,6 +58,7 @@ TODO:
 // Future Functionality
     API for single Blog/Tip
     Lazy loading for lists
+    Loading/Empty states
     Account Details Screen + Edit
     Order History API
     Order History Screen
@@ -65,3 +68,4 @@ TODO:
     App Banners on web
     Error logging as SQLite DB
     Remote announcements/messages via API
+    Check camera roll video size using RNFetchBlob
