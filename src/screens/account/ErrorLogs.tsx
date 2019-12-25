@@ -71,7 +71,6 @@ export const ErrorLogs = () => {
                 <SEButton 
                     title={'SEND ERROR REPORT'} 
                     onPress={() => sendMail()} 
-                    buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
                 />
                 <SEButton
                     title={'LOG FAKE ERROR'}

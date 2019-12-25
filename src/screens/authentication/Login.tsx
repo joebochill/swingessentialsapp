@@ -344,6 +344,7 @@ export const Login = (props: NavigationInjectedProps) => {
                             <SEButton
                                 title="SIGN IN"
                                 containerStyle={{ flex: 1 }}
+                                buttonStyle={{ backgroundColor: theme.colors.primary[500] }}
                                 onPress={() => onLogin(username, password)}
                             />
                             <SEButton

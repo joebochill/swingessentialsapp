@@ -1,10 +1,24 @@
 TODO:
+// Bugs
+    Send and Refresh buttons reversed on Logs screen
+    Banner images for all main screens
+    Clear stored credentials after a failed login (no bio)
+    Re-opening app after token expires shows the token dialog
+    Disable the refresh token button while token is refreshing
+    Text color on SE buttons
+    Countdown gets messed up when it's in the background
+    Add refresh indicator to refreshable screens
+    Remove those pesky unused icon fonts ios
 
+    
 // Additional Functionality
     Tutorials
     Check camera roll video size using RNFetchBlob
     Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
     Disable Android Landscape
+    Loading/Empty states
+    Build the refresh indicator into the header component
+
 
 // Performance
     Remove unused libraries
@@ -33,6 +47,8 @@ TODO:
     Fix the NPM monkeypatch for camera roll
     Publish API Changes
     Linting (Remove inline style warnings)
+    New How-to-use the app video
+    Switch everything over to production (API, email addresses, etc.)
 
 
 
@@ -47,3 +63,5 @@ TODO:
     Store data locally (Async)
     Unit tests
     App Banners on web
+    Error logging as SQLite DB
+    Remote announcements/messages via API

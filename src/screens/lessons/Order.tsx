@@ -171,8 +171,7 @@ export const Order = props => {
             {roleError.length === 0 && !packagesProcessing && !credits.inProgress && (
                 <SEButton
                     containerStyle={{ margin: spaces.medium, marginTop: spaces.large }}
-                    buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
-                    title={<H7 style={{color: theme.colors.onPrimary[50]}}>PURCHASE</H7>}
+                    title={'PURCHASE'}
                     onPress={() => onPurchase(packages[selected].app_sku, packages[selected].shortcode)}
                 />
             )}

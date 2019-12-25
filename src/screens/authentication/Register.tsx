@@ -129,7 +129,6 @@ const VerifyForm = (props: VerifyProps) => {
                         {verification.emailVerified && (
                             <SEButton
                                 style={{ marginTop: spaces.medium }}
-                                buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
                                 title={'SIGN IN'}
                                 onPress={() => navigation.popToTop()}
                             />
@@ -357,8 +356,8 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                     {_canSubmit() && !registration.pending && (
                         <SEButton
                             containerStyle={{ marginTop: spaces.large }}
-                            buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
-                            title={<H7 style={{color: theme.colors.onPrimary[50]}}>SUBMIT</H7>}
+                            // buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
+                            title={'SUBMIT'}
                             onPress={() => {
                                 _submitRegistration();
                                 if (scroller.current) {

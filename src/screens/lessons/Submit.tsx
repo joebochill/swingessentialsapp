@@ -324,8 +324,7 @@ export const Submit = props => {
                         lessons.pending.length <= 0 && (
                             <SEButton
                                 containerStyle={{ marginTop: spaces.large }}
-                                buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
-                                title={<H7 color={'onPrimary'}>SUBMIT</H7>}
+                                title={'SUBMIT'}
                                 onPress={() => _submitLesson()}
                             />
                         )}

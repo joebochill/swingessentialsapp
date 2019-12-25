@@ -82,8 +82,7 @@ export const ForgotPassword = () => {
                         {email.match(EMAIL_REGEX) && (
                             <SEButton
                                 containerStyle={{ marginTop: spaces.medium }}
-                                buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
-                                title={<H7 style={{color: theme.colors.onPrimary[500]}}>REQUEST RESET</H7>}
+                                title={'REQUEST RESET'}
                                 onPress={(): void => _sendPasswordReset()}
                             />
                         )}

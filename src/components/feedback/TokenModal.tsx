@@ -107,7 +107,6 @@ export const TokenModal = (props: ModalProps) => {
 
                     <SEButton
                         title="KEEP ME SIGNED IN"
-                        buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
                         style={{ marginTop: spaces.medium }}
                         onPress={() => dispatch(refreshToken())}
                     />
