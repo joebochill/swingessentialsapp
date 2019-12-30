@@ -8,7 +8,7 @@ import { H7, Body, CollapsibleHeaderLayout } from '../../components';
 
 // Styles
 import { sharedStyles } from '../../styles';
-import { spaces } from '../../styles/sizes';
+import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
 import bg from '../../images/bg_2.jpg';
 
@@ -72,6 +72,7 @@ export const Lessons = props => {
                         rightIcon={{
                             name: 'chevron-right',
                             color: theme.colors.text[500],
+                            size: sizes.small
                         }}
                     />
                 }
@@ -88,6 +89,7 @@ export const Lessons = props => {
                             rightIcon={{
                                 name: 'chevron-right',
                                 color: theme.colors.text[500],
+                                size: sizes.small
                             }}
                         />
                     ) : (

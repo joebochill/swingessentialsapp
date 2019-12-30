@@ -10,7 +10,7 @@ import * as RNIap from 'react-native-iap';
 // Styles
 import bg from '../../images/bg_5.jpg';
 import { sharedStyles } from '../../styles';
-import { spaces, unit } from '../../styles/sizes';
+import { spaces, sizes, unit } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
 
 // Redux
@@ -152,15 +152,17 @@ export const Order = props => {
                             name: parseInt(item.count, 10) === 1 ? 'filter-1' : 'filter-5',
                             color: theme.colors.text[500],
                             iconStyle: { marginLeft: 0 },
+                            size: sizes.small,
                         }}
-                        title={<Body font={'semiBold'}>{item.name}</Body>}
-                        subtitle={<Body>{item.description}</Body>}
+                        title={<Body font={'semiBold'} style={{ marginLeft: spaces.medium }}>{item.name}</Body>}
+                        subtitle={<Body style={{ marginLeft: spaces.medium }}>{item.description}</Body>}
                         rightTitle={<Body>{products.length > 0 ? `$${products[index].price}` : '--'}</Body>}
                         rightIcon={
                             selected === index
                                 ? {
                                       name: 'check',
                                       color: theme.colors.text[500],
+                                      size: sizes.small
                                   }
                                 : undefined
                         }

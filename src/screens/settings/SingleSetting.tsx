@@ -7,7 +7,7 @@ import { ListItem } from 'react-native-elements';
 import { Body, SEHeader } from '../../components/index';
 // Styles
 import { sharedStyles } from '../../styles';
-import { spaces } from '../../styles/sizes';
+import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
 
 // Types
@@ -114,7 +114,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                                 typeof val === 'number' ? 's' : ''
                                 }`}</Body>
                         }
-                        rightIcon={caseSame(value, val) ? { name: 'check', color: theme.colors.text[500] } : undefined}
+                        rightIcon={caseSame(value, val) ? { name: 'check', color: theme.colors.text[500], size: sizes.small } : undefined}
                     />
                 ))}
                 <Body style={[sharedStyles.paddingHorizontalMedium, { marginTop: spaces.medium }]}>

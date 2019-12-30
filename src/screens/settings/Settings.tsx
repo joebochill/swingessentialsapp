@@ -11,7 +11,7 @@ import { ROUTES } from '../../constants/routes';
 
 // Styles
 import { sharedStyles } from '../../styles';
-import { spaces } from '../../styles/sizes';
+import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
 
 // Types
@@ -52,6 +52,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
+                    size: sizes.small,
                 }}
             />
             <View style={[sharedStyles.sectionHeader, { marginTop: spaces.large }]}>
@@ -68,6 +69,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
+                    size: sizes.small
                 }}
             />
             <ListItem
@@ -80,6 +82,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
+                    size: sizes.small
                 }}
             />
             <ListItem
@@ -92,6 +95,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
+                    size: sizes.small
                 }}
             />
         </CollapsibleHeaderLayout>

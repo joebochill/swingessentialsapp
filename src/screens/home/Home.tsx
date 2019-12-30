@@ -90,6 +90,7 @@ export const Home = props => {
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
+                    size: sizes.small
                 }}
             />
             <ListItem
@@ -107,6 +108,7 @@ export const Home = props => {
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
+                    size: sizes.small,
                 }}
             />
 

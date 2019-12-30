@@ -9,7 +9,7 @@ import { ROUTES } from '../../constants/routes';
 // Styles
 import bg from '../../images/bg_3.jpg';
 import { sharedStyles } from '../../styles';
-import { spaces } from '../../styles/sizes';
+import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
 
 // Utilities
@@ -69,6 +69,7 @@ export const Blogs = props => {
                         rightIcon={{
                             name: 'chevron-right',
                             color: theme.colors.text[500],
+                            size: sizes.small
                         }}
                     />
                 )}
