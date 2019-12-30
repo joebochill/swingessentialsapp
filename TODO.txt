@@ -6,6 +6,7 @@ TODO:
         19-Grass
         Tip-Swing
         Sign-In - Bunker
+    Clear the logs after auto sending
 
     Verify Fix on these
         Re-opening app after token expires shows the token dialog
@@ -20,6 +21,8 @@ TODO:
     Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
     Disable Android Landscape
     Build the refresh indicator into the header component
+    Check camera roll video size using RNFS // RNFetchBlob
+    Add join date to the registration API
 
 
 // Performance
@@ -68,4 +71,3 @@ TODO:
     App Banners on web
     Error logging as SQLite DB
     Remote announcements/messages via API
-    Check camera roll video size using RNFetchBlob

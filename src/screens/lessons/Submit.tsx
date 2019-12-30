@@ -30,7 +30,7 @@ import { submitLesson } from '../../redux/actions';
 // Utilities
 import { Logger } from '../../utilities/logging';
 import color from 'color';
-
+const RNFS = require('react-native-fs');
 
 
 export const Submit = props => {
@@ -156,10 +156,27 @@ export const Submit = props => {
                 setUploadProgress((event.loaded / event.total) * 100);
             }),
         );
-    }, [role, lessons.pending.length, fo_video, dtl_video, notes, dispatch]);
+    }, [role, credits, lessons.pending.length, fo_video, dtl_video, notes, dispatch]);
 
     const _setVideoURI = useCallback(
-        (swing: 'fo' | 'dtl', uri: string) => {
+        async (swing: 'fo' | 'dtl', uri: string) => {
+            
+            try{
+                const stats = await RNFS.stat(uri);
+                if(stats.size > 10 * 1024 * 1024){
+                    Alert.alert(`The video you have selected is too large (${(stats.size / (1024*1024)).toFixed(1)} MB). The maximum allowable file size is 10MB.`);
+                    return;
+                }
+            }
+            catch(err){
+                Logger.logError({
+                    code: 'SUB450',
+                    description: `Error while reading local file size. `,
+                    rawErrorCode: err.code,
+                    rawErrorMessage: err.message,
+                });
+            }
+
             if (swing === 'fo') {
                 setFO(uri);
             } else if (swing === 'dtl') {

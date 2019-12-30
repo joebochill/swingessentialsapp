@@ -177,7 +177,6 @@ export const Login = (props: NavigationInjectedProps) => {
 
     useEffect(() => {
         // Show biometric login on load
-        console.log(token, useBiometry, biometry.available, credentials.stored);
         if (!token && useBiometry && biometry.available && credentials.stored) {
             showBiometricLogin();
         }
