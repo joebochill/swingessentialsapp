@@ -1,20 +1,17 @@
 TODO:
 // Bugs
     Remove those pesky unused icon fonts ios
+    Typography doesn't scale
     
 // Additional Functionality
     Tutorials
     Disable Android Landscape
-    Build the refresh indicator into the header component
-    Add join date to the registration API
-
 
 // Performance
     Remove unused libraries
     Optimize image assets 
     Remove unused images
     Optimize bundle size
-    
 
 // Testing
     Fix list dividers missing
@@ -43,8 +40,6 @@ TODO:
     Linting (Remove inline style warnings)
     New How-to-use the app video
     Switch everything over to production (API, email addresses, etc.)
-
-
 
 
 // Future Functionality

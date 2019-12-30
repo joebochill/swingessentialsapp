@@ -14,7 +14,7 @@ import { AnimatedSafeAreaView } from '../../components';
 
 // Styles
 import { blackOpacity } from '../../styles/colors';
-import { sizes, spaces } from '../../styles/sizes';
+import { sizes, spaces, unit } from '../../styles/sizes';
 
 // Utilities
 import color from 'color';
@@ -216,8 +216,8 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
     private contentStyle() {
         const { theme, headerContent, navigation } = this.props;
         const contractedPadding = this.props.subtitle
-            ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.sizes.large + 18)) / 2
-            : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - theme.sizes.large) / 2;
+            ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - unit(theme.sizes.large + 18)) / 2
+            : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - unit(theme.sizes.large)) / 2;
         return [styles.content, headerContent ? {} : { paddingHorizontal: navigation ? spaces.small : spaces.medium, paddingBottom: this.scaleByHeaderHeight(spaces.xLarge, contractedPadding) }];
     }
 
@@ -225,9 +225,9 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         const { theme } = this.props;
         return {
             color: this.fontColor(),
-            lineHeight: this.scaleByHeaderHeight(30, theme.sizes.large),
+            lineHeight: this.scaleByHeaderHeight(unit(30), unit(theme.sizes.large)),
             fontFamily: theme.fonts.semiBold.fontFamily,
-            fontSize: this.scaleByHeaderHeight(30, theme.sizes.large),
+            fontSize: this.scaleByHeaderHeight(unit(30), unit(theme.sizes.large)),
         };
     }
 
@@ -235,9 +235,9 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         const { theme } = this.props;
         return {
             color: this.fontColor(),
-            lineHeight: 18,
+            lineHeight: unit(18),
             fontFamily: theme.fonts.light.fontFamily,
-            fontSize: 18,
+            fontSize: unit(18),
         };
     }
 
@@ -245,10 +245,10 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         const { theme } = this.props;
         return {
             color: this.fontColor(),
-            lineHeight: this.scaleByHeaderHeight(theme.sizes.large * 1.05, 0.1),
+            lineHeight: this.scaleByHeaderHeight(unit(theme.sizes.large) * 1.05, 0.1),
             opacity: this.scaleByHeaderHeight(1, 0),
             fontFamily: theme.fonts.regular.fontFamily,
-            fontSize: this.scaleByHeaderHeight(theme.sizes.large, 0.1),
+            fontSize: this.scaleByHeaderHeight(unit(theme.sizes.large), 0.1),
         };
     }
 

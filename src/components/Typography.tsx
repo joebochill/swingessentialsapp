@@ -1,5 +1,6 @@
 import React, { ComponentType } from 'react';
 import { Text, TextProps, TextStyle, StyleProp, StyleSheet } from 'react-native';
+import { unit } from '../styles/sizes';
 import { WithTheme, withTheme, Theme } from '../styles/theme';
 import { $DeepPartial } from '@callstack/react-theme-provider';
 
@@ -56,47 +57,47 @@ const createTypography = (getStyle: (theme: Theme) => StyleProp<TextStyle>): Typ
  */
 export const H1 = createTypography(({ fonts, sizes }) => ({
   ...fonts.light,
-  fontSize: 96
+  fontSize: unit(96)
 }));
 export const H2 = createTypography(({ fonts, sizes }) => ({
   ...fonts.light,
-  fontSize: 60
+  fontSize: unit(60)
 }));
 export const H3 = createTypography(({ fonts, sizes }) => ({
   ...fonts.regular,
-  fontSize: 48
+  fontSize: unit(48)
 }));
 export const H4 = createTypography(({ fonts, sizes }) => ({
   ...fonts.regular,
-  fontSize: sizes.giant
+  fontSize: unit(sizes.giant)
 }));
 export const H5 = createTypography(({ fonts, sizes }) => ({
   ...fonts.regular,
-  fontSize: sizes.extraLarge
+  fontSize: unit(sizes.extraLarge)
 }));
 export const H6 = createTypography(({ fonts, sizes }) => ({
   ...fonts.semiBold,
-  fontSize: sizes.large,
+  fontSize: unit(sizes.large),
   letterSpacing: 0
 }));
 export const H7 = createTypography(({ fonts, sizes }) => ({
   ...fonts.semiBold,
-  fontSize: 18
+  fontSize: unit(18)
 }));
 export const Body = createTypography(({ fonts, sizes }) => ({
   ...fonts.regular,
-  fontSize: sizes.medium
+  fontSize: unit(sizes.medium)
 }));
 export const Label = createTypography(({ fonts, sizes }) => ({
   ...fonts.regular,
-  fontSize: sizes.medium,
+  fontSize: unit(sizes.medium),
   letterSpacing: 0
 }));
 export const Subtitle = createTypography(({ fonts, sizes }) => ({
   ...fonts.semiBold,
-  fontSize: sizes.small
+  fontSize: unit(sizes.small)
 }));
 export const Caption = createTypography(({ fonts, sizes }) => ({
   ...fonts.regular,
-  fontSize: sizes.tiny
+  fontSize: unit(sizes.tiny)
 }));

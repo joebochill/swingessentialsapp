@@ -31,7 +31,7 @@ import { sharedStyles } from '../styles';
 // import { white } from '../styles/colors';
 import { useTheme } from '../styles/theme';
 
-import { unit, spaces } from '../styles/sizes';
+import { unit, spaces, sizes } from '../styles/sizes';
 
 // Utilities
 import { getLongDate } from '../utilities';
@@ -169,8 +169,8 @@ export const NavigationDrawer = (props) => {
                                     styles.avatar,
                                     {
                                         backgroundColor: theme.colors.background,
-                                        height: scaleByHeight(80, 0),
-                                        width: scaleByHeight(80, 0),
+                                        height: scaleByHeight(unit(80), 0),
+                                        width: scaleByHeight(unit(80), 0),
                                     },
                                 ]}>
                                 {token ?
@@ -178,7 +178,7 @@ export const NavigationDrawer = (props) => {
                                         adjustsFontSizeToFit
                                         allowFontScaling
                                         style={{
-                                            fontSize: scaleByHeight(40, 0),
+                                            fontSize: scaleByHeight(unit(40), 0),
                                             color: theme.colors.text[500],
                                         }}>
                                         {initials.toUpperCase()}
@@ -197,8 +197,8 @@ export const NavigationDrawer = (props) => {
                             <Animated.Text
                                 style={{
                                     color: 'white',
-                                    lineHeight: scaleByHeight(24, 0.1),
-                                    fontSize: scaleByHeight(24, 0.1),
+                                    lineHeight: scaleByHeight(unit(24), 0.1),
+                                    fontSize: scaleByHeight(unit(24), 0.1),
                                     fontWeight: '600',
                                 }} numberOfLines={1} ellipsizeMode={'tail'}
                             >
@@ -207,8 +207,8 @@ export const NavigationDrawer = (props) => {
                             <Animated.Text
                                 style={{
                                     color: 'white',
-                                    lineHeight: scaleByHeight(16, 0.1),
-                                    fontSize: scaleByHeight(16, 0.1),
+                                    lineHeight: scaleByHeight(unit(16), 0.1),
+                                    fontSize: scaleByHeight(unit(16), 0.1),
                                     fontWeight: '500',
                                 }}
                                 numberOfLines={1} ellipsizeMode={'tail'}
@@ -218,8 +218,8 @@ export const NavigationDrawer = (props) => {
                             <Animated.Text
                                 style={{
                                     color: 'white',
-                                    lineHeight: scaleByHeight(10, 0.1),
-                                    fontSize: scaleByHeight(10, 0.1),
+                                    lineHeight: scaleByHeight(unit(10), 0.1),
+                                    fontSize: scaleByHeight(unit(10), 0.1),
                                     opacity: scaleByHeight(1, 0),
                                     fontWeight: '300',
                                 }}
@@ -285,11 +285,13 @@ export const NavigationDrawer = (props) => {
                                             type: item.iconType || 'material',
                                             name: item.icon,
                                             color: theme.colors.text[500],
+                                            size: sizes.small,
                                             iconStyle: { marginLeft: 0 },
                                         }}
                                         rightIcon={item.nested ? {
                                             name: 'chevron-right',
                                             color: theme.colors.text[500],
+                                            size: sizes.small,
                                         } : undefined}
                                     />
                                 )}
