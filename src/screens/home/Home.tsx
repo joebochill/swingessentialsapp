@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { Body, H7, VideoCard, CollapsibleHeaderLayout } from '../../components';
+import { Body, H7, VideoCard, CollapsibleHeaderLayout, HomeTutorial } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Constants
@@ -135,6 +135,7 @@ export const Home = props => {
                     />
                 </>
             )}
+            <HomeTutorial/>
         </CollapsibleHeaderLayout>
     );
 };

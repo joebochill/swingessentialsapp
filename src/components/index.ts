@@ -5,3 +5,4 @@ export * from './headers';
 export * from './feedback';
 export * from './AnimatedSafeAreaView';
 export * from './Typography';
+export * from './tutorials';
