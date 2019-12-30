@@ -36,7 +36,7 @@ export class Logger {
             'utf8',
         );
         if (currentLog.length + message.length > LOG_LIMIT) {
-            this.sendEmail('LOGS');
+            this.autoSendEmail('LOGS');
         }
     }
     public static async logError(error: LOG_ERROR) {
@@ -76,7 +76,7 @@ export class Logger {
         const currentErrors = await this.readMessages(type);
         store.dispatch(sendLogReport(currentErrors, type));
     }
-    public static async sendEmail(type: LOG_TYPE, onDone: Function, username: string = '') {
+    public static async sendEmail(type: LOG_TYPE, onDone: Function = () => {}, username: string = '') {
         const currentLogs = await this.readMessages(type);
 
         Mailer.mail(

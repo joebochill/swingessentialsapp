@@ -1,27 +1,11 @@
 TODO:
 // Bugs
-    Banner images for all main screens
-        Home-standing
-        Pros-Glove
-        19-Grass
-        Tip-Swing
-        Sign-In - Bunker
-    Clear the logs after auto sending
-
-    Verify Fix on these
-        Re-opening app after token expires shows the token dialog
-        Countdown gets messed up when it's in the background
-    
-    Add refresh indicator to refreshable screens
     Remove those pesky unused icon fonts ios
-
     
 // Additional Functionality
     Tutorials
-    Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
     Disable Android Landscape
     Build the refresh indicator into the header component
-    Check camera roll video size using RNFS // RNFetchBlob
     Add join date to the registration API
 
 
@@ -34,10 +18,15 @@ TODO:
 
 // Testing
     Fix list dividers missing
-    Test - Don't flash the token dialog if the token is expired on loading
+    Contact Us link is working
+    Don't flash the token dialog if the token is expired on loading
     Remove Albatross Package
         test how this affects existing app
     Pull to refresh all - verify on android
+    Clear the logs after auto sending
+    Verify Fix on these
+        Re-opening app after token expires shows the token dialog
+        Countdown gets messed up when it's in the background
     Deep linking - verify ios and android
     Verify IAP works
     Verify All Videos and recording on android
@@ -59,6 +48,7 @@ TODO:
 
 
 // Future Functionality
+    Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
     API for single Blog/Tip
     Lazy loading for lists
     Loading/Empty states

@@ -7,7 +7,7 @@ import { H7, Body, CollapsibleHeaderLayout } from '../../components';
 // Constants
 import { ROUTES } from '../../constants/routes';
 // Styles
-import bg from '../../images/bg_6.jpg';
+import bg from '../../images/bg_4.jpg';
 import { sharedStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';

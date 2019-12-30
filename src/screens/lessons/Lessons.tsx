@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, SectionList } from 'react-native';
@@ -20,6 +20,8 @@ import { getLongDate, makeGroups } from '../../utilities';
 
 // Types
 import { ApplicationState } from '../../__types__';
+// Actions
+import { loadLessons } from '../../redux/actions';
 
 
 type Lesson = {
@@ -40,9 +42,16 @@ export const Lessons = props => {
     const myLessons = lessons.pending.concat(lessons.closed);
     const sections = makeGroups(myLessons, (lesson: Lesson) => getLongDate(lesson.request_date));
     const theme = useTheme();
+    const dispatch = useDispatch();
 
     return (
-        <CollapsibleHeaderLayout title={'Your Lessons'} subtitle={"see how far you've come"} backgroundImage={bg}>
+        <CollapsibleHeaderLayout 
+            title={'Your Lessons'} 
+            subtitle={"see how far you've come"} 
+            backgroundImage={bg}
+            refreshing={lessons.loading}
+            onRefresh={() => dispatch(loadLessons())}
+        >
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (
                     <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: spaces.large } : {}]}>

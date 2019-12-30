@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { Platform, View, KeyboardAvoidingView, ScrollView, TouchableOpacity, Image, TextInput, StyleSheet, Alert, Keyboard } from 'react-native';
-import { H7, Label, SEHeader, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox, UploadProgressModal } from '../../components';
+import { H7, Label, CollapsibleHeaderLayout, SEHeader, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox, UploadProgressModal } from '../../components';
 import { Icon } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 
@@ -13,7 +13,8 @@ import { sharedStyles } from '../../styles';
 import { transparent } from '../../styles/colors';
 import { spaces, sizes, fonts, unit } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
-import bg from '../../images/golf_bg.png';
+import bg from '../../images/bg_6.jpg';
+import page_bg from '../../images/golf_bg.png';
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
 
@@ -160,15 +161,15 @@ export const Submit = props => {
 
     const _setVideoURI = useCallback(
         async (swing: 'fo' | 'dtl', uri: string) => {
-            
-            try{
+
+            try {
                 const stats = await RNFS.stat(uri);
-                if(stats.size > 10 * 1024 * 1024){
-                    Alert.alert(`The video you have selected is too large (${(stats.size / (1024*1024)).toFixed(1)} MB). The maximum allowable file size is 10MB.`);
+                if (stats.size > 10 * 1024 * 1024) {
+                    Alert.alert(`The video you have selected is too large (${(stats.size / (1024 * 1024)).toFixed(1)} MB). The maximum allowable file size is 10MB.`);
                     return;
                 }
             }
-            catch(err){
+            catch (err) {
                 Logger.logError({
                     code: 'SUB450',
                     description: `Error while reading local file size. `,
@@ -228,23 +229,14 @@ export const Submit = props => {
     );
 
     return (
-        <View style={sharedStyles.pageContainer}>
-            <Image
-                source={bg}
-                resizeMethod={'resize'}
-                style={{
-                    position: 'absolute',
-                    width: '100%',
-                    resizeMode: 'cover',
-                    height: '100%',
-                    opacity: 0.15,
-                }}
-            />
-            <SEHeader title={'Submit Your Swing'} subtitle={'create a new lesson'} />
-            <KeyboardAvoidingView
-                style={[sharedStyles.pageContainer, { marginTop: HEADER_COLLAPSED_HEIGHT, backgroundColor: transparent }]}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-                <ScrollView contentContainerStyle={sharedStyles.paddingMedium} ref={scroller}>
+        <CollapsibleHeaderLayout
+            title={'Submit Your Swing'}
+            subtitle={'create a new lesson'}
+            backgroundImage={bg}
+            pageBackground={page_bg}
+        >
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+                <ScrollView contentContainerStyle={sharedStyles.paddingHorizontalMedium} ref={scroller}>
                     <ErrorBox show={roleError !== ''} error={roleError} style={{ marginBottom: spaces.medium }} />
                     <ErrorBox
                         show={lessons.pending.length > 0}
@@ -325,7 +317,7 @@ export const Submit = props => {
                                 style={[
                                     styles.input,
                                     {
-                                        backgroundColor: theme.colors.background[50],
+                                        backgroundColor: theme.colors.background,
                                         color: theme.colors.text[500],
                                         borderColor: theme.colors.primary[800]
                                     }
@@ -348,7 +340,7 @@ export const Submit = props => {
                 </ScrollView>
             </KeyboardAvoidingView>
             {lessons.redeemPending && <UploadProgressModal progress={uploadProgress} visible={lessons.redeemPending} />}
-        </View>
+        </CollapsibleHeaderLayout>
     );
 };
 

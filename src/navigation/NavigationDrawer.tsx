@@ -230,9 +230,9 @@ export const NavigationDrawer = (props) => {
 
                     </Animated.View>
                     <View style={[styles.footer]}>
-                        <H7 style={{color: theme.colors.onPrimary[500]}}>SWING ESSENTIALS</H7>
+                        <H7 style={{ color: theme.colors.onPrimary[500] }}>SWING ESSENTIALS</H7>
                         <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
-                            <Body style={{color: theme.colors.onPrimary[500]}} font={'light'} >{`v${APP_VERSION}`}</Body>
+                            <Body style={{ color: theme.colors.onPrimary[500] }} font={'light'} >{`v${APP_VERSION}`}</Body>
                         </Animated.View>
                     </View>
                 </View>
@@ -267,9 +267,11 @@ export const NavigationDrawer = (props) => {
                                         bottomDivider
                                         onPress={
                                             item.route
-                                                ? () => {
-                                                    navigation.navigate(item.route);
-                                                }
+                                                ? item.route === ROUTES.HOME ?
+                                                    () => { navigation.closeDrawer() } :
+                                                    () => {
+                                                        navigation.navigate(item.route);
+                                                    }
                                                 : item.activatePanel !== undefined
                                                     ? () => {
                                                         setActivePanel(item.activatePanel);

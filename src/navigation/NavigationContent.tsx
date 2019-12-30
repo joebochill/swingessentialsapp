@@ -1,4 +1,8 @@
+import { Alert } from 'react-native';
 import { ROUTES } from '../constants/routes';
+import Mailer from 'react-native-mail'
+import { Logger } from '../utilities/logging';
+
 type RouteGroup = {
     name: string;
     data: Array<Route>;
@@ -81,7 +85,46 @@ export const helpNavigationItems: RouteGroup = {
         {
             title: 'Contact Us',
             icon: 'mail',
-            route: ROUTES.CONTACT,
+            onPress: () => {
+                Mailer.mail(
+                    {
+                        subject: `Swing Essentials App Feedback`,
+                        recipients: ['boyle.p.joseph@gmail.com'], //['info@swingessentials.com'],// TODO: update
+                        // body: ``,
+                        isHTML: true,
+                    },
+                    (error, event) => {
+                        if (error && error === 'canceled') {
+                            // Do nothing
+                        } 
+                        else if (error) {
+                            Logger.logError({
+                                code: 'CON100',
+                                description: 'Error sending error logs',
+                                rawErrorMessage: error,
+                            });
+                        } 
+                        else if (event && event === 'sent') {
+                            // message sent successfully
+                            Alert.alert(
+                                'Message Sent',
+                                'Your message has been sent successfully. Thank you for helping us improve the app!',
+                            );
+                        } 
+                        else if (event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')) {
+                            // do nothing
+                        } 
+                        else if (event) {
+                            Logger.logError({
+                                code: 'CON900',
+                                description: 'Error sending feedback email. ',
+                                rawErrorMessage: event,
+                            });
+                        }
+                    },
+                )
+            },
+            // route: ROUTES.CONTACT,
         },
         {
             title: 'Back',
@@ -94,29 +137,29 @@ export const helpNavigationItems: RouteGroup = {
 export const accountNavigationItems: RouteGroup = {
     name: 'account',
     data: [
+        // {
+        //     title: 'Account Details',
+        //     icon: 'person',
+        //     private: true,
+        //     route: ROUTES.ACCOUNT_DETAILS,
+        // },
+        // {
+        //     title: 'Order History',
+        //     icon: 'receipt',
+        //     private: true,
+        //     route: ROUTES.HISTORY,
+        // },
         {
-            title: 'Account Details',
-            icon: 'person',
+            title: 'Settings',
+            icon: 'settings',
             private: true,
-            route: ROUTES.ACCOUNT_DETAILS,
-        },
-        {
-            title: 'Order History',
-            icon: 'receipt',
-            private: true,
-            route: ROUTES.HISTORY,
+            route: ROUTES.SETTINGS,
         },
         {
             title: 'Error Logs',
             icon: 'list',
             private: true,
             route: ROUTES.LOGS,
-        },
-        {
-            title: 'Settings',
-            icon: 'settings',
-            private: true,
-            route: ROUTES.SETTINGS,
         },
         {
             title: 'Back',
