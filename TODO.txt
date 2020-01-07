@@ -18,6 +18,8 @@ TODO:
         test how this affects existing app
     Pull to refresh all - verify on android
     Deep linking - verify ios (xxx) and android
+    Verify All Videos and recording on android
+    Final device testing
 
     XXX Fix list dividers missing
     XXX Contact Us link is working
@@ -26,13 +28,11 @@ TODO:
     XXX Verify Fix on these
         XXX Re-opening app after token expires shows the token dialog
         XXX Countdown gets messed up when it's in the background
+    XXX Verify IAP works
     
-    Verify IAP works
-    Verify All Videos and recording on android
-    Final device testing
-
 // Misc
-    New screenshots and documentation
+    XXX New screenshots and documentation
+    
     New itunes screenshots
     Android permissions request
     Optimize component inclusion
