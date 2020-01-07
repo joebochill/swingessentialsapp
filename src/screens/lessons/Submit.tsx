@@ -241,7 +241,6 @@ export const Submit = props => {
                         });
                     } else {
                         _setVideoURI(swing, response.uri);
-                        // Alert.alert('New Video Connected')
                     }
                 },
             );

@@ -1,7 +1,7 @@
 TODO:
 // Bugs
     Remove those pesky unused icon fonts ios
-    Typography doesn't scale
+    
     
 // Additional Functionality
     Disable Android Landscape
@@ -13,17 +13,20 @@ TODO:
     Optimize bundle size
 
 // Testing
-    Fix list dividers missing
-    Contact Us link is working
-    Don't flash the token dialog if the token is expired on loading
+    Typography doesn't scale
     Remove Albatross Package
         test how this affects existing app
     Pull to refresh all - verify on android
-    Clear the logs after auto sending
-    Verify Fix on these
-        Re-opening app after token expires shows the token dialog
-        Countdown gets messed up when it's in the background
-    Deep linking - verify ios and android
+    Deep linking - verify ios (xxx) and android
+
+    XXX Fix list dividers missing
+    XXX Contact Us link is working
+    XXX Don't flash the token dialog if the token is expired on loading
+    XXX Clear the logs after auto sending
+    XXX Verify Fix on these
+        XXX Re-opening app after token expires shows the token dialog
+        XXX Countdown gets messed up when it's in the background
+    
     Verify IAP works
     Verify All Videos and recording on android
     Final device testing

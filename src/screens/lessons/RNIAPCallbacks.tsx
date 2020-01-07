@@ -21,12 +21,9 @@ export const RNIAPCallbacks = () => {
     useEffect(() => {
         const pil = purchaseUpdatedListener((purchase: any) => {
             const receipt = purchase.transactionReceipt;
-            Alert.alert(receipt);
-            Alert.alert(purchase.productId);
             if (receipt) {
                 const paidPackage = packages.filter(pack => pack.app_sku === purchase.productId);
                 let shortcode = paidPackage.length > 0 ? paidPackage[0].shortcode : '';
-                Alert.alert('have receipt: ' + shortcode);
                 if (shortcode === '') {
                     return;
                 }
@@ -47,13 +44,10 @@ export const RNIAPCallbacks = () => {
                                 // RNIap.acknowledgePurchaseAndroid(purchase.purchaseToken);
                             }
                             RNIap.finishTransaction(purchase);
-                            Alert.alert('purchase api success');
                         },
                         (response: Response) => {
-                            Alert.alert('purchase failed in API');
                             // If purchase is already claimed in database
                             if (parseInt(response.headers.get('Error') || '', 10) === 400607) {
-                                Alert.alert('already claimed');
                                 if (Platform.OS === 'ios') {
                                     RNIap.finishTransactionIOS(purchase.transactionId);
                                 } else if (Platform.OS === 'android') {
