@@ -24,7 +24,6 @@ import { ApplicationState } from '../../__types__';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
-import { ThemeColors } from 'react-navigation';
 
 export const Order = props => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
@@ -59,7 +58,7 @@ export const Order = props => {
                 } catch (err) {
                     Logger.logError({
                         code: 'IAP100',
-                        description: `Failed to load in-app purchases.`,
+                        description: 'Failed to load in-app purchases.',
                         rawErrorCode: err.code,
                         rawErrorMessage: err.message,
                     });
@@ -102,7 +101,7 @@ export const Order = props => {
             } catch (error) {
                 Logger.logError({
                     code: 'IAP200',
-                    description: `Failed to request in-app purchase.`,
+                    description: 'Failed to request in-app purchase.',
                     rawErrorCode: error.code,
                     rawErrorMessage: error.message,
                 });
@@ -128,7 +127,11 @@ export const Order = props => {
                 style={{ marginHorizontal: spaces.medium, marginBottom: spaces.medium }}
             />
             {roleError.length === 0 && (
-                <View style={[styles.callout, {backgroundColor: theme.colors.surface, borderColor: theme.colors.primary[200]}]}>
+                <View
+                    style={[
+                        styles.callout,
+                        { backgroundColor: theme.colors.surface, borderColor: theme.colors.primary[200] },
+                    ]}>
                     <H4 style={{ lineHeight: 32 }}>{credits.count}</H4>
                     <Label>{`Credit${credits.count !== 1 ? 's' : ''} Remaining`}</Label>
                 </View>
@@ -154,7 +157,11 @@ export const Order = props => {
                             iconStyle: { marginLeft: 0 },
                             size: sizes.small,
                         }}
-                        title={<Body font={'semiBold'} style={{ marginLeft: spaces.medium }}>{item.name}</Body>}
+                        title={
+                            <Body font={'semiBold'} style={{ marginLeft: spaces.medium }}>
+                                {item.name}
+                            </Body>
+                        }
                         subtitle={<Body style={{ marginLeft: spaces.medium }}>{item.description}</Body>}
                         rightTitle={<Body>{products.length > 0 ? `$${products[index].price}` : '--'}</Body>}
                         rightIcon={
@@ -162,7 +169,7 @@ export const Order = props => {
                                 ? {
                                       name: 'check',
                                       color: theme.colors.text[500],
-                                      size: sizes.small
+                                      size: sizes.small,
                                   }
                                 : undefined
                         }
@@ -177,7 +184,7 @@ export const Order = props => {
                     onPress={() => onPurchase(packages[selected].app_sku, packages[selected].shortcode)}
                 />
             )}
-            <OrderTutorial/>
+            <OrderTutorial />
         </CollapsibleHeaderLayout>
     );
 };
@@ -191,6 +198,5 @@ const styles = StyleSheet.create({
         marginBottom: spaces.large,
         borderWidth: unit(1),
         borderRadius: unit(5),
-        
     },
 });

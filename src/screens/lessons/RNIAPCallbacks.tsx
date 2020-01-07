@@ -27,7 +27,9 @@ export const RNIAPCallbacks = () => {
                 const paidPackage = packages.filter(pack => pack.app_sku === purchase.productId);
                 let shortcode = paidPackage.length > 0 ? paidPackage[0].shortcode : '';
                 Alert.alert('have receipt: ' + shortcode);
-                if (shortcode === '') return;
+                if (shortcode === '') {
+                    return;
+                }
                 dispatch(
                     purchaseCredits(
                         {
@@ -70,7 +72,7 @@ export const RNIAPCallbacks = () => {
                 // Retry / conclude the purchase is fraudulent, etc...
                 Logger.logError({
                     code: 'IAP999',
-                    description: `Invalid purchase detected.`,
+                    description: 'Invalid purchase detected.',
                     rawErrorMessage: receipt,
                 });
             }
@@ -78,7 +80,7 @@ export const RNIAPCallbacks = () => {
         const pel = purchaseErrorListener((error: any) => {
             Logger.logError({
                 code: 'IAP800',
-                description: `In-App purchase error.`,
+                description: 'In-App purchase error.',
                 rawErrorCode: error.code,
                 rawErrorMessage: error.message,
             });

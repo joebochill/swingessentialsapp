@@ -3,8 +3,29 @@ import { usePrevious } from '../../utilities';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { Platform, View, KeyboardAvoidingView, ScrollView, TouchableOpacity, Image, TextInput, StyleSheet, Alert, Keyboard } from 'react-native';
-import { H7, Label, CollapsibleHeaderLayout, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox, UploadProgressModal, SubmitTutorial } from '../../components';
+import {
+    Platform,
+    View,
+    KeyboardAvoidingView,
+    ScrollView,
+    TouchableOpacity,
+    Image,
+    TextInput,
+    StyleSheet,
+    Alert,
+    Keyboard,
+} from 'react-native';
+import {
+    H7,
+    Label,
+    CollapsibleHeaderLayout,
+    SEVideo,
+    SEVideoPlaceholder,
+    SEButton,
+    ErrorBox,
+    UploadProgressModal,
+    SubmitTutorial,
+} from '../../components';
 import { Icon } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 
@@ -32,7 +53,6 @@ import { Logger } from '../../utilities/logging';
 import color from 'color';
 const RNFS = require('react-native-fs');
 
-
 export const Submit = props => {
     const { navigation } = props;
     const [fo_video, setFO] = useState('');
@@ -51,8 +71,8 @@ export const Submit = props => {
         role === 'anonymous'
             ? 'You must be signed in to submit lessons.'
             : role === 'pending'
-                ? 'You must validate your email address before you can submit lessons'
-                : '';
+            ? 'You must validate your email address before you can submit lessons'
+            : '';
 
     const previousPendingStatus = usePrevious(lessons.redeemPending);
 
@@ -82,7 +102,7 @@ export const Submit = props => {
                 // Fail redeem
                 Logger.logError({
                     code: 'SUB100',
-                    description: `Failed to submit lesson.`,
+                    description: 'Failed to submit lesson.',
                     rawErrorCode: lessons.redeemError,
                 });
                 // 400701 means files were stripped for size
@@ -113,28 +133,28 @@ export const Submit = props => {
         if (role !== 'customer' && role !== 'administrator') {
             Logger.logError({
                 code: 'SUB200',
-                description: `Unverified users cannot submit lessons.`,
+                description: 'Unverified users cannot submit lessons.',
             });
             return;
         }
         if (lessons.pending.length > 0) {
             Logger.logError({
                 code: 'SUB300',
-                description: `You may not submit a new lesson with a current lesson pending.`,
+                description: 'You may not submit a new lesson with a current lesson pending.',
             });
             return;
         }
         if (credits < 1) {
             Logger.logError({
                 code: 'SUB350',
-                description: `You may not submit a new lesson without any credits.`,
+                description: 'You may not submit a new lesson without any credits.',
             });
             return;
         }
         if (!fo_video || !dtl_video) {
             Logger.logError({
                 code: 'SUB400',
-                description: `Missing required video in lesson submission.`,
+                description: 'Missing required video in lesson submission.',
             });
             return;
         }
@@ -160,18 +180,20 @@ export const Submit = props => {
 
     const _setVideoURI = useCallback(
         async (swing: 'fo' | 'dtl', uri: string) => {
-
             try {
                 const stats = await RNFS.stat(uri);
                 if (stats.size > 10 * 1024 * 1024) {
-                    Alert.alert(`The video you have selected is too large (${(stats.size / (1024 * 1024)).toFixed(1)} MB). The maximum allowable file size is 10MB.`);
+                    Alert.alert(
+                        `The video you have selected is too large (${(stats.size / (1024 * 1024)).toFixed(
+                            1,
+                        )} MB). The maximum allowable file size is 10MB.`,
+                    );
                     return;
                 }
-            }
-            catch (err) {
+            } catch (err) {
                 Logger.logError({
                     code: 'SUB450',
-                    description: `Error while reading local file size. `,
+                    description: 'Error while reading local file size. ',
                     rawErrorCode: err.code,
                     rawErrorMessage: err.message,
                 });
@@ -184,7 +206,7 @@ export const Submit = props => {
             } else {
                 Logger.logError({
                     code: 'SUB500',
-                    description: `Invalid video type selection.`,
+                    description: 'Invalid video type selection.',
                 });
             }
         },
@@ -232,8 +254,7 @@ export const Submit = props => {
             title={'Submit Your Swing'}
             subtitle={'create a new lesson'}
             backgroundImage={bg}
-            pageBackground={page_bg}
-        >
+            pageBackground={page_bg}>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView contentContainerStyle={sharedStyles.paddingHorizontalMedium} ref={scroller}>
                     <ErrorBox show={roleError !== ''} error={roleError} style={{ marginBottom: spaces.medium }} />
@@ -246,9 +267,7 @@ export const Submit = props => {
                     />
                     <ErrorBox
                         show={roleError.length === 0 && lessons.pending.length === 0 && credits < 1}
-                        error={
-                            'You don\'t have any credits left. Head over to the Order page to get more.'
-                        }
+                        error={"You don't have any credits left. Head over to the Order page to get more."}
                         style={{ marginBottom: spaces.medium }}
                     />
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
@@ -263,8 +282,8 @@ export const Submit = props => {
                                 onPress={() => _showPicker('fo')}
                             />
                         ) : (
-                                <SEVideo editable source={fo_video} onEdit={() => _showPicker('fo')} />
-                            )}
+                            <SEVideo editable source={fo_video} onEdit={() => _showPicker('fo')} />
+                        )}
                         {!dtl_video ? (
                             <SEVideoPlaceholder
                                 title={'Down-the-Line'}
@@ -273,13 +292,13 @@ export const Submit = props => {
                                 onPress={() => _showPicker('dtl')}
                             />
                         ) : (
-                                <SEVideo
-                                    editable
-                                    source={dtl_video}
-                                    style={{ marginLeft: spaces.medium }}
-                                    onEdit={() => _showPicker('dtl')}
-                                />
-                            )}
+                            <SEVideo
+                                editable
+                                source={dtl_video}
+                                style={{ marginLeft: spaces.medium }}
+                                onEdit={() => _showPicker('dtl')}
+                            />
+                        )}
                     </View>
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0, marginTop: spaces.large }]}>
                         <H7>Special Requests / Comments</H7>
@@ -287,7 +306,11 @@ export const Submit = props => {
                     {!useNotes && (
                         <TouchableOpacity
                             activeOpacity={0.8}
-                            style={[sharedStyles.dashed, styles.dashButton, { backgroundColor: color(theme.colors.primary[500]).fade(.85) }]}
+                            style={[
+                                sharedStyles.dashed,
+                                styles.dashButton,
+                                { backgroundColor: color(theme.colors.primary[500]).fade(0.85) },
+                            ]}
                             onPress={() => setUseNotes(true)}>
                             <Icon name={'add-circle'} color={theme.colors.primary[500]} size={24} />
                         </TouchableOpacity>
@@ -318,8 +341,8 @@ export const Submit = props => {
                                     {
                                         backgroundColor: theme.colors.background,
                                         color: theme.colors.text[500],
-                                        borderColor: theme.colors.primary[800]
-                                    }
+                                        borderColor: theme.colors.primary[800],
+                                    },
                                 ]}
                             />
                             <Label style={{ alignSelf: 'flex-end' }}>{`${500 - notes.length} Characters Left`}</Label>
@@ -339,7 +362,7 @@ export const Submit = props => {
                 </ScrollView>
             </KeyboardAvoidingView>
             {lessons.redeemPending && <UploadProgressModal progress={uploadProgress} visible={lessons.redeemPending} />}
-            <SubmitTutorial/>
+            <SubmitTutorial />
         </CollapsibleHeaderLayout>
     );
 };

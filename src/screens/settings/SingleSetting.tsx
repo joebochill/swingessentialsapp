@@ -66,12 +66,6 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
-    if (!currentSettingName) {
-        navigation.pop();
-        return null;
-    }
-    const currentSetting: SettingType = SETTINGS.filter(setting => setting.name === currentSettingName)[0];
-
     const [value, setValue]: [any, Function] = useState(settings[currentSettingName]);
 
     const _updateSetting = useCallback(() => {
@@ -80,11 +74,19 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                 [currentSettingName]: value,
             }),
         );
-    }, [value, dispatch]);
+    }, [dispatch, currentSettingName, value]);
 
     useEffect(() => {
-        if (!token) props.navigation.popToTop();
-    }, [token]);
+        if (!token) {
+            props.navigation.popToTop();
+        }
+    }, [props.navigation, token]);
+
+    if (!currentSettingName) {
+        navigation.pop();
+        return null;
+    }
+    const currentSetting: SettingType = SETTINGS.filter(setting => setting.name === currentSettingName)[0];
 
     return (
         <View style={sharedStyles.pageContainer}>
@@ -95,12 +97,13 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                 showAuth={false}
                 onNavigate={() => _updateSetting()}
             />
-            <View style={[
-                sharedStyles.pageContainer,
-                {
-                    paddingTop: HEADER_COLLAPSED_HEIGHT + spaces.medium,
-                },
-            ]}>
+            <View
+                style={[
+                    sharedStyles.pageContainer,
+                    {
+                        paddingTop: HEADER_COLLAPSED_HEIGHT + spaces.medium,
+                    },
+                ]}>
                 {currentSetting.values.map((val, index) => (
                     <ListItem
                         key={`Setting-Option-${index}`}
@@ -112,9 +115,13 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                         title={
                             <Body>{`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
                                 typeof val === 'number' ? 's' : ''
-                                }`}</Body>
+                            }`}</Body>
                         }
-                        rightIcon={caseSame(value, val) ? { name: 'check', color: theme.colors.text[500], size: sizes.small } : undefined}
+                        rightIcon={
+                            caseSame(value, val)
+                                ? { name: 'check', color: theme.colors.text[500], size: sizes.small }
+                                : undefined
+                        }
                     />
                 ))}
                 <Body style={[sharedStyles.paddingHorizontalMedium, { marginTop: spaces.medium }]}>

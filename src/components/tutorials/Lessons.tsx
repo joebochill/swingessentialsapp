@@ -18,8 +18,7 @@ import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 // Utilities
 import { getLongDate, getDate } from '../../utilities';
 
-
-export const LessonsTutorial = props => {
+export const LessonsTutorial = () => {
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useTheme();
     const dispatch = useDispatch();
@@ -30,60 +29,66 @@ export const LessonsTutorial = props => {
             data: [
                 {
                     date: getDate(Date.now()),
-                    new: true
+                    new: true,
                 },
                 {
                     date: getDate(Date.now() - 24 * 60 * 60 * 1000),
-                    new: false
-                }
+                    new: false,
+                },
             ],
-        }
-    ]
+        },
+    ];
 
     const slides = [
-        (
-            <>
-                <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>{'Your Lessons'}</H4>
-                <H7 font={'light'} style={{ textAlign: 'center', marginTop: spaces.small, marginBottom: spaces.medium, color: theme.colors.onPrimary[50] }}>{`When you have submitted your golf swing for analysis, your lessons will appear in this list.`}</H7>
-                <SectionList
-                    style={{ marginTop: spaces.large }}
-                    scrollEnabled={false}
-                    renderSectionHeader={({ section: { bucketName, index } }) => (
-                        <H7 style={{ color: theme.colors.onPrimary[50], marginBottom: spaces.xSmall }}>{bucketName}</H7>
-                    )}
-                    sections={sections}
-                    renderItem={({ item, index }) =>
-                        (
-                            <ListItem
-                                containerStyle={sharedStyles.listItem}
-                                contentContainerStyle={sharedStyles.listItemContent}
-                                bottomDivider
-                                topDivider={index === 0}
-                                title={<Body>{item.date}</Body>}
-                                rightTitle={item.new ? <H7>NEW</H7> : undefined}
-                                rightIcon={{
-                                    name: 'chevron-right',
-                                    color: theme.colors.text[500],
-                                    size: sizes.small
-                                }}
-                            />
-                        )
-                    }
-                    keyExtractor={(item): string => 'complete_' + item.date}
-                />
-            </>
-        )
+        <>
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
+                {'Your Lessons'}
+            </H4>
+            <H7
+                font={'light'}
+                style={{
+                    textAlign: 'center',
+                    marginTop: spaces.small,
+                    marginBottom: spaces.medium,
+                    color: theme.colors.onPrimary[50],
+                }}>
+                {'When you have submitted your golf swing for analysis, your lessons will appear in this list.'}
+            </H7>
+            <SectionList
+                style={{ marginTop: spaces.large }}
+                scrollEnabled={false}
+                renderSectionHeader={({ section: { bucketName } }) => (
+                    <H7 style={{ color: theme.colors.onPrimary[50], marginBottom: spaces.xSmall }}>{bucketName}</H7>
+                )}
+                sections={sections}
+                renderItem={({ item, index }) => (
+                    <ListItem
+                        containerStyle={sharedStyles.listItem}
+                        contentContainerStyle={sharedStyles.listItemContent}
+                        bottomDivider
+                        topDivider={index === 0}
+                        title={<Body>{item.date}</Body>}
+                        rightTitle={item.new ? <H7>NEW</H7> : undefined}
+                        rightIcon={{
+                            name: 'chevron-right',
+                            color: theme.colors.text[500],
+                            size: sizes.small,
+                        }}
+                    />
+                )}
+                keyExtractor={(item): string => 'complete_' + item.date}
+            />
+        </>,
     ];
 
     return (
         <TutorialModal
             visible={showTutorial.tutorial_lesson_list}
-            onClose={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]))}
-        >
+            onClose={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]))}>
             <View>
                 <Carousel
                     data={slides}
-                    renderItem={({ item, index }) => slides[index]}
+                    renderItem={({ index }) => slides[index]}
                     sliderWidth={width - 2 * spaces.medium}
                     itemWidth={width - 2 * spaces.medium}
                 />
@@ -95,12 +100,8 @@ export const LessonsTutorial = props => {
                 />
             </View>
         </TutorialModal>
-    )
+    );
 };
-
-
-
-
 
 // import React, { useState } from 'react';
 

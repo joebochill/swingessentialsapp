@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 import { ROUTES } from '../constants/routes';
-import Mailer from 'react-native-mail'
+import Mailer from 'react-native-mail';
 import { Logger } from '../utilities/logging';
 
 type RouteGroup = {
@@ -88,7 +88,7 @@ export const helpNavigationItems: RouteGroup = {
             onPress: () => {
                 Mailer.mail(
                     {
-                        subject: `Swing Essentials App Feedback`,
+                        subject: 'Swing Essentials App Feedback',
                         recipients: ['boyle.p.joseph@gmail.com'], //['info@swingessentials.com'],// TODO: update
                         // body: ``,
                         isHTML: true,
@@ -96,25 +96,21 @@ export const helpNavigationItems: RouteGroup = {
                     (error, event) => {
                         if (error && error === 'canceled') {
                             // Do nothing
-                        } 
-                        else if (error) {
+                        } else if (error) {
                             Logger.logError({
                                 code: 'CON100',
                                 description: 'Error sending error logs',
                                 rawErrorMessage: error,
                             });
-                        } 
-                        else if (event && event === 'sent') {
+                        } else if (event && event === 'sent') {
                             // message sent successfully
                             Alert.alert(
                                 'Message Sent',
                                 'Your message has been sent successfully. Thank you for helping us improve the app!',
                             );
-                        } 
-                        else if (event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')) {
+                        } else if (event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')) {
                             // do nothing
-                        } 
-                        else if (event) {
+                        } else if (event) {
                             Logger.logError({
                                 code: 'CON900',
                                 description: 'Error sending feedback email. ',
@@ -122,7 +118,7 @@ export const helpNavigationItems: RouteGroup = {
                             });
                         }
                     },
-                )
+                );
             },
             // route: ROUTES.CONTACT,
         },

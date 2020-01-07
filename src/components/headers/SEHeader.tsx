@@ -32,12 +32,12 @@ const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-varian
 const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
 
 export type SEHeaderProps = Omit<ResizableHeaderProps, 'headerHeight'> & {
-        mainAction?: NavType;
-        showAuth?: boolean;
-        dynamic?: boolean;
-        headerHeight?: Animated.AnimatedInterpolation;
-        onNavigate?: Function;
-    };
+    mainAction?: NavType;
+    showAuth?: boolean;
+    dynamic?: boolean;
+    headerHeight?: Animated.AnimatedInterpolation;
+    onNavigate?: Function;
+};
 
 export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjectedProps) => {
     const {
@@ -54,22 +54,22 @@ export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjecte
 
     const defaultActions: Array<HeaderIcon> = showAuth
         ? [
-            token
-                ? {
-                    icon: LogoutIcon,
-                    onPress: () => {
-                        Alert.alert('Log Out', 'Are you sure you want to log out?', [
-                            { text: 'Log Out', onPress: () => dispatch(requestLogout(token)) },
-                            { text: 'Cancel' },
-                        ]);
+              token
+                  ? {
+                        icon: LogoutIcon,
+                        onPress: () => {
+                            Alert.alert('Log Out', 'Are you sure you want to log out?', [
+                                { text: 'Log Out', onPress: () => dispatch(requestLogout(token)) },
+                                { text: 'Cancel' },
+                            ]);
+                        },
+                    }
+                  : {
+                        icon: AccountIcon,
+                        onPress: () =>
+                            props.navigation.navigate({ routeName: ROUTES.AUTH_GROUP, key: ROUTES.AUTH_GROUP }),
                     },
-                }
-                : {
-                    icon: AccountIcon,
-                    onPress: () =>
-                        props.navigation.navigate({ routeName: ROUTES.AUTH_GROUP, key: ROUTES.AUTH_GROUP }),
-                },
-        ]
+          ]
         : [];
 
     return (
@@ -77,21 +77,25 @@ export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjecte
             navigation={
                 mainAction === 'menu'
                     ? {
-                        icon: MenuIcon,
-                        onPress: () => {
-                            navigation.openDrawer();
-                            if (onNavigate) onNavigate();
-                        },
-                    }
+                          icon: MenuIcon,
+                          onPress: () => {
+                              navigation.openDrawer();
+                              if (onNavigate) {
+                                  onNavigate();
+                              }
+                          },
+                      }
                     : mainAction === 'back'
-                        ? {
-                            icon: BackIcon,
-                            onPress: () => {
-                                navigation.pop();
-                                if (onNavigate) onNavigate();
-                            },
-                        }
-                        : undefined
+                    ? {
+                          icon: BackIcon,
+                          onPress: () => {
+                              navigation.pop();
+                              if (onNavigate) {
+                                  onNavigate();
+                              }
+                          },
+                      }
+                    : undefined
             }
             headerHeight={props.headerHeight || HEADER_COLLAPSED_HEIGHT}
             backgroundImage={backgroundImage}

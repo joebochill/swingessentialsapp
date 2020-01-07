@@ -16,7 +16,7 @@ import { ApplicationState } from '../../__types__';
 import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 
-export const HomeTutorial = props => {
+export const HomeTutorial = () => {
     const [activePanel, setActivePanel] = useState(0);
     const [showButton, setShowButton] = useState(false);
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
@@ -24,33 +24,50 @@ export const HomeTutorial = props => {
     const dispatch = useDispatch();
 
     const slides = [
-        (
-            <>
-                <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>{'Welcome to Swing Essentials™!'}</H4>
-                <H7 font={'light'} style={{ textAlign: 'center', marginTop: spaces.small, marginBottom: spaces.medium, color: theme.colors.onPrimary[50] }}>{`The Swing Essentials app gives you quick access to everything you need to keep improving your swing.`}</H7>
-            </>
-        ),
-        (
-            <>
-                <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>{'Sign Up Today'}</H4>
-                <H7 font={'light'} style={{ textAlign: 'center', marginTop: spaces.small, marginBottom: spaces.medium, color: theme.colors.onPrimary[50] }}>{`You can sign in or register for an account by clicking the account icon in the header.`}</H7>
-                <Icon name='person' color={'white'} size={sizes.xLarge} containerStyle={{ marginVertical: spaces.large }} />
-            </>
-        ),
+        <>
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
+                {'Welcome to Swing Essentials™!'}
+            </H4>
+            <H7
+                font={'light'}
+                style={{
+                    textAlign: 'center',
+                    marginTop: spaces.small,
+                    marginBottom: spaces.medium,
+                    color: theme.colors.onPrimary[50],
+                }}>
+                {'The Swing Essentials app gives you quick access to everything you need to keep improving your swing.'}
+            </H7>
+        </>,
+        <>
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
+                {'Sign Up Today'}
+            </H4>
+            <H7
+                font={'light'}
+                style={{
+                    textAlign: 'center',
+                    marginTop: spaces.small,
+                    marginBottom: spaces.medium,
+                    color: theme.colors.onPrimary[50],
+                }}>
+                {'You can sign in or register for an account by clicking the account icon in the header.'}
+            </H7>
+            <Icon name="person" color={'white'} size={sizes.xLarge} containerStyle={{ marginVertical: spaces.large }} />
+        </>,
     ];
 
     return (
         <TutorialModal
             visible={showTutorial.tutorial_home}
-            onClose={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]))}
-        >
+            onClose={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]))}>
             <View>
                 <Carousel
                     data={slides}
-                    renderItem={({ item, index }) => slides[index]}
+                    renderItem={({ index }) => slides[index]}
                     sliderWidth={width - 2 * spaces.medium}
                     itemWidth={width - 2 * spaces.medium}
-                    onSnapToItem={(index) => {
+                    onSnapToItem={index => {
                         setActivePanel(index);
                         if (index === slides.length - 1) {
                             setShowButton(true);
@@ -65,7 +82,7 @@ export const HomeTutorial = props => {
                         height: unit(10),
                         borderRadius: unit(10),
                         marginHorizontal: 0,
-                        backgroundColor: whiteOpacity(0.9)
+                        backgroundColor: whiteOpacity(0.9),
                     }}
                     inactiveDotOpacity={0.5}
                     inactiveDotScale={0.8}
@@ -79,5 +96,5 @@ export const HomeTutorial = props => {
                 />
             </View>
         </TutorialModal>
-    )
+    );
 };

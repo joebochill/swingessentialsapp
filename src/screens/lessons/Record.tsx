@@ -2,15 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
 // Components
-import {
-    Image,
-    Platform,
-    SafeAreaView,
-    StatusBar,
-    StyleSheet,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { Image, Platform, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { VideoControls, CountDown, VideoTimer } from '../../components';
 import Video from 'react-native-video';
@@ -53,8 +45,8 @@ const getOverlayImage = (swing: SwingType, handedness: HandednessType, camera: C
 export const Record = props => {
     const { navigation } = props;
     const cameraRef = useRef(null);
-    const onReturn = props.navigation.getParam('onReturn', () => { });
-    const swing: SwingType = props.navigation.getParam('swing', () => { });
+    const onReturn = props.navigation.getParam('onReturn', () => {});
+    const swing: SwingType = props.navigation.getParam('swing', () => {});
 
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -76,7 +68,7 @@ export const Record = props => {
         if (!cameraRef.current) {
             Logger.logError({
                 code: 'REC100',
-                description: `No camera object was found.`,
+                description: 'No camera object was found.',
             });
             return;
         }
@@ -93,11 +85,10 @@ export const Record = props => {
             setRecordedVideo(_video.uri);
             setIsRecording(false);
             setRecordingMode(false);
-        }
-        catch (error) {
+        } catch (error) {
             Logger.logError({
                 code: 'REC150',
-                description: `Async Video Recording failed.`,
+                description: 'Async Video Recording failed.',
                 rawErrorCode: error.code,
                 rawErrorMessage: error.message,
             });
@@ -109,7 +100,7 @@ export const Record = props => {
         if (!cameraRef.current) {
             Logger.logError({
                 code: 'REC200',
-                description: `No camera object was found.`,
+                description: 'No camera object was found.',
             });
             return;
         }
@@ -201,10 +192,7 @@ export const Record = props => {
                             {isRecording && !showCountDown && <VideoTimer visible={isRecording} />}
                             {recordingMode && !isRecording && token && (
                                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                    <TouchableOpacity
-                                        onPress={(): void =>
-                                            navigation.push(ROUTES.SETTINGS_GROUP)
-                                        }>
+                                    <TouchableOpacity onPress={(): void => navigation.push(ROUTES.SETTINGS_GROUP)}>
                                         <Icon name={'settings'} color={white[50]} />
                                     </TouchableOpacity>
                                 </View>
@@ -220,38 +208,38 @@ export const Record = props => {
                 onAction={
                     recordingMode
                         ? () => {
-                            // Start / End recording
-                            if (!isRecording) {
-                                setCountdownStarted(true);
-                                setIsRecording(true);
-                            } else {
-                                _endRecording();
-                            }
-                        }
+                              // Start / End recording
+                              if (!isRecording) {
+                                  setCountdownStarted(true);
+                                  setIsRecording(true);
+                              } else {
+                                  _endRecording();
+                              }
+                          }
                         : () => {
-                            // Play / Pause the video
-                            setIsPlaying(!isPlaying);
-                        }
+                              // Play / Pause the video
+                              setIsPlaying(!isPlaying);
+                          }
                 }
                 onBack={
                     recordingMode
                         ? () => props.navigation.pop() // Go Back
                         : () => {
-                            setRecordingMode(true);
-                            setRecordedVideo('');
-                        }
+                              setRecordingMode(true);
+                              setRecordedVideo('');
+                          }
                 }
                 onNext={
                     recordingMode
                         ? () => {
-                            // Toggle Camera
-                            setCameraType((cameraType + 1) % cameras.length);
-                        }
+                              // Toggle Camera
+                              setCameraType((cameraType + 1) % cameras.length);
+                          }
                         : () => {
-                            // Use-Video
-                            onReturn(recordedVideo);
-                            props.navigation.pop();
-                        }
+                              // Use-Video
+                              onReturn(recordedVideo);
+                              props.navigation.pop();
+                          }
                 }
             />
         </View>

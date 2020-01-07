@@ -12,7 +12,7 @@ import { ROUTES } from '../../constants/routes';
 import { PlaceholderLesson } from '../../constants/lessons';
 
 // Styles
-import { sharedStyles} from '../../styles';
+import { sharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 import { useTheme } from '../../styles/theme';
@@ -46,8 +46,7 @@ export const Home = props => {
             onRefresh={() => {
                 dispatch(loadUserContent());
             }}
-            bottomPad={false}
-        >
+            bottomPad={false}>
             <>
                 <View style={sharedStyles.sectionHeader}>
                     <H7>Latest Lessons</H7>
@@ -58,7 +57,13 @@ export const Home = props => {
                     renderItem={({ item }) => (
                         <VideoCard
                             headerTitle={item.request_date}
-                            headerSubtitle={role === 'administrator' ? item.username : (item.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson')}
+                            headerSubtitle={
+                                role === 'administrator'
+                                    ? item.username
+                                    : item.type === 'in-person'
+                                    ? 'In-Person Lesson'
+                                    : 'Remote Lesson'
+                            }
                             style={{ marginBottom: spaces.medium }}
                             video={item.response_video}
                             onExpand={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
@@ -90,7 +95,7 @@ export const Home = props => {
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
-                    size: sizes.small
+                    size: sizes.small,
                 }}
             />
             <ListItem
@@ -135,7 +140,7 @@ export const Home = props => {
                     />
                 </>
             )}
-            <HomeTutorial/>
+            <HomeTutorial />
         </CollapsibleHeaderLayout>
     );
 };

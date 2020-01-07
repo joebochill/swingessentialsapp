@@ -9,8 +9,6 @@ import { Icon } from 'react-native-elements';
 
 // Styles
 import { sharedStyles } from '../../styles';
-import { useTheme } from '../../styles/theme';
-
 
 // Utilities
 import { Logger } from '../../utilities/logging';
@@ -32,10 +30,10 @@ export const ErrorLogs = () => {
 
     const getLogs = useCallback(async () => {
         dispatch({ type: LOAD_LOGS.REQUEST });
-        const logs = await Logger.readMessages('ERROR');
+        const _logs = await Logger.readMessages('ERROR');
         dispatch({ type: LOAD_LOGS.SUCCESS });
-        setLogs(logs);
-    }, []);
+        setLogs(_logs);
+    }, [dispatch]);
 
     const sendMail = useCallback(() => {
         Logger.sendEmail('ERROR', () => getLogs(), username);
@@ -43,18 +41,19 @@ export const ErrorLogs = () => {
 
     useEffect(() => {
         getLogs();
-    }, []);
-    const actionItems:HeaderIcon[] = [
+    }, [getLogs]);
+    const actionItems: HeaderIcon[] = [
         {
             icon: RefreshIcon,
             onPress: () => getLogs(),
         },
     ];
-    if (logs.length > 0)
+    if (logs.length > 0) {
         actionItems.push({
             icon: MailIcon,
             onPress: () => sendMail(),
         });
+    }
     actionItems.reverse();
     return (
         <CollapsibleHeaderLayout
@@ -68,10 +67,7 @@ export const ErrorLogs = () => {
             }}>
             <View style={[sharedStyles.paddingHorizontalMedium]}>
                 <Body>{logs}</Body>
-                <SEButton 
-                    title={'SEND ERROR REPORT'} 
-                    onPress={() => sendMail()} 
-                />
+                <SEButton title={'SEND ERROR REPORT'} onPress={() => sendMail()} />
                 <SEButton
                     title={'LOG FAKE ERROR'}
                     onPress={() => {

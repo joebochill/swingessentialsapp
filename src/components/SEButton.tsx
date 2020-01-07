@@ -7,7 +7,7 @@ import { Body } from '../components';
 // Styles
 import { transparent } from '../styles/colors';
 import { spaces, sizes, unit, fonts } from '../styles/sizes';
-import { useTheme } from '../styles/theme'
+import { useTheme } from '../styles/theme';
 
 const styles = StyleSheet.create({
     purpleButton: {
@@ -33,14 +33,27 @@ export const SEButton = (props: SEButtonProps) => {
     return (
         <Button
             buttonStyle={StyleSheet.flatten([
-                link ? styles.linkButton : [styles.purpleButton, {
-                    backgroundColor: theme.colors.primary[400],
-                    borderColor: theme.colors.primary[800],
-                }],
-                buttonStyle
+                link
+                    ? styles.linkButton
+                    : [
+                          styles.purpleButton,
+                          {
+                              backgroundColor: theme.colors.primary[400],
+                              borderColor: theme.colors.primary[800],
+                          },
+                      ],
+                buttonStyle,
             ])}
-            title={<Body style={StyleSheet.flatten([{ color: theme.colors.onPrimary[50], fontSize: fonts[14] }, titleStyle])}>{!link ? title.toUpperCase() : title}</Body>}
+            title={
+                <Body
+                    style={StyleSheet.flatten([
+                        { color: theme.colors.onPrimary[50], fontSize: fonts[14] },
+                        titleStyle,
+                    ])}>
+                    {!link ? title.toUpperCase() : title}
+                </Body>
+            }
             {...other}
         />
-    )
+    );
 };

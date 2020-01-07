@@ -21,7 +21,6 @@ import { atob } from '../../utilities';
 // Redux
 import { requestLogout, refreshToken } from '../../redux/actions';
 
-
 const styles = StyleSheet.create({
     modalBackground: {
         flex: 1,
@@ -58,7 +57,9 @@ export const TokenModal = (props: ModalProps) => {
 
     useEffect(() => {
         // Update the timer
-        if (!token || !engageCountdown) return;
+        if (!token || !engageCountdown) {
+            return;
+        }
         let interval: number = 0;
         if (timeRemaining > 0) {
             interval = setInterval(() => {
@@ -72,21 +73,26 @@ export const TokenModal = (props: ModalProps) => {
         }
 
         return () => clearInterval(interval);
-    }, [timeRemaining, engageCountdown, token, updateRate]);
+    }, [timeRemaining, engageCountdown, token, updateRate, updateRefreshRate, dispatch]);
 
     const updateRefreshRate = useCallback(() => {
-        if (timeRemaining <= 3 * 60) setUpdateRate(1);
-        else if (timeRemaining <= 10 * 60) setUpdateRate(1 * 60);
-        else if (timeRemaining <= 20 * 60) setUpdateRate(5 * 60);
-        else setUpdateRate(30 * 60);
-    }, [timeRemaining, setTimeRemaining]);
+        if (timeRemaining <= 3 * 60) {
+            setUpdateRate(1);
+        } else if (timeRemaining <= 10 * 60) {
+            setUpdateRate(1 * 60);
+        } else if (timeRemaining <= 20 * 60) {
+            setUpdateRate(5 * 60);
+        } else {
+            setUpdateRate(30 * 60);
+        }
+    }, [timeRemaining]);
 
     return (
         <Modal
             animationType="slide"
             transparent={true}
-            onRequestClose={() => { }}
-            onDismiss={() => { }}
+            onRequestClose={() => {}}
+            onDismiss={() => {}}
             visible={token !== null && timeRemaining <= 3 * 60 && timeRemaining > 0}
             {...other}>
             <View style={styles.modalBackground}>
@@ -105,20 +111,25 @@ export const TokenModal = (props: ModalProps) => {
                             color={theme.colors.text[500]}
                             containerStyle={{ marginRight: spaces.small }}
                         />
-                        <H7 style={{ flex: 1 }}>{`Session Expiring`}</H7>
+                        <H7 style={{ flex: 1 }}>{'Session Expiring'}</H7>
                         <Body>{_formatTime(timeRemaining)}</Body>
                     </View>
-                    <Body>{`Your current session is about to expire. Click below to stay signed in.`}</Body>
+                    <Body>{'Your current session is about to expire. Click below to stay signed in.'}</Body>
 
-                    {!refreshing &&
+                    {!refreshing && (
                         <SEButton
                             title="KEEP ME SIGNED IN"
                             style={{ marginTop: spaces.medium }}
                             onPress={() => dispatch(refreshToken())}
                         />
-                    }
-                    {refreshing && <ActivityIndicator style={{ marginTop: spaces.xLarge }} size={'large'} color={theme.colors.primary[500]} />}
-
+                    )}
+                    {refreshing && (
+                        <ActivityIndicator
+                            style={{ marginTop: spaces.xLarge }}
+                            size={'large'}
+                            color={theme.colors.primary[500]}
+                        />
+                    )}
                 </View>
             </View>
         </Modal>

@@ -26,8 +26,7 @@ export const SingleTip = props => {
                 <SEHeader title={tip.date} subtitle={tip.title} mainAction={'back'} />
                 <ScrollView
                     contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
-                    keyboardShouldPersistTaps={'always'}
-                >
+                    keyboardShouldPersistTaps={'always'}>
                     <YouTube videoId={tip.video} style={{ width: videoWidth, height: videoHeight }} />
                     {splitParagraphs(tip.comments).map((p, ind) => (
                         <Body key={`${tip.id}_p_${ind}`} style={sharedStyles.paragraph}>

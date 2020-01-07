@@ -21,7 +21,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 // Redux
 export const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
 
-
 export const App = () => {
     useEffect(() => {
         SplashScreen.hide();

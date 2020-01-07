@@ -64,7 +64,10 @@ type RecordButtonProps = TouchableOpacityProps & {
 export const RecordButton = (props: RecordButtonProps) => {
     const { recording, style, onPress, ...other } = props;
     return (
-        <TouchableOpacity onPress={(evt: GestureResponderEvent) => onPress(evt)} style={StyleSheet.flatten([styles.recordButton, style])} {...other}>
+        <TouchableOpacity
+            onPress={(evt: GestureResponderEvent) => onPress(evt)}
+            style={StyleSheet.flatten([styles.recordButton, style])}
+            {...other}>
             {!recording ? <View style={styles.innerRecord} /> : <View style={styles.innerStop} />}
         </TouchableOpacity>
     );

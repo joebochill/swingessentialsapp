@@ -70,7 +70,7 @@ export const Tips = props => {
                         rightIcon={{
                             name: 'chevron-right',
                             color: theme.colors.text[500],
-                            size: sizes.small
+                            size: sizes.small,
                         }}
                     />
                 )}

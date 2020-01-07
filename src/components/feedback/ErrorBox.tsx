@@ -8,7 +8,6 @@ import { Body } from '../../components';
 import { spaces, fonts } from '../../styles/sizes';
 import { white, red } from '../../styles/colors';
 
-
 const styles = StyleSheet.create({
     error: {
         margin: 0,
@@ -26,14 +25,8 @@ export const ErrorBox = (props: ErrorBoxProps) => {
     const { style } = props;
     const theme = useTheme();
     return props.show ? (
-        <Body style={StyleSheet.flatten([
-            styles.error,
-            { backgroundColor: theme.colors.error[500] },
-            style,
-        ])}>
+        <Body style={StyleSheet.flatten([styles.error, { backgroundColor: theme.colors.error[500] }, style])}>
             {props.error}
         </Body>
-    )
-        : null;
-}
-
+    ) : null;
+};

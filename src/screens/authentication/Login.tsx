@@ -12,7 +12,7 @@ import {
     StyleSheet,
     Switch,
     Text,
-    View
+    View,
 } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
 
@@ -51,12 +51,12 @@ type BiometryState = {
 type CredentialsState = {
     stored: boolean;
     savedCredentials:
-    | {
-        username: string;
-        password: string;
-        service?: string;
-    }
-    | undefined;
+        | {
+              username: string;
+              password: string;
+              service?: string;
+          }
+        | undefined;
 };
 const initialBiometry: BiometryState = {
     available: false,
@@ -96,13 +96,12 @@ export const Login = (props: NavigationInjectedProps) => {
                 const use = await AsyncStorage.getItem('@SwingEssentials:useTouch');
                 setRemember(save === 'yes');
                 setUseBiometry(use === 'yes');
-            }
-            catch (error) {
+            } catch (err) {
                 Logger.logError({
                     code: 'LGN100',
-                    description: `Failed to load stored settings.`,
-                    rawErrorCode: error.code,
-                    rawErrorMessage: error.message,
+                    description: 'Failed to load stored settings.',
+                    rawErrorCode: err.code,
+                    rawErrorMessage: err.message,
                 });
             }
         };
@@ -124,7 +123,7 @@ export const Login = (props: NavigationInjectedProps) => {
             }
         };
         touchCheck();
-    }, []);
+    }, [biometry]);
 
     useEffect(() => {
         // Load stored credentials
@@ -148,18 +147,17 @@ export const Login = (props: NavigationInjectedProps) => {
                         savedCredentials: undefined,
                     });
                 }
-            }
-            catch(error){
+            } catch (err) {
                 Logger.logError({
                     code: 'LGN200',
-                    description: `Failed to load stored credentials.`,
-                    rawErrorCode: error.code,
-                    rawErrorMessage: error.message,
+                    description: 'Failed to load stored credentials.',
+                    rawErrorCode: err.code,
+                    rawErrorMessage: err.message,
                 });
             }
         };
         loadKeychainCredentials();
-    }, [token, error, remember]);
+    }, [token, error, remember, credentials]);
 
     useEffect(() => {
         // handle successful login
@@ -168,19 +166,19 @@ export const Login = (props: NavigationInjectedProps) => {
         }
         if (failuresChanged) {
             setPassword('');
-            if(failures > 0){
-                setCredentials({...credentials, stored: false})
+            if (failures > 0) {
+                setCredentials({ ...credentials, stored: false });
                 Keychain.resetGenericPassword();
             }
         }
-    }, [token, failuresChanged, props.navigation]);
+    }, [token, failuresChanged, props.navigation, failures, credentials]);
 
     useEffect(() => {
         // Show biometric login on load
         if (!token && useBiometry && biometry.available && credentials.stored) {
             showBiometricLogin();
         }
-    }, [token, useBiometry, biometry.available, credentials.stored]);
+    }, [token, useBiometry, biometry.available, credentials.stored, showBiometricLogin]);
 
     const onLogin = useCallback(
         (user, pass) => {
@@ -223,17 +221,21 @@ export const Login = (props: NavigationInjectedProps) => {
                     break;
                 case 'LAErrorUserCancel':
                 case 'LAErrorUserFallback':
-                case 'LAErrorSystemCancel':
-                // user canceled touch id - fallback to password
+                case 'LAErrorSystemCancel': // user canceled touch id - fallback to password
                 default:
                     break;
             }
         }
-    }, [biometry, credentials, useBiometry]);
+    }, [biometry.available, biometry.type, credentials.savedCredentials, credentials.stored, onLogin, useBiometry]);
 
     return (
-        <KeyboardAvoidingView style={[styles.container, { backgroundColor: theme.colors.primary[400] }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-            <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps={'always'}>
+        <KeyboardAvoidingView
+            style={[styles.container, { backgroundColor: theme.colors.primary[400] }]}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+            <ScrollView
+                style={{ flex: 1 }}
+                contentContainerStyle={styles.scrollContainer}
+                keyboardShouldPersistTaps={'always'}>
                 {/* LOGO */}
                 <View style={{ width: '100%', maxWidth: unit(500) }}>
                     <Image source={logo} resizeMethod="resize" style={styles.logo} />
@@ -245,7 +247,10 @@ export const Login = (props: NavigationInjectedProps) => {
                             autoCapitalize={'none'}
                             containerStyle={{ paddingHorizontal: 0 }}
                             editable={!pending}
-                            inputContainerStyle={[styles.inputContainer, { backgroundColor: theme.colors.background, borderColor: theme.colors.primary[800], }]}
+                            inputContainerStyle={[
+                                styles.inputContainer,
+                                { backgroundColor: theme.colors.background, borderColor: theme.colors.primary[800] },
+                            ]}
                             inputStyle={[styles.input, { color: theme.colors.text[500] }]}
                             label={'Username'}
                             labelStyle={[styles.formLabel, { color: theme.colors.onPrimary[50] }]}
@@ -286,7 +291,10 @@ export const Login = (props: NavigationInjectedProps) => {
                         autoCapitalize={'none'}
                         containerStyle={{ marginTop: spaces.medium, paddingHorizontal: 0 }}
                         editable={!pending}
-                        inputContainerStyle={[styles.inputContainer, { backgroundColor: theme.colors.background, borderColor: theme.colors.primary[800], }]}
+                        inputContainerStyle={[
+                            styles.inputContainer,
+                            { backgroundColor: theme.colors.background, borderColor: theme.colors.primary[800] },
+                        ]}
                         inputStyle={[styles.input, { color: theme.colors.text[500] }]}
                         label={'Password'}
                         labelStyle={[styles.formLabel, { color: theme.colors.onPrimary[50] }]}
@@ -303,7 +311,9 @@ export const Login = (props: NavigationInjectedProps) => {
                     {/* Remember Me Row */}
                     <View style={styles.rememberRow}>
                         <View style={styles.toggle}>
-                            <Text style={[styles.toggleLabel, { color: theme.colors.onPrimary[50] }]}>Save Username</Text>
+                            <Text style={[styles.toggleLabel, { color: theme.colors.onPrimary[50] }]}>
+                                Save Username
+                            </Text>
                             <Switch
                                 value={remember}
                                 onValueChange={(val: boolean) => {
@@ -316,7 +326,11 @@ export const Login = (props: NavigationInjectedProps) => {
                         </View>
                         {biometry.available && (
                             <View style={styles.toggle}>
-                                <Text style={[styles.toggleLabel, { color: theme.colors.onPrimary[50] }]}>{`Use ${biometry.type}`}</Text>
+                                <Text
+                                    style={[
+                                        styles.toggleLabel,
+                                        { color: theme.colors.onPrimary[50] },
+                                    ]}>{`Use ${biometry.type}`}</Text>
                                 <Switch
                                     value={useBiometry}
                                     onValueChange={(val: boolean) => {
@@ -361,7 +375,13 @@ export const Login = (props: NavigationInjectedProps) => {
                     )}
 
                     {/* Loading Spinner */}
-                    {pending && <ActivityIndicator style={{ marginTop: spaces.jumbo }} size={'large'} color={theme.colors.onPrimary[50]} />}
+                    {pending && (
+                        <ActivityIndicator
+                            style={{ marginTop: spaces.jumbo }}
+                            size={'large'}
+                            color={theme.colors.onPrimary[50]}
+                        />
+                    )}
 
                     {/* Registration Links */}
                     <View style={styles.registerRow}>
@@ -436,6 +456,6 @@ const styles = StyleSheet.create({
     },
     toggleLabel: {
         fontSize: fonts[14],
-        marginRight: spaces.small
+        marginRight: spaces.small,
     },
 });

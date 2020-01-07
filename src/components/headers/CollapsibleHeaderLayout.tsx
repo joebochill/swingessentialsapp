@@ -44,12 +44,18 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
         };
     }
     render() {
-        const { renderScroll = true, children, refreshing = false, onRefresh = () => { }, bottomPad = true } = this.props;
+        const {
+            renderScroll = true,
+            children,
+            refreshing = false,
+            onRefresh = () => {},
+            bottomPad = true,
+        } = this.props;
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
         return (
             <View style={sharedStyles.pageContainer}>
                 <StatusBar barStyle={'light-content'} />
-                {this.props.pageBackground &&
+                {this.props.pageBackground && (
                     <Image
                         source={this.props.pageBackground}
                         resizeMethod={'resize'}
@@ -61,32 +67,40 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                             opacity: 0.15,
                         }}
                     />
-                }
+                )}
                 <SEHeader {...this.props} headerHeight={headerHeight} />
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                     {renderScroll && (
                         <ScrollView
-                            contentContainerStyle={[styles.scrollContainer, bottomPad ? { paddingBottom: height * 0.5 } : {}]}
+                            contentContainerStyle={[
+                                styles.scrollContainer,
+                                bottomPad ? { paddingBottom: height * 0.5 } : {},
+                            ]}
                             refreshControl={
                                 onRefresh ? (
                                     <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()} />
                                 ) : (
-                                        undefined
-                                    )
+                                    undefined
+                                )
                             }
-                            onScroll={Animated.event([
-                                {
-                                    nativeEvent: {
-                                        contentOffset: {
-                                            y: this.state.scrollY,
+                            onScroll={Animated.event(
+                                [
+                                    {
+                                        nativeEvent: {
+                                            contentOffset: {
+                                                y: this.state.scrollY,
+                                            },
                                         },
                                     },
+                                ],
+                                {
+                                    listener: () => {
+                                        if (this.props.onResize) {
+                                            this.props.onResize(this.state.scrollY);
+                                        }
+                                    },
                                 },
-                            ], {
-                                listener: event => {
-                                    if (this.props.onResize) this.props.onResize(this.state.scrollY);
-                                }
-                            })}
+                            )}
                             scrollEventThrottle={16}>
                             {refreshing && (
                                 <ActivityIndicator

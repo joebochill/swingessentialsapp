@@ -23,9 +23,7 @@ export const SingleBlog = props => {
                 <SEHeader title={blog.date} subtitle={blog.title} mainAction={'back'} />
                 <ScrollView
                     contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
-                    keyboardShouldPersistTaps={'always'}
-                >
-
+                    keyboardShouldPersistTaps={'always'}>
                     {splitParagraphs(blog.body).map((p, ind) => (
                         <Body key={`${blog.id}_p_${ind}`} style={sharedStyles.paragraph}>
                             {p}

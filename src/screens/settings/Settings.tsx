@@ -15,7 +15,7 @@ import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
 
 // Types
-import { NavType, ApplicationState } from '../../__types__';
+import { ApplicationState } from '../../__types__';
 // Redux
 import { loadSettings } from '../../redux/actions/SettingsActions';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
@@ -27,8 +27,10 @@ export const Settings = (props: NavigationStackScreenProps) => {
     const theme = useTheme();
 
     useEffect(() => {
-        if (!token) props.navigation.pop();
-    }, [token]);
+        if (!token) {
+            props.navigation.pop();
+        }
+    }, [props.navigation, token]);
 
     return (
         <CollapsibleHeaderLayout
@@ -69,7 +71,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
-                    size: sizes.small
+                    size: sizes.small,
                 }}
             />
             <ListItem
@@ -82,7 +84,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
-                    size: sizes.small
+                    size: sizes.small,
                 }}
             />
             <ListItem
@@ -95,7 +97,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 rightIcon={{
                     name: 'chevron-right',
                     color: theme.colors.text[500],
-                    size: sizes.small
+                    size: sizes.small,
                 }}
             />
         </CollapsibleHeaderLayout>

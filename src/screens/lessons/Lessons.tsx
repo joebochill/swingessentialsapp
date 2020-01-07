@@ -23,7 +23,6 @@ import { ApplicationState } from '../../__types__';
 // Actions
 import { loadLessons } from '../../redux/actions';
 
-
 type Lesson = {
     request_id: number;
     dtl_swing: string;
@@ -45,13 +44,12 @@ export const Lessons = props => {
     const dispatch = useDispatch();
 
     return (
-        <CollapsibleHeaderLayout 
-            title={'Your Lessons'} 
-            subtitle={"see how far you've come"} 
+        <CollapsibleHeaderLayout
+            title={'Your Lessons'}
+            subtitle={"see how far you've come"}
             backgroundImage={bg}
             refreshing={lessons.loading}
-            onRefresh={() => dispatch(loadLessons())}
-        >
+            onRefresh={() => dispatch(loadLessons())}>
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (
                     <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: spaces.large } : {}]}>
@@ -72,7 +70,7 @@ export const Lessons = props => {
                         rightIcon={{
                             name: 'chevron-right',
                             color: theme.colors.text[500],
-                            size: sizes.small
+                            size: sizes.small,
                         }}
                     />
                 }
@@ -89,7 +87,7 @@ export const Lessons = props => {
                             rightIcon={{
                                 name: 'chevron-right',
                                 color: theme.colors.text[500],
-                                size: sizes.small
+                                size: sizes.small,
                             }}
                         />
                     ) : (
@@ -105,7 +103,7 @@ export const Lessons = props => {
                 }
                 keyExtractor={(item): string => 'complete_' + item.request_id}
             />
-            <LessonsTutorial/>
+            <LessonsTutorial />
         </CollapsibleHeaderLayout>
     );
 };

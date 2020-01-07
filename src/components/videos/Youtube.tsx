@@ -36,7 +36,7 @@ const openStandaloneAndroidPlayer = (id: string): void => {
     }).catch((errorMessage: string) => {
         Logger.logError({
             code: 'YT100',
-            description: `YouTube Player error.`,
+            description: 'YouTube Player error.',
             rawErrorMessage: errorMessage,
         });
     });

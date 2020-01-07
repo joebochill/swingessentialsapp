@@ -180,11 +180,11 @@ const AppStack = createStackNavigator(
         [ROUTES.HISTORY]: OrderHistory,
         [ROUTES.SETTINGS_GROUP]: SettingsStack,
 
-        [ROUTES.AUTH_GROUP]: AuthStack,        
+        [ROUTES.AUTH_GROUP]: AuthStack,
     },
     {
         initialRouteName: ROUTES.HOME,
-        headerMode: 'none'
+        headerMode: 'none',
     },
 );
 

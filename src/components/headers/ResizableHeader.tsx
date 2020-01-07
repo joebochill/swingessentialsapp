@@ -1,14 +1,7 @@
 import React, { Component, ComponentType } from 'react';
 
 // Components
-import {
-    Animated,
-    ImageSourcePropType,
-    StatusBar,
-    StyleSheet,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import { Animated, ImageSourcePropType, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTheme, Theme, WithTheme } from '../../styles/theme';
 import { AnimatedSafeAreaView } from '../../components';
 
@@ -26,7 +19,6 @@ import { $DeepPartial } from '@callstack/react-theme-provider';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT_NO_STATUS } from '../../constants';
-
 
 export interface ResizableHeaderProps {
     /** Header title */
@@ -66,10 +58,10 @@ export interface ResizableHeaderProps {
     theme?: $DeepPartial<Theme>;
 }
 
-interface HeaderState { }
+interface HeaderState {}
 
 class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState> {
-    static readonly ICON_SIZE = sizes.small;;
+    static readonly ICON_SIZE = sizes.small;
     static readonly ICON_SPACING = spaces.medium;
 
     render() {
@@ -115,7 +107,9 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         if (navigation) {
             return (
                 <View>
-                    <TouchableOpacity onPress={navigation.onPress} style={[styles.actionIcon, {marginRight: spaces.large}]}>
+                    <TouchableOpacity
+                        onPress={navigation.onPress}
+                        style={[styles.actionIcon, { marginRight: spaces.large }]}>
                         {this.icon(navigation.icon)}
                     </TouchableOpacity>
                 </View>
@@ -192,7 +186,9 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
                 <View style={styles.actionPanel}>
                     {items.slice(0, 3).map((actionItem, index) => (
                         <View key={`action_${index}`}>
-                            <TouchableOpacity onPress={actionItem.onPress} style={[styles.actionIcon, ,index !== 0 ? styles.notFirst : {}]}>
+                            <TouchableOpacity
+                                onPress={actionItem.onPress}
+                                style={[styles.actionIcon, index !== 0 ? styles.notFirst : {}]}>
                                 {this.icon(actionItem.icon)}
                             </TouchableOpacity>
                         </View>
@@ -218,7 +214,15 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         const contractedPadding = this.props.subtitle
             ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - unit(theme.sizes.large + 18)) / 2
             : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - unit(theme.sizes.large)) / 2;
-        return [styles.content, headerContent ? {} : { paddingHorizontal: navigation ? spaces.small : spaces.medium, paddingBottom: this.scaleByHeaderHeight(spaces.xLarge, contractedPadding) }];
+        return [
+            styles.content,
+            headerContent
+                ? {}
+                : {
+                      paddingHorizontal: navigation ? spaces.small : spaces.medium,
+                      paddingBottom: this.scaleByHeaderHeight(spaces.xLarge, contractedPadding),
+                  },
+        ];
     }
 
     private titleStyle() {
@@ -344,7 +348,7 @@ const styles = StyleSheet.create({
         right: spaces.small,
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
     },
-    notFirst:{
-        marginLeft: spaces.small
-    }
+    notFirst: {
+        marginLeft: spaces.small,
+    },
 });

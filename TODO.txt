@@ -4,7 +4,6 @@ TODO:
     Typography doesn't scale
     
 // Additional Functionality
-    Tutorials
     Disable Android Landscape
 
 // Performance

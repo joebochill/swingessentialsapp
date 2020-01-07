@@ -19,7 +19,6 @@ import { useDispatch } from 'react-redux';
 // Constants
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
-
 export const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [complete, setComplete] = useState(false);
@@ -35,12 +34,7 @@ export const ForgotPassword = () => {
 
     return (
         <View style={sharedStyles.pageContainer}>
-            <SEHeader 
-                title={'Forgot Password'} 
-                subtitle={'request a reset'} 
-                mainAction={'back'}
-                showAuth={false} 
-            />
+            <SEHeader title={'Forgot Password'} subtitle={'request a reset'} mainAction={'back'} showAuth={false} />
             <KeyboardAvoidingView
                 style={[
                     sharedStyles.pageContainer,
@@ -48,8 +42,7 @@ export const ForgotPassword = () => {
                         paddingTop: HEADER_COLLAPSED_HEIGHT,
                     },
                 ]}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            >
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 {!complete && (
                     <ScrollView
                         contentContainerStyle={[
