@@ -150,6 +150,13 @@ export type FAQState = {
 export type LogsState = {
     loading: boolean;
 };
+export type TutorialsState = {
+    tutorial_lesson_list: boolean;
+    tutorial_lesson: boolean;
+    tutorial_submit_swing: boolean;
+    tutorial_order: boolean;
+    tutorial_home: boolean;
+}
 
 export type ApplicationState = {
     login: LoginState;
@@ -163,4 +170,5 @@ export type ApplicationState = {
     registration: RegistrationState;
     faq: FAQState;
     logs: LogsState;
+    tutorials: TutorialsState;
 };

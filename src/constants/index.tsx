@@ -26,10 +26,11 @@ export const AUTH = 'Message';
 export const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
 export const TUTORIAL_KEYS = {
-    LESSON_LIST: 'LESSON_LIST',
-    LESSON: 'LESSON',
-    SUBMIT_SWING: 'SUBMIT_SWING',
-    ORDER: 'ORDER',
+    LESSON_LIST: 'lessonList',
+    LESSON: 'lesson',
+    SUBMIT_SWING: 'submit',
+    ORDER: 'order',
+    HOME: 'home',
 };
 
 export const TUTORIALS = {
@@ -37,11 +38,13 @@ export const TUTORIALS = {
     [TUTORIAL_KEYS.LESSON]: 'tutorial_lesson',
     [TUTORIAL_KEYS.SUBMIT_SWING]: 'tutorial_submit_swing',
     [TUTORIAL_KEYS.ORDER]: 'tutorial_order',
+    [TUTORIAL_KEYS.HOME]: 'tutorial_home',
 };
 
 export const TUTORIAL_VERSIONS = {
-    [TUTORIAL_KEYS.LESSON_LIST]: '2.1.0',
-    [TUTORIAL_KEYS.LESSON]: '2.1.0',
-    [TUTORIAL_KEYS.SUBMIT_SWING]: '2.1.0',
-    [TUTORIAL_KEYS.ORDER]: '2.1.0',
+    [TUTORIAL_KEYS.LESSON_LIST]: '4.0.0',
+    [TUTORIAL_KEYS.LESSON]: '4.0.0',
+    [TUTORIAL_KEYS.SUBMIT_SWING]: '4.0.0',
+    [TUTORIAL_KEYS.ORDER]: '4.0.0',
+    [TUTORIAL_KEYS.HOME]: '4.0.0',
 };

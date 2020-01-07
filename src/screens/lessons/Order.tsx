@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View, FlatList, StyleSheet, Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { Body, H7, Label, H4, CollapsibleHeaderLayout, ErrorBox, SEButton } from '../../components';
+import { Body, H7, Label, H4, CollapsibleHeaderLayout, ErrorBox, SEButton, OrderTutorial } from '../../components';
 import * as RNIap from 'react-native-iap';
 
 // Styles
@@ -177,6 +177,7 @@ export const Order = props => {
                     onPress={() => onPurchase(packages[selected].app_sku, packages[selected].shortcode)}
                 />
             )}
+            <OrderTutorial/>
         </CollapsibleHeaderLayout>
     );
 };

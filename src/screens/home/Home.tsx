@@ -13,7 +13,7 @@ import { PlaceholderLesson } from '../../constants/lessons';
 
 // Styles
 import { sharedStyles} from '../../styles';
-import { spaces, unit, sizes } from '../../styles/sizes';
+import { spaces, sizes } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 import { useTheme } from '../../styles/theme';
 import bg from '../../images/bg_1.jpg';

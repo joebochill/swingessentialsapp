@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Platform, ScrollView } from 'react-native';
-import { Body, H7, SEHeader, YouTube, SEVideo, VideoCard } from '../../components';
+import { Body, H7, SEHeader, YouTube, SEVideo, VideoCard, LessonTutorial } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Styles
@@ -131,6 +131,7 @@ export const SingleLesson = props => {
                         </>
                     )}
                 </ScrollView>
+                <LessonTutorial/>
             </View>
         );
 };

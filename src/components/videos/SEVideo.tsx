@@ -27,6 +27,8 @@ type VideoProps = ViewProperties & {
 };
 type PlaceholderProps = ViewProperties & {
     title?: string;
+    inverse?: boolean;
+    disabled?: boolean;
     onPress?: Function;
     icon?: JSX.Element;
     editIcon?: JSX.Element;
@@ -80,11 +82,12 @@ export const SEVideo = (props: VideoProps) => {
     );
 };
 export const SEVideoPlaceholder = (props: PlaceholderProps) => {
-    const { icon, editIcon, style, onPress = () => {} } = props;
+    const { icon, editIcon, style, inverse, disabled, onPress = () => {} } = props;
     const theme = useTheme();
     return (
-        <View style={StyleSheet.flatten([styles.portrait, sharedStyles.dashed, { backgroundColor: color(theme.colors.primary[500]).fade(.85) }, style])}>
+        <View style={StyleSheet.flatten([styles.portrait, sharedStyles.dashed, { backgroundColor: inverse ? color(theme.colors.onPrimary[50]).fade(.35) : color(theme.colors.primary[500]).fade(.85) }, style])}>
             <TouchableOpacity
+                disabled={disabled}
                 activeOpacity={0.8}
                 style={{ height: '100%', width: '100%', alignItems: 'center' }}
                 onPress={() => onPress()}>

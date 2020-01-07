@@ -1,129 +1,65 @@
 import React, { useState } from 'react';
-
-import { View, SectionList, Image } from 'react-native';
-import { Icon } from 'react-native-elements';
-
-import { H7, H4, Body } from '../index';
-import { TutorialModal } from './';
-import { sharedStyles } from '../../styles';
-import { sizes, spaces, unit } from '../../styles/sizes';
-import { ListItem } from 'react-native-elements';
-import { getLongDate, getDate } from '../../utilities';
 import { useTheme } from '../../styles/theme';
-
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { width } from '../../utilities/dimensions';
+// Components
+import { View } from 'react-native';
+import { Icon } from 'react-native-elements';
+import { H7, H4 } from '../index';
 import { SEButton } from '../SEButton';
+import { TutorialModal } from './';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+// Styles
+import { sizes, spaces, unit } from '../../styles/sizes';
+import { width } from '../../utilities/dimensions';
 import { whiteOpacity } from '../../styles/colors';
-
-const sections = [
-    {
-        bucketName: getLongDate(Date.now()),
-        data: [
-            {
-                date: getDate(Date.now()),
-                new: true
-            },
-            {
-                date: getDate(Date.now() - 24 * 60 * 60 * 1000),
-                new: false
-            }
-        ],
-    }
-]
+import { useSelector, useDispatch } from 'react-redux';
+import { ApplicationState } from '../../__types__';
+import { tutorialViewed } from '../../redux/actions';
+import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 
 export const HomeTutorial = props => {
-    const [page, setPage] = useState(0);
+    const [activePanel, setActivePanel] = useState(0);
+    const [showButton, setShowButton] = useState(false);
+    const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useTheme();
+    const dispatch = useDispatch();
 
     const slides = [
         (
-            <View>
+            <>
                 <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>{'Welcome to Swing Essentials™!'}</H4>
-                <H7 font={'light'} style={{ textAlign: 'center', marginTop: spaces.small, color: theme.colors.onPrimary[50] }}>{`The Swing Essentials app gives you quick access to everything you need to keep improving your swing.`}</H7>
-
-                <H7 style={{marginTop: spaces.large, color: theme.colors.onPrimary[50]}}>Lesson Videos</H7>
-                <Image
-                    style={{ width: '100%', height: (width - 2 * spaces.large) * (9 / 16) }}
-                    source={{ uri: 'https://img.youtube.com/vi/l3Y3iJa6DvE/0.jpg' }}
-                />
-                <SectionList
-                    style={{ marginTop: spaces.large }}
-                    scrollEnabled={false}
-                    renderSectionHeader={({ section: { bucketName, index } }) => (
-                        <H7 style={{ color: theme.colors.onPrimary[50], marginBottom: spaces.xSmall }}>{bucketName}</H7>
-                    )}
-                    sections={sections}
-                    renderItem={({ item, index }) =>
-                        (
-                            <ListItem
-                                containerStyle={sharedStyles.listItem}
-                                contentContainerStyle={sharedStyles.listItemContent}
-                                bottomDivider
-                                topDivider={index === 0}
-                                title={<Body>{item.date}</Body>}
-                                rightTitle={item.new ? <H7>NEW</H7> : undefined}
-                                rightIcon={{
-                                    name: 'chevron-right',
-                                    color: theme.colors.text[500],
-                                    size: sizes.small
-                                }}
-                            />
-                        )
-                    }
-                    keyExtractor={(item): string => 'complete_' + item.date}
-                />
-            </View>
+                <H7 font={'light'} style={{ textAlign: 'center', marginTop: spaces.small, marginBottom: spaces.medium, color: theme.colors.onPrimary[50] }}>{`The Swing Essentials app gives you quick access to everything you need to keep improving your swing.`}</H7>
+            </>
         ),
         (
-            <View>
+            <>
                 <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>{'Sign Up Today'}</H4>
-                <H7 font={'light'} style={{ textAlign: 'center', marginTop: spaces.small, color: theme.colors.onPrimary[50] }}>You can sign in or register for an account by clicking the account icon in the header.</H7>
+                <H7 font={'light'} style={{ textAlign: 'center', marginTop: spaces.small, marginBottom: spaces.medium, color: theme.colors.onPrimary[50] }}>{`You can sign in or register for an account by clicking the account icon in the header.`}</H7>
                 <Icon name='person' color={'white'} size={sizes.xLarge} containerStyle={{ marginVertical: spaces.large }} />
-                <SEButton
-                    title="GOT IT"
-                    containerStyle={{ flex: 1 }}
-                    buttonStyle={{ backgroundColor: theme.colors.primary[500] }}
-                // onPress={() => this.props.close()}
-                />
-            </View>
+            </>
         ),
-        (
-            <View>
-                <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>{'Welcome to Swing Essentials™!'}</H4>
-                <H7 font={'light'} style={{ textAlign: 'center', marginTop: spaces.small, color: theme.colors.onPrimary[50] }}>When you have submitted your golf swing for analysis, your lessons will appear in this list.</H7>
-
-                <Image
-                    style={{ width: '100%', height: (width - 2 * spaces.large) * (9 / 16) }}
-                    source={{ uri: 'https://img.youtube.com/vi/l3Y3iJa6DvE/0.jpg' }}
-                />
-                <Body style={{ marginTop: spaces.large, color: theme.colors.onPrimary[50], textAlign: 'center' }}>Your analysis will also include comments and recommended tips to improve your game.</Body>
-                <SEButton
-                    title="GOT IT"
-                    containerStyle={{ flex: 1 }}
-                    buttonStyle={{ backgroundColor: theme.colors.primary[500] }}
-                // onPress={() => this.props.close()}
-                />
-            </View>
-        )
     ];
+
     return (
         <TutorialModal
-            visible={true}
-            onClose={() => { }}
+            visible={showTutorial.tutorial_home}
+            onClose={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]))}
         >
-            
-            <>
+            <View>
                 <Carousel
                     data={slides}
                     renderItem={({ item, index }) => slides[index]}
-                    sliderWidth={width}
+                    sliderWidth={width - 2 * spaces.medium}
                     itemWidth={width - 2 * spaces.medium}
-                    onSnapToItem={(index) => setPage(index)}
+                    onSnapToItem={(index) => {
+                        setActivePanel(index);
+                        if (index === slides.length - 1) {
+                            setShowButton(true);
+                        }
+                    }}
                 />
                 <Pagination
                     dotsLength={slides.length}
-                    activeDotIndex={page}
+                    activeDotIndex={activePanel}
                     dotStyle={{
                         width: unit(10),
                         height: unit(10),
@@ -134,7 +70,14 @@ export const HomeTutorial = props => {
                     inactiveDotOpacity={0.5}
                     inactiveDotScale={0.8}
                 />
-            </>
+                <SEButton
+                    title="GOT IT"
+                    disabled={!showButton}
+                    containerStyle={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}
+                    buttonStyle={{ backgroundColor: theme.colors.primary[500] }}
+                    onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]))}
+                />
+            </View>
         </TutorialModal>
     )
 };

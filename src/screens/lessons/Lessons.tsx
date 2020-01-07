@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View, SectionList } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { H7, Body, CollapsibleHeaderLayout } from '../../components';
+import { H7, Body, CollapsibleHeaderLayout, LessonsTutorial } from '../../components';
 
 // Styles
 import { sharedStyles } from '../../styles';
@@ -105,6 +105,7 @@ export const Lessons = props => {
                 }
                 keyExtractor={(item): string => 'complete_' + item.request_id}
             />
+            <LessonsTutorial/>
         </CollapsibleHeaderLayout>
     );
 };

@@ -7,6 +7,7 @@ import { loadFAQ } from './FAQActions';
 import AsyncStorage from '@react-native-community/async-storage';
 import { ASYNC_PREFIX } from '../../constants';
 import { setToken } from './LoginActions';
+import { loadTutorials } from './TutorialsActions';
 import { HttpRequest } from '../../api/http';
 import { Logger, LOG_TYPE } from '../../utilities/logging';
 import { success, failure } from '../../api/http-helper';
@@ -23,6 +24,7 @@ export function loadInitialData(): Function {
         dispatch(loadBlogs());
         dispatch(loadPackages());
         dispatch(loadFAQ());
+        dispatch(loadTutorials());
     };
 }
 

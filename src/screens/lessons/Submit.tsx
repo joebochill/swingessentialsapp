@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { Platform, View, KeyboardAvoidingView, ScrollView, TouchableOpacity, Image, TextInput, StyleSheet, Alert, Keyboard } from 'react-native';
-import { H7, Label, CollapsibleHeaderLayout, SEHeader, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox, UploadProgressModal } from '../../components';
+import { H7, Label, CollapsibleHeaderLayout, SEVideo, SEVideoPlaceholder, SEButton, ErrorBox, UploadProgressModal, SubmitTutorial } from '../../components';
 import { Icon } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 
@@ -20,7 +20,6 @@ import fo from '../../images/face-on.png';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
-import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
 // Types
 import { ApplicationState } from '../../__types__';
@@ -340,6 +339,7 @@ export const Submit = props => {
                 </ScrollView>
             </KeyboardAvoidingView>
             {lessons.redeemPending && <UploadProgressModal progress={uploadProgress} visible={lessons.redeemPending} />}
+            <SubmitTutorial/>
         </CollapsibleHeaderLayout>
     );
 };

@@ -173,23 +173,11 @@ export const NavigationDrawer = (props) => {
                                         width: scaleByHeight(unit(80), 0),
                                     },
                                 ]}>
-                                {token ?
-                                    <Animated.Text
-                                        adjustsFontSizeToFit
-                                        allowFontScaling
-                                        style={{
-                                            fontSize: scaleByHeight(unit(40), 0),
-                                            color: theme.colors.text[500],
-                                        }}>
-                                        {initials.toUpperCase()}
-                                    </Animated.Text>
-                                    :
-                                    <Image
-                                        resizeMethod='resize'
-                                        style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-                                        source={se}
-                                    />
-                                }
+                                <Image
+                                    resizeMethod='resize'
+                                    style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+                                    source={se}
+                                />
                             </Animated.View>
                         </View>
                         <Animated.View
