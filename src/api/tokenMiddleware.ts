@@ -8,12 +8,9 @@ function _setToken(newToken: string | null) {
 }
 
 export const saveAuthToken = store => next => action => {
-    if (action.type === LOGIN.SUCCESS || 
-        action.type === SET_TOKEN.REQUEST ||
-        action.type === REFRESH_TOKEN.SUCCESS
-    ) {
+    if (action.type === LOGIN.SUCCESS || action.type === SET_TOKEN.REQUEST || action.type === REFRESH_TOKEN.SUCCESS) {
         _setToken(action.payload.token);
-        if(action.payload.token !== null) AsyncStorage.setItem(ASYNC_PREFIX + 'token', action.payload.token);
+        if (action.payload.token !== null) AsyncStorage.setItem(ASYNC_PREFIX + 'token', action.payload.token);
         else AsyncStorage.removeItem(ASYNC_PREFIX + 'token');
     } else if (
         action.type === LOGOUT.SUCCESS ||

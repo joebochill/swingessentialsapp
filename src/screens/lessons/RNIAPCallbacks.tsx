@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
-import { Platform, Alert } from 'react-native';
+import { Platform } from 'react-native';
 import RNIap, { purchaseErrorListener, purchaseUpdatedListener } from 'react-native-iap';
 
 // Redux

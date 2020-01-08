@@ -53,5 +53,4 @@ export const VERIFY_EMAIL = createAction('VERIFY_EMAIL', 'verify');
 /* Other Actions */
 export const LOAD_LOGS = createAction('LOAD_LOGS', '');
 export const SEND_LOGS = createAction('SEND_LOGS', 'logs');
-export const MARK_TUTORIAL = {VIEWED: 'MARK_TUTORIAL_VIEWED', NEW: 'MARK_TUTORIAL_NEW'};
-
+export const MARK_TUTORIAL = { VIEWED: 'MARK_TUTORIAL_VIEWED', NEW: 'MARK_TUTORIAL_NEW' };

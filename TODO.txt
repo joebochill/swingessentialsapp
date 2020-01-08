@@ -1,60 +1,33 @@
-TODO:
-// Bugs
-    Remove those pesky unused icon fonts ios
-    
-    
-// Additional Functionality
-    Disable Android Landscape
-
-// Performance
-    Remove unused libraries
-    Optimize image assets 
-    Remove unused images
-    Optimize bundle size
-
-// Testing
-    Typography doesn't scale
-    Remove Albatross Package
-        test how this affects existing app
-    Pull to refresh all - verify on android
-    Deep linking - verify ios (xxx) and android
-    Verify All Videos and recording on android
-    Final device testing
-
-    XXX Fix list dividers missing
-    XXX Contact Us link is working
-    XXX Don't flash the token dialog if the token is expired on loading
-    XXX Clear the logs after auto sending
-    XXX Verify Fix on these
-        XXX Re-opening app after token expires shows the token dialog
-        XXX Countdown gets messed up when it's in the background
-    XXX Verify IAP works
-    
-// Misc
-    XXX New screenshots and documentation
-    
-    New itunes screenshots
-    Android permissions request
-    Optimize component inclusion
-    Yarn audit
-    Fix the NPM monkeypatch for camera roll
-    Publish API Changes
-    Linting (Remove inline style warnings)
-    New How-to-use the app video
-    Switch everything over to production (API, email addresses, etc.)
+LAST ITEMS FOR 3.0.0 RELEASE:
+    - Optimize bundle size
+    - Remove unused icon fonts for ios
+    - Fix camera roll monkeypatch
+    - Android Specific
+        - Build 64 bit
+        - Permissions request upfront
+        - Disable Landscape mode
+        - Check typography scaling (tablet)
+        - Pull-to-refresh styling/working
+        - Verify Deep Linking works
+        - Verify all videos working
+        - Verify IAP works
+    - New "How to use the app" video/link
+    - Publish API update
+    - Switch everything over to production (API, email addresses, etc.)
+    - Final Device testing
 
 
-// Future Functionality
-    Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
-    API for single Blog/Tip
-    Lazy loading for lists
-    Loading/Empty states
-    Account Details Screen + Edit
-    Order History API
-    Order History Screen
-    Contact Us Screen
-    Store data locally (Async)
-    Unit tests
-    App Banners on web
-    Error logging as SQLite DB
-    Remote announcements/messages via API
+FUTURE FUNCTIONALITY FOR 3.1.0 RELEASE
+    - Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
+    - API for single Blog/Tip
+    - Lazy loading for lists
+    - Loading/Empty states
+    - Account Details Screen + Edit
+    - Order History API
+    - Order History Screen
+    - Contact Us Screen
+    - Store data locally (Async)
+    - Unit tests
+    - App Banners on web
+    - Error logging as SQLite DB
+    - Remote announcements/messages via API

@@ -53,6 +53,6 @@ export function checkTimeout(response, dispatch) {
         response && response.headers && response.headers.get ? parseInt(response.headers.get('Error'), 10) : 999;
     if (error && error === 400100 && dispatch) {
         store.dispatch({ type: TOKEN_TIMEOUT });
-        store.dispatch(loadUserContent())
+        store.dispatch(loadUserContent());
     }
 }

@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
-import { wrapIcon } from '@pxblue/react-native-components';
-import { Body, SEButton, CollapsibleHeaderLayout } from '../../components';
+import { Body, SEButton, CollapsibleHeaderLayout, wrapIcon, HeaderIcon } from '../../components';
 import { Icon } from 'react-native-elements';
 
 // Styles
@@ -16,7 +15,6 @@ import { Logger } from '../../utilities/logging';
 // Types
 import { LOAD_LOGS } from '../../redux/actions/types';
 import { ApplicationState } from 'src/__types__';
-import { HeaderIcon } from '@pxblue/react-native-components/core/header/header';
 
 // Icons
 const RefreshIcon = wrapIcon({ IconClass: Icon, name: 'refresh' });

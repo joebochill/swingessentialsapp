@@ -14,14 +14,14 @@ export const tutorialReducer = (state = initialState, action): TutorialsState =>
         case MARK_TUTORIAL.VIEWED:
             return {
                 ...state,
-                [action.data]: false
+                [action.data]: false,
             };
         case MARK_TUTORIAL.NEW:
             return {
                 ...state,
-                [action.data]: true
-            }
+                [action.data]: true,
+            };
         default:
             return state;
     }
-}
+};

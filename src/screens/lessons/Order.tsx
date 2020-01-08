@@ -132,7 +132,7 @@ export const Order = props => {
                         styles.callout,
                         { backgroundColor: theme.colors.surface, borderColor: theme.colors.primary[200] },
                     ]}>
-                    <H4 style={{ lineHeight: 32 }}>{credits.count}</H4>
+                    <H4 style={{ lineHeight: unit(32) }}>{credits.count}</H4>
                     <Label>{`Credit${credits.count !== 1 ? 's' : ''} Remaining`}</Label>
                 </View>
             )}

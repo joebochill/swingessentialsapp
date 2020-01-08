@@ -4,47 +4,47 @@ import { white, purple, red, green, orange } from '../styles/colors';
 import { ColorDef } from '../__types__';
 
 type Font = {
-  fontFamily: string;
-  fontWeight: TextStyle['fontWeight'];
-}
+    fontFamily: string;
+    fontWeight: TextStyle['fontWeight'];
+};
 
 export interface Theme {
-  roundness: number;
-  colors: {
-    primary: ColorDef;
-    background: string;
-    surface: string;
-    accent: ColorDef;
-    error: ColorDef;
-    text: ColorDef;
-    onPrimary: ColorDef;
-  };
-  fonts: {
-    extraBold: Partial<Font>;
-    bold: Partial<Font>;
-    semiBold: Partial<Font>;
-    regular: Partial<Font>;
-    light: Partial<Font>;
-  };
-  sizes: {
-    tiny: number;
-    extraSmall: number;
-    small: number;
-    medium: number;
-    large: number;
-    extraLarge: number;
-    giant: number;
-  };
-};
+    roundness: number;
+    colors: {
+        primary: ColorDef;
+        background: string;
+        surface: string;
+        accent: ColorDef;
+        error: ColorDef;
+        text: ColorDef;
+        onPrimary: ColorDef;
+    };
+    fonts: {
+        extraBold: Partial<Font>;
+        bold: Partial<Font>;
+        semiBold: Partial<Font>;
+        regular: Partial<Font>;
+        light: Partial<Font>;
+    };
+    sizes: {
+        tiny: number;
+        extraSmall: number;
+        small: number;
+        medium: number;
+        large: number;
+        extraLarge: number;
+        giant: number;
+    };
+}
 
 /* This is the default theme for the component library (Material) */
 export const defaultTheme = {
     roundness: 8,
     fonts: {
-        extraBold: { fontFamily: 'SFCompactDisplay-Black'},
-        bold: { fontFamily: 'SFCompactDisplay-Bold'},
-        semiBold: { fontFamily: 'SFCompactDisplay-Semibold'},
-        regular: { fontFamily: 'SFCompactDisplay-Regular'},
+        extraBold: { fontFamily: 'SFCompactDisplay-Black' },
+        bold: { fontFamily: 'SFCompactDisplay-Bold' },
+        semiBold: { fontFamily: 'SFCompactDisplay-Semibold' },
+        regular: { fontFamily: 'SFCompactDisplay-Regular' },
         light: { fontFamily: 'SFCompactDisplay-Thin' },
     },
     colors: {
@@ -70,11 +70,7 @@ export const defaultTheme = {
 const { ThemeProvider, withTheme, useTheme } = createTheming<Theme>(defaultTheme);
 
 export type WithTheme<T> = T & {
-  theme: Theme;
-}
-
-export {
-  ThemeProvider,
-  withTheme,
-  useTheme
+    theme: Theme;
 };
+
+export { ThemeProvider, withTheme, useTheme };

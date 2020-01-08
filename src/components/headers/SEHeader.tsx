@@ -8,11 +8,10 @@ import { Icon } from 'react-native-elements';
 import { ResizableHeader } from './ResizableHeader';
 
 // Utilities
-import { wrapIcon } from '@pxblue/react-native-components';
+import { wrapIcon, HeaderIcon } from '../IconWrapper';
 
 // Icons
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
-import { HeaderIcon } from '@pxblue/react-native-components/core/header/header';
 import topology from '../../images/topology_20.png';
 
 // Types

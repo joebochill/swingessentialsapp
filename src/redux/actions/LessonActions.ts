@@ -43,7 +43,7 @@ export function markLessonViewed(lesson_id: number) {
         dispatch({ type: ACTIONS.MARK_VIEWED.REQUEST });
 
         HttpRequest.put(ACTIONS.MARK_VIEWED.API)
-            .withBody({id: lesson_id})
+            .withBody({ id: lesson_id })
             .onSuccess((body: any) => {
                 dispatch(success(ACTIONS.MARK_VIEWED.SUCCESS, body));
                 dispatch(loadLessons());

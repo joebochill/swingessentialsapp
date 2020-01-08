@@ -43,7 +43,7 @@ export const loginReducer = (state = initialState, action): LoginState => {
         case REFRESH_TOKEN.FAILURE:
             return {
                 ...state,
-                pending: false
+                pending: false,
             };
         case LOGOUT.SUCCESS:
         case LOGOUT.FAILURE:

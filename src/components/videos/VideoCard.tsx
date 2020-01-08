@@ -9,7 +9,7 @@ import { Icon } from 'react-native-elements';
 
 // Styles
 import { width, aspectHeight } from '../../utilities/dimensions';
-import { spaces, unit } from '../../styles/sizes';
+import { spaces, unit, sizes } from '../../styles/sizes';
 import { black } from '../../styles/colors';
 
 // Types
@@ -83,7 +83,7 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
         const { onExpand } = this.props;
         return onExpand ? (
             <TouchableOpacity onPress={() => onExpand()} style={styles.actionItem}>
-                <Icon name={'open-in-new'} color={this.fontColor()} />
+                <Icon name={'open-in-new'} color={this.fontColor()} size={sizes.small} />
             </TouchableOpacity>
         ) : null;
     }
