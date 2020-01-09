@@ -83,7 +83,7 @@ export class Logger {
             {
                 subject: `Swing Essentials Error Report (${username})`,
                 recipients: ['info@swingessentials.com'],
-                body: `(DEV) My Swing Essentials app has been encountering errors. ${
+                body: `My Swing Essentials app has been encountering errors. ${
                     Platform.OS === 'ios'
                         ? 'Please see the attached error log.'
                         : 'Please see the following:\r\n\r\n\r\n' + currentLogs
