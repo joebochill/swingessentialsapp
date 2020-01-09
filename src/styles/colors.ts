@@ -2,12 +2,6 @@ import { ColorDef } from 'src/__types__';
 
 export const transparent = 'transparent';
 
-// TODO: Update all styles to use variable definitions
-
-// export const purpleOpacity = (opacity: number): string => {
-//     const op = Math.max(0, Math.min(1, opacity));
-//     return `rgba(35,31,97,${op})`;
-// };
 export const blackOpacity = (opacity: number): string => {
     const op = Math.max(0, Math.min(1, opacity));
     return `rgba(0,0,0,${op})`;

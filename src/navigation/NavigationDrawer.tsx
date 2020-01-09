@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 // Components
 import {
     Animated,
@@ -40,12 +40,14 @@ import { Logger } from '../utilities/logging';
 
 // Redux
 import { ApplicationState } from 'src/__types__';
+import { loadUserContent } from '../redux/actions';
 
 // Icons
 import se from '../images/logo-small.png';
 
 export const NavigationDrawer = props => {
     const theme = useTheme();
+    const dispatch = useDispatch();
     const [scrollY] = useState(new Animated.Value(0));
     const [activePanel, setActivePanel] = useState(0);
     const [left] = useState({
@@ -81,7 +83,7 @@ export const NavigationDrawer = props => {
     const _handleAppStateChange = useCallback(
         (nextAppState: AppStateStatus) => {
             if (appState.match(/inactive|background/) && nextAppState === 'active' && token) {
-                // TODO: Refresh data from the token
+                dispatch(loadUserContent());
             }
             setAppState(nextAppState);
         },

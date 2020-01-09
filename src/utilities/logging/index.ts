@@ -82,7 +82,7 @@ export class Logger {
         Mailer.mail(
             {
                 subject: `Swing Essentials Error Report (${username})`,
-                recipients: ['boyle.p.joseph@gmail.com'], //['info@swingessentials.com'],// TODO: update
+                recipients: ['info@swingessentials.com'],
                 body: `(DEV) My Swing Essentials app has been encountering errors. ${
                     Platform.OS === 'ios'
                         ? 'Please see the attached error log.'

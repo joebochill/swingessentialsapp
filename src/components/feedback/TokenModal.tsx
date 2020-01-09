@@ -19,7 +19,7 @@ import { ApplicationState } from '../../__types__';
 import { atob } from '../../utilities';
 
 // Redux
-import { requestLogout, refreshToken } from '../../redux/actions';
+import { requestLogout, refreshToken, checkToken } from '../../redux/actions';
 
 const styles = StyleSheet.create({
     modalBackground: {
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
 export const TokenModal = (props: ModalProps) => {
     const { ...other } = props;
     const token = useSelector((state: ApplicationState) => state.login.token);
+    const role = useSelector((state: ApplicationState) => state.login.role);
     const refreshing = useSelector((state: ApplicationState) => state.login.pending);
 
     const [timeRemaining, setTimeRemaining] = useState(-1);
@@ -42,6 +43,28 @@ export const TokenModal = (props: ModalProps) => {
 
     const dispatch = useDispatch();
     const theme = useTheme();
+
+    const updateRefreshRate = useCallback(() => {
+        if (timeRemaining <= 3 * 60) {
+            setUpdateRate(1);
+        } else if (timeRemaining <= 10 * 60) {
+            setUpdateRate(1 * 60);
+        } else if (timeRemaining <= 20 * 60) {
+            setUpdateRate(5 * 60);
+        } else {
+            setUpdateRate(30 * 60);
+        }
+    }, [timeRemaining]);
+
+    useEffect(() => {
+        // timer to check for pending user registration
+        if(role === 'pending'){
+            const interval = setInterval(() => {
+                dispatch(checkToken())
+            }, 20 * 1000);
+            return () => clearInterval(interval);
+        }
+    }, [token])
 
     useEffect(() => {
         // set the time remaining on login/logout
@@ -74,18 +97,6 @@ export const TokenModal = (props: ModalProps) => {
 
         return () => clearInterval(interval);
     }, [timeRemaining, engageCountdown, token, updateRate, updateRefreshRate, dispatch]);
-
-    const updateRefreshRate = useCallback(() => {
-        if (timeRemaining <= 3 * 60) {
-            setUpdateRate(1);
-        } else if (timeRemaining <= 10 * 60) {
-            setUpdateRate(1 * 60);
-        } else if (timeRemaining <= 20 * 60) {
-            setUpdateRate(5 * 60);
-        } else {
-            setUpdateRate(30 * 60);
-        }
-    }, [timeRemaining]);
 
     return (
         <Modal

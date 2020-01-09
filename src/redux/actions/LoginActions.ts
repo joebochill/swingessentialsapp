@@ -13,9 +13,6 @@ import { HttpRequest } from '../../api/http';
 import { Logger } from '../../utilities/logging';
 import * as Keychain from 'react-native-keychain';
 
-// TODO: Handle fetch failure (on login esp) more gracefully
-// TODO: timer to check pending users registration status update
-
 export function requestLogin(userCredentials: Credentials, useTouch: boolean = false) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({ type: ACTIONS.LOGIN.REQUEST });
@@ -102,6 +99,50 @@ export function setToken(token: string) {
         dispatch(loadUserContent());
     };
 }
+
+export function checkToken() {
+    return (dispatch: ThunkDispatch<any, void, any>) => {
+        dispatch({ type: ACTIONS.CHECK_TOKEN.REQUEST });
+        HttpRequest.get(ACTIONS.CHECK_TOKEN.API)
+            .withFullResponse()
+            .onSuccess((response: any) => {
+                const token = response.headers.get('Token');
+                if(token){
+                    dispatch({ type: ACTIONS.SET_TOKEN.REQUEST, payload: { token } });
+                    dispatch(loadUserContent());
+                }
+            })
+            .onFailure((response: Response) => {
+                dispatch(failure(ACTIONS.CHECK_TOKEN.FAILURE, response, 'Check Token'));
+            })
+            .request();
+    };
+}
+
+// export function checkToken(token){
+//     return (dispatch) => {
+//         fetch(BASEURL+'checkToken', {
+//             headers: {
+//                 [AUTH]: 'Bearer ' + token
+//             }
+//         })
+//         .then((response) => {
+//             switch(response.status){
+//                 case 200:
+//                     const token = response.headers.get('Token');
+//                     if(token){
+//                         dispatch(success(CHECK_TOKEN.SUCCESS, {token: token}));
+//                     }
+//                     break;
+//                 default:
+//                     checkTimeout(response, dispatch);
+//             }
+//         })
+//         .catch((error) => {
+//             logLocalError('116: Promise Error: checking token');
+//         });
+//     }
+// }
 
 export function loadUserContent() {
     return (dispatch: ThunkDispatch<any, void, any>) => {

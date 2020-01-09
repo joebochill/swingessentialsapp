@@ -10,6 +10,7 @@ export const INITIAL_LOAD = 'INITIAL_LOAD';
 export const LOGIN = createAction('LOGIN', 'login');
 export const LOGOUT = createAction('LOGOUT', 'logout');
 export const SET_TOKEN = createAction('SET_TOKEN', '');
+export const CHECK_TOKEN = createAction('CHECK_TOKEN', 'checkToken');
 export const REFRESH_TOKEN = createAction('REFRESH_TOKEN', 'refresh');
 
 /* User Actions */

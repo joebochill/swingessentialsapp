@@ -17,7 +17,6 @@ export function loadInitialData(): Function {
     return async (dispatch: ThunkDispatch<any, void, any>) => {
         const token = await AsyncStorage.getItem(ASYNC_PREFIX + 'token');
         if (token) dispatch(setToken(token));
-        // loadTutorials(store.dispatch); //TODO
 
         dispatch({ type: ACTIONS.INITIAL_LOAD });
         dispatch(loadTips());

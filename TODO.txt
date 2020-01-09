@@ -3,13 +3,13 @@ LAST ITEMS FOR 3.0.0 RELEASE:
     - Remove unused icon fonts for ios
     - Fix camera roll monkeypatch
     - Android Specific
-        - Build 64 bit
         - Permissions request upfront
         - Disable Landscape mode
         - Check typography scaling (tablet)
         - Pull-to-refresh styling/working
         - Verify Deep Linking works
         - Verify all videos working
+        - Play store screenshots
         - Verify IAP works
     - New "How to use the app" video/link
     - Publish API update

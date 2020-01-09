@@ -164,6 +164,10 @@ export const Login = (props: NavigationInjectedProps) => {
         if (token) {
             props.navigation.pop();
         }
+    }, [token]);
+
+    useEffect(() => {
+        // handle login failure
         if (failuresChanged) {
             setPassword('');
             if (failures > 0) {
@@ -171,7 +175,7 @@ export const Login = (props: NavigationInjectedProps) => {
                 Keychain.resetGenericPassword();
             }
         }
-    }, [token, failuresChanged, props.navigation, failures, credentials]);
+    }, [failuresChanged, failures, credentials]);
 
     useEffect(() => {
         // Show biometric login on load
