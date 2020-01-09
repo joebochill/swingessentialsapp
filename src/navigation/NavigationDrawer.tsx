@@ -62,7 +62,7 @@ export const NavigationDrawer = props => {
     const userString = userData.username || 'Welcome!';
     const nameString =
         userData.firstName && userData.lastName ? `${userData.firstName} ${userData.lastName}` : 'New User';
-    const memberString = `Member Since ${
+    const memberString = `Joined ${
         userData.joined ? getLongDate(userData.joined * 1000) : getLongDate(Date.now())
     }`;
 
@@ -219,8 +219,8 @@ export const NavigationDrawer = props => {
                             <Animated.Text
                                 style={{
                                     color: 'white',
-                                    lineHeight: scaleByHeight(unit(10), 0.1),
-                                    fontSize: scaleByHeight(unit(10), 0.1),
+                                    lineHeight: scaleByHeight(unit(14), 0.1),
+                                    fontSize: scaleByHeight(unit(14), 0.1),
                                     opacity: scaleByHeight(1, 0),
                                     fontWeight: '300',
                                 }}

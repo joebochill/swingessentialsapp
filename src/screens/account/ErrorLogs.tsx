@@ -66,7 +66,7 @@ export const ErrorLogs = () => {
             <View style={[sharedStyles.paddingHorizontalMedium]}>
                 <Body>{logs}</Body>
                 <SEButton title={'SEND ERROR REPORT'} onPress={() => sendMail()} />
-                <SEButton
+                {/* <SEButton
                     title={'LOG FAKE ERROR'}
                     onPress={() => {
                         Logger.logError({
@@ -78,7 +78,7 @@ export const ErrorLogs = () => {
                     }}
                 />
                 <SEButton title={'REFRESH'} onPress={() => getLogs()} />
-                <SEButton title={'CLEAR'} onPress={() => Logger.clear('ERROR')} />
+                <SEButton title={'CLEAR'} onPress={() => Logger.clear('ERROR')} /> */}
             </View>
         </CollapsibleHeaderLayout>
     );

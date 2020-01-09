@@ -19,6 +19,8 @@ export const RNIAPCallbacks = () => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
 
     useEffect(() => {
+        if(packages.length < 1) return;
+
         const pil = purchaseUpdatedListener((purchase: any) => {
             const receipt = purchase.transactionReceipt;
             if (receipt) {
@@ -27,6 +29,7 @@ export const RNIAPCallbacks = () => {
                 if (shortcode === '') {
                     return;
                 }
+                console.log('xxx shortcode', shortcode);
                 dispatch(
                     purchaseCredits(
                         {
@@ -48,6 +51,7 @@ export const RNIAPCallbacks = () => {
                         (response: Response) => {
                             // If purchase is already claimed in database
                             if (parseInt(response.headers.get('Error') || '', 10) === 400607) {
+                                console.log('xxx already claimed');
                                 if (Platform.OS === 'ios') {
                                     RNIap.finishTransactionIOS(purchase.transactionId);
                                 } else if (Platform.OS === 'android') {
@@ -80,5 +84,6 @@ export const RNIAPCallbacks = () => {
             });
         });
     }, [dispatch, packages]);
+    
     return null;
 };
