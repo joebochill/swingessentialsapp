@@ -55,12 +55,12 @@ export function requestLogin(userCredentials: Credentials, useTouch: boolean = f
     };
 }
 /* clears the current authentication token */
-export function requestLogout(token: string) {
+export function requestLogout() {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({ type: ACTIONS.LOGOUT.REQUEST });
         HttpRequest.get(ACTIONS.LOGOUT.API)
             .withFullResponse()
-            .onSuccess((response: any) => {
+            .onSuccess(() => {
                 dispatch(success(ACTIONS.LOGOUT.SUCCESS));
                 dispatch(loadTips());
             })

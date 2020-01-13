@@ -1,4 +1,13 @@
 LAST ITEMS FOR 3.0.0 RELEASE:
+    FIX:
+    - Skip button z-index for tablets
+    - choppy scroll
+    - record screen crash on Android
+    - error email no username
+    - no billing android
+    - pull to refresh position android
+    - force users off various screens when no token
+    - android tablet videos are too large
     - Optimize bundle size
     - Remove unused icon fonts for ios
     - Fix camera roll monkeypatch
@@ -14,7 +23,11 @@ LAST ITEMS FOR 3.0.0 RELEASE:
     - New "How to use the app" video/link
     - Publish API update
     - Switch everything over to production (API, email addresses, etc.)
+    
+    TEST:
+    - menu logout crash
     - Final Device testing
+    
 
 
 FUTURE FUNCTIONALITY FOR 3.1.0 RELEASE

@@ -12,6 +12,7 @@ import {
     SafeAreaView,
     StyleSheet,
     View,
+    Alert,
 } from 'react-native';
 import { NavigationItems } from './NavigationContent';
 import { ListItem } from 'react-native-elements';
@@ -40,7 +41,7 @@ import { Logger } from '../utilities/logging';
 
 // Redux
 import { ApplicationState } from 'src/__types__';
-import { loadUserContent } from '../redux/actions';
+import { loadUserContent, requestLogout } from '../redux/actions';
 
 // Icons
 import se from '../images/logo-small.png';
@@ -66,7 +67,7 @@ export const NavigationDrawer = props => {
         userData.firstName && userData.lastName ? `${userData.firstName} ${userData.lastName}` : 'New User';
     const memberString = `Joined ${
         userData.joined ? getLongDate(userData.joined * 1000) : getLongDate(Date.now())
-    }`;
+        }`;
 
     const scaleByHeight = useCallback(
         (atLarge, atSmall) => {
@@ -252,7 +253,13 @@ export const NavigationDrawer = props => {
                             title: token ? 'Log Out' : 'Log In',
                             iconType: token ? 'material-community' : 'material',
                             icon: token ? 'logout-variant' : 'person',
-                            onPress: token ? () => this._logout() : () => navigation.navigate(ROUTES.LOGIN),
+                            onPress: token ?
+                                () => {
+                                    Alert.alert('Log Out', 'Are you sure you want to log out?', [
+                                        { text: 'Log Out', onPress: () => dispatch(requestLogout()) },
+                                        { text: 'Cancel' },
+                                    ]);
+                                } : () => navigation.navigate(ROUTES.LOGIN),
                         });
                     }
                     return (
@@ -269,18 +276,18 @@ export const NavigationDrawer = props => {
                                             item.route
                                                 ? item.route === ROUTES.HOME
                                                     ? () => {
-                                                          navigation.closeDrawer();
-                                                      }
+                                                        navigation.closeDrawer();
+                                                    }
                                                     : () => {
-                                                          navigation.navigate(item.route);
-                                                      }
+                                                        navigation.navigate(item.route);
+                                                    }
                                                 : item.activatePanel !== undefined
-                                                ? () => {
-                                                      setActivePanel(item.activatePanel);
-                                                  }
-                                                : item.onPress
-                                                ? () => item.onPress()
-                                                : undefined
+                                                    ? () => {
+                                                        setActivePanel(item.activatePanel);
+                                                    }
+                                                    : item.onPress
+                                                        ? () => item.onPress()
+                                                        : undefined
                                         }
                                         title={<Body style={[styles.navLabel]}>{item.title}</Body>}
                                         leftIcon={{
@@ -293,10 +300,10 @@ export const NavigationDrawer = props => {
                                         rightIcon={
                                             item.nested
                                                 ? {
-                                                      name: 'chevron-right',
-                                                      color: theme.colors.text[500],
-                                                      size: sizes.small,
-                                                  }
+                                                    name: 'chevron-right',
+                                                    color: theme.colors.text[500],
+                                                    size: sizes.small,
+                                                }
                                                 : undefined
                                         }
                                     />

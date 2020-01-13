@@ -92,7 +92,7 @@ export const TokenModal = (props: ModalProps) => {
             }, updateRate * 1000);
             updateRefreshRate();
         } else {
-            dispatch(requestLogout(token || ''));
+            dispatch(requestLogout());
         }
 
         return () => clearInterval(interval);
