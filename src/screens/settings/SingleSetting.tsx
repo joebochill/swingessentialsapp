@@ -78,9 +78,9 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
 
     useEffect(() => {
         if (!token) {
-            props.navigation.popToTop();
+            navigation.pop();
         }
-    }, [props.navigation, token]);
+    }, [navigation, token]);
 
     if (!currentSettingName) {
         navigation.pop();

@@ -78,7 +78,11 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                             ]}
                             refreshControl={
                                 onRefresh ? (
-                                    <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()} />
+                                    <RefreshControl 
+                                        refreshing={refreshing} 
+                                        onRefresh={() => onRefresh()} 
+                                        progressViewOffset={HEADER_EXPANDED_HEIGHT}
+                                    />
                                 ) : (
                                     undefined
                                 )
@@ -101,8 +105,8 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                                     },
                                 },
                             )}
-                            scrollEventThrottle={16}>
-                            {refreshing && (
+                            scrollEventThrottle={32}>
+                            {refreshing && Platform.OS === 'ios' && (
                                 <ActivityIndicator
                                     size={'large'}
                                     style={{ marginBottom: spaces.medium, marginTop: -1 * spaces.jumbo }}

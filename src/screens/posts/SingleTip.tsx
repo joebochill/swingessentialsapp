@@ -15,7 +15,7 @@ import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 export const SingleTip = props => {
     const tip = props.navigation.getParam('tip', null);
     if (tip === null) {
-        props.navigation.popToTop();
+        props.navigation.pop();
     }
     const videoWidth = width - 2 * spaces.medium;
     const videoHeight = aspectHeight(videoWidth);

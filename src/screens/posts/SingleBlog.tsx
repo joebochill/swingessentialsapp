@@ -15,7 +15,7 @@ import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 export const SingleBlog = props => {
     const blog = props.navigation.getParam('blog', null);
     if (blog === null) {
-        props.navigation.popToTop();
+        props.navigation.pop();
     }
     return (
         blog && (

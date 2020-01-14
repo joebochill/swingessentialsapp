@@ -20,9 +20,10 @@ import { ApplicationState } from 'src/__types__';
 const RefreshIcon = wrapIcon({ IconClass: Icon, name: 'refresh' });
 const MailIcon = wrapIcon({ IconClass: Icon, name: 'mail' });
 
-export const ErrorLogs = () => {
+export const ErrorLogs = (props) => {
     const [logs, setLogs] = useState('');
     const dispatch = useDispatch();
+    const token = useSelector((state: ApplicationState) => state.login.token);
     const loading = useSelector((state: ApplicationState) => state.logs.loading);
     const username = useSelector((state: ApplicationState) => state.userData.username);
 
@@ -36,6 +37,12 @@ export const ErrorLogs = () => {
     const sendMail = useCallback(() => {
         Logger.sendEmail('ERROR', () => getLogs(), username);
     }, [getLogs, username]);
+
+    useEffect(() => {
+        if (!token) {
+            props.navigation.pop();
+        }
+    }, [props.navigation, token]);
 
     useEffect(() => {
         getLogs();
