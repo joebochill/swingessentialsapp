@@ -30,7 +30,7 @@ import { ROUTES } from '../../constants/routes';
 import { Icon } from 'react-native-elements';
 import { Logger } from '../../utilities/logging';
 
-const DESIRED_RATIO = '16:9';
+// const DESIRED_RATIO = '16:9';
 
 const getOverlayImage = (swing: SwingType, handedness: HandednessType, camera: CameraType) => {
     let options = swing === 'dtl' ? [downthelineRH, downthelineLH] : [faceonRH, faceonLH];
@@ -53,7 +53,7 @@ export const Record = props => {
 
     const cameras: CameraType[] = ['back', 'front'];
     const [cameraType, setCameraType] = useState(0);
-    const [cameraRatios, setCameraRatios] = useState([]);
+    // const [cameraRatios, setCameraRatios] = useState([]);
 
     const [recordingMode, setRecordingMode] = useState(true);
     const [showCountDown, setCountdownStarted] = useState(false);
@@ -65,7 +65,7 @@ export const Record = props => {
     const _startRecording = useCallback(async () => {
         setCountdownStarted(false);
 
-        if (!cameraRef.current) {
+        if (!cameraRef || !cameraRef.current) {
             Logger.logError({
                 code: 'REC100',
                 description: 'No camera object was found.',
@@ -97,7 +97,7 @@ export const Record = props => {
 
     const _endRecording = useCallback(() => {
         setCountdownStarted(false);
-        if (!cameraRef.current) {
+        if (!cameraRef || !cameraRef.current) {
             Logger.logError({
                 code: 'REC200',
                 description: 'No camera object was found.',
@@ -112,15 +112,16 @@ export const Record = props => {
         setIsRecording(false);
     }, [isRecording]);
 
-    useEffect(() => {
-        if (Platform.OS === 'android' && cameraRef.current) {
-            const getAvailableRatios = async () => {
-                const ratios = await cameraRef.current.getSupportedRatiosAsync();
-                setCameraRatios(ratios);
-            };
-            getAvailableRatios();
-        }
-    }, [cameraRef]);
+    // This effect causing a null object reference in Android
+    // useEffect(() => {
+    //     if (Platform.OS === 'android' && cameraRef && cameraRef.current) {
+    //         const getAvailableRatios = async () => {
+    //             const ratios = await cameraRef.current.getSupportedRatiosAsync();
+    //             setCameraRatios(ratios);
+    //         };
+    //         getAvailableRatios();
+    //     }
+    // }, [cameraRef, cameraRef.current]);
 
     const VideoRecorder = (
         <RNCamera
@@ -139,7 +140,7 @@ export const Record = props => {
             // onCameraReady={() => setRecordingMode(true)}
             flashMode={showCountDown ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
             captureAudio={false}
-            ratio={cameraRatios.find(ratio => ratio === DESIRED_RATIO) || cameraRatios[cameraRatios.length - 1]}
+            // ratio={cameraRatios.find(ratio => ratio === DESIRED_RATIO) || cameraRatios[cameraRatios.length - 1]}
             androidCameraPermissionOptions={{
                 title: 'Permission to use camera',
                 message: 'We need your permission to use your camera',
