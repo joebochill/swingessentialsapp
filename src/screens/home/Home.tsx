@@ -40,7 +40,7 @@ export const Home = props => {
         <CollapsibleHeaderLayout
             backgroundImage={bg}
             title={'SWING ESSENTIALS'}
-            subtitle={'a pro in your pocket™'}
+            subtitle={'a pro in your pocket'}
             mainAction={'menu'}
             refreshing={lessons.loading || credits.inProgress || tips.loading}
             onRefresh={() => {

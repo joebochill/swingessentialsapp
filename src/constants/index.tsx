@@ -20,7 +20,7 @@ export const DRAWER_WIDTH = 0.9 * width;
 export const BASEURL_DEV = 'https://www.swingessentials.com/apis/dev/dev.php';
 export const BASEURL_PROD = 'https://www.swingessentials.com/apis/swingessentials.php';
 
-export const BASEURL = BASEURL_DEV;
+export const BASEURL = BASEURL_PROD;
 export const AUTH = 'Message';
 
 export const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;

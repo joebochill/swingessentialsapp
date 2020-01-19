@@ -49,8 +49,9 @@ export const YouTube = (props: YouTubeProps) => {
         play = false,
         fullscreen = false,
         loop = false,
-        showinfo = false,
+        showinfo = true,
         modestbranding = false,
+        showFullscreenButton = true,
         controls = 2,
         rel = false,
     } = props;
@@ -75,6 +76,7 @@ export const YouTube = (props: YouTubeProps) => {
             fullscreen={fullscreen}
             loop={loop}
             showinfo={showinfo}
+            showFullscreenButton={showFullscreenButton}
             modestbranding={modestbranding}
             controls={controls}
             rel={rel}

@@ -2,10 +2,7 @@ LAST ITEMS FOR 3.0.0 RELEASE:
     FIX:
     
     - record screen crash on Android
-    
-
     - no billing android
-    
     - android tablet videos are too large
     - Optimize bundle size
     - Remove unused icon fonts for ios
@@ -21,6 +18,7 @@ LAST ITEMS FOR 3.0.0 RELEASE:
         - Verify IAP works
     - New "How to use the app" video/link
     - Publish API update
+    - Remove all DEV
     - Switch everything over to production (API, email addresses, etc.)
     
     TEST:

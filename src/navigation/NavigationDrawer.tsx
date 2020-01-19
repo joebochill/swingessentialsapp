@@ -256,7 +256,10 @@ export const NavigationDrawer = props => {
                             onPress: token ?
                                 () => {
                                     Alert.alert('Log Out', 'Are you sure you want to log out?', [
-                                        { text: 'Log Out', onPress: () => dispatch(requestLogout()) },
+                                        { text: 'Log Out', onPress: () => {
+                                            dispatch(requestLogout());
+                                            navigation.closeDrawer();
+                                        }},
                                         { text: 'Cancel' },
                                     ]);
                                 } : () => navigation.navigate(ROUTES.LOGIN),
