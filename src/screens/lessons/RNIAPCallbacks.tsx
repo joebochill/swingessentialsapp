@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
-import { Platform } from 'react-native';
+import { Platform, EmitterSubscription } from 'react-native';
 import RNIap, { purchaseErrorListener, purchaseUpdatedListener } from 'react-native-iap';
 
 // Redux
@@ -21,7 +21,7 @@ export const RNIAPCallbacks = () => {
     useEffect(() => {
         if(packages.length < 1) return;
 
-        const pil = purchaseUpdatedListener((purchase: any) => {
+        let pil: EmitterSubscription | null = purchaseUpdatedListener((purchase: any) => {
             const receipt = purchase.transactionReceipt;
             if (receipt) {
                 const paidPackage = packages.filter(pack => pack.app_sku === purchase.productId);
@@ -73,7 +73,7 @@ export const RNIAPCallbacks = () => {
                 });
             }
         });
-        const pel = purchaseErrorListener((error: any) => {
+        let pel: EmitterSubscription | null = purchaseErrorListener((error: any) => {
             Logger.logError({
                 code: 'IAP800',
                 description: 'In-App purchase error.',
@@ -81,6 +81,16 @@ export const RNIAPCallbacks = () => {
                 rawErrorMessage: error.message,
             });
         });
+        return () => {
+            if (pil) {
+                pil.remove();
+                pil = null;
+              }
+              if (pel) {
+                pel.remove();
+                pel = null;
+              }
+        }
     }, [dispatch, packages]);
 
     return null;

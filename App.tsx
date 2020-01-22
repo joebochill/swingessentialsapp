@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 
 // Components
 import { StatusBar, Platform, PermissionsAndroid } from 'react-native';
@@ -11,8 +9,6 @@ import SplashScreen from 'react-native-splash-screen';
 
 // Redux
 import { Provider } from 'react-redux';
-import { AppReducer } from './src/redux/reducers';
-import { saveAuthToken } from './src/api/tokenMiddleware';
 import { loadInitialData } from './src/redux/actions';
 
 // Utilities
@@ -20,7 +16,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Logger } from './src/utilities/logging';
 
 // Redux
-export const store = createStore(AppReducer, applyMiddleware(thunk, saveAuthToken));
+import { store } from './src/redux/store';
 
 export const App = () => {
     useEffect(() => {

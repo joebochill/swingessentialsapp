@@ -1,8 +1,8 @@
 import { LOG_FILE, ERROR_FILE, ERROR_LIMIT, LOG_LIMIT } from '../../constants';
 import { getDate, getTime } from '../general';
-import { sendLogReport } from '../../redux/actions';
+import { sendLogReport } from '../../redux/actions/ExtraActions';
 import Mailer from 'react-native-mail';
-import { store } from '../../../App';
+import { store } from '../../redux/store';
 import { Platform, Alert } from 'react-native';
 
 const RNFS = require('react-native-fs');

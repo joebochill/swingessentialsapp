@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { APP_VERSION, ASYNC_PREFIX, TUTORIALS, TUTORIAL_VERSIONS } from '../../constants/index';
 import { MARK_TUTORIAL } from './types';
 import { ThunkDispatch } from 'redux-thunk';

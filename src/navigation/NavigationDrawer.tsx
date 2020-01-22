@@ -157,6 +157,11 @@ export const NavigationDrawer = props => {
                     });
                 });
         }
+
+        return () => {
+            AppState.removeEventListener('change', _handleAppStateChange);
+            Linking.removeEventListener('url', _wakeupByLink);
+        }
     }, [_handleAppStateChange, _linkRoute, _wakeupByLink]);
 
     return (

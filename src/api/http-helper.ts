@@ -1,7 +1,7 @@
 import { Logger } from '../utilities/logging';
 import { TOKEN_TIMEOUT } from '../redux/actions/types';
-import { store } from '../../App';
-import { loadUserContent } from '../redux/actions';
+import { store } from '../redux/store';
+import { loadUserContent } from '../redux/actions/LoginActions';
 
 /* Dispatch a failure action for the supplied action type */
 export function failure(type, response, api = '--') {

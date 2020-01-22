@@ -47,6 +47,7 @@ export const ErrorLogs = (props) => {
     useEffect(() => {
         getLogs();
     }, [getLogs]);
+    
     const actionItems: HeaderIcon[] = [
         {
             icon: RefreshIcon,
@@ -73,19 +74,6 @@ export const ErrorLogs = (props) => {
             <View style={[sharedStyles.paddingHorizontalMedium]}>
                 <Body>{logs}</Body>
                 <SEButton title={'SEND ERROR REPORT'} onPress={() => sendMail()} />
-                {/* <SEButton
-                    title={'LOG FAKE ERROR'}
-                    onPress={() => {
-                        Logger.logError({
-                            code: 'XXX-999',
-                            description: 'Fake error logged from logs screen.',
-                            rawErrorCode: 'EXEC-999',
-                            rawErrorMessage: 'Bad something happened',
-                        });
-                    }}
-                />
-                <SEButton title={'REFRESH'} onPress={() => getLogs()} />
-                <SEButton title={'CLEAR'} onPress={() => Logger.clear('ERROR')} /> */}
             </View>
         </CollapsibleHeaderLayout>
     );

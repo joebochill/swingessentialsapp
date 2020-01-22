@@ -51,12 +51,12 @@ type BiometryState = {
 type CredentialsState = {
     stored: boolean;
     savedCredentials:
-        | {
-              username: string;
-              password: string;
-              service?: string;
-          }
-        | undefined;
+    | {
+        username: string;
+        password: string;
+        service?: string;
+    }
+    | undefined;
 };
 const initialBiometry: BiometryState = {
     available: false,

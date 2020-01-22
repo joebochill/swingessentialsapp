@@ -85,12 +85,13 @@ export const Submit = props => {
     }, [setFO, setDTL, setNotes, setUseNotes, setUploadProgress]);
 
     useEffect(() => {
+        let timeout: number = 0;
         // Submission finished
         if (previousPendingStatus && !lessons.redeemPending) {
             if (lessons.redeemSuccess) {
                 // Successful redeem
                 _clearFields();
-                setTimeout(() => {
+                timeout = setTimeout(() => {
                     Alert.alert(
                         'Success!',
                         'Your lesson request was submitted successfully. We are working on your analysis.',
@@ -98,6 +99,7 @@ export const Submit = props => {
                         { cancelable: false },
                     );
                 }, 700);
+                return () => clearTimeout(timeout);
             } else {
                 // Fail redeem
                 Logger.logError({
@@ -108,7 +110,7 @@ export const Submit = props => {
                 // 400701 means files were stripped for size
                 // 400702 too large
                 setUploadProgress(0);
-                setTimeout(() => {
+                timeout = setTimeout(() => {
                     Alert.alert(
                         'Oops:',
                         lessons.redeemError === 400701 || lessons.redeemError === 400703
@@ -117,8 +119,10 @@ export const Submit = props => {
                         [{ text: 'OK' }],
                     );
                 }, 700);
+                return () => clearTimeout(timeout);
             }
         }
+        
     }, [
         lessons.redeemPending,
         previousPendingStatus,

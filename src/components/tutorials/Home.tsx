@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { H7, H4 } from '../index';
 import { SEButton } from '../SEButton';
-import { TutorialModal } from './';
+import { TutorialModal } from './Tutorial';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 // Styles
 import { sizes, spaces, unit } from '../../styles/sizes';
