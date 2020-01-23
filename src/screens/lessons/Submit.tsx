@@ -119,7 +119,7 @@ export const Submit = props => {
                         [{ text: 'OK' }],
                     );
                 }, 700);
-                return () => clearTimeout(timeout);
+                // return () => clearTimeout(timeout);
             }
         }
         
