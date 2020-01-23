@@ -99,7 +99,7 @@ export const Submit = props => {
                         { cancelable: false },
                     );
                 }, 700);
-                return () => clearTimeout(timeout);
+                // return () => clearTimeout(timeout);
             } else {
                 // Fail redeem
                 Logger.logError({
