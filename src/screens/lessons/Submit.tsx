@@ -259,7 +259,7 @@ export const Submit = props => {
             backgroundImage={bg}
             pageBackground={page_bg}>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-                <ScrollView contentContainerStyle={sharedStyles.paddingHorizontalMedium} ref={scroller}>
+                <ScrollView keyboardShouldPersistTaps={'always'} contentContainerStyle={sharedStyles.paddingHorizontalMedium} ref={scroller}>
                     <ErrorBox show={roleError !== ''} error={roleError} style={{ marginBottom: spaces.medium }} />
                     <ErrorBox
                         show={lessons.pending.length > 0}

@@ -22,6 +22,7 @@ export const userDataReducer = (state = initialState, action): UserDataState => 
             };
         case GET_USER_DATA.FAILURE:
         case LOGOUT.SUCCESS:
+        case LOGOUT.FAILURE:
         case TOKEN_TIMEOUT:
             return {
                 ...state,

@@ -26,8 +26,17 @@ export interface VideoCardProps {
     onExpand?: Function;
     theme?: $DeepPartial<Theme>;
 }
+export type VideoCardState = {
+    play: boolean;
+}
 
-class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
+class VideoCardClass extends Component<WithTheme<VideoCardProps>, VideoCardState> {
+    constructor(props){
+        super(props);
+        this.state={
+            play: false
+        }
+    }
     public render() {
         const { video, theme, headerColor = theme.colors.primary[400], hiddenContent } = this.props;
         const videoWidth = width - 2 * spaces.medium;
@@ -41,7 +50,13 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
                         {this.actionItems()}
                     </View>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
-                        {video && <YouTube videoId={video} style={{ width: videoWidth, height: videoHeight }} />}
+                        {video && 
+                            <YouTube 
+                                videoId={video} 
+                                play={this.state.play}
+                                style={{ width: videoWidth, height: videoHeight }} 
+                            />
+                        }
                         {hiddenContent}
                     </View>
                 </View>
@@ -82,7 +97,10 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>> {
     private actionItems() {
         const { onExpand } = this.props;
         return onExpand ? (
-            <TouchableOpacity onPress={() => onExpand()} style={styles.actionItem}>
+            <TouchableOpacity onPress={() => {
+                this.setState({play:false});
+                onExpand();
+            }} style={styles.actionItem}>
                 <Icon name={'open-in-new'} color={this.fontColor()} size={sizes.small} />
             </TouchableOpacity>
         ) : null;

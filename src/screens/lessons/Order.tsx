@@ -99,12 +99,14 @@ export const Order = props => {
             try {
                 await RNIap.requestPurchase(sku, false);
             } catch (error) {
-                Logger.logError({
-                    code: 'IAP200',
-                    description: 'Failed to request in-app purchase.',
-                    rawErrorCode: error.code,
-                    rawErrorMessage: error.message,
-                });
+                if(error.code !== RNIap.IAPErrorCode.E_USER_CANCELLED){
+                    Logger.logError({
+                        code: 'IAP200',
+                        description: 'Failed to request in-app purchase.',
+                        rawErrorCode: error.code,
+                        rawErrorMessage: error.message,
+                    });
+                }
             }
             // Purchase response is handled in RNIAPCallbacks.tsx
         },

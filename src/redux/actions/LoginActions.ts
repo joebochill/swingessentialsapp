@@ -51,6 +51,7 @@ export function requestLogin(userCredentials: Credentials, useTouch: boolean = f
                     rawErrorCode: error.code,
                     rawErrorMessage: error.error,
                 });
+                dispatch(failure(ACTIONS.LOGIN.FAILURE, null, 'Login'));
             });
     };
 }
