@@ -1,6 +1,9 @@
 import { TOKEN } from './tokenMiddleware';
 import { BASEURL, AUTH } from '../constants';
 import { Logger } from '../utilities/logging';
+import NetInfo from "@react-native-community/netinfo";
+import { Alert } from 'react-native';
+
 
 export enum HttpMethod {
     POST = 'POST',
@@ -81,6 +84,12 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                 }
             })
             .catch(error => {
+                NetInfo.fetch()
+                    .then(state => {
+                        if (!state.isConnected) {
+                            Alert.alert('It looks like you are having trouble with your network connection. Make sure you have a reliable internet connection before interacting with the app.')
+                        }
+                    });
                 Logger.logError({
                     code: 'HTP100',
                     description: `Fetch call failed for ${this.endpoint}.`,
@@ -119,6 +128,12 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                 }
             })
             .catch(error => {
+                NetInfo.fetch()
+                    .then(state => {
+                        if (!state.isConnected) {
+                            Alert.alert('It looks like you are having trouble with your network connection. Make sure you have a reliable internet connection before interacting with the app.')
+                        }
+                    });
                 Logger.logError({
                     code: 'HTP200',
                     description: `XHR call failed for ${this.endpoint}.`,

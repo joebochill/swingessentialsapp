@@ -1,31 +1,30 @@
 LAST ITEMS FOR 3.0.0 RELEASE:
     FIX:
-    
-    - record screen crash on Android
+    - Better error messages when no network
+    - no camera on android
     - no billing android
     - android tablet videos are too large
     - Optimize bundle size
+    - Record in H.264
     - Remove unused icon fonts for ios
     - Fix camera roll monkeypatch
+    - Cancel purchase causes a refresh
+    - Scrollto not working on submit page
     - Android Specific
-        - Permissions request upfront
         - Disable Landscape mode
         - Check typography scaling (tablet)
-        - Pull-to-refresh styling/working
         - Verify Deep Linking works
         - Verify all videos working
-        - Play store screenshots
         - Verify IAP works
-    - New "How to use the app" video/link
-    - Publish API update
-    - Remove all DEV
-    - Switch everything over to production (API, email addresses, etc.)
     
     TEST:
-    - menu logout crash
+    - Big crash
+    - NAme in drawer not updating after autologout
+    - keyboard not persisting on submit page
+    - Pause videos when opening full lesson
+    - Biometric infinite loop
+    - 
     - Final Device testing
-    - pull to refresh position android
-    - choppy scroll
     - force users off various screens when no token
     - Skip button z-index for tablets
     - error email (lesson) no username
