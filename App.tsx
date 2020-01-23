@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
+import {useNetInfo} from "@react-native-community/netinfo"
 
 // Components
-import { StatusBar, Platform, PermissionsAndroid } from 'react-native';
+import { Alert, StatusBar, Platform, PermissionsAndroid } from 'react-native';
 import { ThemeProvider } from './src/styles/theme';
 import MainNavigator from './src/navigation/MainNavigator';
 import { RNIAPCallbacks } from './src/screens/lessons';
@@ -19,6 +20,14 @@ import { Logger } from './src/utilities/logging';
 import { store } from './src/redux/store';
 
 export const App = () => {
+    const netInfo = useNetInfo();
+
+    useEffect(() => {
+        if(!netInfo.isConnected){
+            Alert.alert('It looks like you are having network trouble. Make sure you have a reliable network connection while using the app.');
+        }
+    }, [netInfo])
+
     useEffect(() => {
         SplashScreen.hide();
         StatusBar.setBarStyle('light-content', true);
