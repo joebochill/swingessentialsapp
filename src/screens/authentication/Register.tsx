@@ -34,7 +34,7 @@ import { useTheme } from '../../styles/theme';
 import { height } from '../../utilities/dimensions';
 
 // Redux
-import { checkUsernameAvailability, checkEmailAvailability, createAccount, verifyEmail } from '../../redux/actions';
+import { checkUsernameAvailability, checkEmailAvailability, createAccount, verifyEmail, requestLogout } from '../../redux/actions';
 
 // Constants
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
@@ -85,6 +85,7 @@ type VerifyProps = NavigationStackScreenProps & {
 };
 const VerifyForm = (props: VerifyProps) => {
     const { code, navigation } = props;
+    const token = useSelector((state: ApplicationState) => state.login.token);
     const verification = useSelector((state: ApplicationState) => state.registration);
     const dispatch = useDispatch();
     const theme = useTheme();
@@ -120,14 +121,14 @@ const VerifyForm = (props: VerifyProps) => {
                         />
                         <H7 font={'regular'} style={{ textAlign: 'center' }}>
                             {verification.emailVerified
-                                ? 'Your email address has been confirmed. Please sign in to view your account.'
+                                ? `Your email address has been confirmed. ${token ? 'Let\'s get started!' : 'Please sign in to view your account.'}`
                                 : _getRegistrationErrorMessage(verification.error)}
                         </H7>
                         {verification.emailVerified && (
                             <SEButton
                                 style={{ marginTop: spaces.medium }}
-                                title={'SIGN IN'}
-                                onPress={() => navigation.popToTop()}
+                                title={token ? 'GET STARTED' : 'SIGN IN'}
+                                onPress={() => navigation.replace(ROUTES.LOGIN)}
                             />
                         )}
                     </>
@@ -159,7 +160,12 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
         if (previousPendingState && !registration.pending) {
             if (registration.success) {
                 // Successful
-                props.navigation.goBack(ROUTES.AUTH_GROUP);
+                Alert.alert(
+                    'Success!',
+                    'We\'ve received your registration request. Check your email to confirm your email address.',
+                    [{ text: 'OK'}],
+                );
+                props.navigation.goBack(ROUTES.LOGIN);
             } else {
                 Alert.alert(
                     'Oops:',
@@ -352,7 +358,6 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                     {_canSubmit() && !registration.pending && (
                         <SEButton
                             containerStyle={{ marginTop: spaces.large }}
-                            // buttonStyle={{ backgroundColor: theme.colors.primary[400] }}
                             title={'SUBMIT'}
                             onPress={() => {
                                 _submitRegistration();

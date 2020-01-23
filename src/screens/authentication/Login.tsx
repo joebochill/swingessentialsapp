@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCompare } from '../../utilities';
+import { useCompare, usePrevious } from '../../utilities';
 
 // Components
 import {

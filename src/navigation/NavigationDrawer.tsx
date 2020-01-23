@@ -80,6 +80,23 @@ export const NavigationDrawer = props => {
         [scrollY],
     );
 
+    useEffect(() => {
+        // handle launching from a deep link
+        Linking.getInitialURL()
+            .then((url) => {
+                if (url) {
+                    let path:any = url.split('/').filter(el => el.length > 0);
+                    _linkRoute(url, path);
+                }
+            })
+            .catch(err => { 
+                Logger.logError({
+                    code: 'DRW999',
+                    description: 'Deep link failed to launch the app',
+                });
+            });
+    }, []);
+
     // Handle the app coming into the foreground after being backgrounded
     const _handleAppStateChange = useCallback(
         (nextAppState: AppStateStatus) => {
@@ -261,10 +278,12 @@ export const NavigationDrawer = props => {
                             onPress: token ?
                                 () => {
                                     Alert.alert('Log Out', 'Are you sure you want to log out?', [
-                                        { text: 'Log Out', onPress: () => {
-                                            dispatch(requestLogout());
-                                            navigation.closeDrawer();
-                                        }},
+                                        {
+                                            text: 'Log Out', onPress: () => {
+                                                dispatch(requestLogout());
+                                                navigation.closeDrawer();
+                                            }
+                                        },
                                         { text: 'Cancel' },
                                     ]);
                                 } : () => navigation.navigate(ROUTES.LOGIN),

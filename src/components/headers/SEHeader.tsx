@@ -66,7 +66,7 @@ export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjecte
                   : {
                         icon: AccountIcon,
                         onPress: () =>
-                            props.navigation.navigate({ routeName: ROUTES.AUTH_GROUP, key: ROUTES.AUTH_GROUP }),
+                            props.navigation.navigate({ routeName: ROUTES.LOGIN, key: ROUTES.LOGIN }),
                     },
           ]
         : [];

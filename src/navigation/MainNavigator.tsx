@@ -33,14 +33,14 @@ import {
 } from '../screens';
 import { width } from '../utilities/dimensions';
 
-const AuthStack = createStackNavigator(
-    {
-        [ROUTES.LOGIN]: Login,
-        [ROUTES.REGISTER]: Register,
-        [ROUTES.RESET_PASSWORD]: ForgotPassword,
-    },
-    { initialRouteName: ROUTES.LOGIN, headerMode: 'none' },
-);
+// const AuthStack = createStackNavigator(
+//     {
+//         [ROUTES.LOGIN]: Login,
+//         [ROUTES.REGISTER]: Register,
+//         [ROUTES.RESET_PASSWORD]: ForgotPassword,
+//     },
+//     { initialRouteName: ROUTES.LOGIN, headerMode: 'none' },
+// );
 const SettingsStack = createStackNavigator(
     {
         [ROUTES.SETTINGS]: Settings,
@@ -80,7 +80,10 @@ const AppStack = createStackNavigator(
         // [ROUTES.HISTORY]: OrderHistory,
         [ROUTES.SETTINGS_GROUP]: SettingsStack,
 
-        [ROUTES.AUTH_GROUP]: AuthStack,
+        // [ROUTES.AUTH_GROUP]: AuthStack,
+        [ROUTES.LOGIN]: Login,
+        [ROUTES.REGISTER]: Register,
+        [ROUTES.RESET_PASSWORD]: ForgotPassword,
     },
     {
         initialRouteName: ROUTES.HOME,
