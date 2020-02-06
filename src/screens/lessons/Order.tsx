@@ -165,7 +165,7 @@ export const Order = props => {
                             </Body>
                         }
                         subtitle={<Body style={{ marginLeft: spaces.medium }}>{item.description}</Body>}
-                        rightTitle={<Body>{products.length > 0 ? `$${products[index].price}` : '--'}</Body>}
+                        rightTitle={<Body>{products.length > 0 ? `${products[index].localizedPrice}` : '--'}</Body>}
                         rightIcon={
                             selected === index
                                 ? {

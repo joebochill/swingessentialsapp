@@ -53,7 +53,7 @@ export const SEVideo = (props: VideoProps) => {
                     paused={!playing}
                     onEnd={() => setPlaying(false)}
                     resizeMode="contain"
-                    repeat={true}
+                    repeat={false} // TODO: changed this from ioS release
                     playInBackground={false}
                     playWhenInactive={false}
                     ignoreSilentSwitch={'ignore'}
