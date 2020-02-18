@@ -1,0 +1,27 @@
+{
+  "name": "RCTYouTube",
+  "version": "2.0.0",
+  "summary": "A <YouTube/> component for React Native.",
+  "homepage": "https://github.com/inProgress-team/react-native-youtube#readme",
+  "license": "MIT",
+  "authors": {
+    "Param Aggarwal": "Param Aggarwal"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/inProgress-team/react-native-youtube.git",
+    "tag": "v2.0.0"
+  },
+  "source_files": "RCTYouTube*.{h,m}",
+  "preserve_paths": "*.js",
+  "dependencies": {
+    "React": [
+
+    ],
+    "YoutubePlayer-in-WKWebView": [
+      "~> 0.3.1"
+    ]
+  }
+}
