@@ -81,7 +81,6 @@ export const NavigationDrawer = props => {
     );
 
     useEffect(() => {
-        console.log('using effect...launch deep');
         // handle launching from a deep link
         Linking.getInitialURL()
             .then((url) => {
@@ -101,7 +100,6 @@ export const NavigationDrawer = props => {
     // Handle the app coming into the foreground after being backgrounded
     const _handleAppStateChange = useCallback(
         (nextAppState: AppStateStatus) => {
-            console.log('state change');
             if (appState.match(/inactive|background/) && nextAppState === 'active' && token) {
                 dispatch(loadUserContent());
             }
@@ -112,7 +110,6 @@ export const NavigationDrawer = props => {
 
     const _linkRoute = useCallback(
         (url: string, path: string) => {
-            console.log('linking');
             if (url.match(/\/lessons\/?/gi)) {
                 if (token) {
                     navigation.navigate(ROUTES.LESSONS);
@@ -130,7 +127,6 @@ export const NavigationDrawer = props => {
     // Handles activating a deep link while the app is in the background
     const _wakeupByLink = useCallback(
         event => {
-            console.log('waking up');
             let path = event.url.split('/').filter(el => el.length > 0);
             _linkRoute(event.url, path);
         },
@@ -158,7 +154,6 @@ export const NavigationDrawer = props => {
     }, [activePanel, left.account, left.help, left.main]);
 
     useEffect(() => {
-        console.log('using effect...opened from link');
         // Set Up the State Change listeners
         AppState.addEventListener('change', _handleAppStateChange);
         Linking.addEventListener('url', _wakeupByLink);
