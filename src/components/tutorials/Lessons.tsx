@@ -144,7 +144,7 @@ export const LessonsTutorial = () => {
 //     const slides = [
 //         (
 //             <View>
-//                 <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>{'Welcome to Swingy Essentials™!'}</H4>
+//                 <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>{'Welcome to Swingy Essentials®!'}</H4>
 //                 <H7 font={'light'} style={{ textAlign: 'center', marginTop: spaces.small, color: theme.colors.onPrimary[50] }}>When you have submitted your golf swing for analysis, your lessons will appear in this list.</H7>
 //                 <SectionList
 //                     style={{ marginTop: spaces.large }}

@@ -1,5 +1,5 @@
-# Swing Essentials™ App (React-Native)
-[Swing Essentials™](https://www.swingessentials.com) provides golfers with affordable, personalized video-based golf lessons. Golfers can submit short videos of their golf swing, and within 48-hours, they receive a personalized swing analysis video from a PGA-certified golf professional.
+# Swing Essentials® App (React-Native)
+[Swing Essentials®](https://www.swingessentials.com) provides golfers with affordable, personalized video-based golf lessons. Golfers can submit short videos of their golf swing, and within 48-hours, they receive a personalized swing analysis video from a PGA-certified golf professional.
 
 
 
@@ -32,7 +32,7 @@ Lessons | Analysis
 
 
 ### Order Credits
-New users automatically receive a free credit to use to evaluate the Swing Essentials™ service. Additional credits can be purchased on the Order screen. Purchases are accomplished via in-app payments through Apple/Google.
+New users automatically receive a free credit to use to evaluate the Swing Essentials® service. Additional credits can be purchased on the Order screen. Purchases are accomplished via in-app payments through Apple/Google.
 
 <img width="200" alt="Purchase" src="assets/order.png">
 

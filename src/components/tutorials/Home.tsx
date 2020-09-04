@@ -26,7 +26,7 @@ export const HomeTutorial = () => {
     const slides = [
         <>
             <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
-                {'Welcome to Swing Essentials™!'}
+                {'Welcome to Swing Essentials®!'}
             </H4>
             <H7
                 font={'light'}
