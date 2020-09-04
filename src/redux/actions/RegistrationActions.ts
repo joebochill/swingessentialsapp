@@ -35,12 +35,13 @@ export function checkEmailAvailability(email: string) {
 
 type NewAccountDetails = {
     username: string;
-    firstName: string;
-    lastName: string;
     email: string;
-    heard: string;
-    phone: string;
     password: string;
+    heard: string;
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+    location?: string;
     platform: PlatformOSType;
 };
 export function createAccount(data: NewAccountDetails) {

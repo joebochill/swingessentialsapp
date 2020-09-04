@@ -35,7 +35,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
     return (
         <CollapsibleHeaderLayout
             title={'Settings'}
-            subtitle={'customize your experience'}
+            subtitle={'Customize your experience'}
             refreshing={settings.loading}
             onRefresh={() => {
                 dispatch(loadSettings());

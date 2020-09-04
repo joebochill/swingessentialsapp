@@ -27,7 +27,7 @@ export const FAQ = () => {
     return (
         <CollapsibleHeaderLayout
             title={'FAQ'}
-            subtitle={'answers to common questions'}
+            subtitle={'Answers to common questions'}
             refreshing={faqState.loading}
             onRefresh={() => {
                 dispatch(loadFAQ());

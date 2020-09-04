@@ -8,7 +8,7 @@ import { Body, H6, H7, CollapsibleHeaderLayout } from '../../components';
 import { sharedStyles } from '../../styles';
 
 export const About = () => (
-    <CollapsibleHeaderLayout title={'About'} subtitle={'what is SwingEssentials'}>
+    <CollapsibleHeaderLayout title={'About'} subtitle={'What is SwingEssentials'}>
         <View style={sharedStyles.paddingHorizontalMedium}>
             <H6>What is Swing Essentials®?</H6>
 

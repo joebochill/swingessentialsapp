@@ -64,7 +64,7 @@ export const ErrorLogs = props => {
     return (
         <CollapsibleHeaderLayout
             title={'Error Logs'}
-            subtitle={'what went wrong'}
+            subtitle={'What went wrong'}
             refreshing={loading}
             showAuth={false}
             actionItems={actionItems}

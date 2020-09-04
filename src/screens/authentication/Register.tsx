@@ -47,21 +47,15 @@ import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { ROUTES } from '../../constants/routes';
 
 type RegistrationKeys = {
-    firstName: string;
-    lastName: string;
     email: string;
     username: string;
     password: string;
-    confirm: string;
     heard: string;
 };
 const defaultKeys: RegistrationKeys = {
-    firstName: '',
-    lastName: '',
     email: '',
     username: '',
     password: '',
-    confirm: '',
     heard: '',
 };
 type RegistrationKey = keyof RegistrationKeys;
@@ -104,7 +98,7 @@ const VerifyForm = (props: VerifyProps) => {
 
     return (
         <View style={sharedStyles.pageContainer}>
-            <SEHeader title={'Sign Up'} subtitle={'confirm your email'} mainAction={'back'} showAuth={false} />
+            <SEHeader title={'Sign Up'} subtitle={'Confirm your email'} mainAction={'back'} showAuth={false} />
             <View
                 style={[
                     sharedStyles.paddingMedium,
@@ -128,8 +122,8 @@ const VerifyForm = (props: VerifyProps) => {
                         <H7 font={'regular'} style={{ textAlign: 'center' }}>
                             {verification.emailVerified
                                 ? `Your email address has been confirmed. ${
-                                      token ? "Let's get started!" : 'Please sign in to view your account.'
-                                  }`
+                                token ? "Let's get started!" : 'Please sign in to view your account.'
+                                }`
                                 : _getRegistrationErrorMessage(verification.error)}
                         </H7>
                         {verification.emailVerified && (
@@ -148,16 +142,13 @@ const VerifyForm = (props: VerifyProps) => {
 
 const RegisterForm = (props: NavigationStackScreenProps) => {
     const [fields, setFields] = useState(defaultKeys);
-    const firstRef = useRef(null);
-    const lastRef = useRef(null);
     const emailRef = useRef(null);
     const userRef = useRef(null);
     const passRef = useRef(null);
-    const confirmRef = useRef(null);
 
     const scroller = useRef(null);
 
-    const refs = [firstRef, lastRef, emailRef, userRef, passRef, confirmRef];
+    const refs = [emailRef, userRef, passRef];
     const registration = useSelector((state: ApplicationState) => state.registration);
     const previousPendingState = usePrevious(registration.pending);
 
@@ -191,9 +182,6 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                 return false;
             }
         }
-        if (fields.password !== fields.confirm) {
-            return false;
-        }
         if (!fields.email.match(EMAIL_REGEX)) {
             return false;
         }
@@ -210,33 +198,12 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
         dispatch(
             createAccount({
                 ...fields,
-                phone: '',
                 platform: Platform.OS,
             }),
         );
     }, [_canSubmit, dispatch, fields]);
 
     const regProperties: RegistrationProperty[] = [
-        { property: 'firstName', label: 'First Name' },
-        { property: 'lastName', label: 'Last Name' },
-        {
-            property: 'email',
-            label: 'Email Address',
-            keyboard: 'email-address',
-            errorMessage:
-                fields.email.length > 0 && !fields.email.match(EMAIL_REGEX)
-                    ? 'Invalid Email Address'
-                    : !registration.emailAvailable
-                    ? 'Email Address is already registered'
-                    : '',
-            onChange: value => {
-                setFields({
-                    ...fields,
-                    email: value.substr(0, 128),
-                });
-            },
-            onBlur: () => dispatch(checkEmailAvailability(fields.email)),
-        },
         {
             property: 'username',
             label: 'Username',
@@ -249,13 +216,29 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
             },
             onBlur: () => dispatch(checkUsernameAvailability(fields.username)),
         },
-        { property: 'password', label: 'Password', secure: true },
         {
-            property: 'confirm',
-            label: 'Confirm Password',
+            property: 'email',
+            label: 'Email Address',
+            keyboard: 'email-address',
+            errorMessage:
+                fields.email.length > 0 && !fields.email.match(EMAIL_REGEX)
+                    ? 'Invalid Email Address'
+                    : !registration.emailAvailable
+                        ? 'Email Address is already registered'
+                        : '',
+            onChange: value => {
+                setFields({
+                    ...fields,
+                    email: value.substr(0, 128),
+                });
+            },
+            onBlur: () => dispatch(checkEmailAvailability(fields.email)),
+        },
+        {
+            property: 'password',
+            label: 'Password',
             secure: true,
-            errorMessage: fields.password !== fields.confirm ? 'Passwords do not match' : '',
-            onSubmit: () => Keyboard.dismiss(),
+            onSubmit: () => Keyboard.dismiss()
         },
         {
             property: 'heard',
@@ -276,7 +259,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
 
     return (
         <View style={sharedStyles.pageContainer}>
-            <SEHeader title={'Sign Up'} subtitle={'create an account'} mainAction={'back'} showAuth={false} />
+            <SEHeader title={'Sign Up'} subtitle={'Create an account'} mainAction={'back'} showAuth={false} />
             <KeyboardAvoidingView
                 style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -296,11 +279,11 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                                         field.onChange
                                             ? field.onChange
                                             : (value: string) => {
-                                                  setFields({
-                                                      ...fields,
-                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
-                                                  });
-                                              }
+                                                setFields({
+                                                    ...fields,
+                                                    [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
+                                                });
+                                            }
                                     }
                                     value={fields[field.property]}
                                     useNativeAndroidPickerStyle={false}>
@@ -319,43 +302,43 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                                     />
                                 </RNPickerSelect>
                             ) : (
-                                <Input
-                                    ref={refs[index]}
-                                    secureTextEntry={field.secure}
-                                    autoCorrect={false}
-                                    autoCapitalize={'none'}
-                                    containerStyle={{ paddingHorizontal: 0, marginTop: index > 0 ? spaces.medium : 0 }}
-                                    editable={!registration.pending}
-                                    inputContainerStyle={sharedStyles.inputContainer}
-                                    inputStyle={sharedStyles.input}
-                                    keyboardType={field.keyboard}
-                                    label={field.label}
-                                    labelStyle={[sharedStyles.formLabel]}
-                                    onChangeText={
-                                        field.onChange
-                                            ? field.onChange
-                                            : (value: string) => {
-                                                  setFields({
-                                                      ...fields,
-                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
-                                                  });
-                                              }
-                                    }
-                                    onBlur={field.onBlur}
-                                    onSubmitEditing={
-                                        field.onSubmit
-                                            ? field.onSubmit
-                                            : () => {
-                                                  if (refs[(index + 1) % refs.length].current) {
-                                                      refs[(index + 1) % refs.length].current.focus();
-                                                  }
-                                              }
-                                    }
-                                    returnKeyType={'next'}
-                                    underlineColorAndroid={transparent}
-                                    value={fields[field.property]}
-                                />
-                            )}
+                                    <Input
+                                        ref={refs[index]}
+                                        secureTextEntry={field.secure}
+                                        autoCorrect={false}
+                                        autoCapitalize={'none'}
+                                        containerStyle={{ paddingHorizontal: 0, marginTop: index > 0 ? spaces.medium : 0 }}
+                                        editable={!registration.pending}
+                                        inputContainerStyle={sharedStyles.inputContainer}
+                                        inputStyle={sharedStyles.input}
+                                        keyboardType={field.keyboard}
+                                        label={field.label}
+                                        labelStyle={[sharedStyles.formLabel]}
+                                        onChangeText={
+                                            field.onChange
+                                                ? field.onChange
+                                                : (value: string) => {
+                                                    setFields({
+                                                        ...fields,
+                                                        [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
+                                                    });
+                                                }
+                                        }
+                                        onBlur={field.onBlur}
+                                        onSubmitEditing={
+                                            field.onSubmit
+                                                ? field.onSubmit
+                                                : () => {
+                                                    if (refs[(index + 1) % refs.length].current) {
+                                                        refs[(index + 1) % refs.length].current.focus();
+                                                    }
+                                                }
+                                        }
+                                        returnKeyType={'next'}
+                                        underlineColorAndroid={transparent}
+                                        value={fields[field.property]}
+                                    />
+                                )}
                             <ErrorBox
                                 style={{ marginTop: spaces.small }}
                                 show={field.errorMessage !== undefined && field.errorMessage.length > 0}
