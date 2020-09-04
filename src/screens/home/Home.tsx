@@ -15,7 +15,7 @@ import { sharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 import { useTheme } from '../../styles/theme';
-import bg from '../../images/bg_1.jpg';
+import bg from '../../images/banners/landing.jpg';
 
 // Utilities
 import { getLongDate } from '../../utilities';
@@ -39,8 +39,8 @@ export const Home = props => {
     return (
         <CollapsibleHeaderLayout
             backgroundImage={bg}
-            title={'SWING ESSENTIALS'}
-            subtitle={'a pro in your pocket'}
+            title={'SWING ESSENTIALS®'}
+            subtitle={'the pro in your pocket'}
             mainAction={'menu'}
             refreshing={lessons.loading || credits.inProgress || tips.loading}
             onRefresh={() => {

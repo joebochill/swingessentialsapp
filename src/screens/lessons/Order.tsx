@@ -8,7 +8,7 @@ import { Body, H7, Label, H4, CollapsibleHeaderLayout, ErrorBox, SEButton, Order
 import * as RNIap from 'react-native-iap';
 
 // Styles
-import bg from '../../images/bg_5.jpg';
+import bg from '../../images/banners/order.jpg';
 import { sharedStyles } from '../../styles';
 import { spaces, sizes, unit } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
@@ -115,8 +115,8 @@ export const Order = props => {
 
     return (
         <CollapsibleHeaderLayout
-            title={'Order Lessons'}
-            subtitle={'multiple package options'}
+            title={'Order More Lessons'}
+            subtitle={'Multiple packages available'}
             backgroundImage={bg}
             refreshing={credits.inProgress}
             onRefresh={() => {

@@ -48,7 +48,7 @@ export const mainNavigationItems: RouteGroup = {
             route: ROUTES.TIPS,
         },
         {
-            title: '19th Hole',
+            title: 'The 19th Hole',
             iconType: 'material-community',
             icon: 'beer',
             route: ROUTES.BLOGS,

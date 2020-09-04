@@ -47,7 +47,7 @@ Capture | Submit
 <img width="200" alt="Record Swing" src="assets/record.png"> | <img width="200" alt="Submit Swing" src="assets/submit.png">
 
 ### Tips / Blogs
-Video tips (delivered monthly) can also be viewed through the app. Likewise, 19th Hole blog posts can also be viewed. Both are accessible from the main menu.
+Video tips (delivered monthly) can also be viewed through the app. Likewise, the 19th Hole blog posts can also be viewed. Both are accessible from the main menu.
 
 ## Getting Started
 To extend, update, or contribute to this project, clone the repository to your local machine and install the necessary dependencies (for final deployment, you will also need to install dev dependencies):

@@ -7,7 +7,7 @@ import { H7, Body, CollapsibleHeaderLayout } from '../../components';
 // Constants
 import { ROUTES } from '../../constants/routes';
 // Styles
-import bg from '../../images/bg_3.jpg';
+import bg from '../../images/banners/19th.jpg';
 import { sharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
@@ -34,8 +34,8 @@ export const Blogs = props => {
 
     return (
         <CollapsibleHeaderLayout
-            title={'19th Hole'}
-            subtitle={'golf stories and Q&A'}
+            title={'The 19th Hole'}
+            subtitle={'Stories from the field'}
             backgroundImage={bg}
             refreshing={blogs.loading}
             onRefresh={() => {

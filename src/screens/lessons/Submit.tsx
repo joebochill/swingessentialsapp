@@ -34,7 +34,7 @@ import { sharedStyles } from '../../styles';
 import { transparent } from '../../styles/colors';
 import { spaces, sizes, fonts, unit } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
-import bg from '../../images/bg_6.jpg';
+import bg from '../../images/banners/submit.jpg';
 import page_bg from '../../images/golf_bg.png';
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
@@ -254,7 +254,7 @@ export const Submit = props => {
     return (
         <CollapsibleHeaderLayout
             title={'Submit Your Swing'}
-            subtitle={'create a new lesson'}
+            subtitle={'Request a personalized lesson'}
             backgroundImage={bg}
             pageBackground={page_bg}>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>

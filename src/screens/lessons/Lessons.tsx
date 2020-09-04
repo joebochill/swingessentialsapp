@@ -10,7 +10,7 @@ import { H7, Body, CollapsibleHeaderLayout, LessonsTutorial } from '../../compon
 import { sharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
-import bg from '../../images/bg_2.jpg';
+import bg from '../../images/banners/lessons.jpg';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
@@ -46,7 +46,7 @@ export const Lessons = props => {
     return (
         <CollapsibleHeaderLayout
             title={'Your Lessons'}
-            subtitle={"see how far you've come"}
+            subtitle={"See how far you've come"}
             backgroundImage={bg}
             refreshing={lessons.loading}
             onRefresh={() => dispatch(loadLessons())}>

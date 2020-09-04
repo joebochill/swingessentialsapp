@@ -7,7 +7,7 @@ import { H7, Body, CollapsibleHeaderLayout } from '../../components';
 // Constants
 import { ROUTES } from '../../constants/routes';
 // Styles
-import bg from '../../images/bg_4.jpg';
+import bg from '../../images/banners/tips.jpg';
 import { sharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from '../../styles/theme';
@@ -36,7 +36,7 @@ export const Tips = props => {
     return (
         <CollapsibleHeaderLayout
             title={'Tip of the Month'}
-            subtitle={'small adjustments, big difference'}
+            subtitle={'Keep your game sharp'}
             backgroundImage={bg}
             refreshing={tips.loading}
             onRefresh={() => {
