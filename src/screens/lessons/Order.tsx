@@ -99,7 +99,7 @@ export const Order = props => {
             try {
                 await RNIap.requestPurchase(sku, false);
             } catch (error) {
-                if(error.code !== RNIap.IAPErrorCode.E_USER_CANCELLED){
+                if (error.code !== RNIap.IAPErrorCode.E_USER_CANCELLED) {
                     Logger.logError({
                         code: 'IAP200',
                         description: 'Failed to request in-app purchase.',

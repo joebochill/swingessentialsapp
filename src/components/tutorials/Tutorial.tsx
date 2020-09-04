@@ -33,12 +33,18 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
                     backgroundColor: theme.colors.primary[400],
                 }}>
                 <SEButton
-                    containerStyle={{ position: 'absolute', top: insets.top, right: 0, marginRight: spaces.medium, zIndex: 100 }}
+                    containerStyle={{
+                        position: 'absolute',
+                        top: insets.top,
+                        right: 0,
+                        marginRight: spaces.medium,
+                        zIndex: 100,
+                    }}
                     link
                     title="Skip"
                     onPress={() => onClose()}
                 />
-                <View style={{marginVertical: insets.top}}>
+                <View style={{ marginVertical: insets.top }}>
                     <ScrollView contentContainerStyle={sharedStyles.paddingHorizontalMedium}>
                         {props.children}
                     </ScrollView>

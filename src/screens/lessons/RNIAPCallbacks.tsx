@@ -19,7 +19,7 @@ export const RNIAPCallbacks = () => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
 
     useEffect(() => {
-        if(packages.length < 1) return;
+        if (packages.length < 1) return;
 
         let pil: EmitterSubscription | null = purchaseUpdatedListener((purchase: any) => {
             const receipt = purchase.transactionReceipt;
@@ -85,12 +85,12 @@ export const RNIAPCallbacks = () => {
             if (pil) {
                 pil.remove();
                 pil = null;
-              }
-              if (pel) {
+            }
+            if (pel) {
                 pel.remove();
                 pel = null;
-              }
-        }
+            }
+        };
     }, [dispatch, packages]);
 
     return null;

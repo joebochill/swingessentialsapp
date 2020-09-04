@@ -58,13 +58,13 @@ export const TokenModal = (props: ModalProps) => {
 
     useEffect(() => {
         // timer to check for pending user registration
-        if(role === 'pending'){
+        if (role === 'pending') {
             const interval = setInterval(() => {
-                dispatch(checkToken())
+                dispatch(checkToken());
             }, 20 * 1000);
             return () => clearInterval(interval);
         }
-    }, [token])
+    }, [token]);
 
     useEffect(() => {
         // set the time remaining on login/logout

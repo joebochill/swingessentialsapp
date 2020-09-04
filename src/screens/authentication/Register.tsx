@@ -34,7 +34,13 @@ import { useTheme } from '../../styles/theme';
 import { height } from '../../utilities/dimensions';
 
 // Redux
-import { checkUsernameAvailability, checkEmailAvailability, createAccount, verifyEmail, requestLogout } from '../../redux/actions';
+import {
+    checkUsernameAvailability,
+    checkEmailAvailability,
+    createAccount,
+    verifyEmail,
+    requestLogout,
+} from '../../redux/actions';
 
 // Constants
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
@@ -121,7 +127,9 @@ const VerifyForm = (props: VerifyProps) => {
                         />
                         <H7 font={'regular'} style={{ textAlign: 'center' }}>
                             {verification.emailVerified
-                                ? `Your email address has been confirmed. ${token ? 'Let\'s get started!' : 'Please sign in to view your account.'}`
+                                ? `Your email address has been confirmed. ${
+                                      token ? "Let's get started!" : 'Please sign in to view your account.'
+                                  }`
                                 : _getRegistrationErrorMessage(verification.error)}
                         </H7>
                         {verification.emailVerified && (
@@ -162,8 +170,8 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                 // Successful
                 Alert.alert(
                     'Success!',
-                    'We\'ve received your registration request. Check your email to confirm your email address.',
-                    [{ text: 'OK'}],
+                    "We've received your registration request. Check your email to confirm your email address.",
+                    [{ text: 'OK' }],
                 );
                 props.navigation.goBack(ROUTES.LOGIN);
             } else {

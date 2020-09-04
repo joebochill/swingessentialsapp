@@ -9,7 +9,6 @@ import Carousel from 'react-native-snap-carousel';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
-import { PlaceholderLesson } from '../../constants/lessons';
 
 // Styles
 import { sharedStyles } from '../../styles';
@@ -30,12 +29,13 @@ import { loadUserContent } from '../../redux/actions';
 export const Home = props => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
     const tips = useSelector((state: ApplicationState) => state.tips);
+    const placeholder = useSelector((state: ApplicationState) => state.config.placeholder);
     const credits = useSelector((state: ApplicationState) => state.credits);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
     const theme = useTheme();
 
-    const latestLessons = lessons.closed.length > 0 ? lessons.closed : [PlaceholderLesson];
+    const latestLessons = lessons.closed.length > 0 ? lessons.closed : [placeholder];
     return (
         <CollapsibleHeaderLayout
             backgroundImage={bg}

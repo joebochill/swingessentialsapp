@@ -17,3 +17,18 @@ export function loadFAQ() {
             .request();
     };
 }
+
+export function loadPlaceholder() {
+    return (dispatch: Dispatch) => {
+        dispatch({ type: ACTIONS.GET_CONFIG.REQUEST });
+
+        HttpRequest.get(ACTIONS.GET_CONFIG.API)
+            .onSuccess((body: any) => {
+                dispatch(success(ACTIONS.GET_CONFIG.SUCCESS, body));
+            })
+            .onFailure((response: Response) => {
+                dispatch(failure(ACTIONS.GET_CONFIG.FAILURE, response, 'LoadConfig'));
+            })
+            .request();
+    };
+}

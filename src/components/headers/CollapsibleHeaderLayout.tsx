@@ -78,9 +78,9 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                             ]}
                             refreshControl={
                                 onRefresh ? (
-                                    <RefreshControl 
-                                        refreshing={refreshing} 
-                                        onRefresh={() => onRefresh()} 
+                                    <RefreshControl
+                                        refreshing={refreshing}
+                                        onRefresh={() => onRefresh()}
                                         progressViewOffset={HEADER_EXPANDED_HEIGHT}
                                     />
                                 ) : (

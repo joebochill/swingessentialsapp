@@ -146,6 +146,9 @@ export type FAQState = {
     loading: boolean;
     questions: FAQ[];
 };
+export type ConfigState = {
+    placeholder: Lesson;
+};
 
 export type LogsState = {
     loading: boolean;
@@ -169,6 +172,7 @@ export type ApplicationState = {
     settings: SettingsState;
     registration: RegistrationState;
     faq: FAQState;
+    config: ConfigState;
     logs: LogsState;
     tutorials: TutorialsState;
 };

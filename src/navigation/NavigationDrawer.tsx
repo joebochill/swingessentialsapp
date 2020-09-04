@@ -65,9 +65,7 @@ export const NavigationDrawer = props => {
     const userString = userData.username || 'Welcome!';
     const nameString =
         userData.firstName && userData.lastName ? `${userData.firstName} ${userData.lastName}` : 'New User';
-    const memberString = `Joined ${
-        userData.joined ? getLongDate(userData.joined * 1000) : getLongDate(Date.now())
-        }`;
+    const memberString = `Joined ${userData.joined ? getLongDate(userData.joined * 1000) : getLongDate(Date.now())}`;
 
     const scaleByHeight = useCallback(
         (atLarge, atSmall) => {
@@ -83,13 +81,13 @@ export const NavigationDrawer = props => {
     useEffect(() => {
         // handle launching from a deep link
         Linking.getInitialURL()
-            .then((url) => {
+            .then(url => {
                 if (url) {
-                    let path:any = url.split('/').filter(el => el.length > 0);
+                    let path: any = url.split('/').filter(el => el.length > 0);
                     _linkRoute(url, path);
                 }
             })
-            .catch(err => { 
+            .catch(err => {
                 Logger.logError({
                     code: 'DRW999',
                     description: 'Deep link failed to launch the app',
@@ -178,7 +176,7 @@ export const NavigationDrawer = props => {
         return () => {
             AppState.removeEventListener('change', _handleAppStateChange);
             Linking.removeEventListener('url', _wakeupByLink);
-        }
+        };
     }, [_handleAppStateChange, _linkRoute, _wakeupByLink]);
 
     return (
@@ -275,18 +273,20 @@ export const NavigationDrawer = props => {
                             title: token ? 'Log Out' : 'Log In',
                             iconType: token ? 'material-community' : 'material',
                             icon: token ? 'logout-variant' : 'person',
-                            onPress: token ?
-                                () => {
-                                    Alert.alert('Log Out', 'Are you sure you want to log out?', [
-                                        {
-                                            text: 'Log Out', onPress: () => {
-                                                dispatch(requestLogout());
-                                                navigation.closeDrawer();
-                                            }
-                                        },
-                                        { text: 'Cancel' },
-                                    ]);
-                                } : () => navigation.navigate(ROUTES.LOGIN),
+                            onPress: token
+                                ? () => {
+                                      Alert.alert('Log Out', 'Are you sure you want to log out?', [
+                                          {
+                                              text: 'Log Out',
+                                              onPress: () => {
+                                                  dispatch(requestLogout());
+                                                  navigation.closeDrawer();
+                                              },
+                                          },
+                                          { text: 'Cancel' },
+                                      ]);
+                                  }
+                                : () => navigation.navigate(ROUTES.LOGIN),
                         });
                     }
                     return (
@@ -303,18 +303,18 @@ export const NavigationDrawer = props => {
                                             item.route
                                                 ? item.route === ROUTES.HOME
                                                     ? () => {
-                                                        navigation.closeDrawer();
-                                                    }
+                                                          navigation.closeDrawer();
+                                                      }
                                                     : () => {
-                                                        navigation.navigate(item.route);
-                                                    }
+                                                          navigation.navigate(item.route);
+                                                      }
                                                 : item.activatePanel !== undefined
-                                                    ? () => {
-                                                        setActivePanel(item.activatePanel);
-                                                    }
-                                                    : item.onPress
-                                                        ? () => item.onPress()
-                                                        : undefined
+                                                ? () => {
+                                                      setActivePanel(item.activatePanel);
+                                                  }
+                                                : item.onPress
+                                                ? () => item.onPress()
+                                                : undefined
                                         }
                                         title={<Body style={[styles.navLabel]}>{item.title}</Body>}
                                         leftIcon={{
@@ -327,10 +327,10 @@ export const NavigationDrawer = props => {
                                         rightIcon={
                                             item.nested
                                                 ? {
-                                                    name: 'chevron-right',
-                                                    color: theme.colors.text[500],
-                                                    size: sizes.small,
-                                                }
+                                                      name: 'chevron-right',
+                                                      color: theme.colors.text[500],
+                                                      size: sizes.small,
+                                                  }
                                                 : undefined
                                         }
                                     />

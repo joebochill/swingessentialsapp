@@ -43,6 +43,7 @@ export const PURCHASE_CREDITS = createAction(
 
 /* FAQ Actions */
 export const GET_FAQ = createAction('GET_FAQ', 'faq');
+export const GET_CONFIG = createAction('GET_CONFIG', 'config');
 
 /* Registration Actions */
 export const CHECK_USERNAME = createAction('CHECK_USERNAME', 'checkUser');

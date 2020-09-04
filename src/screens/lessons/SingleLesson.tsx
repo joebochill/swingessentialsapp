@@ -15,7 +15,6 @@ import { width, height, aspectHeight } from '../../utilities/dimensions';
 import { splitParagraphs, getLongDate } from '../../utilities';
 
 // Constants
-import { PlaceholderLesson } from '../../constants/lessons';
 import { ROUTES } from '../../constants/routes';
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
@@ -28,11 +27,12 @@ import { markLessonViewed } from '../../redux/actions';
 export const SingleLesson = props => {
     const token = useSelector((state: ApplicationState) => state.login.token);
     const role = useSelector((state: ApplicationState) => state.login.role);
+    const placeholder = useSelector((state: ApplicationState) => state.config.placeholder);
     const dispatch = useDispatch();
 
     let lesson: Lesson = props.navigation.getParam('lesson', null);
     if (lesson === null) {
-        lesson = PlaceholderLesson;
+        lesson = placeholder;
     }
     const videoWidth = width - 2 * spaces.medium;
     const videoHeight = aspectHeight(videoWidth);

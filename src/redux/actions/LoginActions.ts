@@ -108,7 +108,7 @@ export function checkToken() {
             .withFullResponse()
             .onSuccess((response: any) => {
                 const token = response.headers.get('Token');
-                if(token){
+                if (token) {
                     dispatch({ type: ACTIONS.SET_TOKEN.REQUEST, payload: { token } });
                     dispatch(loadUserContent());
                 }

@@ -20,7 +20,7 @@ import { ApplicationState } from 'src/__types__';
 const RefreshIcon = wrapIcon({ IconClass: Icon, name: 'refresh' });
 const MailIcon = wrapIcon({ IconClass: Icon, name: 'mail' });
 
-export const ErrorLogs = (props) => {
+export const ErrorLogs = props => {
     const [logs, setLogs] = useState('');
     const dispatch = useDispatch();
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -47,7 +47,7 @@ export const ErrorLogs = (props) => {
     useEffect(() => {
         getLogs();
     }, [getLogs]);
-    
+
     const actionItems: HeaderIcon[] = [
         {
             icon: RefreshIcon,

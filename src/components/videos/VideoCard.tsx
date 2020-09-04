@@ -28,14 +28,14 @@ export interface VideoCardProps {
 }
 export type VideoCardState = {
     play: boolean;
-}
+};
 
 class VideoCardClass extends Component<WithTheme<VideoCardProps>, VideoCardState> {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
-            play: false
-        }
+        this.state = {
+            play: false,
+        };
     }
     public render() {
         const { video, theme, headerColor = theme.colors.primary[400], hiddenContent } = this.props;
@@ -50,13 +50,13 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>, VideoCardState
                         {this.actionItems()}
                     </View>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
-                        {video && 
-                            <YouTube 
-                                videoId={video} 
+                        {video && (
+                            <YouTube
+                                videoId={video}
                                 play={this.state.play}
-                                style={{ width: videoWidth, height: videoHeight }} 
+                                style={{ width: videoWidth, height: videoHeight }}
                             />
-                        }
+                        )}
                         {hiddenContent}
                     </View>
                 </View>
@@ -97,10 +97,12 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>, VideoCardState
     private actionItems() {
         const { onExpand } = this.props;
         return onExpand ? (
-            <TouchableOpacity onPress={() => {
-                this.setState({play:false});
-                onExpand();
-            }} style={styles.actionItem}>
+            <TouchableOpacity
+                onPress={() => {
+                    this.setState({ play: false });
+                    onExpand();
+                }}
+                style={styles.actionItem}>
                 <Icon name={'open-in-new'} color={this.fontColor()} size={sizes.small} />
             </TouchableOpacity>
         ) : null;
