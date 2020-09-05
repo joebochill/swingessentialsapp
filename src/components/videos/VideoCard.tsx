@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withTheme, WithTheme, Theme } from '../../styles/theme';
+import { withTheme } from 'react-native-paper'; //'../../styles/theme';
 
 // Components
 import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
@@ -14,6 +14,7 @@ import { black } from '../../styles/colors';
 
 // Types
 import { $DeepPartial } from '@callstack/react-theme-provider';
+import { Theme } from '../../styles/theme';
 
 export interface VideoCardProps {
     headerColor?: string;
@@ -30,7 +31,7 @@ export type VideoCardState = {
     play: boolean;
 };
 
-class VideoCardClass extends Component<WithTheme<VideoCardProps>, VideoCardState> {
+class VideoCardClass extends Component<VideoCardProps, VideoCardState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -38,7 +39,7 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>, VideoCardState
         };
     }
     public render() {
-        const { video, theme, headerColor = theme.colors.primary[400], hiddenContent } = this.props;
+        const { video, theme, headerColor = theme.colors.primary, hiddenContent } = this.props;
         const videoWidth = width - 2 * spaces.medium;
         const videoHeight = aspectHeight(videoWidth);
 
@@ -110,7 +111,7 @@ class VideoCardClass extends Component<WithTheme<VideoCardProps>, VideoCardState
 
     private fontColor() {
         const { headerFontColor, theme } = this.props;
-        return headerFontColor || theme.colors.onPrimary[500];
+        return headerFontColor || theme.colors.onPrimary;
     }
 }
 

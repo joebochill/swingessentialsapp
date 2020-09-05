@@ -14,7 +14,7 @@ import { ROUTES } from '../../constants/routes';
 import { sharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 import bg from '../../images/banners/landing.jpg';
 
 // Utilities
@@ -89,12 +89,12 @@ export const Home = props => {
                 disabledStyle={sharedStyles.disabled}
                 leftIcon={{
                     name: 'golf-course',
-                    color: theme.colors.text[500],
+                    color: theme.colors.text,
                     size: sizes.small,
                 }}
                 rightIcon={{
                     name: 'chevron-right',
-                    color: theme.colors.text[500],
+                    color: theme.colors.text,
                     size: sizes.small,
                 }}
             />
@@ -107,12 +107,12 @@ export const Home = props => {
                 title={<Body style={{ marginLeft: spaces.medium }}>Order More</Body>}
                 leftIcon={{
                     name: 'shopping-cart',
-                    color: theme.colors.text[500],
+                    color: theme.colors.text,
                     size: sizes.small,
                 }}
                 rightIcon={{
                     name: 'chevron-right',
-                    color: theme.colors.text[500],
+                    color: theme.colors.text,
                     size: sizes.small,
                 }}
             />

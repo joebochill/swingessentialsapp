@@ -10,7 +10,7 @@ import { H7, Body, SEButton } from '../';
 import { whiteOpacity } from '../../styles/colors';
 import { spaces } from '../../styles/sizes';
 import { sharedStyles } from '../../styles';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 
 // Types
 import { ApplicationState } from '../../__types__';
@@ -64,7 +64,7 @@ export const TokenModal = (props: ModalProps) => {
             }, 20 * 1000);
             return () => clearInterval(interval);
         }
-    }, [token]);
+    }, [token, dispatch, role]);
 
     useEffect(() => {
         // set the time remaining on login/logout
@@ -119,7 +119,7 @@ export const TokenModal = (props: ModalProps) => {
                         <Icon
                             name={'clock-alert-outline'}
                             type={'material-community'}
-                            color={theme.colors.text[500]}
+                            color={theme.colors.text}
                             containerStyle={{ marginRight: spaces.small }}
                         />
                         <H7 style={{ flex: 1 }}>{'Session Expiring'}</H7>
@@ -138,7 +138,7 @@ export const TokenModal = (props: ModalProps) => {
                         <ActivityIndicator
                             style={{ marginTop: spaces.xLarge }}
                             size={'large'}
-                            color={theme.colors.primary[500]}
+                            color={theme.colors.accent}
                         />
                     )}
                 </View>

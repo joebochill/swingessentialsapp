@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
 // Components

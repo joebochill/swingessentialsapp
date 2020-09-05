@@ -12,7 +12,7 @@ import { ROUTES } from '../../constants/routes';
 // Styles
 import { sharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 
 // Types
 import { ApplicationState } from '../../__types__';
@@ -53,7 +53,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 rightTitle={<Body>{settings.handedness.charAt(0).toUpperCase() + settings.handedness.substr(1)}</Body>}
                 rightIcon={{
                     name: 'chevron-right',
-                    color: theme.colors.text[500],
+                    color: theme.colors.text,
                     size: sizes.small,
                 }}
             />
@@ -70,7 +70,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 rightTitle={<Body>{`${settings.duration}s`}</Body>}
                 rightIcon={{
                     name: 'chevron-right',
-                    color: theme.colors.text[500],
+                    color: theme.colors.text,
                     size: sizes.small,
                 }}
             />
@@ -83,7 +83,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 rightTitle={<Body>{`${settings.delay}s`}</Body>}
                 rightIcon={{
                     name: 'chevron-right',
-                    color: theme.colors.text[500],
+                    color: theme.colors.text,
                     size: sizes.small,
                 }}
             />
@@ -96,7 +96,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 rightTitle={<Body>{`${settings.overlay ? 'On' : 'Off'}`}</Body>}
                 rightIcon={{
                     name: 'chevron-right',
-                    color: theme.colors.text[500],
+                    color: theme.colors.text,
                     size: sizes.small,
                 }}
             />

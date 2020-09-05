@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 // Components
 import { View } from 'react-native';
 import { Icon } from 'react-native-elements';
@@ -25,7 +25,7 @@ export const HomeTutorial = () => {
 
     const slides = [
         <>
-            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
                 {'Welcome to Swing Essentials®!'}
             </H4>
             <H7
@@ -34,13 +34,13 @@ export const HomeTutorial = () => {
                     textAlign: 'center',
                     marginTop: spaces.small,
                     marginBottom: spaces.medium,
-                    color: theme.colors.onPrimary[50],
+                    color: theme.colors.onPrimary,
                 }}>
                 {'The Swing Essentials app gives you quick access to everything you need to keep improving your swing.'}
             </H7>
         </>,
         <>
-            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
                 {'Sign Up Today'}
             </H4>
             <H7
@@ -49,7 +49,7 @@ export const HomeTutorial = () => {
                     textAlign: 'center',
                     marginTop: spaces.small,
                     marginBottom: spaces.medium,
-                    color: theme.colors.onPrimary[50],
+                    color: theme.colors.onPrimary, //[50],
                 }}>
                 {'You can sign in or register for an account by clicking the account icon in the header.'}
             </H7>
@@ -90,8 +90,8 @@ export const HomeTutorial = () => {
                 <SEButton
                     title="GOT IT"
                     disabled={!showButton}
-                    containerStyle={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}
-                    buttonStyle={{ backgroundColor: theme.colors.primary[500] }}
+                    style={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}
+                    containerStyle={{ backgroundColor: theme.colors.accent }}
                     onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]))}
                 />
             </View>

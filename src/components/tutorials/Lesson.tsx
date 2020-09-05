@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 // Components
 import { View, Image } from 'react-native';
 import { H7, H4 } from '../index';
@@ -21,7 +21,7 @@ export const LessonTutorial = () => {
 
     const slides = [
         <>
-            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
                 {'Swing Analysis'}
             </H4>
             <H7
@@ -30,7 +30,7 @@ export const LessonTutorial = () => {
                     textAlign: 'center',
                     marginTop: spaces.small,
                     marginBottom: spaces.medium,
-                    color: theme.colors.onPrimary[50],
+                    color: theme.colors.onPrimary,
                 }}>
                 {
                     'This is where you can view your personalized swing analysis videos. Your analysis will also include comments and recommended tips to improve your game.'
@@ -59,8 +59,8 @@ export const LessonTutorial = () => {
                 />
                 <SEButton
                     title="GOT IT"
-                    containerStyle={{ flex: 1, marginTop: spaces.xLarge }}
-                    buttonStyle={{ backgroundColor: theme.colors.primary[500] }}
+                    style={{ flex: 1, marginTop: spaces.xLarge }}
+                    contentStyle={{ backgroundColor: theme.colors.accent }}
                     onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]))}
                 />
             </View>

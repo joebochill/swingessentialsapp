@@ -10,7 +10,7 @@ import { width, aspectWidth } from '../../utilities/dimensions';
 import { sharedStyles } from '../../styles';
 import { transparent, oledBlack, white, blackOpacity } from '../../styles/colors';
 import { sizes, spaces } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 
 // Utilities
 import color from 'color';
@@ -90,8 +90,8 @@ export const SEVideoPlaceholder = (props: PlaceholderProps) => {
                 sharedStyles.dashed,
                 {
                     backgroundColor: inverse
-                        ? color(theme.colors.onPrimary[50]).fade(0.35)
-                        : color(theme.colors.primary[500]).fade(0.85),
+                        ? color(theme.colors.onPrimary).fade(0.35)
+                        : color(theme.colors.accent).fade(0.85),
                 },
                 style,
             ])}>

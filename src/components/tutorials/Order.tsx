@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 // Components
 import { View, FlatList } from 'react-native';
 import { ListItem } from 'react-native-elements';
@@ -25,7 +25,7 @@ export const OrderTutorial = () => {
 
     const slides = [
         <>
-            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
                 {'Lesson Packages'}
             </H4>
             <H7
@@ -34,7 +34,7 @@ export const OrderTutorial = () => {
                     textAlign: 'center',
                     marginTop: spaces.small,
                     marginBottom: spaces.medium,
-                    color: theme.colors.onPrimary[50],
+                    color: theme.colors.onPrimary,
                 }}>
                 {
                     'We offer multiple lesson packages at different price points. Ensure that you have a payment method linked to your phone before purchasing.'
@@ -45,7 +45,7 @@ export const OrderTutorial = () => {
                 keyboardShouldPersistTaps={'always'}
                 data={packages}
                 ListHeaderComponent={
-                    <H7 style={{ color: theme.colors.onPrimary[50], marginBottom: spaces.xSmall }}>
+                    <H7 style={{ color: theme.colors.onPrimary, marginBottom: spaces.xSmall }}>
                         {'Available Packages'}
                     </H7>
                 }
@@ -57,7 +57,7 @@ export const OrderTutorial = () => {
                         bottomDivider={index === packages.length - 1}
                         leftIcon={{
                             name: parseInt(item.count, 10) === 1 ? 'filter-1' : 'filter-5',
-                            color: theme.colors.text[500],
+                            color: theme.colors.text,
                             iconStyle: { marginLeft: 0 },
                             size: sizes.small,
                         }}
@@ -72,7 +72,7 @@ export const OrderTutorial = () => {
                             index === 0
                                 ? {
                                       name: 'check',
-                                      color: theme.colors.text[500],
+                                      color: theme.colors.text,
                                       size: sizes.small,
                                   }
                                 : undefined
@@ -98,7 +98,7 @@ export const OrderTutorial = () => {
                 <SEButton
                     title="GOT IT"
                     containerStyle={{ flex: 1, marginTop: spaces.xLarge }}
-                    buttonStyle={{ backgroundColor: theme.colors.primary[500] }}
+                    buttonStyle={{ backgroundColor: theme.colors.accent }}
                     onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]))}
                 />
             </View>

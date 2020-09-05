@@ -1,60 +1,37 @@
-import { createTheming } from '@callstack/react-theme-provider';
-import { TextStyle } from 'react-native';
-import { white, purple, red, green, orange } from '../styles/colors';
-import { ColorDef } from '../__types__';
+import { DefaultTheme, configureFonts } from 'react-native-paper';
+import { white, purple, red } from './colors';
 
-type Font = {
-    fontFamily: string;
-    fontWeight: TextStyle['fontWeight'];
+type FontWeight = 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+
+const defaultFontConfig = {
+    extraBold: { fontFamily: 'SFCompactDisplay-Black' },
+    bold: { fontFamily: 'SFCompactDisplay-Bold' },
+    semiBold: { fontFamily: 'SFCompactDisplay-Semibold' },
+    medium: { fontFamily: 'SFCompactDisplay-Semibold' },
+    regular: { fontFamily: 'SFCompactDisplay-Regular' },
+    light: { fontFamily: 'SFCompactDisplay-Thin' },
+    thin: { fontFamily: 'SFCompactDisplay-Thin' },
 };
-
-export interface Theme {
-    roundness: number;
+const fontConfig = {
+    default: defaultFontConfig,
+    ios: defaultFontConfig,
+    android: defaultFontConfig,
+};
+export const theme = {
+    ...DefaultTheme,
+    dark: false,
+    roundness: 4,
+    fonts: configureFonts(fontConfig),
     colors: {
-        primary: ColorDef;
-        background: string;
-        surface: string;
-        accent: ColorDef;
-        error: ColorDef;
-        text: ColorDef;
-        onPrimary: ColorDef;
-    };
-    fonts: {
-        extraBold: Partial<Font>;
-        bold: Partial<Font>;
-        semiBold: Partial<Font>;
-        regular: Partial<Font>;
-        light: Partial<Font>;
-    };
-    sizes: {
-        tiny: number;
-        extraSmall: number;
-        small: number;
-        medium: number;
-        large: number;
-        extraLarge: number;
-        giant: number;
-    };
-}
-
-/* This is the default theme for the component library (Material) */
-export const defaultTheme = {
-    roundness: 8,
-    fonts: {
-        extraBold: { fontFamily: 'SFCompactDisplay-Black' },
-        bold: { fontFamily: 'SFCompactDisplay-Bold' },
-        semiBold: { fontFamily: 'SFCompactDisplay-Semibold' },
-        regular: { fontFamily: 'SFCompactDisplay-Regular' },
-        light: { fontFamily: 'SFCompactDisplay-Thin' },
-    },
-    colors: {
-        primary: purple,
+        primary: purple[400],
         background: white[400],
         surface: purple[50],
-        accent: purple,
-        error: red,
-        text: purple,
-        onPrimary: white,
+        accent: purple[500],
+        error: red[500],
+        text: purple[500],
+        onPrimary: white[50],
+        dark: purple[800],
+        light: purple[200],
     },
     sizes: {
         tiny: 10,
@@ -66,11 +43,4 @@ export const defaultTheme = {
         giant: 34,
     },
 };
-
-const { ThemeProvider, withTheme, useTheme } = createTheming<Theme>(defaultTheme);
-
-export type WithTheme<T> = T & {
-    theme: Theme;
-};
-
-export { ThemeProvider, withTheme, useTheme };
+export type Theme = typeof theme;

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { unit, spaces, spaceUnit, fonts, sizes } from './sizes';
 import { white } from './colors';
-import { defaultTheme } from './theme';
+import { theme } from './theme';
 
 export const sharedStyles = StyleSheet.create({
     absoluteFull: {
@@ -14,7 +14,7 @@ export const sharedStyles = StyleSheet.create({
     border: {
         borderWidth: unit(2),
         borderRadius: unit(5),
-        borderColor: defaultTheme.colors.primary[800],
+        borderColor: theme.colors.dark, //dark,
     },
     centered: {
         alignItems: 'center',
@@ -24,11 +24,11 @@ export const sharedStyles = StyleSheet.create({
         borderWidth: unit(2),
         borderRadius: unit(5),
         borderStyle: 'dashed',
-        borderColor: defaultTheme.colors.primary[800],
+        borderColor: theme.colors.dark, //dark,
     },
     formLabel: {
         fontFamily: 'SFCompactDisplay-Regular',
-        color: defaultTheme.colors.primary[500],
+        color: theme.colors.accent, //[500],
         marginLeft: 0,
         marginTop: 0,
         fontSize: fonts[14],
@@ -40,7 +40,7 @@ export const sharedStyles = StyleSheet.create({
         resizeMode: 'contain',
     },
     input: {
-        color: defaultTheme.colors.primary[500],
+        color: theme.colors.accent, //accent,
         fontSize: fonts[14],
         textAlignVertical: 'center',
         paddingHorizontal: spaces.small,
@@ -50,7 +50,7 @@ export const sharedStyles = StyleSheet.create({
         backgroundColor: white[50],
         marginTop: spaces.small,
         padding: spaces.small,
-        borderColor: defaultTheme.colors.primary[800],
+        borderColor: theme.colors.dark, //dark,
         borderWidth: unit(1),
         borderBottomWidth: unit(1),
         borderRadius: unit(5),
@@ -70,7 +70,7 @@ export const sharedStyles = StyleSheet.create({
     },
     pageContainer: {
         flex: 1,
-        backgroundColor: defaultTheme.colors.background,
+        backgroundColor: theme.colors.background,
     },
     paragraph: {
         marginTop: spaces.small,

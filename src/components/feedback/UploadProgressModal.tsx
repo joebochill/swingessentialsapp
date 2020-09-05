@@ -8,7 +8,7 @@ import { H7, Body } from '../../components';
 import { sharedStyles } from '../../styles';
 import { whiteOpacity } from '../../styles/colors';
 import { spaces } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 
 const styles = StyleSheet.create({
     modalBackground: {
@@ -42,7 +42,7 @@ export const UploadProgressModal = (props: ProgressModalProps) => {
                             <View style={{ flexDirection: 'row', marginBottom: spaces.medium }}>
                                 <Icon
                                     name={'file-upload'}
-                                    color={theme.colors.text[500]}
+                                    color={theme.colors.text}
                                     containerStyle={{ marginRight: spaces.small }}
                                 />
                                 <H7>Submitting Your Lesson</H7>
@@ -51,7 +51,7 @@ export const UploadProgressModal = (props: ProgressModalProps) => {
                             {progress >= 100 && <Body>{'Creating Lesson...'}</Body>}
                         </View>
                         <View style={{ flex: 0, justifyContent: 'center' }}>
-                            <ActivityIndicator color={theme.colors.primary[500]} size={'large'} />
+                            <ActivityIndicator color={theme.colors.accent} size={'large'} />
                         </View>
                     </View>
                 </View>

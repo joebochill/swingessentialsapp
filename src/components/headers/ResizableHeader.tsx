@@ -2,8 +2,8 @@ import React, { Component, ComponentType } from 'react';
 
 // Components
 import { Animated, ImageSourcePropType, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { withTheme, Theme, WithTheme } from '../../styles/theme';
 import { AnimatedSafeAreaView } from '../../components';
+import { withTheme } from 'react-native-paper';
 
 // Styles
 import { blackOpacity } from '../../styles/colors';
@@ -19,6 +19,7 @@ import { $DeepPartial } from '@callstack/react-theme-provider';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT_NO_STATUS } from '../../constants';
+import { Theme } from '../../styles/theme';
 
 export interface ResizableHeaderProps {
     /** Header title */
@@ -60,7 +61,7 @@ export interface ResizableHeaderProps {
 
 interface HeaderState {}
 
-class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState> {
+class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
     static readonly ICON_SIZE = sizes.small;
     static readonly ICON_SPACING = spaces.medium;
 
@@ -262,12 +263,12 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
 
     private fontColor() {
         const { fontColor, theme } = this.props;
-        return fontColor || theme.colors.onPrimary[500];
+        return fontColor || theme.colors.onPrimary;
     }
 
     private backgroundColor() {
         const { backgroundColor, theme } = this.props;
-        return backgroundColor || theme.colors.primary[400];
+        return backgroundColor || theme.colors.primary;
     }
 
     private actionPanelWidth() {

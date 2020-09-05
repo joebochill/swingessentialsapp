@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ScrollView, SafeAreaView } from 'react-native';
 import { SEButton } from '../';
 import Modal from 'react-native-modal';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 import { spaces } from '../../styles/sizes';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { sharedStyles } from '../../styles';
@@ -20,7 +20,7 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
     return (
         <Modal
             isVisible={visible}
-            backdropColor={theme.colors.primary[400]}
+            backdropColor={theme.colors.primary}
             style={{ margin: 0, padding: 0 }}
             backdropOpacity={1}
             animationInTiming={750}
@@ -30,7 +30,7 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
                     flex: 1,
                     position: 'relative',
                     justifyContent: 'center',
-                    backgroundColor: theme.colors.primary[400],
+                    backgroundColor: theme.colors.primary,
                 }}>
                 <SEButton
                     containerStyle={{
@@ -40,7 +40,7 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
                         marginRight: spaces.medium,
                         zIndex: 100,
                     }}
-                    link
+                    mode={'text'}
                     title="Skip"
                     onPress={() => onClose()}
                 />

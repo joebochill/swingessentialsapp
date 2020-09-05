@@ -33,7 +33,7 @@ import ImagePicker from 'react-native-image-picker';
 import { sharedStyles } from '../../styles';
 import { transparent } from '../../styles/colors';
 import { spaces, sizes, fonts, unit } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 import bg from '../../images/banners/submit.jpg';
 import page_bg from '../../images/golf_bg.png';
 import dtl from '../../images/down-the-line.png';
@@ -283,7 +283,7 @@ export const Submit = props => {
                             <SEVideoPlaceholder
                                 title={'Face-On'}
                                 icon={<Image source={fo} resizeMethod={'resize'} style={sharedStyles.image} />}
-                                editIcon={<Icon name={'add-a-photo'} color={theme.colors.primary[500]} />}
+                                editIcon={<Icon name={'add-a-photo'} color={theme.colors.accent} />}
                                 onPress={() => _showPicker('fo')}
                             />
                         ) : (
@@ -293,7 +293,7 @@ export const Submit = props => {
                             <SEVideoPlaceholder
                                 title={'Down-the-Line'}
                                 icon={<Image source={dtl} resizeMethod={'resize'} style={sharedStyles.image} />}
-                                editIcon={<Icon name={'add-a-photo'} color={theme.colors.primary[500]} />}
+                                editIcon={<Icon name={'add-a-photo'} color={theme.colors.accent} />}
                                 onPress={() => _showPicker('dtl')}
                             />
                         ) : (
@@ -314,10 +314,10 @@ export const Submit = props => {
                             style={[
                                 sharedStyles.dashed,
                                 styles.dashButton,
-                                { backgroundColor: color(theme.colors.primary[500]).fade(0.85) },
+                                { backgroundColor: color(theme.colors.accent).fade(0.85) },
                             ]}
                             onPress={() => setUseNotes(true)}>
-                            <Icon name={'add-circle'} color={theme.colors.primary[500]} size={24} />
+                            <Icon name={'add-circle'} color={theme.colors.accent} size={24} />
                         </TouchableOpacity>
                     )}
                     {useNotes && (
@@ -345,8 +345,8 @@ export const Submit = props => {
                                     styles.input,
                                     {
                                         backgroundColor: theme.colors.background,
-                                        color: theme.colors.text[500],
-                                        borderColor: theme.colors.primary[800],
+                                        color: theme.colors.text,
+                                        borderColor: theme.colors.dark,
                                     },
                                 ]}
                             />

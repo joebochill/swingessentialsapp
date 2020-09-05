@@ -8,7 +8,7 @@ import { Body, SEHeader } from '../../components/index';
 // Styles
 import { sharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 
 // Types
 import { SettingsState, ApplicationState } from '../../__types__';
@@ -119,7 +119,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                         }
                         rightIcon={
                             caseSame(value, val)
-                                ? { name: 'check', color: theme.colors.text[500], size: sizes.small }
+                                ? { name: 'check', color: theme.colors.text, size: sizes.small }
                                 : undefined
                         }
                     />

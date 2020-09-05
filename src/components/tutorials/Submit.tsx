@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
@@ -33,7 +33,7 @@ export const SubmitTutorial = () => {
 
     const slides = [
         <>
-            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
                 {'Submitting Your Swing'}
             </H4>
             <H7
@@ -42,7 +42,7 @@ export const SubmitTutorial = () => {
                     textAlign: 'center',
                     marginTop: spaces.small,
                     marginBottom: spaces.medium,
-                    color: theme.colors.onPrimary[50],
+                    color: theme.colors.onPrimary,
                 }}>
                 {
                     'When you are ready to submit your swing, click on the golfer images to upload Face-On and Down-the-Line videos.'
@@ -54,19 +54,19 @@ export const SubmitTutorial = () => {
                     disabled
                     title={'Face-On'}
                     icon={<Image source={fo} resizeMethod={'resize'} style={[sharedStyles.image]} />}
-                    editIcon={<Icon name={'add-a-photo'} color={theme.colors.primary[500]} />}
+                    editIcon={<Icon name={'add-a-photo'} color={theme.colors.accent} />}
                 />
                 <SEVideoPlaceholder
                     inverse
                     disabled
                     title={'Down-the-Line'}
                     icon={<Image source={dtl} resizeMethod={'resize'} style={sharedStyles.image} />}
-                    editIcon={<Icon name={'add-a-photo'} color={theme.colors.primary[500]} />}
+                    editIcon={<Icon name={'add-a-photo'} color={theme.colors.accent} />}
                 />
             </View>
         </>,
         <>
-            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
                 {'Using the Camera'}
             </H4>
             <H7
@@ -75,7 +75,7 @@ export const SubmitTutorial = () => {
                     textAlign: 'center',
                     marginTop: spaces.small,
                     marginBottom: spaces.medium,
-                    color: theme.colors.onPrimary[50],
+                    color: theme.colors.onPrimary,
                 }}>
                 {'Press the Record button to start recording your swing.'}
             </H7>
@@ -90,7 +90,7 @@ export const SubmitTutorial = () => {
                     textAlign: 'center',
                     marginTop: spaces.xLarge,
                     marginBottom: spaces.xLarge,
-                    color: theme.colors.onPrimary[50],
+                    color: theme.colors.onPrimary,
                 }}>
                 {'You can adjust your settings for recording length and delay by clicking the settings icon.'}
             </H7>
@@ -131,8 +131,8 @@ export const SubmitTutorial = () => {
                 <SEButton
                     title="GOT IT"
                     disabled={!showButton}
-                    containerStyle={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}
-                    buttonStyle={{ backgroundColor: theme.colors.primary[500] }}
+                    style={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}
+                    contentStyle={{ backgroundColor: theme.colors.accent }}
                     onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]))}
                 />
             </View>

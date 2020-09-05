@@ -11,7 +11,7 @@ import * as RNIap from 'react-native-iap';
 import bg from '../../images/banners/order.jpg';
 import { sharedStyles } from '../../styles';
 import { spaces, sizes, unit } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 
 // Redux
 import { loadCredits, loadPackages } from '../../redux/actions';
@@ -132,7 +132,7 @@ export const Order = props => {
                 <View
                     style={[
                         styles.callout,
-                        { backgroundColor: theme.colors.surface, borderColor: theme.colors.primary[200] },
+                        { backgroundColor: theme.colors.surface, borderColor: theme.colors.light },
                     ]}>
                     <H4 style={{ lineHeight: unit(32) }}>{credits.count}</H4>
                     <Label>{`Credit${credits.count !== 1 ? 's' : ''} Remaining`}</Label>
@@ -155,7 +155,7 @@ export const Order = props => {
                         onPress={() => setSelected(index)}
                         leftIcon={{
                             name: parseInt(item.count, 10) === 1 ? 'filter-1' : 'filter-5',
-                            color: theme.colors.text[500],
+                            color: theme.colors.text,
                             iconStyle: { marginLeft: 0 },
                             size: sizes.small,
                         }}
@@ -170,7 +170,7 @@ export const Order = props => {
                             selected === index
                                 ? {
                                       name: 'check',
-                                      color: theme.colors.text[500],
+                                      color: theme.colors.text,
                                       size: sizes.small,
                                   }
                                 : undefined
@@ -181,7 +181,7 @@ export const Order = props => {
             />
             {roleError.length === 0 && !packagesProcessing && !credits.inProgress && (
                 <SEButton
-                    containerStyle={{ margin: spaces.medium, marginTop: spaces.large }}
+                    style={{ margin: spaces.medium, marginTop: spaces.large }}
                     title={'PURCHASE'}
                     onPress={() => onPurchase(packages[selected].app_sku, packages[selected].shortcode)}
                 />

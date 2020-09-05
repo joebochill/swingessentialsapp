@@ -9,7 +9,7 @@ import { H7, Body, CollapsibleHeaderLayout, LessonsTutorial } from '../../compon
 // Styles
 import { sharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 import bg from '../../images/banners/lessons.jpg';
 
 // Constants
@@ -69,7 +69,7 @@ export const Lessons = props => {
                         rightTitle={<H7>NEW</H7>}
                         rightIcon={{
                             name: 'chevron-right',
-                            color: theme.colors.text[500],
+                            color: theme.colors.text,
                             size: sizes.small,
                         }}
                     />
@@ -86,7 +86,7 @@ export const Lessons = props => {
                             rightTitle={!item.viewed ? <H7>NEW</H7> : undefined}
                             rightIcon={{
                                 name: 'chevron-right',
-                                color: theme.colors.text[500],
+                                color: theme.colors.text,
                                 size: sizes.small,
                             }}
                         />

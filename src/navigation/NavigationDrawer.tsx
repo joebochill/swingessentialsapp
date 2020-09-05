@@ -8,7 +8,6 @@ import {
     Image,
     FlatList,
     Linking,
-    Platform,
     SafeAreaView,
     StyleSheet,
     View,
@@ -30,7 +29,7 @@ import { ROUTES } from '../constants/routes';
 // Styles
 import { sharedStyles } from '../styles';
 // import { white } from '../styles/colors';
-import { useTheme } from '../styles/theme';
+import { useTheme } from 'react-native-paper';
 
 import { unit, spaces, sizes } from '../styles/sizes';
 
@@ -91,6 +90,7 @@ export const NavigationDrawer = props => {
                 Logger.logError({
                     code: 'DRW999',
                     description: 'Deep link failed to launch the app',
+                    rawErrorMessage: err.message,
                 });
             });
     }, []);
@@ -254,11 +254,9 @@ export const NavigationDrawer = props => {
                         </Animated.View>
                     </Animated.View>
                     <View style={[styles.footer]}>
-                        <H7 style={{ color: theme.colors.onPrimary[500] }}>SWING ESSENTIALS</H7>
+                        <H7 style={{ color: theme.colors.onPrimary }}>SWING ESSENTIALS</H7>
                         <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
-                            <Body
-                                style={{ color: theme.colors.onPrimary[500] }}
-                                font={'light'}>{`v${APP_VERSION}`}</Body>
+                            <Body style={{ color: theme.colors.onPrimary }} font={'light'}>{`v${APP_VERSION}`}</Body>
                         </Animated.View>
                     </View>
                 </View>
@@ -320,7 +318,7 @@ export const NavigationDrawer = props => {
                                         leftIcon={{
                                             type: item.iconType || 'material',
                                             name: item.icon,
-                                            color: theme.colors.text[500],
+                                            color: theme.colors.text,
                                             size: sizes.small,
                                             iconStyle: { marginLeft: 0 },
                                         }}
@@ -328,7 +326,7 @@ export const NavigationDrawer = props => {
                                             item.nested
                                                 ? {
                                                       name: 'chevron-right',
-                                                      color: theme.colors.text[500],
+                                                      color: theme.colors.text,
                                                       size: sizes.small,
                                                   }
                                                 : undefined

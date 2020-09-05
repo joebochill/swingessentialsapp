@@ -10,7 +10,7 @@ import { ROUTES } from '../../constants/routes';
 import bg from '../../images/banners/19th.jpg';
 import { sharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 
 // Utilities
 import { makeGroups } from '../../utilities';
@@ -68,7 +68,7 @@ export const Blogs = props => {
                         title={<Body>{item.title}</Body>}
                         rightIcon={{
                             name: 'chevron-right',
-                            color: theme.colors.text[500],
+                            color: theme.colors.text,
                             size: sizes.small,
                         }}
                     />

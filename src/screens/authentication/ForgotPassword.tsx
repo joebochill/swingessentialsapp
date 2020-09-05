@@ -10,7 +10,7 @@ import { spaces, sizes } from '../../styles/sizes';
 import { transparent } from '../../styles/colors';
 import { sharedStyles } from '../../styles';
 import { height } from '../../utilities/dimensions';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 
 // Redux
 import { requestPasswordReset } from '../../redux/actions';
@@ -83,7 +83,7 @@ export const ForgotPassword = () => {
                 )}
                 {complete && (
                     <View style={[sharedStyles.paddingMedium, sharedStyles.centered, { flex: 1 }]}>
-                        <Icon name={'check-circle'} size={sizes.jumbo} color={theme.colors.primary[400]} />
+                        <Icon name={'check-circle'} size={sizes.jumbo} color={theme.colors.primary} />
                         <H7 font={'regular'} style={{ textAlign: 'center' }}>
                             {'Your password reset request was received. Check your email for further instructions.'}
                         </H7>

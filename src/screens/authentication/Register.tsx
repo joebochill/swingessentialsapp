@@ -28,19 +28,13 @@ import { ApplicationState } from '../../__types__';
 import { sharedStyles } from '../../styles';
 import { transparent, blackOpacity } from '../../styles/colors';
 import { sizes, spaces } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 
 // Utilities
 import { height } from '../../utilities/dimensions';
 
 // Redux
-import {
-    checkUsernameAvailability,
-    checkEmailAvailability,
-    createAccount,
-    verifyEmail,
-    requestLogout,
-} from '../../redux/actions';
+import { checkUsernameAvailability, checkEmailAvailability, createAccount, verifyEmail } from '../../redux/actions';
 
 // Constants
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
@@ -106,7 +100,7 @@ const VerifyForm = (props: VerifyProps) => {
                 ]}>
                 {verification.pending && (
                     <>
-                        <ActivityIndicator size={'large'} color={theme.colors.primary[800]} />
+                        <ActivityIndicator size={'large'} color={theme.colors.dark} />
                         <H7 font={'regular'} style={{ textAlign: 'center' }}>
                             Verifying your email address...
                         </H7>
@@ -117,13 +111,13 @@ const VerifyForm = (props: VerifyProps) => {
                         <Icon
                             name={verification.emailVerified ? 'check-circle' : 'error'}
                             size={sizes.jumbo}
-                            color={verification.emailVerified ? theme.colors.primary[400] : theme.colors.error[500]}
+                            color={verification.emailVerified ? theme.colors.primary : theme.colors.error}
                         />
                         <H7 font={'regular'} style={{ textAlign: 'center' }}>
                             {verification.emailVerified
                                 ? `Your email address has been confirmed. ${
-                                token ? "Let's get started!" : 'Please sign in to view your account.'
-                                }`
+                                      token ? "Let's get started!" : 'Please sign in to view your account.'
+                                  }`
                                 : _getRegistrationErrorMessage(verification.error)}
                         </H7>
                         {verification.emailVerified && (
@@ -224,8 +218,8 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                 fields.email.length > 0 && !fields.email.match(EMAIL_REGEX)
                     ? 'Invalid Email Address'
                     : !registration.emailAvailable
-                        ? 'Email Address is already registered'
-                        : '',
+                    ? 'Email Address is already registered'
+                    : '',
             onChange: value => {
                 setFields({
                     ...fields,
@@ -238,7 +232,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
             property: 'password',
             label: 'Password',
             secure: true,
-            onSubmit: () => Keyboard.dismiss()
+            onSubmit: () => Keyboard.dismiss(),
         },
         {
             property: 'heard',
@@ -279,11 +273,11 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                                         field.onChange
                                             ? field.onChange
                                             : (value: string) => {
-                                                setFields({
-                                                    ...fields,
-                                                    [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
-                                                });
-                                            }
+                                                  setFields({
+                                                      ...fields,
+                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
+                                                  });
+                                              }
                                     }
                                     value={fields[field.property]}
                                     useNativeAndroidPickerStyle={false}>
@@ -302,43 +296,43 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                                     />
                                 </RNPickerSelect>
                             ) : (
-                                    <Input
-                                        ref={refs[index]}
-                                        secureTextEntry={field.secure}
-                                        autoCorrect={false}
-                                        autoCapitalize={'none'}
-                                        containerStyle={{ paddingHorizontal: 0, marginTop: index > 0 ? spaces.medium : 0 }}
-                                        editable={!registration.pending}
-                                        inputContainerStyle={sharedStyles.inputContainer}
-                                        inputStyle={sharedStyles.input}
-                                        keyboardType={field.keyboard}
-                                        label={field.label}
-                                        labelStyle={[sharedStyles.formLabel]}
-                                        onChangeText={
-                                            field.onChange
-                                                ? field.onChange
-                                                : (value: string) => {
-                                                    setFields({
-                                                        ...fields,
-                                                        [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
-                                                    });
-                                                }
-                                        }
-                                        onBlur={field.onBlur}
-                                        onSubmitEditing={
-                                            field.onSubmit
-                                                ? field.onSubmit
-                                                : () => {
-                                                    if (refs[(index + 1) % refs.length].current) {
-                                                        refs[(index + 1) % refs.length].current.focus();
-                                                    }
-                                                }
-                                        }
-                                        returnKeyType={'next'}
-                                        underlineColorAndroid={transparent}
-                                        value={fields[field.property]}
-                                    />
-                                )}
+                                <Input
+                                    ref={refs[index]}
+                                    secureTextEntry={field.secure}
+                                    autoCorrect={false}
+                                    autoCapitalize={'none'}
+                                    containerStyle={{ paddingHorizontal: 0, marginTop: index > 0 ? spaces.medium : 0 }}
+                                    editable={!registration.pending}
+                                    inputContainerStyle={sharedStyles.inputContainer}
+                                    inputStyle={sharedStyles.input}
+                                    keyboardType={field.keyboard}
+                                    label={field.label}
+                                    labelStyle={[sharedStyles.formLabel]}
+                                    onChangeText={
+                                        field.onChange
+                                            ? field.onChange
+                                            : (value: string) => {
+                                                  setFields({
+                                                      ...fields,
+                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
+                                                  });
+                                              }
+                                    }
+                                    onBlur={field.onBlur}
+                                    onSubmitEditing={
+                                        field.onSubmit
+                                            ? field.onSubmit
+                                            : () => {
+                                                  if (refs[(index + 1) % refs.length].current) {
+                                                      refs[(index + 1) % refs.length].current.focus();
+                                                  }
+                                              }
+                                    }
+                                    returnKeyType={'next'}
+                                    underlineColorAndroid={transparent}
+                                    value={fields[field.property]}
+                                />
+                            )}
                             <ErrorBox
                                 style={{ marginTop: spaces.small }}
                                 show={field.errorMessage !== undefined && field.errorMessage.length > 0}
