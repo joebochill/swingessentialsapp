@@ -6,8 +6,7 @@ import { Button } from 'react-native-paper';
 const useStyles = () =>
     StyleSheet.create({
         textButton: {
-            paddingLeft: 0,
-            paddingRight: 0,
+            marginHorizontal: 0,
         },
     });
 
@@ -18,12 +17,13 @@ export const SEButton: React.FC<SEButtonProps> = props => {
     const { title, mode = 'contained', style, contentStyle, labelStyle, ...other } = props;
     const styles = useStyles();
     return (
+        // @ts-ignore
         <Button
             uppercase={mode !== 'text'}
             mode={mode}
-            style={[mode === 'text' ? styles.textButton : {}, style]}
+            style={[style]}
             contentStyle={[contentStyle]}
-            labelStyle={[labelStyle]}
+            labelStyle={[mode === 'text' ? styles.textButton : {}, labelStyle]}
             {...other}>
             {title}
         </Button>

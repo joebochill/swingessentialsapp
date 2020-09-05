@@ -359,7 +359,7 @@ export const Submit = props => {
                         dtl_video !== '' &&
                         lessons.pending.length <= 0 && (
                             <SEButton
-                                containerStyle={{ marginTop: spaces.large }}
+                                style={{ marginTop: spaces.large }}
                                 title={'SUBMIT'}
                                 onPress={() => _submitLesson()}
                             />

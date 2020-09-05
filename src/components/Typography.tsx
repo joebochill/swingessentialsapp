@@ -77,47 +77,47 @@ const createTypography = (getStyle: (theme: Theme) => StyleProp<TextStyle>): Rea
  */
 export const H1 = createTypography(theme => ({
     ...theme.fonts.light,
-    fontSize: unit(96),
+    fontSize: theme.fontSizes[96],
 }));
 export const H2 = createTypography(theme => ({
     ...theme.fonts.light,
-    fontSize: unit(60),
+    fontSize: theme.fontSizes[60],
 }));
 export const H3 = createTypography(theme => ({
     ...theme.fonts.regular,
-    fontSize: unit(48),
+    fontSize: theme.fontSizes[48],
 }));
 export const H4 = createTypography(theme => ({
     ...theme.fonts.regular,
-    fontSize: unit(theme.sizes.giant),
+    fontSize: theme.fontSizes[34],
 }));
 export const H5 = createTypography(theme => ({
     ...theme.fonts.regular,
-    fontSize: unit(theme.sizes.extraLarge),
+    fontSize: theme.fontSizes[24],
 }));
 export const H6 = createTypography(theme => ({
     ...theme.fonts.semiBold,
-    fontSize: unit(theme.sizes.large),
+    fontSize: theme.fontSizes[20],
     letterSpacing: 0,
 }));
 export const H7 = createTypography(theme => ({
     ...theme.fonts.semiBold,
-    fontSize: unit(18),
+    fontSize: theme.fontSizes[18],
 }));
 export const Body = createTypography(theme => ({
     ...theme.fonts.regular,
-    fontSize: unit(theme.sizes.medium),
+    fontSize: theme.fontSizes[16],
 }));
 export const Label = createTypography(theme => ({
     ...theme.fonts.regular,
-    fontSize: unit(theme.sizes.medium),
+    fontSize: theme.fontSizes[16],
     letterSpacing: 0,
 }));
 export const Subtitle = createTypography(theme => ({
     ...theme.fonts.semiBold,
-    fontSize: unit(theme.sizes.small),
+    fontSize: theme.fontSizes[14],
 }));
 export const Caption = createTypography(theme => ({
     ...theme.fonts.regular,
-    fontSize: unit(theme.sizes.tiny),
+    fontSize: theme.fontSizes[10],
 }));

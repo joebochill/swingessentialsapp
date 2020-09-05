@@ -15,9 +15,11 @@ import {
     TextInputFocusEventData,
     TextInputSubmitEditingEventData,
     View,
+    Image,
 } from 'react-native';
-import { Icon, Input } from 'react-native-elements';
-import { H7, ErrorBox, SEButton, SEHeader } from '../../components';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import { TextInput } from 'react-native-paper';
+import { H7, ErrorBox, SEButton, SEHeader, BackgroundImage } from '../../components';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
 
 // Types
@@ -25,7 +27,7 @@ import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { ApplicationState } from '../../__types__';
 
 // Styles
-import { sharedStyles } from '../../styles';
+import { sharedStyles, formStyles } from '../../styles';
 import { transparent, blackOpacity } from '../../styles/colors';
 import { sizes, spaces } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
@@ -39,6 +41,7 @@ import { checkUsernameAvailability, checkEmailAvailability, createAccount, verif
 // Constants
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { ROUTES } from '../../constants/routes';
+
 
 type RegistrationKeys = {
     email: string;
@@ -56,7 +59,7 @@ type RegistrationKey = keyof RegistrationKeys;
 
 type RegistrationProperty = {
     property: RegistrationKey;
-    ref?: RefObject<Input>;
+    ref?: RefObject<typeof TextInput>;
     label: string;
     type?: 'text' | 'select';
     keyboard?: KeyboardType;
@@ -108,21 +111,22 @@ const VerifyForm = (props: VerifyProps) => {
                 )}
                 {!verification.pending && (
                     <>
-                        <Icon
+                        <MatIcon
                             name={verification.emailVerified ? 'check-circle' : 'error'}
                             size={sizes.jumbo}
                             color={verification.emailVerified ? theme.colors.primary : theme.colors.error}
+                            style={{ alignSelf: 'center' }}
                         />
                         <H7 font={'regular'} style={{ textAlign: 'center' }}>
                             {verification.emailVerified
                                 ? `Your email address has been confirmed. ${
-                                      token ? "Let's get started!" : 'Please sign in to view your account.'
-                                  }`
+                                token ? "Let's get started!" : 'Please sign in to view your account.'
+                                }`
                                 : _getRegistrationErrorMessage(verification.error)}
                         </H7>
                         {verification.emailVerified && (
                             <SEButton
-                                style={{ marginTop: spaces.medium }}
+                                style={formStyles.formField}
                                 title={token ? 'GET STARTED' : 'SIGN IN'}
                                 onPress={() => navigation.replace(ROUTES.LOGIN)}
                             />
@@ -135,10 +139,12 @@ const VerifyForm = (props: VerifyProps) => {
 };
 
 const RegisterForm = (props: NavigationStackScreenProps) => {
+    const theme = useTheme();
     const [fields, setFields] = useState(defaultKeys);
     const emailRef = useRef(null);
     const userRef = useRef(null);
     const passRef = useRef(null);
+    const [activeField, setActiveField] = useState<RegistrationKey | null>(null);
 
     const scroller = useRef(null);
 
@@ -218,8 +224,8 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                 fields.email.length > 0 && !fields.email.match(EMAIL_REGEX)
                     ? 'Invalid Email Address'
                     : !registration.emailAvailable
-                    ? 'Email Address is already registered'
-                    : '',
+                        ? 'Email address is already registered'
+                        : '',
             onChange: value => {
                 setFields({
                     ...fields,
@@ -255,8 +261,10 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
         <View style={sharedStyles.pageContainer}>
             <SEHeader title={'Sign Up'} subtitle={'Create an account'} mainAction={'back'} showAuth={false} />
             <KeyboardAvoidingView
-                style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+                style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT, backgroundColor: theme.colors.primary }]}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            >
+                <BackgroundImage style={{ top: HEADER_COLLAPSED_HEIGHT }} />
                 <ScrollView
                     ref={scroller}
                     contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
@@ -269,89 +277,85 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                                     ref={refs[index]}
                                     placeholder={{ label: 'Choose One...', value: '', color: blackOpacity(0.25) }}
                                     items={field.items || []}
+                                    onOpen={() => setActiveField(field.property)}
+                                    onClose={() => setActiveField(null)}
                                     onValueChange={
                                         field.onChange
                                             ? field.onChange
                                             : (value: string) => {
-                                                  setFields({
-                                                      ...fields,
-                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
-                                                  });
-                                              }
+                                                setFields({
+                                                    ...fields,
+                                                    [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
+                                                });
+                                            }
                                     }
                                     value={fields[field.property]}
-                                    useNativeAndroidPickerStyle={false}>
-                                    <Input
+                                    useNativeAndroidPickerStyle={false}
+                                >
+                                    <TextInput
                                         editable={false}
-                                        containerStyle={{
-                                            paddingHorizontal: 0,
-                                            marginTop: index > 0 ? spaces.medium : 0,
-                                        }}
-                                        inputContainerStyle={sharedStyles.inputContainer}
-                                        inputStyle={sharedStyles.input}
+                                        style={[index > 0 ? formStyles.formField : {}, activeField === field.property || fields[field.property].length > 0 ? formStyles.active : formStyles.inactive]}
                                         label={field.label}
-                                        labelStyle={[sharedStyles.formLabel]}
                                         underlineColorAndroid={transparent}
                                         value={fields[field.property]}
                                     />
                                 </RNPickerSelect>
                             ) : (
-                                <Input
-                                    ref={refs[index]}
-                                    secureTextEntry={field.secure}
-                                    autoCorrect={false}
-                                    autoCapitalize={'none'}
-                                    containerStyle={{ paddingHorizontal: 0, marginTop: index > 0 ? spaces.medium : 0 }}
-                                    editable={!registration.pending}
-                                    inputContainerStyle={sharedStyles.inputContainer}
-                                    inputStyle={sharedStyles.input}
-                                    keyboardType={field.keyboard}
-                                    label={field.label}
-                                    labelStyle={[sharedStyles.formLabel]}
-                                    onChangeText={
-                                        field.onChange
-                                            ? field.onChange
-                                            : (value: string) => {
-                                                  setFields({
-                                                      ...fields,
-                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
-                                                  });
-                                              }
-                                    }
-                                    onBlur={field.onBlur}
-                                    onSubmitEditing={
-                                        field.onSubmit
-                                            ? field.onSubmit
-                                            : () => {
-                                                  if (refs[(index + 1) % refs.length].current) {
-                                                      refs[(index + 1) % refs.length].current.focus();
-                                                  }
-                                              }
-                                    }
-                                    returnKeyType={'next'}
-                                    underlineColorAndroid={transparent}
-                                    value={fields[field.property]}
-                                />
-                            )}
+                                    <TextInput
+                                        ref={refs[index]}
+                                        secureTextEntry={field.secure}
+                                        autoCorrect={false}
+                                        autoCapitalize={'none'}
+                                        style={[index > 0 ? formStyles.formField : {}, activeField === field.property || fields[field.property].length > 0 ? formStyles.active : formStyles.inactive]}
+                                        onFocus={() => setActiveField(field.property)}
+                                        onBlur={() => setActiveField(null)}
+                                        editable={!registration.pending}
+                                        error={field.errorMessage !== undefined && field.errorMessage.length > 0}
+                                        keyboardType={field.keyboard}
+                                        label={field.label}
+                                        onChangeText={
+                                            field.onChange
+                                                ? field.onChange
+                                                : (value: string) => {
+                                                    setFields({
+                                                        ...fields,
+                                                        [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
+                                                    });
+                                                }
+                                        }
+                                        onBlur={field.onBlur}
+                                        onSubmitEditing={
+                                            field.onSubmit
+                                                ? field.onSubmit
+                                                : () => {
+                                                    if (refs[(index + 1) % refs.length].current) {
+                                                        refs[(index + 1) % refs.length].current.focus();
+                                                    }
+                                                }
+                                        }
+                                        returnKeyType={'next'}
+                                        underlineColorAndroid={transparent}
+                                        value={fields[field.property]}
+                                    />
+                                )}
                             <ErrorBox
-                                style={{ marginTop: spaces.small }}
                                 show={field.errorMessage !== undefined && field.errorMessage.length > 0}
                                 error={field.errorMessage || `Invalid ${field.label}`}
                             />
                         </React.Fragment>
                     ))}
-                    {_canSubmit() && !registration.pending && (
-                        <SEButton
-                            containerStyle={{ marginTop: spaces.large }}
-                            title={'SUBMIT'}
-                            onPress={() => {
-                                _submitRegistration();
-                                if (scroller.current) {
-                                    scroller.current.scrollTo({ x: 0, y: 0, animated: true });
-                                }
-                            }}
-                        />
-                    )}
+                    <SEButton
+                        title={'SUBMIT'}
+                        // disabled={!_canSubmit()}
+                        onPress={_canSubmit() && !registration.pending ? () => {
+                            _submitRegistration();
+                            if (scroller.current) {
+                                scroller.current.scrollTo({ x: 0, y: 0, animated: true });
+                            }
+                        } : undefined}
+                        style={[formStyles.formField, _canSubmit() ? {} : { opacity: 0.6 }]}
+                        contentStyle={{ backgroundColor: theme.colors.accent }}
+                    />
                 </ScrollView>
             </KeyboardAvoidingView>
         </View>

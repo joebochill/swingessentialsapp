@@ -7,14 +7,16 @@ import { useTheme } from 'react-native-paper';
 // Styles
 import { spaces, fonts } from '../../styles/sizes';
 import { white, red } from '../../styles/colors';
+import { Theme } from '../../styles/theme';
 
-const styles = StyleSheet.create({
+const useStyles = (theme: Theme) => StyleSheet.create({
     error: {
         margin: 0,
-        padding: spaces.medium,
-        backgroundColor: red[500],
-        color: white[50],
-        fontSize: fonts[14],
+        paddingVertical: 4,
+        paddingHorizontal: 16,//theme.spaces.medium,
+        backgroundColor: theme.colors.error,
+        color: theme.colors.onPrimary,
+        fontSize: theme.fontSizes[14],
     },
 });
 type ErrorBoxProps = TextProps & {
@@ -24,8 +26,10 @@ type ErrorBoxProps = TextProps & {
 export const ErrorBox = (props: ErrorBoxProps) => {
     const { style } = props;
     const theme = useTheme();
+    const styles= useStyles(theme);
+    
     return props.show ? (
-        <Body style={StyleSheet.flatten([styles.error, { backgroundColor: theme.colors.error }, style])}>
+        <Body style={[styles.error, style]}>
             {props.error}
         </Body>
     ) : null;

@@ -97,8 +97,8 @@ export const OrderTutorial = () => {
                 />
                 <SEButton
                     title="GOT IT"
-                    containerStyle={{ flex: 1, marginTop: spaces.xLarge }}
-                    buttonStyle={{ backgroundColor: theme.colors.accent }}
+                    style={{ flex: 1, marginTop: spaces.xLarge }}
+                    contentStyle={{ backgroundColor: theme.colors.accent }}
                     onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]))}
                 />
             </View>

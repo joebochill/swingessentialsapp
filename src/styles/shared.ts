@@ -3,6 +3,25 @@ import { unit, spaces, spaceUnit, fonts, sizes } from './sizes';
 import { white } from './colors';
 import { theme } from './theme';
 
+export const formStyles = StyleSheet.create({
+    fieldRow: {
+        marginTop: spaces.large,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+    },
+    formField: {
+        marginTop: spaces.large,
+    },
+    inactive: {
+        backgroundColor: 'rgba(255,255,255,0.6)'
+    },
+    active: {
+        backgroundColor: theme.colors.onPrimary,
+    },
+})
+
 export const sharedStyles = StyleSheet.create({
     absoluteFull: {
         position: 'absolute',
@@ -26,6 +45,9 @@ export const sharedStyles = StyleSheet.create({
         borderStyle: 'dashed',
         borderColor: theme.colors.dark, //dark,
     },
+    formField: {
+        marginTop: spaces.large,
+    },
     formLabel: {
         fontFamily: 'SFCompactDisplay-Regular',
         color: theme.colors.accent, //[500],
@@ -46,14 +68,14 @@ export const sharedStyles = StyleSheet.create({
         paddingHorizontal: spaces.small,
     },
     inputContainer: {
-        height: sizes.large,
-        backgroundColor: white[50],
-        marginTop: spaces.small,
-        padding: spaces.small,
-        borderColor: theme.colors.dark, //dark,
-        borderWidth: unit(1),
-        borderBottomWidth: unit(1),
-        borderRadius: unit(5),
+        // height: sizes.large,
+        // backgroundColor: white[50],
+        // marginTop: spaces.small,
+        // padding: spaces.small,
+        // borderColor: theme.colors.dark, //dark,
+        // borderWidth: unit(1),
+        // borderBottomWidth: unit(1),
+        // borderRadius: unit(5),
     },
     textTitle: {
         marginTop: spaces.medium,

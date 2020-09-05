@@ -213,8 +213,8 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
     private contentStyle() {
         const { theme, headerContent, navigation } = this.props;
         const contractedPadding = this.props.subtitle
-            ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - unit(theme.sizes.large + 18)) / 2
-            : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - unit(theme.sizes.large)) / 2;
+            ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.fontSizes[20] + theme.fontSizes[18])) / 2
+            : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.fontSizes[20])) / 2;
         return [
             styles.content,
             headerContent
@@ -230,9 +230,9 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
         const { theme } = this.props;
         return {
             color: this.fontColor(),
-            lineHeight: this.scaleByHeaderHeight(unit(30), unit(theme.sizes.large)),
+            lineHeight: this.scaleByHeaderHeight(unit(30), theme.fontSizes[20]),
             fontFamily: theme.fonts.semiBold.fontFamily,
-            fontSize: this.scaleByHeaderHeight(unit(30), unit(theme.sizes.large)),
+            fontSize: this.scaleByHeaderHeight(unit(30), theme.fontSizes[20]),
         };
     }
 
@@ -250,10 +250,10 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
         const { theme } = this.props;
         return {
             color: this.fontColor(),
-            lineHeight: this.scaleByHeaderHeight(unit(theme.sizes.large) * 1.05, 0.1),
+            lineHeight: this.scaleByHeaderHeight(theme.fontSizes[20] * 1.05, 0.1),
             opacity: this.scaleByHeaderHeight(1, 0),
             fontFamily: theme.fonts.regular.fontFamily,
-            fontSize: this.scaleByHeaderHeight(unit(theme.sizes.large), 0.1),
+            fontSize: this.scaleByHeaderHeight(theme.fontSizes[20], 0.1),
         };
     }
 

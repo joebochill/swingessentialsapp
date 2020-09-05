@@ -33,13 +33,14 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
                     backgroundColor: theme.colors.primary,
                 }}>
                 <SEButton
-                    containerStyle={{
+                    style={{
                         position: 'absolute',
                         top: insets.top,
                         right: 0,
                         marginRight: spaces.medium,
                         zIndex: 100,
                     }}
+                    labelStyle={{color: theme.colors.onPrimary}}
                     mode={'text'}
                     title="Skip"
                     onPress={() => onClose()}

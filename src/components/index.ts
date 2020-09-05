@@ -7,3 +7,4 @@ export * from './AnimatedSafeAreaView';
 export * from './Typography';
 export * from './tutorials';
 export * from './IconWrapper';
+export * from './BackgroundImage';
