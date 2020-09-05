@@ -57,8 +57,8 @@ export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjecte
                   ? {
                         icon: LogoutIcon,
                         onPress: () => {
-                            Alert.alert('Log Out', 'Are you sure you want to log out?', [
-                                { text: 'Log Out', onPress: () => dispatch(requestLogout()) },
+                            Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+                                { text: 'Sign Out', onPress: () => dispatch(requestLogout()) },
                                 { text: 'Cancel' },
                             ]);
                         },

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { withTheme } from 'react-native-paper'; //'../../styles/theme';
+import React, { Component, useState } from 'react';
+import { withTheme, Card, Avatar, Button, useTheme, ActivityIndicator } from 'react-native-paper'; //'../../styles/theme';
 
 // Components
-import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle, Platform } from 'react-native';
 import { Label, Subtitle } from '../';
 import { YouTube } from './Youtube';
 import { Icon } from 'react-native-elements';
-
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { width, aspectHeight } from '../../utilities/dimensions';
 import { spaces, unit, sizes } from '../../styles/sizes';
@@ -20,106 +20,77 @@ export interface VideoCardProps {
     headerColor?: string;
     headerTitle: string;
     headerSubtitle?: string;
+    headerIcon?: string;
     headerFontColor?: string;
-    style?: StyleProp<ViewStyle>;
     video?: string;
-    hiddenContent?: JSX.Element;
     onExpand?: Function;
-    theme?: $DeepPartial<Theme>;
 }
-export type VideoCardState = {
-    play: boolean;
-};
 
-class VideoCardClass extends Component<VideoCardProps, VideoCardState> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            play: false,
-        };
-    }
-    public render() {
-        const { video, theme, headerColor = theme.colors.primary, hiddenContent } = this.props;
-        const videoWidth = width - 2 * spaces.medium;
-        const videoHeight = aspectHeight(videoWidth);
+export const VideoCard: React.FC<VideoCardProps> = (props) => {
+    const { video, style, onExpand, headerIcon, headerTitle, headerSubtitle } = props;
+    const theme = useTheme();
+    const { headerColor = theme.colors.primary, headerFontColor = theme.colors.onPrimary } = props;
+    const styles = useStyles(theme);
 
-        return (
-            <View style={this.cardStyle()}>
-                <View style={this.innerWrapperStyle()}>
-                    <View style={[styles.header, { backgroundColor: headerColor }]}>
-                        {this.headerText()}
-                        {this.actionItems()}
+    const [refresh, setRefresh] = useState(0);
+    const [play, setPlay] = useState(false);
+    const [ready, setReady] = useState(Platform.OS === 'android');
+
+    const videoWidth = width - 2 * theme.spaces.medium;
+    const videoHeight = aspectHeight(videoWidth);
+
+    return (
+        <View style={[styles.card, style]}>
+            <View style={{
+                borderRadius: theme.roundness,
+                overflow: 'hidden',
+            }}>
+                <View style={[styles.header, { backgroundColor: headerColor }]}>
+                    {headerIcon &&
+                        <MatIcon name={headerIcon} color={headerFontColor} size={24} style={{ marginRight: theme.spaces.medium }} />
+                    }
+                    <View style={{ flex: 1 }}>
+                        <Subtitle style={{ color: headerFontColor }}>{headerTitle}</Subtitle>
+
+                        {headerSubtitle ? (
+                            <Subtitle style={{ color: headerFontColor }}>
+                                {headerSubtitle}
+                            </Subtitle>
+                        ) : null}
                     </View>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        {video && (
-                            <YouTube
-                                videoId={video}
-                                play={this.state.play}
-                                style={{ width: videoWidth, height: videoHeight }}
-                            />
-                        )}
-                        {hiddenContent}
-                    </View>
+                    {onExpand &&
+                        <TouchableOpacity
+                            onPress={() => {
+                                setPlay(false);
+                                setRefresh((refresh + 1) % 2);
+                                onExpand();
+                            }}
+                            style={styles.actionItem}>
+                            <MatIcon name={'open-in-new'} color={headerFontColor} size={theme.sizes.small} />
+                        </TouchableOpacity>
+                    }
+                </View>
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+
+                    {video && (
+                        <YouTube
+                            videoId={video}
+                            play={play}
+                            onReady={() => setReady(true)}
+                            style={{ opacity: ready ? 1 : 0, width: videoWidth, height: videoHeight }}
+                        />
+                    )}
+                    {!ready && <ActivityIndicator size={theme.sizes.xLarge} style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }} />}
+
                 </View>
             </View>
-        );
-    }
-
-    private headerText() {
-        const { headerTitle, headerSubtitle } = this.props;
-        return (
-            <View style={{ flex: 1 }}>
-                <Label style={{ color: this.fontColor() }}>{headerTitle}</Label>
-                {headerSubtitle ? (
-                    <Subtitle style={{ color: this.fontColor() }} font={'regular'}>
-                        {headerSubtitle}
-                    </Subtitle>
-                ) : null}
-            </View>
-        );
-    }
-
-    private cardStyle() {
-        const { style, theme } = this.props;
-        const newStyle = {
-            backgroundColor: theme.colors.surface,
-            borderRadius: theme.roundness,
-        };
-        return StyleSheet.flatten([styles.card, newStyle, style]);
-    }
-    private innerWrapperStyle(): StyleProp<ViewStyle> {
-        const { theme } = this.props;
-        return {
-            borderRadius: theme.roundness,
-            overflow: 'hidden',
-        };
-    }
-
-    private actionItems() {
-        const { onExpand } = this.props;
-        return onExpand ? (
-            <TouchableOpacity
-                onPress={() => {
-                    this.setState({ play: false });
-                    onExpand();
-                }}
-                style={styles.actionItem}>
-                <Icon name={'open-in-new'} color={this.fontColor()} size={sizes.small} />
-            </TouchableOpacity>
-        ) : null;
-    }
-
-    private fontColor() {
-        const { headerFontColor, theme } = this.props;
-        return headerFontColor || theme.colors.onPrimary;
-    }
+        </View>
+    )
 }
 
-export const VideoCard = withTheme(VideoCardClass);
-
-const styles = StyleSheet.create({
+const useStyles = (theme: Theme) => StyleSheet.create({
     actionItem: {
-        marginLeft: spaces.small,
+        marginLeft: theme.spaces.small,
     },
     card: {
         shadowColor: black[900],
@@ -131,9 +102,11 @@ const styles = StyleSheet.create({
         },
         elevation: 1,
         flex: 1,
+        backgroundColor: theme.colors.surface,
+        borderRadius: theme.roundness
     },
     header: {
-        height: unit(56),
+        height: unit(52),
         paddingHorizontal: spaces.medium,
         overflow: 'hidden',
         flexDirection: 'row',

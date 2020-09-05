@@ -78,11 +78,10 @@ export const ForgotPassword = () => {
                             underlineColorAndroid={transparent}
                             value={email}
                         />
-                        <SEButton
+                        <SEButton dark
                             title={'REQUEST RESET'}
                             onPress={email.match(EMAIL_REGEX) ? (): void => _sendPasswordReset() : undefined}
                             style={[formStyles.formField, email.match(EMAIL_REGEX) ? {} : { opacity: 0.6 }]}
-                            contentStyle={{ backgroundColor: theme.colors.accent }}
                         />
                     </ScrollView>
                 )}

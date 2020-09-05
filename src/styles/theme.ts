@@ -12,7 +12,7 @@ const defaultFontConfig = {
         // fontFamily: 'SFCompactDisplay-Bold'
     },
     semiBold: {
-        fontFamily: 'SFCompactDisplay-Semibold'
+        // fontFamily: 'SFCompactDisplay-Semibold'
     },
     medium: {
         // fontFamily: 'SFCompactDisplay-Semibold'
@@ -35,7 +35,7 @@ const fontConfig = {
 export const theme = {
     ...DefaultTheme,
     dark: false,
-    roundness: 4,
+    roundness: 0,
     fonts: configureFonts(fontConfig),
     colors: {
         primary: purple[400],

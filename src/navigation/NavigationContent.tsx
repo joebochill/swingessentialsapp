@@ -49,16 +49,21 @@ export const mainNavigationItems: RouteGroup = {
         },
         {
             title: 'The 19th Hole',
-            iconType: 'material-community',
-            icon: 'beer',
+            icon: 'local-bar',
             route: ROUTES.BLOGS,
         },
+        // {
+        //     title: 'My Account',
+        //     icon: 'person',
+        //     nested: true,
+        //     private: true,
+        //     activatePanel: 1,
+        // },
         {
-            title: 'My Account',
-            icon: 'person',
-            nested: true,
+            title: 'Settings',
+            icon: 'settings',
             private: true,
-            activatePanel: 1,
+            route: ROUTES.SETTINGS,
         },
         {
             title: 'Help',
@@ -122,6 +127,12 @@ export const helpNavigationItems: RouteGroup = {
             // route: ROUTES.CONTACT,
         },
         {
+            title: 'Error Logs',
+            icon: 'report-problem',
+            private: true,
+            route: ROUTES.LOGS,
+        },
+        {
             title: 'Back',
             icon: 'arrow-back',
             activatePanel: 0,
@@ -145,17 +156,18 @@ export const accountNavigationItems: RouteGroup = {
         //     route: ROUTES.HISTORY,
         // },
         {
+            title: 'My Profile',
+            icon: 'person',
+            private: true,
+            route: ROUTES.SETTINGS,
+        },
+        {
             title: 'Settings',
             icon: 'settings',
             private: true,
             route: ROUTES.SETTINGS,
         },
-        {
-            title: 'Error Logs',
-            icon: 'list',
-            private: true,
-            route: ROUTES.LOGS,
-        },
+        
         {
             title: 'Back',
             icon: 'arrow-back',

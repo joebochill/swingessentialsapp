@@ -129,7 +129,7 @@ export const TokenModal = (props: ModalProps) => {
                     <Body>{'Your current session is about to expire. Click below to stay signed in.'}</Body>
 
                     {!refreshing && (
-                        <SEButton
+                        <SEButton dark
                             title="KEEP ME SIGNED IN"
                             style={{ marginTop: spaces.medium }}
                             onPress={() => dispatch(refreshToken())}

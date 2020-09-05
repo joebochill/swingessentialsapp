@@ -126,11 +126,10 @@ const VerifyForm = (props: VerifyProps) => {
                                 : _getRegistrationErrorMessage(verification.error)}
                         </H7>
                         {verification.emailVerified && (
-                            <SEButton
+                            <SEButton dark
                                 style={formStyles.formField}
                                 title={token ? 'GET STARTED' : 'SIGN IN'}
                                 onPress={() => navigation.replace(ROUTES.LOGIN)}
-                                contentStyle={{ backgroundColor: theme.colors.accent }}
                             />
                         )}
                     </>
@@ -353,7 +352,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                             />
                         </React.Fragment>
                     ))}
-                    <SEButton
+                    <SEButton dark
                         title={!registration.pending ? 'SUBMIT' : 'SUBMITTING'}
                         // disabled={!_canSubmit()}
                         loading={registration.pending}
@@ -364,7 +363,6 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                             }
                         } : undefined}
                         style={[formStyles.formField, _canSubmit() ? {} : { opacity: 0.6 }]}
-                        contentStyle={{ backgroundColor: theme.colors.accent }}
                     />
                 </ScrollView>
             </KeyboardAvoidingView>

@@ -5,14 +5,14 @@ import { theme as defaultTheme } from './theme';
 
 export const useFormStyles = (theme = defaultTheme) => StyleSheet.create({
     fieldRow: {
-        marginTop: spaces.large,
+        marginTop: theme.spaces.large,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
     },
     formField: {
-        marginTop: spaces.large,
+        marginTop: theme.spaces.large,
     },
     inactive: {
         backgroundColor: 'rgba(255,255,255,0.6)'
@@ -20,6 +20,23 @@ export const useFormStyles = (theme = defaultTheme) => StyleSheet.create({
     active: {
         backgroundColor: theme.colors.onPrimary,
     },
+})
+
+export const useFlexStyles = (theme: Theme) => StyleSheet.create({
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    centered: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    paddingHorizontal: {
+        paddingHorizontal: theme.spaces.medium,
+    },
+    paddingMedium: {
+        padding: theme.spaces.medium,
+    }
 })
 
 export const useSharedStyles = (theme = defaultTheme) => StyleSheet.create({
@@ -115,9 +132,9 @@ export const useSharedStyles = (theme = defaultTheme) => StyleSheet.create({
     },
     sectionHeader: {
         flexDirection: 'row',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: theme.spaces.small,
+        marginBottom: theme.spaces.medium,
         marginHorizontal: theme.spaces.medium,
         // Used in several places
     },

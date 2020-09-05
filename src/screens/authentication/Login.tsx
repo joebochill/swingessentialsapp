@@ -351,11 +351,10 @@ export const Login = (props: NavigationInjectedProps) => {
 
                     {/* Log In Buttons */}
                     <View style={formStyles.fieldRow}>
-                        <SEButton
+                        <SEButton dark
                             title={"Sign In"}
                             loading={pending}
                             style={{ flex: 1 }}
-                            contentStyle={{ backgroundColor: theme.colors.accent }}
                             onPress={() => onLogin(username, password)}
                         />
                         <SEButton

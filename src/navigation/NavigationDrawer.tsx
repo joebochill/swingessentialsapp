@@ -269,14 +269,14 @@ export const NavigationDrawer = props => {
                     panelData = token ? panelData : panelData.filter(item => !item.private);
                     if (ind === 0) {
                         panelData.push({
-                            title: token ? 'Log Out' : 'Log In',
+                            title: token ? 'Sign Out' : 'Log In',
                             iconType: token ? 'material-community' : 'material',
                             icon: token ? 'logout-variant' : 'person',
                             onPress: token
                                 ? () => {
-                                      Alert.alert('Log Out', 'Are you sure you want to log out?', [
+                                      Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
                                           {
-                                              text: 'Log Out',
+                                              text: 'Sign Out',
                                               onPress: () => {
                                                   dispatch(requestLogout());
                                                   navigation.closeDrawer();
