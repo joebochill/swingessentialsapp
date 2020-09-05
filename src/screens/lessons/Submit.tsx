@@ -30,7 +30,7 @@ import { Icon } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { transparent } from '../../styles/colors';
 import { spaces, sizes, fonts, unit } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
@@ -66,6 +66,7 @@ export const Submit = props => {
     const scroller = useRef(null);
     const dispatch = useDispatch();
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     const roleError =
         role === 'anonymous'

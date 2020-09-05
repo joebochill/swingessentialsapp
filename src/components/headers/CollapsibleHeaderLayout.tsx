@@ -17,12 +17,14 @@ import {
 import { SEHeader, SEHeaderProps } from './SEHeader';
 
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
 import { height } from '../../utilities/dimensions';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT } from '../../constants';
+import { useTheme } from 'react-native-paper';
+import { white } from '../../styles/colors';
 
 type HeaderLayoutState = {
     scrollY: Animated.Value;
@@ -52,8 +54,9 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
             bottomPad = true,
         } = this.props;
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
+
         return (
-            <View style={sharedStyles.pageContainer}>
+            <View style={{flex: 1, backgroundColor: white[400]}}>
                 <StatusBar barStyle={'light-content'} />
                 {this.props.pageBackground && (
                     <Image

@@ -7,7 +7,7 @@ import { Body, SEButton, CollapsibleHeaderLayout, wrapIcon, HeaderIcon } from '.
 import { Icon } from 'react-native-elements';
 
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
@@ -15,6 +15,7 @@ import { Logger } from '../../utilities/logging';
 // Types
 import { LOAD_LOGS } from '../../redux/actions/types';
 import { ApplicationState } from 'src/__types__';
+import { useTheme } from 'react-native-paper';
 
 // Icons
 const RefreshIcon = wrapIcon({ IconClass: Icon, name: 'refresh' });
@@ -26,6 +27,8 @@ export const ErrorLogs = props => {
     const token = useSelector((state: ApplicationState) => state.login.token);
     const loading = useSelector((state: ApplicationState) => state.logs.loading);
     const username = useSelector((state: ApplicationState) => state.userData.username);
+    const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     const getLogs = useCallback(async () => {
         dispatch({ type: LOAD_LOGS.REQUEST });

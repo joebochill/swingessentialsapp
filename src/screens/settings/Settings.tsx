@@ -10,7 +10,7 @@ import { H7, Body, CollapsibleHeaderLayout } from '../../components';
 import { ROUTES } from '../../constants/routes';
 
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
 
@@ -25,6 +25,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
     const token = useSelector((state: ApplicationState) => state.login.token);
     const dispatch = useDispatch();
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     useEffect(() => {
         if (!token) {

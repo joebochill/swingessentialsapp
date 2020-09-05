@@ -9,7 +9,7 @@ import { H7, Body, SEButton } from '../';
 // Styles
 import { whiteOpacity } from '../../styles/colors';
 import { spaces } from '../../styles/sizes';
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { useTheme } from 'react-native-paper';
 
 // Types
@@ -43,6 +43,7 @@ export const TokenModal = (props: ModalProps) => {
 
     const dispatch = useDispatch();
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     const updateRefreshRate = useCallback(() => {
         if (timeRemaining <= 3 * 60) {

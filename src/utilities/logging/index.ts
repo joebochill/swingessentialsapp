@@ -17,6 +17,7 @@ export type LOG_ERROR = {
 };
 
 export type LOG_TYPE = 'ERROR' | 'LOGS';
+export let LAST_SENT: number = 0;
 
 export class Logger {
     public static async logMessage(message: string) {
@@ -36,7 +37,10 @@ export class Logger {
             'utf8',
         );
         if (currentLog.length + message.length > LOG_LIMIT) {
-            this.autoSendEmail('LOGS');
+            if(LAST_SENT < Date.now()/1000 - (60 * 60) ){ // don't try to send more than once per hour
+                this.autoSendEmail('LOGS');
+                LAST_SENT = Date.now() / 1000;
+            }
         }
     }
     public static async logError(error: LOG_ERROR) {

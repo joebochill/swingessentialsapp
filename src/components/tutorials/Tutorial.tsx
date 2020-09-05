@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 import { useTheme } from 'react-native-paper';
 import { spaces } from '../../styles/sizes';
 import { useSafeArea } from 'react-native-safe-area-context';
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 
 type TutorialProps = {
     visible: boolean;
@@ -15,6 +15,7 @@ type TutorialProps = {
 export const TutorialModal: React.FC<TutorialProps> = props => {
     const { visible = true, onClose } = props;
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
     const insets = useSafeArea();
 
     return (

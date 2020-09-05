@@ -15,7 +15,6 @@ import {
     TextInputFocusEventData,
     TextInputSubmitEditingEventData,
     View,
-    Image,
 } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { TextInput } from 'react-native-paper';
@@ -27,9 +26,8 @@ import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { ApplicationState } from '../../__types__';
 
 // Styles
-import { sharedStyles, formStyles } from '../../styles';
+import { useSharedStyles, useFormStyles } from '../../styles';
 import { transparent, blackOpacity } from '../../styles/colors';
-import { sizes, spaces } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
 
 // Utilities
@@ -86,6 +84,8 @@ const VerifyForm = (props: VerifyProps) => {
     const verification = useSelector((state: ApplicationState) => state.registration);
     const dispatch = useDispatch();
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
+    const formStyles = useFormStyles(theme);
 
     useEffect(() => {
         if (code) {
@@ -94,8 +94,9 @@ const VerifyForm = (props: VerifyProps) => {
     }, [code, dispatch]);
 
     return (
-        <View style={sharedStyles.pageContainer}>
+        <View style={[sharedStyles.pageContainer, {backgroundColor: theme.colors.primary}]}>
             <SEHeader title={'Sign Up'} subtitle={'Confirm your email'} mainAction={'back'} showAuth={false} />
+            <BackgroundImage />
             <View
                 style={[
                     sharedStyles.paddingMedium,
@@ -103,8 +104,8 @@ const VerifyForm = (props: VerifyProps) => {
                 ]}>
                 {verification.pending && (
                     <>
-                        <ActivityIndicator size={'large'} color={theme.colors.dark} />
-                        <H7 font={'regular'} style={{ textAlign: 'center' }}>
+                        <ActivityIndicator size={'large'} color={theme.colors.onPrimary} />
+                        <H7 font={'regular'} color={'onPrimary'} style={{ textAlign: 'center' }}>
                             Verifying your email address...
                         </H7>
                     </>
@@ -113,11 +114,11 @@ const VerifyForm = (props: VerifyProps) => {
                     <>
                         <MatIcon
                             name={verification.emailVerified ? 'check-circle' : 'error'}
-                            size={sizes.jumbo}
-                            color={verification.emailVerified ? theme.colors.primary : theme.colors.error}
+                            size={theme.sizes.jumbo}
+                            color={theme.colors.onPrimary}
                             style={{ alignSelf: 'center' }}
                         />
-                        <H7 font={'regular'} style={{ textAlign: 'center' }}>
+                        <H7 font={'regular'} color={'onPrimary'} style={{ textAlign: 'center' }}>
                             {verification.emailVerified
                                 ? `Your email address has been confirmed. ${
                                 token ? "Let's get started!" : 'Please sign in to view your account.'
@@ -129,6 +130,7 @@ const VerifyForm = (props: VerifyProps) => {
                                 style={formStyles.formField}
                                 title={token ? 'GET STARTED' : 'SIGN IN'}
                                 onPress={() => navigation.replace(ROUTES.LOGIN)}
+                                contentStyle={{ backgroundColor: theme.colors.accent }}
                             />
                         )}
                     </>
@@ -140,6 +142,8 @@ const VerifyForm = (props: VerifyProps) => {
 
 const RegisterForm = (props: NavigationStackScreenProps) => {
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
+    const formStyles = useFormStyles(theme);
     const [fields, setFields] = useState(defaultKeys);
     const emailRef = useRef(null);
     const userRef = useRef(null);
@@ -148,11 +152,18 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
 
     const scroller = useRef(null);
 
-    const refs = [emailRef, userRef, passRef];
+    const refs = [userRef, emailRef, passRef];
     const registration = useSelector((state: ApplicationState) => state.registration);
     const previousPendingState = usePrevious(registration.pending);
 
     const dispatch = useDispatch();
+
+    // Select the first field on load
+    useEffect(() => {
+        if(userRef && userRef.current){
+            userRef.current.focus();
+        }
+    }, []);
 
     useEffect(() => {
         // Registration finished
@@ -269,7 +280,6 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                     ref={scroller}
                     contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
                     keyboardShouldPersistTaps={'always'}>
-                    {registration.pending && <ActivityIndicator size={'large'} />}
                     {regProperties.map((field: RegistrationProperty, index: number) => (
                         <React.Fragment key={`registration_property_${field.property}`}>
                             {field.type === 'select' ? (
@@ -308,7 +318,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                                         autoCapitalize={'none'}
                                         style={[index > 0 ? formStyles.formField : {}, activeField === field.property || fields[field.property].length > 0 ? formStyles.active : formStyles.inactive]}
                                         onFocus={() => setActiveField(field.property)}
-                                        onBlur={() => setActiveField(null)}
+                                        onBlur={(e) => {setActiveField(null); if(field.onBlur) {field.onBlur(e)}}}
                                         editable={!registration.pending}
                                         error={field.errorMessage !== undefined && field.errorMessage.length > 0}
                                         keyboardType={field.keyboard}
@@ -323,7 +333,6 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                                                     });
                                                 }
                                         }
-                                        onBlur={field.onBlur}
                                         onSubmitEditing={
                                             field.onSubmit
                                                 ? field.onSubmit
@@ -345,8 +354,9 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                         </React.Fragment>
                     ))}
                     <SEButton
-                        title={'SUBMIT'}
+                        title={!registration.pending ? 'SUBMIT' : 'SUBMITTING'}
                         // disabled={!_canSubmit()}
+                        loading={registration.pending}
                         onPress={_canSubmit() && !registration.pending ? () => {
                             _submitRegistration();
                             if (scroller.current) {

@@ -8,7 +8,7 @@ import { H7, Body, CollapsibleHeaderLayout } from '../../components';
 import { ROUTES } from '../../constants/routes';
 // Styles
 import bg from '../../images/banners/19th.jpg';
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
 
@@ -31,6 +31,7 @@ export const Blogs = props => {
     const sections = makeGroups(blogs.blogList, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     return (
         <CollapsibleHeaderLayout

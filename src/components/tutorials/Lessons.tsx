@@ -8,7 +8,7 @@ import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { sizes, spaces } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,6 +21,7 @@ import { getLongDate, getDate } from '../../utilities';
 export const LessonsTutorial = () => {
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
     const dispatch = useDispatch();
 
     const sections = [

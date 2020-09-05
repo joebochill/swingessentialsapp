@@ -8,7 +8,7 @@ import { VideoControls, CountDown, VideoTimer } from '../../components';
 import Video from 'react-native-video';
 
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { oledBlack, blackOpacity, white } from '../../styles/colors';
 import { spaces } from '../../styles/sizes';
 
@@ -29,6 +29,7 @@ import downthelineRH from '../../images/overlay-dtl-rh.png';
 import { ROUTES } from '../../constants/routes';
 import { Icon } from 'react-native-elements';
 import { Logger } from '../../utilities/logging';
+import { useTheme } from 'react-native-paper';
 
 // const DESIRED_RATIO = '16:9';
 
@@ -45,6 +46,8 @@ const getOverlayImage = (swing: SwingType, handedness: HandednessType, camera: C
 export const Record = props => {
     const { navigation } = props;
     const cameraRef = useRef(null);
+    const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
     const onReturn = props.navigation.getParam('onReturn', () => {});
     const swing: SwingType = props.navigation.getParam('swing', () => {});
 

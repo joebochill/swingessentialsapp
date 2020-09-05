@@ -5,7 +5,7 @@ import { Icon } from 'react-native-elements';
 import { H7, Body } from '../../components';
 
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { whiteOpacity } from '../../styles/colors';
 import { spaces } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
@@ -26,6 +26,7 @@ type ProgressModalProps = ModalProps & {
 export const UploadProgressModal = (props: ProgressModalProps) => {
     const { visible, progress, ...other } = props;
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
     return (
         <Modal animationType="slide" transparent={true} visible={visible} {...other}>
             <View style={styles.modalBackground}>

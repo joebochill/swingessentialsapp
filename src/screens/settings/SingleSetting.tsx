@@ -6,7 +6,7 @@ import { View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { Body, SEHeader } from '../../components/index';
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
 
@@ -65,6 +65,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
 
     const dispatch = useDispatch();
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     const [value, setValue]: [any, Function] = useState(settings[currentSettingName]);
 

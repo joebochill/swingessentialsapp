@@ -10,7 +10,7 @@ import { SEButton, SEVideoPlaceholder } from '..';
 import { TutorialModal } from '.';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { sizes, spaces, unit } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 import { whiteOpacity } from '../../styles/colors';
@@ -29,6 +29,7 @@ export const SubmitTutorial = () => {
     const [showButton, setShowButton] = useState(false);
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
     const dispatch = useDispatch();
 
     const slides = [

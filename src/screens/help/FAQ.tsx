@@ -7,7 +7,7 @@ import { CollapsibleHeaderLayout } from '../../components';
 import { Body, H6, H7, YouTube } from '../../components';
 
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 
@@ -19,10 +19,13 @@ import { ApplicationState } from '../../__types__';
 
 // Redux
 import { loadFAQ } from '../../redux/actions';
+import { useTheme } from 'react-native-paper';
 
 export const FAQ = () => {
     const faqState = useSelector((state: ApplicationState) => state.faq);
     const dispatch = useDispatch();
+    const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     return (
         <CollapsibleHeaderLayout

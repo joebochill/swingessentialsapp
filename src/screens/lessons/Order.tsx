@@ -9,7 +9,7 @@ import * as RNIap from 'react-native-iap';
 
 // Styles
 import bg from '../../images/banners/order.jpg';
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { spaces, sizes, unit } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
 
@@ -32,6 +32,7 @@ export const Order = props => {
     const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     const [selected, setSelected] = useState(-1);
     const [products, setProducts] = useState<RNIap.Product[]>([]);

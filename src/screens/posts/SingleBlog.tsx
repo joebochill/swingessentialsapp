@@ -3,7 +3,7 @@ import * as React from 'react';
 import { View, ScrollView } from 'react-native';
 import { Body, SEHeader } from '../../components/index';
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 
 // Utilities
 import { splitParagraphs } from '../../utilities';
@@ -11,9 +11,13 @@ import { height } from '../../utilities/dimensions';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
+import { useTheme } from 'react-native-paper';
 
 export const SingleBlog = props => {
     const blog = props.navigation.getParam('blog', null);
+    const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
+    
     if (blog === null) {
         props.navigation.pop();
     }

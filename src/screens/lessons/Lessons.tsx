@@ -7,7 +7,7 @@ import { ListItem } from 'react-native-elements';
 import { H7, Body, CollapsibleHeaderLayout, LessonsTutorial } from '../../components';
 
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
 import bg from '../../images/banners/lessons.jpg';
@@ -41,6 +41,7 @@ export const Lessons = props => {
     const myLessons = lessons.pending.concat(lessons.closed);
     const sections = makeGroups(myLessons, (lesson: Lesson) => getLongDate(lesson.request_date));
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
     const dispatch = useDispatch();
 
     return (

@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { View, ViewProps } from 'react-native';
 import { Body } from '../';
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { white, blackOpacity } from '../../styles/colors';
 import { fonts, unit } from '../../styles/sizes';
+import { useTheme } from 'react-native-paper';
 
 export type CountDownProps = ViewProps & {
     startValue: number;
@@ -15,6 +16,8 @@ export type CountDownProps = ViewProps & {
 export const CountDown = (props: CountDownProps) => {
     const { startValue, endValue = 0, onFinish = () => {} } = props;
     const [seconds, setSeconds] = useState(startValue);
+    const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     useEffect(() => {
         let interval: number = 0;

@@ -11,7 +11,7 @@ import Carousel from 'react-native-snap-carousel';
 import { ROUTES } from '../../constants/routes';
 
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 import { useTheme } from 'react-native-paper';
@@ -34,6 +34,7 @@ export const Home = props => {
     const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     const latestLessons = lessons.closed.length > 0 ? lessons.closed : [placeholder];
     return (

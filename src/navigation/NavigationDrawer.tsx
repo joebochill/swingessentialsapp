@@ -27,7 +27,7 @@ import {
 import { ROUTES } from '../constants/routes';
 
 // Styles
-import { sharedStyles } from '../styles';
+import { useSharedStyles } from '../styles';
 // import { white } from '../styles/colors';
 import { useTheme } from 'react-native-paper';
 
@@ -47,6 +47,7 @@ import se from '../images/logo-small.png';
 
 export const NavigationDrawer = props => {
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
     const dispatch = useDispatch();
     const [scrollY] = useState(new Animated.Value(0));
     const [activePanel, setActivePanel] = useState(0);

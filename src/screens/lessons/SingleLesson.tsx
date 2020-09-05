@@ -7,7 +7,7 @@ import { Body, H7, SEHeader, YouTube, SEVideo, VideoCard, LessonTutorial } from 
 import Carousel from 'react-native-snap-carousel';
 
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
 import { width, height, aspectHeight } from '../../utilities/dimensions';
 
@@ -23,12 +23,15 @@ import { ApplicationState, Lesson } from 'src/__types__';
 
 // Actions
 import { markLessonViewed } from '../../redux/actions';
+import { useTheme } from 'react-native-paper';
 
 export const SingleLesson = props => {
     const token = useSelector((state: ApplicationState) => state.login.token);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const placeholder = useSelector((state: ApplicationState) => state.config.placeholder);
     const dispatch = useDispatch();
+    const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     let lesson: Lesson = props.navigation.getParam('lesson', null);
     if (lesson === null) {

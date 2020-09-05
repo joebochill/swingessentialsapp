@@ -3,7 +3,7 @@ import * as React from 'react';
 import { View, ScrollView } from 'react-native';
 import { Body, SEHeader, YouTube } from '../../components/index';
 // Styles
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
 import { width, height, aspectHeight } from '../../utilities/dimensions';
 
@@ -11,9 +11,13 @@ import { width, height, aspectHeight } from '../../utilities/dimensions';
 import { splitParagraphs } from '../../utilities';
 // Constants
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
+import { useTheme } from 'react-native-paper';
 
 export const SingleTip = props => {
     const tip = props.navigation.getParam('tip', null);
+    const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
+    
     if (tip === null) {
         props.navigation.pop();
     }

@@ -8,7 +8,7 @@ import { H7, Body, CollapsibleHeaderLayout } from '../../components';
 import { ROUTES } from '../../constants/routes';
 // Styles
 import bg from '../../images/banners/tips.jpg';
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { spaces, sizes } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
 
@@ -32,6 +32,7 @@ export const Tips = props => {
     const sections = makeGroups(tips.tipList, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     return (
         <CollapsibleHeaderLayout

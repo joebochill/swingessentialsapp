@@ -4,18 +4,14 @@ import { useCompare } from '../../utilities';
 
 // Components
 import {
-    ActivityIndicator,
     Image,
     KeyboardAvoidingView,
     Platform,
     ScrollView,
     StyleSheet,
-    Switch as RNSwitch,
-    Text,
     View,
 } from 'react-native';
-import { Icon, Input } from 'react-native-elements';
-import { Body, Subtitle } from '../../components/Typography'
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Utilities
 import AsyncStorage from '@react-native-community/async-storage';
@@ -30,22 +26,21 @@ import { ApplicationState } from '../../__types__';
 
 // Styles
 import { transparent } from '../../styles/colors';
-import { spaces, unit, sizes, fonts } from '../../styles/sizes';
-import { useTheme, TextInput, Switch } from 'react-native-paper';
+import { unit } from '../../styles/sizes';
+import { useTheme, TextInput, Switch, Theme } from 'react-native-paper';
 import { height } from '../../utilities/dimensions';
-
+import { useFormStyles } from '../../styles';
 import logo from '../../images/logo-big.png';
 
 // SE Components
-import { SEButton, ErrorBox, BackgroundImage } from '../../components';
+import { SEButton, ErrorBox, BackgroundImage, Body } from '../../components';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
 
 // Actions
 import { requestLogin } from '../../redux/actions';
-import { formStyles } from '../../styles';
-import { Theme } from '../../styles/theme';
+
 
 type BiometryState = {
     available: boolean;
@@ -73,6 +68,7 @@ const initialCredentials: CredentialsState = {
 export const Login = (props: NavigationInjectedProps) => {
     const theme = useTheme();
     const styles = useStyles(theme);
+    const formStyles = useFormStyles(theme);
     // Local Component State
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -182,13 +178,6 @@ export const Login = (props: NavigationInjectedProps) => {
         }
     }, [failuresChanged, failures, credentials]);
 
-    useEffect(() => {
-        // Show biometric login on load
-        if (!token && useBiometry && biometry.available && credentials.stored) {
-            showBiometricLogin();
-        }
-    }, [token, useBiometry, biometry.available, credentials.stored, showBiometricLogin]);
-
     const onLogin = useCallback(
         (user, pass) => {
             if (!user || !pass) {
@@ -237,9 +226,13 @@ export const Login = (props: NavigationInjectedProps) => {
         }
     }, [biometry.available, biometry.type, credentials.savedCredentials, credentials.stored, onLogin, useBiometry]);
 
-    // return (
-    //     <View style={{height: 300, width: 300, backgroundColor: 'pink'}}/>
-    // );
+    useEffect(() => {
+        // Show biometric login on load
+        if (!token && useBiometry && biometry.available && credentials.stored) {
+            showBiometricLogin();
+        }
+    }, [token, useBiometry, biometry.available, credentials.stored, showBiometricLogin]);
+
     return (
         <KeyboardAvoidingView
             style={[styles.container, { backgroundColor: theme.colors.primary }]}
@@ -280,13 +273,13 @@ export const Login = (props: NavigationInjectedProps) => {
                                     position: 'absolute',
                                     right: theme.spaces.medium,
                                     bottom: 0,
-                                    height: '100%',//sizes.large,
+                                    height: '100%',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                 }}>
-                                <Icon
+                                <MatIcon
                                     name={'fingerprint'}
-                                    size={sizes.small}
+                                    size={theme.sizes.small}
                                     color={theme.colors.text}
                                     underlayColor={transparent}
                                     onPress={() => showBiometricLogin()}
@@ -319,7 +312,7 @@ export const Login = (props: NavigationInjectedProps) => {
                             <Body style={styles.toggleLabel} color={'onPrimary'}>Save Username</Body>
                             <Switch
                                 value={remember}
-                                style={{backgroundColor: 'pink'}}
+                                style={{ backgroundColor: 'pink' }}
                                 onValueChange={(val: boolean) => {
                                     setRemember(val);
                                     AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
@@ -346,46 +339,37 @@ export const Login = (props: NavigationInjectedProps) => {
 
                     {/* Error Messages */}
                     <ErrorBox
-                        show={failures > 0 || error} //={(this.props.loginFails > 0 || this.state.error)}
+                        show={failures > 0 || error}
                         error={'The username / password you entered was not correct.'}
-                        style={[formStyles.formField, {paddingVertical: theme.spaces.small}]}
+                        style={[formStyles.formField, { paddingVertical: theme.spaces.small }]}
                     />
                     <ErrorBox
-                        show={touchFail.length > 0 && failures <= 0} //={(this.state.touchFail && this.props.loginFails <= 0)}
+                        show={touchFail.length > 0 && failures <= 0}
                         error={touchFail}
-                        style={[formStyles.formField, {paddingVertical: theme.spaces.small}]}
+                        style={[formStyles.formField, { paddingVertical: theme.spaces.small }]}
                     />
 
                     {/* Log In Buttons */}
-                    {!pending && (
-                        <View style={formStyles.fieldRow}>
-                            <SEButton
-                                title="SIGN IN"
-                                style={{ flex: 1 }}
-                                contentStyle={{ backgroundColor: theme.colors.accent }}
-                                onPress={() => onLogin(username, password)}
-                            />
-                            <SEButton
-                                mode={'text'}
-                                labelStyle={{ color: theme.colors.onPrimary }}
-                                style={{ marginLeft: spaces.medium, flex: 0 }}
-                                title="CANCEL"
-                                onPress={() => props.navigation.pop()}
-                            />
-                        </View>
-                    )}
-
-                    {/* Loading Spinner */}
-                    {pending && (
-                        <ActivityIndicator
-                            style={formStyles.formField}
-                            size={'large'}
-                            color={theme.colors.onPrimary}
+                    <View style={formStyles.fieldRow}>
+                        <SEButton
+                            title={"Sign In"}
+                            loading={pending}
+                            style={{ flex: 1 }}
+                            contentStyle={{ backgroundColor: theme.colors.accent }}
+                            onPress={() => onLogin(username, password)}
                         />
-                    )}
+                        <SEButton
+                            mode={'text'}
+                            disabled={pending}
+                            labelStyle={{ color: theme.colors.onPrimary }}
+                            style={{ marginLeft: theme.spaces.medium, flex: 0 }}
+                            title="CANCEL"
+                            onPress={() => props.navigation.pop()}
+                        />
+                    </View>
 
                     {/* Registration Links */}
-                    <View style={formStyles.fieldRow}>
+                    <View style={[formStyles.fieldRow]}>
                         <SEButton
                             mode={'text'}
                             labelStyle={{ color: theme.colors.onPrimary }}

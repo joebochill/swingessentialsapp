@@ -49,7 +49,7 @@ export const theme = {
         dark: purple[800],
         light: purple[200],
     },
-    sizes:{
+    sizes: {
         xSmall: spaceUnit(3),
         small: spaceUnit(6),
         medium: spaceUnit(8),

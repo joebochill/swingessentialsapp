@@ -7,7 +7,7 @@ import { H7 } from '../';
 
 // Styles
 import { width, aspectWidth } from '../../utilities/dimensions';
-import { sharedStyles } from '../../styles';
+import { useSharedStyles } from '../../styles';
 import { transparent, oledBlack, white, blackOpacity } from '../../styles/colors';
 import { sizes, spaces } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
@@ -37,6 +37,8 @@ export const SEVideo = (props: VideoProps) => {
     const { source, style, editable = false, onEdit = () => {} } = props;
     const vid = useRef(null);
     const [playing, setPlaying] = useState(false);
+    const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     return (
         <View style={StyleSheet.flatten([styles.portrait, { backgroundColor: oledBlack[900] }, style])}>
@@ -83,6 +85,7 @@ export const SEVideo = (props: VideoProps) => {
 export const SEVideoPlaceholder = (props: PlaceholderProps) => {
     const { icon, editIcon, style, inverse, disabled, onPress = () => {} } = props;
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
     return (
         <View
             style={StyleSheet.flatten([
