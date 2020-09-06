@@ -40,10 +40,14 @@ export const FAQ = () => {
             <View style={[sharedStyles.pageContainer, sharedStyles.paddingHorizontalMedium]}>
                 {faqState.questions.map((faq, ind) => (
                     <React.Fragment key={`FAQ_${ind}`}>
-                        <View style={[sharedStyles.sectionHeader, { marginTop: ind > 0 ? theme.spaces.jumbo : 0, marginHorizontal: 0 }]}>
+                        <View
+                            style={[
+                                sharedStyles.sectionHeader,
+                                { marginTop: ind > 0 ? theme.spaces.jumbo : 0, marginHorizontal: 0 },
+                            ]}>
                             <Subheading style={listStyles.heading}>{faq.question}</Subheading>
                         </View>
-                        
+
                         {!faq.platform_specific ? (
                             splitParagraphs(faq.answer).map((p: string, pInd: number) => (
                                 <Body key={`faq-${ind}-${pInd}`} style={[pInd > 0 ? sharedStyles.paragraph : {}]}>
@@ -51,21 +55,25 @@ export const FAQ = () => {
                                 </Body>
                             ))
                         ) : (
-                                <>
-                                    {Platform.OS === 'ios' &&
-                                        splitParagraphs(faq.answer_ios).map((p: string, pInd: number) => (
-                                            <Body key={`faq-${ind}-${pInd}`} style={[pInd > 0 ? sharedStyles.paragraph : {}]}>
-                                                {p}
-                                            </Body>
-                                        ))}
-                                    {Platform.OS === 'android' &&
-                                        splitParagraphs(faq.answer_android).map((p: string, pInd: number) => (
-                                            <Body key={`faq-${ind}-${pInd}`} style={[pInd > 0 ? sharedStyles.paragraph : {}]}>
-                                                {p}
-                                            </Body>
-                                        ))}
-                                </>
-                            )}
+                            <>
+                                {Platform.OS === 'ios' &&
+                                    splitParagraphs(faq.answer_ios).map((p: string, pInd: number) => (
+                                        <Body
+                                            key={`faq-${ind}-${pInd}`}
+                                            style={[pInd > 0 ? sharedStyles.paragraph : {}]}>
+                                            {p}
+                                        </Body>
+                                    ))}
+                                {Platform.OS === 'android' &&
+                                    splitParagraphs(faq.answer_android).map((p: string, pInd: number) => (
+                                        <Body
+                                            key={`faq-${ind}-${pInd}`}
+                                            style={[pInd > 0 ? sharedStyles.paragraph : {}]}>
+                                            {p}
+                                        </Body>
+                                    ))}
+                            </>
+                        )}
                         {faq.video === '' ? null : <YouTube videoId={faq.video} style={styles.video} />}
                     </React.Fragment>
                 ))}
@@ -73,9 +81,10 @@ export const FAQ = () => {
         </CollapsibleHeaderLayout>
     );
 };
-const useStyles = (theme: Theme) => StyleSheet.create({
-    video: {
-        height: (width - 2 * theme.spaces.medium) * (9 / 16),
-        marginTop: theme.spaces.xLarge,
-    },
-});
+const useStyles = (theme: Theme) =>
+    StyleSheet.create({
+        video: {
+            height: (width - 2 * theme.spaces.medium) * (9 / 16),
+            marginTop: theme.spaces.xLarge,
+        },
+    });

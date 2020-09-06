@@ -36,7 +36,11 @@ export const SEButton: React.FC<SEButtonProps> = props => {
             mode={mode}
             style={[dark ? styles.dark : {}, style]}
             contentStyle={[contentStyle]}
-            labelStyle={[styles.label, mode === 'text' ? styles.textButton : mode === 'outlined' ? styles.outlinedButton : {}, labelStyle]}
+            labelStyle={[
+                styles.label,
+                mode === 'text' ? styles.textButton : mode === 'outlined' ? styles.outlinedButton : {},
+                labelStyle,
+            ]}
             {...other}>
             {title}
         </Button>

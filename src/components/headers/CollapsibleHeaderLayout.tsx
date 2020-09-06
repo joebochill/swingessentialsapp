@@ -17,14 +17,11 @@ import {
 import { SEHeader, SEHeaderProps } from './SEHeader';
 
 // Styles
-import { useSharedStyles } from '../../styles';
-import { spaces } from '../../styles/sizes';
 import { height } from '../../utilities/dimensions';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT } from '../../constants';
-import { useTheme } from 'react-native-paper';
-import { white } from '../../styles/colors';
+import { theme } from '../../styles/theme';
 
 type HeaderLayoutState = {
     scrollY: Animated.Value;
@@ -56,7 +53,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
 
         return (
-            <View style={{ flex: 1, backgroundColor: white[400] }}>
+            <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
                 <StatusBar barStyle={'light-content'} />
                 {this.props.pageBackground && (
                     <Image
@@ -112,7 +109,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                             {refreshing && Platform.OS === 'ios' && (
                                 <ActivityIndicator
                                     size={'large'}
-                                    style={{ marginBottom: spaces.medium, marginTop: -1 * spaces.jumbo }}
+                                    style={{ marginBottom: theme.spaces.medium, marginTop: -1 * theme.spaces.jumbo }}
                                 />
                             )}
                             {children}
@@ -135,8 +132,8 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
 
 const styles = StyleSheet.create({
     scrollContainer: {
-        paddingTop: HEADER_EXPANDED_HEIGHT + spaces.medium,
-        paddingBottom: spaces.jumbo,
+        paddingTop: HEADER_EXPANDED_HEIGHT + theme.spaces.medium,
+        paddingBottom: theme.spaces.jumbo,
     },
     nonScrollContainer: {
         marginTop: HEADER_EXPANDED_HEIGHT,

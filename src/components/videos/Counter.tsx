@@ -4,9 +4,10 @@ import { View, ViewProps } from 'react-native';
 import { Body } from '../';
 // Styles
 import { useSharedStyles } from '../../styles';
-import { white, blackOpacity } from '../../styles/colors';
-import { fonts, unit } from '../../styles/sizes';
+import { blackOpacity } from '../../styles/colors';
+import { unit } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
+import { theme } from '../../styles/theme';
 
 export type CountDownProps = ViewProps & {
     startValue: number;
@@ -40,7 +41,7 @@ export const CountDown = (props: CountDownProps) => {
                 { backgroundColor: blackOpacity(0.25) },
                 props.style,
             ]}>
-            <Body style={{ color: white[50], fontSize: unit(128) }}>{seconds}</Body>
+            <Body style={{ color: theme.colors.onPrimary, fontSize: unit(128) }}>{seconds}</Body>
         </View>
     ) : null;
 };
@@ -85,7 +86,7 @@ export const VideoTimer = (props: VideoTimerProps) => {
                     }}
                 />
             </View>
-            <Body style={{ fontSize: fonts[14], color: white[50] }}>
+            <Body style={{ fontSize: theme.fontSizes[14], color: theme.colors.onPrimary }}>
                 {'00:00:' + (displaySeconds < 10 ? '0' : '') + displaySeconds}
             </Body>
         </View>

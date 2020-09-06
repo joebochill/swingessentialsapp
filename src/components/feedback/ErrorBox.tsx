@@ -5,16 +5,14 @@ import { Body } from '../../components';
 import { useTheme } from 'react-native-paper';
 
 // Styles
-import { spaces, fonts } from '../../styles/sizes';
-import { white, red } from '../../styles/colors';
 import { Theme } from '../../styles/theme';
 
 const useStyles = (theme: Theme) =>
     StyleSheet.create({
         error: {
             margin: 0,
-            paddingVertical: 4,
-            paddingHorizontal: 16, //theme.spaces.medium,
+            paddingVertical: theme.spaces.xSmall, // 4,
+            paddingHorizontal: 16, // to match form field padding from RNP
             backgroundColor: theme.colors.error,
             color: theme.colors.onPrimary,
             fontSize: theme.fontSizes[14],

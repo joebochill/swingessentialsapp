@@ -44,8 +44,8 @@ export const Order = props => {
         role === 'anonymous'
             ? 'You must be signed in to purchase lessons.'
             : role === 'pending'
-                ? 'You must validate your email address before you can purchase lessons'
-                : '';
+            ? 'You must validate your email address before you can purchase lessons'
+            : '';
 
     useEffect(() => {
         if (packages) {
@@ -142,12 +142,11 @@ export const Order = props => {
                             borderWidth: unit(1),
                             borderRadius: theme.roundness,
                             marginHorizontal: theme.spaces.medium,
-                            backgroundColor: theme.colors.surface, 
+                            backgroundColor: theme.colors.surface,
                             borderColor: theme.colors.light,
                             marginBottom: theme.spaces.jumbo,
                         },
-                    ]}
-                >
+                    ]}>
                     <H4 style={{ lineHeight: unit(32) }} color={'primary'}>
                         {credits.count}
                     </H4>
@@ -177,7 +176,17 @@ export const Order = props => {
                             right={({ style, ...rightProps }) => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body>{products.length > 0 ? `${products[index].localizedPrice}` : '--'}</Body>
-                                    {selected === index && <MatIcon name={'check'} size={theme.sizes.small} color={theme.colors.accent} style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.xSmall }} />}
+                                    {selected === index && (
+                                        <MatIcon
+                                            name={'check'}
+                                            size={theme.sizes.small}
+                                            color={theme.colors.accent}
+                                            style={{
+                                                marginLeft: theme.spaces.small,
+                                                marginRight: -1 * theme.spaces.xSmall,
+                                            }}
+                                        />
+                                    )}
                                 </View>
                             )}
                         />
@@ -187,9 +196,17 @@ export const Order = props => {
                 keyExtractor={item => 'package_' + item.app_sku}
             />
             <SEButton
-                style={[formStyles.formField, { margin: theme.spaces.medium }, (roleError.length === 0 && !packagesProcessing && !credits.inProgress) ? {} : { opacity: 0.6 }]}
+                style={[
+                    formStyles.formField,
+                    { margin: theme.spaces.medium },
+                    roleError.length === 0 && !packagesProcessing && !credits.inProgress ? {} : { opacity: 0.6 },
+                ]}
                 title={'PURCHASE'}
-                onPress={(roleError.length === 0 && !packagesProcessing && !credits.inProgress) ? () => onPurchase(packages[selected].app_sku, packages[selected].shortcode) : undefined}
+                onPress={
+                    roleError.length === 0 && !packagesProcessing && !credits.inProgress
+                        ? () => onPurchase(packages[selected].app_sku, packages[selected].shortcode)
+                        : undefined
+                }
             />
             <OrderTutorial />
         </CollapsibleHeaderLayout>

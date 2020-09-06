@@ -75,7 +75,7 @@ export const Home = props => {
             />
 
             <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.xLarge }]}>
-            <Subheading style={listStyles.heading}>{'Lesson Credits'}</Subheading>
+                <Subheading style={listStyles.heading}>{'Lesson Credits'}</Subheading>
                 <SEButton
                     mode={'outlined'}
                     title={'Order More'}
@@ -93,8 +93,7 @@ export const Home = props => {
                             borderRadius: theme.roundness,
                         },
                         { backgroundColor: theme.colors.surface, borderColor: theme.colors.light },
-                    ]}
-                >
+                    ]}>
                     <H4 style={{ lineHeight: unit(32) }} color={'primary'}>
                         {credits.count}
                     </H4>

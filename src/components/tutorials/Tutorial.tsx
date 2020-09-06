@@ -47,9 +47,7 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
                     onPress={() => onClose()}
                 />
                 <View style={{ marginVertical: insets.top }}>
-                    <ScrollView contentContainerStyle={flexStyles.paddingHorizontal}>
-                        {props.children}
-                    </ScrollView>
+                    <ScrollView contentContainerStyle={flexStyles.paddingHorizontal}>{props.children}</ScrollView>
                 </View>
             </SafeAreaView>
         </Modal>

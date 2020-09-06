@@ -7,7 +7,7 @@ import { withTheme } from 'react-native-paper';
 
 // Styles
 import { blackOpacity } from '../../styles/colors';
-import { sizes, spaces, unit } from '../../styles/sizes';
+import { unit } from '../../styles/sizes';
 
 // Utilities
 import color from 'color';
@@ -19,7 +19,7 @@ import { $DeepPartial } from '@callstack/react-theme-provider';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT_NO_STATUS } from '../../constants';
-import { Theme } from '../../styles/theme';
+import { theme, Theme } from '../../styles/theme';
 
 export interface ResizableHeaderProps {
     /** Header title */
@@ -62,8 +62,8 @@ export interface ResizableHeaderProps {
 interface HeaderState {}
 
 class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
-    static readonly ICON_SIZE = sizes.small;
-    static readonly ICON_SPACING = spaces.medium;
+    static readonly ICON_SIZE = theme.sizes.small;
+    static readonly ICON_SPACING = theme.spaces.medium;
 
     render() {
         const barStyle = this.barStyle();
@@ -104,13 +104,13 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
     }
 
     private navigation() {
-        const { navigation } = this.props;
+        const { navigation, theme } = this.props;
         if (navigation) {
             return (
                 <View>
                     <TouchableOpacity
                         onPress={navigation.onPress}
-                        style={[styles.actionIcon, { marginRight: spaces.large }]}>
+                        style={[styles.actionIcon, { marginRight: theme.spaces.large }]}>
                         {this.icon(navigation.icon)}
                     </TouchableOpacity>
                 </View>
@@ -220,8 +220,8 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
             headerContent
                 ? {}
                 : {
-                      paddingHorizontal: navigation ? spaces.small : spaces.medium,
-                      paddingBottom: this.scaleByHeaderHeight(spaces.xLarge, contractedPadding),
+                      paddingHorizontal: navigation ? theme.spaces.small : theme.spaces.medium,
+                      paddingBottom: this.scaleByHeaderHeight(theme.spaces.xLarge, contractedPadding),
                   },
         ];
     }
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     },
     actionIcon: {
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
-        paddingHorizontal: spaces.small,
+        paddingHorizontal: theme.spaces.small,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -346,10 +346,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'absolute',
-        right: spaces.small,
+        right: theme.spaces.small,
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
     },
     notFirst: {
-        marginLeft: spaces.small,
+        marginLeft: theme.spaces.small,
     },
 });

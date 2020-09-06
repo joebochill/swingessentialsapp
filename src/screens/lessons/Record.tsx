@@ -197,7 +197,11 @@ export const Record = props => {
                             {recordingMode && !isRecording && token && (
                                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                     <TouchableOpacity onPress={(): void => navigation.push(ROUTES.SETTINGS_GROUP)}>
-                                        <MatIcon name={'settings'} size={theme.sizes.small} color={theme.colors.onPrimary} />
+                                        <MatIcon
+                                            name={'settings'}
+                                            size={theme.sizes.small}
+                                            color={theme.colors.onPrimary}
+                                        />
                                     </TouchableOpacity>
                                 </View>
                             )}
@@ -250,23 +254,24 @@ export const Record = props => {
     );
 };
 
-const useStyles = (theme: Theme) => StyleSheet.create({
-    bar: {
-        width: '100%',
-        top: 0,
-        left: 0,
-        paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
-        position: 'absolute',
-        justifyContent: 'flex-end',
-        zIndex: 1000,
-        backgroundColor: blackOpacity(0.5),
-    },
-    content: {
-        flex: 1,
-        position: 'relative',
-        paddingHorizontal: theme.spaces.medium,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
+const useStyles = (theme: Theme) =>
+    StyleSheet.create({
+        bar: {
+            width: '100%',
+            top: 0,
+            left: 0,
+            paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
+            position: 'absolute',
+            justifyContent: 'flex-end',
+            zIndex: 1000,
+            backgroundColor: blackOpacity(0.5),
+        },
+        content: {
+            flex: 1,
+            position: 'relative',
+            paddingHorizontal: theme.spaces.medium,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+    });

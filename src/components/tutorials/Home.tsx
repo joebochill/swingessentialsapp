@@ -53,7 +53,12 @@ export const HomeTutorial = () => {
                 }}>
                 {'You can sign in or register for an account by clicking the account icon in the header.'}
             </H7>
-            <MatIcon name="person" color={'white'} size={theme.sizes.xLarge} style={{ marginVertical: theme.spaces.large, alignSelf: 'center' }} />
+            <MatIcon
+                name="person"
+                color={'white'}
+                size={theme.sizes.xLarge}
+                style={{ marginVertical: theme.spaces.large, alignSelf: 'center' }}
+            />
         </>,
     ];
 

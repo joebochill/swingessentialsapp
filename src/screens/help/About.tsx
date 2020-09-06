@@ -24,11 +24,9 @@ export const About = () => {
                 </Body>
 
                 <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo, marginHorizontal: 0 }]}>
-                <Subheading style={listStyles.heading}>{'How it Works'}</Subheading>
+                    <Subheading style={listStyles.heading}>{'How it Works'}</Subheading>
                 </View>
-                <Body>
-                    1) Open the Swing Essentials® app and snap a short video of your swing using your camera.
-                </Body>
+                <Body>1) Open the Swing Essentials® app and snap a short video of your swing using your camera.</Body>
                 <Body style={sharedStyles.paragraph}>
                     2) Preview your swing and when you’re ready, submit your videos for professional analysis.
                 </Body>
@@ -47,7 +45,7 @@ export const About = () => {
                 </Body>
 
                 <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo, marginHorizontal: 0 }]}>
-                <Subheading style={listStyles.heading}>{'Testimonials'}</Subheading>
+                    <Subheading style={listStyles.heading}>{'Testimonials'}</Subheading>
                 </View>
                 <Body>
                     "Thanks for the great work this last year. After working with you, I've lowered my handicap by three
@@ -56,14 +54,14 @@ export const About = () => {
                 <Body style={sharedStyles.paragraph} font={'semiBold'}>
                     - David A.
                 </Body>
-                <Body style={{marginTop: theme.spaces.large}}>
+                <Body style={{ marginTop: theme.spaces.large }}>
                     "I sent my swing in to Swing Essentials® and I'm playing so much better - it's easily taken four to
                     five shots off my game. I strongly recommend it!"
                 </Body>
                 <Body style={sharedStyles.paragraph} font={'semiBold'}>
                     - Dean L.
                 </Body>
-                <Body style={{marginTop: theme.spaces.large}}>
+                <Body style={{ marginTop: theme.spaces.large }}>
                     "Thanks to you, I have been playing my best golf. It's all finally clicking now!"
                 </Body>
                 <Body style={sharedStyles.paragraph} font={'semiBold'}>

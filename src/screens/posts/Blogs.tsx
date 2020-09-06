@@ -55,11 +55,7 @@ export const Blogs = props => {
                 ListEmptyComponent={
                     <>
                         <Divider />
-                        <List.Item
-                            title={'No Posts Yet!'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                        />
+                        <List.Item title={'No Posts Yet!'} style={listStyles.item} titleStyle={{ marginLeft: -8 }} />
                         <Divider />
                     </>
                 }
@@ -76,7 +72,11 @@ export const Blogs = props => {
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }) => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <MatIcon name={'chevron-right'} size={theme.sizes.small} style={{marginRight: -1 * theme.spaces.small}}/>
+                                    <MatIcon
+                                        name={'chevron-right'}
+                                        size={theme.sizes.small}
+                                        style={{ marginRight: -1 * theme.spaces.small }}
+                                    />
                                 </View>
                             )}
                         />

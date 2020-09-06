@@ -61,8 +61,9 @@ export const LessonsTutorial = () => {
                 scrollEnabled={false}
                 renderSectionHeader={({ section: { bucketName } }) => (
                     <View style={[sharedStyles.sectionHeader]}>
-                        <Subheading style={[listStyles.heading, { color: theme.colors.onPrimary }]}>{bucketName}</Subheading>
-
+                        <Subheading style={[listStyles.heading, { color: theme.colors.onPrimary }]}>
+                            {bucketName}
+                        </Subheading>
                     </View>
                 )}
                 sections={sections}
@@ -78,7 +79,11 @@ export const LessonsTutorial = () => {
                             right={({ style, ...rightProps }) => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     {item.new && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}
-                                    <MatIcon name={'chevron-right'} size={theme.sizes.small} style={{ marginRight: -1 * theme.spaces.small }} />
+                                    <MatIcon
+                                        name={'chevron-right'}
+                                        size={theme.sizes.small}
+                                        style={{ marginRight: -1 * theme.spaces.small }}
+                                    />
                                 </View>
                             )}
                         />

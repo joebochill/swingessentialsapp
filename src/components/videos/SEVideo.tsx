@@ -25,7 +25,7 @@ type PlaceholderProps = ViewProperties & {
 };
 
 export const SEVideo = (props: VideoProps) => {
-    const { source, style, editable = false, onEdit = () => { } } = props;
+    const { source, style, editable = false, onEdit = () => {} } = props;
     const vid = useRef(null);
     const [playing, setPlaying] = useState(false);
     const theme = useTheme();
@@ -54,7 +54,12 @@ export const SEVideo = (props: VideoProps) => {
                     style={{ height: '100%', width: '100%' }}
                 />
                 <View style={[styles.fullCentered, { opacity: playing ? 0 : 1 }]}>
-                    <MatIcon name={'play-arrow'} size={theme.sizes.large} color={theme.colors.onPrimary} underlayColor={transparent} />
+                    <MatIcon
+                        name={'play-arrow'}
+                        size={theme.sizes.large}
+                        color={theme.colors.onPrimary}
+                        underlayColor={transparent}
+                    />
                 </View>
                 {editable && (
                     <TouchableOpacity
@@ -67,7 +72,12 @@ export const SEVideo = (props: VideoProps) => {
                             },
                         ]}
                         onPress={() => onEdit()}>
-                        <MatIcon name={'edit'} size={theme.sizes.small} color={theme.colors.onPrimary} underlayColor={transparent} />
+                        <MatIcon
+                            name={'edit'}
+                            size={theme.sizes.small}
+                            color={theme.colors.onPrimary}
+                            underlayColor={transparent}
+                        />
                     </TouchableOpacity>
                 )}
             </TouchableOpacity>
@@ -75,7 +85,7 @@ export const SEVideo = (props: VideoProps) => {
     );
 };
 export const SEVideoPlaceholder = (props: PlaceholderProps) => {
-    const { icon, editIcon, style, disabled, onPress = () => { } } = props;
+    const { icon, editIcon, style, disabled, onPress = () => {} } = props;
     const theme = useTheme();
     const styles = useStyles(theme);
     const sharedStyles = useSharedStyles(theme);
@@ -83,19 +93,16 @@ export const SEVideoPlaceholder = (props: PlaceholderProps) => {
     const listStyles = useListStyles(theme);
 
     return (
-        <View
-            style={[
-                styles.portrait,
-                formStyles.dashed,
-                style,
-            ]}>
+        <View style={[styles.portrait, formStyles.dashed, style]}>
             <TouchableOpacity
                 disabled={disabled}
                 activeOpacity={0.8}
                 style={{ height: '100%', width: '100%', alignItems: 'center' }}
                 onPress={() => onPress()}>
                 <View style={[sharedStyles.sectionHeader]}>
-                    <Subheading style={[listStyles.heading, { marginVertical: theme.spaces.medium }]}>{props.title}</Subheading>
+                    <Subheading style={[listStyles.heading, { marginVertical: theme.spaces.medium }]}>
+                        {props.title}
+                    </Subheading>
                 </View>
                 <View style={styles.fullCentered}>{icon}</View>
                 <View style={[sharedStyles.centered, styles.bottomPanel]}>{editIcon}</View>
@@ -129,5 +136,5 @@ const useStyles = (theme: Theme) => {
             left: 0,
             zIndex: 100,
         },
-    })
+    });
 };

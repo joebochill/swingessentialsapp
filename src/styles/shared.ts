@@ -52,24 +52,25 @@ export const useFlexStyles = (theme: Theme = defaultTheme) =>
         },
     });
 
-export const useListStyles = (theme: Theme = defaultTheme) => StyleSheet.create({
-    item:{
-        backgroundColor: theme.colors.onPrimary,
-        // padding: 0,
-        paddingHorizontal: theme.spaces.medium,
-        // paddingLeft: 0,
-        // marginLeft: 10,
-        alignItems: 'center',
-        flexDirection: 'row',
-        minHeight: theme.sizes.xLarge,
-    },
-    heading:{
-        fontSize: theme.fontSizes[14], 
-        paddingHorizontal: 0,
-        marginVertical: theme.spaces.small,//9, // to match button style
-        textTransform: 'uppercase',
-    }
-})
+export const useListStyles = (theme: Theme = defaultTheme) =>
+    StyleSheet.create({
+        item: {
+            backgroundColor: theme.colors.onPrimary,
+            // padding: 0,
+            paddingHorizontal: theme.spaces.medium,
+            // paddingLeft: 0,
+            // marginLeft: 10,
+            alignItems: 'center',
+            flexDirection: 'row',
+            minHeight: theme.sizes.xLarge,
+        },
+        heading: {
+            fontSize: theme.fontSizes[14],
+            paddingHorizontal: 0,
+            marginVertical: theme.spaces.small, //9, // to match button style
+            textTransform: 'uppercase',
+        },
+    });
 
 export const useSharedStyles = (theme: Theme = defaultTheme) =>
     StyleSheet.create({
@@ -82,9 +83,9 @@ export const useSharedStyles = (theme: Theme = defaultTheme) =>
             // used in Counter and Record
         },
         border: {
-            borderWidth: unit(2),
+            borderWidth: unit(1),
             borderRadius: theme.roundness,
-            borderColor: theme.colors.dark, //dark,
+            borderColor: theme.colors.primary, //dark,
             // Used in token modal and up;oad progress modal
         },
         centered: {

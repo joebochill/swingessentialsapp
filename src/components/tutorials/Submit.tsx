@@ -80,7 +80,7 @@ export const SubmitTutorial = () => {
             </H7>
             <RecordButton
                 recording={false}
-                onPress={() => { }}
+                onPress={() => {}}
                 style={{ alignSelf: 'center', marginTop: theme.spaces.large }}
             />
             <H7
@@ -93,7 +93,12 @@ export const SubmitTutorial = () => {
                 }}>
                 {'You can adjust your settings for recording length and delay by clicking the settings icon.'}
             </H7>
-            <MatIcon name="settings" color={theme.colors.onPrimary} size={theme.sizes.xLarge} style={{alignSelf: 'center'}} />
+            <MatIcon
+                name="settings"
+                color={theme.colors.onPrimary}
+                size={theme.sizes.xLarge}
+                style={{ alignSelf: 'center' }}
+            />
         </>,
     ];
 

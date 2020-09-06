@@ -81,7 +81,11 @@ export const Lessons = props => {
                             right={({ style, ...rightProps }) => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>
-                                    <MatIcon name={'chevron-right'} size={theme.sizes.small} style={{ marginRight: -1 * theme.spaces.small }} />
+                                    <MatIcon
+                                        name={'chevron-right'}
+                                        size={theme.sizes.small}
+                                        style={{ marginRight: -1 * theme.spaces.small }}
+                                    />
                                 </View>
                             )}
                         />
@@ -98,8 +102,8 @@ export const Lessons = props => {
                                     role === 'administrator'
                                         ? item.request_date
                                         : item.type === 'in-person'
-                                            ? 'In-person lesson'
-                                            : 'Remote lesson'
+                                        ? 'In-person lesson'
+                                        : 'Remote lesson'
                                 }
                                 onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                                 style={listStyles.item}
@@ -108,36 +112,40 @@ export const Lessons = props => {
                                 right={({ style, ...rightProps }) => (
                                     <View style={[flexStyles.row, style]} {...rightProps}>
                                         {!item.viewed && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}
-                                        <MatIcon name={'chevron-right'} size={theme.sizes.small} style={{ marginRight: -1 * theme.spaces.small }} />
+                                        <MatIcon
+                                            name={'chevron-right'}
+                                            size={theme.sizes.small}
+                                            style={{ marginRight: -1 * theme.spaces.small }}
+                                        />
                                     </View>
                                 )}
                             />
                             <Divider />
                         </>
                     ) : (
-                            <>
-                                {index === 0 && <Divider />}
-                                <List.Item
-                                    title={role === 'administrator' ? item.username : item.request_date}
-                                    description={
-                                        role === 'administrator'
-                                            ? item.request_date
-                                            : item.type === 'in-person'
-                                                ? 'In-person lesson'
-                                                : 'Remote lesson'
-                                    }
-                                    style={listStyles.item}
-                                    titleStyle={{ marginLeft: -8 }}
-                                    descriptionStyle={{ marginLeft: -8 }}
-                                    right={({ style, ...rightProps }) => (
-                                        <View style={[flexStyles.row, style]} {...rightProps}>
-                                            <Body style={{ marginRight: theme.spaces.small }}>IN PROGRESS</Body>
-                                        </View>
-                                    )}
-                                />
-                                <Divider />
-                            </>
-                        )
+                        <>
+                            {index === 0 && <Divider />}
+                            <List.Item
+                                title={role === 'administrator' ? item.username : item.request_date}
+                                description={
+                                    role === 'administrator'
+                                        ? item.request_date
+                                        : item.type === 'in-person'
+                                        ? 'In-person lesson'
+                                        : 'Remote lesson'
+                                }
+                                style={listStyles.item}
+                                titleStyle={{ marginLeft: -8 }}
+                                descriptionStyle={{ marginLeft: -8 }}
+                                right={({ style, ...rightProps }) => (
+                                    <View style={[flexStyles.row, style]} {...rightProps}>
+                                        <Body style={{ marginRight: theme.spaces.small }}>IN PROGRESS</Body>
+                                    </View>
+                                )}
+                            />
+                            <Divider />
+                        </>
+                    )
                 }
                 keyExtractor={(item): string => 'complete_' + item.request_id}
             />

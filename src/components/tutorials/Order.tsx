@@ -59,7 +59,17 @@ export const OrderTutorial = () => {
                             right={({ style, ...rightProps }) => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body>{packages.length > 0 ? `$${item.price}` : '--'}</Body>
-                                    {index === 0 && <MatIcon name={'check'} size={theme.sizes.small} color={theme.colors.accent} style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.xSmall }} />}
+                                    {index === 0 && (
+                                        <MatIcon
+                                            name={'check'}
+                                            size={theme.sizes.small}
+                                            color={theme.colors.accent}
+                                            style={{
+                                                marginLeft: theme.spaces.small,
+                                                marginRight: -1 * theme.spaces.xSmall,
+                                            }}
+                                        />
+                                    )}
                                 </View>
                             )}
                         />

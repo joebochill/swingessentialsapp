@@ -32,25 +32,15 @@ export const SingleTip = props => {
                 <ScrollView
                     contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
                     keyboardShouldPersistTaps={'always'}>
-                    <View
-                        style={[
-                            sharedStyles.sectionHeader,
-                            { marginHorizontal: 0 },
-                        ]}>
+                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                         <Subheading style={listStyles.heading}>{'Tip Video'}</Subheading>
                     </View>
                     <YouTube videoId={tip.video} style={{ width: videoWidth, height: videoHeight }} />
-                    <View
-                        style={[
-                            sharedStyles.sectionHeader,
-                            { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
-                        ]}>
+                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0, marginTop: theme.spaces.jumbo }]}>
                         <Subheading style={listStyles.heading}>{'Description'}</Subheading>
                     </View>
                     {splitParagraphs(tip.comments).map((p, ind) => (
-                        <Body
-                            key={`${tip.id}_p_${ind}`}
-                            style={[ind > 0 ? sharedStyles.paragraph : {}]}>
+                        <Body key={`${tip.id}_p_${ind}`} style={[ind > 0 ? sharedStyles.paragraph : {}]}>
                             {p}
                         </Body>
                     ))}

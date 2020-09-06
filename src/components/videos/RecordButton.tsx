@@ -12,57 +12,61 @@ import { Icon } from 'react-native-elements';
 import { Body } from '../';
 
 // Styles
-import { transparent, blackOpacity, white } from '../../styles/colors';
-import { spaces, sizes, unit, fonts } from '../../styles/sizes';
+import { transparent, blackOpacity } from '../../styles/colors';
+import { unit } from '../../styles/sizes';
 
 // Utilities
 import { useSafeArea } from 'react-native-safe-area-context';
+import { useTheme, Theme } from 'react-native-paper';
 
-const styles = StyleSheet.create({
-    recordRow: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: spaces.medium,
-    },
-    recordButton: {
-        flex: 0,
-        borderColor: white[50],
-        borderWidth: unit(6),
-        borderRadius: sizes.xLarge,
-        height: sizes.xLarge,
-        width: sizes.xLarge,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: unit(2),
-    },
-    innerRecord: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
-        alignSelf: 'stretch',
-        backgroundColor: 'red',
-        borderRadius: sizes.xLarge,
-    },
-    innerStop: {
-        height: sizes.small,
-        width: sizes.small,
-        backgroundColor: 'red',
-        borderRadius: unit(2),
-    },
-    label: {
-        fontSize: fonts[16],
-        color: white[50],
-    },
-});
+const useStyles = (theme: Theme) =>
+    StyleSheet.create({
+        recordRow: {
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            flexDirection: 'row',
+            alignItems: 'center',
+            padding: theme.spaces.medium,
+        },
+        recordButton: {
+            flex: 0,
+            borderColor: theme.colors.onPrimary,
+            borderWidth: unit(6),
+            borderRadius: theme.sizes.xLarge,
+            height: theme.sizes.xLarge,
+            width: theme.sizes.xLarge,
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: unit(2),
+        },
+        innerRecord: {
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            alignSelf: 'stretch',
+            backgroundColor: 'red',
+            borderRadius: theme.sizes.xLarge,
+        },
+        innerStop: {
+            height: theme.sizes.small,
+            width: theme.sizes.small,
+            backgroundColor: 'red',
+            borderRadius: unit(2),
+        },
+        label: {
+            fontSize: theme.fontSizes[16],
+            color: theme.colors.onPrimary,
+        },
+    });
 type RecordButtonProps = TouchableOpacityProps & {
     recording: boolean;
     onPress: Function;
 };
 export const RecordButton = (props: RecordButtonProps) => {
     const { recording, style, onPress, ...other } = props;
+    const theme = useTheme();
+    const styles = useStyles(theme);
     return (
         <TouchableOpacity
             onPress={(evt: GestureResponderEvent) => onPress(evt)}
@@ -83,6 +87,8 @@ type VideoControlRowProps = ViewProps & {
 export const VideoControls = (props: VideoControlRowProps) => {
     const { mode, active, onAction, onBack, onNext, ...other } = props;
     const insets = useSafeArea();
+    const theme = useTheme();
+    const styles = useStyles(theme);
     return (
         <View
             style={[
@@ -99,9 +105,9 @@ export const VideoControls = (props: VideoControlRowProps) => {
             {mode === 'play' && (
                 <Icon
                     name={active ? 'pause' : 'play-arrow'}
-                    size={sizes.xLarge}
+                    size={theme.sizes.xLarge}
                     underlayColor={transparent}
-                    color={white[50]}
+                    color={theme.colors.onPrimary}
                     style={{ flex: 0 }}
                     onPress={() => onAction()}
                 />
@@ -113,9 +119,9 @@ export const VideoControls = (props: VideoControlRowProps) => {
                     <Icon
                         type={'material-community'}
                         name={'camera-switch'}
-                        size={sizes.medium}
+                        size={theme.sizes.medium}
                         underlayColor={transparent}
-                        color={white[50]}
+                        color={theme.colors.onPrimary}
                         onPress={() => onNext()}
                     />
                 )}

@@ -72,8 +72,8 @@ export const Submit = props => {
         role === 'anonymous'
             ? 'You must be signed in to submit lessons.'
             : role === 'pending'
-                ? 'You must validate your email address before you can submit lessons'
-                : '';
+            ? 'You must validate your email address before you can submit lessons'
+            : '';
 
     const previousPendingStatus = usePrevious(lessons.redeemPending);
 
@@ -138,9 +138,9 @@ export const Submit = props => {
             !lessons.redeemPending &&
             fo_video !== '' &&
             dtl_video !== '' &&
-            lessons.pending.length <= 0)
-            ;
-    }, [roleError, lessons, fo_video, dtl_video])
+            lessons.pending.length <= 0
+        );
+    }, [roleError, lessons, fo_video, dtl_video]);
 
     const _submitLesson = useCallback(() => {
         Keyboard.dismiss();
@@ -266,8 +266,7 @@ export const Submit = props => {
         <CollapsibleHeaderLayout
             title={'Submit Your Swing'}
             subtitle={'Request a personalized lesson'}
-            backgroundImage={bg}
-        >
+            backgroundImage={bg}>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView
                     keyboardShouldPersistTaps={'always'}
@@ -289,32 +288,44 @@ export const Submit = props => {
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                         <Subheading style={listStyles.heading}>{'Your Swing Videos'}</Subheading>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         {!fo_video ? (
                             <SEVideoPlaceholder
                                 title={'Face-On'}
                                 icon={<Image source={fo} resizeMethod={'resize'} style={sharedStyles.image} />}
-                                editIcon={<MatIcon name={'add-a-photo'} color={theme.colors.accent} size={theme.sizes.small} />}
+                                editIcon={
+                                    <MatIcon
+                                        name={'add-a-photo'}
+                                        color={theme.colors.accent}
+                                        size={theme.sizes.small}
+                                    />
+                                }
                                 onPress={() => _showPicker('fo')}
                             />
                         ) : (
-                                <SEVideo editable source={fo_video} onEdit={() => _showPicker('fo')} />
-                            )}
+                            <SEVideo editable source={fo_video} onEdit={() => _showPicker('fo')} />
+                        )}
                         {!dtl_video ? (
                             <SEVideoPlaceholder
                                 title={'Down-the-Line'}
                                 icon={<Image source={dtl} resizeMethod={'resize'} style={sharedStyles.image} />}
-                                editIcon={<MatIcon name={'add-a-photo'} color={theme.colors.accent} size={theme.sizes.small} />}
+                                editIcon={
+                                    <MatIcon
+                                        name={'add-a-photo'}
+                                        color={theme.colors.accent}
+                                        size={theme.sizes.small}
+                                    />
+                                }
                                 onPress={() => _showPicker('dtl')}
                             />
                         ) : (
-                                <SEVideo
-                                    editable
-                                    source={dtl_video}
-                                    style={{ marginLeft: theme.spaces.medium }}
-                                    onEdit={() => _showPicker('dtl')}
-                                />
-                            )}
+                            <SEVideo
+                                editable
+                                source={dtl_video}
+                                style={{ marginLeft: theme.spaces.medium }}
+                                onEdit={() => _showPicker('dtl')}
+                            />
+                        )}
                     </View>
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0, marginTop: theme.spaces.jumbo }]}>
                         <Subheading style={listStyles.heading}>{'Special Requests / Comments'}</Subheading>
@@ -322,10 +333,7 @@ export const Submit = props => {
                     {!useNotes && (
                         <TouchableOpacity
                             activeOpacity={0.8}
-                            style={[
-                                formStyles.dashed,
-                                styles.dashButton,
-                            ]}
+                            style={[formStyles.dashed, styles.dashButton]}
                             onPress={() => setUseNotes(true)}>
                             <MatIcon name={'add-circle'} color={theme.colors.accent} size={24} />
                         </TouchableOpacity>
@@ -355,7 +363,8 @@ export const Submit = props => {
                                 value={notes}
                                 style={[formStyles.active]}
                             />
-                            <Caption style={{ alignSelf: 'flex-end', marginTop: theme.spaces.small }}>{`${500 - notes.length} Characters Left`}</Caption>
+                            <Caption style={{ alignSelf: 'flex-end', marginTop: theme.spaces.small }}>{`${500 -
+                                notes.length} Characters Left`}</Caption>
                         </>
                     )}
                     <SEButton
@@ -371,11 +380,12 @@ export const Submit = props => {
     );
 };
 
-const useStyles = (theme: Theme) => StyleSheet.create({
-    dashButton: {
-        padding: theme.spaces.medium,
-        minHeight: theme.sizes.xLarge,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
+const useStyles = (theme: Theme) =>
+    StyleSheet.create({
+        dashButton: {
+            padding: theme.spaces.medium,
+            minHeight: theme.sizes.xLarge,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+    });

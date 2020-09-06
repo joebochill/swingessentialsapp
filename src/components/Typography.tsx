@@ -1,8 +1,6 @@
 import React from 'react';
-import { Text, TextProps, TextStyle, StyleProp, I18nManager, Platform } from 'react-native';
+import { Text, TextProps, TextStyle, StyleProp } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { unit } from '../styles/sizes';
-import { $DeepPartial } from '@callstack/react-theme-provider';
 import { Theme } from '../styles/theme';
 
 export type TypographyProps = {

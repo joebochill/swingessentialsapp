@@ -1,19 +1,17 @@
-import React, { Component, useState } from 'react';
-import { withTheme, Card, Avatar, Button, useTheme, ActivityIndicator } from 'react-native-paper'; //'../../styles/theme';
+import React, { useState } from 'react';
+import { useTheme, ActivityIndicator } from 'react-native-paper'; //'../../styles/theme';
 
 // Components
-import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle, Platform } from 'react-native';
-import { Label, Subtitle } from '../';
+import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { Subtitle } from '../';
 import { YouTube } from './Youtube';
-import { Icon } from 'react-native-elements';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { width, aspectHeight } from '../../utilities/dimensions';
-import { spaces, unit, sizes } from '../../styles/sizes';
+import { unit } from '../../styles/sizes';
 import { black } from '../../styles/colors';
 
 // Types
-import { $DeepPartial } from '@callstack/react-theme-provider';
 import { Theme } from '../../styles/theme';
 
 export interface VideoCardProps {
@@ -115,7 +113,7 @@ const useStyles = (theme: Theme) =>
         },
         header: {
             height: unit(52),
-            paddingHorizontal: spaces.medium,
+            paddingHorizontal: theme.spaces.medium,
             overflow: 'hidden',
             flexDirection: 'row',
             alignItems: 'center',

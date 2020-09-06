@@ -55,11 +55,7 @@ export const Tips = props => {
                 ListEmptyComponent={
                     <>
                         <Divider />
-                        <List.Item
-                            title={'No Tips Yet!'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                        />
+                        <List.Item title={'No Tips Yet!'} style={listStyles.item} titleStyle={{ marginLeft: -8 }} />
                         <Divider />
                     </>
                 }
@@ -71,13 +67,16 @@ export const Tips = props => {
                             titleNumberOfLines={2}
                             titleEllipsizeMode={'tail'}
                             onPress={() => props.navigation.push(ROUTES.TIP, { tip: item })}
-
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }) => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <MatIcon name={'chevron-right'} size={theme.sizes.small} style={{ marginRight: -1 * theme.spaces.small }} />
+                                    <MatIcon
+                                        name={'chevron-right'}
+                                        size={theme.sizes.small}
+                                        style={{ marginRight: -1 * theme.spaces.small }}
+                                    />
                                 </View>
                             )}
                         />
