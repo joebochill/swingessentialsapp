@@ -12,8 +12,9 @@ import { Credentials } from '../../__types__';
 import { HttpRequest } from '../../api/http';
 import { Logger } from '../../utilities/logging';
 import * as Keychain from 'react-native-keychain';
+import AsyncStorage from '@react-native-community/async-storage';
 
-export function requestLogin(userCredentials: Credentials, useTouch: boolean = false) {
+export function requestLogin(userCredentials: Credentials, remember: boolean = false, useTouch: boolean = false) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({ type: ACTIONS.LOGIN.REQUEST });
         return fetch(BASEURL + '/' + ACTIONS.LOGIN.API, {
@@ -26,6 +27,9 @@ export function requestLogin(userCredentials: Credentials, useTouch: boolean = f
                     case 200:
                         if (useTouch) Keychain.setGenericPassword(userCredentials.username, userCredentials.password);
                         else Keychain.resetGenericPassword();
+                        if (remember) {
+                            AsyncStorage.setItem('@SwingEssentials:lastUser', userCredentials.username);
+                        }
 
                         const token = response.headers.get('Token');
                         response

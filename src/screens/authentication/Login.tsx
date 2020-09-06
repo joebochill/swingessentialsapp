@@ -87,6 +87,8 @@ export const Login = (props: NavigationInjectedProps) => {
             try {
                 const save = await AsyncStorage.getItem('@SwingEssentials:saveUser');
                 const use = await AsyncStorage.getItem('@SwingEssentials:useTouch');
+                const storedUser = await AsyncStorage.getItem('@SwingEssentials:lastUser');
+                setUsername(storedUser || username);
                 setRemember(save === 'yes');
                 setUseBiometry(use === 'yes');
             } catch (err) {
@@ -177,9 +179,9 @@ export const Login = (props: NavigationInjectedProps) => {
                 return;
             }
             setError(false);
-            dispatch(requestLogin({ username: user, password: pass }, useBiometry));
+            dispatch(requestLogin({ username: user, password: pass }, remember, useBiometry));
         },
-        [dispatch, useBiometry],
+        [dispatch, useBiometry, remember],
     );
 
     const showBiometricLogin = useCallback(async () => {
@@ -316,6 +318,10 @@ export const Login = (props: NavigationInjectedProps) => {
                                 onValueChange={(val: boolean) => {
                                     setRemember(val);
                                     AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
+                                    if (!val) {
+                                        AsyncStorage.removeItem('@SwingEssentials:lastUser');
+                                        setUsername('');
+                                    }
                                 }}
                                 ios_backgroundColor={theme.colors.light}
                                 trackColor={{ false: theme.colors.onPrimary, true: theme.colors.accent }}

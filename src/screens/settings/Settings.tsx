@@ -87,7 +87,10 @@ export const Settings = (props: NavigationStackScreenProps) => {
         <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
             <SEHeader title={userData.username} subtitle={memberString} mainAction={'back'} />
             <ScrollView
-                contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
+                contentContainerStyle={[
+                    flexStyles.paddingMedium,
+                    { paddingHorizontal: 0, paddingBottom: height * 0.5 },
+                ]}
                 keyboardShouldPersistTaps={'always'}
                 refreshControl={
                     <RefreshControl
