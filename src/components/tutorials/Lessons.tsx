@@ -8,7 +8,7 @@ import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
-import { useSharedStyles, useFlexStyles } from '../../styles';
+import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
@@ -22,6 +22,7 @@ export const LessonsTutorial = () => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const flexStyles = useFlexStyles(theme);
+    const listStyles = useListStyles(theme);
     const dispatch = useDispatch();
 
     const sections = [
@@ -75,7 +76,7 @@ export const LessonsTutorial = () => {
                         <List.Item
                             title={item.date}
                             description={'Remote Lesson'}
-                            style={{ backgroundColor: theme.colors.onPrimary }}
+                            style={listStyles.item}
                             right={({ style, ...rightProps }) => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     {item.new && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}

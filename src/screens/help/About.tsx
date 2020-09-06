@@ -2,7 +2,7 @@ import * as React from 'react';
 
 // Components
 import { View } from 'react-native';
-import { Body, H6, H7, CollapsibleHeaderLayout } from '../../components';
+import { Body, CollapsibleHeaderLayout, SEButton } from '../../components';
 
 // Styles
 import { useSharedStyles } from '../../styles';
@@ -12,18 +12,20 @@ export const About = () => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     return (
-        <CollapsibleHeaderLayout title={'About'} subtitle={'What is SwingEssentials'}>
+        <CollapsibleHeaderLayout title={'About'} subtitle={'What is SwingEssentials®?'}>
             <View style={sharedStyles.paddingHorizontalMedium}>
-                <H6>What is Swing Essentials®?</H6>
-
-                <H7 style={sharedStyles.textTitle}>Lessons On Your Schedule</H7>
-                <Body style={sharedStyles.paragraph}>
+                <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
+                    <SEButton mode={'text'} title={'Lessons on Your Schedule'} uppercase />
+                </View>
+                <Body>
                     Swing Essentials® provides you with affordable, individualized one-on-one lessons from a
                     PGA-certified golf pro from the comfort and convenience of your home.
                 </Body>
 
-                <H7 style={sharedStyles.textTitle}>How It Works</H7>
-                <Body style={sharedStyles.paragraph}>
+                <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo, marginHorizontal: 0 }]}>
+                    <SEButton mode={'text'} title={'How It Works'} uppercase />
+                </View>
+                <Body>
                     1) Open the Swing Essentials® app and snap a short video of your swing using your camera.
                 </Body>
                 <Body style={sharedStyles.paragraph}>
@@ -34,29 +36,33 @@ export const About = () => {
                     areas of your swing that could be improved.
                 </Body>
 
-                <H7 style={sharedStyles.textTitle}>Why Swing Essentials®</H7>
-                <Body style={sharedStyles.paragraph}>
+                <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo, marginHorizontal: 0 }]}>
+                    <SEButton mode={'text'} title={'Why Swing Essentials®'} uppercase />
+                </View>
+                <Body>
                     Swing Essentials® offers a true one-on-one experience. Our PGA-certified professional puts a
                     personal touch on each and every lesson, giving you the confidence to know that your lesson is just
                     for you. But don’t take our word for it - hear what our customers have to say.
                 </Body>
 
-                <H7 style={sharedStyles.textTitle}>Testimonials</H7>
-                <Body style={sharedStyles.paragraph}>
+                <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo, marginHorizontal: 0 }]}>
+                    <SEButton mode={'text'} title={'Testimonials'} uppercase />
+                </View>
+                <Body>
                     "Thanks for the great work this last year. After working with you, I've lowered my handicap by three
                     and a half!"
                 </Body>
                 <Body style={sharedStyles.paragraph} font={'semiBold'}>
                     - David A.
                 </Body>
-                <Body style={sharedStyles.paragraph}>
+                <Body style={{marginTop: theme.spaces.large}}>
                     "I sent my swing in to Swing Essentials® and I'm playing so much better - it's easily taken four to
                     five shots off my game. I strongly recommend it!"
                 </Body>
                 <Body style={sharedStyles.paragraph} font={'semiBold'}>
                     - Dean L.
                 </Body>
-                <Body style={sharedStyles.paragraph}>
+                <Body style={{marginTop: theme.spaces.large}}>
                     "Thanks to you, I have been playing my best golf. It's all finally clicking now!"
                 </Body>
                 <Body style={sharedStyles.paragraph} font={'semiBold'}>

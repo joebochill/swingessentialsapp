@@ -47,6 +47,11 @@ export const useListStyles = (theme: Theme) => StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         minHeight: theme.sizes.xLarge,
+    },
+    heading:{
+        fontSize: theme.fontSizes[14], 
+        marginVertical: theme.spaces.small,//9, // to match button style
+        textTransform: 'uppercase',
     }
 })
 

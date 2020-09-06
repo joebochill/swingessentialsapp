@@ -9,7 +9,7 @@ import { ROUTES } from '../../constants/routes';
 // Styles
 import bg from '../../images/banners/tips.jpg';
 import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
-import { useTheme, Divider, List } from 'react-native-paper';
+import { useTheme, Divider, List, Subheading } from 'react-native-paper';
 
 // Utilities
 import { makeGroups } from '../../utilities';
@@ -46,8 +46,8 @@ export const Tips = props => {
             }}>
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (
-                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }, index > 0 ? { marginTop: theme.spaces.jumbo } : {}]}>
-                        <SEButton mode={'text'} title={bucketName} uppercase />
+                    <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: theme.spaces.jumbo } : {}]}>
+                        <Subheading style={listStyles.heading}>{bucketName}</Subheading>
                     </View>
                 )}
                 sections={sections}

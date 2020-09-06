@@ -6,16 +6,17 @@ import { Button, Theme, useTheme } from 'react-native-paper';
 const useStyles = (theme: Theme) =>
     StyleSheet.create({
         label: {
-            color: theme.colors.accent,
+            color: theme.colors.onPrimary,
         },
         textButton: {
             marginHorizontal: 0,
+            color: theme.colors.text,
+        },
+        outlinedButton: {
+            color: theme.colors.text,
         },
         dark: {
             backgroundColor: theme.colors.accent,
-        },
-        darkLabel: {
-            color: theme.colors.onPrimary,
         },
     });
 
@@ -35,7 +36,7 @@ export const SEButton: React.FC<SEButtonProps> = props => {
             mode={mode}
             style={[dark ? styles.dark : {}, style]}
             contentStyle={[contentStyle]}
-            labelStyle={[dark ? styles.darkLabel : styles.label, mode === 'text' ? styles.textButton : {}, labelStyle]}
+            labelStyle={[styles.label, mode === 'text' ? styles.textButton : mode === 'outlined' ? styles.outlinedButton : {}, labelStyle]}
             {...other}>
             {title}
         </Button>

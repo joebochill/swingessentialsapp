@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, StyleSheet, Platform } from 'react-native';
-import { CollapsibleHeaderLayout } from '../../components';
+import { CollapsibleHeaderLayout, SEButton } from '../../components';
 import { Body, H6, H7, YouTube } from '../../components';
 
 // Styles
-import { useSharedStyles } from '../../styles';
+import { useSharedStyles, useListStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 
@@ -19,13 +19,15 @@ import { ApplicationState } from '../../__types__';
 
 // Redux
 import { loadFAQ } from '../../redux/actions';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Subheading } from 'react-native-paper';
 
 export const FAQ = () => {
     const faqState = useSelector((state: ApplicationState) => state.faq);
     const dispatch = useDispatch();
     const theme = useTheme();
+    const styles = useStyles(theme);
     const sharedStyles = useSharedStyles(theme);
+    const listStyles = useListStyles(theme);
 
     return (
         <CollapsibleHeaderLayout
@@ -36,32 +38,34 @@ export const FAQ = () => {
                 dispatch(loadFAQ());
             }}>
             <View style={[sharedStyles.pageContainer, sharedStyles.paddingHorizontalMedium]}>
-                <H6>Frequently Asked Questions</H6>
                 {faqState.questions.map((faq, ind) => (
                     <React.Fragment key={`FAQ_${ind}`}>
-                        <H7 style={sharedStyles.textTitle}>{faq.question}</H7>
+                        <View style={[sharedStyles.sectionHeader, { marginTop: ind > 0 ? theme.spaces.jumbo : 0, marginHorizontal: 0 }]}>
+                            <Subheading style={listStyles.heading}>{faq.question}</Subheading>
+                        </View>
+                        
                         {!faq.platform_specific ? (
                             splitParagraphs(faq.answer).map((p: string, pInd: number) => (
-                                <Body key={`faq-${ind}-${pInd}`} style={sharedStyles.paragraph}>
+                                <Body key={`faq-${ind}-${pInd}`} style={[pInd > 0 ? sharedStyles.paragraph : {}]}>
                                     {p}
                                 </Body>
                             ))
                         ) : (
-                            <>
-                                {Platform.OS === 'ios' &&
-                                    splitParagraphs(faq.answer_ios).map((p: string, pInd: number) => (
-                                        <Body key={`faq-${ind}-${pInd}`} style={sharedStyles.paragraph}>
-                                            {p}
-                                        </Body>
-                                    ))}
-                                {Platform.OS === 'android' &&
-                                    splitParagraphs(faq.answer_android).map((p: string, pInd: number) => (
-                                        <Body key={`faq-${ind}-${pInd}`} style={sharedStyles.paragraph}>
-                                            {p}
-                                        </Body>
-                                    ))}
-                            </>
-                        )}
+                                <>
+                                    {Platform.OS === 'ios' &&
+                                        splitParagraphs(faq.answer_ios).map((p: string, pInd: number) => (
+                                            <Body key={`faq-${ind}-${pInd}`} style={[pInd > 0 ? sharedStyles.paragraph : {}]}>
+                                                {p}
+                                            </Body>
+                                        ))}
+                                    {Platform.OS === 'android' &&
+                                        splitParagraphs(faq.answer_android).map((p: string, pInd: number) => (
+                                            <Body key={`faq-${ind}-${pInd}`} style={[pInd > 0 ? sharedStyles.paragraph : {}]}>
+                                                {p}
+                                            </Body>
+                                        ))}
+                                </>
+                            )}
                         {faq.video === '' ? null : <YouTube videoId={faq.video} style={styles.video} />}
                     </React.Fragment>
                 ))}
@@ -69,9 +73,9 @@ export const FAQ = () => {
         </CollapsibleHeaderLayout>
     );
 };
-const styles = StyleSheet.create({
+const useStyles = (theme: Theme) => StyleSheet.create({
     video: {
-        height: (width - 2 * spaces.medium) * (9 / 16),
-        marginTop: spaces.small,
+        height: (width - 2 * theme.spaces.medium) * (9 / 16),
+        marginTop: theme.spaces.xLarge,
     },
 });

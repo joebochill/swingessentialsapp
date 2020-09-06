@@ -7,7 +7,7 @@ import { Body, CollapsibleHeaderLayout, LessonsTutorial, SEButton, wrapIcon } fr
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
-import { useSharedStyles, useFlexStyles } from '../../styles';
+import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
 import { useTheme, List, Divider } from 'react-native-paper';
 import bg from '../../images/banners/lessons.jpg';
 
@@ -45,6 +45,7 @@ export const Lessons = props => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const flexStyles = useFlexStyles(theme);
+    const listStyles = useListStyles(theme);
     const dispatch = useDispatch();
 
     return (
@@ -74,7 +75,7 @@ export const Lessons = props => {
                         <List.Item
                             title={'Welcome to Swing Essentials!'}
                             onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: null })}
-                            style={{ backgroundColor: theme.colors.onPrimary, alignItems: 'center' }}
+                            style={listStyles.item}
                             right={({ style, ...rightProps }) => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>
@@ -99,7 +100,7 @@ export const Lessons = props => {
                                         : 'Remote lesson'
                                 }
                                 onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
-                                style={{ backgroundColor: theme.colors.onPrimary, alignItems: 'center' }}
+                                style={listStyles.item}
                                 right={({ style, ...rightProps }) => (
                                     <View style={[flexStyles.row, style]} {...rightProps}>
                                         {!item.viewed && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}
@@ -121,7 +122,7 @@ export const Lessons = props => {
                                         ? 'In-person lesson'
                                         : 'Remote lesson'
                                 }
-                                style={{ backgroundColor: theme.colors.onPrimary, alignItems: 'center' }}
+                                style={listStyles.item}
                                 right={({ style, ...rightProps }) => (
                                     <View style={[flexStyles.row, style]} {...rightProps}>
                                         <Body style={{ marginRight: theme.spaces.small }}>IN PROGRESS</Body>
