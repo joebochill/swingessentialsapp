@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import { Body, H7, VideoCard, CollapsibleHeaderLayout, HomeTutorial, SEButton, H4, Label } from '../../components';
+import { VideoCard, CollapsibleHeaderLayout, HomeTutorial, SEButton, H4, Label } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Constants

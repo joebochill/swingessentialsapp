@@ -8,7 +8,8 @@ import {
     GestureResponderEvent,
     TouchableOpacity,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Body } from '../';
 
 // Styles
@@ -103,7 +104,7 @@ export const VideoControls = (props: VideoControlRowProps) => {
                 {!active && <Body style={styles.label}>{mode === 'record' ? 'Cancel' : 'Retake'}</Body>}
             </TouchableOpacity>
             {mode === 'play' && (
-                <Icon
+                <MatIcon
                     name={active ? 'pause' : 'play-arrow'}
                     size={theme.sizes.xLarge}
                     underlayColor={transparent}
@@ -116,8 +117,7 @@ export const VideoControls = (props: VideoControlRowProps) => {
             <TouchableOpacity onPress={() => onNext()} disabled={active} style={{ flex: 1, alignItems: 'flex-end' }}>
                 {!active && mode === 'play' && <Body style={styles.label}>Use Video</Body>}
                 {!active && mode === 'record' && (
-                    <Icon
-                        type={'material-community'}
+                    <MaterialCommunityIcon
                         name={'camera-switch'}
                         size={theme.sizes.medium}
                         underlayColor={transparent}

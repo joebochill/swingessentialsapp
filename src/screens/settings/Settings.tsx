@@ -3,16 +3,15 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import { H7, Body, CollapsibleHeaderLayout } from '../../components';
+import { Body, CollapsibleHeaderLayout } from '../../components';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
 
 // Styles
-import { useSharedStyles } from '../../styles';
-import { spaces, sizes } from '../../styles/sizes';
-import { useTheme } from 'react-native-paper';
+import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
+import { useTheme, List, Subheading, Divider } from 'react-native-paper';
 
 // Types
 import { ApplicationState } from '../../__types__';
@@ -26,6 +25,8 @@ export const Settings = (props: NavigationStackScreenProps) => {
     const dispatch = useDispatch();
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
+    const listStyles = useListStyles(theme);
+    const flexStyles = useFlexStyles(theme);
 
     useEffect(() => {
         if (!token) {
@@ -41,66 +42,94 @@ export const Settings = (props: NavigationStackScreenProps) => {
             onRefresh={() => {
                 dispatch(loadSettings());
             }}>
-            <View style={sharedStyles.sectionHeader}>
-                <H7>User Settings</H7>
+            <View style={[sharedStyles.sectionHeader]}>
+                <Subheading style={listStyles.heading}>{'User Settings'}</Subheading>
             </View>
-            <ListItem
-                containerStyle={sharedStyles.listItem}
-                contentContainerStyle={sharedStyles.listItemContent}
-                bottomDivider
-                topDivider
-                onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
-                title={<Body>Handedness</Body>}
-                rightTitle={<Body>{settings.handedness.charAt(0).toUpperCase() + settings.handedness.substr(1)}</Body>}
-                rightIcon={{
-                    name: 'chevron-right',
-                    color: theme.colors.text,
-                    size: sizes.small,
-                }}
-            />
-            <View style={[sharedStyles.sectionHeader, { marginTop: spaces.large }]}>
-                <H7>Camera Settings</H7>
+            <>
+                <Divider />
+                <List.Item
+                    title={'Handedness'}
+                    titleEllipsizeMode={'tail'}
+                    onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
+                    style={listStyles.item}
+                    titleStyle={{ marginLeft: -8 }}
+                    descriptionStyle={{ marginLeft: -8 }}
+                    right={({ style, ...rightProps }) => (
+                        <View style={[flexStyles.row, style]} {...rightProps}>
+                            <Body>{settings.handedness.charAt(0).toUpperCase() + settings.handedness.substr(1)}</Body>
+                            <MatIcon
+                                name={'chevron-right'}
+                                size={theme.sizes.small}
+                                style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
+                            />
+                        </View>
+                    )}
+                />
+                <Divider />
+            </>
+            <View style={[sharedStyles.sectionHeader, {marginTop: theme.spaces.jumbo}]}>
+                <Subheading style={listStyles.heading}>{'Camera Settings'}</Subheading>
             </View>
-            <ListItem
-                containerStyle={sharedStyles.listItem}
-                contentContainerStyle={sharedStyles.listItemContent}
-                bottomDivider
-                topDivider
-                onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'duration' })}
-                title={<Body>Duration</Body>}
-                rightTitle={<Body>{`${settings.duration}s`}</Body>}
-                rightIcon={{
-                    name: 'chevron-right',
-                    color: theme.colors.text,
-                    size: sizes.small,
-                }}
-            />
-            <ListItem
-                containerStyle={sharedStyles.listItem}
-                contentContainerStyle={sharedStyles.listItemContent}
-                bottomDivider
-                onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'delay' })}
-                title={<Body>Delay</Body>}
-                rightTitle={<Body>{`${settings.delay}s`}</Body>}
-                rightIcon={{
-                    name: 'chevron-right',
-                    color: theme.colors.text,
-                    size: sizes.small,
-                }}
-            />
-            <ListItem
-                containerStyle={sharedStyles.listItem}
-                contentContainerStyle={sharedStyles.listItemContent}
-                bottomDivider
-                onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'overlay' })}
-                title={<Body>Overlay</Body>}
-                rightTitle={<Body>{`${settings.overlay ? 'On' : 'Off'}`}</Body>}
-                rightIcon={{
-                    name: 'chevron-right',
-                    color: theme.colors.text,
-                    size: sizes.small,
-                }}
-            />
+            <>
+                <Divider />
+                <List.Item
+                    title={'Recording Duration'}
+                    titleEllipsizeMode={'tail'}
+                    onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'duration' })}
+                    style={listStyles.item}
+                    titleStyle={{ marginLeft: -8 }}
+                    descriptionStyle={{ marginLeft: -8 }}
+                    right={({ style, ...rightProps }) => (
+                        <View style={[flexStyles.row, style]} {...rightProps}>
+                            <Body>{`${settings.duration}s`}</Body>
+                            <MatIcon
+                                name={'chevron-right'}
+                                size={theme.sizes.small}
+                                style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
+                            />
+                        </View>
+                    )}
+                />
+                <Divider />
+                <List.Item
+                    title={'Recording Delay'}
+                    titleEllipsizeMode={'tail'}
+                    onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'delay' })}
+                    style={listStyles.item}
+                    titleStyle={{ marginLeft: -8 }}
+                    descriptionStyle={{ marginLeft: -8 }}
+                    right={({ style, ...rightProps }) => (
+                        <View style={[flexStyles.row, style]} {...rightProps}>
+                            <Body>{`${settings.delay}s`}</Body>
+                            <MatIcon
+                                name={'chevron-right'}
+                                size={theme.sizes.small}
+                                style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
+                            />
+                        </View>
+                    )}
+                />
+                <Divider />
+                <List.Item
+                    title={'Stance Overlay'}
+                    titleEllipsizeMode={'tail'}
+                    onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'overlay' })}
+                    style={listStyles.item}
+                    titleStyle={{ marginLeft: -8 }}
+                    descriptionStyle={{ marginLeft: -8 }}
+                    right={({ style, ...rightProps }) => (
+                        <View style={[flexStyles.row, style]} {...rightProps}>
+                            <Body>{`${settings.overlay ? 'On' : 'Off'}`}</Body>
+                            <MatIcon
+                                name={'chevron-right'}
+                                size={theme.sizes.small}
+                                style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
+                            />
+                        </View>
+                    )}
+                />
+                <Divider />
+            </>
         </CollapsibleHeaderLayout>
     );
 };

@@ -43,8 +43,7 @@ export const mainNavigationItems: RouteGroup = {
         },
         {
             title: 'Tip of the Month',
-            iconType: 'material-community',
-            icon: 'calendar-today',
+            icon: 'today',
             route: ROUTES.TIPS,
         },
         {

@@ -201,7 +201,7 @@ export const Login = (props: NavigationInjectedProps) => {
                 case 'LAErrorAuthenticationFailed':
                 case 'RCTTouchIDUnknownError':
                     // authentication failed
-                    setTouchFail(`Your ${label} was not recognized. Please log in using your password.`);
+                    setTouchFail(`Your ${label} was not recognized. Please sign in using your password.`);
                     break;
                 case 'LAErrorPasscodeNotSet':
                 case 'LAErrorTouchIDNotAvailable':

@@ -62,7 +62,7 @@ export const useListStyles = (theme: Theme = defaultTheme) =>
             // marginLeft: 10,
             alignItems: 'center',
             flexDirection: 'row',
-            minHeight: theme.sizes.xLarge,
+            minHeight: 'auto',//theme.sizes.xLarge,
         },
         heading: {
             fontSize: theme.fontSizes[14],

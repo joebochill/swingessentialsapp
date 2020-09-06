@@ -14,7 +14,7 @@ import {
     Alert,
 } from 'react-native';
 import { NavigationItems } from './NavigationContent';
-import { ListItem } from 'react-native-elements';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { Body, H7, TokenModal, CollapsibleHeaderLayout } from '../components';
 
 // Constants
@@ -27,9 +27,9 @@ import {
 import { ROUTES } from '../constants/routes';
 
 // Styles
-import { useSharedStyles } from '../styles';
+import { useSharedStyles, useListStyles, useFlexStyles } from '../styles';
 // import { white } from '../styles/colors';
-import { useTheme } from 'react-native-paper';
+import { useTheme, List, Divider } from 'react-native-paper';
 
 import { unit, spaces, sizes } from '../styles/sizes';
 
@@ -44,10 +44,14 @@ import { loadUserContent, requestLogout } from '../redux/actions';
 
 // Icons
 import se from '../images/logo-small.png';
+import { Icon } from 'react-native-paper/lib/typescript/src/components/Avatar/Avatar';
 
 export const NavigationDrawer = props => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
+    const listStyles = useListStyles(theme);
+    const flexStyles = useFlexStyles(theme);
+
     const dispatch = useDispatch();
     const [scrollY] = useState(new Animated.Value(0));
     const [activePanel, setActivePanel] = useState(0);
@@ -255,7 +259,7 @@ export const NavigationDrawer = props => {
                         </Animated.View>
                     </Animated.View>
                     <View style={[styles.footer]}>
-                        <H7 style={{ color: theme.colors.onPrimary }}>SWING ESSENTIALS</H7>
+                        <H7 font={'semiBold'} style={{ color: theme.colors.onPrimary }}>SWING ESSENTIALS</H7>
                         <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
                             <Body style={{ color: theme.colors.onPrimary }} font={'light'}>{`v${APP_VERSION}`}</Body>
                         </Animated.View>
@@ -269,22 +273,21 @@ export const NavigationDrawer = props => {
                     panelData = token ? panelData : panelData.filter(item => !item.private);
                     if (ind === 0) {
                         panelData.push({
-                            title: token ? 'Sign Out' : 'Log In',
-                            iconType: token ? 'material-community' : 'material',
-                            icon: token ? 'logout-variant' : 'person',
+                            title: token ? 'Sign Out' : 'Sign In',
+                            icon: token ? 'exit-to-app' : 'person',
                             onPress: token
                                 ? () => {
-                                      Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-                                          {
-                                              text: 'Sign Out',
-                                              onPress: () => {
-                                                  dispatch(requestLogout());
-                                                  navigation.closeDrawer();
-                                              },
-                                          },
-                                          { text: 'Cancel' },
-                                      ]);
-                                  }
+                                    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+                                        {
+                                            text: 'Sign Out',
+                                            onPress: () => {
+                                                dispatch(requestLogout());
+                                                navigation.closeDrawer();
+                                            },
+                                        },
+                                        { text: 'Cancel' },
+                                    ]);
+                                }
                                 : () => navigation.navigate(ROUTES.LOGIN),
                         });
                     }
@@ -294,45 +297,47 @@ export const NavigationDrawer = props => {
                                 data={ind === activePanel ? panelData : []}
                                 keyExtractor={(item, index) => `${index}`}
                                 renderItem={({ item }) => (
-                                    <ListItem
-                                        containerStyle={sharedStyles.listItem}
-                                        contentContainerStyle={sharedStyles.listItemContent}
-                                        bottomDivider
-                                        onPress={
-                                            item.route
-                                                ? item.route === ROUTES.HOME
-                                                    ? () => {
-                                                          navigation.closeDrawer();
-                                                      }
-                                                    : () => {
-                                                          navigation.navigate(item.route);
-                                                      }
-                                                : item.activatePanel !== undefined
-                                                ? () => {
-                                                      setActivePanel(item.activatePanel);
-                                                  }
-                                                : item.onPress
-                                                ? () => item.onPress()
-                                                : undefined
-                                        }
-                                        title={<Body style={[styles.navLabel]}>{item.title}</Body>}
-                                        leftIcon={{
-                                            type: item.iconType || 'material',
-                                            name: item.icon,
-                                            color: theme.colors.text,
-                                            size: sizes.small,
-                                            iconStyle: { marginLeft: 0 },
-                                        }}
-                                        rightIcon={
-                                            item.nested
-                                                ? {
-                                                      name: 'chevron-right',
-                                                      color: theme.colors.text,
-                                                      size: sizes.small,
-                                                  }
-                                                : undefined
-                                        }
-                                    />
+                                    <>
+                                        <List.Item
+                                            title={item.title}
+                                            titleEllipsizeMode={'tail'}
+                                            left={() => (
+                                                <List.Icon icon={({ size, color }) => <MatIcon name={item.icon} size={size} color={color} />} />
+                                            )}
+                                            onPress={
+                                                item.route
+                                                    ? item.route === ROUTES.HOME
+                                                        ? () => {
+                                                            navigation.closeDrawer();
+                                                        }
+                                                        : () => {
+                                                            navigation.navigate(item.route);
+                                                        }
+                                                    : item.activatePanel !== undefined
+                                                        ? () => {
+                                                            setActivePanel(item.activatePanel);
+                                                        }
+                                                        : item.onPress
+                                                            ? () => item.onPress()
+                                                            : undefined
+                                            }
+                                            style={[listStyles.item, { paddingLeft: 0, paddingVertical: 0, minHeight: 'auto' }]}
+                                            titleStyle={{ marginLeft: theme.spaces.small, fontSize: theme.fontSizes[16] }}
+                                            right={item.nested ? ({ style, ...rightProps }) => (
+                                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                                    <MatIcon
+                                                        name={'chevron-right'}
+                                                        size={theme.sizes.small}
+                                                        color={theme.colors.accent}
+                                                        style={{
+                                                            marginRight: -1 * theme.spaces.small,
+                                                        }}
+                                                    />
+                                                </View>
+                                            ) : undefined}
+                                        />
+                                        <Divider />
+                                    </>
                                 )}
                             />
                         </Animated.View>

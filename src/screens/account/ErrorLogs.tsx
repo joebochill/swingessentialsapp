@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // Components
 import { View } from 'react-native';
 import { Body, SEButton, CollapsibleHeaderLayout, wrapIcon, HeaderIcon } from '../../components';
-import { Icon } from 'react-native-elements';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
 import { useSharedStyles } from '../../styles';
@@ -18,8 +18,8 @@ import { ApplicationState } from 'src/__types__';
 import { useTheme } from 'react-native-paper';
 
 // Icons
-const RefreshIcon = wrapIcon({ IconClass: Icon, name: 'refresh' });
-const MailIcon = wrapIcon({ IconClass: Icon, name: 'mail' });
+const RefreshIcon = wrapIcon({ IconClass: MatIcon, name: 'refresh' });
+const MailIcon = wrapIcon({ IconClass: MatIcon, name: 'mail' });
 
 export const ErrorLogs = props => {
     const [logs, setLogs] = useState('');
