@@ -289,6 +289,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                         <TextInput
                             label={'Location'}
                             value={personal.location}
+                            placeholder={'e.g., Denver, CO'}
                             autoCorrect={false}
                             autoCapitalize={'none'}
                             style={[
@@ -306,6 +307,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                         <TextInput
                             label={'Phone Number'}
                             value={personal.phone}
+                            placeholder={'e.g., 123-456-7890'}
                             autoCorrect={false}
                             autoCapitalize={'none'}
                             style={[

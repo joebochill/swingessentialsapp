@@ -359,6 +359,7 @@ export const Submit = props => {
                                 textAlignVertical={'top'}
                                 underlineColorAndroid={transparent}
                                 value={notes}
+                                placeholder={'e.g., Help me with my slice!'}
                                 style={[formStyles.active]}
                             />
                             <Caption style={{ alignSelf: 'flex-end', marginTop: theme.spaces.small }}>{`${500 -

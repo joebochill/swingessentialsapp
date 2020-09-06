@@ -260,7 +260,7 @@ export const Login = (props: NavigationInjectedProps) => {
                                     passField.current.focus();
                                 }
                             }}
-                            placeholder="Please enter your username"
+                            placeholder="Enter your username or email address"
                             returnKeyType={'next'}
                             underlineColorAndroid={transparent}
                             value={username}
@@ -299,7 +299,7 @@ export const Login = (props: NavigationInjectedProps) => {
                         onBlur={() => setActiveField(null)}
                         onChangeText={(val: string) => setPassword(val)}
                         onSubmitEditing={() => onLogin(username, password)}
-                        placeholder="Please enter your password"
+                        placeholder="Enter your password"
                         ref={passField}
                         returnKeyType={'go'}
                         secureTextEntry
