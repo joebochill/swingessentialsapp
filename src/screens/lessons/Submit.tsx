@@ -28,7 +28,7 @@ import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 
 // Styles
-import { useSharedStyles, useListStyles, useFormStyles } from '../../styles';
+import { useSharedStyles, useListStyles, useFormStyles, useFlexStyles } from '../../styles';
 import { transparent } from '../../styles/colors';
 import { useTheme, Subheading, TextInput } from 'react-native-paper';
 import bg from '../../images/banners/submit.jpg';
@@ -46,7 +46,7 @@ import { submitLesson } from '../../redux/actions';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
-import color from 'color';
+
 const RNFS = require('react-native-fs');
 
 export const Submit = props => {
@@ -55,7 +55,6 @@ export const Submit = props => {
     const [dtl_video, setDTL] = useState('');
     const [useNotes, setUseNotes] = useState(false);
     const [notes, setNotes] = useState('');
-    const [notesActive, setNotesActive] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const credits = useSelector((state: ApplicationState) => state.credits.count);
     const lessons = useSelector((state: ApplicationState) => state.lessons);
@@ -67,6 +66,7 @@ export const Submit = props => {
     const sharedStyles = useSharedStyles(theme);
     const listStyles = useListStyles(theme);
     const formStyles = useFormStyles(theme);
+    const flexStyles = useFlexStyles(theme);
 
     const roleError =
         role === 'anonymous'
@@ -270,7 +270,7 @@ export const Submit = props => {
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView
                     keyboardShouldPersistTaps={'always'}
-                    contentContainerStyle={sharedStyles.paddingHorizontalMedium}
+                    contentContainerStyle={flexStyles.paddingHorizontal}
                     ref={scroller}>
                     <ErrorBox show={roleError !== ''} error={roleError} style={formStyles.errorBox} />
                     <ErrorBox
@@ -350,12 +350,10 @@ export const Submit = props => {
                                 multiline
                                 onChangeText={val => setNotes(val)}
                                 onFocus={() => {
-                                    setNotesActive(true);
                                     if (scroller.current) {
                                         scroller.current.scrollTo({ x: 0, y: 350, animated: true });
                                     }
                                 }}
-                                onBlur={() => setNotesActive(false)}
                                 returnKeyType={'done'}
                                 spellCheck
                                 textAlignVertical={'top'}

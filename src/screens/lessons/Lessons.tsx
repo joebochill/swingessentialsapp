@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, SectionList } from 'react-native';
-import { Body, CollapsibleHeaderLayout, LessonsTutorial, SEButton, wrapIcon } from '../../components';
+import { Body, CollapsibleHeaderLayout, LessonsTutorial, wrapIcon } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles

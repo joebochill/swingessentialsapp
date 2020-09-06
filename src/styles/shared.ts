@@ -26,7 +26,6 @@ export const useFormStyles = (theme: Theme = defaultTheme) =>
             borderStyle: 'dashed',
             borderColor: theme.colors.dark,
             backgroundColor: theme.colors.surface,
-            // Used in Submit and SEVideo
         },
         errorBox: {
             paddingVertical: theme.spaces.medium,
@@ -56,18 +55,15 @@ export const useListStyles = (theme: Theme = defaultTheme) =>
     StyleSheet.create({
         item: {
             backgroundColor: theme.colors.onPrimary,
-            // padding: 0,
             paddingHorizontal: theme.spaces.medium,
-            // paddingLeft: 0,
-            // marginLeft: 10,
             alignItems: 'center',
             flexDirection: 'row',
-            minHeight: 'auto',//theme.sizes.xLarge,
+            minHeight: theme.sizes.xLarge,
         },
         heading: {
             fontSize: theme.fontSizes[14],
             paddingHorizontal: 0,
-            marginVertical: theme.spaces.small, //9, // to match button style
+            marginVertical: theme.spaces.small,
             textTransform: 'uppercase',
         },
     });
@@ -80,89 +76,27 @@ export const useSharedStyles = (theme: Theme = defaultTheme) =>
             left: 0,
             right: 0,
             bottom: 0,
-            // used in Counter and Record
         },
         border: {
             borderWidth: unit(1),
             borderRadius: theme.roundness,
-            borderColor: theme.colors.primary, //dark,
-            // Used in token modal and up;oad progress modal
+            borderColor: theme.colors.primary,
         },
         centered: {
             alignItems: 'center',
             justifyContent: 'center',
         },
-        dashed: {
-            borderWidth: unit(2),
-            borderRadius: theme.roundness,
-            borderStyle: 'dashed',
-            borderColor: theme.colors.dark, //dark,
-            // Used in Submit and SEVideo
-        },
-        // formLabel: {
-        //     fontFamily: 'SFCompactDisplay-Regular',
-        //     color: theme.colors.accent, //[500],
-        //     marginLeft: 0,
-        //     marginTop: 0,
-        //     fontSize: theme.fontSizes[14],
-        //     fontWeight: '500',
-        // },
         image: {
             height: '100%',
             width: '100%',
             resizeMode: 'contain',
-            // Used in submit and submit tutorial
-        },
-        // input: {
-        //     color: theme.colors.accent, //accent,
-        //     fontSize: theme.fontSizes[14],
-        //     textAlignVertical: 'center',
-        //     paddingHorizontal: theme.spaces.small,
-        // },
-        // inputContainer: {
-        //     // height: sizes.large,
-        //     // backgroundColor: white[50],
-        //     // marginTop: spaces.small,
-        //     // padding: spaces.small,
-        //     // borderColor: theme.colors.dark, //dark,
-        //     // borderWidth: unit(1),
-        //     // borderBottomWidth: unit(1),
-        //     // borderRadius: unit(5),
-        // },
-        textTitle: {
-            marginTop: theme.spaces.medium,
-            // used in About FAQ and Single Lesson
-        },
-        listItem: {
-            paddingHorizontal: theme.spaces.medium,
-            paddingVertical: 0,
-            // Used a LOT
-        },
-        listItemContent: {
-            height: spaceUnit(14),
-            // Used a LOT
-        },
-        disabled: {
-            opacity: 0.7,
-            // Only used on Home
         },
         pageContainer: {
             flex: 1,
             backgroundColor: theme.colors.background,
-            // Used across multiple pages
         },
         paragraph: {
             marginTop: theme.spaces.small,
-            // Used in About FAAQ, Singles
-        },
-        paddingMedium: {
-            padding: theme.spaces.medium,
-            paddingBottom: theme.spaces.jumbo,
-            // Used in several places
-        },
-        paddingHorizontalMedium: {
-            paddingHorizontal: theme.spaces.medium,
-            // used in several places
         },
         sectionHeader: {
             flexDirection: 'row',
@@ -170,6 +104,5 @@ export const useSharedStyles = (theme: Theme = defaultTheme) =>
             justifyContent: 'space-between',
             marginBottom: theme.spaces.medium,
             marginHorizontal: theme.spaces.medium,
-            // Used in several places
         },
     });

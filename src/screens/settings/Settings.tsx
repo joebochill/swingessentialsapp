@@ -67,7 +67,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                 />
                 <Divider />
             </>
-            <View style={[sharedStyles.sectionHeader, {marginTop: theme.spaces.jumbo}]}>
+            <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo }]}>
                 <Subheading style={listStyles.heading}>{'Camera Settings'}</Subheading>
             </View>
             <>

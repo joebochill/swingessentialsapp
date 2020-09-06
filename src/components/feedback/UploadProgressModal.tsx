@@ -49,7 +49,7 @@ export const UploadProgressModal = (props: ProgressModalProps) => {
                             <Body style={{ textAlign: 'left' }}>{`Uploading Videos... ${progress.toFixed(0)}%`}</Body>
                             {progress >= 100 && <Body>{'Creating Lesson...'}</Body>}
                         </View>
-                        <View style={{ flex: 0, justifyContent: 'center' }}></View>
+                        <View style={{ flex: 0, justifyContent: 'center' }} />
                     </View>
                 </View>
             </View>

@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Platform, ScrollView } from 'react-native';
-import { Body, SEHeader, YouTube, SEVideo, VideoCard, LessonTutorial, SEButton } from '../../components';
+import { Body, SEHeader, YouTube, SEVideo, VideoCard, LessonTutorial } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Styles
-import { useSharedStyles, useListStyles } from '../../styles';
+import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
 import { width, height, aspectHeight } from '../../utilities/dimensions';
 
 // Utilities
@@ -32,6 +32,7 @@ export const SingleLesson = props => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const listStyles = useListStyles(theme);
+    const flexStyles = useFlexStyles(theme);
 
     let lesson: Lesson = props.navigation.getParam('lesson', null);
     if (lesson === null) {
@@ -66,7 +67,7 @@ export const SingleLesson = props => {
                       mainAction={'back'}
                   />
                   <ScrollView
-                      contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
+                      contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
                       keyboardShouldPersistTaps={'always'}>
                       {lesson.response_video && (
                           <>

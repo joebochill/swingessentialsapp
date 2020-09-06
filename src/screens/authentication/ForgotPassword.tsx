@@ -6,7 +6,7 @@ import { Body, H7, SEHeader, SEButton, BackgroundImage } from '../../components'
 
 // Styles
 import { transparent } from '../../styles/colors';
-import { useSharedStyles, useFormStyles } from '../../styles';
+import { useSharedStyles, useFormStyles, useFlexStyles } from '../../styles';
 import { height } from '../../utilities/dimensions';
 import { useTheme, TextInput } from 'react-native-paper';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
@@ -26,6 +26,7 @@ export const ForgotPassword = () => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const formStyles = useFormStyles(theme);
+    const flexStyles = useFlexStyles(theme);
 
     const _sendPasswordReset = useCallback(() => {
         if (email.match(EMAIL_REGEX)) {
@@ -50,7 +51,7 @@ export const ForgotPassword = () => {
                 {!complete && (
                     <ScrollView
                         contentContainerStyle={[
-                            sharedStyles.paddingMedium,
+                            flexStyles.paddingMedium,
                             {
                                 paddingBottom: height * 0.5,
                             },
@@ -87,7 +88,7 @@ export const ForgotPassword = () => {
                     </ScrollView>
                 )}
                 {complete && (
-                    <View style={[sharedStyles.paddingMedium, sharedStyles.centered, { flex: 1 }]}>
+                    <View style={[flexStyles.paddingMedium, sharedStyles.centered, { flex: 1 }]}>
                         <MatIcon
                             name={'check-circle'}
                             size={theme.sizes.jumbo}

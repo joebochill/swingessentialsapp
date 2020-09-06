@@ -7,7 +7,6 @@ import { useSharedStyles } from '../../styles';
 import { blackOpacity } from '../../styles/colors';
 import { unit } from '../../styles/sizes';
 import { useTheme } from 'react-native-paper';
-import { theme } from '../../styles/theme';
 
 export type CountDownProps = ViewProps & {
     startValue: number;
@@ -55,6 +54,7 @@ export type VideoTimerProps = ViewProps & {
 export const VideoTimer = (props: VideoTimerProps) => {
     const { visible, startValue = 0, offset = -1 } = props;
     const [seconds, setSeconds] = useState(startValue);
+    const theme = useTheme();
 
     useEffect(() => {
         let interval = setInterval(() => {

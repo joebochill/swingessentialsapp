@@ -45,7 +45,8 @@ const SETTINGS: SettingType[] = [
     {
         name: 'overlay',
         label: 'Stance Overlay',
-        description: 'The Stance Overlay shows a semi-transparent image of how you should stand while recording your swing',
+        description:
+            'The Stance Overlay shows a semi-transparent image of how you should stand while recording your swing',
         values: [true, false],
     },
 ];
@@ -112,7 +113,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                         <List.Item
                             title={`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
                                 typeof val === 'number' ? 's' : ''
-                                }`}
+                            }`}
                             titleEllipsizeMode={'tail'}
                             onPress={(): void => setValue(val)}
                             style={listStyles.item}

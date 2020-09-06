@@ -26,7 +26,7 @@ import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { ApplicationState } from '../../__types__';
 
 // Styles
-import { useSharedStyles, useFormStyles } from '../../styles';
+import { useSharedStyles, useFormStyles, useFlexStyles } from '../../styles';
 import { transparent, blackOpacity } from '../../styles/colors';
 import { useTheme } from 'react-native-paper';
 
@@ -85,6 +85,7 @@ const VerifyForm = (props: VerifyProps) => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const formStyles = useFormStyles(theme);
+    const flexStyles = useFlexStyles(theme);
 
     useEffect(() => {
         if (code) {
@@ -98,7 +99,7 @@ const VerifyForm = (props: VerifyProps) => {
             <BackgroundImage />
             <View
                 style={[
-                    sharedStyles.paddingMedium,
+                    flexStyles.paddingMedium,
                     { flex: 1, justifyContent: 'center', paddingTop: HEADER_COLLAPSED_HEIGHT },
                 ]}>
                 {verification.pending && (
@@ -143,6 +144,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const formStyles = useFormStyles(theme);
+    const flexStyles = useFlexStyles(theme);
     const [fields, setFields] = useState(defaultKeys);
     const emailRef = useRef(null);
     const userRef = useRef(null);
@@ -279,7 +281,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                 <BackgroundImage style={{ top: HEADER_COLLAPSED_HEIGHT }} />
                 <ScrollView
                     ref={scroller}
-                    contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
+                    contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
                     keyboardShouldPersistTaps={'always'}>
                     {regProperties.map((field: RegistrationProperty, index: number) => (
                         <React.Fragment key={`registration_property_${field.property}`}>

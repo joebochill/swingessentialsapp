@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View, SectionList } from 'react-native';
-import { CollapsibleHeaderLayout, SEButton } from '../../components';
+import { CollapsibleHeaderLayout } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Constants
 import { ROUTES } from '../../constants/routes';

@@ -1,9 +1,9 @@
 import * as React from 'react';
 // Components
 import { View, ScrollView } from 'react-native';
-import { Body, SEHeader, YouTube, SEButton } from '../../components/index';
+import { Body, SEHeader, YouTube } from '../../components/index';
 // Styles
-import { useSharedStyles, useListStyles } from '../../styles';
+import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
 import { width, height, aspectHeight } from '../../utilities/dimensions';
 
@@ -18,6 +18,7 @@ export const SingleTip = props => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const listStyles = useListStyles(theme);
+    const flexStyles = useFlexStyles(theme);
 
     if (tip === null) {
         props.navigation.pop();
@@ -30,7 +31,7 @@ export const SingleTip = props => {
             <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
                 <SEHeader title={tip.title} subtitle={getLongDate(tip.date)} mainAction={'back'} />
                 <ScrollView
-                    contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
+                    contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
                     keyboardShouldPersistTaps={'always'}>
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                         <Subheading style={listStyles.heading}>{'Tip Video'}</Subheading>

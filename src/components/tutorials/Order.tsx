@@ -8,7 +8,7 @@ import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
 // Styles
-import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
+import { useListStyles, useFlexStyles } from '../../styles';
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
@@ -19,7 +19,6 @@ export const OrderTutorial = () => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
     const listStyles = useListStyles(theme);
     const flexStyles = useFlexStyles(theme);
     const dispatch = useDispatch();

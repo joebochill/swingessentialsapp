@@ -7,7 +7,7 @@ import { Body, SEButton, CollapsibleHeaderLayout, wrapIcon, HeaderIcon } from '.
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
-import { useSharedStyles } from '../../styles';
+import { useFlexStyles } from '../../styles';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
@@ -28,7 +28,7 @@ export const ErrorLogs = props => {
     const loading = useSelector((state: ApplicationState) => state.logs.loading);
     const username = useSelector((state: ApplicationState) => state.userData.username);
     const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
+    const flexStyles = useFlexStyles(theme);
 
     const getLogs = useCallback(async () => {
         dispatch({ type: LOAD_LOGS.REQUEST });
@@ -74,7 +74,7 @@ export const ErrorLogs = props => {
             onRefresh={() => {
                 getLogs();
             }}>
-            <View style={[sharedStyles.paddingHorizontalMedium]}>
+            <View style={[flexStyles.paddingHorizontal]}>
                 <Body>{logs}</Body>
                 <SEButton title={'SEND ERROR REPORT'} onPress={() => sendMail()} />
             </View>

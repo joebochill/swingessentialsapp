@@ -27,11 +27,10 @@ import {
 import { ROUTES } from '../constants/routes';
 
 // Styles
-import { useSharedStyles, useListStyles, useFlexStyles } from '../styles';
-// import { white } from '../styles/colors';
+import { useListStyles, useFlexStyles } from '../styles';
 import { useTheme, List, Divider } from 'react-native-paper';
 
-import { unit, spaces, sizes } from '../styles/sizes';
+import { unit } from '../styles/sizes';
 
 // Utilities
 import { getLongDate } from '../utilities';
@@ -44,11 +43,10 @@ import { loadUserContent, requestLogout } from '../redux/actions';
 
 // Icons
 import se from '../images/logo-small.png';
-import { Icon } from 'react-native-paper/lib/typescript/src/components/Avatar/Avatar';
 
 export const NavigationDrawer = props => {
     const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
+    const styles = useStyles(theme);
     const listStyles = useListStyles(theme);
     const flexStyles = useFlexStyles(theme);
 
@@ -221,7 +219,8 @@ export const NavigationDrawer = props => {
                                 />
                             </Animated.View>
                         </View>
-                        <Animated.View style={[styles.headerText, { marginLeft: scaleByHeight(spaces.medium, 0) }]}>
+                        <Animated.View
+                            style={[styles.headerText, { marginLeft: scaleByHeight(theme.spaces.medium, 0) }]}>
                             <Animated.Text
                                 style={{
                                     color: 'white',
@@ -259,14 +258,16 @@ export const NavigationDrawer = props => {
                         </Animated.View>
                     </Animated.View>
                     <View style={[styles.footer]}>
-                        <H7 font={'semiBold'} style={{ color: theme.colors.onPrimary }}>SWING ESSENTIALS</H7>
+                        <H7 font={'semiBold'} style={{ color: theme.colors.onPrimary }}>
+                            SWING ESSENTIALS
+                        </H7>
                         <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
                             <Body style={{ color: theme.colors.onPrimary }} font={'light'}>{`v${APP_VERSION}`}</Body>
                         </Animated.View>
                     </View>
                 </View>
             }>
-            <View style={[styles.drawerBody, { marginTop: -1 * spaces.medium }]}>
+            <View style={[styles.drawerBody, { marginTop: -1 * theme.spaces.medium }]}>
                 {NavigationItems.map((panel, ind) => {
                     const leftPosition = ind === 2 ? left.help : ind === 1 ? left.account : left.main;
                     let panelData = [...panel.data];
@@ -277,17 +278,17 @@ export const NavigationDrawer = props => {
                             icon: token ? 'exit-to-app' : 'person',
                             onPress: token
                                 ? () => {
-                                    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-                                        {
-                                            text: 'Sign Out',
-                                            onPress: () => {
-                                                dispatch(requestLogout());
-                                                navigation.closeDrawer();
-                                            },
-                                        },
-                                        { text: 'Cancel' },
-                                    ]);
-                                }
+                                      Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+                                          {
+                                              text: 'Sign Out',
+                                              onPress: () => {
+                                                  dispatch(requestLogout());
+                                                  navigation.closeDrawer();
+                                              },
+                                          },
+                                          { text: 'Cancel' },
+                                      ]);
+                                  }
                                 : () => navigation.navigate(ROUTES.LOGIN),
                         });
                     }
@@ -302,39 +303,53 @@ export const NavigationDrawer = props => {
                                             title={item.title}
                                             titleEllipsizeMode={'tail'}
                                             left={() => (
-                                                <List.Icon icon={({ size, color }) => <MatIcon name={item.icon} size={size} color={color} />} />
+                                                <List.Icon
+                                                    icon={({ size, color }) => (
+                                                        <MatIcon name={item.icon} size={size} color={color} />
+                                                    )}
+                                                />
                                             )}
                                             onPress={
                                                 item.route
                                                     ? item.route === ROUTES.HOME
                                                         ? () => {
-                                                            navigation.closeDrawer();
-                                                        }
+                                                              navigation.closeDrawer();
+                                                          }
                                                         : () => {
-                                                            navigation.navigate(item.route);
-                                                        }
+                                                              navigation.navigate(item.route);
+                                                          }
                                                     : item.activatePanel !== undefined
-                                                        ? () => {
-                                                            setActivePanel(item.activatePanel);
-                                                        }
-                                                        : item.onPress
-                                                            ? () => item.onPress()
-                                                            : undefined
+                                                    ? () => {
+                                                          setActivePanel(item.activatePanel);
+                                                      }
+                                                    : item.onPress
+                                                    ? () => item.onPress()
+                                                    : undefined
                                             }
-                                            style={[listStyles.item, { paddingLeft: 0, paddingVertical: 0, minHeight: 'auto' }]}
-                                            titleStyle={{ marginLeft: theme.spaces.small, fontSize: theme.fontSizes[16] }}
-                                            right={item.nested ? ({ style, ...rightProps }) => (
-                                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                                    <MatIcon
-                                                        name={'chevron-right'}
-                                                        size={theme.sizes.small}
-                                                        color={theme.colors.accent}
-                                                        style={{
-                                                            marginRight: -1 * theme.spaces.small,
-                                                        }}
-                                                    />
-                                                </View>
-                                            ) : undefined}
+                                            style={[
+                                                listStyles.item,
+                                                { paddingLeft: 0, paddingVertical: 0, minHeight: 'auto' },
+                                            ]}
+                                            titleStyle={{
+                                                marginLeft: theme.spaces.small,
+                                                fontSize: theme.fontSizes[16],
+                                            }}
+                                            right={
+                                                item.nested
+                                                    ? ({ style, ...rightProps }) => (
+                                                          <View style={[flexStyles.row, style]} {...rightProps}>
+                                                              <MatIcon
+                                                                  name={'chevron-right'}
+                                                                  size={theme.sizes.small}
+                                                                  color={theme.colors.accent}
+                                                                  style={{
+                                                                      marginRight: -1 * theme.spaces.small,
+                                                                  }}
+                                                              />
+                                                          </View>
+                                                      )
+                                                    : undefined
+                                            }
                                         />
                                         <Divider />
                                     </>
@@ -351,40 +366,41 @@ export const NavigationDrawer = props => {
     );
 };
 
-const styles = StyleSheet.create({
-    avatarContainer: {
-        justifyContent: 'center',
-    },
-    avatar: {
-        borderRadius: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    content: {
-        flex: 1,
-        paddingVertical: spaces.medium,
-        paddingHorizontal: spaces.medium,
-        flexDirection: 'row',
-    },
-    headerText: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    navLabel: {
-        marginLeft: spaces.medium,
-    },
-    drawerBody: {
-        flexDirection: 'row',
-    },
-    panel: {
-        width: DRAWER_WIDTH,
-    },
-    footer: {
-        flex: 0,
-        height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: spaces.medium,
-    },
-});
+const useStyles = (theme: Theme) =>
+    StyleSheet.create({
+        avatarContainer: {
+            justifyContent: 'center',
+        },
+        avatar: {
+            borderRadius: 100,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        content: {
+            flex: 1,
+            paddingVertical: theme.spaces.medium,
+            paddingHorizontal: theme.spaces.medium,
+            flexDirection: 'row',
+        },
+        headerText: {
+            flex: 1,
+            justifyContent: 'center',
+        },
+        navLabel: {
+            marginLeft: theme.spaces.medium,
+        },
+        drawerBody: {
+            flexDirection: 'row',
+        },
+        panel: {
+            width: DRAWER_WIDTH,
+        },
+        footer: {
+            flex: 0,
+            height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: theme.spaces.medium,
+        },
+    });

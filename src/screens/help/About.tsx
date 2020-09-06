@@ -2,19 +2,20 @@ import * as React from 'react';
 
 // Components
 import { View } from 'react-native';
-import { Body, CollapsibleHeaderLayout, SEButton } from '../../components';
+import { Body, CollapsibleHeaderLayout } from '../../components';
 
 // Styles
-import { useSharedStyles, useListStyles } from '../../styles';
+import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
 import { useTheme, Subheading } from 'react-native-paper';
 
 export const About = () => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const listStyles = useListStyles(theme);
+    const flexStyles = useFlexStyles(theme);
     return (
         <CollapsibleHeaderLayout title={'About'} subtitle={'What is SwingEssentials®?'}>
-            <View style={sharedStyles.paddingHorizontalMedium}>
+            <View style={flexStyles.paddingHorizontal}>
                 <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                     <Subheading style={listStyles.heading}>{'Lessons on Your Schedule'}</Subheading>
                 </View>

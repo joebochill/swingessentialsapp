@@ -19,7 +19,7 @@ import { $DeepPartial } from '@callstack/react-theme-provider';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT_NO_STATUS } from '../../constants';
-import { theme, Theme } from '../../styles/theme';
+import { theme as defaultTheme, Theme } from '../../styles/theme';
 
 export interface ResizableHeaderProps {
     /** Header title */
@@ -62,8 +62,8 @@ export interface ResizableHeaderProps {
 interface HeaderState {}
 
 class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
-    static readonly ICON_SIZE = theme.sizes.small;
-    static readonly ICON_SPACING = theme.spaces.medium;
+    static readonly ICON_SIZE = defaultTheme.sizes.small;
+    static readonly ICON_SPACING = defaultTheme.spaces.medium;
 
     render() {
         const barStyle = this.barStyle();
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     },
     actionIcon: {
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
-        paddingHorizontal: theme.spaces.small,
+        paddingHorizontal: defaultTheme.spaces.small,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -346,10 +346,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'absolute',
-        right: theme.spaces.small,
+        right: defaultTheme.spaces.small,
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
     },
     notFirst: {
-        marginLeft: theme.spaces.small,
+        marginLeft: defaultTheme.spaces.small,
     },
 });

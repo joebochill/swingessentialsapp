@@ -3,12 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, StyleSheet, Platform } from 'react-native';
-import { CollapsibleHeaderLayout, SEButton } from '../../components';
-import { Body, H6, H7, YouTube } from '../../components';
+import { CollapsibleHeaderLayout } from '../../components';
+import { Body, YouTube } from '../../components';
 
 // Styles
-import { useSharedStyles, useListStyles } from '../../styles';
-import { spaces } from '../../styles/sizes';
+import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
 import { width } from '../../utilities/dimensions';
 
 // Utilities
@@ -28,6 +27,7 @@ export const FAQ = () => {
     const styles = useStyles(theme);
     const sharedStyles = useSharedStyles(theme);
     const listStyles = useListStyles(theme);
+    const flexStyles = useFlexStyles(theme);
 
     return (
         <CollapsibleHeaderLayout
@@ -37,7 +37,7 @@ export const FAQ = () => {
             onRefresh={() => {
                 dispatch(loadFAQ());
             }}>
-            <View style={[sharedStyles.pageContainer, sharedStyles.paddingHorizontalMedium]}>
+            <View style={[sharedStyles.pageContainer, flexStyles.paddingHorizontal]}>
                 {faqState.questions.map((faq, ind) => (
                     <React.Fragment key={`FAQ_${ind}`}>
                         <View
