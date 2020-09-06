@@ -56,7 +56,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
 
         return (
-            <View style={{flex: 1, backgroundColor: white[400]}}>
+            <View style={{ flex: 1, backgroundColor: white[400] }}>
                 <StatusBar barStyle={'light-content'} />
                 {this.props.pageBackground && (
                     <Image

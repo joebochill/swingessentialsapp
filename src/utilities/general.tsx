@@ -88,13 +88,13 @@ export function checkVersionGreater(test, against) {
     }
     test = test.split('.', 3);
     const testNumeric = [];
-    for(let i = 0; i < 3; i++){
-        testNumeric.push(parseInt(test[i], 10))
+    for (let i = 0; i < 3; i++) {
+        testNumeric.push(parseInt(test[i], 10));
     }
     against = against.split('.', 3);
     const againstNumeric = [];
-    for(let i = 0; i < 3; i++){
-        againstNumeric.push(parseInt(against[i], 10))
+    for (let i = 0; i < 3; i++) {
+        againstNumeric.push(parseInt(against[i], 10));
     }
     for (let i = 0; i < againstNumeric.length; i++) {
         if (testNumeric[i] === againstNumeric[i]) {

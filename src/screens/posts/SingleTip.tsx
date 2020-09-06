@@ -17,7 +17,7 @@ export const SingleTip = props => {
     const tip = props.navigation.getParam('tip', null);
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
-    
+
     if (tip === null) {
         props.navigation.pop();
     }

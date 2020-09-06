@@ -40,7 +40,6 @@ import { checkUsernameAvailability, checkEmailAvailability, createAccount, verif
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { ROUTES } from '../../constants/routes';
 
-
 type RegistrationKeys = {
     email: string;
     username: string;
@@ -94,7 +93,7 @@ const VerifyForm = (props: VerifyProps) => {
     }, [code, dispatch]);
 
     return (
-        <View style={[sharedStyles.pageContainer, {backgroundColor: theme.colors.primary}]}>
+        <View style={[sharedStyles.pageContainer, { backgroundColor: theme.colors.primary }]}>
             <SEHeader title={'Sign Up'} subtitle={'Confirm your email'} mainAction={'back'} showAuth={false} />
             <BackgroundImage />
             <View
@@ -121,12 +120,13 @@ const VerifyForm = (props: VerifyProps) => {
                         <H7 font={'regular'} color={'onPrimary'} style={{ textAlign: 'center' }}>
                             {verification.emailVerified
                                 ? `Your email address has been confirmed. ${
-                                token ? "Let's get started!" : 'Please sign in to view your account.'
-                                }`
+                                      token ? "Let's get started!" : 'Please sign in to view your account.'
+                                  }`
                                 : _getRegistrationErrorMessage(verification.error)}
                         </H7>
                         {verification.emailVerified && (
-                            <SEButton dark
+                            <SEButton
+                                dark
                                 style={formStyles.formField}
                                 title={token ? 'GET STARTED' : 'SIGN IN'}
                                 onPress={() => navigation.replace(ROUTES.LOGIN)}
@@ -159,7 +159,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
 
     // Select the first field on load
     useEffect(() => {
-        if(userRef && userRef.current){
+        if (userRef && userRef.current) {
             userRef.current.focus();
         }
     }, []);
@@ -234,8 +234,8 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                 fields.email.length > 0 && !fields.email.match(EMAIL_REGEX)
                     ? 'Invalid Email Address'
                     : !registration.emailAvailable
-                        ? 'Email address is already registered'
-                        : '',
+                    ? 'Email address is already registered'
+                    : '',
             onChange: value => {
                 setFields({
                     ...fields,
@@ -271,9 +271,11 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
         <View style={sharedStyles.pageContainer}>
             <SEHeader title={'Sign Up'} subtitle={'Create an account'} mainAction={'back'} showAuth={false} />
             <KeyboardAvoidingView
-                style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT, backgroundColor: theme.colors.primary }]}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            >
+                style={[
+                    sharedStyles.pageContainer,
+                    { paddingTop: HEADER_COLLAPSED_HEIGHT, backgroundColor: theme.colors.primary },
+                ]}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <BackgroundImage style={{ top: HEADER_COLLAPSED_HEIGHT }} />
                 <ScrollView
                     ref={scroller}
@@ -292,76 +294,95 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                                         field.onChange
                                             ? field.onChange
                                             : (value: string) => {
-                                                setFields({
-                                                    ...fields,
-                                                    [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
-                                                });
-                                            }
+                                                  setFields({
+                                                      ...fields,
+                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
+                                                  });
+                                              }
                                     }
                                     value={fields[field.property]}
-                                    useNativeAndroidPickerStyle={false}
-                                >
+                                    useNativeAndroidPickerStyle={false}>
                                     <TextInput
                                         editable={false}
-                                        style={[index > 0 ? formStyles.formField : {}, activeField === field.property || fields[field.property].length > 0 ? formStyles.active : formStyles.inactive]}
+                                        style={[
+                                            index > 0 ? formStyles.formField : {},
+                                            activeField === field.property || fields[field.property].length > 0
+                                                ? formStyles.active
+                                                : formStyles.inactive,
+                                        ]}
                                         label={field.label}
                                         underlineColorAndroid={transparent}
                                         value={fields[field.property]}
                                     />
                                 </RNPickerSelect>
                             ) : (
-                                    <TextInput
-                                        ref={refs[index]}
-                                        secureTextEntry={field.secure}
-                                        autoCorrect={false}
-                                        autoCapitalize={'none'}
-                                        style={[index > 0 ? formStyles.formField : {}, activeField === field.property || fields[field.property].length > 0 ? formStyles.active : formStyles.inactive]}
-                                        onFocus={() => setActiveField(field.property)}
-                                        onBlur={(e) => {setActiveField(null); if(field.onBlur) {field.onBlur(e)}}}
-                                        editable={!registration.pending}
-                                        error={field.errorMessage !== undefined && field.errorMessage.length > 0}
-                                        keyboardType={field.keyboard}
-                                        label={field.label}
-                                        onChangeText={
-                                            field.onChange
-                                                ? field.onChange
-                                                : (value: string) => {
-                                                    setFields({
-                                                        ...fields,
-                                                        [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
-                                                    });
-                                                }
+                                <TextInput
+                                    ref={refs[index]}
+                                    secureTextEntry={field.secure}
+                                    autoCorrect={false}
+                                    autoCapitalize={'none'}
+                                    style={[
+                                        index > 0 ? formStyles.formField : {},
+                                        activeField === field.property || fields[field.property].length > 0
+                                            ? formStyles.active
+                                            : formStyles.inactive,
+                                    ]}
+                                    onFocus={() => setActiveField(field.property)}
+                                    onBlur={e => {
+                                        setActiveField(null);
+                                        if (field.onBlur) {
+                                            field.onBlur(e);
                                         }
-                                        onSubmitEditing={
-                                            field.onSubmit
-                                                ? field.onSubmit
-                                                : () => {
-                                                    if (refs[(index + 1) % refs.length].current) {
-                                                        refs[(index + 1) % refs.length].current.focus();
-                                                    }
-                                                }
-                                        }
-                                        returnKeyType={'next'}
-                                        underlineColorAndroid={transparent}
-                                        value={fields[field.property]}
-                                    />
-                                )}
+                                    }}
+                                    editable={!registration.pending}
+                                    error={field.errorMessage !== undefined && field.errorMessage.length > 0}
+                                    keyboardType={field.keyboard}
+                                    label={field.label}
+                                    onChangeText={
+                                        field.onChange
+                                            ? field.onChange
+                                            : (value: string) => {
+                                                  setFields({
+                                                      ...fields,
+                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
+                                                  });
+                                              }
+                                    }
+                                    onSubmitEditing={
+                                        field.onSubmit
+                                            ? field.onSubmit
+                                            : () => {
+                                                  if (refs[(index + 1) % refs.length].current) {
+                                                      refs[(index + 1) % refs.length].current.focus();
+                                                  }
+                                              }
+                                    }
+                                    returnKeyType={'next'}
+                                    underlineColorAndroid={transparent}
+                                    value={fields[field.property]}
+                                />
+                            )}
                             <ErrorBox
                                 show={field.errorMessage !== undefined && field.errorMessage.length > 0}
                                 error={field.errorMessage || `Invalid ${field.label}`}
                             />
                         </React.Fragment>
                     ))}
-                    <SEButton dark
+                    <SEButton
+                        dark
                         title={!registration.pending ? 'SUBMIT' : 'SUBMITTING'}
                         // disabled={!_canSubmit()}
                         loading={registration.pending}
-                        onPress={_canSubmit() && !registration.pending ? () => {
-                            _submitRegistration();
-                            if (scroller.current) {
-                                scroller.current.scrollTo({ x: 0, y: 0, animated: true });
-                            }
-                        } : undefined}
+                        onPress={
+                            _canSubmit() && !registration.pending
+                                ? () => {
+                                      _submitRegistration();
+                                      if (scroller.current) {
+                                          scroller.current.scrollTo({ x: 0, y: 0, animated: true });
+                                      }
+                                  }
+                                : undefined
+                        }
                         style={[formStyles.formField, _canSubmit() ? {} : { opacity: 0.6 }]}
                     />
                 </ScrollView>

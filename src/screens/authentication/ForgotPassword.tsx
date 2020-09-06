@@ -11,7 +11,6 @@ import { height } from '../../utilities/dimensions';
 import { useTheme, TextInput } from 'react-native-paper';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
-
 // Redux
 import { requestPasswordReset } from '../../redux/actions';
 import { useDispatch } from 'react-redux';
@@ -27,7 +26,7 @@ export const ForgotPassword = () => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const formStyles = useFormStyles(theme);
-    
+
     const _sendPasswordReset = useCallback(() => {
         if (email.match(EMAIL_REGEX)) {
             dispatch(requestPasswordReset({ email }));
@@ -45,10 +44,8 @@ export const ForgotPassword = () => {
                         paddingTop: HEADER_COLLAPSED_HEIGHT,
                         backgroundColor: theme.colors.primary,
                     },
-
                 ]}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            >
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <BackgroundImage style={{ top: HEADER_COLLAPSED_HEIGHT }} />
                 {!complete && (
                     <ScrollView
@@ -69,7 +66,10 @@ export const ForgotPassword = () => {
                             autoCapitalize={'none'}
                             keyboardType={'email-address'}
                             label={'Email Address'}
-                            style={[formStyles.formField, activeField === 'email' || email.length > 0 ? formStyles.active : formStyles.inactive]}
+                            style={[
+                                formStyles.formField,
+                                activeField === 'email' || email.length > 0 ? formStyles.active : formStyles.inactive,
+                            ]}
                             onFocus={() => setActiveField('email')}
                             onBlur={() => setActiveField(null)}
                             onChangeText={(value: string) => setEmail(value.substr(0, 128))}
@@ -78,7 +78,8 @@ export const ForgotPassword = () => {
                             underlineColorAndroid={transparent}
                             value={email}
                         />
-                        <SEButton dark
+                        <SEButton
+                            dark
                             title={'REQUEST RESET'}
                             onPress={email.match(EMAIL_REGEX) ? (): void => _sendPasswordReset() : undefined}
                             style={[formStyles.formField, email.match(EMAIL_REGEX) ? {} : { opacity: 0.6 }]}
@@ -87,7 +88,12 @@ export const ForgotPassword = () => {
                 )}
                 {complete && (
                     <View style={[sharedStyles.paddingMedium, sharedStyles.centered, { flex: 1 }]}>
-                        <MatIcon name={'check-circle'} size={theme.sizes.jumbo} color={theme.colors.onPrimary} style={{alignSelf: 'center'}} />
+                        <MatIcon
+                            name={'check-circle'}
+                            size={theme.sizes.jumbo}
+                            color={theme.colors.onPrimary}
+                            style={{ alignSelf: 'center' }}
+                        />
                         <H7 font={'regular'} color={'onPrimary'} style={[{ textAlign: 'center' }]}>
                             {'Your password reset request was received. Check your email for further instructions.'}
                         </H7>

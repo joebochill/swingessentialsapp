@@ -3,12 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Platform, ScrollView } from 'react-native';
-import { Body, H7, SEHeader, YouTube, SEVideo, VideoCard, LessonTutorial } from '../../components';
+import { Body, SEHeader, YouTube, SEVideo, VideoCard, LessonTutorial, SEButton } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Styles
 import { useSharedStyles } from '../../styles';
-import { spaces } from '../../styles/sizes';
 import { width, height, aspectHeight } from '../../utilities/dimensions';
 
 // Utilities
@@ -37,7 +36,7 @@ export const SingleLesson = props => {
     if (lesson === null) {
         lesson = placeholder;
     }
-    const videoWidth = width - 2 * spaces.medium;
+    const videoWidth = width - 2 * theme.spaces.medium;
     const videoHeight = aspectHeight(videoWidth);
 
     useEffect(() => {
@@ -71,15 +70,23 @@ export const SingleLesson = props => {
                       {lesson.response_video && (
                           <>
                               <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                                  <H7>Video Analysis</H7>
+                                  <SEButton mode={'text'} title={'Video Analysis'} uppercase />
                               </View>
                               <YouTube
                                   videoId={lesson.response_video}
-                                  style={{ width: videoWidth, height: videoHeight }}
+                                  style={{ width: videoWidth, height: videoHeight, backgroundColor: 'magenta' }}
                               />
-                              <H7 style={sharedStyles.textTitle}>Comments</H7>
+                              <View
+                                  style={[
+                                      sharedStyles.sectionHeader,
+                                      { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
+                                  ]}>
+                                  <SEButton mode={'text'} title={'Comments'} uppercase />
+                              </View>
                               {splitParagraphs(lesson.response_notes).map((p, ind) => (
-                                  <Body key={`${lesson.request_id}_p_${ind}`} style={sharedStyles.paragraph}>
+                                  <Body
+                                      key={`${lesson.request_id}_p_${ind}`}
+                                      style={[ind > 0 ? sharedStyles.paragraph : {}]}>
                                       {p}
                                   </Body>
                               ))}
@@ -87,8 +94,12 @@ export const SingleLesson = props => {
                       )}
                       {lesson.tips && lesson.tips.length > 0 && (
                           <>
-                              <View style={sharedStyles.sectionHeader}>
-                                  <H7>Recommended Tips</H7>
+                              <View
+                                  style={[
+                                      sharedStyles.sectionHeader,
+                                      { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
+                                  ]}>
+                                  <SEButton mode={'text'} title={'Recommended Tips'} uppercase />
                               </View>
 
                               <Carousel
@@ -97,13 +108,13 @@ export const SingleLesson = props => {
                                       <VideoCard
                                           headerTitle={getLongDate(item.date)}
                                           headerSubtitle={item.title}
-                                          style={{ marginBottom: spaces.medium }}
+                                          style={{ marginBottom: theme.spaces.medium }}
                                           video={item.video}
                                           onExpand={() => props.navigation.push(ROUTES.TIP, { tip: item })}
                                       />
                                   )}
                                   sliderWidth={width}
-                                  itemWidth={width - 2 * spaces.medium}
+                                  itemWidth={width - 2 * theme.spaces.medium}
                                   inactiveSlideScale={0.95}
                               />
                           </>
@@ -114,16 +125,16 @@ export const SingleLesson = props => {
                               <View
                                   style={[
                                       sharedStyles.sectionHeader,
-                                      { marginTop: spaces.large, marginHorizontal: 0 },
+                                      { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
                                   ]}>
-                                  <H7>Your Swing Videos</H7>
+                                  <SEButton mode={'text'} title={'Your Swing Videos'} uppercase />
                               </View>
                               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                   <SEVideo
                                       source={`https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.fo_swing}`}
                                   />
                                   <SEVideo
-                                      style={{ marginLeft: spaces.medium }}
+                                      style={{ marginLeft: theme.spaces.medium }}
                                       source={`https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.dtl_swing}`}
                                   />
                               </View>
@@ -131,9 +142,17 @@ export const SingleLesson = props => {
                       )}
                       {lesson.request_notes.length > 0 && (
                           <>
-                              <H7 style={sharedStyles.textTitle}>Special Requests</H7>
+                              <View
+                                  style={[
+                                      sharedStyles.sectionHeader,
+                                      { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
+                                  ]}>
+                                  <SEButton mode={'text'} title={'Your Special Requests'} uppercase />
+                              </View>
                               {splitParagraphs(lesson.request_notes).map((p, ind) => (
-                                  <Body key={`${lesson.request_id}_p_${ind}`} style={sharedStyles.paragraph}>
+                                  <Body
+                                      key={`${lesson.request_id}_p_${ind}`}
+                                      style={[ind > 0 ? sharedStyles.paragraph : {}]}>
                                       {p}
                                   </Body>
                               ))}

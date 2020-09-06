@@ -17,7 +17,7 @@ export const SingleBlog = props => {
     const blog = props.navigation.getParam('blog', null);
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
-    
+
     if (blog === null) {
         props.navigation.pop();
     }

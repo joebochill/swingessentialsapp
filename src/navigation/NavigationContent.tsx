@@ -167,7 +167,7 @@ export const accountNavigationItems: RouteGroup = {
             private: true,
             route: ROUTES.SETTINGS,
         },
-        
+
         {
             title: 'Back',
             icon: 'arrow-back',

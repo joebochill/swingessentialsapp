@@ -130,10 +130,10 @@ export const SubmitTutorial = () => {
                     inactiveDotScale={0.8}
                 />
                 <SEButton
+                    dark
                     title="GOT IT"
                     disabled={!showButton}
                     style={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}
-                    contentStyle={{ backgroundColor: theme.colors.accent }}
                     onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]))}
                 />
             </View>

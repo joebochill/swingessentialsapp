@@ -214,7 +214,7 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
         const { theme, headerContent, navigation } = this.props;
         const contractedPadding = this.props.subtitle
             ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.fontSizes[20] + theme.fontSizes[18])) / 2
-            : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.fontSizes[20])) / 2;
+            : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - theme.fontSizes[20]) / 2;
         return [
             styles.content,
             headerContent

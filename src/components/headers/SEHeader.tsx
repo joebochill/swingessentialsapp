@@ -97,7 +97,7 @@ export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjecte
             }
             headerHeight={props.headerHeight || HEADER_COLLAPSED_HEIGHT}
             backgroundImage={backgroundImage}
-            actionItems={defaultActions.concat(actionItems)}
+            actionItems={actionItems.concat(defaultActions)}
             {...other}
         />
     );

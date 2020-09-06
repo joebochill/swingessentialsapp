@@ -20,13 +20,5 @@ type BGImageProps = Omit<ImageProps, 'source'> & {
 export const BackgroundImage: React.FC<BGImageProps> = props => {
     const { style, source = bg, ...other } = props;
     const styles = useStyles();
-    return (
-        <Image
-            source={source}
-            resizeMethod={'resize'}
-            style={[styles.image, style]}
-            {...other}
-        />
-    );
+    return <Image source={source} resizeMethod={'resize'} style={[styles.image, style]} {...other} />;
 };
-

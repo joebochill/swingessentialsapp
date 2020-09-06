@@ -1,15 +1,14 @@
 import React from 'react';
-import { useTheme } from 'react-native-paper';
+import { useTheme, List, Divider } from 'react-native-paper';
 // Components
 import { View, SectionList } from 'react-native';
-import { ListItem } from 'react-native-elements';
 import { H7, H4, Body } from '../index';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
-import { useSharedStyles } from '../../styles';
-import { sizes, spaces } from '../../styles/sizes';
+import { useSharedStyles, useFlexStyles } from '../../styles';
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
@@ -22,6 +21,7 @@ export const LessonsTutorial = () => {
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
+    const flexStyles = useFlexStyles(theme);
     const dispatch = useDispatch();
 
     const sections = [
@@ -49,33 +49,42 @@ export const LessonsTutorial = () => {
                 font={'light'}
                 style={{
                     textAlign: 'center',
-                    marginTop: spaces.small,
-                    marginBottom: spaces.medium,
+                    marginTop: theme.spaces.small,
+                    marginBottom: theme.spaces.medium,
                     color: theme.colors.onPrimary,
                 }}>
                 {'When you have submitted your golf swing for analysis, your lessons will appear in this list.'}
             </H7>
             <SectionList
-                style={{ marginTop: spaces.large }}
+                style={{ marginTop: theme.spaces.large }}
                 scrollEnabled={false}
                 renderSectionHeader={({ section: { bucketName } }) => (
-                    <H7 style={{ color: theme.colors.onPrimary, marginBottom: spaces.xSmall }}>{bucketName}</H7>
+                    <View style={[sharedStyles.sectionHeader]}>
+                        <SEButton
+                            mode={'text'}
+                            title={bucketName}
+                            labelStyle={{ color: theme.colors.onPrimary }}
+                            uppercase
+                        />
+                    </View>
                 )}
                 sections={sections}
                 renderItem={({ item, index }) => (
-                    <ListItem
-                        containerStyle={sharedStyles.listItem}
-                        contentContainerStyle={sharedStyles.listItemContent}
-                        bottomDivider
-                        topDivider={index === 0}
-                        title={<Body>{item.date}</Body>}
-                        rightTitle={item.new ? <H7>NEW</H7> : undefined}
-                        rightIcon={{
-                            name: 'chevron-right',
-                            color: theme.colors.text,
-                            size: sizes.small,
-                        }}
-                    />
+                    <>
+                        {index === 0 && <Divider />}
+                        <List.Item
+                            title={item.date}
+                            description={'Remote Lesson'}
+                            style={{ backgroundColor: theme.colors.onPrimary }}
+                            right={({ style, ...rightProps }) => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    {item.new && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}
+                                    <MatIcon name={'chevron-right'} size={theme.sizes.small} />
+                                </View>
+                            )}
+                        />
+                        <Divider />
+                    </>
                 )}
                 keyExtractor={(item): string => 'complete_' + item.date}
             />
@@ -90,13 +99,13 @@ export const LessonsTutorial = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }) => slides[index]}
-                    sliderWidth={width - 2 * spaces.medium}
-                    itemWidth={width - 2 * spaces.medium}
+                    sliderWidth={width - 2 * theme.spaces.medium}
+                    itemWidth={width - 2 * theme.spaces.medium}
                 />
                 <SEButton
+                    dark
                     title="GOT IT"
-                    style={{ flex: 1, marginTop: spaces.xLarge }}
-                    contentStyle={{ backgroundColor: theme.colors.accent }}
+                    style={{ flex: 1, marginTop: theme.spaces.xLarge }}
                     onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]))}
                 />
             </View>

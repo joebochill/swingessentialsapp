@@ -87,7 +87,8 @@ export const HomeTutorial = () => {
                     inactiveDotOpacity={0.5}
                     inactiveDotScale={0.8}
                 />
-                <SEButton dark
+                <SEButton
+                    dark
                     title="GOT IT"
                     disabled={!showButton}
                     style={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}

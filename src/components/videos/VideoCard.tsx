@@ -26,7 +26,7 @@ export interface VideoCardProps {
     onExpand?: Function;
 }
 
-export const VideoCard: React.FC<VideoCardProps> = (props) => {
+export const VideoCard: React.FC<VideoCardProps> = props => {
     const { video, style, onExpand, headerIcon, headerTitle, headerSubtitle } = props;
     const theme = useTheme();
     const { headerColor = theme.colors.primary, headerFontColor = theme.colors.onPrimary } = props;
@@ -41,24 +41,28 @@ export const VideoCard: React.FC<VideoCardProps> = (props) => {
 
     return (
         <View style={[styles.card, style]}>
-            <View style={{
-                borderRadius: theme.roundness,
-                overflow: 'hidden',
-            }}>
+            <View
+                style={{
+                    borderRadius: theme.roundness,
+                    overflow: 'hidden',
+                }}>
                 <View style={[styles.header, { backgroundColor: headerColor }]}>
-                    {headerIcon &&
-                        <MatIcon name={headerIcon} color={headerFontColor} size={24} style={{ marginRight: theme.spaces.medium }} />
-                    }
+                    {headerIcon && (
+                        <MatIcon
+                            name={headerIcon}
+                            color={headerFontColor}
+                            size={24}
+                            style={{ marginRight: theme.spaces.medium }}
+                        />
+                    )}
                     <View style={{ flex: 1 }}>
                         <Subtitle style={{ color: headerFontColor }}>{headerTitle}</Subtitle>
 
                         {headerSubtitle ? (
-                            <Subtitle style={{ color: headerFontColor }}>
-                                {headerSubtitle}
-                            </Subtitle>
+                            <Subtitle style={{ color: headerFontColor }}>{headerSubtitle}</Subtitle>
                         ) : null}
                     </View>
-                    {onExpand &&
+                    {onExpand && (
                         <TouchableOpacity
                             onPress={() => {
                                 setPlay(false);
@@ -68,10 +72,9 @@ export const VideoCard: React.FC<VideoCardProps> = (props) => {
                             style={styles.actionItem}>
                             <MatIcon name={'open-in-new'} color={headerFontColor} size={theme.sizes.small} />
                         </TouchableOpacity>
-                    }
+                    )}
                 </View>
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-
                     {video && (
                         <YouTube
                             videoId={video}
@@ -80,36 +83,41 @@ export const VideoCard: React.FC<VideoCardProps> = (props) => {
                             style={{ opacity: ready ? 1 : 0, width: videoWidth, height: videoHeight }}
                         />
                     )}
-                    {!ready && <ActivityIndicator size={theme.sizes.xLarge} style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }} />}
-
+                    {!ready && (
+                        <ActivityIndicator
+                            size={theme.sizes.xLarge}
+                            style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
+                        />
+                    )}
                 </View>
             </View>
         </View>
-    )
-}
+    );
+};
 
-const useStyles = (theme: Theme) => StyleSheet.create({
-    actionItem: {
-        marginLeft: theme.spaces.small,
-    },
-    card: {
-        shadowColor: black[900],
-        shadowOpacity: 0.4,
-        shadowRadius: 3,
-        shadowOffset: {
-            width: 0,
-            height: 1,
+const useStyles = (theme: Theme) =>
+    StyleSheet.create({
+        actionItem: {
+            marginLeft: theme.spaces.small,
         },
-        elevation: 1,
-        flex: 1,
-        backgroundColor: theme.colors.surface,
-        borderRadius: theme.roundness
-    },
-    header: {
-        height: unit(52),
-        paddingHorizontal: spaces.medium,
-        overflow: 'hidden',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-});
+        card: {
+            shadowColor: black[900],
+            shadowOpacity: 0.4,
+            shadowRadius: 3,
+            shadowOffset: {
+                width: 0,
+                height: 1,
+            },
+            elevation: 1,
+            flex: 1,
+            backgroundColor: theme.colors.surface,
+            borderRadius: theme.roundness,
+        },
+        header: {
+            height: unit(52),
+            paddingHorizontal: spaces.medium,
+            overflow: 'hidden',
+            flexDirection: 'row',
+            alignItems: 'center',
+        },
+    });

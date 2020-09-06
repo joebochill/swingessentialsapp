@@ -12,7 +12,7 @@ const defaultFontConfig = {
         // fontFamily: 'SFCompactDisplay-Bold'
     },
     semiBold: {
-        // fontFamily: 'SFCompactDisplay-Semibold'
+        fontFamily: 'SFCompactDisplay-Semibold',
     },
     medium: {
         // fontFamily: 'SFCompactDisplay-Semibold'
@@ -21,7 +21,7 @@ const defaultFontConfig = {
         // fontFamily: 'SFCompactDisplay-Regular'
     },
     light: {
-        // fontFamily: 'SFCompactDisplay-Thin'
+        fontFamily: 'SFCompactDisplay-Thin',
     },
     thin: {
         // fontFamily: 'SFCompactDisplay-Thin'
@@ -58,12 +58,12 @@ export const theme = {
         jumbo: spaceUnit(24),
     },
     spaces: {
-        xSmall: spaceUnit(1),  // 4
-        small: spaceUnit(2),   // 8
-        medium: spaceUnit(4),  // 16
-        large: spaceUnit(6),   // 24
-        xLarge: spaceUnit(8),  // 32
-        jumbo: spaceUnit(12),  // 48
+        xSmall: spaceUnit(1), // 4
+        small: spaceUnit(2), // 8
+        medium: spaceUnit(4), // 16
+        large: spaceUnit(6), // 24
+        xLarge: spaceUnit(8), // 32
+        jumbo: spaceUnit(12), // 48
     },
     fontSizes: {
         10: unit(10),
@@ -77,6 +77,6 @@ export const theme = {
         48: unit(48),
         60: unit(60),
         96: unit(96),
-    }
+    },
 };
 export type Theme = typeof theme;

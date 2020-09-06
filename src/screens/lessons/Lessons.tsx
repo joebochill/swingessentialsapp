@@ -3,13 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, SectionList } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import { H7, Body, CollapsibleHeaderLayout, LessonsTutorial } from '../../components';
+import { Body, CollapsibleHeaderLayout, LessonsTutorial, SEButton, wrapIcon } from '../../components';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
-import { useSharedStyles } from '../../styles';
-import { spaces, sizes } from '../../styles/sizes';
-import { useTheme } from 'react-native-paper';
+import { useSharedStyles, useFlexStyles } from '../../styles';
+import { useTheme, List, Divider } from 'react-native-paper';
 import bg from '../../images/banners/lessons.jpg';
 
 // Constants
@@ -22,6 +21,8 @@ import { getLongDate, makeGroups } from '../../utilities';
 import { ApplicationState } from '../../__types__';
 // Actions
 import { loadLessons } from '../../redux/actions';
+
+const AddIcon = wrapIcon({ IconClass: MatIcon, name: 'add-circle' });
 
 type Lesson = {
     request_id: number;
@@ -38,10 +39,12 @@ type Lesson = {
 
 export const Lessons = props => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
+    const role = useSelector((state: ApplicationState) => state.login.role);
     const myLessons = lessons.pending.concat(lessons.closed);
     const sections = makeGroups(myLessons, (lesson: Lesson) => getLongDate(lesson.request_date));
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
+    const flexStyles = useFlexStyles(theme);
     const dispatch = useDispatch();
 
     return (
@@ -50,56 +53,83 @@ export const Lessons = props => {
             subtitle={"See how far you've come"}
             backgroundImage={bg}
             refreshing={lessons.loading}
-            onRefresh={() => dispatch(loadLessons())}>
+            onRefresh={() => dispatch(loadLessons())}
+            actionItems={[
+                {
+                    icon: AddIcon,
+                    onPress: () => props.navigation.navigate(ROUTES.SUBMIT),
+                },
+            ]}>
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (
-                    <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: spaces.large } : {}]}>
-                        <H7>{bucketName}</H7>
+                    <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: theme.spaces.jumbo } : {}]}>
+                        <SEButton mode={'text'} title={bucketName} uppercase />
                     </View>
                 )}
                 sections={sections}
                 stickySectionHeadersEnabled={false}
                 ListEmptyComponent={
-                    <ListItem
-                        containerStyle={sharedStyles.listItem}
-                        contentContainerStyle={sharedStyles.listItemContent}
-                        bottomDivider
-                        topDivider
-                        onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: null })}
-                        title={<Body>Welcome to Swing Essentials!</Body>}
-                        rightTitle={<H7>NEW</H7>}
-                        rightIcon={{
-                            name: 'chevron-right',
-                            color: theme.colors.text,
-                            size: sizes.small,
-                        }}
-                    />
+                    <>
+                        <Divider />
+                        <List.Item
+                            title={'Welcome to Swing Essentials!'}
+                            onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: null })}
+                            style={{ backgroundColor: theme.colors.onPrimary, alignItems: 'center' }}
+                            right={({ style, ...rightProps }) => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>
+                                    <MatIcon name={'chevron-right'} size={theme.sizes.small} />
+                                </View>
+                            )}
+                        />
+                        <Divider />
+                    </>
                 }
                 renderItem={({ item, index }) =>
                     item.response_video ? (
-                        <ListItem
-                            containerStyle={sharedStyles.listItem}
-                            contentContainerStyle={sharedStyles.listItemContent}
-                            bottomDivider
-                            topDivider={index === 0}
-                            onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
-                            title={<Body>{item.request_date}</Body>}
-                            rightTitle={!item.viewed ? <H7>NEW</H7> : undefined}
-                            rightIcon={{
-                                name: 'chevron-right',
-                                color: theme.colors.text,
-                                size: sizes.small,
-                            }}
-                        />
+                        <>
+                            {index === 0 && <Divider />}
+                            <List.Item
+                                title={role === 'administrator' ? item.username : item.request_date}
+                                description={
+                                    role === 'administrator'
+                                        ? item.request_date
+                                        : item.type === 'in-person'
+                                        ? 'In-person lesson'
+                                        : 'Remote lesson'
+                                }
+                                onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
+                                style={{ backgroundColor: theme.colors.onPrimary, alignItems: 'center' }}
+                                right={({ style, ...rightProps }) => (
+                                    <View style={[flexStyles.row, style]} {...rightProps}>
+                                        {!item.viewed && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}
+                                        <MatIcon name={'chevron-right'} size={theme.sizes.small} />
+                                    </View>
+                                )}
+                            />
+                            <Divider />
+                        </>
                     ) : (
-                        <ListItem
-                            containerStyle={sharedStyles.listItem}
-                            contentContainerStyle={sharedStyles.listItemContent}
-                            bottomDivider
-                            topDivider={index === 0}
-                            title={<Body>{item.request_date}</Body>}
-                            rightTitle={<H7>IN PROGRESS</H7>}
-                        />
+                        <>
+                            {index === 0 && <Divider />}
+                            <List.Item
+                                title={role === 'administrator' ? item.username : item.request_date}
+                                description={
+                                    role === 'administrator'
+                                        ? item.request_date
+                                        : item.type === 'in-person'
+                                        ? 'In-person lesson'
+                                        : 'Remote lesson'
+                                }
+                                style={{ backgroundColor: theme.colors.onPrimary, alignItems: 'center' }}
+                                right={({ style, ...rightProps }) => (
+                                    <View style={[flexStyles.row, style]} {...rightProps}>
+                                        <Body style={{ marginRight: theme.spaces.small }}>IN PROGRESS</Body>
+                                    </View>
+                                )}
+                            />
+                            <Divider />
+                        </>
                     )
                 }
                 keyExtractor={(item): string => 'complete_' + item.request_id}

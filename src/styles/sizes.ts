@@ -20,10 +20,10 @@ export const fonts = {
     24: unit(24),
 };
 export const spaces = {
-    xSmall: spaceUnit(1),  // 4
-    small: spaceUnit(2),   // 8
-    medium: spaceUnit(4),  // 16
-    large: spaceUnit(6),   // 24
-    xLarge: spaceUnit(8),  // 32
-    jumbo: spaceUnit(12),  // 48
+    xSmall: spaceUnit(1), // 4
+    small: spaceUnit(2), // 8
+    medium: spaceUnit(4), // 16
+    large: spaceUnit(6), // 24
+    xLarge: spaceUnit(8), // 32
+    jumbo: spaceUnit(12), // 48
 };

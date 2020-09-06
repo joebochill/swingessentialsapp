@@ -44,15 +44,17 @@ const createTypography = (getStyle: (theme: Theme) => StyleProp<TextStyle>): Rea
     if (fontSize) {
         customStyle.fontSize = fontSize;
     }
+    if (font) {
+        customStyle = {
+            ...customStyle,
+            ...theme.fonts[font],
+        };
+    }
+
     return (
         <Text
             {...props}
-            style={[
-                { color: color ? theme.colors[color] : theme.colors.text },
-                getStyle(theme),
-                customStyle,
-                style,
-            ]}
+            style={[{ color: color ? theme.colors[color] : theme.colors.text }, getStyle(theme), customStyle, style]}
         />
     );
 };

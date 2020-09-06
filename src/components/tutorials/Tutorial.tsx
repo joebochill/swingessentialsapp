@@ -34,6 +34,7 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
                     backgroundColor: theme.colors.primary,
                 }}>
                 <SEButton
+                    uppercase
                     style={{
                         position: 'absolute',
                         top: insets.top,
@@ -41,7 +42,7 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
                         marginRight: spaces.medium,
                         zIndex: 100,
                     }}
-                    labelStyle={{color: theme.colors.onPrimary}}
+                    labelStyle={{ color: theme.colors.onPrimary }}
                     mode={'text'}
                     title="Skip"
                     onPress={() => onClose()}

@@ -16,7 +16,7 @@ const useStyles = (theme: Theme) =>
         },
         darkLabel: {
             color: theme.colors.onPrimary,
-        }
+        },
     });
 
 type SEButtonProps = React.ComponentProps<typeof Button> & {

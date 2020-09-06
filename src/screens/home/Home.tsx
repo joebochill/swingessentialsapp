@@ -48,11 +48,14 @@ export const Home = props => {
             onRefresh={() => {
                 dispatch(loadUserContent());
             }}
-            bottomPad={false}
-        >
+            bottomPad={false}>
             <View style={[sharedStyles.sectionHeader]}>
                 <SEButton mode={'text'} title={'Latest Lessons'} uppercase />
-                <SEButton mode={'outlined'} title={'View All'} onPress={() => props.navigation.navigate(ROUTES.LESSONS)} />
+                <SEButton
+                    mode={'outlined'}
+                    title={'View All'}
+                    onPress={() => props.navigation.navigate(ROUTES.LESSONS)}
+                />
             </View>
             <Carousel
                 data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)}
@@ -60,11 +63,7 @@ export const Home = props => {
                     <VideoCard
                         // headerIcon={item.type === 'in-person' ? 'settings-remote' : 'settings-remote'}
                         headerTitle={item.request_date}
-                        headerSubtitle={
-                            role === 'administrator'
-                                ? item.username
-                                : undefined
-                        }
+                        headerSubtitle={role === 'administrator' ? item.username : undefined}
                         video={item.response_video}
                         onExpand={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                     />
@@ -74,23 +73,31 @@ export const Home = props => {
                 inactiveSlideScale={0.95}
             />
 
-            <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.xLarge}]}>
+            <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.xLarge }]}>
                 <SEButton mode={'text'} title={'Lesson Credits'} uppercase />
-                <SEButton mode={'outlined'} title={'Order More'} onPress={() => props.navigation.navigate(ROUTES.ORDER)} />
+                <SEButton
+                    mode={'outlined'}
+                    title={'Order More'}
+                    onPress={() => props.navigation.navigate(ROUTES.ORDER)}
+                />
             </View>
             <View style={[flexStyles.row, flexStyles.paddingHorizontal, { justifyContent: 'space-between' }]}>
                 <View
-                    style={[flexStyles.centered, flexStyles.paddingMedium,
-                    {
-                        flex: 1,
-                        borderWidth: unit(1),
-                        borderRadius: theme.roundness,
-                    },
-                    { backgroundColor: theme.colors.surface, borderColor: theme.colors.light },
+                    style={[
+                        flexStyles.centered,
+                        flexStyles.paddingMedium,
+                        {
+                            flex: 1,
+                            borderWidth: unit(1),
+                            borderRadius: theme.roundness,
+                        },
+                        { backgroundColor: theme.colors.surface, borderColor: theme.colors.light },
                     ]}>
-                    <H4 style={{ lineHeight: unit(32) }} color={'primary'}>{credits.count}</H4>
+                    <H4 style={{ lineHeight: unit(32) }} color={'primary'}>
+                        {credits.count}
+                    </H4>
                     <Label color={'primary'}>{`Credit${credits.count !== 1 ? 's' : ''} Remaining`}</Label>
-                    {credits.count > 0 &&
+                    {credits.count > 0 && (
                         <SEButton
                             mode={'outlined'}
                             title={'Submit a Swing'}
@@ -98,7 +105,7 @@ export const Home = props => {
                             style={{ marginTop: theme.spaces.medium }}
                             onPress={() => props.navigation.navigate(ROUTES.SUBMIT)}
                         />
-                    }
+                    )}
                 </View>
             </View>
 
@@ -106,7 +113,11 @@ export const Home = props => {
                 <>
                     <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.xLarge }]}>
                         <SEButton mode={'text'} title={'Tip of the Month'} uppercase />
-                        <SEButton mode={'outlined'} title={'View All'} onPress={() => props.navigation.navigate(ROUTES.TIPS)} />
+                        <SEButton
+                            mode={'outlined'}
+                            title={'View All'}
+                            onPress={() => props.navigation.navigate(ROUTES.TIPS)}
+                        />
                     </View>
                     <Carousel
                         data={tips.tipList.slice(0, 3)}

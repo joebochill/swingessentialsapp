@@ -3,14 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useCompare } from '../../utilities';
 
 // Components
-import {
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    View,
-} from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Utilities
@@ -41,7 +34,6 @@ import { ROUTES } from '../../constants/routes';
 // Actions
 import { requestLogin } from '../../redux/actions';
 
-
 type BiometryState = {
     available: boolean;
     type: 'FaceID' | 'TouchID' | 'Fingerprint' | 'None';
@@ -49,12 +41,12 @@ type BiometryState = {
 type CredentialsState = {
     stored: boolean;
     savedCredentials:
-    | {
-        username: string;
-        password: string;
-        service?: string;
-    }
-    | undefined;
+        | {
+              username: string;
+              password: string;
+              service?: string;
+          }
+        | undefined;
 };
 const initialBiometry: BiometryState = {
     available: false,
@@ -252,7 +244,11 @@ export const Login = (props: NavigationInjectedProps) => {
                             autoCorrect={false}
                             autoCapitalize={'none'}
                             editable={!pending}
-                            style={activeField === 'username' || username.length > 0 ? formStyles.active : formStyles.inactive}
+                            style={
+                                activeField === 'username' || username.length > 0
+                                    ? formStyles.active
+                                    : formStyles.inactive
+                            }
                             label={'Username'}
                             onFocus={() => setActiveField('username')}
                             onBlur={() => setActiveField(null)}
@@ -293,7 +289,10 @@ export const Login = (props: NavigationInjectedProps) => {
                         autoCapitalize={'none'}
                         editable={!pending}
                         label={'Password'}
-                        style={[formStyles.formField, activeField === 'password' || password.length > 0 ? formStyles.active : formStyles.inactive]}
+                        style={[
+                            formStyles.formField,
+                            activeField === 'password' || password.length > 0 ? formStyles.active : formStyles.inactive,
+                        ]}
                         onFocus={() => setActiveField('password')}
                         onBlur={() => setActiveField(null)}
                         onChangeText={(val: string) => setPassword(val)}
@@ -309,7 +308,9 @@ export const Login = (props: NavigationInjectedProps) => {
                     {/* Remember Me Row */}
                     <View style={[formStyles.formField, formStyles.fieldRow]}>
                         <View style={styles.toggle}>
-                            <Body style={styles.toggleLabel} color={'onPrimary'}>Save Username</Body>
+                            <Body style={styles.toggleLabel} color={'onPrimary'}>
+                                Save Username
+                            </Body>
                             <Switch
                                 value={remember}
                                 style={{ backgroundColor: 'pink' }}
@@ -351,8 +352,9 @@ export const Login = (props: NavigationInjectedProps) => {
 
                     {/* Log In Buttons */}
                     <View style={formStyles.fieldRow}>
-                        <SEButton dark
-                            title={"Sign In"}
+                        <SEButton
+                            dark
+                            title={'Sign In'}
                             loading={pending}
                             style={{ flex: 1 }}
                             onPress={() => onLogin(username, password)}
@@ -388,29 +390,30 @@ export const Login = (props: NavigationInjectedProps) => {
     );
 };
 
-const useStyles = (theme: Theme) => StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    logo: {
-        height: unit(60),
-        width: '100%',
-        resizeMode: 'contain',
-        marginBottom: theme.spaces.medium,
-    },
-    scrollContainer: {
-        minHeight: height - getStatusBarHeight(),
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: theme.spaces.medium,
-    },
-    toggle: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-    },
-    toggleLabel: {
-        fontSize: theme.fontSizes[14],
-        marginRight: theme.spaces.small,
-    },
-});
+const useStyles = (theme: Theme) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+        },
+        logo: {
+            height: unit(60),
+            width: '100%',
+            resizeMode: 'contain',
+            marginBottom: theme.spaces.medium,
+        },
+        scrollContainer: {
+            minHeight: height - getStatusBarHeight(),
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingHorizontal: theme.spaces.medium,
+        },
+        toggle: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+        },
+        toggleLabel: {
+            fontSize: theme.fontSizes[14],
+            marginRight: theme.spaces.small,
+        },
+    });
