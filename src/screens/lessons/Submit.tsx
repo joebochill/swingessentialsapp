@@ -10,14 +10,11 @@ import {
     ScrollView,
     TouchableOpacity,
     Image,
-    TextInput,
     StyleSheet,
     Alert,
     Keyboard,
 } from 'react-native';
 import {
-    H7,
-    Label,
     CollapsibleHeaderLayout,
     SEVideo,
     SEVideoPlaceholder,
@@ -25,17 +22,16 @@ import {
     ErrorBox,
     UploadProgressModal,
     SubmitTutorial,
+    Caption,
 } from '../../components';
-import { Icon } from 'react-native-elements';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 
 // Styles
-import { useSharedStyles } from '../../styles';
+import { useSharedStyles, useListStyles, useFormStyles } from '../../styles';
 import { transparent } from '../../styles/colors';
-import { spaces, sizes, fonts, unit } from '../../styles/sizes';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Subheading, TextInput } from 'react-native-paper';
 import bg from '../../images/banners/submit.jpg';
-import page_bg from '../../images/golf_bg.png';
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
 
@@ -59,6 +55,7 @@ export const Submit = props => {
     const [dtl_video, setDTL] = useState('');
     const [useNotes, setUseNotes] = useState(false);
     const [notes, setNotes] = useState('');
+    const [notesActive, setNotesActive] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const credits = useSelector((state: ApplicationState) => state.credits.count);
     const lessons = useSelector((state: ApplicationState) => state.lessons);
@@ -66,14 +63,17 @@ export const Submit = props => {
     const scroller = useRef(null);
     const dispatch = useDispatch();
     const theme = useTheme();
+    const styles = useStyles(theme);
     const sharedStyles = useSharedStyles(theme);
+    const listStyles = useListStyles(theme);
+    const formStyles = useFormStyles(theme);
 
     const roleError =
         role === 'anonymous'
             ? 'You must be signed in to submit lessons.'
             : role === 'pending'
-            ? 'You must validate your email address before you can submit lessons'
-            : '';
+                ? 'You must validate your email address before you can submit lessons'
+                : '';
 
     const previousPendingStatus = usePrevious(lessons.redeemPending);
 
@@ -131,6 +131,16 @@ export const Submit = props => {
         _clearFields,
         navigation,
     ]);
+
+    const _canSubmit = useCallback(() => {
+        return (
+            roleError.length === 0 &&
+            !lessons.redeemPending &&
+            fo_video !== '' &&
+            dtl_video !== '' &&
+            lessons.pending.length <= 0)
+            ;
+    }, [roleError, lessons, fo_video, dtl_video])
 
     const _submitLesson = useCallback(() => {
         Keyboard.dismiss();
@@ -257,68 +267,67 @@ export const Submit = props => {
             title={'Submit Your Swing'}
             subtitle={'Request a personalized lesson'}
             backgroundImage={bg}
-            pageBackground={page_bg}>
+        >
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView
                     keyboardShouldPersistTaps={'always'}
                     contentContainerStyle={sharedStyles.paddingHorizontalMedium}
                     ref={scroller}>
-                    <ErrorBox show={roleError !== ''} error={roleError} style={{ marginBottom: spaces.medium }} />
+                    <ErrorBox show={roleError !== ''} error={roleError} style={formStyles.errorBox} />
                     <ErrorBox
                         show={lessons.pending.length > 0}
                         error={
                             'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.'
                         }
-                        style={{ marginBottom: spaces.medium }}
+                        style={formStyles.errorBox}
                     />
                     <ErrorBox
                         show={roleError.length === 0 && lessons.pending.length === 0 && credits < 1}
                         error={"You don't have any credits left. Head over to the Order page to get more."}
-                        style={{ marginBottom: spaces.medium }}
+                        style={formStyles.errorBox}
                     />
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                        <H7>Your Swing Videos</H7>
+                        <Subheading style={listStyles.heading}>{'Your Swing Videos'}</Subheading>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
                         {!fo_video ? (
                             <SEVideoPlaceholder
                                 title={'Face-On'}
                                 icon={<Image source={fo} resizeMethod={'resize'} style={sharedStyles.image} />}
-                                editIcon={<Icon name={'add-a-photo'} color={theme.colors.accent} />}
+                                editIcon={<MatIcon name={'add-a-photo'} color={theme.colors.accent} size={theme.sizes.small} />}
                                 onPress={() => _showPicker('fo')}
                             />
                         ) : (
-                            <SEVideo editable source={fo_video} onEdit={() => _showPicker('fo')} />
-                        )}
+                                <SEVideo editable source={fo_video} onEdit={() => _showPicker('fo')} />
+                            )}
                         {!dtl_video ? (
                             <SEVideoPlaceholder
                                 title={'Down-the-Line'}
                                 icon={<Image source={dtl} resizeMethod={'resize'} style={sharedStyles.image} />}
-                                editIcon={<Icon name={'add-a-photo'} color={theme.colors.accent} />}
+                                editIcon={<MatIcon name={'add-a-photo'} color={theme.colors.accent} size={theme.sizes.small} />}
                                 onPress={() => _showPicker('dtl')}
                             />
                         ) : (
-                            <SEVideo
-                                editable
-                                source={dtl_video}
-                                style={{ marginLeft: spaces.medium }}
-                                onEdit={() => _showPicker('dtl')}
-                            />
-                        )}
+                                <SEVideo
+                                    editable
+                                    source={dtl_video}
+                                    style={{ marginLeft: theme.spaces.medium }}
+                                    onEdit={() => _showPicker('dtl')}
+                                />
+                            )}
                     </View>
-                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0, marginTop: spaces.large }]}>
-                        <H7>Special Requests / Comments</H7>
+                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0, marginTop: theme.spaces.jumbo }]}>
+                        <Subheading style={listStyles.heading}>{'Special Requests / Comments'}</Subheading>
                     </View>
                     {!useNotes && (
                         <TouchableOpacity
                             activeOpacity={0.8}
                             style={[
-                                sharedStyles.dashed,
+                                formStyles.dashed,
                                 styles.dashButton,
-                                { backgroundColor: color(theme.colors.accent).fade(0.85) },
                             ]}
                             onPress={() => setUseNotes(true)}>
-                            <Icon name={'add-circle'} color={theme.colors.accent} size={24} />
+                            <MatIcon name={'add-circle'} color={theme.colors.accent} size={24} />
                         </TouchableOpacity>
                     )}
                     {useNotes && (
@@ -333,38 +342,27 @@ export const Submit = props => {
                                 multiline
                                 onChangeText={val => setNotes(val)}
                                 onFocus={() => {
+                                    setNotesActive(true);
                                     if (scroller.current) {
                                         scroller.current.scrollTo({ x: 0, y: 350, animated: true });
                                     }
                                 }}
+                                onBlur={() => setNotesActive(false)}
                                 returnKeyType={'done'}
                                 spellCheck
                                 textAlignVertical={'top'}
                                 underlineColorAndroid={transparent}
                                 value={notes}
-                                style={[
-                                    styles.input,
-                                    {
-                                        backgroundColor: theme.colors.background,
-                                        color: theme.colors.text,
-                                        borderColor: theme.colors.dark,
-                                    },
-                                ]}
+                                style={[formStyles.active]}
                             />
-                            <Label style={{ alignSelf: 'flex-end' }}>{`${500 - notes.length} Characters Left`}</Label>
+                            <Caption style={{ alignSelf: 'flex-end', marginTop: theme.spaces.small }}>{`${500 - notes.length} Characters Left`}</Caption>
                         </>
                     )}
-                    {roleError.length === 0 &&
-                        !lessons.redeemPending &&
-                        fo_video !== '' &&
-                        dtl_video !== '' &&
-                        lessons.pending.length <= 0 && (
-                            <SEButton
-                                style={{ marginTop: spaces.large }}
-                                title={'SUBMIT'}
-                                onPress={() => _submitLesson()}
-                            />
-                        )}
+                    <SEButton
+                        style={[formStyles.formField, _canSubmit() ? {} : { opacity: 0.6 }]}
+                        title={'SUBMIT'}
+                        onPress={_canSubmit() ? () => _submitLesson() : undefined}
+                    />
                 </ScrollView>
             </KeyboardAvoidingView>
             {lessons.redeemPending && <UploadProgressModal progress={uploadProgress} visible={lessons.redeemPending} />}
@@ -373,20 +371,11 @@ export const Submit = props => {
     );
 };
 
-const styles = StyleSheet.create({
+const useStyles = (theme: Theme) => StyleSheet.create({
     dashButton: {
-        padding: spaces.medium,
-        minHeight: sizes.xLarge,
+        padding: theme.spaces.medium,
+        minHeight: theme.sizes.xLarge,
+        alignItems: 'center',
         justifyContent: 'center',
-    },
-    input: {
-        minHeight: sizes.xLarge,
-        paddingHorizontal: spaces.medium,
-        paddingTop: spaces.medium,
-        paddingBottom: spaces.medium,
-        fontFamily: 'SFCompactDisplay-Regular',
-        fontSize: fonts[14],
-        borderRadius: unit(5),
-        borderWidth: unit(2),
     },
 });

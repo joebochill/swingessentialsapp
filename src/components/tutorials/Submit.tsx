@@ -4,14 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Image } from 'react-native';
-import { Icon } from 'react-native-elements';
 import { H7, H4 } from '../index';
 import { SEButton, SEVideoPlaceholder } from '..';
 import { TutorialModal } from '.';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { useSharedStyles } from '../../styles';
-import { sizes, spaces, unit } from '../../styles/sizes';
+import { unit } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 import { whiteOpacity } from '../../styles/colors';
 // Images
@@ -41,8 +41,8 @@ export const SubmitTutorial = () => {
                 font={'light'}
                 style={{
                     textAlign: 'center',
-                    marginTop: spaces.small,
-                    marginBottom: spaces.medium,
+                    marginTop: theme.spaces.small,
+                    marginBottom: theme.spaces.medium,
                     color: theme.colors.onPrimary,
                 }}>
                 {
@@ -51,18 +51,16 @@ export const SubmitTutorial = () => {
             </H7>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <SEVideoPlaceholder
-                    inverse
                     disabled
                     title={'Face-On'}
                     icon={<Image source={fo} resizeMethod={'resize'} style={[sharedStyles.image]} />}
-                    editIcon={<Icon name={'add-a-photo'} color={theme.colors.accent} />}
+                    editIcon={<MatIcon name={'add-a-photo'} color={theme.colors.accent} size={theme.sizes.small} />}
                 />
                 <SEVideoPlaceholder
-                    inverse
                     disabled
                     title={'Down-the-Line'}
                     icon={<Image source={dtl} resizeMethod={'resize'} style={sharedStyles.image} />}
-                    editIcon={<Icon name={'add-a-photo'} color={theme.colors.accent} />}
+                    editIcon={<MatIcon name={'add-a-photo'} color={theme.colors.accent} size={theme.sizes.small} />}
                 />
             </View>
         </>,
@@ -74,28 +72,28 @@ export const SubmitTutorial = () => {
                 font={'light'}
                 style={{
                     textAlign: 'center',
-                    marginTop: spaces.small,
-                    marginBottom: spaces.medium,
+                    marginTop: theme.spaces.small,
+                    marginBottom: theme.spaces.medium,
                     color: theme.colors.onPrimary,
                 }}>
                 {'Press the Record button to start recording your swing.'}
             </H7>
             <RecordButton
                 recording={false}
-                onPress={() => {}}
-                style={{ alignSelf: 'center', marginTop: spaces.large }}
+                onPress={() => { }}
+                style={{ alignSelf: 'center', marginTop: theme.spaces.large }}
             />
             <H7
                 font={'light'}
                 style={{
                     textAlign: 'center',
-                    marginTop: spaces.xLarge,
-                    marginBottom: spaces.xLarge,
+                    marginTop: theme.spaces.xLarge,
+                    marginBottom: theme.spaces.xLarge,
                     color: theme.colors.onPrimary,
                 }}>
                 {'You can adjust your settings for recording length and delay by clicking the settings icon.'}
             </H7>
-            <Icon name="settings" color={'white'} size={sizes.xLarge} />
+            <MatIcon name="settings" color={theme.colors.onPrimary} size={theme.sizes.xLarge} style={{alignSelf: 'center'}} />
         </>,
     ];
 
@@ -107,8 +105,8 @@ export const SubmitTutorial = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }) => slides[index]}
-                    sliderWidth={width - 2 * spaces.medium}
-                    itemWidth={width - 2 * spaces.medium}
+                    sliderWidth={width - 2 * theme.spaces.medium}
+                    itemWidth={width - 2 * theme.spaces.medium}
                     onSnapToItem={index => {
                         setActivePanel(index);
                         if (index === slides.length - 1) {

@@ -21,6 +21,18 @@ export const useFormStyles = (theme = defaultTheme) =>
         active: {
             backgroundColor: theme.colors.onPrimary,
         },
+        dashed: {
+            borderWidth: unit(1),
+            borderRadius: theme.roundness,
+            borderStyle: 'dashed',
+            borderColor: theme.colors.dark,
+            backgroundColor: theme.colors.surface,
+            // Used in Submit and SEVideo
+        },
+        errorBox: {
+            paddingVertical: theme.spaces.medium,
+            marginBottom: theme.spaces.medium,
+        },
     });
 
 export const useFlexStyles = (theme: Theme) =>
