@@ -167,7 +167,7 @@ export const Record = props => {
             paused={!isPlaying}
             onEnd={() => setIsPlaying(false)}
             resizeMode="contain"
-            repeat={false} // TODO: changed since ios release
+            repeat={Platform.OS === 'ios'}
             playInBackground={false}
             playWhenInactive={false}
             ignoreSilentSwitch={'ignore'}

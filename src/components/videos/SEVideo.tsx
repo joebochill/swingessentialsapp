@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 // Components
-import { StyleSheet, TouchableOpacity, ViewProperties, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, ViewProperties, View, Platform } from 'react-native';
 import Video from 'react-native-video';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
@@ -8,7 +8,7 @@ import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { width, aspectWidth } from '../../utilities/dimensions';
 import { useSharedStyles, useFormStyles, useListStyles } from '../../styles';
 import { transparent, blackOpacity } from '../../styles/colors';
-import { useTheme, Subheading } from 'react-native-paper';
+import { useTheme, Subheading, ActivityIndicator } from 'react-native-paper';
 
 type VideoProps = ViewProperties & {
     source: string;
@@ -25,9 +25,10 @@ type PlaceholderProps = ViewProperties & {
 };
 
 export const SEVideo = (props: VideoProps) => {
-    const { source, style, editable = false, onEdit = () => {} } = props;
+    const { source, style, editable = false, onEdit = () => { } } = props;
     const vid = useRef(null);
     const [playing, setPlaying] = useState(false);
+    const [ready, setReady] = useState(false);
     const theme = useTheme();
     const styles = useStyles(theme);
     const sharedStyles = useSharedStyles(theme);
@@ -45,22 +46,33 @@ export const SEVideo = (props: VideoProps) => {
                     volume={1.0}
                     muted={false}
                     paused={!playing}
+                    onRe
                     onEnd={() => setPlaying(false)}
+                    onReadyForDisplay={() => setReady(true)}
                     resizeMode="contain"
-                    repeat={false} // TODO: changed this from ioS release
+                    repeat={Platform.OS === 'ios'}
                     playInBackground={false}
                     playWhenInactive={false}
                     ignoreSilentSwitch={'ignore'}
                     style={{ height: '100%', width: '100%' }}
                 />
-                <View style={[styles.fullCentered, { opacity: playing ? 0 : 1 }]}>
-                    <MatIcon
-                        name={'play-arrow'}
-                        size={theme.sizes.large}
+                {!ready && (
+                    <ActivityIndicator
+                        size={theme.sizes.xLarge}
                         color={theme.colors.onPrimary}
-                        underlayColor={transparent}
+                        style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
                     />
-                </View>
+                )}
+                {ready &&
+                    <View style={[styles.fullCentered, { opacity: playing ? 0 : 1 }]}>
+                        <MatIcon
+                            name={'play-arrow'}
+                            size={theme.sizes.large}
+                            color={theme.colors.onPrimary}
+                            underlayColor={transparent}
+                        />
+                    </View>
+                }
                 {editable && (
                     <TouchableOpacity
                         activeOpacity={0.8}
@@ -85,7 +97,7 @@ export const SEVideo = (props: VideoProps) => {
     );
 };
 export const SEVideoPlaceholder = (props: PlaceholderProps) => {
-    const { icon, editIcon, style, disabled, onPress = () => {} } = props;
+    const { icon, editIcon, style, disabled, onPress = () => { } } = props;
     const theme = useTheme();
     const styles = useStyles(theme);
     const sharedStyles = useSharedStyles(theme);

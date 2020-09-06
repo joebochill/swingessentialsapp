@@ -27,6 +27,12 @@ export const mainNavigationItems: RouteGroup = {
             route: ROUTES.HOME,
         },
         {
+            title: 'Your Profile',
+            icon: 'person',
+            private: true,
+            route: ROUTES.SETTINGS,
+        },
+        {
             title: 'Your Lessons',
             icon: 'subscriptions',
             route: ROUTES.LESSONS,
@@ -58,12 +64,6 @@ export const mainNavigationItems: RouteGroup = {
         //     private: true,
         //     activatePanel: 1,
         // },
-        {
-            title: 'Settings',
-            icon: 'settings',
-            private: true,
-            route: ROUTES.SETTINGS,
-        },
         {
             title: 'Help',
             icon: 'help',
