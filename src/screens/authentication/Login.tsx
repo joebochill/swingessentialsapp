@@ -313,7 +313,6 @@ export const Login = (props: NavigationInjectedProps) => {
                             </Body>
                             <Switch
                                 value={remember}
-                                style={{ backgroundColor: 'pink' }}
                                 onValueChange={(val: boolean) => {
                                     setRemember(val);
                                     AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');

@@ -137,7 +137,6 @@ export const Record = props => {
                 bottom: 0,
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: 'orange',
             }}
             type={RNCamera.Constants.Type[cameras[cameraType]]}
             // onCameraReady={() => setRecordingMode(true)}

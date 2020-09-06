@@ -3,15 +3,16 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Image, RefreshControl, ScrollView, TouchableHighlight } from 'react-native';
-import { Body, CollapsibleHeaderLayout, SEButton, SEHeader } from '../../components';
+import { Body, SEButton, SEHeader } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import ImagePicker from 'react-native-image-crop-picker';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
 
 // Styles
 import { useSharedStyles, useListStyles, useFlexStyles, useFormStyles } from '../../styles';
-import { useTheme, List, Subheading, Divider, TextInput } from 'react-native-paper';
+import { useTheme, List, Subheading, Divider, TextInput, IconButton } from 'react-native-paper';
 
 // Types
 import { ApplicationState } from '../../__types__';
@@ -20,7 +21,7 @@ import { loadSettings } from '../../redux/actions/SettingsActions';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { getLongDate } from '../../utilities';
 import { transparent } from '../../styles/colors';
-import { setUserData, loadUserInfo } from '../../redux/actions/user-data-actions';
+import { setUserData, loadUserInfo, setUserAvatar } from '../../redux/actions/user-data-actions';
 import { width, height } from '../../utilities/dimensions';
 import { HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
@@ -31,7 +32,7 @@ const objectsEqual = (a: Object, b: Object) => {
 
     // If number of properties is different,
     // objects are not equivalent
-    if (aProps.length != bProps.length) {
+    if (aProps.length !== bProps.length) {
         return false;
     }
 
@@ -84,7 +85,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
 
     return (
         <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
-            <SEHeader title={userData.username} subtitle={'Your Profile'} mainAction={'back'} />
+            <SEHeader title={userData.username} subtitle={memberString} mainAction={'back'} />
             <ScrollView
                 contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
                 keyboardShouldPersistTaps={'always'}
@@ -98,22 +99,75 @@ export const Settings = (props: NavigationStackScreenProps) => {
                         progressViewOffset={HEADER_EXPANDED_HEIGHT}
                     />
                 }>
-                <TouchableHighlight
-                    underlayColor={theme.colors.onPrimary}
-                    style={{
-                        width: width / 2,
-                        height: width / 2,
-                        maxWidth: 200,
-                        maxHeight: 200,
-                        alignSelf: 'center',
-                        borderRadius: width / 4,
-                        overflow: 'hidden',
-                        backgroundColor: theme.colors.surface,
-                    }}
-                    onPress={() => console.log('show image picker')}>
-                    <Image source={{ uri: avatarURL }} style={{ width: '100%', height: '100%' }} />
-                </TouchableHighlight>
-                <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo }]}>
+                <View style={{ alignSelf: 'center' }}>
+                    <TouchableHighlight
+                        underlayColor={theme.colors.onPrimary}
+                        onPress={() => {
+                            ImagePicker.openPicker({
+                                width: 200,
+                                height: 200,
+                                cropping: true,
+                                cropperCircleOverlay: true,
+                                includeBase64: true,
+                            })
+                                .then(image => {
+                                    dispatch(
+                                        setUserAvatar({
+                                            useAvatar: 1,
+                                            avatar: image.data,
+                                        }),
+                                    );
+                                })
+                                .catch(err => {
+                                    // do nothing (canceled image picker)
+                                });
+                        }}
+                        style={{
+                            width: width / 2,
+                            height: width / 2,
+                            maxWidth: 200,
+                            maxHeight: 200,
+                            alignSelf: 'center',
+                            borderRadius: width / 4,
+                            overflow: 'hidden',
+                            backgroundColor: theme.colors.surface,
+                        }}>
+                        <>
+                            <Image source={{ uri: avatarURL }} style={{ width: '100%', height: '100%' }} />
+                            <View style={{ position: 'absolute', bottom: 0, width: '100%', alignItems: 'center' }}>
+                                <IconButton
+                                    icon="pencil"
+                                    color={theme.colors.onPrimary}
+                                    size={theme.sizes.small}
+                                    style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+                                />
+                            </View>
+                        </>
+                    </TouchableHighlight>
+                    {settings.avatar !== '' && (
+                        <IconButton
+                            icon="close"
+                            color={theme.colors.onPrimary}
+                            size={theme.sizes.xSmall}
+                            style={{
+                                backgroundColor: 'rgba(0,0,0,0.5)',
+                                position: 'absolute',
+                                top: 0,
+                                right: 0,
+                            }}
+                            onPress={() => {
+                                dispatch(
+                                    setUserAvatar({
+                                        useAvatar: 0,
+                                        avatar: '',
+                                    }),
+                                );
+                            }}
+                        />
+                    )}
+                </View>
+
+                <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.large }]}>
                     <Subheading style={listStyles.heading}>{'About Me'}</Subheading>
                     <SEButton
                         mode={'outlined'}
@@ -236,7 +290,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                             autoCapitalize={'none'}
                             style={[
                                 formStyles.formField,
-                                activeField === 'location' || (personal.location ?? '').length > 0
+                                activeField === 'location' || (personal.location || '').length > 0
                                     ? formStyles.active
                                     : formStyles.inactive,
                             ]}
@@ -253,7 +307,7 @@ export const Settings = (props: NavigationStackScreenProps) => {
                             autoCapitalize={'none'}
                             style={[
                                 formStyles.formField,
-                                activeField === 'phone' || (personal.phone ?? '').length > 0
+                                activeField === 'phone' || (personal.phone || '').length > 0
                                     ? formStyles.active
                                     : formStyles.inactive,
                             ]}

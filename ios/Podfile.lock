@@ -193,7 +193,7 @@ PODS:
     - React
   - react-native-camera/RN (3.16.0):
     - React
-  - react-native-image-picker (1.1.0):
+  - react-native-image-picker (2.3.3):
     - React
   - react-native-mail (4.1.0):
     - React
@@ -251,6 +251,15 @@ PODS:
     - React
   - RNIap (4.3.3):
     - React
+  - RNImageCropPicker (0.34.1):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.34.1)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.34.1):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNKeychain (4.0.4):
     - React
   - RNReanimated (1.4.0):
@@ -259,6 +268,7 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
+  - TOCropViewController (2.5.4)
   - TouchID (4.4.1):
     - React
   - Yoga (1.14.0)
@@ -304,6 +314,7 @@ DEPENDENCIES:
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNIap (from `../node_modules/react-native-iap`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -314,6 +325,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - boost-for-react-native
+    - TOCropViewController
     - YoutubePlayer-in-WKWebView
 
 EXTERNAL SOURCES:
@@ -389,6 +401,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNIap:
     :path: "../node_modules/react-native-iap"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNKeychain:
     :path: "../node_modules/react-native-keychain"
   RNReanimated:
@@ -420,7 +434,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-camera: 705c7e9412436957b4dc894a1af61f43830787e2
-  react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
+  react-native-image-picker: 3d3f85baabca60a00b75fb8facc1376db7bbdafa
   react-native-mail: a864fb211feaa5845c6c478a3266de725afdce89
   react-native-netinfo: 8884d510fe67349940b4399c01db3e3591c922aa
   react-native-safe-area-context: 1f8a52fb0ab1321eef9a7099bd2c360d4e38264b
@@ -440,10 +454,12 @@ SPEC CHECKSUMS:
   RNFS: 0d4191b1052bef9ce70deff00a5b4169c62bbd9b
   RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
   RNIap: 845e5612d14287f645714d4eeb1b8376509c4aed
+  RNImageCropPicker: 39ec170dc53c227ea352b706c76f7960070309a8
   RNKeychain: 79cfca6cd5030bbabcd1a2c009531b84e358116d
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNSVG: 9d45f03136ecc9b5497e12f6f20838b568acb9f4
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  TOCropViewController: 2a1ae1242600b1f2d996fd91a5268b2309a33b5c
   TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
   YoutubePlayer-in-WKWebView: af2f5929fc78882d94bfdfeea999b661b78d9717

@@ -5,6 +5,7 @@ import * as ACTIONS from './types';
 
 import { HttpRequest } from '../../api/http';
 import { success, failure } from '../../api/http-helper';
+import { loadSettings } from './SettingsActions';
 
 export function loadUserInfo() {
     return (dispatch: ThunkDispatch<any, void, any>): void => {
@@ -39,6 +40,27 @@ export function setUserData(data: UserDataChange) {
             })
             .onFailure((response: Response) => {
                 dispatch(failure(ACTIONS.SET_USER_DATA.FAILURE, response, 'SetUserData'));
+            })
+            .request();
+    };
+}
+
+type SetAvatar = {
+    useAvatar: 0 | 1;
+    avatar: string;
+};
+export function setUserAvatar(data: SetAvatar) {
+    return (dispatch: ThunkDispatch<any, void, any>): void => {
+        dispatch({ type: ACTIONS.CHANGE_AVATAR.REQUEST });
+
+        HttpRequest.post(ACTIONS.CHANGE_AVATAR.API)
+            .withBody(data)
+            .onSuccess((response: any) => {
+                dispatch(success(ACTIONS.CHANGE_AVATAR.SUCCESS, response));
+                dispatch(loadSettings());
+            })
+            .onFailure((response: Response) => {
+                dispatch(failure(ACTIONS.CHANGE_AVATAR.FAILURE, response));
             })
             .request();
     };
