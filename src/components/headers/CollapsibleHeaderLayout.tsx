@@ -47,7 +47,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
             renderScroll = true,
             children,
             refreshing = false,
-            onRefresh = () => {},
+            onRefresh = () => { },
             bottomPad = true,
         } = this.props;
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
@@ -72,6 +72,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                     {renderScroll && (
                         <ScrollView
+                            keyboardShouldPersistTaps={'always'}
                             contentContainerStyle={[
                                 styles.scrollContainer,
                                 bottomPad ? { paddingBottom: height * 0.5 } : {},
@@ -84,8 +85,8 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                                         progressViewOffset={HEADER_EXPANDED_HEIGHT}
                                     />
                                 ) : (
-                                    undefined
-                                )
+                                        undefined
+                                    )
                             }
                             onScroll={Animated.event(
                                 [

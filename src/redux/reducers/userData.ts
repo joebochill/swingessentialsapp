@@ -6,6 +6,8 @@ const initialState: UserDataState = {
     firstName: '',
     lastName: '',
     email: '',
+    location: '',
+    phone: '',
     joined: 0,
 };
 export const userDataReducer = (state = initialState, action): UserDataState => {
@@ -18,6 +20,8 @@ export const userDataReducer = (state = initialState, action): UserDataState => 
                 firstName: action.payload.personal.first_name,
                 lastName: action.payload.personal.last_name,
                 email: action.payload.personal.email,
+                location: action.payload.personal.location,
+                phone: action.payload.personal.phone,
                 joined: action.payload.personal.joined,
             };
         case GET_USER_DATA.FAILURE:

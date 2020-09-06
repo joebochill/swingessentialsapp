@@ -1,7 +1,4 @@
 import {
-    LOGIN,
-    LOGOUT,
-    GET_USER_DATA,
     CREATE_ACCOUNT,
     CHECK_USERNAME,
     CHECK_EMAIL,

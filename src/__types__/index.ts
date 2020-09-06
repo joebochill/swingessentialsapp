@@ -27,6 +27,8 @@ export type UserSettingsType = {
     delay?: number;
     overlay?: boolean;
     handedness?: HandednessType;
+    avatar?: string;
+    notifications?: string;
 };
 
 export type Credentials = {
@@ -99,6 +101,8 @@ export type UserDataState = {
     lastName: string;
     email: string;
     joined: number;
+    location?: string;
+    phone?: string;
 };
 export type CreditsState = {
     count: number;
@@ -122,6 +126,8 @@ export type SettingsState = {
     delay: number;
     overlay: boolean;
     handedness: HandednessType;
+    notifications: boolean;
+    avatar: string;
 };
 export type RegistrationState = {
     pending: boolean;

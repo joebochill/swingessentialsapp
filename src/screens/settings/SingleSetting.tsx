@@ -26,7 +26,7 @@ type SettingType = {
 const SETTINGS: SettingType[] = [
     {
         name: 'handedness',
-        label: 'Handedness',
+        label: 'Swing Handedness',
         description: 'Your dominant hand for golfing',
         values: ['Right', 'Left'],
     },
@@ -49,6 +49,13 @@ const SETTINGS: SettingType[] = [
             'The Stance Overlay shows a semi-transparent image of how you should stand while recording your swing',
         values: [true, false],
     },
+    {
+        name: 'notifications',
+        label: 'New Lesson Email Notification',
+        description:
+            'Send you an email whenever your swing analysis has been posted or updated.',
+        values: [true, false],
+    },
 ];
 const caseSame = (val1: string | number, val2: string | number): boolean => {
     if (typeof val1 === 'string' && typeof val2 === 'string') {
@@ -69,14 +76,21 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
     const flexStyles = useFlexStyles(theme);
     const listStyles = useListStyles(theme);
 
-    const [value, setValue]: [any, Function] = useState(settings[currentSettingName]);
+    const [value, setValue] = useState(settings[currentSettingName]);
 
     const _updateSetting = useCallback(() => {
-        dispatch(
-            putSettings({
-                [currentSettingName]: value,
-            }),
-        );
+        if (currentSettingName === 'notifications') {
+            dispatch(
+                putSettings({
+                    subscribe: value,
+                }))
+        }
+        else {
+            dispatch(
+                putSettings({
+                    [currentSettingName]: value,
+                }))
+        }
     }, [dispatch, currentSettingName, value]);
 
     useEffect(() => {
@@ -108,12 +122,12 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                     },
                 ]}>
                 {currentSetting.values.map((val, index) => (
-                    <>
+                    <View key={`option_${index}`}>
                         {index === 0 && <Divider />}
                         <List.Item
                             title={`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
                                 typeof val === 'number' ? 's' : ''
-                            }`}
+                                }`}
                             titleEllipsizeMode={'tail'}
                             onPress={(): void => setValue(val)}
                             style={listStyles.item}
@@ -134,7 +148,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                             )}
                         />
                         <Divider />
-                    </>
+                    </View>
                 ))}
                 <Body style={[flexStyles.paddingHorizontal, { marginTop: theme.spaces.medium }]}>
                     {currentSetting.description}
