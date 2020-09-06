@@ -51,7 +51,7 @@ export function createAccount(data: NewAccountDetails) {
             .withBody(data)
             .onSuccess((response: any) => {
                 const token = response.headers.get('Token');
-                dispatch(success(ACTIONS.CREATE_ACCOUNT.SUCCESS, { token }));
+                dispatch(success(ACTIONS.CREATE_ACCOUNT.SUCCESS, { token, personal: data }));
             })
             .onFailure((response: Response) => {
                 dispatch(failure(ACTIONS.CREATE_ACCOUNT.FAILURE, response, 'CreateAccount'));

@@ -75,8 +75,12 @@ export const ErrorLogs = props => {
                 getLogs();
             }}>
             <View style={[flexStyles.paddingHorizontal]}>
-                <SEButton title={'SEND ERROR REPORT'} onPress={() => sendMail()} style={{marginBottom: theme.spaces.medium}}/>
-                <Caption style={{color: theme.colors.text}}>{logs}</Caption>
+                <SEButton
+                    title={'SEND ERROR REPORT'}
+                    onPress={() => sendMail()}
+                    style={{ marginBottom: theme.spaces.medium }}
+                />
+                <Caption style={{ color: theme.colors.text }}>{logs}</Caption>
             </View>
         </CollapsibleHeaderLayout>
     );

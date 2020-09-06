@@ -52,8 +52,7 @@ const SETTINGS: SettingType[] = [
     {
         name: 'notifications',
         label: 'New Lesson Email Notification',
-        description:
-            'Send you an email whenever your swing analysis has been posted or updated.',
+        description: 'Send you an email whenever your swing analysis has been posted or updated.',
         values: [true, false],
     },
 ];
@@ -83,13 +82,14 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
             dispatch(
                 putSettings({
                     subscribe: value,
-                }))
-        }
-        else {
+                }),
+            );
+        } else {
             dispatch(
                 putSettings({
                     [currentSettingName]: value,
-                }))
+                }),
+            );
         }
     }, [dispatch, currentSettingName, value]);
 
@@ -127,7 +127,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                         <List.Item
                             title={`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
                                 typeof val === 'number' ? 's' : ''
-                                }`}
+                            }`}
                             titleEllipsizeMode={'tail'}
                             onPress={(): void => setValue(val)}
                             style={listStyles.item}

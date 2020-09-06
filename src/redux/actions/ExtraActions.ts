@@ -12,6 +12,7 @@ import { HttpRequest } from '../../api/http';
 import { Logger, LOG_TYPE } from '../../utilities/logging';
 import { success, failure } from '../../api/http-helper';
 import { Platform } from 'react-native';
+import { loadUserInfo } from './user-data-actions';
 
 export function loadInitialData(): Function {
     return async (dispatch: ThunkDispatch<any, void, any>) => {
@@ -20,6 +21,7 @@ export function loadInitialData(): Function {
 
         dispatch({ type: ACTIONS.INITIAL_LOAD });
         dispatch(loadPlaceholder());
+        dispatch(loadUserInfo());
         dispatch(loadTips());
         dispatch(loadBlogs());
         dispatch(loadPackages());

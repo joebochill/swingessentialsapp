@@ -25,7 +25,7 @@ type PlaceholderProps = ViewProperties & {
 };
 
 export const SEVideo = (props: VideoProps) => {
-    const { source, style, editable = false, onEdit = () => { } } = props;
+    const { source, style, editable = false, onEdit = () => {} } = props;
     const vid = useRef(null);
     const [playing, setPlaying] = useState(false);
     const [ready, setReady] = useState(false);
@@ -63,7 +63,7 @@ export const SEVideo = (props: VideoProps) => {
                         style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
                     />
                 )}
-                {ready &&
+                {ready && (
                     <View style={[styles.fullCentered, { opacity: playing ? 0 : 1 }]}>
                         <MatIcon
                             name={'play-arrow'}
@@ -72,7 +72,7 @@ export const SEVideo = (props: VideoProps) => {
                             underlayColor={transparent}
                         />
                     </View>
-                }
+                )}
                 {editable && (
                     <TouchableOpacity
                         activeOpacity={0.8}
@@ -97,7 +97,7 @@ export const SEVideo = (props: VideoProps) => {
     );
 };
 export const SEVideoPlaceholder = (props: PlaceholderProps) => {
-    const { icon, editIcon, style, disabled, onPress = () => { } } = props;
+    const { icon, editIcon, style, disabled, onPress = () => {} } = props;
     const theme = useTheme();
     const styles = useStyles(theme);
     const sharedStyles = useSharedStyles(theme);

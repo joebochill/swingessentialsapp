@@ -23,7 +23,7 @@ export function loadSettings() {
 }
 
 type SettingsUpdateType = Exclude<Exclude<UserSettingsType, 'loading'>, 'notifications'> & {
-    subscribe: boolean
+    subscribe: boolean;
 };
 
 /* Updates the user app settings in the database */

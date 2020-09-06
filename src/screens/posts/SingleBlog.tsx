@@ -29,8 +29,7 @@ export const SingleBlog = props => {
                 <SEHeader title={getLongDate(blog.date)} mainAction={'back'} />
                 <ScrollView
                     contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
-                    keyboardShouldPersistTaps={'always'}
-                >
+                    keyboardShouldPersistTaps={'always'}>
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                         <Subheading style={listStyles.heading}>{blog.title}</Subheading>
                     </View>
