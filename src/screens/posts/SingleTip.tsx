@@ -29,12 +29,12 @@ export const SingleTip = props => {
     return (
         tip && (
             <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
-                <SEHeader title={tip.title} subtitle={getLongDate(tip.date)} mainAction={'back'} />
+                <SEHeader title={getLongDate(tip.date)} mainAction={'back'} />
                 <ScrollView
                     contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
                     keyboardShouldPersistTaps={'always'}>
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                        <Subheading style={listStyles.heading}>{'Tip Video'}</Subheading>
+                        <Subheading style={listStyles.heading}>{tip.title}</Subheading>
                     </View>
                     <YouTube videoId={tip.video} style={{ width: videoWidth, height: videoHeight }} />
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0, marginTop: theme.spaces.jumbo }]}>
