@@ -288,6 +288,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                             {field.type === 'select' ? (
                                 <RNPickerSelect
                                     ref={refs[index]}
+                                    disabled={registration.pending}
                                     placeholder={{ label: 'Choose One...', value: '', color: blackOpacity(0.25) }}
                                     items={field.items || []}
                                     onOpen={() => setActiveField(field.property)}

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
-import { Body, SEButton, CollapsibleHeaderLayout, wrapIcon, HeaderIcon } from '../../components';
+import { SEButton, CollapsibleHeaderLayout, wrapIcon, HeaderIcon } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
@@ -15,7 +15,7 @@ import { Logger } from '../../utilities/logging';
 // Types
 import { LOAD_LOGS } from '../../redux/actions/types';
 import { ApplicationState } from 'src/__types__';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Caption } from 'react-native-paper';
 
 // Icons
 const RefreshIcon = wrapIcon({ IconClass: MatIcon, name: 'refresh' });
@@ -75,8 +75,8 @@ export const ErrorLogs = props => {
                 getLogs();
             }}>
             <View style={[flexStyles.paddingHorizontal]}>
-                <Body>{logs}</Body>
-                <SEButton title={'SEND ERROR REPORT'} onPress={() => sendMail()} />
+                <SEButton title={'SEND ERROR REPORT'} onPress={() => sendMail()} style={{marginBottom: theme.spaces.medium}}/>
+                <Caption style={{color: theme.colors.text}}>{logs}</Caption>
             </View>
         </CollapsibleHeaderLayout>
     );
