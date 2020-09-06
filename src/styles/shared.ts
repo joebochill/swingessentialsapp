@@ -41,6 +41,15 @@ export const useFlexStyles = (theme: Theme) =>
         },
     });
 
+export const useListStyles = (theme: Theme) => StyleSheet.create({
+    item:{
+        backgroundColor: theme.colors.onPrimary,
+        alignItems: 'center',
+        flexDirection: 'row',
+        minHeight: theme.sizes.xLarge,
+    }
+})
+
 export const useSharedStyles = (theme = defaultTheme) =>
     StyleSheet.create({
         absoluteFull: {

@@ -2,15 +2,14 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View, SectionList } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import { H7, Body, CollapsibleHeaderLayout } from '../../components';
+import { CollapsibleHeaderLayout, SEButton } from '../../components';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Constants
 import { ROUTES } from '../../constants/routes';
 // Styles
 import bg from '../../images/banners/tips.jpg';
-import { useSharedStyles } from '../../styles';
-import { spaces, sizes } from '../../styles/sizes';
-import { useTheme } from 'react-native-paper';
+import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
+import { useTheme, Divider, List } from 'react-native-paper';
 
 // Utilities
 import { makeGroups } from '../../utilities';
@@ -33,6 +32,8 @@ export const Tips = props => {
     const dispatch = useDispatch();
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
+    const flexStyles = useFlexStyles(theme);
+    const listStyles = useListStyles(theme);
 
     return (
         <CollapsibleHeaderLayout
@@ -45,35 +46,40 @@ export const Tips = props => {
             }}>
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (
-                    <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: spaces.large } : {}]}>
-                        <H7>{bucketName}</H7>
+                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }, index > 0 ? { marginTop: theme.spaces.jumbo } : {}]}>
+                        <SEButton mode={'text'} title={bucketName} uppercase />
                     </View>
                 )}
                 sections={sections}
                 stickySectionHeadersEnabled={false}
                 ListEmptyComponent={
-                    <ListItem
-                        containerStyle={sharedStyles.listItem}
-                        contentContainerStyle={sharedStyles.listItemContent}
-                        bottomDivider
-                        topDivider
-                        title={<Body>No Tips Yet!</Body>}
-                    />
+                    <>
+                        <Divider />
+                        <List.Item
+                            title={'No Tips Yet!'}
+                            style={listStyles.item}
+                        />
+                        <Divider />
+                    </>
                 }
                 renderItem={({ item, index }) => (
-                    <ListItem
-                        containerStyle={sharedStyles.listItem}
-                        contentContainerStyle={sharedStyles.listItemContent}
-                        bottomDivider
-                        topDivider={index === 0}
-                        onPress={() => props.navigation.push(ROUTES.TIP, { tip: item })}
-                        title={<Body>{item.title}</Body>}
-                        rightIcon={{
-                            name: 'chevron-right',
-                            color: theme.colors.text,
-                            size: sizes.small,
-                        }}
-                    />
+                    <>
+                        {index === 0 && <Divider />}
+                        <List.Item
+                            title={item.title}
+                            titleNumberOfLines={2}
+                            titleEllipsizeMode={'tail'}
+                            onPress={() => props.navigation.push(ROUTES.TIP, { tip: item })}
+                            
+                            style={listStyles.item}
+                            right={({ style, ...rightProps }) => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <MatIcon name={'chevron-right'} size={theme.sizes.small} />
+                                </View>
+                            )}
+                        />
+                        <Divider />
+                    </>
                 )}
                 keyExtractor={(item): string => `tip_${item.id}`}
             />

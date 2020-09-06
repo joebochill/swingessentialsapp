@@ -6,7 +6,7 @@ import { Body, SEHeader } from '../../components/index';
 import { useSharedStyles } from '../../styles';
 
 // Utilities
-import { splitParagraphs } from '../../utilities';
+import { splitParagraphs, getLongDate } from '../../utilities';
 import { height } from '../../utilities/dimensions';
 
 // Constants
@@ -24,12 +24,12 @@ export const SingleBlog = props => {
     return (
         blog && (
             <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
-                <SEHeader title={blog.date} subtitle={blog.title} mainAction={'back'} />
+                <SEHeader title={blog.title} subtitle={getLongDate(blog.date)} mainAction={'back'} />
                 <ScrollView
                     contentContainerStyle={[sharedStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
                     keyboardShouldPersistTaps={'always'}>
                     {splitParagraphs(blog.body).map((p, ind) => (
-                        <Body key={`${blog.id}_p_${ind}`} style={sharedStyles.paragraph}>
+                        <Body key={`${blog.id}_p_${ind}`} style={[ind > 0 ? sharedStyles.paragraph : {}]}>
                             {p}
                         </Body>
                     ))}
