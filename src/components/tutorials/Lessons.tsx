@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme, List, Divider } from 'react-native-paper';
+import { useTheme, List, Divider, Subheading } from 'react-native-paper';
 // Components
 import { View, SectionList } from 'react-native';
 import { H7, H4, Body } from '../index';
@@ -61,12 +61,8 @@ export const LessonsTutorial = () => {
                 scrollEnabled={false}
                 renderSectionHeader={({ section: { bucketName } }) => (
                     <View style={[sharedStyles.sectionHeader]}>
-                        <SEButton
-                            mode={'text'}
-                            title={bucketName}
-                            labelStyle={{ color: theme.colors.onPrimary }}
-                            uppercase
-                        />
+                        <Subheading style={[listStyles.heading, { color: theme.colors.onPrimary }]}>{bucketName}</Subheading>
+
                     </View>
                 )}
                 sections={sections}
@@ -77,10 +73,12 @@ export const LessonsTutorial = () => {
                             title={item.date}
                             description={'Remote Lesson'}
                             style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }) => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     {item.new && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}
-                                    <MatIcon name={'chevron-right'} size={theme.sizes.small} />
+                                    <MatIcon name={'chevron-right'} size={theme.sizes.small} style={{ marginRight: -1 * theme.spaces.small }} />
                                 </View>
                             )}
                         />

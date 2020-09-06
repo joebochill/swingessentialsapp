@@ -7,7 +7,7 @@ import { Body, SEHeader, YouTube, SEVideo, VideoCard, LessonTutorial, SEButton }
 import Carousel from 'react-native-snap-carousel';
 
 // Styles
-import { useSharedStyles } from '../../styles';
+import { useSharedStyles, useListStyles } from '../../styles';
 import { width, height, aspectHeight } from '../../utilities/dimensions';
 
 // Utilities
@@ -22,7 +22,7 @@ import { ApplicationState, Lesson } from 'src/__types__';
 
 // Actions
 import { markLessonViewed } from '../../redux/actions';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Subheading } from 'react-native-paper';
 
 export const SingleLesson = props => {
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -31,6 +31,7 @@ export const SingleLesson = props => {
     const dispatch = useDispatch();
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
+    const listStyles = useListStyles(theme);
 
     let lesson: Lesson = props.navigation.getParam('lesson', null);
     if (lesson === null) {
@@ -70,7 +71,7 @@ export const SingleLesson = props => {
                       {lesson.response_video && (
                           <>
                               <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                                  <SEButton mode={'text'} title={'Video Analysis'} uppercase />
+                                  <Subheading style={listStyles.heading}>{'Video Analysis'}</Subheading>
                               </View>
                               <YouTube
                                   videoId={lesson.response_video}
@@ -81,7 +82,7 @@ export const SingleLesson = props => {
                                       sharedStyles.sectionHeader,
                                       { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
                                   ]}>
-                                  <SEButton mode={'text'} title={'Comments'} uppercase />
+                                  <Subheading style={listStyles.heading}>{'Comments'}</Subheading>
                               </View>
                               {splitParagraphs(lesson.response_notes).map((p, ind) => (
                                   <Body
@@ -99,7 +100,7 @@ export const SingleLesson = props => {
                                       sharedStyles.sectionHeader,
                                       { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
                                   ]}>
-                                  <SEButton mode={'text'} title={'Recommended Tips'} uppercase />
+                                  <Subheading style={listStyles.heading}>{'Recommended Tips'}</Subheading>
                               </View>
 
                               <Carousel
@@ -127,7 +128,7 @@ export const SingleLesson = props => {
                                       sharedStyles.sectionHeader,
                                       { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
                                   ]}>
-                                  <SEButton mode={'text'} title={'Your Swing Videos'} uppercase />
+                                  <Subheading style={listStyles.heading}>{'Your Swing Videos'}</Subheading>
                               </View>
                               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                   <SEVideo
@@ -147,7 +148,7 @@ export const SingleLesson = props => {
                                       sharedStyles.sectionHeader,
                                       { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
                                   ]}>
-                                  <SEButton mode={'text'} title={'Your Special Requests'} uppercase />
+                                  <Subheading style={listStyles.heading}>{'Your Special Requests'}</Subheading>
                               </View>
                               {splitParagraphs(lesson.request_notes).map((p, ind) => (
                                   <Body

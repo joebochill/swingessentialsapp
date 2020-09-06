@@ -1,9 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { unit, spaces, spaceUnit, fonts, sizes } from './sizes';
-import { white } from './colors';
-import { theme as defaultTheme } from './theme';
+import { unit, spaceUnit } from './sizes';
+import { theme as defaultTheme, Theme } from './theme';
 
-export const useFormStyles = (theme = defaultTheme) =>
+export const useFormStyles = (theme: Theme = defaultTheme) =>
     StyleSheet.create({
         fieldRow: {
             marginTop: theme.spaces.large,
@@ -35,7 +34,7 @@ export const useFormStyles = (theme = defaultTheme) =>
         },
     });
 
-export const useFlexStyles = (theme: Theme) =>
+export const useFlexStyles = (theme: Theme = defaultTheme) =>
     StyleSheet.create({
         row: {
             flexDirection: 'row',
@@ -53,21 +52,26 @@ export const useFlexStyles = (theme: Theme) =>
         },
     });
 
-export const useListStyles = (theme: Theme) => StyleSheet.create({
+export const useListStyles = (theme: Theme = defaultTheme) => StyleSheet.create({
     item:{
         backgroundColor: theme.colors.onPrimary,
+        // padding: 0,
+        paddingHorizontal: theme.spaces.medium,
+        // paddingLeft: 0,
+        // marginLeft: 10,
         alignItems: 'center',
         flexDirection: 'row',
         minHeight: theme.sizes.xLarge,
     },
     heading:{
         fontSize: theme.fontSizes[14], 
+        paddingHorizontal: 0,
         marginVertical: theme.spaces.small,//9, // to match button style
         textTransform: 'uppercase',
     }
 })
 
-export const useSharedStyles = (theme = defaultTheme) =>
+export const useSharedStyles = (theme: Theme = defaultTheme) =>
     StyleSheet.create({
         absoluteFull: {
             position: 'absolute',

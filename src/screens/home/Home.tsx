@@ -11,9 +11,9 @@ import Carousel from 'react-native-snap-carousel';
 import { ROUTES } from '../../constants/routes';
 
 // Styles
-import { useSharedStyles, useFlexStyles } from '../../styles';
+import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
 import { width } from '../../utilities/dimensions';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Subheading } from 'react-native-paper';
 import bg from '../../images/banners/landing.jpg';
 
 // Utilities
@@ -36,6 +36,7 @@ export const Home = props => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const flexStyles = useFlexStyles(theme);
+    const listStyles = useListStyles(theme);
 
     const latestLessons = lessons.closed.length > 0 ? lessons.closed : [placeholder];
     return (
@@ -50,7 +51,7 @@ export const Home = props => {
             }}
             bottomPad={false}>
             <View style={[sharedStyles.sectionHeader]}>
-                <SEButton mode={'text'} title={'Latest Lessons'} uppercase />
+                <Subheading style={listStyles.heading}>{'Latest Lessons'}</Subheading>
                 <SEButton
                     mode={'outlined'}
                     title={'View All'}
@@ -74,7 +75,7 @@ export const Home = props => {
             />
 
             <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.xLarge }]}>
-                <SEButton mode={'text'} title={'Lesson Credits'} uppercase />
+            <Subheading style={listStyles.heading}>{'Lesson Credits'}</Subheading>
                 <SEButton
                     mode={'outlined'}
                     title={'Order More'}
@@ -92,7 +93,8 @@ export const Home = props => {
                             borderRadius: theme.roundness,
                         },
                         { backgroundColor: theme.colors.surface, borderColor: theme.colors.light },
-                    ]}>
+                    ]}
+                >
                     <H4 style={{ lineHeight: unit(32) }} color={'primary'}>
                         {credits.count}
                     </H4>
@@ -112,7 +114,7 @@ export const Home = props => {
             {tips.tipList.length > 0 && (
                 <>
                     <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.xLarge }]}>
-                        <SEButton mode={'text'} title={'Tip of the Month'} uppercase />
+                        <Subheading style={listStyles.heading}>{'Tip of the Month'}</Subheading>
                         <SEButton
                             mode={'outlined'}
                             title={'View All'}

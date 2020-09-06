@@ -2,16 +2,16 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { View, FlatList, StyleSheet, Alert } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import { Body, H7, Label, H4, CollapsibleHeaderLayout, ErrorBox, SEButton, OrderTutorial } from '../../components';
+import { View, FlatList, Alert } from 'react-native';
+import { Body, Label, H4, CollapsibleHeaderLayout, ErrorBox, SEButton, OrderTutorial } from '../../components';
 import * as RNIap from 'react-native-iap';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
 import bg from '../../images/banners/order.jpg';
-import { useSharedStyles } from '../../styles';
-import { spaces, sizes, unit } from '../../styles/sizes';
-import { useTheme } from 'react-native-paper';
+import { useSharedStyles, useFormStyles, useFlexStyles, useListStyles } from '../../styles';
+import { unit } from '../../styles/sizes';
+import { useTheme, Subheading, Divider, List } from 'react-native-paper';
 
 // Redux
 import { loadCredits, loadPackages } from '../../redux/actions';
@@ -33,6 +33,9 @@ export const Order = props => {
     const dispatch = useDispatch();
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
+    const formStyles = useFormStyles(theme);
+    const flexStyles = useFlexStyles(theme);
+    const listStyles = useListStyles(theme);
 
     const [selected, setSelected] = useState(-1);
     const [products, setProducts] = useState<RNIap.Product[]>([]);
@@ -41,8 +44,8 @@ export const Order = props => {
         role === 'anonymous'
             ? 'You must be signed in to purchase lessons.'
             : role === 'pending'
-            ? 'You must validate your email address before you can purchase lessons'
-            : '';
+                ? 'You must validate your email address before you can purchase lessons'
+                : '';
 
     useEffect(() => {
         if (packages) {
@@ -127,20 +130,32 @@ export const Order = props => {
             <ErrorBox
                 show={roleError !== ''}
                 error={roleError}
-                style={{ marginHorizontal: spaces.medium, marginBottom: spaces.medium }}
+                style={[formStyles.errorBox, { marginHorizontal: theme.spaces.medium }]}
             />
             {roleError.length === 0 && (
                 <View
                     style={[
-                        styles.callout,
-                        { backgroundColor: theme.colors.surface, borderColor: theme.colors.light },
-                    ]}>
-                    <H4 style={{ lineHeight: unit(32) }}>{credits.count}</H4>
-                    <Label>{`Credit${credits.count !== 1 ? 's' : ''} Remaining`}</Label>
+                        flexStyles.centered,
+                        flexStyles.paddingMedium,
+                        {
+                            flex: 1,
+                            borderWidth: unit(1),
+                            borderRadius: theme.roundness,
+                            marginHorizontal: theme.spaces.medium,
+                            backgroundColor: theme.colors.surface, 
+                            borderColor: theme.colors.light,
+                            marginBottom: theme.spaces.jumbo,
+                        },
+                    ]}
+                >
+                    <H4 style={{ lineHeight: unit(32) }} color={'primary'}>
+                        {credits.count}
+                    </H4>
+                    <Label color={'primary'}>{`Credit${credits.count !== 1 ? 's' : ''} Remaining`}</Label>
                 </View>
             )}
             <View style={[sharedStyles.sectionHeader]}>
-                <H7>{'Available Purchases'}</H7>
+                <Subheading style={listStyles.heading}>{'Available Packages'}</Subheading>
             </View>
             <FlatList
                 scrollEnabled={false}
@@ -148,58 +163,35 @@ export const Order = props => {
                 data={packages}
                 extraData={products}
                 renderItem={({ item, index }) => (
-                    <ListItem
-                        containerStyle={sharedStyles.listItem}
-                        contentContainerStyle={sharedStyles.listItemContent}
-                        topDivider
-                        bottomDivider={index === packages.length - 1}
-                        onPress={() => setSelected(index)}
-                        leftIcon={{
-                            name: parseInt(item.count, 10) === 1 ? 'filter-1' : 'filter-5',
-                            color: theme.colors.text,
-                            iconStyle: { marginLeft: 0 },
-                            size: sizes.small,
-                        }}
-                        title={
-                            <Body font={'semiBold'} style={{ marginLeft: spaces.medium }}>
-                                {item.name}
-                            </Body>
-                        }
-                        subtitle={<Body style={{ marginLeft: spaces.medium }}>{item.description}</Body>}
-                        rightTitle={<Body>{products.length > 0 ? `${products[index].localizedPrice}` : '--'}</Body>}
-                        rightIcon={
-                            selected === index
-                                ? {
-                                      name: 'check',
-                                      color: theme.colors.text,
-                                      size: sizes.small,
-                                  }
-                                : undefined
-                        }
-                    />
+                    <>
+                        {index === 0 && <Divider />}
+                        <List.Item
+                            title={item.name}
+                            description={item.description}
+                            titleNumberOfLines={2}
+                            titleEllipsizeMode={'tail'}
+                            onPress={() => setSelected(index)}
+                            style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            descriptionStyle={{ marginLeft: -8 }}
+                            right={({ style, ...rightProps }) => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <Body>{products.length > 0 ? `${products[index].localizedPrice}` : '--'}</Body>
+                                    {selected === index && <MatIcon name={'check'} size={theme.sizes.small} color={theme.colors.accent} style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.xSmall }} />}
+                                </View>
+                            )}
+                        />
+                        <Divider />
+                    </>
                 )}
                 keyExtractor={item => 'package_' + item.app_sku}
             />
-            {roleError.length === 0 && !packagesProcessing && !credits.inProgress && (
-                <SEButton
-                    style={{ margin: spaces.medium, marginTop: spaces.large }}
-                    title={'PURCHASE'}
-                    onPress={() => onPurchase(packages[selected].app_sku, packages[selected].shortcode)}
-                />
-            )}
+            <SEButton
+                style={[formStyles.formField, { margin: theme.spaces.medium }, (roleError.length === 0 && !packagesProcessing && !credits.inProgress) ? {} : { opacity: 0.6 }]}
+                title={'PURCHASE'}
+                onPress={(roleError.length === 0 && !packagesProcessing && !credits.inProgress) ? () => onPurchase(packages[selected].app_sku, packages[selected].shortcode) : undefined}
+            />
             <OrderTutorial />
         </CollapsibleHeaderLayout>
     );
 };
-
-const styles = StyleSheet.create({
-    callout: {
-        alignSelf: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: spaces.medium,
-        marginBottom: spaces.large,
-        borderWidth: unit(1),
-        borderRadius: unit(5),
-    },
-});

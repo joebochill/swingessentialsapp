@@ -1,16 +1,14 @@
 import React from 'react';
-import { useTheme } from 'react-native-paper';
+import { useTheme, List, Divider } from 'react-native-paper';
 // Components
 import { View, FlatList } from 'react-native';
-import { ListItem } from 'react-native-elements';
-
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { H7, H4, Body } from '../index';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
 // Styles
-import { useSharedStyles } from '../../styles';
-import { sizes, spaces } from '../../styles/sizes';
+import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
@@ -22,6 +20,8 @@ export const OrderTutorial = () => {
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
+    const listStyles = useListStyles(theme);
+    const flexStyles = useFlexStyles(theme);
     const dispatch = useDispatch();
 
     const slides = [
@@ -33,8 +33,8 @@ export const OrderTutorial = () => {
                 font={'light'}
                 style={{
                     textAlign: 'center',
-                    marginTop: spaces.small,
-                    marginBottom: spaces.medium,
+                    marginTop: theme.spaces.small,
+                    marginBottom: theme.spaces.medium,
                     color: theme.colors.onPrimary,
                 }}>
                 {
@@ -45,40 +45,26 @@ export const OrderTutorial = () => {
                 scrollEnabled={false}
                 keyboardShouldPersistTaps={'always'}
                 data={packages}
-                ListHeaderComponent={
-                    <H7 style={{ color: theme.colors.onPrimary, marginBottom: spaces.xSmall }}>
-                        {'Available Packages'}
-                    </H7>
-                }
                 renderItem={({ item, index }) => (
-                    <ListItem
-                        containerStyle={sharedStyles.listItem}
-                        contentContainerStyle={sharedStyles.listItemContent}
-                        topDivider
-                        bottomDivider={index === packages.length - 1}
-                        leftIcon={{
-                            name: parseInt(item.count, 10) === 1 ? 'filter-1' : 'filter-5',
-                            color: theme.colors.text,
-                            iconStyle: { marginLeft: 0 },
-                            size: sizes.small,
-                        }}
-                        title={
-                            <Body font={'semiBold'} style={{ marginLeft: spaces.medium }}>
-                                {item.name}
-                            </Body>
-                        }
-                        subtitle={<Body style={{ marginLeft: spaces.medium }}>{item.description}</Body>}
-                        rightTitle={<Body>{packages.length > 0 ? `$${item.price}` : '--'}</Body>}
-                        rightIcon={
-                            index === 0
-                                ? {
-                                      name: 'check',
-                                      color: theme.colors.text,
-                                      size: sizes.small,
-                                  }
-                                : undefined
-                        }
-                    />
+                    <>
+                        {index === 0 && <Divider />}
+                        <List.Item
+                            title={item.name}
+                            description={item.description}
+                            titleNumberOfLines={2}
+                            titleEllipsizeMode={'tail'}
+                            style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            descriptionStyle={{ marginLeft: -8 }}
+                            right={({ style, ...rightProps }) => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <Body>{packages.length > 0 ? `$${item.price}` : '--'}</Body>
+                                    {index === 0 && <MatIcon name={'check'} size={theme.sizes.small} color={theme.colors.accent} style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.xSmall }} />}
+                                </View>
+                            )}
+                        />
+                        <Divider />
+                    </>
                 )}
                 keyExtractor={item => 'package_' + item.app_sku}
             />
@@ -93,13 +79,13 @@ export const OrderTutorial = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }) => slides[index]}
-                    sliderWidth={width - 2 * spaces.medium}
-                    itemWidth={width - 2 * spaces.medium}
+                    sliderWidth={width - 2 * theme.spaces.medium}
+                    itemWidth={width - 2 * theme.spaces.medium}
                 />
                 <SEButton
                     dark
                     title="GOT IT"
-                    style={{ flex: 1, marginTop: spaces.xLarge }}
+                    style={{ flex: 1, marginTop: theme.spaces.xLarge }}
                     onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]))}
                 />
             </View>

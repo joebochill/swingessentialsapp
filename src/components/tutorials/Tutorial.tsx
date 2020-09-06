@@ -3,9 +3,8 @@ import { View, ScrollView, SafeAreaView } from 'react-native';
 import { SEButton } from '../';
 import Modal from 'react-native-modal';
 import { useTheme } from 'react-native-paper';
-import { spaces } from '../../styles/sizes';
 import { useSafeArea } from 'react-native-safe-area-context';
-import { useSharedStyles } from '../../styles';
+import { useFlexStyles } from '../../styles';
 
 type TutorialProps = {
     visible: boolean;
@@ -15,7 +14,7 @@ type TutorialProps = {
 export const TutorialModal: React.FC<TutorialProps> = props => {
     const { visible = true, onClose } = props;
     const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
+    const flexStyles = useFlexStyles(theme);
     const insets = useSafeArea();
 
     return (
@@ -39,7 +38,7 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
                         position: 'absolute',
                         top: insets.top,
                         right: 0,
-                        marginRight: spaces.medium,
+                        marginRight: theme.spaces.medium,
                         zIndex: 100,
                     }}
                     labelStyle={{ color: theme.colors.onPrimary }}
@@ -48,7 +47,7 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
                     onPress={() => onClose()}
                 />
                 <View style={{ marginVertical: insets.top }}>
-                    <ScrollView contentContainerStyle={sharedStyles.paddingHorizontalMedium}>
+                    <ScrollView contentContainerStyle={flexStyles.paddingHorizontal}>
                         {props.children}
                     </ScrollView>
                 </View>

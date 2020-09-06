@@ -8,7 +8,7 @@ import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
 import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
-import { useTheme, List, Divider } from 'react-native-paper';
+import { useTheme, List, Divider, Subheading } from 'react-native-paper';
 import bg from '../../images/banners/lessons.jpg';
 
 // Constants
@@ -64,7 +64,7 @@ export const Lessons = props => {
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (
                     <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: theme.spaces.jumbo } : {}]}>
-                        <SEButton mode={'text'} title={bucketName} uppercase />
+                        <Subheading style={listStyles.heading}>{bucketName}</Subheading>
                     </View>
                 )}
                 sections={sections}
@@ -76,10 +76,12 @@ export const Lessons = props => {
                             title={'Welcome to Swing Essentials!'}
                             onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: null })}
                             style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }) => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>
-                                    <MatIcon name={'chevron-right'} size={theme.sizes.small} />
+                                    <MatIcon name={'chevron-right'} size={theme.sizes.small} style={{ marginRight: -1 * theme.spaces.small }} />
                                 </View>
                             )}
                         />
@@ -96,42 +98,46 @@ export const Lessons = props => {
                                     role === 'administrator'
                                         ? item.request_date
                                         : item.type === 'in-person'
-                                        ? 'In-person lesson'
-                                        : 'Remote lesson'
+                                            ? 'In-person lesson'
+                                            : 'Remote lesson'
                                 }
                                 onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                                 style={listStyles.item}
+                                titleStyle={{ marginLeft: -8 }}
+                                descriptionStyle={{ marginLeft: -8 }}
                                 right={({ style, ...rightProps }) => (
                                     <View style={[flexStyles.row, style]} {...rightProps}>
                                         {!item.viewed && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}
-                                        <MatIcon name={'chevron-right'} size={theme.sizes.small} />
+                                        <MatIcon name={'chevron-right'} size={theme.sizes.small} style={{ marginRight: -1 * theme.spaces.small }} />
                                     </View>
                                 )}
                             />
                             <Divider />
                         </>
                     ) : (
-                        <>
-                            {index === 0 && <Divider />}
-                            <List.Item
-                                title={role === 'administrator' ? item.username : item.request_date}
-                                description={
-                                    role === 'administrator'
-                                        ? item.request_date
-                                        : item.type === 'in-person'
-                                        ? 'In-person lesson'
-                                        : 'Remote lesson'
-                                }
-                                style={listStyles.item}
-                                right={({ style, ...rightProps }) => (
-                                    <View style={[flexStyles.row, style]} {...rightProps}>
-                                        <Body style={{ marginRight: theme.spaces.small }}>IN PROGRESS</Body>
-                                    </View>
-                                )}
-                            />
-                            <Divider />
-                        </>
-                    )
+                            <>
+                                {index === 0 && <Divider />}
+                                <List.Item
+                                    title={role === 'administrator' ? item.username : item.request_date}
+                                    description={
+                                        role === 'administrator'
+                                            ? item.request_date
+                                            : item.type === 'in-person'
+                                                ? 'In-person lesson'
+                                                : 'Remote lesson'
+                                    }
+                                    style={listStyles.item}
+                                    titleStyle={{ marginLeft: -8 }}
+                                    descriptionStyle={{ marginLeft: -8 }}
+                                    right={({ style, ...rightProps }) => (
+                                        <View style={[flexStyles.row, style]} {...rightProps}>
+                                            <Body style={{ marginRight: theme.spaces.small }}>IN PROGRESS</Body>
+                                        </View>
+                                    )}
+                                />
+                                <Divider />
+                            </>
+                        )
                 }
                 keyExtractor={(item): string => 'complete_' + item.request_id}
             />

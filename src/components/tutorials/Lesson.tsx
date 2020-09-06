@@ -7,7 +7,6 @@ import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
 // Styles
-import { spaces } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
@@ -28,8 +27,8 @@ export const LessonTutorial = () => {
                 font={'light'}
                 style={{
                     textAlign: 'center',
-                    marginTop: spaces.small,
-                    marginBottom: spaces.medium,
+                    marginTop: theme.spaces.small,
+                    marginBottom: theme.spaces.medium,
                     color: theme.colors.onPrimary,
                 }}>
                 {
@@ -39,7 +38,7 @@ export const LessonTutorial = () => {
             <Image
                 style={{
                     width: '100%',
-                    height: (width - 2 * spaces.medium) * (9 / 16),
+                    height: (width - 2 * theme.spaces.medium) * (9 / 16),
                 }}
                 source={{ uri: 'https://img.youtube.com/vi/l3Y3iJa6DvE/0.jpg' }}
             />
@@ -54,13 +53,13 @@ export const LessonTutorial = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }) => slides[index]}
-                    sliderWidth={width - 2 * spaces.medium}
-                    itemWidth={width - 2 * spaces.medium}
+                    sliderWidth={width - 2 * theme.spaces.medium}
+                    itemWidth={width - 2 * theme.spaces.medium}
                 />
                 <SEButton
                     dark
                     title="GOT IT"
-                    style={{ flex: 1, marginTop: spaces.xLarge }}
+                    style={{ flex: 1, marginTop: theme.spaces.xLarge }}
                     onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]))}
                 />
             </View>

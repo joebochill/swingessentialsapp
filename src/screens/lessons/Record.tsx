@@ -9,8 +9,7 @@ import Video from 'react-native-video';
 
 // Styles
 import { useSharedStyles } from '../../styles';
-import { oledBlack, blackOpacity, white } from '../../styles/colors';
-import { spaces } from '../../styles/sizes';
+import { oledBlack, blackOpacity } from '../../styles/colors';
 
 // Utilities
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -27,9 +26,9 @@ import faceonRH from '../../images/overlay-fo-rh.png';
 import downthelineLH from '../../images/overlay-dtl-lh.png';
 import downthelineRH from '../../images/overlay-dtl-rh.png';
 import { ROUTES } from '../../constants/routes';
-import { Icon } from 'react-native-elements';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { Logger } from '../../utilities/logging';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Theme } from 'react-native-paper';
 
 // const DESIRED_RATIO = '16:9';
 
@@ -47,6 +46,7 @@ export const Record = props => {
     const { navigation } = props;
     const cameraRef = useRef(null);
     const theme = useTheme();
+    const styles = useStyles(theme);
     const sharedStyles = useSharedStyles(theme);
     const onReturn = props.navigation.getParam('onReturn', () => {});
     const swing: SwingType = props.navigation.getParam('swing', () => {});
@@ -197,7 +197,7 @@ export const Record = props => {
                             {recordingMode && !isRecording && token && (
                                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                     <TouchableOpacity onPress={(): void => navigation.push(ROUTES.SETTINGS_GROUP)}>
-                                        <Icon name={'settings'} color={white[50]} />
+                                        <MatIcon name={'settings'} size={theme.sizes.small} color={theme.colors.onPrimary} />
                                     </TouchableOpacity>
                                 </View>
                             )}
@@ -250,7 +250,7 @@ export const Record = props => {
     );
 };
 
-const styles = StyleSheet.create({
+const useStyles = (theme: Theme) => StyleSheet.create({
     bar: {
         width: '100%',
         top: 0,
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         position: 'relative',
-        paddingHorizontal: spaces.medium,
+        paddingHorizontal: theme.spaces.medium,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

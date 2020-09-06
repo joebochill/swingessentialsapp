@@ -3,7 +3,7 @@ import * as React from 'react';
 import { View, ScrollView } from 'react-native';
 import { Body, SEHeader, YouTube, SEButton } from '../../components/index';
 // Styles
-import { useSharedStyles } from '../../styles';
+import { useSharedStyles, useListStyles } from '../../styles';
 import { spaces } from '../../styles/sizes';
 import { width, height, aspectHeight } from '../../utilities/dimensions';
 
@@ -11,12 +11,13 @@ import { width, height, aspectHeight } from '../../utilities/dimensions';
 import { splitParagraphs, getLongDate } from '../../utilities';
 // Constants
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Subheading } from 'react-native-paper';
 
 export const SingleTip = props => {
     const tip = props.navigation.getParam('tip', null);
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
+    const listStyles = useListStyles(theme);
 
     if (tip === null) {
         props.navigation.pop();
@@ -36,7 +37,7 @@ export const SingleTip = props => {
                             sharedStyles.sectionHeader,
                             { marginHorizontal: 0 },
                         ]}>
-                        <SEButton mode={'text'} title={'Tip Video'} uppercase />
+                        <Subheading style={listStyles.heading}>{'Tip Video'}</Subheading>
                     </View>
                     <YouTube videoId={tip.video} style={{ width: videoWidth, height: videoHeight }} />
                     <View
@@ -44,7 +45,7 @@ export const SingleTip = props => {
                             sharedStyles.sectionHeader,
                             { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
                         ]}>
-                        <SEButton mode={'text'} title={'Decription'} uppercase />
+                        <Subheading style={listStyles.heading}>{'Description'}</Subheading>
                     </View>
                     {splitParagraphs(tip.comments).map((p, ind) => (
                         <Body

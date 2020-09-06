@@ -5,17 +5,18 @@ import { View } from 'react-native';
 import { Body, CollapsibleHeaderLayout, SEButton } from '../../components';
 
 // Styles
-import { useSharedStyles } from '../../styles';
-import { useTheme } from 'react-native-paper';
+import { useSharedStyles, useListStyles } from '../../styles';
+import { useTheme, Subheading } from 'react-native-paper';
 
 export const About = () => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
+    const listStyles = useListStyles(theme);
     return (
         <CollapsibleHeaderLayout title={'About'} subtitle={'What is SwingEssentials®?'}>
             <View style={sharedStyles.paddingHorizontalMedium}>
                 <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                    <SEButton mode={'text'} title={'Lessons on Your Schedule'} uppercase />
+                    <Subheading style={listStyles.heading}>{'Lessons on Your Schedule'}</Subheading>
                 </View>
                 <Body>
                     Swing Essentials® provides you with affordable, individualized one-on-one lessons from a
@@ -23,7 +24,7 @@ export const About = () => {
                 </Body>
 
                 <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo, marginHorizontal: 0 }]}>
-                    <SEButton mode={'text'} title={'How It Works'} uppercase />
+                <Subheading style={listStyles.heading}>{'How it Works'}</Subheading>
                 </View>
                 <Body>
                     1) Open the Swing Essentials® app and snap a short video of your swing using your camera.
@@ -37,7 +38,7 @@ export const About = () => {
                 </Body>
 
                 <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo, marginHorizontal: 0 }]}>
-                    <SEButton mode={'text'} title={'Why Swing Essentials®'} uppercase />
+                    <Subheading style={listStyles.heading}>{'Why Swing Essentials®'}</Subheading>
                 </View>
                 <Body>
                     Swing Essentials® offers a true one-on-one experience. Our PGA-certified professional puts a
@@ -46,7 +47,7 @@ export const About = () => {
                 </Body>
 
                 <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo, marginHorizontal: 0 }]}>
-                    <SEButton mode={'text'} title={'Testimonials'} uppercase />
+                <Subheading style={listStyles.heading}>{'Testimonials'}</Subheading>
                 </View>
                 <Body>
                     "Thanks for the great work this last year. After working with you, I've lowered my handicap by three
