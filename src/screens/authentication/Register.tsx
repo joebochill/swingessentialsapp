@@ -146,6 +146,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
     const formStyles = useFormStyles(theme);
     const flexStyles = useFlexStyles(theme);
     const [fields, setFields] = useState(defaultKeys);
+    const [showPassword, setShowPassword] = useState(false);
     const emailRef = useRef(null);
     const userRef = useRef(null);
     const passRef = useRef(null);
@@ -249,7 +250,7 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
         {
             property: 'password',
             label: 'Password',
-            secure: true,
+            secure: !showPassword, //true,
             onSubmit: () => Keyboard.dismiss(),
         },
         {
@@ -319,52 +320,75 @@ const RegisterForm = (props: NavigationStackScreenProps) => {
                                     />
                                 </RNPickerSelect>
                             ) : (
-                                <TextInput
-                                    ref={refs[index]}
-                                    secureTextEntry={field.secure}
-                                    autoCorrect={false}
-                                    autoCapitalize={'none'}
-                                    style={[
-                                        index > 0 ? formStyles.formField : {},
-                                        activeField === field.property || fields[field.property].length > 0
-                                            ? formStyles.active
-                                            : formStyles.inactive,
-                                    ]}
-                                    onFocus={() => setActiveField(field.property)}
-                                    onBlur={e => {
-                                        setActiveField(null);
-                                        if (field.onBlur) {
-                                            field.onBlur(e);
-                                        }
-                                    }}
-                                    editable={!registration.pending}
-                                    error={field.errorMessage !== undefined && field.errorMessage.length > 0}
-                                    keyboardType={field.keyboard}
-                                    label={field.label}
-                                    onChangeText={
-                                        field.onChange
-                                            ? field.onChange
-                                            : (value: string) => {
-                                                  setFields({
-                                                      ...fields,
-                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
-                                                  });
-                                              }
-                                    }
-                                    onSubmitEditing={
-                                        field.onSubmit
-                                            ? field.onSubmit
-                                            : () => {
-                                                  if (refs[(index + 1) % refs.length].current) {
-                                                      refs[(index + 1) % refs.length].current.focus();
+                                <View style={[index > 0 ? formStyles.formField : {}]}>
+                                    <TextInput
+                                        ref={refs[index]}
+                                        secureTextEntry={field.secure}
+                                        autoCorrect={false}
+                                        autoCapitalize={'none'}
+                                        style={[
+                                            activeField === field.property || fields[field.property].length > 0
+                                                ? formStyles.active
+                                                : formStyles.inactive,
+                                        ]}
+                                        onFocus={() => setActiveField(field.property)}
+                                        onBlur={e => {
+                                            setActiveField(null);
+                                            if (field.onBlur) {
+                                                field.onBlur(e);
+                                            }
+                                        }}
+                                        editable={!registration.pending}
+                                        error={field.errorMessage !== undefined && field.errorMessage.length > 0}
+                                        keyboardType={field.keyboard}
+                                        label={field.label}
+                                        onChangeText={
+                                            field.onChange
+                                                ? field.onChange
+                                                : (value: string) => {
+                                                      setFields({
+                                                          ...fields,
+                                                          [field.property]: value
+                                                              .replace(/[^A-Z- .]/gi, '')
+                                                              .substr(0, 32),
+                                                      });
                                                   }
-                                              }
-                                    }
-                                    returnKeyType={'next'}
-                                    underlineColorAndroid={transparent}
-                                    value={fields[field.property]}
-                                />
+                                        }
+                                        onSubmitEditing={
+                                            field.onSubmit
+                                                ? field.onSubmit
+                                                : () => {
+                                                      if (refs[(index + 1) % refs.length].current) {
+                                                          refs[(index + 1) % refs.length].current.focus();
+                                                      }
+                                                  }
+                                        }
+                                        returnKeyType={'next'}
+                                        underlineColorAndroid={transparent}
+                                        value={fields[field.property]}
+                                    />
+                                    {field.property === 'password' && (
+                                        <View
+                                            style={{
+                                                position: 'absolute',
+                                                right: theme.spaces.medium,
+                                                bottom: 0,
+                                                height: '100%',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                            }}>
+                                            <MatIcon
+                                                name={field.secure ? 'visibility' : 'visibility-off'}
+                                                size={theme.sizes.small}
+                                                color={theme.colors.text}
+                                                underlayColor={transparent}
+                                                onPress={() => setShowPassword(!showPassword)}
+                                            />
+                                        </View>
+                                    )}
+                                </View>
                             )}
+
                             <ErrorBox
                                 show={field.errorMessage !== undefined && field.errorMessage.length > 0}
                                 error={field.errorMessage || `Invalid ${field.label}`}
