@@ -43,6 +43,8 @@ import { loadUserContent, requestLogout } from '../redux/actions';
 
 // Icons
 import se from '../images/logo-small.png';
+import { TouchableHighlight } from 'react-native-gesture-handler';
+import { transparent } from '../styles/colors';
 
 export const NavigationDrawer = props => {
     const theme = useTheme();
@@ -59,6 +61,7 @@ export const NavigationDrawer = props => {
         help: new Animated.Value(-1 * DRAWER_WIDTH),
     });
     const userData = useSelector((state: ApplicationState) => state.userData);
+    const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
     const [appState, setAppState] = useState(AppState.currentState);
 
@@ -68,6 +71,9 @@ export const NavigationDrawer = props => {
     const nameString =
         userData.firstName && userData.lastName ? `${userData.firstName} ${userData.lastName}` : 'New User';
     const memberString = `Joined ${userData.joined ? getLongDate(userData.joined * 1000) : getLongDate(Date.now())}`;
+    const avatarURL = `https://www.swingessentials.com/images/profiles/${
+        settings.avatar ? `${userData.username}/${settings.avatar}.png` : 'blank.png'
+    }`;
 
     const scaleByHeight = useCallback(
         (atLarge, atSmall) => {
@@ -203,21 +209,27 @@ export const NavigationDrawer = props => {
                             },
                         ]}>
                         <View style={[styles.avatarContainer]}>
-                            <Animated.View
-                                style={[
-                                    styles.avatar,
-                                    {
-                                        backgroundColor: theme.colors.background,
-                                        height: scaleByHeight(unit(80), 0),
-                                        width: scaleByHeight(unit(80), 0),
-                                    },
-                                ]}>
-                                <Image
-                                    resizeMethod="resize"
-                                    style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-                                    source={se}
-                                />
-                            </Animated.View>
+                            <TouchableHighlight
+                                underlayColor={transparent}
+                                onPress={token ? () => navigation.navigate(ROUTES.SETTINGS) : undefined}>
+                                <Animated.View
+                                    style={[
+                                        styles.avatar,
+                                        {
+                                            backgroundColor: theme.colors.background,
+                                            height: scaleByHeight(unit(80), 0),
+                                            width: scaleByHeight(unit(80), 0),
+                                            borderRadius: scaleByHeight(unit(80) / 2, 0),
+                                            overflow: 'hidden',
+                                        },
+                                    ]}>
+                                    <Image
+                                        resizeMethod="resize"
+                                        style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+                                        source={settings.avatar ? { uri: avatarURL } : se}
+                                    />
+                                </Animated.View>
+                            </TouchableHighlight>
                         </View>
                         <Animated.View
                             style={[styles.headerText, { marginLeft: scaleByHeight(theme.spaces.medium, 0) }]}>
@@ -259,7 +271,7 @@ export const NavigationDrawer = props => {
                     </Animated.View>
                     <View style={[styles.footer]}>
                         <H7 font={'semiBold'} style={{ color: theme.colors.onPrimary }}>
-                            SWING ESSENTIALS
+                            SWING ESSENTIALS®
                         </H7>
                         <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
                             <Body style={{ color: theme.colors.onPrimary }} font={'light'}>{`v${APP_VERSION}`}</Body>

@@ -110,7 +110,7 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
                 <View>
                     <TouchableOpacity
                         onPress={navigation.onPress}
-                        style={[styles.actionIcon, { marginRight: theme.spaces.large }]}>
+                        style={[styles.actionIcon, { marginRight: theme.spaces.small }]}>
                         {this.icon(navigation.icon)}
                     </TouchableOpacity>
                 </View>
@@ -218,7 +218,7 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
         return [
             styles.content,
             headerContent
-                ? {}
+                ? {} // no styles if you pass in custom content (Drawer)
                 : {
                       paddingHorizontal: navigation ? theme.spaces.small : theme.spaces.medium,
                       paddingBottom: this.scaleByHeaderHeight(theme.spaces.xLarge, contractedPadding),
