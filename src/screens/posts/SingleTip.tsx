@@ -4,7 +4,6 @@ import { View, ScrollView } from 'react-native';
 import { Body, SEHeader, YouTube } from '../../components/index';
 // Styles
 import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
-import { spaces } from '../../styles/sizes';
 import { width, height, aspectHeight } from '../../utilities/dimensions';
 
 // Utilities
@@ -23,7 +22,7 @@ export const SingleTip = props => {
     if (tip === null) {
         props.navigation.pop();
     }
-    const videoWidth = width - 2 * spaces.medium;
+    const videoWidth = width - 2 * theme.spaces.medium;
     const videoHeight = aspectHeight(videoWidth);
 
     return (
