@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 // Components
 import { StyleSheet, TouchableOpacity, ViewProperties, View, Platform } from 'react-native';
 import Video from 'react-native-video';
@@ -33,6 +33,11 @@ export const SEVideo = (props: VideoProps) => {
     const styles = useStyles(theme);
     const sharedStyles = useSharedStyles(theme);
 
+    useEffect(() => {
+        // TODO: This was added after the iOS release
+        setReady(false);
+    }, [source, setReady]);
+
     return (
         <View style={[styles.portrait, { backgroundColor: theme.colors.light }, style]}>
             <TouchableOpacity
@@ -46,9 +51,13 @@ export const SEVideo = (props: VideoProps) => {
                     volume={1.0}
                     muted={false}
                     paused={!playing}
-                    onRe
+                    onLoad={() => {
+                        // TODO: this was added for Android after iOS release
+                        setReady(true);
+                        if (vid.current && Platform.OS === 'android') vid.current.seek(0);
+                    }}
                     onEnd={() => setPlaying(false)}
-                    onReadyForDisplay={() => setReady(true)}
+                    // onReadyForDisplay={() => setReady(true } TODO: this was changed after iOS release
                     resizeMode="contain"
                     repeat={Platform.OS === 'ios'}
                     playInBackground={false}
@@ -111,7 +120,7 @@ export const SEVideoPlaceholder = (props: PlaceholderProps) => {
                 activeOpacity={0.8}
                 style={{ height: '100%', width: '100%', alignItems: 'center' }}
                 onPress={() => onPress()}>
-                <View style={[sharedStyles.sectionHeader]}>
+                <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                     <Subheading style={[listStyles.heading, { marginVertical: theme.spaces.medium }]}>
                         {props.title}
                     </Subheading>

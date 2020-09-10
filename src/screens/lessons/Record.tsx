@@ -2,7 +2,16 @@ import React, { useRef, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
 // Components
-import { Image, Platform, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+    Image,
+    Platform,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+    ActivityIndicator,
+} from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { VideoControls, CountDown, VideoTimer } from '../../components';
 import Video from 'react-native-video';
@@ -45,6 +54,7 @@ const getOverlayImage = (swing: SwingType, handedness: HandednessType, camera: C
 export const Record = props => {
     const { navigation } = props;
     const cameraRef = useRef(null);
+    const videoRef = useRef(null);
     const theme = useTheme();
     const styles = useStyles(theme);
     const sharedStyles = useSharedStyles(theme);
@@ -62,6 +72,7 @@ export const Record = props => {
     const [showCountDown, setCountdownStarted] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [previewReady, setPreviewReady] = useState(false);
 
     const [recordedVideo, setRecordedVideo] = useState('');
 
@@ -159,12 +170,18 @@ export const Record = props => {
     );
     const VideoPlayer = (
         <Video
+            ref={videoRef}
             source={{ uri: recordedVideo }}
             rate={1.0}
             volume={1.0}
             muted={false}
             paused={!isPlaying}
             onEnd={() => setIsPlaying(false)}
+            onLoad={() => {
+                // TODO: this was added for Android after iOS release
+                setPreviewReady(true);
+                if (videoRef.current && Platform.OS === 'android') videoRef.current.seek(0);
+            }}
             resizeMode="contain"
             repeat={Platform.OS === 'ios'}
             playInBackground={false}
@@ -177,6 +194,14 @@ export const Record = props => {
         <View style={{ flex: 1, alignItems: 'stretch', backgroundColor: oledBlack[900] }}>
             {recordingMode && VideoRecorder}
             {!recordingMode && VideoPlayer}
+            {!recordingMode &&
+            !previewReady && ( // TODO: this was added after the iOS release
+                    <ActivityIndicator
+                        size={theme.sizes.xLarge}
+                        color={theme.colors.onPrimary}
+                        style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
+                    />
+                )}
             {recordingMode && settings.overlay && (
                 <View style={[sharedStyles.absoluteFull, sharedStyles.centered]}>
                     <Image
@@ -245,6 +270,7 @@ export const Record = props => {
                         : () => {
                               // Use-Video
                               onReturn(recordedVideo);
+                              setPreviewReady(false);
                               props.navigation.pop();
                           }
                 }
