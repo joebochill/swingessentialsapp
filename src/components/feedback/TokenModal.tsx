@@ -3,14 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { ActivityIndicator, Modal, ModalProps, StyleSheet, View } from 'react-native';
-import { Icon } from 'react-native-elements';
-import { H7, Body, SEButton } from '../';
+import { Body, SEButton } from '../';
 
 // Styles
 import { whiteOpacity } from '../../styles/colors';
-import { spaces } from '../../styles/sizes';
-import { sharedStyles } from '../../styles';
-import { useTheme } from '../../styles/theme';
+import { useSharedStyles, useListStyles } from '../../styles';
+import { useTheme, Theme, Subheading } from 'react-native-paper';
 
 // Types
 import { ApplicationState } from '../../__types__';
@@ -21,15 +19,16 @@ import { atob } from '../../utilities';
 // Redux
 import { requestLogout, refreshToken, checkToken } from '../../redux/actions';
 
-const styles = StyleSheet.create({
-    modalBackground: {
-        flex: 1,
-        padding: spaces.xLarge,
-        alignItems: 'stretch',
-        justifyContent: 'center',
-        backgroundColor: whiteOpacity(0.75),
-    },
-});
+const useStyles = (theme: Theme) =>
+    StyleSheet.create({
+        modalBackground: {
+            flex: 1,
+            padding: theme.spaces.xLarge,
+            alignItems: 'stretch',
+            justifyContent: 'center',
+            backgroundColor: whiteOpacity(0.75),
+        },
+    });
 
 export const TokenModal = (props: ModalProps) => {
     const { ...other } = props;
@@ -43,6 +42,9 @@ export const TokenModal = (props: ModalProps) => {
 
     const dispatch = useDispatch();
     const theme = useTheme();
+    const styles = useStyles(theme);
+    const sharedStyles = useSharedStyles(theme);
+    const listStyles = useListStyles(theme);
 
     const updateRefreshRate = useCallback(() => {
         if (timeRemaining <= 3 * 60) {
@@ -58,13 +60,13 @@ export const TokenModal = (props: ModalProps) => {
 
     useEffect(() => {
         // timer to check for pending user registration
-        if(role === 'pending'){
+        if (role === 'pending') {
             const interval = setInterval(() => {
-                dispatch(checkToken())
+                dispatch(checkToken());
             }, 20 * 1000);
             return () => clearInterval(interval);
         }
-    }, [token])
+    }, [token, dispatch, role]);
 
     useEffect(() => {
         // set the time remaining on login/logout
@@ -112,17 +114,11 @@ export const TokenModal = (props: ModalProps) => {
                         sharedStyles.border,
                         {
                             backgroundColor: theme.colors.surface,
-                            padding: spaces.medium,
+                            padding: theme.spaces.medium,
                         },
                     ]}>
-                    <View style={{ flexDirection: 'row', marginBottom: spaces.medium }}>
-                        <Icon
-                            name={'clock-alert-outline'}
-                            type={'material-community'}
-                            color={theme.colors.text[500]}
-                            containerStyle={{ marginRight: spaces.small }}
-                        />
-                        <H7 style={{ flex: 1 }}>{'Session Expiring'}</H7>
+                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
+                        <Subheading style={listStyles.heading}>{'Automatic Logout'}</Subheading>
                         <Body>{_formatTime(timeRemaining)}</Body>
                     </View>
                     <Body>{'Your current session is about to expire. Click below to stay signed in.'}</Body>
@@ -130,15 +126,15 @@ export const TokenModal = (props: ModalProps) => {
                     {!refreshing && (
                         <SEButton
                             title="KEEP ME SIGNED IN"
-                            style={{ marginTop: spaces.medium }}
+                            style={{ marginTop: theme.spaces.medium }}
                             onPress={() => dispatch(refreshToken())}
                         />
                     )}
                     {refreshing && (
                         <ActivityIndicator
-                            style={{ marginTop: spaces.xLarge }}
+                            style={{ marginTop: theme.spaces.xLarge }}
                             size={'large'}
-                            color={theme.colors.primary[500]}
+                            color={theme.colors.accent}
                         />
                     )}
                 </View>

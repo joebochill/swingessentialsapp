@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 // Components
 import { View, Image } from 'react-native';
 import { H7, H4 } from '../index';
@@ -7,7 +7,6 @@ import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
 // Styles
-import { spaces } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
@@ -21,16 +20,16 @@ export const LessonTutorial = () => {
 
     const slides = [
         <>
-            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
                 {'Swing Analysis'}
             </H4>
             <H7
                 font={'light'}
                 style={{
                     textAlign: 'center',
-                    marginTop: spaces.small,
-                    marginBottom: spaces.medium,
-                    color: theme.colors.onPrimary[50],
+                    marginTop: theme.spaces.small,
+                    marginBottom: theme.spaces.medium,
+                    color: theme.colors.onPrimary,
                 }}>
                 {
                     'This is where you can view your personalized swing analysis videos. Your analysis will also include comments and recommended tips to improve your game.'
@@ -39,7 +38,7 @@ export const LessonTutorial = () => {
             <Image
                 style={{
                     width: '100%',
-                    height: (width - 2 * spaces.medium) * (9 / 16),
+                    height: (width - 2 * theme.spaces.medium) * (9 / 16),
                 }}
                 source={{ uri: 'https://img.youtube.com/vi/l3Y3iJa6DvE/0.jpg' }}
             />
@@ -54,13 +53,13 @@ export const LessonTutorial = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }) => slides[index]}
-                    sliderWidth={width - 2 * spaces.medium}
-                    itemWidth={width - 2 * spaces.medium}
+                    sliderWidth={width - 2 * theme.spaces.medium}
+                    itemWidth={width - 2 * theme.spaces.medium}
                 />
                 <SEButton
+                    dark
                     title="GOT IT"
-                    containerStyle={{ flex: 1, marginTop: spaces.xLarge }}
-                    buttonStyle={{ backgroundColor: theme.colors.primary[500] }}
+                    style={{ flex: 1, marginTop: theme.spaces.xLarge }}
                     onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]))}
                 />
             </View>

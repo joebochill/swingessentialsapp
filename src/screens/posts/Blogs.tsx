@@ -2,15 +2,15 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View, SectionList } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import { H7, Body, CollapsibleHeaderLayout } from '../../components';
+import { CollapsibleHeaderLayout } from '../../components';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
+
 // Constants
 import { ROUTES } from '../../constants/routes';
 // Styles
-import bg from '../../images/bg_3.jpg';
-import { sharedStyles } from '../../styles';
-import { spaces, sizes } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import bg from '../../images/banners/19th.jpg';
+import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
+import { useTheme, Divider, List, Subheading } from 'react-native-paper';
 
 // Utilities
 import { makeGroups } from '../../utilities';
@@ -31,11 +31,14 @@ export const Blogs = props => {
     const sections = makeGroups(blogs.blogList, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
+    const flexStyles = useFlexStyles(theme);
+    const listStyles = useListStyles(theme);
 
     return (
         <CollapsibleHeaderLayout
-            title={'19th Hole'}
-            subtitle={'golf stories and Q&A'}
+            title={'The 19th Hole'}
+            subtitle={'Stories from the field'}
             backgroundImage={bg}
             refreshing={blogs.loading}
             onRefresh={() => {
@@ -43,35 +46,42 @@ export const Blogs = props => {
             }}>
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (
-                    <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: spaces.large } : {}]}>
-                        <H7>{bucketName}</H7>
+                    <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: theme.spaces.jumbo } : {}]}>
+                        <Subheading style={listStyles.heading}>{bucketName}</Subheading>
                     </View>
                 )}
                 sections={sections}
                 stickySectionHeadersEnabled={false}
                 ListEmptyComponent={
-                    <ListItem
-                        containerStyle={sharedStyles.listItem}
-                        contentContainerStyle={sharedStyles.listItemContent}
-                        bottomDivider
-                        topDivider
-                        title={<Body>No Posts Yet!</Body>}
-                    />
+                    <>
+                        <Divider />
+                        <List.Item title={'No Posts Yet!'} style={listStyles.item} titleStyle={{ marginLeft: -8 }} />
+                        <Divider />
+                    </>
                 }
                 renderItem={({ item, index }) => (
-                    <ListItem
-                        containerStyle={sharedStyles.listItem}
-                        contentContainerStyle={sharedStyles.listItemContent}
-                        bottomDivider
-                        topDivider={index === 0}
-                        onPress={() => props.navigation.push(ROUTES.BLOG, { blog: item })}
-                        title={<Body>{item.title}</Body>}
-                        rightIcon={{
-                            name: 'chevron-right',
-                            color: theme.colors.text[500],
-                            size: sizes.small,
-                        }}
-                    />
+                    <>
+                        {index === 0 && <Divider />}
+                        <List.Item
+                            title={item.title}
+                            titleNumberOfLines={2}
+                            titleEllipsizeMode={'tail'}
+                            onPress={() => props.navigation.push(ROUTES.BLOG, { blog: item })}
+                            style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            descriptionStyle={{ marginLeft: -8 }}
+                            right={({ style, ...rightProps }) => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <MatIcon
+                                        name={'chevron-right'}
+                                        size={theme.sizes.small}
+                                        style={{ marginRight: -1 * theme.spaces.small }}
+                                    />
+                                </View>
+                            )}
+                        />
+                        <Divider />
+                    </>
                 )}
                 keyExtractor={(item): string => `blog_${item.id}`}
             />

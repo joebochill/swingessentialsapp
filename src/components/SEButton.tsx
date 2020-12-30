@@ -1,59 +1,48 @@
 import React from 'react';
 // Components
 import { StyleSheet } from 'react-native';
-import { Button, ButtonProps } from 'react-native-elements';
-import { Body } from '../components';
+import { Button, Theme, useTheme } from 'react-native-paper';
 
-// Styles
-import { transparent } from '../styles/colors';
-import { spaces, sizes, unit, fonts } from '../styles/sizes';
-import { useTheme } from '../styles/theme';
+const useStyles = (theme: Theme) =>
+    StyleSheet.create({
+        label: {
+            color: theme.colors.onPrimary,
+        },
+        textButton: {
+            marginHorizontal: 0,
+            color: theme.colors.text,
+        },
+        outlinedButton: {
+            color: theme.colors.text,
+        },
+        dark: {
+            backgroundColor: theme.colors.accent,
+        },
+    });
 
-const styles = StyleSheet.create({
-    purpleButton: {
-        height: sizes.large,
-        borderWidth: unit(2),
-        borderRadius: unit(5),
-    },
-    linkButton: {
-        backgroundColor: transparent,
-        paddingLeft: 0,
-        paddingRight: 0,
-        paddingTop: spaces.small,
-        paddingBottom: spaces.small,
-    },
-});
-type SEButtonProps = ButtonProps & {
-    link?: boolean;
+type SEButtonProps = React.ComponentProps<typeof Button> & {
     title: string;
+    dark?: boolean;
 };
-export const SEButton = (props: SEButtonProps) => {
-    const { link, buttonStyle, title, titleStyle, ...other } = props;
+export const SEButton: React.FC<SEButtonProps> = props => {
+    const { title, mode = 'contained', dark = false, style, contentStyle, labelStyle, ...other } = props;
     const theme = useTheme();
+    const styles = useStyles(theme);
+
     return (
+        // @ts-ignore
         <Button
-            buttonStyle={StyleSheet.flatten([
-                link
-                    ? styles.linkButton
-                    : [
-                          styles.purpleButton,
-                          {
-                              backgroundColor: theme.colors.primary[400],
-                              borderColor: theme.colors.primary[800],
-                          },
-                      ],
-                buttonStyle,
-            ])}
-            title={
-                <Body
-                    style={StyleSheet.flatten([
-                        { color: theme.colors.onPrimary[50], fontSize: fonts[14] },
-                        titleStyle,
-                    ])}>
-                    {!link ? title.toUpperCase() : title}
-                </Body>
-            }
-            {...other}
-        />
+            uppercase={mode !== 'text'}
+            mode={mode}
+            style={[dark ? styles.dark : {}, style]}
+            contentStyle={[contentStyle]}
+            labelStyle={[
+                styles.label,
+                mode === 'text' ? styles.textButton : mode === 'outlined' ? styles.outlinedButton : {},
+                labelStyle,
+            ]}
+            {...other}>
+            {title}
+        </Button>
     );
 };

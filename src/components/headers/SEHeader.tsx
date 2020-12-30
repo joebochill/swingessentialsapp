@@ -4,7 +4,6 @@ import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 
 // Components
 import { Alert, Animated } from 'react-native';
-import { Icon } from 'react-native-elements';
 import { ResizableHeader } from './ResizableHeader';
 
 // Utilities
@@ -12,6 +11,7 @@ import { wrapIcon, HeaderIcon } from '../IconWrapper';
 
 // Icons
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import topology from '../../images/topology_20.png';
 
 // Types
@@ -25,10 +25,10 @@ import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 // Redux
 import { requestLogout } from '../../redux/actions';
 
-const MenuIcon = wrapIcon({ IconClass: Icon, name: 'menu' });
-const BackIcon = wrapIcon({ IconClass: Icon, name: 'arrow-back' });
+const MenuIcon = wrapIcon({ IconClass: MatIcon, name: 'menu' });
+const BackIcon = wrapIcon({ IconClass: MatIcon, name: 'arrow-back' });
 const LogoutIcon = wrapIcon({ IconClass: MaterialCommunity, name: 'logout-variant' });
-const AccountIcon = wrapIcon({ IconClass: Icon, name: 'person' });
+const AccountIcon = wrapIcon({ IconClass: MatIcon, name: 'person' });
 
 export type SEHeaderProps = Omit<ResizableHeaderProps, 'headerHeight'> & {
     mainAction?: NavType;
@@ -57,16 +57,15 @@ export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjecte
                   ? {
                         icon: LogoutIcon,
                         onPress: () => {
-                            Alert.alert('Log Out', 'Are you sure you want to log out?', [
-                                { text: 'Log Out', onPress: () => dispatch(requestLogout()) },
+                            Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+                                { text: 'Sign Out', onPress: () => dispatch(requestLogout()) },
                                 { text: 'Cancel' },
                             ]);
                         },
                     }
                   : {
                         icon: AccountIcon,
-                        onPress: () =>
-                            props.navigation.navigate({ routeName: ROUTES.LOGIN, key: ROUTES.LOGIN }),
+                        onPress: () => props.navigation.navigate({ routeName: ROUTES.LOGIN, key: ROUTES.LOGIN }),
                     },
           ]
         : [];
@@ -98,7 +97,7 @@ export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjecte
             }
             headerHeight={props.headerHeight || HEADER_COLLAPSED_HEIGHT}
             backgroundImage={backgroundImage}
-            actionItems={defaultActions.concat(actionItems)}
+            actionItems={actionItems.concat(defaultActions)}
             {...other}
         />
     );

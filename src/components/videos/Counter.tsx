@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { View, ViewProps } from 'react-native';
 import { Body } from '../';
 // Styles
-import { sharedStyles } from '../../styles';
-import { white, blackOpacity } from '../../styles/colors';
-import { fonts, unit } from '../../styles/sizes';
+import { useSharedStyles } from '../../styles';
+import { blackOpacity } from '../../styles/colors';
+import { unit } from '../../styles/sizes';
+import { useTheme } from 'react-native-paper';
 
 export type CountDownProps = ViewProps & {
     startValue: number;
@@ -15,6 +16,8 @@ export type CountDownProps = ViewProps & {
 export const CountDown = (props: CountDownProps) => {
     const { startValue, endValue = 0, onFinish = () => {} } = props;
     const [seconds, setSeconds] = useState(startValue);
+    const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
 
     useEffect(() => {
         let interval: number = 0;
@@ -37,7 +40,7 @@ export const CountDown = (props: CountDownProps) => {
                 { backgroundColor: blackOpacity(0.25) },
                 props.style,
             ]}>
-            <Body style={{ color: white[50], fontSize: unit(128) }}>{seconds}</Body>
+            <Body style={{ color: theme.colors.onPrimary, fontSize: unit(128) }}>{seconds}</Body>
         </View>
     ) : null;
 };
@@ -51,6 +54,7 @@ export type VideoTimerProps = ViewProps & {
 export const VideoTimer = (props: VideoTimerProps) => {
     const { visible, startValue = 0, offset = -1 } = props;
     const [seconds, setSeconds] = useState(startValue);
+    const theme = useTheme();
 
     useEffect(() => {
         let interval = setInterval(() => {
@@ -82,7 +86,7 @@ export const VideoTimer = (props: VideoTimerProps) => {
                     }}
                 />
             </View>
-            <Body style={{ fontSize: fonts[14], color: white[50] }}>
+            <Body style={{ fontSize: theme.fontSizes[14], color: theme.colors.onPrimary }}>
                 {'00:00:' + (displaySeconds < 10 ? '0' : '') + displaySeconds}
             </Body>
         </View>

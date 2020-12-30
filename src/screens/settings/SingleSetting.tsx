@@ -3,12 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
-import { ListItem } from 'react-native-elements';
 import { Body, SEHeader } from '../../components/index';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
-import { sharedStyles } from '../../styles';
-import { spaces, sizes } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
+import { useTheme, List, Divider } from 'react-native-paper';
 
 // Types
 import { SettingsState, ApplicationState } from '../../__types__';
@@ -27,26 +26,33 @@ type SettingType = {
 const SETTINGS: SettingType[] = [
     {
         name: 'handedness',
-        label: 'Handedness',
+        label: 'Swing Handedness',
         description: 'Your dominant hand for golfing',
         values: ['Right', 'Left'],
     },
     {
         name: 'duration',
-        label: 'Camera Duration',
+        label: 'Recording Duration',
         description: 'How long to record for each swing',
         values: [5, 8, 10],
     },
     {
         name: 'delay',
-        label: 'Camera Delay',
+        label: 'Recording Delay',
         description: 'How long to wait between pressing record and the start of the recording',
         values: [0, 5, 10],
     },
     {
         name: 'overlay',
-        label: 'Camera Overlay',
-        description: 'Overlay shows an image of how you should stand while recording your swing',
+        label: 'Stance Overlay',
+        description:
+            'The Stance Overlay shows a semi-transparent image of how you should stand while recording your swing',
+        values: [true, false],
+    },
+    {
+        name: 'notifications',
+        label: 'New Lesson Email Notification',
+        description: 'Send you an email whenever your swing analysis has been posted or updated.',
         values: [true, false],
     },
 ];
@@ -65,15 +71,26 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
 
     const dispatch = useDispatch();
     const theme = useTheme();
+    const sharedStyles = useSharedStyles(theme);
+    const flexStyles = useFlexStyles(theme);
+    const listStyles = useListStyles(theme);
 
-    const [value, setValue]: [any, Function] = useState(settings[currentSettingName]);
+    const [value, setValue] = useState(settings[currentSettingName]);
 
     const _updateSetting = useCallback(() => {
-        dispatch(
-            putSettings({
-                [currentSettingName]: value,
-            }),
-        );
+        if (currentSettingName === 'notifications') {
+            dispatch(
+                putSettings({
+                    subscribe: value,
+                }),
+            );
+        } else {
+            dispatch(
+                putSettings({
+                    [currentSettingName]: value,
+                }),
+            );
+        }
     }, [dispatch, currentSettingName, value]);
 
     useEffect(() => {
@@ -101,30 +118,39 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                 style={[
                     sharedStyles.pageContainer,
                     {
-                        paddingTop: HEADER_COLLAPSED_HEIGHT + spaces.medium,
+                        paddingTop: HEADER_COLLAPSED_HEIGHT + theme.spaces.medium,
                     },
                 ]}>
                 {currentSetting.values.map((val, index) => (
-                    <ListItem
-                        key={`Setting-Option-${index}`}
-                        containerStyle={[sharedStyles.listItem]}
-                        contentContainerStyle={sharedStyles.listItemContent}
-                        bottomDivider
-                        topDivider={index === 0}
-                        onPress={(): void => setValue(val)}
-                        title={
-                            <Body>{`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
+                    <View key={`option_${index}`}>
+                        {index === 0 && <Divider />}
+                        <List.Item
+                            title={`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
                                 typeof val === 'number' ? 's' : ''
-                            }`}</Body>
-                        }
-                        rightIcon={
-                            caseSame(value, val)
-                                ? { name: 'check', color: theme.colors.text[500], size: sizes.small }
-                                : undefined
-                        }
-                    />
+                            }`}
+                            titleEllipsizeMode={'tail'}
+                            onPress={(): void => setValue(val)}
+                            style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            right={({ style, ...rightProps }) => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    {caseSame(value, val) && (
+                                        <MatIcon
+                                            name={'check'}
+                                            size={theme.sizes.small}
+                                            color={theme.colors.accent}
+                                            style={{
+                                                marginRight: -1 * theme.spaces.xSmall,
+                                            }}
+                                        />
+                                    )}
+                                </View>
+                            )}
+                        />
+                        <Divider />
+                    </View>
                 ))}
-                <Body style={[sharedStyles.paddingHorizontalMedium, { marginTop: spaces.medium }]}>
+                <Body style={[flexStyles.paddingHorizontal, { marginTop: theme.spaces.medium }]}>
                     {currentSetting.description}
                 </Body>
             </View>

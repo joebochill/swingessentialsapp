@@ -1,11 +1,11 @@
-# Swing Essentials™ App (React-Native)
-[Swing Essentials™](https://www.swingessentials.com) provides golfers with affordable, personalized video-based golf lessons. Golfers can submit short videos of their golf swing, and within 48-hours, they receive a personalized swing analysis video from a PGA-certified golf professional.
+# Swing Essentials® App (React-Native)
+[Swing Essentials®](https://www.swingessentials.com) provides golfers with affordable, personalized video-based golf lessons. Golfers can submit short videos of their golf swing, and within 48-hours, they receive a personalized swing analysis video from a PGA-certified golf professional.
 
 
 
 This project was bootstrapped using the [React Native CLI](https://github.com/react-native-community/cli) and takes advantage of the following libraries (many thanks to the contributors):
 * [react-native-camera](https://github.com/react-native-community/react-native-camera)
-* [react-native-elements](https://github.com/react-native-training/react-native-elements)
+* [react-native-paper](https://callstack.github.io/react-native-paper/index.html)
 * [react-native-iap](https://github.com/dooboolab/react-native-iap)
 * [react-native-image-picker](https://github.com/react-community/react-native-image-picker)
 * [react-native-keychain](https://github.com/oblador/react-native-keychain)
@@ -32,7 +32,7 @@ Lessons | Analysis
 
 
 ### Order Credits
-New users automatically receive a free credit to use to evaluate the Swing Essentials™ service. Additional credits can be purchased on the Order screen. Purchases are accomplished via in-app payments through Apple/Google.
+New users automatically receive a free credit to use to evaluate the Swing Essentials® service. Additional credits can be purchased on the Order screen. Purchases are accomplished via in-app payments through Apple/Google.
 
 <img width="200" alt="Purchase" src="assets/order.png">
 
@@ -47,7 +47,7 @@ Capture | Submit
 <img width="200" alt="Record Swing" src="assets/record.png"> | <img width="200" alt="Submit Swing" src="assets/submit.png">
 
 ### Tips / Blogs
-Video tips (delivered monthly) can also be viewed through the app. Likewise, 19th Hole blog posts can also be viewed. Both are accessible from the main menu.
+Video tips (delivered monthly) can also be viewed through the app. Likewise, the 19th Hole blog posts can also be viewed. Both are accessible from the main menu.
 
 ## Getting Started
 To extend, update, or contribute to this project, clone the repository to your local machine and install the necessary dependencies (for final deployment, you will also need to install dev dependencies):

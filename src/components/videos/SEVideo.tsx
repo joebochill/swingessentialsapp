@@ -1,22 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 // Components
-import { StyleSheet, TouchableOpacity, ViewProperties, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, ViewProperties, View, Platform } from 'react-native';
 import Video from 'react-native-video';
-import { Icon } from 'react-native-elements';
-import { H7 } from '../';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
 import { width, aspectWidth } from '../../utilities/dimensions';
-import { sharedStyles } from '../../styles';
-import { transparent, oledBlack, white, blackOpacity } from '../../styles/colors';
-import { sizes, spaces } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
-
-// Utilities
-import color from 'color';
-
-const portraitWidth = (width - 3 * spaces.medium) / 2;
-const portraitHeight = aspectWidth(portraitWidth);
+import { useSharedStyles, useFormStyles, useListStyles } from '../../styles';
+import { transparent, blackOpacity } from '../../styles/colors';
+import { useTheme, Subheading, ActivityIndicator } from 'react-native-paper';
 
 type VideoProps = ViewProperties & {
     source: string;
@@ -26,7 +18,6 @@ type VideoProps = ViewProperties & {
 };
 type PlaceholderProps = ViewProperties & {
     title?: string;
-    inverse?: boolean;
     disabled?: boolean;
     onPress?: Function;
     icon?: JSX.Element;
@@ -37,9 +28,18 @@ export const SEVideo = (props: VideoProps) => {
     const { source, style, editable = false, onEdit = () => {} } = props;
     const vid = useRef(null);
     const [playing, setPlaying] = useState(false);
+    const [ready, setReady] = useState(false);
+    const theme = useTheme();
+    const styles = useStyles(theme);
+    const sharedStyles = useSharedStyles(theme);
+
+    useEffect(() => {
+        // TODO: This was added after the iOS release
+        setReady(false);
+    }, [source, setReady]);
 
     return (
-        <View style={StyleSheet.flatten([styles.portrait, { backgroundColor: oledBlack[900] }, style])}>
+        <View style={[styles.portrait, { backgroundColor: theme.colors.light }, style]}>
             <TouchableOpacity
                 activeOpacity={0.8}
                 style={{ height: '100%', width: '100%' }}
@@ -51,17 +51,37 @@ export const SEVideo = (props: VideoProps) => {
                     volume={1.0}
                     muted={false}
                     paused={!playing}
+                    onLoad={() => {
+                        // TODO: this was added for Android after iOS release
+                        setReady(true);
+                        if (vid.current && Platform.OS === 'android') vid.current.seek(0);
+                    }}
                     onEnd={() => setPlaying(false)}
+                    // onReadyForDisplay={() => setReady(true } TODO: this was changed after iOS release
                     resizeMode="contain"
-                    repeat={false} // TODO: changed this from ioS release
+                    repeat={Platform.OS === 'ios'}
                     playInBackground={false}
                     playWhenInactive={false}
                     ignoreSilentSwitch={'ignore'}
                     style={{ height: '100%', width: '100%' }}
                 />
-                <View style={[styles.fullCentered, { opacity: playing ? 0 : 1 }]}>
-                    <Icon name={'play-arrow'} size={sizes.large} color={white[50]} underlayColor={transparent} />
-                </View>
+                {!ready && (
+                    <ActivityIndicator
+                        size={theme.sizes.xLarge}
+                        color={theme.colors.onPrimary}
+                        style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
+                    />
+                )}
+                {ready && (
+                    <View style={[styles.fullCentered, { opacity: playing ? 0 : 1 }]}>
+                        <MatIcon
+                            name={'play-arrow'}
+                            size={theme.sizes.large}
+                            color={theme.colors.onPrimary}
+                            underlayColor={transparent}
+                        />
+                    </View>
+                )}
                 {editable && (
                     <TouchableOpacity
                         activeOpacity={0.8}
@@ -73,7 +93,12 @@ export const SEVideo = (props: VideoProps) => {
                             },
                         ]}
                         onPress={() => onEdit()}>
-                        <Icon name={'edit'} color={white[50]} underlayColor={transparent} />
+                        <MatIcon
+                            name={'edit'}
+                            size={theme.sizes.small}
+                            color={theme.colors.onPrimary}
+                            underlayColor={transparent}
+                        />
                     </TouchableOpacity>
                 )}
             </TouchableOpacity>
@@ -81,55 +106,56 @@ export const SEVideo = (props: VideoProps) => {
     );
 };
 export const SEVideoPlaceholder = (props: PlaceholderProps) => {
-    const { icon, editIcon, style, inverse, disabled, onPress = () => {} } = props;
+    const { icon, editIcon, style, disabled, onPress = () => {} } = props;
     const theme = useTheme();
+    const styles = useStyles(theme);
+    const sharedStyles = useSharedStyles(theme);
+    const formStyles = useFormStyles(theme);
+    const listStyles = useListStyles(theme);
+
     return (
-        <View
-            style={StyleSheet.flatten([
-                styles.portrait,
-                sharedStyles.dashed,
-                {
-                    backgroundColor: inverse
-                        ? color(theme.colors.onPrimary[50]).fade(0.35)
-                        : color(theme.colors.primary[500]).fade(0.85),
-                },
-                style,
-            ])}>
+        <View style={[styles.portrait, formStyles.dashed, style]}>
             <TouchableOpacity
                 disabled={disabled}
                 activeOpacity={0.8}
                 style={{ height: '100%', width: '100%', alignItems: 'center' }}
                 onPress={() => onPress()}>
-                <H7 font={'regular'} style={{ marginTop: spaces.medium }}>
-                    {props.title}
-                </H7>
+                <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
+                    <Subheading style={[listStyles.heading, { marginVertical: theme.spaces.medium }]}>
+                        {props.title}
+                    </Subheading>
+                </View>
                 <View style={styles.fullCentered}>{icon}</View>
                 <View style={[sharedStyles.centered, styles.bottomPanel]}>{editIcon}</View>
             </TouchableOpacity>
         </View>
     );
 };
-const styles = StyleSheet.create({
-    fullCentered: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    portrait: {
-        width: portraitWidth,
-        height: portraitHeight,
-    },
-    bottomPanel: {
-        backgroundColor: transparent,
-        padding: spaces.medium,
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        left: 0,
-        zIndex: 100,
-    },
-});
+const useStyles = (theme: Theme) => {
+    const portraitWidth = (width - 3 * theme.spaces.medium) / 2;
+    const portraitHeight = aspectWidth(portraitWidth);
+    return StyleSheet.create({
+        fullCentered: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        portrait: {
+            width: portraitWidth,
+            height: portraitHeight,
+        },
+        bottomPanel: {
+            backgroundColor: transparent,
+            padding: theme.spaces.medium,
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+            left: 0,
+            zIndex: 100,
+        },
+    });
+};

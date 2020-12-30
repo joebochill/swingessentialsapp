@@ -4,14 +4,16 @@ import { store } from '../redux/store';
 import { loadUserContent } from '../redux/actions/LoginActions';
 
 /* Dispatch a failure action for the supplied action type */
-export function failure(type, response, api = '--') {
+export function failure(type, response, api = '--', log = true) {
     if (response && response.headers && response.headers.get) {
-        Logger.logError({
-            code: 'HTH100',
-            description: `API Failure response (${api}).`,
-            rawErrorCode: response.headers.get('Error'),
-            rawErrorMessage: response.headers.get('Message'),
-        });
+        if (log) {
+            Logger.logError({
+                code: 'HTH100',
+                description: `API Failure response (${api}).`,
+                rawErrorCode: response.headers.get('Error'),
+                rawErrorMessage: response.headers.get('Message'),
+            });
+        }
     }
 
     return {

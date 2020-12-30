@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { useTheme } from '../../styles/theme';
+import { useTheme } from 'react-native-paper';
 // Components
 import { View } from 'react-native';
-import { Icon } from 'react-native-elements';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { H7, H4 } from '../index';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './Tutorial';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 // Styles
-import { sizes, spaces, unit } from '../../styles/sizes';
+import { unit } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
 import { whiteOpacity } from '../../styles/colors';
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,35 +25,40 @@ export const HomeTutorial = () => {
 
     const slides = [
         <>
-            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
-                {'Welcome to Swing Essentials™!'}
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
+                {'Welcome to Swing Essentials®!'}
             </H4>
             <H7
                 font={'light'}
                 style={{
                     textAlign: 'center',
-                    marginTop: spaces.small,
-                    marginBottom: spaces.medium,
-                    color: theme.colors.onPrimary[50],
+                    marginTop: theme.spaces.small,
+                    marginBottom: theme.spaces.medium,
+                    color: theme.colors.onPrimary,
                 }}>
                 {'The Swing Essentials app gives you quick access to everything you need to keep improving your swing.'}
             </H7>
         </>,
         <>
-            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary[50] }}>
+            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
                 {'Sign Up Today'}
             </H4>
             <H7
                 font={'light'}
                 style={{
                     textAlign: 'center',
-                    marginTop: spaces.small,
-                    marginBottom: spaces.medium,
-                    color: theme.colors.onPrimary[50],
+                    marginTop: theme.spaces.small,
+                    marginBottom: theme.spaces.medium,
+                    color: theme.colors.onPrimary,
                 }}>
                 {'You can sign in or register for an account by clicking the account icon in the header.'}
             </H7>
-            <Icon name="person" color={'white'} size={sizes.xLarge} containerStyle={{ marginVertical: spaces.large }} />
+            <MatIcon
+                name="person"
+                color={'white'}
+                size={theme.sizes.xLarge}
+                style={{ marginVertical: theme.spaces.large, alignSelf: 'center' }}
+            />
         </>,
     ];
 
@@ -65,8 +70,8 @@ export const HomeTutorial = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }) => slides[index]}
-                    sliderWidth={width - 2 * spaces.medium}
-                    itemWidth={width - 2 * spaces.medium}
+                    sliderWidth={width - 2 * theme.spaces.medium}
+                    itemWidth={width - 2 * theme.spaces.medium}
                     onSnapToItem={index => {
                         setActivePanel(index);
                         if (index === slides.length - 1) {
@@ -88,10 +93,10 @@ export const HomeTutorial = () => {
                     inactiveDotScale={0.8}
                 />
                 <SEButton
+                    dark
                     title="GOT IT"
                     disabled={!showButton}
-                    containerStyle={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}
-                    buttonStyle={{ backgroundColor: theme.colors.primary[500] }}
+                    style={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}
                     onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]))}
                 />
             </View>

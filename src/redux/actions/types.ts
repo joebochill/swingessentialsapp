@@ -15,6 +15,9 @@ export const REFRESH_TOKEN = createAction('REFRESH_TOKEN', 'refresh');
 
 /* User Actions */
 export const GET_USER_DATA = createAction('GET_USER_DATA', 'user');
+export const SET_USER_DATA = createAction('SET_USER_DATA', 'details');
+export const SET_USER_NOTIFICATIONS = createAction('SET_USER_NOTIFICATIONS', 'settings');
+export const CHANGE_AVATAR = createAction('SET_USER_AVATAR', 'avatar');
 
 /* Settings Actions */
 export const GET_SETTINGS = createAction('GET_SETTINGS', 'settings');
@@ -43,6 +46,7 @@ export const PURCHASE_CREDITS = createAction(
 
 /* FAQ Actions */
 export const GET_FAQ = createAction('GET_FAQ', 'faq');
+export const GET_CONFIG = createAction('GET_CONFIG', 'config');
 
 /* Registration Actions */
 export const CHECK_USERNAME = createAction('CHECK_USERNAME', 'checkUser');
