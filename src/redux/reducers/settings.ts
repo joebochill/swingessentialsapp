@@ -7,6 +7,8 @@ const initialState: SettingsState = {
     delay: 5,
     overlay: true,
     handedness: 'right',
+    notifications: false,
+    avatar: '',
 };
 
 export const settingsReducer = (state = initialState, action): SettingsState => {
@@ -24,6 +26,8 @@ export const settingsReducer = (state = initialState, action): SettingsState => 
                 duration: action.payload.camera.duration,
                 overlay: !!action.payload.camera.overlay,
                 handedness: action.payload.handed.toLowerCase(),
+                notifications: action.payload.subbed,
+                avatar: action.payload.avatar,
             };
         case GET_SETTINGS.FAILURE:
             return {

@@ -3,7 +3,7 @@ import * as ACTIONS from './types';
 import { loadTips } from './TipActions';
 import { loadBlogs } from './BlogActions';
 import { loadPackages } from './PackageActions';
-import { loadFAQ } from './FAQActions';
+import { loadFAQ, loadPlaceholder } from './FAQActions';
 import AsyncStorage from '@react-native-community/async-storage';
 import { ASYNC_PREFIX } from '../../constants';
 import { setToken } from './LoginActions';
@@ -12,6 +12,7 @@ import { HttpRequest } from '../../api/http';
 import { Logger, LOG_TYPE } from '../../utilities/logging';
 import { success, failure } from '../../api/http-helper';
 import { Platform } from 'react-native';
+import { loadUserInfo } from './user-data-actions';
 
 export function loadInitialData(): Function {
     return async (dispatch: ThunkDispatch<any, void, any>) => {
@@ -19,6 +20,8 @@ export function loadInitialData(): Function {
         if (token) dispatch(setToken(token));
 
         dispatch({ type: ACTIONS.INITIAL_LOAD });
+        dispatch(loadPlaceholder());
+        dispatch(loadUserInfo());
         dispatch(loadTips());
         dispatch(loadBlogs());
         dispatch(loadPackages());

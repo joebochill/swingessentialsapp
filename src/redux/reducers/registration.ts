@@ -1,12 +1,4 @@
-import {
-    LOGIN,
-    LOGOUT,
-    GET_USER_DATA,
-    CREATE_ACCOUNT,
-    CHECK_USERNAME,
-    CHECK_EMAIL,
-    VERIFY_EMAIL,
-} from '../actions/types';
+import { CREATE_ACCOUNT, CHECK_USERNAME, CHECK_EMAIL, VERIFY_EMAIL } from '../actions/types';
 import { RegistrationState } from '../../__types__';
 
 const initialState: RegistrationState = {

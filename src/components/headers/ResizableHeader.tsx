@@ -2,12 +2,12 @@ import React, { Component, ComponentType } from 'react';
 
 // Components
 import { Animated, ImageSourcePropType, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { withTheme, Theme, WithTheme } from '../../styles/theme';
 import { AnimatedSafeAreaView } from '../../components';
+import { withTheme } from 'react-native-paper';
 
 // Styles
 import { blackOpacity } from '../../styles/colors';
-import { sizes, spaces, unit } from '../../styles/sizes';
+import { unit } from '../../styles/sizes';
 
 // Utilities
 import color from 'color';
@@ -19,6 +19,7 @@ import { $DeepPartial } from '@callstack/react-theme-provider';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT_NO_STATUS } from '../../constants';
+import { theme as defaultTheme, Theme } from '../../styles/theme';
 
 export interface ResizableHeaderProps {
     /** Header title */
@@ -60,9 +61,9 @@ export interface ResizableHeaderProps {
 
 interface HeaderState {}
 
-class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState> {
-    static readonly ICON_SIZE = sizes.small;
-    static readonly ICON_SPACING = spaces.medium;
+class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
+    static readonly ICON_SIZE = defaultTheme.sizes.small;
+    static readonly ICON_SPACING = defaultTheme.spaces.medium;
 
     render() {
         const barStyle = this.barStyle();
@@ -103,13 +104,13 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
     }
 
     private navigation() {
-        const { navigation } = this.props;
+        const { navigation, theme } = this.props;
         if (navigation) {
             return (
                 <View>
                     <TouchableOpacity
                         onPress={navigation.onPress}
-                        style={[styles.actionIcon, { marginRight: spaces.large }]}>
+                        style={[styles.actionIcon, { marginRight: theme.spaces.small }]}>
                         {this.icon(navigation.icon)}
                     </TouchableOpacity>
                 </View>
@@ -212,15 +213,15 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
     private contentStyle() {
         const { theme, headerContent, navigation } = this.props;
         const contractedPadding = this.props.subtitle
-            ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - unit(theme.sizes.large + 18)) / 2
-            : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - unit(theme.sizes.large)) / 2;
+            ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.fontSizes[20] + theme.fontSizes[18])) / 2
+            : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - theme.fontSizes[20]) / 2;
         return [
             styles.content,
             headerContent
-                ? {}
+                ? {} // no styles if you pass in custom content (Drawer)
                 : {
-                      paddingHorizontal: navigation ? spaces.small : spaces.medium,
-                      paddingBottom: this.scaleByHeaderHeight(spaces.xLarge, contractedPadding),
+                      paddingHorizontal: navigation ? theme.spaces.small : theme.spaces.medium,
+                      paddingBottom: this.scaleByHeaderHeight(theme.spaces.xLarge, contractedPadding),
                   },
         ];
     }
@@ -229,9 +230,9 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         const { theme } = this.props;
         return {
             color: this.fontColor(),
-            lineHeight: this.scaleByHeaderHeight(unit(30), unit(theme.sizes.large)),
+            lineHeight: this.scaleByHeaderHeight(unit(30), theme.fontSizes[20]),
             fontFamily: theme.fonts.semiBold.fontFamily,
-            fontSize: this.scaleByHeaderHeight(unit(30), unit(theme.sizes.large)),
+            fontSize: this.scaleByHeaderHeight(unit(30), theme.fontSizes[20]),
         };
     }
 
@@ -249,10 +250,10 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
         const { theme } = this.props;
         return {
             color: this.fontColor(),
-            lineHeight: this.scaleByHeaderHeight(unit(theme.sizes.large) * 1.05, 0.1),
+            lineHeight: this.scaleByHeaderHeight(theme.fontSizes[20] * 1.05, 0.1),
             opacity: this.scaleByHeaderHeight(1, 0),
             fontFamily: theme.fonts.regular.fontFamily,
-            fontSize: this.scaleByHeaderHeight(unit(theme.sizes.large), 0.1),
+            fontSize: this.scaleByHeaderHeight(theme.fontSizes[20], 0.1),
         };
     }
 
@@ -262,12 +263,12 @@ class HeaderClass extends Component<WithTheme<ResizableHeaderProps>, HeaderState
 
     private fontColor() {
         const { fontColor, theme } = this.props;
-        return fontColor || theme.colors.onPrimary[500];
+        return fontColor || theme.colors.onPrimary;
     }
 
     private backgroundColor() {
         const { backgroundColor, theme } = this.props;
-        return backgroundColor || theme.colors.primary[400];
+        return backgroundColor || theme.colors.primary;
     }
 
     private actionPanelWidth() {
@@ -332,7 +333,7 @@ const styles = StyleSheet.create({
     },
     actionIcon: {
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
-        paddingHorizontal: spaces.small,
+        paddingHorizontal: defaultTheme.spaces.small,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -345,10 +346,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'absolute',
-        right: spaces.small,
+        right: defaultTheme.spaces.small,
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
     },
     notFirst: {
-        marginLeft: spaces.small,
+        marginLeft: defaultTheme.spaces.small,
     },
 });

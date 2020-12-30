@@ -1,22 +1,23 @@
 import React from 'react';
 // Components
 import { StyleSheet, TextProps } from 'react-native';
-import { useTheme } from '../../styles/theme';
 import { Body } from '../../components';
+import { useTheme } from 'react-native-paper';
 
 // Styles
-import { spaces, fonts } from '../../styles/sizes';
-import { white, red } from '../../styles/colors';
+import { Theme } from '../../styles/theme';
 
-const styles = StyleSheet.create({
-    error: {
-        margin: 0,
-        padding: spaces.medium,
-        backgroundColor: red[500],
-        color: white[50],
-        fontSize: fonts[14],
-    },
-});
+const useStyles = (theme: Theme) =>
+    StyleSheet.create({
+        error: {
+            margin: 0,
+            paddingVertical: theme.spaces.xSmall, // 4,
+            paddingHorizontal: 16, // to match form field padding from RNP
+            backgroundColor: theme.colors.error,
+            color: theme.colors.onPrimary,
+            fontSize: theme.fontSizes[14],
+        },
+    });
 type ErrorBoxProps = TextProps & {
     show?: boolean;
     error: string;
@@ -24,9 +25,7 @@ type ErrorBoxProps = TextProps & {
 export const ErrorBox = (props: ErrorBoxProps) => {
     const { style } = props;
     const theme = useTheme();
-    return props.show ? (
-        <Body style={StyleSheet.flatten([styles.error, { backgroundColor: theme.colors.error[500] }, style])}>
-            {props.error}
-        </Body>
-    ) : null;
+    const styles = useStyles(theme);
+
+    return props.show ? <Body style={[styles.error, style]}>{props.error}</Body> : null;
 };

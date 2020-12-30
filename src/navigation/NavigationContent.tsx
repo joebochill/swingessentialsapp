@@ -27,6 +27,12 @@ export const mainNavigationItems: RouteGroup = {
             route: ROUTES.HOME,
         },
         {
+            title: 'Your Profile',
+            icon: 'person',
+            private: true,
+            route: ROUTES.SETTINGS,
+        },
+        {
             title: 'Your Lessons',
             icon: 'subscriptions',
             route: ROUTES.LESSONS,
@@ -43,23 +49,21 @@ export const mainNavigationItems: RouteGroup = {
         },
         {
             title: 'Tip of the Month',
-            iconType: 'material-community',
-            icon: 'calendar-today',
+            icon: 'today',
             route: ROUTES.TIPS,
         },
         {
-            title: '19th Hole',
-            iconType: 'material-community',
-            icon: 'beer',
+            title: 'The 19th Hole',
+            icon: 'local-bar',
             route: ROUTES.BLOGS,
         },
-        {
-            title: 'My Account',
-            icon: 'person',
-            nested: true,
-            private: true,
-            activatePanel: 1,
-        },
+        // {
+        //     title: 'My Account',
+        //     icon: 'person',
+        //     nested: true,
+        //     private: true,
+        //     activatePanel: 1,
+        // },
         {
             title: 'Help',
             icon: 'help',
@@ -122,6 +126,12 @@ export const helpNavigationItems: RouteGroup = {
             // route: ROUTES.CONTACT,
         },
         {
+            title: 'Error Logs',
+            icon: 'report-problem',
+            private: true,
+            route: ROUTES.LOGS,
+        },
+        {
             title: 'Back',
             icon: 'arrow-back',
             activatePanel: 0,
@@ -145,17 +155,18 @@ export const accountNavigationItems: RouteGroup = {
         //     route: ROUTES.HISTORY,
         // },
         {
+            title: 'My Profile',
+            icon: 'person',
+            private: true,
+            route: ROUTES.SETTINGS,
+        },
+        {
             title: 'Settings',
             icon: 'settings',
             private: true,
             route: ROUTES.SETTINGS,
         },
-        {
-            title: 'Error Logs',
-            icon: 'list',
-            private: true,
-            route: ROUTES.LOGS,
-        },
+
         {
             title: 'Back',
             icon: 'arrow-back',

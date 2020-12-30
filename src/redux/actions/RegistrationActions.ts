@@ -35,12 +35,13 @@ export function checkEmailAvailability(email: string) {
 
 type NewAccountDetails = {
     username: string;
-    firstName: string;
-    lastName: string;
     email: string;
-    heard: string;
-    phone: string;
     password: string;
+    heard: string;
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+    location?: string;
     platform: PlatformOSType;
 };
 export function createAccount(data: NewAccountDetails) {
@@ -50,7 +51,7 @@ export function createAccount(data: NewAccountDetails) {
             .withBody(data)
             .onSuccess((response: any) => {
                 const token = response.headers.get('Token');
-                dispatch(success(ACTIONS.CREATE_ACCOUNT.SUCCESS, { token }));
+                dispatch(success(ACTIONS.CREATE_ACCOUNT.SUCCESS, { token, personal: data }));
             })
             .onFailure((response: Response) => {
                 dispatch(failure(ACTIONS.CREATE_ACCOUNT.FAILURE, response, 'CreateAccount'));

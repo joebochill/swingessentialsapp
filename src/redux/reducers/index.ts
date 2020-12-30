@@ -11,12 +11,14 @@ import { registrationReducer } from './registration';
 import { faqReducer } from './faq';
 import { logsReducer } from './logs';
 import { tutorialReducer } from './tutorials';
+import { configReducer } from './config';
 
 export const AppReducer = combineReducers({
     login: loginReducer,
     lessons: lessonsReducer,
     tips: tipsReducer,
     userData: userDataReducer,
+    config: configReducer,
     credits: creditsReducer,
     blogs: blogsReducer,
     packages: packagesReducer,

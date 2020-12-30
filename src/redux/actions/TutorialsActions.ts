@@ -13,6 +13,7 @@ export function loadTutorials() {
             stores.map((item, i, store) => {
                 let key = item[0];
                 let value = item[1];
+
                 if (!checkVersionGreater(value, TUTORIAL_VERSIONS[_keys[i]])) {
                     dispatch(tutorialNew(key.replace(ASYNC_PREFIX, '')));
                 }

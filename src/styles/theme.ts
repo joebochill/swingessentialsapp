@@ -1,76 +1,82 @@
-import { createTheming } from '@callstack/react-theme-provider';
-import { TextStyle } from 'react-native';
-import { white, purple, red, green, orange } from '../styles/colors';
-import { ColorDef } from '../__types__';
+import { DefaultTheme, configureFonts } from 'react-native-paper';
+import { white, purple, red, gray, black } from './colors';
+import { spaceUnit, unit } from './sizes';
 
-type Font = {
-    fontFamily: string;
-    fontWeight: TextStyle['fontWeight'];
-};
+type FontWeight = 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
 
-export interface Theme {
-    roundness: number;
-    colors: {
-        primary: ColorDef;
-        background: string;
-        surface: string;
-        accent: ColorDef;
-        error: ColorDef;
-        text: ColorDef;
-        onPrimary: ColorDef;
-    };
-    fonts: {
-        extraBold: Partial<Font>;
-        bold: Partial<Font>;
-        semiBold: Partial<Font>;
-        regular: Partial<Font>;
-        light: Partial<Font>;
-    };
-    sizes: {
-        tiny: number;
-        extraSmall: number;
-        small: number;
-        medium: number;
-        large: number;
-        extraLarge: number;
-        giant: number;
-    };
-}
-
-/* This is the default theme for the component library (Material) */
-export const defaultTheme = {
-    roundness: 8,
-    fonts: {
-        extraBold: { fontFamily: 'SFCompactDisplay-Black' },
-        bold: { fontFamily: 'SFCompactDisplay-Bold' },
-        semiBold: { fontFamily: 'SFCompactDisplay-Semibold' },
-        regular: { fontFamily: 'SFCompactDisplay-Regular' },
-        light: { fontFamily: 'SFCompactDisplay-Thin' },
+const defaultFontConfig = {
+    extraBold: {
+        // fontFamily: 'SFCompactDisplay-Black'
     },
+    bold: {
+        // fontFamily: 'SFCompactDisplay-Bold'
+    },
+    semiBold: {
+        fontFamily: 'SFCompactDisplay-Semibold',
+    },
+    medium: {
+        // fontFamily: 'SFCompactDisplay-Semibold'
+    },
+    regular: {
+        // fontFamily: 'SFCompactDisplay-Regular'
+    },
+    light: {
+        fontFamily: 'SFCompactDisplay-Thin',
+    },
+    thin: {
+        // fontFamily: 'SFCompactDisplay-Thin'
+    },
+};
+const fontConfig = {
+    default: defaultFontConfig,
+    ios: defaultFontConfig,
+    android: defaultFontConfig,
+};
+export const theme = {
+    ...DefaultTheme,
+    dark: false,
+    roundness: 0,
+    fonts: configureFonts(fontConfig),
     colors: {
-        primary: purple,
+        primary: purple[400],
         background: white[400],
         surface: purple[50],
-        accent: purple,
-        error: red,
-        text: purple,
-        onPrimary: white,
+        accent: purple[500],
+        error: red[500],
+        text: purple[500],
+        placeholder: black[500],
+        onPrimary: white[50],
+        dark: purple[800],
+        light: purple[200],
     },
     sizes: {
-        tiny: 10,
-        extraSmall: 12,
-        small: 14,
-        medium: 16,
-        large: 20,
-        extraLarge: 24,
-        giant: 34,
+        xSmall: spaceUnit(3),
+        small: spaceUnit(6),
+        medium: spaceUnit(8),
+        large: spaceUnit(12),
+        xLarge: spaceUnit(16),
+        jumbo: spaceUnit(24),
+    },
+    spaces: {
+        xSmall: spaceUnit(1), // 4
+        small: spaceUnit(2), // 8
+        medium: spaceUnit(4), // 16
+        large: spaceUnit(6), // 24
+        xLarge: spaceUnit(8), // 32
+        jumbo: spaceUnit(12), // 48
+    },
+    fontSizes: {
+        10: unit(10),
+        12: unit(12),
+        14: unit(14),
+        16: unit(16),
+        18: unit(18),
+        20: unit(20),
+        24: unit(24),
+        34: unit(34),
+        48: unit(48),
+        60: unit(60),
+        96: unit(96),
     },
 };
-
-const { ThemeProvider, withTheme, useTheme } = createTheming<Theme>(defaultTheme);
-
-export type WithTheme<T> = T & {
-    theme: Theme;
-};
-
-export { ThemeProvider, withTheme, useTheme };
+export type Theme = typeof theme;

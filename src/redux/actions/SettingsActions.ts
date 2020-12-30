@@ -22,13 +22,14 @@ export function loadSettings() {
     };
 }
 
-type SettingsUpdateType = Exclude<UserSettingsType, 'loading'>;
+type SettingsUpdateType = Exclude<Exclude<UserSettingsType, 'loading'>, 'notifications'> & {
+    subscribe: boolean;
+};
 
 /* Updates the user app settings in the database */
 export function putSettings(data: Partial<SettingsUpdateType>) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({ type: ACTIONS.PUT_SETTINGS.REQUEST });
-
         HttpRequest.put(ACTIONS.PUT_SETTINGS.API)
             .withBody(data)
             .onSuccess((body: any) => {

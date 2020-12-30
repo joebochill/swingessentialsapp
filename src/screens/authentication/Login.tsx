@@ -1,20 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCompare, usePrevious } from '../../utilities';
+import { useCompare } from '../../utilities';
 
 // Components
-import {
-    ActivityIndicator,
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Switch,
-    Text,
-    View,
-} from 'react-native';
-import { Icon, Input } from 'react-native-elements';
+import { Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Utilities
 import AsyncStorage from '@react-native-community/async-storage';
@@ -29,14 +19,14 @@ import { ApplicationState } from '../../__types__';
 
 // Styles
 import { transparent } from '../../styles/colors';
-import { spaces, unit, sizes, fonts } from '../../styles/sizes';
-import { useTheme } from '../../styles/theme';
+import { unit } from '../../styles/sizes';
+import { useTheme, TextInput, Switch, Theme } from 'react-native-paper';
 import { height } from '../../utilities/dimensions';
-
+import { useFormStyles } from '../../styles';
 import logo from '../../images/logo-big.png';
 
 // SE Components
-import { SEButton, ErrorBox } from '../../components';
+import { SEButton, ErrorBox, BackgroundImage, Body } from '../../components';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
@@ -51,12 +41,12 @@ type BiometryState = {
 type CredentialsState = {
     stored: boolean;
     savedCredentials:
-    | {
-        username: string;
-        password: string;
-        service?: string;
-    }
-    | undefined;
+        | {
+              username: string;
+              password: string;
+              service?: string;
+          }
+        | undefined;
 };
 const initialBiometry: BiometryState = {
     available: false,
@@ -69,6 +59,8 @@ const initialCredentials: CredentialsState = {
 
 export const Login = (props: NavigationInjectedProps) => {
     const theme = useTheme();
+    const styles = useStyles(theme);
+    const formStyles = useFormStyles(theme);
     // Local Component State
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -78,6 +70,7 @@ export const Login = (props: NavigationInjectedProps) => {
     const [touchFail, setTouchFail] = useState('');
     const [biometry, setBiometry] = useState(initialBiometry);
     const [credentials, setCredentials] = useState(initialCredentials);
+    const [activeField, setActiveField] = useState<'username' | 'password' | null>(null);
 
     // Redux State
     const pending = useSelector((state: ApplicationState) => state.login.pending);
@@ -94,6 +87,8 @@ export const Login = (props: NavigationInjectedProps) => {
             try {
                 const save = await AsyncStorage.getItem('@SwingEssentials:saveUser');
                 const use = await AsyncStorage.getItem('@SwingEssentials:useTouch');
+                const storedUser = await AsyncStorage.getItem('@SwingEssentials:lastUser');
+                setUsername(storedUser || username);
                 setRemember(save === 'yes');
                 setUseBiometry(use === 'yes');
             } catch (err) {
@@ -123,7 +118,7 @@ export const Login = (props: NavigationInjectedProps) => {
             }
         };
         touchCheck();
-    }, [biometry]);
+    }, []);
 
     useEffect(() => {
         // Load stored credentials
@@ -157,14 +152,14 @@ export const Login = (props: NavigationInjectedProps) => {
             }
         };
         loadKeychainCredentials();
-    }, [token, error, remember, credentials]);
+    }, [token, error, remember]);
 
     useEffect(() => {
         // handle successful login
         if (token) {
             props.navigation.pop();
         }
-    }, [token]);
+    }, [token, props.navigation]);
 
     useEffect(() => {
         // handle login failure
@@ -177,13 +172,6 @@ export const Login = (props: NavigationInjectedProps) => {
         }
     }, [failuresChanged, failures, credentials]);
 
-    useEffect(() => {
-        // Show biometric login on load
-        if (!token && useBiometry && biometry.available && credentials.stored) {
-            showBiometricLogin();
-        }
-    }, [token, useBiometry, biometry.available, credentials.stored, showBiometricLogin]);
-
     const onLogin = useCallback(
         (user, pass) => {
             if (!user || !pass) {
@@ -191,9 +179,9 @@ export const Login = (props: NavigationInjectedProps) => {
                 return;
             }
             setError(false);
-            dispatch(requestLogin({ username: user, password: pass }, useBiometry));
+            dispatch(requestLogin({ username: user, password: pass }, remember, useBiometry));
         },
-        [dispatch, useBiometry],
+        [dispatch, useBiometry, remember],
     );
 
     const showBiometricLogin = useCallback(async () => {
@@ -215,7 +203,7 @@ export const Login = (props: NavigationInjectedProps) => {
                 case 'LAErrorAuthenticationFailed':
                 case 'RCTTouchIDUnknownError':
                     // authentication failed
-                    setTouchFail(`Your ${label} was not recognized. Please log in using your password.`);
+                    setTouchFail(`Your ${label} was not recognized. Please sign in using your password.`);
                     break;
                 case 'LAErrorPasscodeNotSet':
                 case 'LAErrorTouchIDNotAvailable':
@@ -232,10 +220,18 @@ export const Login = (props: NavigationInjectedProps) => {
         }
     }, [biometry.available, biometry.type, credentials.savedCredentials, credentials.stored, onLogin, useBiometry]);
 
+    useEffect(() => {
+        // Show biometric login on load
+        if (!token && useBiometry && biometry.available && credentials.stored) {
+            showBiometricLogin();
+        }
+    }, [token, useBiometry, biometry.available, credentials.stored, showBiometricLogin]);
+
     return (
         <KeyboardAvoidingView
-            style={[styles.container, { backgroundColor: theme.colors.primary[400] }]}
+            style={[styles.container, { backgroundColor: theme.colors.primary }]}
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+            <BackgroundImage />
             <ScrollView
                 style={{ flex: 1 }}
                 contentContainerStyle={styles.scrollContainer}
@@ -246,25 +242,25 @@ export const Login = (props: NavigationInjectedProps) => {
 
                     {/* Username Field */}
                     <View>
-                        <Input
+                        <TextInput
                             autoCorrect={false}
                             autoCapitalize={'none'}
-                            containerStyle={{ paddingHorizontal: 0 }}
                             editable={!pending}
-                            inputContainerStyle={[
-                                styles.inputContainer,
-                                { backgroundColor: theme.colors.background, borderColor: theme.colors.primary[800] },
-                            ]}
-                            inputStyle={[styles.input, { color: theme.colors.text[500] }]}
+                            style={
+                                activeField === 'username' || username.length > 0
+                                    ? formStyles.active
+                                    : formStyles.inactive
+                            }
                             label={'Username'}
-                            labelStyle={[styles.formLabel, { color: theme.colors.onPrimary[50] }]}
+                            onFocus={() => setActiveField('username')}
+                            onBlur={() => setActiveField(null)}
                             onChangeText={(val: string) => setUsername(val)}
                             onSubmitEditing={() => {
                                 if (passField.current) {
                                     passField.current.focus();
                                 }
                             }}
-                            placeholder="Please enter your username"
+                            placeholder="Enter your username or email address"
                             returnKeyType={'next'}
                             underlineColorAndroid={transparent}
                             value={username}
@@ -273,16 +269,16 @@ export const Login = (props: NavigationInjectedProps) => {
                             <View
                                 style={{
                                     position: 'absolute',
-                                    right: spaces.medium,
+                                    right: theme.spaces.medium,
                                     bottom: 0,
-                                    height: sizes.large,
+                                    height: '100%',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                 }}>
-                                <Icon
+                                <MatIcon
                                     name={'fingerprint'}
-                                    size={sizes.small}
-                                    color={theme.colors.text[500]}
+                                    size={theme.sizes.small}
+                                    color={theme.colors.text}
                                     underlayColor={transparent}
                                     onPress={() => showBiometricLogin()}
                                 />
@@ -291,20 +287,19 @@ export const Login = (props: NavigationInjectedProps) => {
                     </View>
 
                     {/* Password Field */}
-                    <Input
+                    <TextInput
                         autoCapitalize={'none'}
-                        containerStyle={{ marginTop: spaces.medium, paddingHorizontal: 0 }}
                         editable={!pending}
-                        inputContainerStyle={[
-                            styles.inputContainer,
-                            { backgroundColor: theme.colors.background, borderColor: theme.colors.primary[800] },
-                        ]}
-                        inputStyle={[styles.input, { color: theme.colors.text[500] }]}
                         label={'Password'}
-                        labelStyle={[styles.formLabel, { color: theme.colors.onPrimary[50] }]}
+                        style={[
+                            formStyles.formField,
+                            activeField === 'password' || password.length > 0 ? formStyles.active : formStyles.inactive,
+                        ]}
+                        onFocus={() => setActiveField('password')}
+                        onBlur={() => setActiveField(null)}
                         onChangeText={(val: string) => setPassword(val)}
                         onSubmitEditing={() => onLogin(username, password)}
-                        placeholder="Please enter your password"
+                        placeholder="Enter your password"
                         ref={passField}
                         returnKeyType={'go'}
                         secureTextEntry
@@ -313,36 +308,36 @@ export const Login = (props: NavigationInjectedProps) => {
                     />
 
                     {/* Remember Me Row */}
-                    <View style={styles.rememberRow}>
+                    <View style={[formStyles.formField, formStyles.fieldRow]}>
                         <View style={styles.toggle}>
-                            <Text style={[styles.toggleLabel, { color: theme.colors.onPrimary[50] }]}>
+                            <Body style={styles.toggleLabel} color={'onPrimary'}>
                                 Save Username
-                            </Text>
+                            </Body>
                             <Switch
                                 value={remember}
                                 onValueChange={(val: boolean) => {
                                     setRemember(val);
                                     AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
+                                    if (!val) {
+                                        AsyncStorage.removeItem('@SwingEssentials:lastUser');
+                                        setUsername('');
+                                    }
                                 }}
-                                ios_backgroundColor={theme.colors.primary[200]}
-                                trackColor={{ false: theme.colors.onPrimary[50], true: theme.colors.primary[500] }}
+                                ios_backgroundColor={theme.colors.light}
+                                trackColor={{ false: theme.colors.onPrimary, true: theme.colors.accent }}
                             />
                         </View>
                         {biometry.available && (
                             <View style={styles.toggle}>
-                                <Text
-                                    style={[
-                                        styles.toggleLabel,
-                                        { color: theme.colors.onPrimary[50] },
-                                    ]}>{`Use ${biometry.type}`}</Text>
+                                <Body color={'onPrimary'} style={[styles.toggleLabel]}>{`Use ${biometry.type}`}</Body>
                                 <Switch
                                     value={useBiometry}
                                     onValueChange={(val: boolean) => {
                                         setUseBiometry(val);
                                         AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
                                     }}
-                                    ios_backgroundColor={theme.colors.primary[200]}
-                                    trackColor={{ false: theme.colors.onPrimary[50], true: theme.colors.primary[500] }}
+                                    ios_backgroundColor={theme.colors.light}
+                                    trackColor={{ false: theme.colors.onPrimary, true: theme.colors.accent }}
                                 />
                             </View>
                         )}
@@ -350,51 +345,49 @@ export const Login = (props: NavigationInjectedProps) => {
 
                     {/* Error Messages */}
                     <ErrorBox
-                        show={failures > 0 || error} //={(this.props.loginFails > 0 || this.state.error)}
-                        error={'The username/password you entered was not correct.'}
-                        style={{ marginTop: spaces.xLarge }}
+                        show={failures > 0 || error}
+                        error={'The username / password you entered was not correct.'}
+                        style={[formStyles.formField, { paddingVertical: theme.spaces.small }]}
                     />
                     <ErrorBox
-                        show={touchFail.length > 0 && failures <= 0} //={(this.state.touchFail && this.props.loginFails <= 0)}
+                        show={touchFail.length > 0 && failures <= 0}
                         error={touchFail}
-                        style={{ marginTop: spaces.xLarge }}
+                        style={[formStyles.formField, { paddingVertical: theme.spaces.small }]}
                     />
 
                     {/* Log In Buttons */}
-                    {!pending && (
-                        <View style={styles.loginRow}>
-                            <SEButton
-                                title="SIGN IN"
-                                containerStyle={{ flex: 1 }}
-                                buttonStyle={{ backgroundColor: theme.colors.primary[500] }}
-                                onPress={() => onLogin(username, password)}
-                            />
-                            <SEButton
-                                link
-                                containerStyle={{ marginLeft: spaces.medium, flex: 0 }}
-                                title="CANCEL"
-                                onPress={() => props.navigation.pop()}
-                            />
-                        </View>
-                    )}
-
-                    {/* Loading Spinner */}
-                    {pending && (
-                        <ActivityIndicator
-                            style={{ marginTop: spaces.jumbo }}
-                            size={'large'}
-                            color={theme.colors.onPrimary[50]}
+                    <View style={formStyles.fieldRow}>
+                        <SEButton
+                            dark
+                            title={'Sign In'}
+                            loading={pending}
+                            style={{ flex: 1 }}
+                            onPress={() => onLogin(username, password)}
                         />
-                    )}
+                        <SEButton
+                            mode={'text'}
+                            disabled={pending}
+                            labelStyle={{ color: theme.colors.onPrimary }}
+                            style={{ marginLeft: theme.spaces.medium, flex: 0 }}
+                            title="CANCEL"
+                            onPress={() => props.navigation.pop()}
+                        />
+                    </View>
 
                     {/* Registration Links */}
-                    <View style={styles.registerRow}>
+                    <View style={[formStyles.fieldRow]}>
                         <SEButton
-                            link
+                            mode={'text'}
+                            labelStyle={{ color: theme.colors.onPrimary }}
                             title="Forgot Password?"
                             onPress={() => props.navigation.push(ROUTES.RESET_PASSWORD)}
                         />
-                        <SEButton link title="Create Account" onPress={() => props.navigation.push(ROUTES.REGISTER)} />
+                        <SEButton
+                            mode={'text'}
+                            labelStyle={{ color: theme.colors.onPrimary }}
+                            title="Need an Account?"
+                            onPress={() => props.navigation.push(ROUTES.REGISTER)}
+                        />
                     </View>
                 </View>
             </ScrollView>
@@ -402,64 +395,30 @@ export const Login = (props: NavigationInjectedProps) => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    formLabel: {
-        fontFamily: 'SFCompactDisplay-Regular',
-        marginLeft: 0,
-        marginTop: 0,
-        fontSize: fonts[14],
-        fontWeight: 'bold',
-    },
-    input: {
-        fontSize: fonts[14],
-        textAlignVertical: 'center',
-        paddingHorizontal: spaces.small,
-    },
-    inputContainer: {
-        height: sizes.large,
-        marginTop: spaces.small,
-        padding: spaces.small,
-        borderWidth: unit(1),
-    },
-    loginRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: spaces.xLarge,
-    },
-    logo: {
-        height: unit(60),
-        width: '100%',
-        resizeMode: 'contain',
-        marginBottom: spaces.medium,
-    },
-    registerRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: spaces.medium,
-    },
-    rememberRow: {
-        marginTop: spaces.xLarge,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-    },
-    scrollContainer: {
-        minHeight: height - getStatusBarHeight(),
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: spaces.medium,
-    },
-    toggle: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-    },
-    toggleLabel: {
-        fontSize: fonts[14],
-        marginRight: spaces.small,
-    },
-});
+const useStyles = (theme: Theme) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+        },
+        logo: {
+            height: unit(60),
+            width: '100%',
+            resizeMode: 'contain',
+            marginBottom: theme.spaces.medium,
+        },
+        scrollContainer: {
+            minHeight: height - getStatusBarHeight(),
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingHorizontal: theme.spaces.medium,
+        },
+        toggle: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+        },
+        toggleLabel: {
+            fontSize: theme.fontSizes[14],
+            marginRight: theme.spaces.small,
+        },
+    });
