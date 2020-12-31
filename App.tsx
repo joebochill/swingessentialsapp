@@ -1,38 +1,120 @@
-import React, { useEffect } from 'react';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * Generated with the TypeScript template
+ * https://github.com/react-native-community/react-native-template-typescript
+ *
+ * @format
+ */
 
-// Components
-import { StatusBar } from 'react-native';
-import { ThemeProvider } from 'react-native-paper';
-import MainNavigator from './src/navigation/MainNavigator';
-import { RNIAPCallbacks } from './src/screens/lessons';
-import SplashScreen from 'react-native-splash-screen';
+import React from 'react';
+import {
+    SafeAreaView,
+    StyleSheet,
+    ScrollView,
+    View,
+    Text,
+    StatusBar,
+} from 'react-native';
 
-// Redux
-import { Provider } from 'react-redux';
-import { loadInitialData } from './src/redux/actions';
+import {
+    Header,
+    LearnMoreLinks,
+    Colors,
+    DebugInstructions,
+    ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
 
-// Utilities
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { theme } from './src/styles/theme';
+import { Provider as ThemeProvider } from 'react-native-paper';
+import * as PXBThemes from '@pxblue/react-native-themes';
 
-// Redux
-import { store } from './src/redux/store';
+declare var global: { HermesInternal: null | {} };
 
-export const App = () => {
-    useEffect(() => {
-        SplashScreen.hide();
-        StatusBar.setBarStyle('light-content', true);
-        store.dispatch(loadInitialData());
-    }, []);
-
+const App = () => {
     return (
-        <Provider store={store}>
-            <SafeAreaProvider>
-                <ThemeProvider theme={theme}>
-                    <RNIAPCallbacks />
-                    <MainNavigator enableURLHandling={false} />
-                </ThemeProvider>
-            </SafeAreaProvider>
-        </Provider>
+        <ThemeProvider theme={PXBThemes.blue}>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView>
+                <ScrollView
+                    contentInsetAdjustmentBehavior="automatic"
+                    style={styles.scrollView}>
+                    <Header />
+                    {global.HermesInternal == null ? null : (
+                        <View style={styles.engine}>
+                            <Text style={styles.footer}>Engine: Hermes</Text>
+                        </View>
+                    )}
+                    <View style={styles.body}>
+                        <View style={styles.sectionContainer}>
+                            <Text style={styles.sectionTitle}>Step One</Text>
+                            <Text style={styles.sectionDescription}>
+                                Edit <Text style={styles.highlight}>App.tsx</Text> to change this screen and then come back to see your edits.
+                            </Text>
+                        </View>
+                        <View style={styles.sectionContainer}>
+                            <Text style={styles.sectionTitle}>See Your Changes</Text>
+                            <Text style={styles.sectionDescription}>
+                                <ReloadInstructions />
+                            </Text>
+                        </View>
+                        <View style={styles.sectionContainer}>
+                            <Text style={styles.sectionTitle}>Debug</Text>
+                            <Text style={styles.sectionDescription}>
+                                <DebugInstructions />
+                            </Text>
+                        </View>
+                        <View style={styles.sectionContainer}>
+                            <Text style={styles.sectionTitle}>Learn More</Text>
+                            <Text style={styles.sectionDescription}>
+                                Read the docs to discover what to do next:
+                        </Text>
+                        </View>
+                        <LearnMoreLinks />
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
+        </ThemeProvider>
     );
 };
+
+const styles = StyleSheet.create({
+    scrollView: {
+        backgroundColor: Colors.lighter,
+    },
+    engine: {
+        position: 'absolute',
+        right: 0,
+    },
+    body: {
+        backgroundColor: Colors.white,
+    },
+    sectionContainer: {
+        marginTop: 32,
+        paddingHorizontal: 24,
+    },
+    sectionTitle: {
+        fontSize: 24,
+        fontWeight: '600',
+        color: Colors.black,
+    },
+    sectionDescription: {
+        marginTop: 8,
+        fontSize: 18,
+        fontWeight: '400',
+        color: Colors.dark,
+    },
+    highlight: {
+        fontWeight: '700',
+    },
+    footer: {
+        color: Colors.dark,
+        fontSize: 12,
+        fontWeight: '600',
+        padding: 4,
+        paddingRight: 12,
+        textAlign: 'right',
+    },
+});
+
+export default App;

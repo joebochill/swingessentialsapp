@@ -9,23 +9,22 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* swingessentialsappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* swingessentialsappTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1C324908141246928E1BDEBD /* SFCompactDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 98E6EC2F2B8545959F310C0A /* SFCompactDisplay-Bold.otf */; };
-		1F113A67488DBEF79D6E8404 /* libPods-swingessentialsapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 756598F37F46742BC620A44D /* libPods-swingessentialsapp-tvOSTests.a */; };
-		27234B8D7EF8483EBD90DDF5 /* SFCompactDisplay-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 584692C02743414B86789A0A /* SFCompactDisplay-Thin.otf */; };
+		1D82A9EDEC4A6EA505A6E8C3 /* libPods-swingessentialsapp-swingessentialsappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D250CB26958F90BB3EB07B05 /* libPods-swingessentialsapp-swingessentialsappTests.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* swingessentialsappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* swingessentialsappTests.m */; };
-		41C0B18E86187A4FCE105847 /* libPods-swingessentialsapp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FAB31A55F769CA39D8AB369 /* libPods-swingessentialsapp-tvOS.a */; };
-		64E0A68079477B13463CA669 /* libPods-swingessentialsapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 024D3C573F21EBE2E13EE062 /* libPods-swingessentialsapp.a */; };
-		90754342EA6C44AA99EB47E7 /* SFCompactDisplay-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 684D0E0DCCF84DC7B993319C /* SFCompactDisplay-Black.otf */; };
-		998B6E03906486D13ACCB3FE /* libPods-swingessentialsappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2B7339F853FD2DBF524B91 /* libPods-swingessentialsappTests.a */; };
-		A8EA8D9DF720439EBAF6FEB7 /* SFCompactDisplay-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E6C1958251084AD28D49AF33 /* SFCompactDisplay-Semibold.otf */; };
-		C52CBA7324AC4DF89AF38BE2 /* SFCompactDisplay-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5CF6E0D23E9C491CA3124613 /* SFCompactDisplay-Regular.otf */; };
-		F2029B212394862C0053EBE9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2029B202394862C0053EBE9 /* StoreKit.framework */; };
+		4846D869B91942AAA2347670 /* SFCompactDisplay-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6EABF2DF49BA4AAD9403CF7C /* SFCompactDisplay-Black.otf */; };
+		54CBBDF8EA2448FF9702D85B /* SFCompactDisplay-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 36E74C9F7F7A4947BBAF4C37 /* SFCompactDisplay-Thin.otf */; };
+		58D850DE523F4CF8B1273A96 /* SFCompactDisplay-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 868AC57B745E4276A2F53C6D /* SFCompactDisplay-Regular.otf */; };
+		744EB3C39AB441997407E674 /* libPods-swingessentialsapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DFFFAECD374F6E5FC4FCE05 /* libPods-swingessentialsapp.a */; };
+		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		B2D1F84ED9D46EA080DD4AE3 /* libPods-swingessentialsapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE0C3154A2EDEFC70CE00336 /* libPods-swingessentialsapp-tvOSTests.a */; };
+		B7D2E0FA920A418E8EEB82E4 /* SFCompactDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C2C1D656F1474B85F1DE62 /* SFCompactDisplay-Bold.otf */; };
+		F5D70F68131C43E0809B0D62 /* SFCompactDisplay-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7674B37AE3A14BF5943B0E3A /* SFCompactDisplay-Semibold.otf */; };
+		F9D6C2D38122616A68A1FA56 /* libPods-swingessentialsapp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8719BAEEEF6860C5C58E3D0 /* libPods-swingessentialsapp-tvOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,56 +49,36 @@
 		00E356EE1AD99517003FC87E /* swingessentialsappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swingessentialsappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* swingessentialsappTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = swingessentialsappTests.m; sourceTree = "<group>"; };
-		024D3C573F21EBE2E13EE062 /* libPods-swingessentialsapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		03DE7011F926F3E0C4B86C05 /* Pods-swingessentialsapp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOSTests/Pods-swingessentialsapp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		03C2C1D656F1474B85F1DE62 /* SFCompactDisplay-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Bold.otf"; path = "../assets/fonts/SFCompactDisplay-Bold.otf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* swingessentialsapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swingessentialsapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = swingessentialsapp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = swingessentialsapp/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = swingessentialsapp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = swingessentialsapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = swingessentialsapp/main.m; sourceTree = "<group>"; };
-		17A88097336B43DBA2D39B03 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		17E017656DE642D6BF228079 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		2078E675A960CA4E5F3C1028 /* Pods-swingessentialsapp-swingessentialsappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-swingessentialsappTests.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-swingessentialsappTests/Pods-swingessentialsapp-swingessentialsappTests.release.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* swingessentialsapp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "swingessentialsapp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* swingessentialsapp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "swingessentialsapp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D93AF0E293548A5A6A7A488 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		367BF86C64FC2FE9C408EF5C /* Pods-swingessentialsapp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOS/Pods-swingessentialsapp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		3F9D6829E343E5F16B9E9532 /* Pods-swingessentialsappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsappTests.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsappTests/Pods-swingessentialsappTests.release.xcconfig"; sourceTree = "<group>"; };
-		42C9DEDB1193C098B6727B7C /* Pods-swingessentialsappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsappTests.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsappTests/Pods-swingessentialsappTests.debug.xcconfig"; sourceTree = "<group>"; };
-		4732BFE0A089E2DA091FA8AF /* Pods-swingessentialsapp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOS/Pods-swingessentialsapp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		4C2B7339F853FD2DBF524B91 /* libPods-swingessentialsappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		584692C02743414B86789A0A /* SFCompactDisplay-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Thin.otf"; path = "../assets/fonts/SFCompactDisplay-Thin.otf"; sourceTree = "<group>"; };
-		5875D4D15729454DB8F70C50 /* SFCompactDisplay-Ultralight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Ultralight.otf"; path = "../assets/fonts/SFCompactDisplay-Ultralight.otf"; sourceTree = "<group>"; };
-		5CF6E0D23E9C491CA3124613 /* SFCompactDisplay-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Regular.otf"; path = "../assets/fonts/SFCompactDisplay-Regular.otf"; sourceTree = "<group>"; };
-		652E45594726434BA4D46CD5 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		684D0E0DCCF84DC7B993319C /* SFCompactDisplay-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Black.otf"; path = "../assets/fonts/SFCompactDisplay-Black.otf"; sourceTree = "<group>"; };
-		6FAB31A55F769CA39D8AB369 /* libPods-swingessentialsapp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		756598F37F46742BC620A44D /* libPods-swingessentialsapp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7A917961D94D4DDF9C520FA7 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		853186997CFC4ECD8AC1B709 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
-		8ED6357265DD401688DDAC5B /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		92A29B2E8009424DB55C9C4D /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		95BACF34B6EB44749D0F9CEA /* SFCompactDisplay-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Medium.otf"; path = "../assets/fonts/SFCompactDisplay-Medium.otf"; sourceTree = "<group>"; };
-		98E6EC2F2B8545959F310C0A /* SFCompactDisplay-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Bold.otf"; path = "../assets/fonts/SFCompactDisplay-Bold.otf"; sourceTree = "<group>"; };
-		9B06C63438824B49A5BCCF18 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
-		A29D659D66E2092548978AA2 /* Pods-swingessentialsapp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOSTests/Pods-swingessentialsapp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		AC0C22B21B8A4679816682EB /* SFCompactDisplay-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Light.otf"; path = "../assets/fonts/SFCompactDisplay-Light.otf"; sourceTree = "<group>"; };
-		AE0C748F07DE48B58E100349 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		BB54AF7A1BBA432E8702BC85 /* SFCompactDisplayHeavy.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SFCompactDisplayHeavy.otf; path = ../assets/fonts/SFCompactDisplayHeavy.otf; sourceTree = "<group>"; };
-		C76E373055A3DEA7080BCCBB /* Pods-swingessentialsapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp.release.xcconfig"; sourceTree = "<group>"; };
-		D359F6FC018547ECA5E63D47 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
-		DD8A543EDEFB479A9B566EFA /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		E2C4A7780167977D95760A22 /* Pods-swingessentialsapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp.debug.xcconfig"; sourceTree = "<group>"; };
-		E6C1958251084AD28D49AF33 /* SFCompactDisplay-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Semibold.otf"; path = "../assets/fonts/SFCompactDisplay-Semibold.otf"; sourceTree = "<group>"; };
-		E9742FE9438A4EFBBF33C3C6 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		36E74C9F7F7A4947BBAF4C37 /* SFCompactDisplay-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Thin.otf"; path = "../assets/fonts/SFCompactDisplay-Thin.otf"; sourceTree = "<group>"; };
+		4392E59A9C46B9234069B5D7 /* Pods-swingessentialsapp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOSTests/Pods-swingessentialsapp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		6E559E85280F0671575D4EB7 /* Pods-swingessentialsapp-swingessentialsappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-swingessentialsappTests.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-swingessentialsappTests/Pods-swingessentialsapp-swingessentialsappTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6EABF2DF49BA4AAD9403CF7C /* SFCompactDisplay-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Black.otf"; path = "../assets/fonts/SFCompactDisplay-Black.otf"; sourceTree = "<group>"; };
+		70F600301AB97A4EE6FC5464 /* Pods-swingessentialsapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp.debug.xcconfig"; sourceTree = "<group>"; };
+		7674B37AE3A14BF5943B0E3A /* SFCompactDisplay-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Semibold.otf"; path = "../assets/fonts/SFCompactDisplay-Semibold.otf"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = swingessentialsapp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		868AC57B745E4276A2F53C6D /* SFCompactDisplay-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFCompactDisplay-Regular.otf"; path = "../assets/fonts/SFCompactDisplay-Regular.otf"; sourceTree = "<group>"; };
+		88A00591428F1E4AC5524181 /* Pods-swingessentialsapp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOS/Pods-swingessentialsapp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		94856BCAA322ECCC9344B803 /* Pods-swingessentialsapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp.release.xcconfig"; sourceTree = "<group>"; };
+		975E7E40ADF4443F9178EBF2 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		9DFFFAECD374F6E5FC4FCE05 /* libPods-swingessentialsapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B00C119B2073456381E7688D /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		BF003B649C7A2FBA79C7B91D /* Pods-swingessentialsapp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOS/Pods-swingessentialsapp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		D04BA45F4A2EBDE0F1202531 /* Pods-swingessentialsapp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-tvOSTests/Pods-swingessentialsapp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D250CB26958F90BB3EB07B05 /* libPods-swingessentialsapp-swingessentialsappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-swingessentialsappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F18D0EE95EC64ECBB4ACE7F9 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
-		F2029B202394862C0053EBE9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		F2029B222394863A0053EBE9 /* swingessentialsapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = swingessentialsapp.entitlements; path = swingessentialsapp/swingessentialsapp.entitlements; sourceTree = "<group>"; };
-		FA0BC020B7BB4374ABF22BAB /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		FA19E2465B274786BB308C8D /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		F8719BAEEEF6860C5C58E3D0 /* libPods-swingessentialsapp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE0C3154A2EDEFC70CE00336 /* libPods-swingessentialsapp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				998B6E03906486D13ACCB3FE /* libPods-swingessentialsappTests.a in Frameworks */,
+				1D82A9EDEC4A6EA505A6E8C3 /* libPods-swingessentialsapp-swingessentialsappTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,8 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64E0A68079477B13463CA669 /* libPods-swingessentialsapp.a in Frameworks */,
-				F2029B212394862C0053EBE9 /* StoreKit.framework in Frameworks */,
+				744EB3C39AB441997407E674 /* libPods-swingessentialsapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41C0B18E86187A4FCE105847 /* libPods-swingessentialsapp-tvOS.a in Frameworks */,
+				F9D6C2D38122616A68A1FA56 /* libPods-swingessentialsapp-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,7 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F113A67488DBEF79D6E8404 /* libPods-swingessentialsapp-tvOSTests.a in Frameworks */,
+				B2D1F84ED9D46EA080DD4AE3 /* libPods-swingessentialsapp-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,13 +137,12 @@
 		13B07FAE1A68108700A75B9A /* swingessentialsapp */ = {
 			isa = PBXGroup;
 			children = (
-				F2029B222394863A0053EBE9 /* swingessentialsapp.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
+				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = swingessentialsapp;
@@ -174,47 +151,29 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F2029B202394862C0053EBE9 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				024D3C573F21EBE2E13EE062 /* libPods-swingessentialsapp.a */,
-				6FAB31A55F769CA39D8AB369 /* libPods-swingessentialsapp-tvOS.a */,
-				756598F37F46742BC620A44D /* libPods-swingessentialsapp-tvOSTests.a */,
-				4C2B7339F853FD2DBF524B91 /* libPods-swingessentialsappTests.a */,
+				9DFFFAECD374F6E5FC4FCE05 /* libPods-swingessentialsapp.a */,
+				D250CB26958F90BB3EB07B05 /* libPods-swingessentialsapp-swingessentialsappTests.a */,
+				F8719BAEEEF6860C5C58E3D0 /* libPods-swingessentialsapp-tvOS.a */,
+				FE0C3154A2EDEFC70CE00336 /* libPods-swingessentialsapp-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		329F712D3B5B43F5881B9AEA /* Resources */ = {
+		5137F3853AA01CA26A8DDC2C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F18D0EE95EC64ECBB4ACE7F9 /* AntDesign.ttf */,
-				2D93AF0E293548A5A6A7A488 /* Entypo.ttf */,
-				AE0C748F07DE48B58E100349 /* EvilIcons.ttf */,
-				9B06C63438824B49A5BCCF18 /* Feather.ttf */,
-				E9742FE9438A4EFBBF33C3C6 /* FontAwesome.ttf */,
-				DD8A543EDEFB479A9B566EFA /* FontAwesome5_Brands.ttf */,
-				FA19E2465B274786BB308C8D /* FontAwesome5_Regular.ttf */,
-				853186997CFC4ECD8AC1B709 /* FontAwesome5_Solid.ttf */,
-				17A88097336B43DBA2D39B03 /* Fontisto.ttf */,
-				652E45594726434BA4D46CD5 /* Foundation.ttf */,
-				8ED6357265DD401688DDAC5B /* Ionicons.ttf */,
-				FA0BC020B7BB4374ABF22BAB /* MaterialCommunityIcons.ttf */,
-				92A29B2E8009424DB55C9C4D /* MaterialIcons.ttf */,
-				17E017656DE642D6BF228079 /* Octicons.ttf */,
-				7A917961D94D4DDF9C520FA7 /* SimpleLineIcons.ttf */,
-				D359F6FC018547ECA5E63D47 /* Zocial.ttf */,
-				684D0E0DCCF84DC7B993319C /* SFCompactDisplay-Black.otf */,
-				98E6EC2F2B8545959F310C0A /* SFCompactDisplay-Bold.otf */,
-				AC0C22B21B8A4679816682EB /* SFCompactDisplay-Light.otf */,
-				95BACF34B6EB44749D0F9CEA /* SFCompactDisplay-Medium.otf */,
-				5CF6E0D23E9C491CA3124613 /* SFCompactDisplay-Regular.otf */,
-				E6C1958251084AD28D49AF33 /* SFCompactDisplay-Semibold.otf */,
-				584692C02743414B86789A0A /* SFCompactDisplay-Thin.otf */,
-				5875D4D15729454DB8F70C50 /* SFCompactDisplay-Ultralight.otf */,
-				BB54AF7A1BBA432E8702BC85 /* SFCompactDisplayHeavy.otf */,
+				70F600301AB97A4EE6FC5464 /* Pods-swingessentialsapp.debug.xcconfig */,
+				94856BCAA322ECCC9344B803 /* Pods-swingessentialsapp.release.xcconfig */,
+				6E559E85280F0671575D4EB7 /* Pods-swingessentialsapp-swingessentialsappTests.debug.xcconfig */,
+				2078E675A960CA4E5F3C1028 /* Pods-swingessentialsapp-swingessentialsappTests.release.xcconfig */,
+				88A00591428F1E4AC5524181 /* Pods-swingessentialsapp-tvOS.debug.xcconfig */,
+				BF003B649C7A2FBA79C7B91D /* Pods-swingessentialsapp-tvOS.release.xcconfig */,
+				D04BA45F4A2EBDE0F1202531 /* Pods-swingessentialsapp-tvOSTests.debug.xcconfig */,
+				4392E59A9C46B9234069B5D7 /* Pods-swingessentialsapp-tvOSTests.release.xcconfig */,
 			);
-			name = Resources;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -232,8 +191,8 @@
 				00E356EF1AD99517003FC87E /* swingessentialsappTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				A41DA496599BF5313F4CFF4B /* Pods */,
-				329F712D3B5B43F5881B9AEA /* Resources */,
+				5137F3853AA01CA26A8DDC2C /* Pods */,
+				F7F9C7B29DC14A0E9C9CB5A6 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -251,19 +210,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A41DA496599BF5313F4CFF4B /* Pods */ = {
+		F7F9C7B29DC14A0E9C9CB5A6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E2C4A7780167977D95760A22 /* Pods-swingessentialsapp.debug.xcconfig */,
-				C76E373055A3DEA7080BCCBB /* Pods-swingessentialsapp.release.xcconfig */,
-				367BF86C64FC2FE9C408EF5C /* Pods-swingessentialsapp-tvOS.debug.xcconfig */,
-				4732BFE0A089E2DA091FA8AF /* Pods-swingessentialsapp-tvOS.release.xcconfig */,
-				A29D659D66E2092548978AA2 /* Pods-swingessentialsapp-tvOSTests.debug.xcconfig */,
-				03DE7011F926F3E0C4B86C05 /* Pods-swingessentialsapp-tvOSTests.release.xcconfig */,
-				42C9DEDB1193C098B6727B7C /* Pods-swingessentialsappTests.debug.xcconfig */,
-				3F9D6829E343E5F16B9E9532 /* Pods-swingessentialsappTests.release.xcconfig */,
+				B00C119B2073456381E7688D /* MaterialCommunityIcons.ttf */,
+				975E7E40ADF4443F9178EBF2 /* MaterialIcons.ttf */,
+				6EABF2DF49BA4AAD9403CF7C /* SFCompactDisplay-Black.otf */,
+				03C2C1D656F1474B85F1DE62 /* SFCompactDisplay-Bold.otf */,
+				868AC57B745E4276A2F53C6D /* SFCompactDisplay-Regular.otf */,
+				7674B37AE3A14BF5943B0E3A /* SFCompactDisplay-Semibold.otf */,
+				36E74C9F7F7A4947BBAF4C37 /* SFCompactDisplay-Thin.otf */,
 			);
-			path = Pods;
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,10 +231,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "swingessentialsappTests" */;
 			buildPhases = (
-				B7209F3D5E10CF2D1857BCB9 /* [CP] Check Pods Manifest.lock */,
+				2B89F3FAE5CFA60079122FC0 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
+				C3B90E88E055C999A825397C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -292,13 +251,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "swingessentialsapp" */;
 			buildPhases = (
-				B17CB0337B764BB3E2F0C027 /* [CP] Check Pods Manifest.lock */,
+				28E91E95234994F473B65838 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				4DC54429A426D1292E13110C /* [CP] Copy Pods Resources */,
+				AAD6C3A81D3EF656468A6848 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -313,7 +272,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "swingessentialsapp-tvOS" */;
 			buildPhases = (
-				3AC91CD7424F6E7630688C12 /* [CP] Check Pods Manifest.lock */,
+				E99D75CDE2B672435358BD15 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -333,7 +292,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "swingessentialsapp-tvOSTests" */;
 			buildPhases = (
-				31466B22F9BCFFF3932BBE60 /* [CP] Check Pods Manifest.lock */,
+				929616F04CC5D81E550BA028 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -354,22 +313,18 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 940;
-				ORGANIZATIONNAME = Facebook;
+				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 4KFCFX93VP;
-						ProvisioningStyle = Automatic;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = U4XC42DW6S;
-						ProvisioningStyle = Manual;
+						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E48F1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -380,10 +335,9 @@
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "swingessentialsapp" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -412,13 +366,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				90754342EA6C44AA99EB47E7 /* SFCompactDisplay-Black.otf in Resources */,
-				1C324908141246928E1BDEBD /* SFCompactDisplay-Bold.otf in Resources */,
-				C52CBA7324AC4DF89AF38BE2 /* SFCompactDisplay-Regular.otf in Resources */,
-				A8EA8D9DF720439EBAF6FEB7 /* SFCompactDisplay-Semibold.otf in Resources */,
-				27234B8D7EF8483EBD90DDF5 /* SFCompactDisplay-Thin.otf in Resources */,
+				4846D869B91942AAA2347670 /* SFCompactDisplay-Black.otf in Resources */,
+				B7D2E0FA920A418E8EEB82E4 /* SFCompactDisplay-Bold.otf in Resources */,
+				58D850DE523F4CF8B1273A96 /* SFCompactDisplay-Regular.otf in Resources */,
+				F5D70F68131C43E0809B0D62 /* SFCompactDisplay-Semibold.otf in Resources */,
+				54CBBDF8EA2448FF9702D85B /* SFCompactDisplay-Thin.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,7 +406,51 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		28E91E95234994F473B65838 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-swingessentialsapp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2B89F3FAE5CFA60079122FC0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-swingessentialsapp-swingessentialsappTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -468,7 +466,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		31466B22F9BCFFF3932BBE60 /* [CP] Check Pods Manifest.lock */ = {
+		929616F04CC5D81E550BA028 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -490,29 +488,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3AC91CD7424F6E7630688C12 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-swingessentialsapp-tvOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4DC54429A426D1292E13110C /* [CP] Copy Pods Resources */ = {
+		AAD6C3A81D3EF656468A6848 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -536,6 +512,7 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_ROOT}/YoutubePlayer-in-WKWebView/WKYTPlayerView/WKYTPlayerView.bundle",
 			);
@@ -558,6 +535,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WKYTPlayerView.bundle",
 			);
@@ -566,29 +544,63 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B17CB0337B764BB3E2F0C027 /* [CP] Check Pods Manifest.lock */ = {
+		C3B90E88E055C999A825397C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+				"${PODS_ROOT}/Target Support Files/Pods-swingessentialsapp-swingessentialsappTests/Pods-swingessentialsapp-swingessentialsappTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
+				"${PODS_ROOT}/YoutubePlayer-in-WKWebView/WKYTPlayerView/WKYTPlayerView.bundle",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-swingessentialsapp-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WKYTPlayerView.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-swingessentialsapp-swingessentialsappTests/Pods-swingessentialsapp-swingessentialsappTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B7209F3D5E10CF2D1857BCB9 /* [CP] Check Pods Manifest.lock */ = {
+		E99D75CDE2B672435358BD15 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -603,7 +615,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-swingessentialsappTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-swingessentialsapp-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -700,34 +712,18 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				13B07FB21A68108700A75B9A /* Base */,
-			);
-			name = LaunchScreen.xib;
-			path = swingessentialsapp;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 42C9DEDB1193C098B6727B7C /* Pods-swingessentialsappTests.debug.xcconfig */;
+			baseConfigurationReference = 6E559E85280F0671575D4EB7 /* Pods-swingessentialsapp-swingessentialsappTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4KFCFX93VP;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = swingessentialsappTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -736,24 +732,18 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/swingessentialsapp.app/swingessentialsapp";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F9D6829E343E5F16B9E9532 /* Pods-swingessentialsappTests.release.xcconfig */;
+			baseConfigurationReference = 2078E675A960CA4E5F3C1028 /* Pods-swingessentialsapp-swingessentialsappTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = 4KFCFX93VP;
 				INFOPLIST_FILE = swingessentialsappTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -762,27 +752,20 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/swingessentialsapp.app/swingessentialsapp";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2C4A7780167977D95760A22 /* Pods-swingessentialsapp.debug.xcconfig */;
+			baseConfigurationReference = 70F600301AB97A4EE6FC5464 /* Pods-swingessentialsapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = swingessentialsapp/swingessentialsapp.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Alan Nelson (U4XC42DW6S)";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 9;
-				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = U4XC42DW6S;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = swingessentialsapp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -790,26 +773,21 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.swingessentials.app;
 				PRODUCT_NAME = swingessentialsapp;
-				PROVISIONING_PROFILE_SPECIFIER = "Swing Essentials LLC Distro";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C76E373055A3DEA7080BCCBB /* Pods-swingessentialsapp.release.xcconfig */;
+			baseConfigurationReference = 94856BCAA322ECCC9344B803 /* Pods-swingessentialsapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = swingessentialsapp/swingessentialsapp.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Alan Nelson (U4XC42DW6S)";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 9;
-				DEVELOPMENT_TEAM = U4XC42DW6S;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = swingessentialsapp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -817,15 +795,14 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.swingessentials.app;
 				PRODUCT_NAME = swingessentialsapp;
-				PROVISIONING_PROFILE_SPECIFIER = "Swing Essentials LLC Distro";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 367BF86C64FC2FE9C408EF5C /* Pods-swingessentialsapp-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 88A00591428F1E4AC5524181 /* Pods-swingessentialsapp-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -833,10 +810,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "swingessentialsapp-tvOS/Info.plist";
@@ -846,18 +820,17 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.swingessentialsapp-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.swingessentialsapp-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4732BFE0A089E2DA091FA8AF /* Pods-swingessentialsapp-tvOS.release.xcconfig */;
+			baseConfigurationReference = BF003B649C7A2FBA79C7B91D /* Pods-swingessentialsapp-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -865,11 +838,8 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "swingessentialsapp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -878,18 +848,17 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.swingessentialsapp-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.swingessentialsapp-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A29D659D66E2092548978AA2 /* Pods-swingessentialsapp-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = D04BA45F4A2EBDE0F1202531 /* Pods-swingessentialsapp-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -897,7 +866,6 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "swingessentialsapp-tvOSTests/Info.plist";
@@ -907,7 +875,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.swingessentialsapp-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.swingessentialsapp-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/swingessentialsapp-tvOS.app/swingessentialsapp-tvOS";
@@ -917,7 +885,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 03DE7011F926F3E0C4B86C05 /* Pods-swingessentialsapp-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 4392E59A9C46B9234069B5D7 /* Pods-swingessentialsapp-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -926,7 +894,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "swingessentialsapp-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -935,7 +902,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.swingessentialsapp-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.swingessentialsapp-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/swingessentialsapp-tvOS.app/swingessentialsapp-tvOS";
@@ -947,6 +914,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -970,8 +938,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Alan Nelson (U4XC42DW6S)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Alan Nelson (U4XC42DW6S)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -990,7 +957,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1001,6 +974,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1024,8 +998,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Alan Nelson (U4XC42DW6S)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Alan Nelson (U4XC42DW6S)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1037,7 +1010,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
