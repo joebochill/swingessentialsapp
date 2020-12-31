@@ -46,6 +46,9 @@ import { submitLesson } from '../../redux/actions';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
+import { StackScreenProps } from '@react-navigation/stack';
+import { Theme } from 'react-native-paper/lib/typescript/types';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
 const RNFS = require('react-native-fs');
 
