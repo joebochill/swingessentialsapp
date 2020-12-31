@@ -21,6 +21,8 @@ import { getLongDate, makeGroups } from '../../utilities';
 import { ApplicationState } from '../../__types__';
 // Actions
 import { loadLessons } from '../../redux/actions';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
 const AddIcon = wrapIcon({ IconClass: MatIcon, name: 'add-circle' });
 
@@ -37,7 +39,7 @@ type Lesson = {
     viewed: boolean;
 };
 
-export const Lessons = (props) => {
+export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> = (props) => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const myLessons = lessons.pending.concat(lessons.closed);
@@ -61,6 +63,7 @@ export const Lessons = (props) => {
                     onPress: () => props.navigation.navigate(ROUTES.SUBMIT),
                 },
             ]}
+            navigation={props.navigation}
         >
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (
@@ -148,7 +151,7 @@ export const Lessons = (props) => {
                         </>
                     )
                 }
-                keyExtractor={(item): string => `complete_${  item.request_id}`}
+                keyExtractor={(item): string => `complete_${item.request_id}`}
             />
             <LessonsTutorial />
         </CollapsibleHeaderLayout>

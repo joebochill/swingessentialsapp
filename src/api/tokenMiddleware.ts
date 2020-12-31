@@ -15,8 +15,8 @@ export const saveAuthToken = (store) => (next) => (action) => {
         action.type === CREATE_ACCOUNT.SUCCESS
     ) {
         _setToken(action.payload.token);
-        if (action.payload.token !== null) AsyncStorage.setItem(`${ASYNC_PREFIX  }token`, action.payload.token);
-        else AsyncStorage.removeItem(`${ASYNC_PREFIX  }token`);
+        if (action.payload.token !== null) AsyncStorage.setItem(`${ASYNC_PREFIX}token`, action.payload.token);
+        else AsyncStorage.removeItem(`${ASYNC_PREFIX}token`);
     } else if (
         action.type === LOGOUT.SUCCESS ||
         action.type === LOGOUT.FAILURE ||
@@ -24,7 +24,7 @@ export const saveAuthToken = (store) => (next) => (action) => {
         action.type === TOKEN_TIMEOUT
     ) {
         _setToken(null);
-        AsyncStorage.removeItem(`${ASYNC_PREFIX  }token`);
+        AsyncStorage.removeItem(`${ASYNC_PREFIX}token`);
     }
     // continue processing this action
     return next(action);

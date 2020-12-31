@@ -18,6 +18,8 @@ import { makeGroups } from '../../utilities';
 import { loadBlogs } from '../../redux/actions';
 // Types
 import { ApplicationState } from '../../__types__';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
 type Blog = {
     id: number;
@@ -26,7 +28,7 @@ type Blog = {
     title: string;
 };
 
-export const Blogs = (props) => {
+export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (props) => {
     const blogs = useSelector((state: ApplicationState) => state.blogs);
     const sections = makeGroups(blogs.blogList, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
@@ -44,6 +46,7 @@ export const Blogs = (props) => {
             onRefresh={() => {
                 dispatch(loadBlogs());
             }}
+            navigation={props.navigation}
         >
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (

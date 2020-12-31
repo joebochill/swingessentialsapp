@@ -7,14 +7,17 @@ import { Body, CollapsibleHeaderLayout } from '../../components';
 // Styles
 import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
 import { useTheme, Subheading } from 'react-native-paper';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useLinkProps } from '@react-navigation/native';
 
-export const About = () => {
+export const About: React.FC<StackScreenProps<RootStackParamList, 'About'>> = (props) => {
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const listStyles = useListStyles(theme);
     const flexStyles = useFlexStyles(theme);
     return (
-        <CollapsibleHeaderLayout title={'About'} subtitle={'What is SwingEssentials®?'}>
+        <CollapsibleHeaderLayout title={'About'} subtitle={'What is SwingEssentials®?'} navigation={props.navigation}>
             <View style={flexStyles.paddingHorizontal}>
                 <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                     <Subheading style={listStyles.heading}>{'Lessons on Your Schedule'}</Subheading>

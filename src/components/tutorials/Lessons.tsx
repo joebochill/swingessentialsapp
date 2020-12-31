@@ -91,7 +91,7 @@ export const LessonsTutorial = () => {
                         <Divider />
                     </>
                 )}
-                keyExtractor={(item): string => `complete_${  item.date}`}
+                keyExtractor={(item): string => `complete_${item.date}`}
             />
         </>,
     ];

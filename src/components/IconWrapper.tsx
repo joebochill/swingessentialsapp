@@ -5,11 +5,11 @@ import { IconProps } from 'react-native-vector-icons/Icon';
 type IconSetArg = {
     IconClass: ComponentType<IconProps>;
     name: string;
-}
+};
 
 type PxBlueIconArg = {
     IconClass: ComponentType<SvgProps>;
-}
+};
 
 type IconArg = IconSetArg | PxBlueIconArg;
 
@@ -19,7 +19,7 @@ export type HeaderIcon = {
 
     /** Callback when icon is pressed */
     onPress: () => void;
-}
+};
 
 const isIconSetArg = (x: IconSetArg | PxBlueIconArg): x is IconSetArg => (x as any).name !== undefined;
 
@@ -29,10 +29,9 @@ export const wrapIcon = (arg: IconArg) => {
         return (props: { size: number; color: string }) => (
             <IconClass name={name} color={props.color} size={props.size} testID={'icon'} />
         );
-    } 
-        const { IconClass } = arg;
-        return (props: { size: number; color: string }) => (
-            <IconClass fill={props.color} width={props.size} height={props.size} testID={'icon'} />
-        );
-    
+    }
+    const { IconClass } = arg;
+    return (props: { size: number; color: string }) => (
+        <IconClass fill={props.color} width={props.size} height={props.size} testID={'icon'} />
+    );
 };

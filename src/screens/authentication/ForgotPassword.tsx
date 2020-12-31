@@ -17,8 +17,11 @@ import { useDispatch } from 'react-redux';
 
 // Constants
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
-export const ForgotPassword = () => {
+export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'ResetPassword'>> = (props) => {
+    const { navigation } = props;
     const [email, setEmail] = useState('');
     const [activeField, setActiveField] = useState<'email' | null>(null);
     const [complete, setComplete] = useState(false);
@@ -37,7 +40,13 @@ export const ForgotPassword = () => {
 
     return (
         <View style={sharedStyles.pageContainer}>
-            <SEHeader title={'Forgot Password'} subtitle={'Request a reset'} mainAction={'back'} showAuth={false} />
+            <SEHeader
+                title={'Forgot Password'}
+                subtitle={'Request a reset'}
+                mainAction={'back'}
+                showAuth={false}
+                navigation={navigation}
+            />
             <KeyboardAvoidingView
                 style={[
                     sharedStyles.pageContainer,

@@ -114,6 +114,7 @@ export const SingleSetting = (props: StackScreenProps<RootStackParamList, 'Singl
                 subtitle={currentSetting.label}
                 showAuth={false}
                 onNavigate={() => _updateSetting()}
+                navigation={navigation}
             />
             <View
                 style={[

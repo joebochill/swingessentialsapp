@@ -153,5 +153,5 @@ const _formatTime = (remaining: number): string => {
     const min = Math.floor(remaining / 60);
     const sec = Math.floor(remaining - min * 60);
 
-    return `${min < 10 ? `0${  min}` : min  }:${  sec < 10 ? `0${  sec}` : sec}`;
+    return `${min < 10 ? `0${min}` : min}:${sec < 10 ? `0${sec}` : sec}`;
 };

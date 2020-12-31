@@ -86,7 +86,12 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
 
     return (
         <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
-            <SEHeader title={userData.username} subtitle={memberString} mainAction={'back'} />
+            <SEHeader
+                title={userData.username}
+                subtitle={memberString}
+                mainAction={'back'}
+                navigation={props.navigation}
+            />
             <ScrollView
                 contentContainerStyle={[
                     flexStyles.paddingMedium,

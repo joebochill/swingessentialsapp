@@ -32,9 +32,8 @@ export function roundNumber(num, dec) {
 export const getUserRole = (token: string): UserRole => {
     if (!token) {
         return 'anonymous';
-    } 
-        return JSON.parse(atob(token.split('.')[1])).role;
-    
+    }
+    return JSON.parse(atob(token.split('.')[1])).role;
 };
 
 export function splitParagraphs(text: string) {
@@ -50,12 +49,12 @@ export function getDate(unix) {
     let mm = day.getUTCMonth() + 1;
     const yyyy = day.getUTCFullYear();
     if (dd < 10) {
-        dd = `0${  dd}`;
+        dd = `0${dd}`;
     }
     if (mm < 10) {
-        mm = `0${  mm}`;
+        mm = `0${mm}`;
     }
-    return `${yyyy  }-${  mm  }-${  dd}`;
+    return `${yyyy}-${mm}-${dd}`;
 }
 
 export function getLongDate(unix) {
@@ -70,16 +69,16 @@ export function getTime(unix) {
     let ss = day.getUTCSeconds();
 
     if (hh < 10) {
-        hh = `0${  hh}`;
+        hh = `0${hh}`;
     }
     if (mm < 10) {
-        mm = `0${  mm}`;
+        mm = `0${mm}`;
     }
     if (ss < 10) {
-        ss = `0${  ss}`;
+        ss = `0${ss}`;
     }
 
-    return `${hh  }:${  mm  }:${  ss}`;
+    return `${hh}:${mm}:${ss}`;
 }
 
 export function checkVersionGreater(test, against) {

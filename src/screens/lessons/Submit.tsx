@@ -49,7 +49,7 @@ import { Logger } from '../../utilities/logging';
 
 const RNFS = require('react-native-fs');
 
-export const Submit = (props) => {
+export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = (props) => {
     const { navigation } = props;
     const [fo_video, setFO] = useState('');
     const [dtl_video, setDTL] = useState('');
@@ -132,13 +132,15 @@ export const Submit = (props) => {
         navigation,
     ]);
 
-    const _canSubmit = useCallback(() => (
+    const _canSubmit = useCallback(
+        () =>
             roleError.length === 0 &&
             !lessons.redeemPending &&
             fo_video !== '' &&
             dtl_video !== '' &&
-            lessons.pending.length <= 0
-        ), [roleError, lessons, fo_video, dtl_video]);
+            lessons.pending.length <= 0,
+        [roleError, lessons, fo_video, dtl_video]
+    );
 
     const _submitLesson = useCallback(() => {
         Keyboard.dismiss();
@@ -265,6 +267,7 @@ export const Submit = (props) => {
             title={'Submit Your Swing'}
             subtitle={'Request a personalized lesson'}
             backgroundImage={bg}
+            navigation={navigation}
         >
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView

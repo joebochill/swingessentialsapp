@@ -24,8 +24,10 @@ import { ApplicationState } from '../../__types__';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
-export const Order = (props) => {
+export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (props) => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
     const credits = useSelector((state: ApplicationState) => state.credits);
     const packagesProcessing = useSelector((state: ApplicationState) => state.packages.loading);
@@ -127,6 +129,7 @@ export const Order = (props) => {
                 dispatch(loadCredits());
                 dispatch(loadPackages());
             }}
+            navigation={props.navigation}
         >
             <ErrorBox
                 show={roleError !== ''}
@@ -195,7 +198,7 @@ export const Order = (props) => {
                         <Divider />
                     </>
                 )}
-                keyExtractor={(item) => `package_${  item.app_sku}`}
+                keyExtractor={(item) => `package_${item.app_sku}`}
             />
             <SEButton
                 style={[

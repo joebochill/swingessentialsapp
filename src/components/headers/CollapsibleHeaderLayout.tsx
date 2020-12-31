@@ -33,6 +33,7 @@ type CollapsibleHeaderLayoutProps = SEHeaderProps & {
     refreshing?: boolean;
     bottomPad?: boolean;
     pageBackground?: ImageSourcePropType;
+    navigation?: any;
 };
 
 export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLayoutProps, HeaderLayoutState> {

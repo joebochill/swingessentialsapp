@@ -76,7 +76,7 @@ export const OrderTutorial = () => {
                         <Divider />
                     </>
                 )}
-                keyExtractor={(item) => `package_${  item.app_sku}`}
+                keyExtractor={(item) => `package_${item.app_sku}`}
             />
         </>,
     ];

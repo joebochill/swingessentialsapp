@@ -30,7 +30,7 @@ export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip
     return (
         tip && (
             <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
-                <SEHeader title={getLongDate(tip.date)} mainAction={'back'} />
+                <SEHeader title={getLongDate(tip.date)} mainAction={'back'} navigation={props.navigation} />
                 <ScrollView
                     contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
                     keyboardShouldPersistTaps={'always'}

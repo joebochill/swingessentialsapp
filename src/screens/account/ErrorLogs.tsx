@@ -16,12 +16,14 @@ import { Logger } from '../../utilities/logging';
 import { LOAD_LOGS } from '../../redux/actions/types';
 import { ApplicationState } from 'src/__types__';
 import { useTheme, Caption } from 'react-native-paper';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
 // Icons
 const RefreshIcon = wrapIcon({ IconClass: MatIcon, name: 'refresh' });
 const MailIcon = wrapIcon({ IconClass: MatIcon, name: 'mail' });
 
-export const ErrorLogs = (props) => {
+export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> = (props) => {
     const [logs, setLogs] = useState('');
     const dispatch = useDispatch();
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -74,6 +76,7 @@ export const ErrorLogs = (props) => {
             onRefresh={() => {
                 getLogs();
             }}
+            navigation={props.navigation}
         >
             <View style={[flexStyles.paddingHorizontal]}>
                 <SEButton

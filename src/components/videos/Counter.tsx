@@ -89,7 +89,7 @@ export const VideoTimer = (props: VideoTimerProps) => {
                 />
             </View>
             <Body style={{ fontSize: theme.fontSizes[14], color: theme.colors.onPrimary }}>
-                {`00:00:${  displaySeconds < 10 ? '0' : ''  }${displaySeconds}`}
+                {`00:00:${displaySeconds < 10 ? '0' : ''}${displaySeconds}`}
             </Body>
         </View>
     ) : null;

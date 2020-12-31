@@ -17,9 +17,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 export function requestLogin(userCredentials: Credentials, remember = false, useTouch = false) {
     return (dispatch: ThunkDispatch<any, void, any>) => {
         dispatch({ type: ACTIONS.LOGIN.REQUEST });
-        return fetch(`${BASEURL  }/${  ACTIONS.LOGIN.API}`, {
+        return fetch(`${BASEURL}/${ACTIONS.LOGIN.API}`, {
             headers: {
-                [AUTH]: `Basic ${  btoa(userCredentials.username)  }.${  btoa(userCredentials.password)}`,
+                [AUTH]: `Basic ${btoa(userCredentials.username)}.${btoa(userCredentials.password)}`,
             },
         })
             .then((response) => {

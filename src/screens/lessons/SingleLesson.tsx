@@ -67,6 +67,7 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
                       title={lesson.request_date}
                       subtitle={lesson.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson'}
                       mainAction={'back'}
+                      navigation={props.navigation}
                   />
                   <ScrollView
                       contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}

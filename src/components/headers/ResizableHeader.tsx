@@ -57,9 +57,9 @@ export type ResizableHeaderProps = {
      * Overrides for theme
      */
     theme?: $DeepPartial<Theme>;
-}
+};
 
-type HeaderState = {}
+type HeaderState = {};
 
 class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
     static readonly ICON_SIZE = defaultTheme.sizes.small;

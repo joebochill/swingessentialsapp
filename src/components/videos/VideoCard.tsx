@@ -22,7 +22,7 @@ export type VideoCardProps = {
     headerFontColor?: string;
     video?: string;
     onExpand?: Function;
-}
+};
 
 export const VideoCard: React.FC<VideoCardProps> = (props) => {
     const { video, style, onExpand, headerIcon, headerTitle, headerSubtitle } = props;

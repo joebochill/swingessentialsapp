@@ -24,8 +24,10 @@ import { ApplicationState } from '../../__types__';
 // Redux
 import { loadUserContent } from '../../redux/actions';
 import { unit } from '../../styles/sizes';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
-export const Home = (props) => {
+export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (props) => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
     const tips = useSelector((state: ApplicationState) => state.tips);
     const placeholder = useSelector((state: ApplicationState) => state.config.placeholder);
@@ -49,6 +51,7 @@ export const Home = (props) => {
                 dispatch(loadUserContent());
             }}
             bottomPad={false}
+            navigation={props.navigation}
         >
             <View style={[sharedStyles.sectionHeader]}>
                 <Subheading style={listStyles.heading}>{'Latest Lessons'}</Subheading>

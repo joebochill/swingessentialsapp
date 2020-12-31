@@ -25,15 +25,9 @@ export class Logger {
         const currentLog = await this.readMessages('LOGS');
         await RNFS.writeFile(
             log_path,
-            `${currentLog +
-                getDate(timestamp) 
-                } ${ 
-                getTime(timestamp) 
-                } (${ 
-                (timestamp / 1000).toFixed(0) 
-                }):\r\n${ 
-                message 
-                }\r\n\r\n`,
+            `${currentLog + getDate(timestamp)} ${getTime(timestamp)} (${(timestamp / 1000).toFixed(
+                0
+            )}):\r\n${message}\r\n\r\n`,
             'utf8'
         );
         if (currentLog.length + message.length > LOG_LIMIT) {
@@ -53,15 +47,9 @@ export class Logger {
 
         await RNFS.writeFile(
             error_path,
-            `${currentLog +
-                getDate(timestamp) 
-                } ${ 
-                getTime(timestamp) 
-                } (${ 
-                (timestamp / 1000).toFixed(0) 
-                }):\r\n${ 
-                composedMessage 
-                }\r\n\r\n`,
+            `${currentLog + getDate(timestamp)} ${getTime(timestamp)} (${(timestamp / 1000).toFixed(
+                0
+            )}):\r\n${composedMessage}\r\n\r\n`,
             'utf8'
         );
         if (currentLog.length + composedMessage.length > ERROR_LIMIT) {
@@ -91,7 +79,7 @@ export class Logger {
                 body: `My Swing Essentials app has been encountering errors. ${
                     Platform.OS === 'ios'
                         ? 'Please see the attached error log.'
-                        : `Please see the following:\r\n\r\n\r\n${  currentLogs}`
+                        : `Please see the following:\r\n\r\n\r\n${currentLogs}`
                 }`,
                 isHTML: false,
                 attachment:

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 // Components
 import { Alert, Animated } from 'react-native';
@@ -24,6 +24,7 @@ import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
 // Redux
 import { requestLogout } from '../../redux/actions';
+import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 
 const MenuIcon = wrapIcon({ IconClass: MatIcon, name: 'menu' });
 const BackIcon = wrapIcon({ IconClass: MatIcon, name: 'arrow-back' });
@@ -36,6 +37,7 @@ export type SEHeaderProps = Omit<ResizableHeaderProps, 'headerHeight'> & {
     dynamic?: boolean;
     headerHeight?: Animated.AnimatedInterpolation;
     onNavigate?: Function;
+    navigation: any;
 };
 
 export const SEHeader = (props: SEHeaderProps) => {
@@ -45,9 +47,10 @@ export const SEHeader = (props: SEHeaderProps) => {
         backgroundImage = topology,
         actionItems = [],
         onNavigate,
+        navigation: navigationProp,
         ...other
     } = props;
-    const navigation = useNavigation();
+
     const token = useSelector((state: ApplicationState) => state.login.token);
     const dispatch = useDispatch();
 
@@ -65,7 +68,7 @@ export const SEHeader = (props: SEHeaderProps) => {
                     }
                   : {
                         icon: AccountIcon,
-                        onPress: () => navigation.navigate({ name: ROUTES.LOGIN, key: ROUTES.LOGIN }),
+                        onPress: () => navigationProp.navigate({ name: ROUTES.LOGIN, key: ROUTES.LOGIN }),
                     },
           ]
         : [];
@@ -77,7 +80,7 @@ export const SEHeader = (props: SEHeaderProps) => {
                     ? {
                           icon: MenuIcon,
                           onPress: () => {
-                              navigation.openDrawer();
+                              navigationProp.openDrawer();
                               if (onNavigate) {
                                   onNavigate();
                               }
@@ -87,7 +90,7 @@ export const SEHeader = (props: SEHeaderProps) => {
                     ? {
                           icon: BackIcon,
                           onPress: () => {
-                              navigation.pop();
+                              navigationProp.pop();
                               if (onNavigate) {
                                   onNavigate();
                               }

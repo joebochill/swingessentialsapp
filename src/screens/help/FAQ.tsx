@@ -19,8 +19,11 @@ import { ApplicationState } from '../../__types__';
 // Redux
 import { loadFAQ } from '../../redux/actions';
 import { useTheme, Subheading } from 'react-native-paper';
+import { StackScreenProps } from '@react-navigation/stack';
+import { Theme } from 'react-native-paper/lib/typescript/types';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
-export const FAQ = () => {
+export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props) => {
     const faqState = useSelector((state: ApplicationState) => state.faq);
     const dispatch = useDispatch();
     const theme = useTheme();
@@ -37,6 +40,7 @@ export const FAQ = () => {
             onRefresh={() => {
                 dispatch(loadFAQ());
             }}
+            navigation={props.navigation}
         >
             <View style={[sharedStyles.pageContainer, flexStyles.paddingHorizontal]}>
                 {faqState.questions.map((faq, ind) => (

@@ -40,7 +40,7 @@ export const mainNavigationItems: RouteGroup = {
         {
             title: 'Submit Your Swing',
             icon: 'videocam',
-            route: ROUTES.SUBMIT_GROUP,
+            route: ROUTES.SUBMIT,
         },
         {
             title: 'Order More',

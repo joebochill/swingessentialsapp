@@ -73,8 +73,11 @@ type RegistrationProperty = {
 type VerifyStackProps = StackScreenProps<RootStackParamList, 'Verify'>;
 type RegisterStackProps = StackScreenProps<RootStackParamList, 'Register'>;
 export const Register = (props: RegisterStackProps | VerifyStackProps) => {
-    const { code } = props.route.params;
-    return code ? <VerifyForm {...(props as VerifyStackProps)} /> : <RegisterForm {...(props as RegisterStackProps)} />;
+    return props.route.params && props.route.params.code ? (
+        <VerifyForm {...(props as VerifyStackProps)} />
+    ) : (
+        <RegisterForm {...(props as RegisterStackProps)} />
+    );
 };
 
 const VerifyForm = (props: StackScreenProps<RootStackParamList, 'Verify'>) => {
@@ -96,7 +99,13 @@ const VerifyForm = (props: StackScreenProps<RootStackParamList, 'Verify'>) => {
 
     return (
         <View style={[sharedStyles.pageContainer, { backgroundColor: theme.colors.primary }]}>
-            <SEHeader title={'Sign Up'} subtitle={'Confirm your email'} mainAction={'back'} showAuth={false} />
+            <SEHeader
+                title={'Sign Up'}
+                subtitle={'Confirm your email'}
+                mainAction={'back'}
+                showAuth={false}
+                navigation={navigation}
+            />
             <BackgroundImage />
             <View
                 style={[
@@ -143,6 +152,7 @@ const VerifyForm = (props: StackScreenProps<RootStackParamList, 'Verify'>) => {
 };
 
 const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) => {
+    const { navigation } = props;
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const formStyles = useFormStyles(theme);
@@ -274,7 +284,13 @@ const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) =
 
     return (
         <View style={sharedStyles.pageContainer}>
-            <SEHeader title={'Sign Up'} subtitle={'Create an account'} mainAction={'back'} showAuth={false} />
+            <SEHeader
+                title={'Sign Up'}
+                subtitle={'Create an account'}
+                mainAction={'back'}
+                showAuth={false}
+                navigation={navigation}
+            />
             <KeyboardAvoidingView
                 style={[
                     sharedStyles.pageContainer,
@@ -434,6 +450,6 @@ const _getRegistrationErrorMessage = (code: number): string => {
         case -1:
             return 'Your your email address has already been verified. Sign in to view your account.';
         default:
-            return `Unknown Error: ${  code}`;
+            return `Unknown Error: ${code}`;
     }
 };

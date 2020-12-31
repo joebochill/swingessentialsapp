@@ -17,6 +17,8 @@ import { makeGroups } from '../../utilities';
 import { loadTips } from '../../redux/actions';
 // Types
 import { ApplicationState } from '../../__types__';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
 type Tip = {
     id: number;
@@ -26,7 +28,7 @@ type Tip = {
     video: string;
 };
 
-export const Tips = (props) => {
+export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (props) => {
     const tips = useSelector((state: ApplicationState) => state.tips);
     const sections = makeGroups(tips.tipList, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
@@ -44,6 +46,7 @@ export const Tips = (props) => {
             onRefresh={() => {
                 dispatch(loadTips());
             }}
+            navigation={props.navigation}
         >
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }) => (

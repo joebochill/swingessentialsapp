@@ -16,7 +16,7 @@ import { loadUserInfo } from './user-data-actions';
 
 export function loadInitialData(): Function {
     return async (dispatch: ThunkDispatch<any, void, any>) => {
-        const token = await AsyncStorage.getItem(`${ASYNC_PREFIX  }token`);
+        const token = await AsyncStorage.getItem(`${ASYNC_PREFIX}token`);
         if (token) dispatch(setToken(token));
 
         dispatch({ type: ACTIONS.INITIAL_LOAD });
@@ -38,7 +38,7 @@ export function sendLogReport(log: string, type: LOG_TYPE) {
             .withBody({ platform: Platform.OS, data: log })
             .onSuccess((body: any) => {
                 Logger.clear(type);
-                AsyncStorage.setItem(`${ASYNC_PREFIX  }logs_sent`, `${  Math.floor(Date.now() / 1000)}`);
+                AsyncStorage.setItem(`${ASYNC_PREFIX}logs_sent`, `${Math.floor(Date.now() / 1000)}`);
                 dispatch(success(ACTIONS.SEND_LOGS.SUCCESS, body));
             })
             .onFailure((response: Response) => {
