@@ -31,7 +31,10 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
     private readonly method: HttpMethod;
     private readonly endpoint: string;
     private successCallback?: (body: any) => void;
-    private failureCallback?: (response: Response | XMLHttpRequest | null) => void;
+    private failureCallback?:
+        | ((response: Response) => void)
+        | ((response: XMLHttpRequest) => void)
+        | ((response: null) => void);
     private body?: any;
     private parseResponse?: boolean;
 
@@ -51,7 +54,9 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
         this.successCallback = callback;
         return this;
     }
-    public onFailure(callback: (response: Response | XMLHttpRequest | null) => void): HttpRequest {
+    public onFailure(
+        callback: ((response: Response) => void) | ((response: XMLHttpRequest) => void) | ((response: null) => void)
+    ): HttpRequest {
         this.failureCallback = callback;
         return this;
     }

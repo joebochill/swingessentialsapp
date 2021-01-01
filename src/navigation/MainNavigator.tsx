@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 // React-Navigation Components
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -102,7 +101,7 @@ const MainNavigator: React.FC = () => (
         <Drawer.Navigator
             initialRouteName={ROUTES.APP_GROUP}
             drawerStyle={{ width: width * 0.9 }}
-            drawerContent={(props) => <NavigationDrawer {...props} />}
+            drawerContent={(props): JSX.Element => <NavigationDrawer {...props} />}
         >
             <Drawer.Screen name={ROUTES.APP_GROUP} component={StackNavigator} />
         </Drawer.Navigator>

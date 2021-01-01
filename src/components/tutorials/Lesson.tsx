@@ -13,7 +13,7 @@ import { ApplicationState } from '../../__types__';
 import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 
-export const LessonTutorial = () => {
+export const LessonTutorial: React.FC = () => {
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useTheme();
     const dispatch = useDispatch();
@@ -49,12 +49,14 @@ export const LessonTutorial = () => {
     return (
         <TutorialModal
             visible={showTutorial.tutorial_lesson}
-            onClose={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]))}
+            onClose={(): void => {
+                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]));
+            }}
         >
             <View>
                 <Carousel
                     data={slides}
-                    renderItem={({ index }) => slides[index]}
+                    renderItem={({ index }: { index: number }): JSX.Element => slides[index]}
                     sliderWidth={width - 2 * theme.spaces.medium}
                     itemWidth={width - 2 * theme.spaces.medium}
                 />
@@ -62,7 +64,9 @@ export const LessonTutorial = () => {
                     dark
                     title="GOT IT"
                     style={{ flex: 1, marginTop: theme.spaces.xLarge }}
-                    onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]))}
+                    onPress={(): void => {
+                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]));
+                    }}
                 />
             </View>
         </TutorialModal>

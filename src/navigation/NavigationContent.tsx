@@ -15,7 +15,7 @@ type Route = {
     nested?: boolean;
     private?: boolean;
     activatePanel?: number;
-    onPress?: Function;
+    onPress?: () => void;
 };
 
 export const mainNavigationItems: RouteGroup = {
@@ -89,7 +89,7 @@ export const helpNavigationItems: RouteGroup = {
         {
             title: 'Contact Us',
             icon: 'mail',
-            onPress: () => {
+            onPress: (): void => {
                 Mailer.mail(
                     {
                         subject: 'Swing Essentials App Feedback',
@@ -100,7 +100,7 @@ export const helpNavigationItems: RouteGroup = {
                         if (error && error === 'canceled') {
                             // Do nothing
                         } else if (error) {
-                            Logger.logError({
+                            void Logger.logError({
                                 code: 'CON100',
                                 description: 'Error sending error logs',
                                 rawErrorMessage: error,
@@ -114,7 +114,7 @@ export const helpNavigationItems: RouteGroup = {
                         } else if (event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')) {
                             // do nothing
                         } else if (event) {
-                            Logger.logError({
+                            void Logger.logError({
                                 code: 'CON900',
                                 description: 'Error sending feedback email. ',
                                 rawErrorMessage: event,

@@ -12,6 +12,9 @@ import {
     StyleSheet,
     View,
     Alert,
+    StyleProp,
+    ViewStyle,
+    TextStyle,
 } from 'react-native';
 import { NavigationItems } from './NavigationContent';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
@@ -45,9 +48,59 @@ import { loadUserContent, requestLogout } from '../redux/actions';
 import se from '../images/logo-small.png';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { transparent } from '../styles/colors';
-import { DrawerContentComponentProps, DrawerContentOptions } from '@react-navigation/drawer';
+import { DrawerContentComponentProps } from '@react-navigation/drawer';
 
-export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerContentOptions>> = (props) => {
+const useStyles = (
+    theme: ReactNativePaper.Theme
+): StyleSheet.NamedStyles<{
+    avatarContainer: StyleProp<ViewStyle>;
+    avatar: StyleProp<ViewStyle>;
+    content: StyleProp<ViewStyle>;
+    headerText: StyleProp<ViewStyle>;
+    navLabel: StyleProp<TextStyle>;
+    drawerBody: StyleProp<ViewStyle>;
+    panel: StyleProp<ViewStyle>;
+    footer: StyleProp<ViewStyle>;
+}> =>
+    StyleSheet.create({
+        avatarContainer: {
+            justifyContent: 'center',
+        },
+        avatar: {
+            borderRadius: 100,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        content: {
+            flex: 1,
+            paddingVertical: theme.spaces.medium,
+            paddingHorizontal: theme.spaces.medium,
+            flexDirection: 'row',
+        },
+        headerText: {
+            flex: 1,
+            justifyContent: 'center',
+        },
+        navLabel: {
+            marginLeft: theme.spaces.medium,
+        },
+        drawerBody: {
+            flexDirection: 'row',
+        },
+        panel: {
+            width: DRAWER_WIDTH,
+        },
+        footer: {
+            flex: 0,
+            height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: theme.spaces.medium,
+        },
+    });
+
+export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) => {
     const theme = useTheme();
     const styles = useStyles(theme);
     const listStyles = useListStyles(theme);
@@ -77,46 +130,16 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
     }`;
 
     const scaleByHeight = useCallback(
-        (atLarge, atSmall) => {
-            return scrollY.interpolate({
+        (atLarge, atSmall) =>
+            scrollY.interpolate({
                 inputRange: [0, HEADER_EXPANDED_HEIGHT_NO_STATUS - HEADER_COLLAPSED_HEIGHT_NO_STATUS],
                 outputRange: [atLarge, atSmall],
                 extrapolate: 'clamp',
-            });
-        },
+            }),
         [scrollY]
     );
 
-    useEffect(() => {
-        // handle launching from a deep link
-        Linking.getInitialURL()
-            .then((url) => {
-                if (url) {
-                    let path: any = url.split('/').filter((el) => el.length > 0);
-                    _linkRoute(url, path);
-                }
-            })
-            .catch((err) => {
-                Logger.logError({
-                    code: 'DRW999',
-                    description: 'Deep link failed to launch the app',
-                    rawErrorMessage: err.message,
-                });
-            });
-    }, []);
-
-    // Handle the app coming into the foreground after being backgrounded
-    const _handleAppStateChange = useCallback(
-        (nextAppState: AppStateStatus) => {
-            if (appState.match(/inactive|background/) && nextAppState === 'active' && token) {
-                dispatch(loadUserContent());
-            }
-            setAppState(nextAppState);
-        },
-        [appState, token]
-    );
-
-    const _linkRoute = useCallback(
+    const linkRoute = useCallback(
         (url: string, path: string) => {
             if (url.match(/\/lessons\/?/gi)) {
                 if (token) {
@@ -132,13 +155,42 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
         [token, navigation]
     );
 
-    // Handles activating a deep link while the app is in the background
-    const _wakeupByLink = useCallback(
-        (event) => {
-            let path = event.url.split('/').filter((el) => el.length > 0);
-            _linkRoute(event.url, path);
+    useEffect(() => {
+        // handle launching from a deep link
+        Linking.getInitialURL()
+            .then((url) => {
+                if (url) {
+                    const path: any = url.split('/').filter((el) => el.length > 0);
+                    linkRoute(url, path);
+                }
+            })
+            .catch((err) => {
+                void Logger.logError({
+                    code: 'DRW999',
+                    description: 'Deep link failed to launch the app',
+                    rawErrorMessage: err.message,
+                });
+            });
+    }, []);
+
+    // Handle the app coming into the foreground after being backgrounded
+    const handleAppStateChange = useCallback(
+        (nextAppState: AppStateStatus) => {
+            if (/inactive|background/.test(appState) && nextAppState === 'active' && token) {
+                dispatch(loadUserContent());
+            }
+            setAppState(nextAppState);
         },
-        [_linkRoute]
+        [appState, token]
+    );
+
+    // Handles activating a deep link while the app is in the background
+    const wakeUpByLink = useCallback(
+        (event) => {
+            const path = event.url.split('/').filter((el) => el.length > 0);
+            linkRoute(event.url, path);
+        },
+        [linkRoute]
     );
 
     useEffect(() => {
@@ -164,10 +216,10 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
         }).start();
     }, [activePanel, left.account, left.help, left.main]);
 
-    useEffect(() => {
+    useEffect((): (() => void) => {
         // Set Up the State Change listeners
-        AppState.addEventListener('change', _handleAppStateChange);
-        Linking.addEventListener('url', _wakeupByLink);
+        AppState.addEventListener('change', handleAppStateChange);
+        Linking.addEventListener('url', wakeUpByLink);
 
         // Handle the case where the application is opened from a Universal Link
         // if (Platform.OS !== 'ios') {
@@ -175,7 +227,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
         //         .then(url => {
         //             if (url) {
         //                 let path = url.split('/').filter(el => el.length > 0);
-        //                 _linkRoute(url, path);
+        //                 linkRoute(url, path);
         //             }
         //         })
         //         .catch((): void => {
@@ -186,11 +238,11 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
         //         });
         // }
 
-        return () => {
-            AppState.removeEventListener('change', _handleAppStateChange);
-            Linking.removeEventListener('url', _wakeupByLink);
+        return (): void => {
+            AppState.removeEventListener('change', handleAppStateChange);
+            Linking.removeEventListener('url', wakeUpByLink);
         };
-    }, [_handleAppStateChange, _linkRoute, _wakeupByLink]);
+    }, [handleAppStateChange, linkRoute, wakeUpByLink]);
 
     return (
         <CollapsibleHeaderLayout
@@ -198,7 +250,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
             info={''}
             navigation={navigation}
             mainAction={'none'}
-            onResize={(scroll: Animated.Value) => {
+            onResize={(scroll: Animated.Value): void => {
                 scrollY.setValue(scroll._value);
             }}
             subtitle={''}
@@ -217,7 +269,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
                         <View style={[styles.avatarContainer]}>
                             <TouchableHighlight
                                 underlayColor={transparent}
-                                onPress={token ? () => navigation.navigate(ROUTES.SETTINGS) : undefined}
+                                onPress={token ? (): void => navigation.navigate(ROUTES.SETTINGS) : undefined}
                             >
                                 <Animated.View
                                     style={[
@@ -302,11 +354,11 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
                             title: token ? 'Sign Out' : 'Sign In',
                             icon: token ? 'exit-to-app' : 'person',
                             onPress: token
-                                ? () => {
+                                ? (): void => {
                                       Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
                                           {
                                               text: 'Sign Out',
-                                              onPress: () => {
+                                              onPress: (): void => {
                                                   dispatch(requestLogout());
                                                   navigation.closeDrawer();
                                               },
@@ -314,22 +366,22 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
                                           { text: 'Cancel' },
                                       ]);
                                   }
-                                : () => navigation.navigate(ROUTES.LOGIN),
+                                : (): void => navigation.navigate(ROUTES.LOGIN),
                         });
                     }
                     return (
                         <Animated.View key={`Panel_${panel.name}`} style={[styles.panel, { left: leftPosition }]}>
                             <FlatList
                                 data={ind === activePanel ? panelData : []}
-                                keyExtractor={(item, index) => `${index}`}
-                                renderItem={({ item }) => (
+                                keyExtractor={(item, index): string => `${index}`}
+                                renderItem={({ item }): JSX.Element => (
                                     <>
                                         <List.Item
                                             title={item.title}
                                             titleEllipsizeMode={'tail'}
-                                            left={() => (
+                                            left={(): JSX.Element => (
                                                 <List.Icon
-                                                    icon={({ size, color }) => (
+                                                    icon={({ size, color }): JSX.Element => (
                                                         <MatIcon name={item.icon} size={size} color={color} />
                                                     )}
                                                 />
@@ -337,18 +389,18 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
                                             onPress={
                                                 item.route
                                                     ? item.route === ROUTES.HOME
-                                                        ? () => {
+                                                        ? (): void => {
                                                               navigation.closeDrawer();
                                                           }
-                                                        : () => {
+                                                        : (): void => {
                                                               navigation.navigate(item.route);
                                                           }
                                                     : item.activatePanel !== undefined
-                                                    ? () => {
+                                                    ? (): void => {
                                                           setActivePanel(item.activatePanel);
                                                       }
                                                     : item.onPress
-                                                    ? () => item.onPress()
+                                                    ? (): void => item.onPress()
                                                     : undefined
                                             }
                                             style={[
@@ -361,7 +413,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
                                             }}
                                             right={
                                                 item.nested
-                                                    ? ({ style, ...rightProps }) => (
+                                                    ? ({ style, ...rightProps }): JSX.Element => (
                                                           <View style={[flexStyles.row, style]} {...rightProps}>
                                                               <MatIcon
                                                                   name={'chevron-right'}
@@ -390,42 +442,3 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps<DrawerConten
         </CollapsibleHeaderLayout>
     );
 };
-
-const useStyles = (theme: Theme) =>
-    StyleSheet.create({
-        avatarContainer: {
-            justifyContent: 'center',
-        },
-        avatar: {
-            borderRadius: 100,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        content: {
-            flex: 1,
-            paddingVertical: theme.spaces.medium,
-            paddingHorizontal: theme.spaces.medium,
-            flexDirection: 'row',
-        },
-        headerText: {
-            flex: 1,
-            justifyContent: 'center',
-        },
-        navLabel: {
-            marginLeft: theme.spaces.medium,
-        },
-        drawerBody: {
-            flexDirection: 'row',
-        },
-        panel: {
-            width: DRAWER_WIDTH,
-        },
-        footer: {
-            flex: 0,
-            height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: theme.spaces.medium,
-        },
-    });

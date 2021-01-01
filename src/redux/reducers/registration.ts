@@ -1,5 +1,6 @@
 import { CREATE_ACCOUNT, CHECK_USERNAME, CHECK_EMAIL, VERIFY_EMAIL } from '../actions/types';
 import { RegistrationState } from '../../__types__';
+import { ReducerAction } from '.';
 
 const initialState: RegistrationState = {
     pending: false,
@@ -9,7 +10,7 @@ const initialState: RegistrationState = {
     emailVerified: false,
     error: 0,
 };
-export const registrationReducer = (state = initialState, action): RegistrationState => {
+export const registrationReducer = (state = initialState, action: ReducerAction): RegistrationState => {
     switch (action.type) {
         case CREATE_ACCOUNT.REQUEST:
             return {

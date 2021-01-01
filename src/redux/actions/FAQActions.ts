@@ -4,10 +4,10 @@ import { Dispatch } from 'redux';
 import * as ACTIONS from './types';
 
 export function loadFAQ() {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch): void => {
         dispatch({ type: ACTIONS.GET_FAQ.REQUEST });
 
-        HttpRequest.get(ACTIONS.GET_FAQ.API)
+        void HttpRequest.get(ACTIONS.GET_FAQ.API)
             .onSuccess((body: any) => {
                 dispatch(success(ACTIONS.GET_FAQ.SUCCESS, body));
             })
@@ -19,10 +19,10 @@ export function loadFAQ() {
 }
 
 export function loadPlaceholder() {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch): void => {
         dispatch({ type: ACTIONS.GET_CONFIG.REQUEST });
 
-        HttpRequest.get(ACTIONS.GET_CONFIG.API)
+        void HttpRequest.get(ACTIONS.GET_CONFIG.API)
             .onSuccess((body: any) => {
                 dispatch(success(ACTIONS.GET_CONFIG.SUCCESS, body));
             })

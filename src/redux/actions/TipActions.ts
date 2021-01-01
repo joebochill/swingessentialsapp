@@ -4,10 +4,10 @@ import { Dispatch } from 'redux';
 import * as ACTIONS from './types';
 
 export function loadTips() {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch): void => {
         dispatch({ type: ACTIONS.GET_TIPS.REQUEST });
 
-        HttpRequest.get(ACTIONS.GET_TIPS.API)
+        void HttpRequest.get(ACTIONS.GET_TIPS.API)
             .onSuccess((body: any) => {
                 dispatch(success(ACTIONS.GET_TIPS.SUCCESS, body));
             })

@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { Action, combineReducers } from 'redux';
 import { loginReducer } from './authentication';
 import { lessonsReducer } from './lessons';
 import { tipsReducer } from './tips';
@@ -12,6 +12,10 @@ import { faqReducer } from './faq';
 import { logsReducer } from './logs';
 import { tutorialReducer } from './tutorials';
 import { configReducer } from './config';
+
+export type ReducerAction = Action & {
+    payload: any;
+};
 
 export const AppReducer = combineReducers({
     login: loginReducer,

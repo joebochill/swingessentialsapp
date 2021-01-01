@@ -1,11 +1,12 @@
 import { LOGOUT, GET_FAQ, TOKEN_TIMEOUT } from '../actions/types';
 import { FAQState } from '../../__types__';
+import { ReducerAction } from '.';
 
 const initialState: FAQState = {
     loading: false,
     questions: [],
 };
-export const faqReducer = (state = initialState, action): FAQState => {
+export const faqReducer = (state = initialState, action: ReducerAction): FAQState => {
     switch (action.type) {
         case GET_FAQ.REQUEST:
             return {

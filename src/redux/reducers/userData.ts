@@ -1,5 +1,6 @@
 import { LOGIN, LOGOUT, GET_USER_DATA, TOKEN_TIMEOUT, CREATE_ACCOUNT } from '../actions/types';
 import { UserDataState } from '../../__types__';
+import { ReducerAction } from '.';
 
 const initialState: UserDataState = {
     username: '',
@@ -10,7 +11,7 @@ const initialState: UserDataState = {
     phone: '',
     joined: 0,
 };
-export const userDataReducer = (state = initialState, action): UserDataState => {
+export const userDataReducer = (state = initialState, action: ReducerAction): UserDataState => {
     switch (action.type) {
         case GET_USER_DATA.SUCCESS:
         case LOGIN.SUCCESS:

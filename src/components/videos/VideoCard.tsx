@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTheme, ActivityIndicator } from 'react-native-paper'; //'../../styles/theme';
 
 // Components
-import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Platform, StyleProp, ViewStyle } from 'react-native';
 import { Subtitle } from '../';
 import { YouTube } from './Youtube';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
@@ -14,6 +14,39 @@ import { black } from '../../styles/colors';
 // Types
 // import { Theme } from '../../styles/theme';
 
+const useStyles = (
+    theme: ReactNativePaper.Theme
+): StyleSheet.NamedStyles<{
+    actionItem: StyleProp<ViewStyle>;
+    card: StyleProp<ViewStyle>;
+    header: StyleProp<ViewStyle>;
+}> =>
+    StyleSheet.create({
+        actionItem: {
+            marginLeft: theme.spaces.small,
+        },
+        card: {
+            shadowColor: black[900],
+            shadowOpacity: 0.4,
+            shadowRadius: 3,
+            shadowOffset: {
+                width: 0,
+                height: 1,
+            },
+            elevation: 1,
+            flex: 1,
+            backgroundColor: theme.colors.surface,
+            borderRadius: theme.roundness,
+        },
+        header: {
+            height: unit(52),
+            paddingHorizontal: theme.spaces.medium,
+            overflow: 'hidden',
+            flexDirection: 'row',
+            alignItems: 'center',
+        },
+    });
+
 export type VideoCardProps = {
     headerColor?: string;
     headerTitle: string;
@@ -21,7 +54,7 @@ export type VideoCardProps = {
     headerIcon?: string;
     headerFontColor?: string;
     video?: string;
-    onExpand?: Function;
+    onExpand?: () => void;
 };
 
 export const VideoCard: React.FC<VideoCardProps> = (props) => {
@@ -63,7 +96,7 @@ export const VideoCard: React.FC<VideoCardProps> = (props) => {
                     </View>
                     {onExpand && (
                         <TouchableOpacity
-                            onPress={() => {
+                            onPress={(): void => {
                                 setPlay(false);
                                 setRefresh((refresh + 1) % 2);
                                 onExpand();
@@ -79,7 +112,7 @@ export const VideoCard: React.FC<VideoCardProps> = (props) => {
                         <YouTube
                             videoId={video}
                             play={play}
-                            onReady={() => setReady(true)}
+                            onReady={(): void => setReady(true)}
                             style={{ opacity: ready ? 1 : 0, width: videoWidth, height: videoHeight }}
                         />
                     )}
@@ -94,30 +127,3 @@ export const VideoCard: React.FC<VideoCardProps> = (props) => {
         </View>
     );
 };
-
-const useStyles = (theme: ReactNativePaper.Theme) =>
-    StyleSheet.create({
-        actionItem: {
-            marginLeft: theme.spaces.small,
-        },
-        card: {
-            shadowColor: black[900],
-            shadowOpacity: 0.4,
-            shadowRadius: 3,
-            shadowOffset: {
-                width: 0,
-                height: 1,
-            },
-            elevation: 1,
-            flex: 1,
-            backgroundColor: theme.colors.surface,
-            borderRadius: theme.roundness,
-        },
-        header: {
-            height: unit(52),
-            paddingHorizontal: theme.spaces.medium,
-            overflow: 'hidden',
-            flexDirection: 'row',
-            alignItems: 'center',
-        },
-    });

@@ -8,7 +8,7 @@ import { useFlexStyles } from '../../styles';
 
 type TutorialProps = {
     visible: boolean;
-    onClose: Function;
+    onClose: () => void;
 };
 
 export const TutorialModal: React.FC<TutorialProps> = (props) => {
@@ -46,7 +46,7 @@ export const TutorialModal: React.FC<TutorialProps> = (props) => {
                     labelStyle={{ color: theme.colors.onPrimary }}
                     mode={'text'}
                     title="Skip"
-                    onPress={() => onClose()}
+                    onPress={onClose}
                 />
                 <View style={{ marginVertical: insets.top }}>
                     <ScrollView contentContainerStyle={flexStyles.paddingHorizontal}>{props.children}</ScrollView>

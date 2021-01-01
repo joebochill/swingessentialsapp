@@ -14,8 +14,19 @@ import { Logger } from '../../utilities/logging';
 import * as Keychain from 'react-native-keychain';
 import AsyncStorage from '@react-native-community/async-storage';
 
+export function loadUserContent() {
+    return (dispatch: ThunkDispatch<any, void, any>): void => {
+        // dispatch({type:DATA_FROM_TOKEN.REQUEST});
+        dispatch(loadLessons());
+        dispatch(loadCredits());
+        dispatch(loadSettings());
+        dispatch(loadTips());
+        dispatch(loadBlogs());
+    };
+}
+
 export function requestLogin(userCredentials: Credentials, remember = false, useTouch = false) {
-    return (dispatch: ThunkDispatch<any, void, any>) => {
+    return (dispatch: ThunkDispatch<any, void, any>): Promise<void> => {
         dispatch({ type: ACTIONS.LOGIN.REQUEST });
         return fetch(`${BASEURL}/${ACTIONS.LOGIN.API}`, {
             headers: {
@@ -24,32 +35,34 @@ export function requestLogin(userCredentials: Credentials, remember = false, use
         })
             .then((response) => {
                 switch (response.status) {
-                    case 200:
-                        if (useTouch) Keychain.setGenericPassword(userCredentials.username, userCredentials.password);
-                        else Keychain.resetGenericPassword();
+                    case 200: {
+                        if (useTouch)
+                            void Keychain.setGenericPassword(userCredentials.username, userCredentials.password);
+                        else void Keychain.resetGenericPassword();
                         if (remember) {
-                            AsyncStorage.setItem('@SwingEssentials:lastUser', userCredentials.username);
+                            void AsyncStorage.setItem('@SwingEssentials:lastUser', userCredentials.username);
                         }
 
                         const token = response.headers.get('Token');
-                        response
+                        void response
                             .json()
-                            .then((json) => {
+                            .then((json): void => {
                                 dispatch(success(ACTIONS.LOGIN.SUCCESS, { ...json, token: token }));
                             })
-                            .then(() => {
+                            .then((): void => {
                                 dispatch(loadUserContent());
                             });
                         break;
+                    }
                     default:
-                        Keychain.resetGenericPassword();
+                        void Keychain.resetGenericPassword();
                         dispatch(failure(ACTIONS.LOGIN.FAILURE, response, 'Login'));
                         break;
                 }
             })
-            .catch((error) => {
-                Keychain.resetGenericPassword();
-                Logger.logError({
+            .catch((error): void => {
+                void Keychain.resetGenericPassword();
+                void Logger.logError({
                     code: 'ACTLGN100',
                     description: `Exception encountered while executing login request.`,
                     rawErrorCode: error.code,
@@ -61,9 +74,9 @@ export function requestLogin(userCredentials: Credentials, remember = false, use
 }
 /* clears the current authentication token */
 export function requestLogout() {
-    return (dispatch: ThunkDispatch<any, void, any>) => {
+    return (dispatch: ThunkDispatch<any, void, any>): void => {
         dispatch({ type: ACTIONS.LOGOUT.REQUEST });
-        HttpRequest.get(ACTIONS.LOGOUT.API)
+        void HttpRequest.get(ACTIONS.LOGOUT.API)
             .withFullResponse()
             .onSuccess(() => {
                 dispatch(success(ACTIONS.LOGOUT.SUCCESS));
@@ -78,9 +91,9 @@ export function requestLogout() {
 }
 
 export function refreshToken() {
-    return (dispatch: ThunkDispatch<any, void, any>) => {
+    return (dispatch: ThunkDispatch<any, void, any>): void => {
         dispatch({ type: ACTIONS.REFRESH_TOKEN.REQUEST });
-        HttpRequest.get(ACTIONS.REFRESH_TOKEN.API)
+        void HttpRequest.get(ACTIONS.REFRESH_TOKEN.API)
             .withFullResponse()
             .onSuccess((response: any) => {
                 const token = response.headers.get('Token');
@@ -94,11 +107,11 @@ export function refreshToken() {
 }
 
 export function setToken(token: string) {
-    return (dispatch: ThunkDispatch<any, void, any>) => {
+    return (dispatch: ThunkDispatch<any, void, any>): void => {
         const exp = JSON.parse(atob(token.split('.')[1])).exp;
         const expired = exp < Date.now() / 1000;
         if (expired) {
-            Logger.logMessage(`Local token has expired.`);
+            void Logger.logMessage(`Local token has expired.`);
         }
         dispatch({ type: ACTIONS.SET_TOKEN.REQUEST, payload: { token: expired ? null : token } });
         dispatch(loadUserContent());
@@ -106,9 +119,9 @@ export function setToken(token: string) {
 }
 
 export function checkToken() {
-    return (dispatch: ThunkDispatch<any, void, any>) => {
+    return (dispatch: ThunkDispatch<any, void, any>): void => {
         dispatch({ type: ACTIONS.CHECK_TOKEN.REQUEST });
-        HttpRequest.get(ACTIONS.CHECK_TOKEN.API)
+        void HttpRequest.get(ACTIONS.CHECK_TOKEN.API)
             .withFullResponse()
             .onSuccess((response: any) => {
                 const token = response.headers.get('Token');
@@ -148,14 +161,3 @@ export function checkToken() {
 //         });
 //     }
 // }
-
-export function loadUserContent() {
-    return (dispatch: ThunkDispatch<any, void, any>) => {
-        // dispatch({type:DATA_FROM_TOKEN.REQUEST});
-        dispatch(loadLessons());
-        dispatch(loadCredits());
-        dispatch(loadSettings());
-        dispatch(loadTips());
-        dispatch(loadBlogs());
-    };
-}

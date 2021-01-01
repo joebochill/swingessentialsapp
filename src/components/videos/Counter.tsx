@@ -11,10 +11,10 @@ import { useTheme } from 'react-native-paper';
 export type CountDownProps = ViewProps & {
     startValue: number;
     endValue?: number;
-    onFinish?: Function;
+    onFinish?: () => void;
 };
-export const CountDown = (props: CountDownProps) => {
-    const { startValue, endValue = 0, onFinish = () => {} } = props;
+export const CountDown: React.FC<CountDownProps> = (props) => {
+    const { startValue, endValue = 0, onFinish = (): void => {} } = props;
     const [seconds, setSeconds] = useState(startValue);
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
@@ -29,7 +29,7 @@ export const CountDown = (props: CountDownProps) => {
             onFinish();
         }
 
-        return () => clearInterval(interval);
+        return (): void => clearInterval(interval);
     }, [endValue, onFinish, seconds]);
 
     return seconds > endValue ? (
@@ -52,7 +52,7 @@ export type VideoTimerProps = ViewProps & {
     offset?: number;
 };
 
-export const VideoTimer = (props: VideoTimerProps) => {
+export const VideoTimer: React.FC<VideoTimerProps> = (props) => {
     const { visible, startValue = 0, offset = -1 } = props;
     const [seconds, setSeconds] = useState(startValue);
     const theme = useTheme();
@@ -61,7 +61,7 @@ export const VideoTimer = (props: VideoTimerProps) => {
         const interval = setInterval(() => {
             setSeconds((sec) => sec + 1);
         }, 1000);
-        return () => clearInterval(interval);
+        return (): void => clearInterval(interval);
     }, [seconds]);
 
     const displaySeconds = Math.max(0, seconds + offset);
