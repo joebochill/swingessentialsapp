@@ -17,7 +17,7 @@ import {
     View,
 } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import { TextInput } from 'react-native-paper';
+import { TextInput, useTheme } from 'react-native-paper';
 import { H7, ErrorBox, SEButton, SEHeader, BackgroundImage } from '../../components';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
 
@@ -28,7 +28,6 @@ import { ApplicationState } from '../../__types__';
 // Styles
 import { useSharedStyles, useFormStyles, useFlexStyles } from '../../styles';
 import { transparent, blackOpacity } from '../../styles/colors';
-import { useTheme } from 'react-native-paper';
 
 // Utilities
 import { height } from '../../utilities/dimensions';
@@ -40,6 +39,20 @@ import { checkUsernameAvailability, checkEmailAvailability, createAccount, verif
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { ROUTES } from '../../constants/routes';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+
+const getRegistrationErrorMessage = (code: number): string => {
+    switch (code) {
+        case 400302:
+            return 'Oops! Your verification link is invalid. Please check your registration email and try again. If you continue to have problems, please contact us.';
+        case 400303:
+            return 'Your verification link has expired. You will need to re-register.';
+        case 400304:
+        case -1:
+            return 'Your your email address has already been verified. Sign in to view your account.';
+        default:
+            return `Unknown Error: ${code}`;
+    }
+};
 
 type RegistrationKeys = {
     email: string;
@@ -70,17 +83,7 @@ type RegistrationProperty = {
     items?: Item[];
 };
 
-type VerifyStackProps = StackScreenProps<RootStackParamList, 'Verify'>;
-type RegisterStackProps = StackScreenProps<RootStackParamList, 'Register'>;
-export const Register = (props: RegisterStackProps | VerifyStackProps) => {
-    return props.route.params && props.route.params.code ? (
-        <VerifyForm {...(props as VerifyStackProps)} />
-    ) : (
-        <RegisterForm {...(props as RegisterStackProps)} />
-    );
-};
-
-const VerifyForm = (props: StackScreenProps<RootStackParamList, 'Verify'>) => {
+const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (props) => {
     const { navigation } = props;
     const { code } = props.route.params;
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -134,14 +137,14 @@ const VerifyForm = (props: StackScreenProps<RootStackParamList, 'Verify'>) => {
                                 ? `Your email address has been confirmed. ${
                                       token ? "Let's get started!" : 'Please sign in to view your account.'
                                   }`
-                                : _getRegistrationErrorMessage(verification.error)}
+                                : getRegistrationErrorMessage(verification.error)}
                         </H7>
                         {verification.emailVerified && (
                             <SEButton
                                 dark
                                 style={formStyles.formField}
                                 title={token ? 'GET STARTED' : 'SIGN IN'}
-                                onPress={() => navigation.replace(ROUTES.LOGIN)}
+                                onPress={(): void => navigation.replace(ROUTES.LOGIN)}
                             />
                         )}
                     </>
@@ -151,7 +154,7 @@ const VerifyForm = (props: StackScreenProps<RootStackParamList, 'Verify'>) => {
     );
 };
 
-const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) => {
+const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> = (props) => {
     const { navigation } = props;
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
@@ -200,14 +203,14 @@ const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) =
         }
     }, [previousPendingState, props.navigation, registration]);
 
-    const _canSubmit = useCallback((): boolean => {
+    const canSubmit = useCallback((): boolean => {
         const keys: RegistrationKey[] = Object.keys(fields) as RegistrationKey[];
         for (let i = 0; i < keys.length; i++) {
             if (fields[keys[i]].length <= 0) {
                 return false;
             }
         }
-        if (!fields.email.match(EMAIL_REGEX)) {
+        if (!EMAIL_REGEX.test(fields.email)) {
             return false;
         }
         if (!registration.emailAvailable) {
@@ -216,8 +219,8 @@ const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) =
         return true;
     }, [fields, registration]);
 
-    const _submitRegistration = useCallback((): void => {
-        if (!_canSubmit()) {
+    const submitRegistration = useCallback((): void => {
+        if (!canSubmit()) {
             return;
         }
         dispatch(
@@ -226,44 +229,44 @@ const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) =
                 platform: Platform.OS,
             })
         );
-    }, [_canSubmit, dispatch, fields]);
+    }, [canSubmit, dispatch, fields]);
 
     const regProperties: RegistrationProperty[] = [
         {
             property: 'username',
             label: 'Username',
             errorMessage: !registration.userAvailable ? 'Username is already registered' : '',
-            onChange: (value: string) => {
+            onChange: (value: string): void => {
                 setFields({
                     ...fields,
                     username: value.replace(/[^A-Z0-9-_.$#@!+]/gi, '').substr(0, 32),
                 });
             },
-            onBlur: () => dispatch(checkUsernameAvailability(fields.username)),
+            onBlur: (): void => dispatch(checkUsernameAvailability(fields.username)),
         },
         {
             property: 'email',
             label: 'Email Address',
             keyboard: 'email-address',
             errorMessage:
-                fields.email.length > 0 && !fields.email.match(EMAIL_REGEX)
+                fields.email.length > 0 && !EMAIL_REGEX.test(fields.email)
                     ? 'Invalid Email Address'
                     : !registration.emailAvailable
                     ? 'Email address is already registered'
                     : '',
-            onChange: (value) => {
+            onChange: (value): void => {
                 setFields({
                     ...fields,
                     email: value.substr(0, 128),
                 });
             },
-            onBlur: () => dispatch(checkEmailAvailability(fields.email)),
+            onBlur: (): void => dispatch(checkEmailAvailability(fields.email)),
         },
         {
             property: 'password',
             label: 'Password',
             secure: !showPassword, //true,
-            onSubmit: () => Keyboard.dismiss(),
+            onSubmit: (): void => Keyboard.dismiss(),
         },
         {
             property: 'heard',
@@ -312,12 +315,12 @@ const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) =
                                     disabled={registration.pending}
                                     placeholder={{ label: 'Choose One...', value: '', color: blackOpacity(0.25) }}
                                     items={field.items || []}
-                                    onOpen={() => setActiveField(field.property)}
-                                    onClose={() => setActiveField(null)}
+                                    onOpen={(): void => setActiveField(field.property)}
+                                    onClose={(): void => setActiveField(null)}
                                     onValueChange={
                                         field.onChange
                                             ? field.onChange
-                                            : (value: string) => {
+                                            : (value: string): void => {
                                                   setFields({
                                                       ...fields,
                                                       [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
@@ -352,8 +355,8 @@ const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) =
                                                 ? formStyles.active
                                                 : formStyles.inactive,
                                         ]}
-                                        onFocus={() => setActiveField(field.property)}
-                                        onBlur={(e) => {
+                                        onFocus={(): void => setActiveField(field.property)}
+                                        onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>): void => {
                                             setActiveField(null);
                                             if (field.onBlur) {
                                                 field.onBlur(e);
@@ -366,7 +369,7 @@ const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) =
                                         onChangeText={
                                             field.onChange
                                                 ? field.onChange
-                                                : (value: string) => {
+                                                : (value: string): void => {
                                                       setFields({
                                                           ...fields,
                                                           [field.property]: value
@@ -378,7 +381,7 @@ const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) =
                                         onSubmitEditing={
                                             field.onSubmit
                                                 ? field.onSubmit
-                                                : () => {
+                                                : (): void => {
                                                       if (refs[(index + 1) % refs.length].current) {
                                                           refs[(index + 1) % refs.length].current.focus();
                                                       }
@@ -404,7 +407,7 @@ const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) =
                                                 size={theme.sizes.small}
                                                 color={theme.colors.text}
                                                 underlayColor={transparent}
-                                                onPress={() => setShowPassword(!showPassword)}
+                                                onPress={(): void => setShowPassword(!showPassword)}
                                             />
                                         </View>
                                     )}
@@ -420,19 +423,19 @@ const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) =
                     <SEButton
                         dark
                         title={!registration.pending ? 'SUBMIT' : 'SUBMITTING'}
-                        // disabled={!_canSubmit()}
+                        // disabled={!canSubmit()}
                         loading={registration.pending}
                         onPress={
-                            _canSubmit() && !registration.pending
-                                ? () => {
-                                      _submitRegistration();
+                            canSubmit() && !registration.pending
+                                ? (): void => {
+                                      submitRegistration();
                                       if (scroller.current) {
                                           scroller.current.scrollTo({ x: 0, y: 0, animated: true });
                                       }
                                   }
                                 : undefined
                         }
-                        style={[formStyles.formField, _canSubmit() ? {} : { opacity: 0.6 }]}
+                        style={[formStyles.formField, canSubmit() ? {} : { opacity: 0.6 }]}
                     />
                 </ScrollView>
             </KeyboardAvoidingView>
@@ -440,16 +443,11 @@ const RegisterForm = (props: StackScreenProps<RootStackParamList, 'Register'>) =
     );
 };
 
-const _getRegistrationErrorMessage = (code: number): string => {
-    switch (code) {
-        case 400302:
-            return 'Oops! Your verification link is invalid. Please check your registration email and try again. If you continue to have problems, please contact us.';
-        case 400303:
-            return 'Your verification link has expired. You will need to re-register.';
-        case 400304:
-        case -1:
-            return 'Your your email address has already been verified. Sign in to view your account.';
-        default:
-            return `Unknown Error: ${code}`;
-    }
-};
+type VerifyStackProps = StackScreenProps<RootStackParamList, 'Verify'>;
+type RegisterStackProps = StackScreenProps<RootStackParamList, 'Register'>;
+export const Register: React.FC<RegisterStackProps | VerifyStackProps> = (props) =>
+    props.route.params && props.route.params.code ? (
+        <VerifyForm {...(props as VerifyStackProps)} />
+    ) : (
+        <RegisterForm {...(props as RegisterStackProps)} />
+    );

@@ -113,13 +113,13 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
 
                               <Carousel
                                   data={lesson.tips.slice(0, 3)}
-                                  renderItem={({ item }) => (
+                                  renderItem={({ item }): JSX.Element => (
                                       <VideoCard
                                           headerTitle={getLongDate(item.date)}
                                           headerSubtitle={item.title}
                                           style={{ marginBottom: theme.spaces.medium }}
                                           video={item.video}
-                                          onExpand={() => props.navigation.push(ROUTES.TIP, { tip: item })}
+                                          onExpand={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
                                       />
                                   )}
                                   sliderWidth={width}

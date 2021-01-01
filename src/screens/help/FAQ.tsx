@@ -2,9 +2,8 @@ import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { View, StyleSheet, Platform } from 'react-native';
-import { CollapsibleHeaderLayout } from '../../components';
-import { Body, YouTube } from '../../components';
+import { View, StyleSheet, Platform, StyleProp, ViewStyle } from 'react-native';
+import { CollapsibleHeaderLayout, Body, YouTube } from '../../components';
 
 // Styles
 import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
@@ -22,6 +21,18 @@ import { useTheme, Subheading } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 
+const useStyles = (
+    theme: ReactNativePaper.Theme
+): StyleSheet.NamedStyles<{
+    video: StyleProp<ViewStyle>;
+}> =>
+    StyleSheet.create({
+        video: {
+            height: (width - 2 * theme.spaces.medium) * (9 / 16),
+            marginTop: theme.spaces.xLarge,
+        },
+    });
+
 export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props) => {
     const faqState = useSelector((state: ApplicationState) => state.faq);
     const dispatch = useDispatch();
@@ -36,7 +47,7 @@ export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props
             title={'FAQ'}
             subtitle={'Answers to common questions'}
             refreshing={faqState.loading}
-            onRefresh={() => {
+            onRefresh={(): void => {
                 dispatch(loadFAQ());
             }}
             navigation={props.navigation}
@@ -88,10 +99,3 @@ export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props
         </CollapsibleHeaderLayout>
     );
 };
-const useStyles = (theme: ReactNativePaper.Theme) =>
-    StyleSheet.create({
-        video: {
-            height: (width - 2 * theme.spaces.medium) * (9 / 16),
-            marginTop: theme.spaces.xLarge,
-        },
-    });

@@ -3,7 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useCompare } from '../../utilities';
 
 // Components
-import { Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import {
+    Image,
+    ImageStyle,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleProp,
+    StyleSheet,
+    TextStyle,
+    View,
+    ViewStyle,
+} from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Utilities
@@ -36,6 +47,42 @@ import { requestLogin } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 
+const useStyles = (
+    theme: ReactNativePaper.Theme
+): StyleSheet.NamedStyles<{
+    container: StyleProp<ViewStyle>;
+    logo: ImageStyle;
+    scrollContainer: StyleProp<ViewStyle>;
+    toggle: StyleProp<ViewStyle>;
+    toggleLabel: StyleProp<TextStyle>;
+}> =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+        },
+        logo: {
+            height: unit(60),
+            width: '100%',
+            resizeMode: 'contain',
+            marginBottom: theme.spaces.medium,
+        },
+        scrollContainer: {
+            minHeight: height - getStatusBarHeight(),
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingHorizontal: theme.spaces.medium,
+        },
+        toggle: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+        },
+        toggleLabel: {
+            fontSize: theme.fontSizes[14],
+            marginRight: theme.spaces.small,
+        },
+    });
+
 type BiometryState = {
     available: boolean;
     type: 'FaceID' | 'TouchID' | 'Fingerprint' | 'None';
@@ -59,7 +106,7 @@ const initialCredentials: CredentialsState = {
     savedCredentials: undefined,
 };
 
-export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
+export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (props) => {
     const theme = useTheme();
     const styles = useStyles(theme);
     const formStyles = useFormStyles(theme);
@@ -85,7 +132,7 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
 
     useEffect(() => {
         // Load saved settings
-        const loadSavedSettings = async () => {
+        const loadSavedSettings = async (): Promise<void> => {
             try {
                 const save = await AsyncStorage.getItem('@SwingEssentials:saveUser');
                 const use = await AsyncStorage.getItem('@SwingEssentials:useTouch');
@@ -94,7 +141,7 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                 setRemember(save === 'yes');
                 setUseBiometry(use === 'yes');
             } catch (err) {
-                Logger.logError({
+                void Logger.logError({
                     code: 'LGN100',
                     description: 'Failed to load stored settings.',
                     rawErrorCode: err.code,
@@ -102,12 +149,12 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                 });
             }
         };
-        loadSavedSettings();
+        void loadSavedSettings();
     }, []);
 
     useEffect(() => {
         // Load biometric type
-        const touchCheck = async () => {
+        const touchCheck = async (): Promise<void> => {
             try {
                 const biometricType = await TouchID.isSupported();
                 setBiometry({
@@ -119,23 +166,23 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                 setBiometry({ ...biometry, available: false });
             }
         };
-        touchCheck();
+        void touchCheck();
     }, []);
 
     useEffect(() => {
         // Load stored credentials
-        const loadKeychainCredentials = async () => {
+        const loadKeychainCredentials = async (): Promise<void> => {
             try {
-                const _credentials = await Keychain.getGenericPassword();
+                const keychainCredentials = await Keychain.getGenericPassword();
 
-                if (_credentials) {
+                if (keychainCredentials) {
                     setCredentials({
                         ...credentials,
                         stored: true,
-                        savedCredentials: _credentials,
+                        savedCredentials: keychainCredentials,
                     });
                     if (remember) {
-                        setUsername(_credentials.username);
+                        setUsername(keychainCredentials.username);
                     }
                 } else {
                     setCredentials({
@@ -145,7 +192,7 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                     });
                 }
             } catch (err) {
-                Logger.logError({
+                void Logger.logError({
                     code: 'LGN200',
                     description: 'Failed to load stored credentials.',
                     rawErrorCode: err.code,
@@ -153,7 +200,7 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                 });
             }
         };
-        loadKeychainCredentials();
+        void loadKeychainCredentials();
     }, [token, error, remember]);
 
     useEffect(() => {
@@ -169,7 +216,7 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
             setPassword('');
             if (failures > 0) {
                 setCredentials({ ...credentials, stored: false });
-                Keychain.resetGenericPassword();
+                void Keychain.resetGenericPassword();
             }
         }
     }, [failuresChanged, failures, credentials]);
@@ -225,7 +272,7 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
     useEffect(() => {
         // Show biometric login on load
         if (!token && useBiometry && biometry.available && credentials.stored) {
-            showBiometricLogin();
+            void showBiometricLogin();
         }
     }, [token, useBiometry, biometry.available, credentials.stored, showBiometricLogin]);
 
@@ -256,10 +303,10 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                                     : formStyles.inactive
                             }
                             label={'Username'}
-                            onFocus={() => setActiveField('username')}
-                            onBlur={() => setActiveField(null)}
-                            onChangeText={(val: string) => setUsername(val)}
-                            onSubmitEditing={() => {
+                            onFocus={(): void => setActiveField('username')}
+                            onBlur={(): void => setActiveField(null)}
+                            onChangeText={(val: string): void => setUsername(val)}
+                            onSubmitEditing={(): void => {
                                 if (passField.current) {
                                     passField.current.focus();
                                 }
@@ -285,7 +332,7 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                                     size={theme.sizes.small}
                                     color={theme.colors.text}
                                     underlayColor={transparent}
-                                    onPress={() => showBiometricLogin()}
+                                    onPress={(): void => showBiometricLogin()}
                                 />
                             </View>
                         )}
@@ -300,10 +347,10 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                             formStyles.formField,
                             activeField === 'password' || password.length > 0 ? formStyles.active : formStyles.inactive,
                         ]}
-                        onFocus={() => setActiveField('password')}
-                        onBlur={() => setActiveField(null)}
-                        onChangeText={(val: string) => setPassword(val)}
-                        onSubmitEditing={() => onLogin(username, password)}
+                        onFocus={(): void => setActiveField('password')}
+                        onBlur={(): void => setActiveField(null)}
+                        onChangeText={(val: string): void => setPassword(val)}
+                        onSubmitEditing={(): void => onLogin(username, password)}
                         placeholder="Enter your password"
                         ref={passField}
                         returnKeyType={'go'}
@@ -320,11 +367,11 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                             </Body>
                             <Switch
                                 value={remember}
-                                onValueChange={(val: boolean) => {
+                                onValueChange={(val: boolean): void => {
                                     setRemember(val);
-                                    AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
+                                    void AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
                                     if (!val) {
-                                        AsyncStorage.removeItem('@SwingEssentials:lastUser');
+                                        void AsyncStorage.removeItem('@SwingEssentials:lastUser');
                                         setUsername('');
                                     }
                                 }}
@@ -337,9 +384,9 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                                 <Body color={'onPrimary'} style={[styles.toggleLabel]}>{`Use ${biometry.type}`}</Body>
                                 <Switch
                                     value={useBiometry}
-                                    onValueChange={(val: boolean) => {
+                                    onValueChange={(val: boolean): void => {
                                         setUseBiometry(val);
-                                        AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
+                                        void AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
                                     }}
                                     ios_backgroundColor={theme.colors.light}
                                     trackColor={{ false: theme.colors.onPrimary, true: theme.colors.accent }}
@@ -367,7 +414,7 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                             title={'Sign In'}
                             loading={pending}
                             style={{ flex: 1 }}
-                            onPress={() => onLogin(username, password)}
+                            onPress={(): void => onLogin(username, password)}
                         />
                         <SEButton
                             mode={'text'}
@@ -375,7 +422,7 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                             labelStyle={{ color: theme.colors.onPrimary }}
                             style={{ marginLeft: theme.spaces.medium, flex: 0 }}
                             title="CANCEL"
-                            onPress={() => props.navigation.pop()}
+                            onPress={(): void => props.navigation.pop()}
                         />
                     </View>
 
@@ -385,13 +432,13 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
                             mode={'text'}
                             labelStyle={{ color: theme.colors.onPrimary }}
                             title="Forgot Password?"
-                            onPress={() => props.navigation.push(ROUTES.RESET_PASSWORD)}
+                            onPress={(): void => props.navigation.push(ROUTES.RESET_PASSWORD)}
                         />
                         <SEButton
                             mode={'text'}
                             labelStyle={{ color: theme.colors.onPrimary }}
                             title="Need an Account?"
-                            onPress={() => props.navigation.push(ROUTES.REGISTER)}
+                            onPress={(): void => props.navigation.push(ROUTES.REGISTER)}
                         />
                     </View>
                 </View>
@@ -399,31 +446,3 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
         </KeyboardAvoidingView>
     );
 };
-
-const useStyles = (theme: ReactNativePaper.Theme) =>
-    StyleSheet.create({
-        container: {
-            flex: 1,
-        },
-        logo: {
-            height: unit(60),
-            width: '100%',
-            resizeMode: 'contain',
-            marginBottom: theme.spaces.medium,
-        },
-        scrollContainer: {
-            minHeight: height - getStatusBarHeight(),
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingHorizontal: theme.spaces.medium,
-        },
-        toggle: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-        },
-        toggleLabel: {
-            fontSize: theme.fontSizes[14],
-            marginRight: theme.spaces.small,
-        },
-    });

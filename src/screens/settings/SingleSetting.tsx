@@ -64,7 +64,7 @@ const caseSame = (val1: string | number, val2: string | number): boolean => {
     return val1 === val2;
 };
 
-export const SingleSetting = (props: StackScreenProps<RootStackParamList, 'SingleSetting'>) => {
+export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'SingleSetting'>> = (props) => {
     const { navigation, route } = props;
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -78,7 +78,7 @@ export const SingleSetting = (props: StackScreenProps<RootStackParamList, 'Singl
 
     const [value, setValue] = useState(settings[currentSettingName]);
 
-    const _updateSetting = useCallback(() => {
+    const updateSetting = useCallback(() => {
         if (currentSettingName === 'notifications') {
             dispatch(
                 putSettings({
@@ -113,7 +113,7 @@ export const SingleSetting = (props: StackScreenProps<RootStackParamList, 'Singl
                 title={'Settings'}
                 subtitle={currentSetting.label}
                 showAuth={false}
-                onNavigate={() => _updateSetting()}
+                onNavigate={(): void => updateSetting()}
                 navigation={navigation}
             />
             <View
@@ -135,7 +135,7 @@ export const SingleSetting = (props: StackScreenProps<RootStackParamList, 'Singl
                             onPress={(): void => setValue(val)}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     {caseSame(value, val) && (
                                         <MatIcon

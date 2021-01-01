@@ -18,7 +18,9 @@ import { theme } from './src/styles/theme';
 // Redux
 import { store } from './src/redux/store';
 
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
 declare global {
+    /* eslint-disable-next-line @typescript-eslint/no-namespace */
     namespace ReactNativePaper {
         interface ThemeColors {
             // primary: string;
@@ -46,7 +48,7 @@ declare global {
         //     | '900';
         // }
         interface ThemeFonts {
-            semiBold: ReactNativePaper.ThemeFont;
+            semiBold: ThemeFont;
         }
 
         interface Theme {
@@ -82,6 +84,7 @@ declare global {
         }
     }
 }
+/* eslint-enable @typescript-eslint/consistent-type-definitions */
 
 export const App: React.FC = () => {
     useEffect((): void => {

@@ -47,7 +47,7 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
             subtitle={'The pro in your pocket'}
             mainAction={'menu'}
             refreshing={lessons.loading || credits.inProgress || tips.loading}
-            onRefresh={() => {
+            onRefresh={(): void => {
                 dispatch(loadUserContent());
             }}
             bottomPad={false}
@@ -58,18 +58,18 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                 <SEButton
                     mode={'outlined'}
                     title={'View All'}
-                    onPress={() => props.navigation.navigate(ROUTES.LESSONS)}
+                    onPress={(): void => props.navigation.navigate(ROUTES.LESSONS)}
                 />
             </View>
             <Carousel
                 data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)}
-                renderItem={({ item }) => (
+                renderItem={({ item }): JSX.Element => (
                     <VideoCard
                         // headerIcon={item.type === 'in-person' ? 'settings-remote' : 'settings-remote'}
                         headerTitle={item.request_date}
                         headerSubtitle={role === 'administrator' ? item.username : undefined}
                         video={item.response_video}
-                        onExpand={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
+                        onExpand={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                     />
                 )}
                 sliderWidth={width}
@@ -82,7 +82,7 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                 <SEButton
                     mode={'outlined'}
                     title={'Order More'}
-                    onPress={() => props.navigation.navigate(ROUTES.ORDER)}
+                    onPress={(): void => props.navigation.navigate(ROUTES.ORDER)}
                 />
             </View>
             <View style={[flexStyles.row, flexStyles.paddingHorizontal, { justifyContent: 'space-between' }]}>
@@ -108,7 +108,7 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                             title={'Submit a Swing'}
                             icon={'publish'}
                             style={{ marginTop: theme.spaces.medium }}
-                            onPress={() => props.navigation.navigate(ROUTES.SUBMIT)}
+                            onPress={(): void => props.navigation.navigate(ROUTES.SUBMIT)}
                         />
                     )}
                 </View>
@@ -121,18 +121,18 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                         <SEButton
                             mode={'outlined'}
                             title={'View All'}
-                            onPress={() => props.navigation.navigate(ROUTES.TIPS)}
+                            onPress={(): void => props.navigation.navigate(ROUTES.TIPS)}
                         />
                     </View>
                     <Carousel
                         data={tips.tipList.slice(0, 3)}
-                        renderItem={({ item }) => (
+                        renderItem={({ item }): JSX.Element => (
                             <VideoCard
                                 // headerIcon={'event'}
                                 headerTitle={item.title}
                                 headerSubtitle={role === 'administrator' ? getLongDate(item.date) : ''}
                                 video={item.video}
-                                onExpand={() => props.navigation.push(ROUTES.TIP, { tip: item })}
+                                onExpand={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
                             />
                         )}
                         sliderWidth={width}

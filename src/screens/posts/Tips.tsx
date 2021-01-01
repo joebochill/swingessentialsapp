@@ -43,13 +43,13 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
             subtitle={'Keep your game sharp'}
             backgroundImage={bg}
             refreshing={tips.loading}
-            onRefresh={() => {
+            onRefresh={(): void => {
                 dispatch(loadTips());
             }}
             navigation={props.navigation}
         >
             <SectionList
-                renderSectionHeader={({ section: { bucketName, index } }) => (
+                renderSectionHeader={({ section: { bucketName, index } }): JSX.Element => (
                     <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: theme.spaces.jumbo } : {}]}>
                         <Subheading style={listStyles.heading}>{bucketName}</Subheading>
                     </View>
@@ -63,18 +63,18 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
                         <Divider />
                     </>
                 }
-                renderItem={({ item, index }) => (
+                renderItem={({ item, index }): JSX.Element => (
                     <>
                         {index === 0 && <Divider />}
                         <List.Item
                             title={item.title}
                             titleNumberOfLines={2}
                             titleEllipsizeMode={'tail'}
-                            onPress={() => props.navigation.push(ROUTES.TIP, { tip: item })}
+                            onPress={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <MatIcon
                                         name={'chevron-right'}

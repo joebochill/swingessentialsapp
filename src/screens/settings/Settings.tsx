@@ -26,7 +26,7 @@ import { width, height } from '../../utilities/dimensions';
 import { HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 
-const objectsEqual = (a: Object, b: Object) => {
+const objectsEqual = (a: Record<string, unknown>, b: Record<string, unknown>): boolean => {
     // Create arrays of property names
     const aProps = Object.getOwnPropertyNames(a);
     const bProps = Object.getOwnPropertyNames(b);
@@ -52,7 +52,7 @@ const objectsEqual = (a: Object, b: Object) => {
     return true;
 };
 
-export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>) => {
+export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>> = (props) => {
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
     const userData = useSelector((state: ApplicationState) => state.userData);
@@ -101,7 +101,7 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                 refreshControl={
                     <RefreshControl
                         refreshing={settings.loading}
-                        onRefresh={() => {
+                        onRefresh={(): void => {
                             dispatch(loadSettings());
                             dispatch(loadUserInfo());
                         }}
@@ -112,7 +112,7 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                 <View style={{ alignSelf: 'center' }}>
                     <TouchableHighlight
                         underlayColor={theme.colors.onPrimary}
-                        onPress={() => {
+                        onPress={(): void => {
                             ImagePicker.openPicker({
                                 width: 200,
                                 height: 200,
@@ -128,7 +128,7 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                                         })
                                     );
                                 })
-                                .catch((err) => {
+                                .catch((/*err*/): void => {
                                     // do nothing (canceled image picker)
                                 });
                         }}
@@ -166,7 +166,7 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                                 top: 0,
                                 right: 0,
                             }}
-                            onPress={() => {
+                            onPress={(): void => {
                                 dispatch(
                                     setUserAvatar({
                                         useAvatar: 0,
@@ -183,7 +183,7 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                     <SEButton
                         mode={'outlined'}
                         title={editAbout ? 'Cancel' : 'Edit'}
-                        onPress={() => {
+                        onPress={(): void => {
                             setEditAbout(!editAbout);
                             setPersonal(userData);
                         }}
@@ -198,7 +198,7 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                             titleEllipsizeMode={'tail'}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body>{userData.firstName}</Body>
                                 </View>
@@ -210,7 +210,7 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                             titleEllipsizeMode={'tail'}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body>{userData.lastName}</Body>
                                 </View>
@@ -222,7 +222,7 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                             titleEllipsizeMode={'tail'}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body>{userData.location}</Body>
                                 </View>
@@ -234,7 +234,7 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                             titleEllipsizeMode={'tail'}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body>{userData.phone}</Body>
                                 </View>
@@ -248,7 +248,7 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body>{userData.email}</Body>
                                 </View>
@@ -271,9 +271,9 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                                     ? formStyles.active
                                     : formStyles.inactive,
                             ]}
-                            onFocus={() => setActiveField('first')}
-                            onBlur={() => setActiveField(null)}
-                            onChangeText={(value: string) => setPersonal({ ...personal, firstName: value })}
+                            onFocus={(): void => setActiveField('first')}
+                            onBlur={(): void => setActiveField(null)}
+                            onChangeText={(value: string): void => setPersonal({ ...personal, firstName: value })}
                             underlineColorAndroid={transparent}
                         />
                         <Divider />
@@ -288,9 +288,9 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                                     ? formStyles.active
                                     : formStyles.inactive,
                             ]}
-                            onFocus={() => setActiveField('last')}
-                            onBlur={() => setActiveField(null)}
-                            onChangeText={(value: string) => setPersonal({ ...personal, lastName: value })}
+                            onFocus={(): void => setActiveField('last')}
+                            onBlur={(): void => setActiveField(null)}
+                            onChangeText={(value: string): void => setPersonal({ ...personal, lastName: value })}
                             underlineColorAndroid={transparent}
                         />
                         <Divider />
@@ -306,9 +306,9 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                                     ? formStyles.active
                                     : formStyles.inactive,
                             ]}
-                            onFocus={() => setActiveField('location')}
-                            onBlur={() => setActiveField(null)}
-                            onChangeText={(value: string) => setPersonal({ ...personal, location: value })}
+                            onFocus={(): void => setActiveField('location')}
+                            onBlur={(): void => setActiveField(null)}
+                            onChangeText={(value: string): void => setPersonal({ ...personal, location: value })}
                             underlineColorAndroid={transparent}
                         />
                         <Divider />
@@ -324,9 +324,9 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                                     ? formStyles.active
                                     : formStyles.inactive,
                             ]}
-                            onFocus={() => setActiveField('phone')}
-                            onBlur={() => setActiveField(null)}
-                            onChangeText={(value: string) => setPersonal({ ...personal, phone: value })}
+                            onFocus={(): void => setActiveField('phone')}
+                            onBlur={(): void => setActiveField(null)}
+                            onChangeText={(value: string): void => setPersonal({ ...personal, phone: value })}
                             underlineColorAndroid={transparent}
                         />
                         <Divider />
@@ -344,7 +344,7 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                             <SEButton
                                 style={formStyles.formField}
                                 title={'Save Changes'}
-                                onPress={() => {
+                                onPress={(): void => {
                                     /* TODO Save the settings */
                                     dispatch(setUserData(personal));
                                     setEditAbout(false);
@@ -362,11 +362,11 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                     <List.Item
                         title={'Swing Handedness'}
                         titleEllipsizeMode={'tail'}
-                        onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
+                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
                         style={listStyles.item}
                         titleStyle={{ marginLeft: -8 }}
                         descriptionStyle={{ marginLeft: -8 }}
-                        right={({ style, ...rightProps }) => (
+                        right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[flexStyles.row, style]} {...rightProps}>
                                 <Body>
                                     {settings.handedness.charAt(0).toUpperCase() + settings.handedness.substr(1)}
@@ -389,11 +389,11 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                     <List.Item
                         title={'Recording Duration'}
                         titleEllipsizeMode={'tail'}
-                        onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'duration' })}
+                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'duration' })}
                         style={listStyles.item}
                         titleStyle={{ marginLeft: -8 }}
                         descriptionStyle={{ marginLeft: -8 }}
-                        right={({ style, ...rightProps }) => (
+                        right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[flexStyles.row, style]} {...rightProps}>
                                 <Body>{`${settings.duration}s`}</Body>
                                 <MatIcon
@@ -408,11 +408,11 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                     <List.Item
                         title={'Recording Delay'}
                         titleEllipsizeMode={'tail'}
-                        onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'delay' })}
+                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'delay' })}
                         style={listStyles.item}
                         titleStyle={{ marginLeft: -8 }}
                         descriptionStyle={{ marginLeft: -8 }}
-                        right={({ style, ...rightProps }) => (
+                        right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[flexStyles.row, style]} {...rightProps}>
                                 <Body>{`${settings.delay}s`}</Body>
                                 <MatIcon
@@ -427,11 +427,11 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                     <List.Item
                         title={'Stance Overlay'}
                         titleEllipsizeMode={'tail'}
-                        onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'overlay' })}
+                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'overlay' })}
                         style={listStyles.item}
                         titleStyle={{ marginLeft: -8 }}
                         descriptionStyle={{ marginLeft: -8 }}
-                        right={({ style, ...rightProps }) => (
+                        right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[flexStyles.row, style]} {...rightProps}>
                                 <Body>{`${settings.overlay ? 'On' : 'Off'}`}</Body>
                                 <MatIcon
@@ -451,11 +451,13 @@ export const Settings = (props: StackScreenProps<RootStackParamList, 'Settings'>
                         <List.Item
                             title={'New Lesson Emails'}
                             titleEllipsizeMode={'tail'}
-                            onPress={() => props.navigation.navigate(ROUTES.SETTING, { setting: 'notifications' })}
+                            onPress={(): void =>
+                                props.navigation.navigate(ROUTES.SETTING, { setting: 'notifications' })
+                            }
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body>{`${settings.notifications ? 'On' : 'Off'}`}</Body>
                                     <MatIcon

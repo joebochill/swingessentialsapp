@@ -55,14 +55,14 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
             for (let i = 0; i < packages.length; i++) {
                 skus.push(packages[i].app_sku);
             }
-            const loadProducts = async () => {
+            const loadProducts = async (): Promise<void> => {
                 try {
                     await RNIap.initConnection();
                     const verifiedProducts = await RNIap.getProducts(skus);
                     setProducts(verifiedProducts.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)));
                     setSelected(0);
                 } catch (err) {
-                    Logger.logError({
+                    void Logger.logError({
                         code: 'IAP100',
                         description: 'Failed to load in-app purchases.',
                         rawErrorCode: err.code,
@@ -70,7 +70,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                     });
                 }
             };
-            loadProducts();
+            void loadProducts();
         }
     }, [packages]);
 
@@ -79,7 +79,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
             Alert.alert('Purchase Complete', 'Your order has finished processing. Thank you for your purchase!', [
                 {
                     text: 'Submit Your Swing Now',
-                    onPress: () => {
+                    onPress: (): void => {
                         props.navigation.navigate(ROUTES.SUBMIT);
                     },
                 },
@@ -106,7 +106,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 await RNIap.requestPurchase(sku, false);
             } catch (error) {
                 if (error.code !== RNIap.IAPErrorCode.E_USER_CANCELLED) {
-                    Logger.logError({
+                    void Logger.logError({
                         code: 'IAP200',
                         description: 'Failed to request in-app purchase.',
                         rawErrorCode: error.code,
@@ -125,7 +125,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
             subtitle={'Multiple packages available'}
             backgroundImage={bg}
             refreshing={credits.inProgress}
-            onRefresh={() => {
+            onRefresh={(): void => {
                 dispatch(loadCredits());
                 dispatch(loadPackages());
             }}
@@ -166,7 +166,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 keyboardShouldPersistTaps={'always'}
                 data={packages}
                 extraData={products}
-                renderItem={({ item, index }) => (
+                renderItem={({ item, index }): JSX.Element => (
                     <>
                         {index === 0 && <Divider />}
                         <List.Item
@@ -174,11 +174,11 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                             description={item.description}
                             titleNumberOfLines={2}
                             titleEllipsizeMode={'tail'}
-                            onPress={() => setSelected(index)}
+                            onPress={(): void => setSelected(index)}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body>{products.length > 0 ? `${products[index].localizedPrice}` : '--'}</Body>
                                     {selected === index && (
@@ -198,7 +198,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                         <Divider />
                     </>
                 )}
-                keyExtractor={(item) => `package_${item.app_sku}`}
+                keyExtractor={(item): string => `package_${item.app_sku}`}
             />
             <SEButton
                 style={[
@@ -209,7 +209,9 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 title={'PURCHASE'}
                 onPress={
                     roleError.length === 0 && !packagesProcessing && !credits.inProgress
-                        ? () => onPurchase(packages[selected].app_sku, packages[selected].shortcode)
+                        ? (): void => {
+                              void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
+                          }
                         : undefined
                 }
             />

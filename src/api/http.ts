@@ -30,11 +30,11 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
     }
     private readonly method: HttpMethod;
     private readonly endpoint: string;
-    private successCallback?: (body: any) => void;
+    private successCallback?: (body: any) => void | Promise<void>;
     private failureCallback?:
-        | ((response: Response) => void)
-        | ((response: XMLHttpRequest) => void)
-        | ((response: null) => void);
+        | ((response: Response) => void | Promise<void>)
+        | ((response: XMLHttpRequest) => void | Promise<void>)
+        | ((response: null) => void | Promise<void>);
     private body?: any;
     private parseResponse?: boolean;
 
@@ -50,12 +50,15 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
         this.body = stringify ? JSON.stringify(body) : body;
         return this;
     }
-    public onSuccess(callback: (body: any) => void): HttpRequest {
+    public onSuccess(callback: (body: any) => void | Promise<void>): HttpRequest {
         this.successCallback = callback;
         return this;
     }
     public onFailure(
-        callback: ((response: Response) => void) | ((response: XMLHttpRequest) => void) | ((response: null) => void)
+        callback:
+            | ((response: Response) => void | Promise<void>)
+            | ((response: XMLHttpRequest) => void | Promise<void>)
+            | ((response: null) => void | Promise<void>)
     ): HttpRequest {
         this.failureCallback = callback;
         return this;
@@ -79,11 +82,11 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                         } else if (this.method === HttpMethod.GET) {
                             reply = await response.json();
                         }
-                        if (this.successCallback) this.successCallback(reply);
+                        if (this.successCallback) void this.successCallback(reply);
                         break;
                     }
                     default:
-                        if (this.failureCallback) this.failureCallback(response);
+                        if (this.failureCallback) void this.failureCallback(response);
                         break;
                 }
             })
@@ -94,7 +97,7 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                     rawErrorCode: error.code,
                     rawErrorMessage: error.message,
                 });
-                if (this.failureCallback) this.failureCallback(null);
+                if (this.failureCallback) void this.failureCallback(null);
             });
     }
     public requestWithProgress(onProgress: (this: XMLHttpRequest, ev: ProgressEvent) => any): Promise<void> {
@@ -118,11 +121,11 @@ export class HttpRequest<TResponses extends GeneralResponseMapping = {}> {
                         } else if (this.method === HttpMethod.GET) {
                             reply = await response.json();
                         }
-                        if (this.successCallback) this.successCallback(reply);
+                        if (this.successCallback) void this.successCallback(reply);
                         break;
                     }
                     default:
-                        if (this.failureCallback) this.failureCallback(response);
+                        if (this.failureCallback) void this.failureCallback(response);
                         break;
                 }
             })

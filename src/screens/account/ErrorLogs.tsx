@@ -14,7 +14,7 @@ import { Logger } from '../../utilities/logging';
 
 // Types
 import { LOAD_LOGS } from '../../redux/actions/types';
-import { ApplicationState } from 'src/__types__';
+import { ApplicationState } from '../../__types__';
 import { useTheme, Caption } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
@@ -32,15 +32,21 @@ export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> =
     const theme = useTheme();
     const flexStyles = useFlexStyles(theme);
 
-    const getLogs = useCallback(async () => {
+    const getLogs = useCallback(async (): Promise<void> => {
         dispatch({ type: LOAD_LOGS.REQUEST });
-        const _logs = await Logger.readMessages('ERROR');
+        const storedLogs = await Logger.readMessages('ERROR');
         dispatch({ type: LOAD_LOGS.SUCCESS });
-        setLogs(_logs);
+        setLogs(storedLogs);
     }, [dispatch]);
 
     const sendMail = useCallback(() => {
-        Logger.sendEmail('ERROR', () => getLogs(), username);
+        void Logger.sendEmail(
+            'ERROR',
+            (): void => {
+                void getLogs();
+            },
+            username
+        );
     }, [getLogs, username]);
 
     useEffect(() => {
@@ -50,13 +56,15 @@ export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> =
     }, [props.navigation, token]);
 
     useEffect(() => {
-        getLogs();
+        void getLogs();
     }, [getLogs]);
 
     const actionItems: HeaderIcon[] = [
         {
             icon: RefreshIcon,
-            onPress: () => getLogs(),
+            onPress: (): void => {
+                void getLogs();
+            },
         },
     ];
     if (logs.length > 0) {
@@ -73,15 +81,15 @@ export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> =
             refreshing={loading}
             showAuth={false}
             actionItems={actionItems}
-            onRefresh={() => {
-                getLogs();
+            onRefresh={(): void => {
+                void getLogs();
             }}
             navigation={props.navigation}
         >
             <View style={[flexStyles.paddingHorizontal]}>
                 <SEButton
                     title={'SEND ERROR REPORT'}
-                    onPress={() => sendMail()}
+                    onPress={(): void => sendMail()}
                     style={{ marginBottom: theme.spaces.medium }}
                 />
                 <Caption style={{ color: theme.colors.text }}>{logs}</Caption>

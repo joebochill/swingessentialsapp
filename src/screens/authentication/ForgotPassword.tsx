@@ -31,8 +31,8 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
     const formStyles = useFormStyles(theme);
     const flexStyles = useFlexStyles(theme);
 
-    const _sendPasswordReset = useCallback(() => {
-        if (email.match(EMAIL_REGEX)) {
+    const sendPasswordReset = useCallback(() => {
+        if (EMAIL_REGEX.test(email)) {
             dispatch(requestPasswordReset({ email }));
             setComplete(true);
         }
@@ -82,10 +82,10 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
                                 formStyles.formField,
                                 activeField === 'email' || email.length > 0 ? formStyles.active : formStyles.inactive,
                             ]}
-                            onFocus={() => setActiveField('email')}
-                            onBlur={() => setActiveField(null)}
-                            onChangeText={(value: string) => setEmail(value.substr(0, 128))}
-                            onSubmitEditing={(): void => _sendPasswordReset()}
+                            onFocus={(): void => setActiveField('email')}
+                            onBlur={(): void => setActiveField(null)}
+                            onChangeText={(value: string): void => setEmail(value.substr(0, 128))}
+                            onSubmitEditing={(): void => sendPasswordReset()}
                             returnKeyType={'send'}
                             underlineColorAndroid={transparent}
                             value={email}
@@ -93,8 +93,8 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
                         <SEButton
                             dark
                             title={'REQUEST RESET'}
-                            onPress={email.match(EMAIL_REGEX) ? (): void => _sendPasswordReset() : undefined}
-                            style={[formStyles.formField, email.match(EMAIL_REGEX) ? {} : { opacity: 0.6 }]}
+                            onPress={EMAIL_REGEX.test(email) ? (): void => sendPasswordReset() : undefined}
+                            style={[formStyles.formField, EMAIL_REGEX.test(email) ? {} : { opacity: 0.6 }]}
                         />
                     </ScrollView>
                 )}

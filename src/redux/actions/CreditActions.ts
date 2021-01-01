@@ -22,8 +22,8 @@ export function loadCredits() {
 /* Hands the payment processing over to the server */
 export function purchaseCredits(
     data: { receipt: string; package: string },
-    onSuccess: (body: any) => void,
-    onFailure: (response: Response) => void
+    onSuccess: (body: any) => void | Promise<void>,
+    onFailure: (response: Response) => void | Promise<void>
 ) {
     return (dispatch: ThunkDispatch<any, void, any>): void => {
         dispatch({ type: ACTIONS.PURCHASE_CREDITS.REQUEST });
@@ -31,12 +31,12 @@ export function purchaseCredits(
             .withBody(data)
             .onSuccess((body: any) => {
                 dispatch(success(ACTIONS.PURCHASE_CREDITS.SUCCESS, body));
-                onSuccess(body);
+                void onSuccess(body);
                 dispatch(loadCredits());
             })
             .onFailure((response: Response) => {
                 dispatch(failure(ACTIONS.PURCHASE_CREDITS.FAILURE, response, 'PurchaseCredits'));
-                onFailure(response);
+                void onFailure(response);
             })
             .request();
     };
