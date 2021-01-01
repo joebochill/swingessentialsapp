@@ -1,5 +1,5 @@
 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-export const btoa = (input = '') => {
+export const btoa = (input = ''): string => {
     const str = input;
     let output = '';
 
@@ -19,11 +19,11 @@ export const btoa = (input = '') => {
 
     return output;
 };
-export const atob = (input = '') => {
+export const atob = (input = ''): string => {
     const str = input.replace(/=+$/, '');
     let output = '';
 
-    if (str.length % 4 == 1) {
+    if (str.length % 4 === 1) {
         throw new Error("'atob' failed: The string to be decoded is not correctly encoded.");
     }
     for (

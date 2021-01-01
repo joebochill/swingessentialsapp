@@ -1,8 +1,17 @@
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { unit } from './sizes';
-import { theme as defaultTheme } from './theme';
+import { theme as defaultTheme, Theme } from './theme';
 
-export const useFormStyles = (theme: ReactNativePaper.Theme = defaultTheme) =>
+export const useFormStyles = (
+    theme: ReactNativePaper.Theme = defaultTheme
+): StyleSheet.NamedStyles<{
+    fieldRow: StyleProp<ViewStyle>;
+    formField: StyleProp<ViewStyle>;
+    inactive: StyleProp<ViewStyle>;
+    active: StyleProp<ViewStyle>;
+    dashed: StyleProp<ViewStyle>;
+    errorBox: StyleProp<ViewStyle>;
+}> =>
     StyleSheet.create({
         fieldRow: {
             marginTop: theme.spaces.large,
@@ -33,7 +42,14 @@ export const useFormStyles = (theme: ReactNativePaper.Theme = defaultTheme) =>
         },
     });
 
-export const useFlexStyles = (theme: Theme = defaultTheme) =>
+export const useFlexStyles = (
+    theme: Theme = defaultTheme
+): StyleSheet.NamedStyles<{
+    row: StyleProp<ViewStyle>;
+    centered: StyleProp<ViewStyle>;
+    paddingHorizontal: StyleProp<ViewStyle>;
+    paddingMedium: StyleProp<ViewStyle>;
+}> =>
     StyleSheet.create({
         row: {
             flexDirection: 'row',
@@ -51,7 +67,12 @@ export const useFlexStyles = (theme: Theme = defaultTheme) =>
         },
     });
 
-export const useListStyles = (theme: Theme = defaultTheme) =>
+export const useListStyles = (
+    theme: Theme = defaultTheme
+): StyleSheet.NamedStyles<{
+    item: StyleProp<ViewStyle>;
+    heading: StyleProp<TextStyle>;
+}> =>
     StyleSheet.create({
         item: {
             backgroundColor: theme.colors.onPrimary,
@@ -68,7 +89,17 @@ export const useListStyles = (theme: Theme = defaultTheme) =>
         },
     });
 
-export const useSharedStyles = (theme: Theme = defaultTheme) =>
+export const useSharedStyles = (
+    theme: Theme = defaultTheme
+): StyleSheet.NamedStyles<{
+    absoluteFull: StyleProp<ViewStyle>;
+    border: StyleProp<ViewStyle>;
+    centered: StyleProp<ViewStyle>;
+    image: StyleProp<ViewStyle>;
+    pageContainer: StyleProp<ViewStyle>;
+    paragraph: StyleProp<TextStyle>;
+    sectionHeader: StyleProp<TextStyle>;
+}> =>
     StyleSheet.create({
         absoluteFull: {
             position: 'absolute',

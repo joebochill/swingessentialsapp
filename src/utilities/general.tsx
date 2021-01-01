@@ -17,7 +17,7 @@ export const MONTHS = [
 ];
 
 // Returns a number rounded to the specified number of decimal places
-export function roundNumber(num, dec) {
+export function roundNumber(num: number, dec: number): number {
     return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
 }
 
@@ -36,17 +36,17 @@ export const getUserRole = (token: string): UserRole => {
     return JSON.parse(atob(token.split('.')[1])).role;
 };
 
-export function splitParagraphs(text: string) {
+export function splitParagraphs(text: string): string[] {
     if (!text) {
         return [];
     }
     return text.split('|:::|');
 }
 
-export function getDate(unix) {
+export function getDate(unix: number): string {
     const day = new Date(unix);
-    let dd = day.getUTCDate();
-    let mm = day.getUTCMonth() + 1;
+    let dd: string | number = day.getUTCDate();
+    let mm: string | number = day.getUTCMonth() + 1;
     const yyyy = day.getUTCFullYear();
     if (dd < 10) {
         dd = `0${dd}`;
@@ -57,16 +57,16 @@ export function getDate(unix) {
     return `${yyyy}-${mm}-${dd}`;
 }
 
-export function getLongDate(unix) {
+export function getLongDate(unix: number): string {
     const day = new Date(unix);
     return `${MONTHS[day.getUTCMonth()]} ${day.getUTCFullYear()}`;
 }
 
-export function getTime(unix) {
+export function getTime(unix: number): string {
     const day = new Date(unix);
-    let hh = day.getUTCHours();
-    let mm = day.getUTCMinutes();
-    let ss = day.getUTCSeconds();
+    let hh: number | string = day.getUTCHours();
+    let mm: number | string = day.getUTCMinutes();
+    let ss: number | string = day.getUTCSeconds();
 
     if (hh < 10) {
         hh = `0${hh}`;
@@ -81,19 +81,19 @@ export function getTime(unix) {
     return `${hh}:${mm}:${ss}`;
 }
 
-export function checkVersionGreater(test, against) {
+export function checkVersionGreater(test: string, against: string): boolean {
     if (!test || typeof test !== 'string' || test.length < 5) {
         return false;
     }
-    test = test.split('.', 3);
+    const testArray = test.split('.', 3);
     const testNumeric = [];
     for (let i = 0; i < 3; i++) {
-        testNumeric.push(parseInt(test[i], 10));
+        testNumeric.push(parseInt(testArray[i], 10));
     }
-    against = against.split('.', 3);
+    const againstArray = against.split('.', 3);
     const againstNumeric = [];
     for (let i = 0; i < 3; i++) {
-        againstNumeric.push(parseInt(against[i], 10));
+        againstNumeric.push(parseInt(againstArray[i], 10));
     }
     for (let i = 0; i < againstNumeric.length; i++) {
         if (testNumeric[i] === againstNumeric[i]) {
@@ -105,7 +105,7 @@ export function checkVersionGreater(test, against) {
     return true;
 }
 
-export const makeGroups = (list: any[], bucketExtractor: Function): BucketSection[] => {
+export const makeGroups = (list: any[], bucketExtractor: (item: any) => string): BucketSection[] => {
     const sections: BucketData = {};
     let ind = 0;
     for (let i = 0; i < list.length; i++) {
@@ -128,7 +128,7 @@ type Range = {
     min: number;
     max: number;
 };
-export const interpolate = (value: number, inputRange: Range, outputRange: Range) => {
+export const interpolate = (value: number, inputRange: Range, outputRange: Range): number => {
     const ranges = [value, inputRange.max, inputRange.min];
     ranges.sort((b, a) => b - a);
     const rangedValue = ranges[1];

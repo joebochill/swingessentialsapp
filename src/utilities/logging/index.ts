@@ -6,26 +6,26 @@ import { store } from '../../redux/store';
 import { Platform, Alert } from 'react-native';
 
 const RNFS = require('react-native-fs');
-const error_path = `${RNFS.DocumentDirectoryPath}/${ERROR_FILE}`;
-const log_path = `${RNFS.DocumentDirectoryPath}/${LOG_FILE}`;
+const errorPath = `${RNFS.DocumentDirectoryPath}/${ERROR_FILE}`;
+const logPath = `${RNFS.DocumentDirectoryPath}/${LOG_FILE}`;
 
-export type LOG_ERROR = {
+export type LogError = {
     code: string | number;
     description: string;
     rawErrorCode?: string | number | null;
     rawErrorMessage?: string | null;
 };
 
-export type LOG_TYPE = 'ERROR' | 'LOGS';
+export type LogType = 'ERROR' | 'LOGS';
 export let LAST_SENT = 0;
 
 export class Logger {
-    public static async logMessage(message: string) {
+    public static async logMessage(message: string): Promise<void> {
         const timestamp = Date.now();
         const currentLog = await this.readMessages('LOGS');
         await RNFS.writeFile(
-            log_path,
-            `${currentLog + getDate(timestamp)} ${getTime(timestamp)} (${(timestamp / 1000).toFixed(
+            logPath,
+            `${currentLog}${getDate(timestamp)} ${getTime(timestamp)} (${(timestamp / 1000).toFixed(
                 0
             )}):\r\n${message}\r\n\r\n`,
             'utf8'
@@ -33,12 +33,12 @@ export class Logger {
         if (currentLog.length + message.length > LOG_LIMIT) {
             if (LAST_SENT < Date.now() / 1000 - 60 * 60) {
                 // don't try to send more than once per hour
-                this.autoSendEmail('LOGS');
+                void this._autoSendEmail('LOGS');
                 LAST_SENT = Date.now() / 1000;
             }
         }
     }
-    public static async logError(error: LOG_ERROR) {
+    public static async logError(error: LogError): Promise<void> {
         const errorMessage = `(${error.rawErrorCode || '--'}: ${error.rawErrorMessage || '--'})`;
         const composedMessage = `(${error.code}): ${error.description} ${errorMessage}`;
 
@@ -46,30 +46,30 @@ export class Logger {
         const currentLog = await this.readMessages('ERROR');
 
         await RNFS.writeFile(
-            error_path,
+            errorPath,
             `${currentLog + getDate(timestamp)} ${getTime(timestamp)} (${(timestamp / 1000).toFixed(
                 0
             )}):\r\n${composedMessage}\r\n\r\n`,
             'utf8'
         );
         if (currentLog.length + composedMessage.length > ERROR_LIMIT) {
-            this.autoSendEmail('ERROR');
+            void this._autoSendEmail('ERROR');
         }
     }
-    public static async clear(type: LOG_TYPE) {
-        const path = type === 'ERROR' ? error_path : log_path;
+    public static async clear(type: LogType): Promise<void> {
+        const path = type === 'ERROR' ? errorPath : logPath;
         await RNFS.writeFile(path, '', 'utf8');
     }
-    public static async readMessages(type: LOG_TYPE) {
-        const path = type === 'ERROR' ? error_path : log_path;
+    public static async readMessages(type: LogType): Promise<string> {
+        const path = type === 'ERROR' ? errorPath : logPath;
         const fileExists = await RNFS.exists(path);
         return fileExists ? RNFS.readFile(path, 'utf8') : '';
     }
-    private static async autoSendEmail(type: LOG_TYPE) {
+    private static async _autoSendEmail(type: LogType): Promise<void> {
         const currentErrors = await this.readMessages(type);
         store.dispatch(sendLogReport(currentErrors, type));
     }
-    public static async sendEmail(type: LOG_TYPE, onDone: Function = () => {}, username = '') {
+    public static async sendEmail(type: LogType, onDone: () => void = (): void => {}, username = ''): Promise<void> {
         const currentLogs = await this.readMessages(type);
 
         Mailer.mail(
@@ -85,7 +85,7 @@ export class Logger {
                 attachment:
                     Platform.OS === 'ios'
                         ? {
-                              path: type === 'ERROR' ? error_path : log_path,
+                              path: type === 'ERROR' ? errorPath : logPath,
                               type: 'doc',
                               name: 'Logs.txt',
                           }
@@ -95,23 +95,23 @@ export class Logger {
                 if (error && error === 'canceled') {
                     // Do nothing
                 } else if (error) {
-                    this.logError({
+                    void this.logError({
                         code: 'LOGS100',
                         description: 'Error sending error logs',
                         rawErrorMessage: error,
                     });
                 } else if (event && event === 'sent') {
                     // message sent successfully
-                    this.clear(type);
+                    void this.clear(type);
                     Alert.alert(
                         'Error Report Sent',
                         'Your error report has been submitted successfully. Thank you for helping us improve the app!',
-                        [{ text: 'DONE', onPress: onDone ? () => onDone() : () => {} }]
+                        [{ text: 'DONE', onPress: onDone }]
                     );
                 } else if (event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')) {
                     // do nothing
                 } else if (event) {
-                    this.logError({
+                    void this.logError({
                         code: 'LOGS900',
                         description: 'Error sending error logs',
                         rawErrorMessage: event,
