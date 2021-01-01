@@ -14,7 +14,6 @@ export const packagesReducer = (state = initialState, action: ReducerAction): Pa
                 loading: true,
             };
         case GET_PACKAGES.SUCCESS:
-            console.log(action.payload);
             return {
                 loading: false,
                 list: action.payload,

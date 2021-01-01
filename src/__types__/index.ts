@@ -81,6 +81,7 @@ export type TipsState = {
     loading: boolean;
     tipList: Tip[];
 };
+export type Average = '60' | '70' | '80' | '90' | '100' | '150';
 export type UserDataState = {
     username: string;
     firstName: string;
@@ -88,7 +89,10 @@ export type UserDataState = {
     email: string;
     joined: number;
     location?: string;
-    phone?: string;
+    // phone?: string;
+    birthday?: string;
+    average?: Average;
+    goals?: string;
 };
 export type CreditsState = {
     count: number;

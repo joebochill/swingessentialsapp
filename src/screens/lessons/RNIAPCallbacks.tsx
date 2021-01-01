@@ -17,7 +17,7 @@ import {
     purchaseUpdatedListener,
     initConnection,
     // consumeAllItemsAndroid,
-    flushFailedPurchasesCachedAsPendingAndroid
+    flushFailedPurchasesCachedAsPendingAndroid,
 } from 'react-native-iap';
 
 // Redux
@@ -40,7 +40,7 @@ export const RNIAPCallbacks: React.FC = () => {
     useEffect(() => {
         const update = async (): Promise<void> => {
             try {
-                await flushFailedPurchasesCachedAsPendingAndroid;//consumeAllItemsAndroid();
+                await flushFailedPurchasesCachedAsPendingAndroid(); // await consumeAllItemsAndroid();
             } catch (e) {
                 // No purchases available to consume
             }

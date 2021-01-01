@@ -8,7 +8,10 @@ const initialState: UserDataState = {
     lastName: '',
     email: '',
     location: '',
-    phone: '',
+    birthday: '',
+    average: undefined,
+    goals: '',
+    // phone: '',
     joined: 0,
 };
 export const userDataReducer = (state = initialState, action: ReducerAction): UserDataState => {
@@ -22,7 +25,10 @@ export const userDataReducer = (state = initialState, action: ReducerAction): Us
                 lastName: action.payload.personal.last_name,
                 email: action.payload.personal.email,
                 location: action.payload.personal.location,
-                phone: action.payload.personal.phone,
+                birthday: action.payload.personal.birthday,
+                average: action.payload.personal.average,
+                goals: action.payload.personal.goals,
+                // phone: action.payload.personal.phone,
                 joined: action.payload.personal.joined,
             };
         case CREATE_ACCOUNT.SUCCESS:
@@ -41,6 +47,9 @@ export const userDataReducer = (state = initialState, action: ReducerAction): Us
                 username: '',
                 firstName: '',
                 lastName: '',
+                birthday: '',
+                average: undefined,
+                goals: '',
                 email: '',
                 joined: 0,
             };

@@ -39,8 +39,8 @@ type NewAccountDetails = {
     heard: string;
     firstName?: string;
     lastName?: string;
-    phone?: string;
-    location?: string;
+    // phone?: string;
+    // location?: string;
     platform: PlatformOSType;
 };
 export function createAccount(data: NewAccountDetails) {

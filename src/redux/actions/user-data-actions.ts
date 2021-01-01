@@ -24,8 +24,11 @@ export function loadUserInfo() {
 export type UserDataChange = {
     firstName?: string;
     lastName?: string;
-    phone?: string;
+    // phone?: string;
     location?: string;
+    average?: number;
+    birthday?: string;
+    goals?: string;
 };
 export function setUserData(data: UserDataChange) {
     return (dispatch: ThunkDispatch<any, void, any>): void => {

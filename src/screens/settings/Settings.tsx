@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactText, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { View, Image, RefreshControl, ScrollView, TouchableHighlight } from 'react-native';
-import { Body, SEButton, SEHeader } from '../../components';
+import { View, Image, RefreshControl, ScrollView, TouchableHighlight, Keyboard } from 'react-native';
+import { Body, Caption, SEButton, SEHeader } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 
@@ -15,7 +15,7 @@ import { useSharedStyles, useListStyles, useFlexStyles, useFormStyles } from '..
 import { useTheme, List, Subheading, Divider, TextInput, IconButton } from 'react-native-paper';
 
 // Types
-import { ApplicationState } from '../../__types__';
+import { ApplicationState, Average } from '../../__types__';
 // Redux
 import { loadSettings } from '../../redux/actions/SettingsActions';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -25,6 +25,10 @@ import { setUserData, loadUserInfo, setUserAvatar } from '../../redux/actions/us
 import { width, height } from '../../utilities/dimensions';
 import { HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { Picker } from '@react-native-picker/picker';
+import { BottomSheet } from '../../components/bottomsheet/BottomSheet';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import { format } from 'date-fns';
 
 const objectsEqual = (a: Record<string, unknown>, b: Record<string, unknown>): boolean => {
     // Create arrays of property names
@@ -52,6 +56,25 @@ const objectsEqual = (a: Record<string, unknown>, b: Record<string, unknown>): b
     return true;
 };
 
+const mapAverageToLabel = (avg: Average | undefined): string => {
+    switch (parseInt(avg || '', 10)) {
+        case 60:
+            return 'Under 70';
+        case 70:
+            return '70-79';
+        case 80:
+            return '80-89';
+        case 90:
+            return '90-99';
+        case 100:
+            return '100-149';
+        case 150:
+            return '150+';
+        default:
+            return '--';
+    }
+};
+
 export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>> = (props) => {
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -66,7 +89,9 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
     const formStyles = useFormStyles(theme);
 
     const [editAbout, setEditAbout] = useState(false);
-    const [activeField, setActiveField] = useState<'first' | 'last' | 'location' | 'phone' | null>(null);
+    const [activeField, setActiveField] = useState<
+        'first' | 'last' | 'location' | 'birthday' | 'average' | 'goals' | null
+    >(null);
     const [personal, setPersonal] = useState(userData);
 
     const memberString = `Joined ${userData.joined ? getLongDate(userData.joined * 1000) : getLongDate(Date.now())}`;
@@ -230,13 +255,13 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         />
                         <Divider />
                         <List.Item
-                            title={'Phone Number'}
+                            title={'Date of Birth'}
                             titleEllipsizeMode={'tail'}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.phone}</Body>
+                                    <Body>{userData.birthday || '--'}</Body>
                                 </View>
                             )}
                         />
@@ -255,12 +280,47 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             )}
                         />
                         <Divider />
+                        <List.Item
+                            title={'Avg. Score (18 Holes)'}
+                            titleEllipsizeMode={'tail'}
+                            style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            right={({ style, ...rightProps }): JSX.Element => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <Body>{mapAverageToLabel(userData.average)}</Body>
+                                </View>
+                            )}
+                        />
+                        <Divider />
+                        <List.Item
+                            title={'Golf Goals'}
+                            titleEllipsizeMode={'tail'}
+                            style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            right={({ style, ...rightProps }): JSX.Element => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <Body>{`${(userData.goals || '').substr(0, 18)}...`}</Body>
+                                </View>
+                            )}
+                        />
+                        <Divider />
+                        {/* <List.Item
+                            title={'Phone Number'}
+                            titleEllipsizeMode={'tail'}
+                            style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            right={({ style, ...rightProps }): JSX.Element => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <Body>{userData.phone}</Body>
+                                </View>
+                            )}
+                        />
+                        <Divider /> */}
                     </>
                 )}
                 {/* Write Mode */}
                 {editAbout && (
                     <View style={flexStyles.paddingHorizontal}>
-                        <Divider />
                         <TextInput
                             label={'First Name'}
                             value={personal.firstName}
@@ -276,7 +336,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             onChangeText={(value: string): void => setPersonal({ ...personal, firstName: value })}
                             underlineColorAndroid={transparent}
                         />
-                        <Divider />
                         <TextInput
                             label={'Last Name'}
                             value={personal.lastName}
@@ -293,7 +352,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             onChangeText={(value: string): void => setPersonal({ ...personal, lastName: value })}
                             underlineColorAndroid={transparent}
                         />
-                        <Divider />
                         <TextInput
                             label={'Location'}
                             value={personal.location}
@@ -311,8 +369,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             onChangeText={(value: string): void => setPersonal({ ...personal, location: value })}
                             underlineColorAndroid={transparent}
                         />
-                        <Divider />
-                        <TextInput
+                        {/* <TextInput
                             label={'Phone Number'}
                             value={personal.phone}
                             placeholder={'e.g., 123-456-7890'}
@@ -329,7 +386,34 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             onChangeText={(value: string): void => setPersonal({ ...personal, phone: value })}
                             underlineColorAndroid={transparent}
                         />
-                        <Divider />
+                        <Divider /> */}
+                        <TextInput
+                            label={'Date of Birth'}
+                            value={personal.birthday}
+                            placeholder={'MM/DD/YYYY'}
+                            autoCorrect={false}
+                            autoCapitalize={'none'}
+                            style={[
+                                formStyles.formField,
+                                activeField === 'birthday' || (personal.birthday || '').length > 0
+                                    ? formStyles.active
+                                    : formStyles.inactive,
+                            ]}
+                            onFocus={(): void => {
+                                setActiveField('birthday');
+                                Keyboard.dismiss();
+                            }}
+                            underlineColorAndroid={transparent}
+                        />
+                        <DateTimePicker
+                            date={new Date(personal.birthday || Date.now())}
+                            isVisible={activeField === 'birthday'}
+                            onConfirm={(date): void => {
+                                setPersonal({ ...personal, birthday: format(new Date(date), 'MM/dd/yyyy') });
+                                setActiveField(null);
+                            }}
+                            onCancel={(): void => setActiveField(null)}
+                        />
                         <TextInput
                             editable={false}
                             label={'Email Address'}
@@ -339,7 +423,74 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             style={[formStyles.formField, formStyles.active, { opacity: 0.6 }]}
                             underlineColorAndroid={transparent}
                         />
-                        <Divider />
+                        <TextInput
+                            label={'Avg. Score (18 Holes)'}
+                            value={mapAverageToLabel(personal.average)}
+                            autoCorrect={false}
+                            autoCapitalize={'none'}
+                            style={[
+                                formStyles.formField,
+                                activeField === 'average' || (personal.average || '').length > 0
+                                    ? formStyles.active
+                                    : formStyles.inactive,
+                            ]}
+                            onFocus={(): void => {
+                                setActiveField('average');
+                                Keyboard.dismiss();
+                            }}
+                            underlineColorAndroid={transparent}
+                        />
+                        <BottomSheet
+                            show={activeField === 'average'}
+                            dismissBottomSheet={(): void => {
+                                setActiveField(null);
+                            }}
+                        >
+                            <Picker
+                                selectedValue={personal.average}
+                                itemStyle={{ backgroundColor: 'white' }}
+                                onValueChange={(value: ReactText): void =>
+                                    setPersonal({ ...personal, average: value as Average })
+                                }
+                            >
+                                <Picker.Item label="Under 70" value="60" />
+                                <Picker.Item label="70-79" value="70" />
+                                <Picker.Item label="80-89" value="80" />
+                                <Picker.Item label="90-99" value="90" />
+                                <Picker.Item label="100-149" value="100" />
+                                <Picker.Item label="150+" value="150" />
+                            </Picker>
+                        </BottomSheet>
+
+                        <TextInput
+                            label={'Golf Goals'}
+                            multiline
+                            value={personal.goals}
+                            placeholder={'I want to be the next Tiger Woods...'}
+                            autoCorrect={false}
+                            autoCapitalize={'sentences'}
+                            // autoFocus
+                            blurOnSubmit={true}
+                            caretHidden
+                            // editable={!lessons.redeemPending}
+                            maxLength={255}
+                            returnKeyType={'done'}
+                            spellCheck
+                            textAlignVertical={'top'}
+                            style={[
+                                formStyles.formField,
+                                activeField === 'goals' || (personal.goals || '').length > 0
+                                    ? formStyles.active
+                                    : formStyles.inactive,
+                            ]}
+                            onFocus={(): void => setActiveField('goals')}
+                            onBlur={(): void => setActiveField(null)}
+                            onChangeText={(value: string): void => setPersonal({ ...personal, goals: value })}
+                            underlineColorAndroid={transparent}
+                        />
+                        <Caption style={{ alignSelf: 'flex-end', marginTop: theme.spaces.small }}>{`${
+                            255 - (personal.goals || '').length
+                        } Characters Left`}</Caption>
                         {!objectsEqual(personal, userData) && (
                             <SEButton
                                 style={formStyles.formField}

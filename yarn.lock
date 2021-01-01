@@ -1241,6 +1241,13 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-community/datetimepicker@^3.0.8":
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-3.0.8.tgz#3960b39dfeea4a0f11425e24e0852764ed9133ca"
+  integrity sha512-85pOIjRnhrUmyWFH52qGGya1MDwE7vU4fDqt21yY6EyT7TolwQvZknwId8TAmREawsMoCMchke6VFo1IqRaUOA==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-community/eslint-config@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-config/-/eslint-config-1.1.0.tgz#2dacad06dd44d13e778510864473fc6091f080c0"
@@ -1275,7 +1282,7 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.9.9.tgz#5e022637f5e08bd74bf94a0c3315748acd4589f9"
   integrity sha512-Gp0XV4BgabvzkL4Dp6JAsA2l9LcmgBAq3erCLdvRZmEFz7guCWTogQWVfFtl+IbU0uqfwfo9fm2+mQiwdudLCw==
 
-"@react-native-picker/picker@^1.8.3":
+"@react-native-picker/picker@^1.8.3", "@react-native-picker/picker@^1.9.8":
   version "1.9.8"
   resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.9.8.tgz#7272ec9957e2234bc23aeeee2b25db1ede9d1ffc"
   integrity sha512-DcIrg9jMLqercmrWzV1WjpiNVo54CYamwsD91b+gKiY1F0dBDjQHilmsuTje7UesrZc9K+of4DGtisB4i/QxJg==
@@ -2701,6 +2708,11 @@ data-urls@^2.0.0:
     abab "^2.0.3"
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
+
+date-fns@^2.16.1:
+  version "2.16.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
+  integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
 
 dayjs@^1.8.15:
   version "1.9.8"
@@ -6390,6 +6402,13 @@ react-native-mail@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/react-native-mail/-/react-native-mail-6.0.0.tgz#7e8014cccff794098f8de012fc822c57d28f7d72"
   integrity sha512-aQjCxKmPIwwX+voC2oK5Lj54Gfuvkodhp9lYFpPMxYYCXXtADuuZMsNWN7jSeqVuQHQzJZvYhgRtYqx0UDoKoQ==
+
+react-native-modal-datetime-picker@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-9.1.0.tgz#a1286efa6d9c456e931805fd0687cf9e916af6ed"
+  integrity sha512-KwZEduMvfxp1BMQ2nMOckJCpR5Wiw+GIBazqtWm6zptNTL+iQyeYQeyjIubsMGWh4MkMueActSRWMvHut98h/Q==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-modal@^11.5.3:
   version "11.6.1"
