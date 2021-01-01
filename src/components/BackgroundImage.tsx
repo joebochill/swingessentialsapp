@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, Image, ImageProps, ImageSourcePropType } from 'react-native';
+import { StyleSheet, Image, ImageProps, ImageSourcePropType, ImageStyle } from 'react-native';
 import bg from '../images/banners/landing.jpg';
 
-const useStyles = () =>
+const useStyles = (): StyleSheet.NamedStyles<{
+    image: ImageStyle;
+}> =>
     StyleSheet.create({
         image: {
             position: 'absolute',

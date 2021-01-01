@@ -18,9 +18,9 @@ import { unit } from '../../styles/sizes';
 
 // Utilities
 import { useSafeArea } from 'react-native-safe-area-context';
-import { useTheme, Theme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 
-const useStyles = (theme: Theme) =>
+const useStyles = (theme: ReactNativePaper.Theme) =>
     StyleSheet.create({
         recordRow: {
             position: 'absolute',

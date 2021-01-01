@@ -1,13 +1,14 @@
 import React from 'react';
 // Components
-import { StyleSheet, TextProps } from 'react-native';
+import { StyleProp, StyleSheet, TextProps, TextStyle } from 'react-native';
 import { Body } from '../../components';
 import { useTheme } from 'react-native-paper';
 
-// Styles
-import { Theme } from '../../styles/theme';
-
-const useStyles = (theme: Theme) =>
+const useStyles = (
+    theme: ReactNativePaper.Theme
+): StyleSheet.NamedStyles<{
+    error: StyleProp<TextStyle>;
+}> =>
     StyleSheet.create({
         error: {
             margin: 0,
@@ -22,7 +23,7 @@ type ErrorBoxProps = TextProps & {
     show?: boolean;
     error: string;
 };
-export const ErrorBox = (props: ErrorBoxProps) => {
+export const ErrorBox: React.FC<ErrorBoxProps> = (props) => {
     const { style } = props;
     const theme = useTheme();
     const styles = useStyles(theme);

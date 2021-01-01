@@ -20,7 +20,6 @@ import { ApplicationState } from '../../__types__';
 import { loadFAQ } from '../../redux/actions';
 import { useTheme, Subheading } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
-import { Theme } from 'react-native-paper/lib/typescript/types';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 
 export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props) => {
@@ -89,7 +88,7 @@ export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props
         </CollapsibleHeaderLayout>
     );
 };
-const useStyles = (theme: Theme) =>
+const useStyles = (theme: ReactNativePaper.Theme) =>
     StyleSheet.create({
         video: {
             height: (width - 2 * theme.spaces.medium) * (9 / 16),

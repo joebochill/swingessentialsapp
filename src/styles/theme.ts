@@ -32,12 +32,13 @@ const fontConfig = {
     ios: defaultFontConfig,
     android: defaultFontConfig,
 };
-export const theme = {
+export const theme: ReactNativePaper.Theme = {
     ...DefaultTheme,
     dark: false,
     roundness: 0,
     fonts: configureFonts(fontConfig),
     colors: {
+        ...DefaultTheme.colors,
         primary: purple[400],
         background: white[400],
         surface: purple[50],

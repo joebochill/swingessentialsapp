@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react';
+import { ComponentType } from 'react';
 
 export type HeaderIcon = {
     icon: ComponentType<{ size: number; color: string }>;

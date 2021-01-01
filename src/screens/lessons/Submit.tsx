@@ -47,7 +47,6 @@ import { submitLesson } from '../../redux/actions';
 // Utilities
 import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
-import { Theme } from 'react-native-paper/lib/typescript/types';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 
 const RNFS = require('react-native-fs');
@@ -387,7 +386,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
     );
 };
 
-const useStyles = (theme: Theme) =>
+const useStyles = (theme: ReactNativePaper.Theme) =>
     StyleSheet.create({
         dashButton: {
             padding: theme.spaces.medium,

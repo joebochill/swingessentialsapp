@@ -23,13 +23,24 @@ import { height } from '../../utilities/dimensions';
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT } from '../../constants';
 import { theme } from '../../styles/theme';
 
+const styles = StyleSheet.create({
+    scrollContainer: {
+        paddingTop: HEADER_EXPANDED_HEIGHT + theme.spaces.medium,
+        paddingBottom: theme.spaces.jumbo,
+    },
+    nonScrollContainer: {
+        marginTop: HEADER_EXPANDED_HEIGHT,
+        flex: 1,
+    },
+});
+
 type HeaderLayoutState = {
     scrollY: Animated.Value;
 };
 type CollapsibleHeaderLayoutProps = SEHeaderProps & {
     renderScroll?: boolean;
-    onRefresh?: Function;
-    onResize?: Function;
+    onRefresh?: () => void;
+    onResize?: (scroll: Animated.Value) => void;
     refreshing?: boolean;
     bottomPad?: boolean;
     pageBackground?: ImageSourcePropType;
@@ -37,18 +48,18 @@ type CollapsibleHeaderLayoutProps = SEHeaderProps & {
 };
 
 export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLayoutProps, HeaderLayoutState> {
-    constructor(props) {
+    constructor(props: CollapsibleHeaderLayoutProps) {
         super(props);
         this.state = {
             scrollY: new Animated.Value(0),
         };
     }
-    render() {
+    render(): JSX.Element {
         const {
             renderScroll = true,
             children,
             refreshing = false,
-            onRefresh = () => {},
+            onRefresh = (): void => {},
             bottomPad = true,
         } = this.props;
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
@@ -82,7 +93,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                                 onRefresh ? (
                                     <RefreshControl
                                         refreshing={refreshing}
-                                        onRefresh={() => onRefresh()}
+                                        onRefresh={(): void => onRefresh()}
                                         progressViewOffset={HEADER_EXPANDED_HEIGHT}
                                     />
                                 ) : undefined
@@ -123,7 +134,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
             </View>
         );
     }
-    scaleByHeaderHeight(atLarge: number, atSmall: number) {
+    scaleByHeaderHeight(atLarge: number, atSmall: number): Animated.AnimatedInterpolation {
         return this.state.scrollY.interpolate({
             inputRange: [0, HEADER_EXPANDED_HEIGHT - HEADER_COLLAPSED_HEIGHT],
             outputRange: [atLarge, atSmall],
@@ -131,14 +142,3 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
         });
     }
 }
-
-const styles = StyleSheet.create({
-    scrollContainer: {
-        paddingTop: HEADER_EXPANDED_HEIGHT + theme.spaces.medium,
-        paddingBottom: theme.spaces.jumbo,
-    },
-    nonScrollContainer: {
-        marginTop: HEADER_EXPANDED_HEIGHT,
-        flex: 1,
-    },
-});

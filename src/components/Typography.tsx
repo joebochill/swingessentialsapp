@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, TextProps, TextStyle, StyleProp } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { Theme } from '../styles/theme';
 
 export type TypographyProps = {
     /**
@@ -12,12 +11,12 @@ export type TypographyProps = {
     /**
      * Font to use
      */
-    font?: keyof Theme['fonts'];
+    font?: keyof ReactNativePaper.Theme['fonts'];
 
     /**
      * Font to use
      */
-    color?: keyof Theme['colors'];
+    color?: keyof ReactNativePaper.Theme['colors'];
 
     /** Style Overrides */
     styles?: {
@@ -29,13 +28,9 @@ export type TypographyProps = {
  *     getStyle: a function that takes in a theme and returns a text style object
  * createTypography returns a theme-wrapped text component that utilizes that styles and theme that are provided
  */
-const createTypography = (getStyle: (theme: Theme) => StyleProp<TextStyle>): React.FC<TypographyProps> => ({
-    font,
-    fontSize,
-    color,
-    style,
-    ...props
-}): JSX.Element => {
+const createTypography = (
+    getStyle: (theme: ReactNativePaper.Theme) => StyleProp<TextStyle>
+): React.FC<TypographyProps> => ({ font, fontSize, color, style, ...props }): JSX.Element => {
     const theme = useTheme();
 
     let customStyle: StyleProp<TextStyle> = {};

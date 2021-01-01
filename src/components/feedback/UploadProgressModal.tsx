@@ -1,14 +1,18 @@
 import React from 'react';
 // Components
-import { ActivityIndicator, Modal, ModalProps, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Modal, ModalProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Body } from '../../components';
 
 // Styles
 import { useSharedStyles, useListStyles } from '../../styles';
 import { whiteOpacity } from '../../styles/colors';
-import { useTheme, Theme, Subheading } from 'react-native-paper';
+import { useTheme, Subheading } from 'react-native-paper';
 
-const useStyles = (theme: Theme) =>
+const useStyles = (
+    theme: ReactNativePaper.Theme
+): StyleSheet.NamedStyles<{
+    modalBackground: StyleProp<ViewStyle>;
+}> =>
     StyleSheet.create({
         modalBackground: {
             flex: 1,
@@ -22,7 +26,7 @@ type ProgressModalProps = ModalProps & {
     visible?: boolean;
     progress: number;
 };
-export const UploadProgressModal = (props: ProgressModalProps) => {
+export const UploadProgressModal: React.FC<ProgressModalProps> = (props) => {
     const { visible, progress, ...other } = props;
     const theme = useTheme();
     const styles = useStyles(theme);

@@ -37,7 +37,7 @@ import downthelineRH from '../../images/overlay-dtl-rh.png';
 import { ROUTES } from '../../constants/routes';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { Logger } from '../../utilities/logging';
-import { useTheme, Theme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 
@@ -280,7 +280,7 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
     );
 };
 
-const useStyles = (theme: Theme) =>
+const useStyles = (theme: ReactNativePaper.Theme) =>
     StyleSheet.create({
         bar: {
             width: '100%',

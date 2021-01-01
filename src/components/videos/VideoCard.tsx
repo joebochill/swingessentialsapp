@@ -12,7 +12,7 @@ import { unit } from '../../styles/sizes';
 import { black } from '../../styles/colors';
 
 // Types
-import { Theme } from '../../styles/theme';
+// import { Theme } from '../../styles/theme';
 
 export type VideoCardProps = {
     headerColor?: string;
@@ -95,7 +95,7 @@ export const VideoCard: React.FC<VideoCardProps> = (props) => {
     );
 };
 
-const useStyles = (theme: Theme) =>
+const useStyles = (theme: ReactNativePaper.Theme) =>
     StyleSheet.create({
         actionItem: {
             marginLeft: theme.spaces.small,

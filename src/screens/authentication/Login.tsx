@@ -14,13 +14,13 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Logger } from '../../utilities/logging';
 
 // Types
-import { NavigationInjectedProps } from '@react-navigation/native';
+// import { NavigationInjectedProps } from '@react-navigation/native';
 import { ApplicationState } from '../../__types__';
 
 // Styles
 import { transparent } from '../../styles/colors';
 import { unit } from '../../styles/sizes';
-import { useTheme, TextInput, Switch, Theme } from 'react-native-paper';
+import { useTheme, TextInput, Switch } from 'react-native-paper';
 import { height } from '../../utilities/dimensions';
 import { useFormStyles } from '../../styles';
 import logo from '../../images/logo-big.png';
@@ -400,7 +400,7 @@ export const Login = (props: StackScreenProps<RootStackParamList, 'Login'>) => {
     );
 };
 
-const useStyles = (theme: Theme) =>
+const useStyles = (theme: ReactNativePaper.Theme) =>
     StyleSheet.create({
         container: {
             flex: 1,

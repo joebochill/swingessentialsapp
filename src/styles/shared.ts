@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { unit, spaceUnit } from './sizes';
-import { theme as defaultTheme, Theme } from './theme';
+import { unit } from './sizes';
+import { theme as defaultTheme } from './theme';
 
-export const useFormStyles = (theme: Theme = defaultTheme) =>
+export const useFormStyles = (theme: ReactNativePaper.Theme = defaultTheme) =>
     StyleSheet.create({
         fieldRow: {
             marginTop: theme.spaces.large,

@@ -1,9 +1,16 @@
 import React from 'react';
 // Components
-import { StyleSheet } from 'react-native';
-import { Button, Theme, useTheme } from 'react-native-paper';
+import { StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { Button, useTheme } from 'react-native-paper';
 
-const useStyles = (theme: Theme) =>
+const useStyles = (
+    theme: ReactNativePaper.Theme
+): StyleSheet.NamedStyles<{
+    label: StyleProp<TextStyle>;
+    textButton: StyleProp<TextStyle>;
+    outlinedButton: StyleProp<TextStyle>;
+    dark: StyleProp<ViewStyle>;
+}> =>
     StyleSheet.create({
         label: {
             color: theme.colors.onPrimary,

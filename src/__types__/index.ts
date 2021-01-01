@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export type HandednessType = 'right' | 'left';
 export type CameraType = 'front' | 'back';
 export type SwingType = 'dtl' | 'fo';
@@ -5,23 +6,6 @@ export type UserRole = 'administrator' | 'anonymous' | 'customer' | 'pending';
 export type NavType = 'menu' | 'back' | 'none';
 export type LessonType = 'in-person' | 'single';
 
-export type ColorDef = {
-    50: string;
-    100: string;
-    200: string;
-    300: string;
-    400: string;
-    500: string;
-    600: string;
-    700: string;
-    800: string;
-    900: string;
-    A100?: string;
-    A200?: string;
-    A400?: string;
-    A700?: string;
-    contrastDefaultColor?: string;
-};
 export type UserSettingsType = {
     duration?: number;
     delay?: number;
@@ -41,6 +25,7 @@ export type Blog = {
     title: string;
     body: string;
 };
+
 export type Lesson = {
     dtl_swing: string;
     fo_swing: string;
@@ -55,6 +40,7 @@ export type Lesson = {
     username?: string;
     viewed: number | boolean;
 };
+
 export type Package = {
     // TODO: update API to return proper types for numbers
     id: string | number;
@@ -106,8 +92,6 @@ export type UserDataState = {
 };
 export type CreditsState = {
     count: number;
-    // unlimited: number,
-    // unlimitedExpires: number,
     inProgress: boolean;
     success: boolean;
     fail: boolean;
@@ -132,9 +116,7 @@ export type SettingsState = {
 export type RegistrationState = {
     pending: boolean;
     userAvailable: boolean;
-    // lastUserChecked: string;
     emailAvailable: boolean;
-    // lastEmailChecked: string;
     success: boolean;
     emailVerified: boolean;
     error: number;
@@ -159,6 +141,7 @@ export type ConfigState = {
 export type LogsState = {
     loading: boolean;
 };
+
 export type TutorialsState = {
     tutorial_lesson_list: boolean;
     tutorial_lesson: boolean;
