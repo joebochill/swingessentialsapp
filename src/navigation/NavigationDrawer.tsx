@@ -125,9 +125,8 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
     const nameString =
         userData.firstName && userData.lastName ? `${userData.firstName} ${userData.lastName}` : 'New User';
     const memberString = `Joined ${userData.joined ? getLongDate(userData.joined * 1000) : getLongDate(Date.now())}`;
-    const avatarURL = `https://www.swingessentials.com/images/profiles/${
-        settings.avatar ? `${userData.username}/${settings.avatar}.png` : 'blank.png'
-    }`;
+    const avatarURL = `https://www.swingessentials.com/images/profiles/${settings.avatar ? `${userData.username}/${settings.avatar}.png` : 'blank.png'
+        }`;
 
     const scaleByHeight = useCallback(
         (atLarge, atSmall) =>
@@ -355,17 +354,17 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                             icon: token ? 'exit-to-app' : 'person',
                             onPress: token
                                 ? (): void => {
-                                      Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-                                          {
-                                              text: 'Sign Out',
-                                              onPress: (): void => {
-                                                  dispatch(requestLogout());
-                                                  navigation.closeDrawer();
-                                              },
-                                          },
-                                          { text: 'Cancel' },
-                                      ]);
-                                  }
+                                    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+                                        {
+                                            text: 'Sign Out',
+                                            onPress: (): void => {
+                                                dispatch(requestLogout());
+                                                navigation.closeDrawer();
+                                            },
+                                        },
+                                        { text: 'Cancel' },
+                                    ]);
+                                }
                                 : (): void => navigation.navigate(ROUTES.LOGIN),
                         });
                     }
@@ -390,18 +389,22 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                                                 item.route
                                                     ? item.route === ROUTES.HOME
                                                         ? (): void => {
-                                                              navigation.closeDrawer();
-                                                          }
-                                                        : (): void => {
-                                                              navigation.navigate(item.route);
-                                                          }
+                                                            navigation.closeDrawer();
+                                                        }
+                                                        : item.screen ?
+                                                            (): void => {
+                                                                navigation.navigate(item.route, { screen: item.screen })
+                                                            }
+                                                            : (): void => {
+                                                                navigation.navigate(item.route);
+                                                            }
                                                     : item.activatePanel !== undefined
-                                                    ? (): void => {
-                                                          setActivePanel(item.activatePanel);
-                                                      }
-                                                    : item.onPress
-                                                    ? (): void => item.onPress()
-                                                    : undefined
+                                                        ? (): void => {
+                                                            setActivePanel(item.activatePanel);
+                                                        }
+                                                        : item.onPress
+                                                            ? (): void => item.onPress()
+                                                            : undefined
                                             }
                                             style={[
                                                 listStyles.item,
@@ -414,17 +417,17 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                                             right={
                                                 item.nested
                                                     ? ({ style, ...rightProps }): JSX.Element => (
-                                                          <View style={[flexStyles.row, style]} {...rightProps}>
-                                                              <MatIcon
-                                                                  name={'chevron-right'}
-                                                                  size={theme.sizes.small}
-                                                                  color={theme.colors.accent}
-                                                                  style={{
-                                                                      marginRight: -1 * theme.spaces.small,
-                                                                  }}
-                                                              />
-                                                          </View>
-                                                      )
+                                                        <View style={[flexStyles.row, style]} {...rightProps}>
+                                                            <MatIcon
+                                                                name={'chevron-right'}
+                                                                size={theme.sizes.small}
+                                                                color={theme.colors.accent}
+                                                                style={{
+                                                                    marginRight: -1 * theme.spaces.small,
+                                                                }}
+                                                            />
+                                                        </View>
+                                                    )
                                                     : undefined
                                             }
                                         />

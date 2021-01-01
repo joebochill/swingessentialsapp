@@ -11,6 +11,7 @@ type Route = {
     title: string;
     icon: string;
     route?: string;
+    screen?: string;
     iconType?: string;
     nested?: boolean;
     private?: boolean;
@@ -30,7 +31,8 @@ export const mainNavigationItems: RouteGroup = {
             title: 'Your Profile',
             icon: 'person',
             private: true,
-            route: ROUTES.SETTINGS,
+            route: ROUTES.SETTINGS_GROUP,
+            screen: ROUTES.SETTINGS,
         },
         {
             title: 'Your Lessons',

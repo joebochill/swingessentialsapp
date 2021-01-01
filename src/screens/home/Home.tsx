@@ -26,6 +26,8 @@ import { loadUserContent } from '../../redux/actions';
 import { unit } from '../../styles/sizes';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { Spacer } from '@pxblue/react-native-components';
+import { HEADER_EXPANDED_HEIGHT, HEADER_EXPANDED_HEIGHT_NO_STATUS } from '../../constants';
 
 export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (props) => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
@@ -53,6 +55,32 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
             bottomPad={false}
             navigation={props.navigation}
         >
+            {role === 'anonymous' && <View style={[
+                flexStyles.centered,
+                flexStyles.paddingMedium,
+                {
+                    marginTop: -1 * theme.spaces.medium,
+                    marginBottom: theme.spaces.medium,
+                    backgroundColor: theme.colors.surface,
+                    flexDirection: 'row',
+                    borderWidth: unit(1),
+                    borderColor: theme.colors.light,
+                }]}>
+                <SEButton
+                    mode={'contained'}
+                    title={'Sign Up Today'}
+                    style={{ flex: 1 }}
+                    onPress={(): void => props.navigation.navigate(ROUTES.REGISTER)}
+                />
+                <Spacer flex={0} width={theme.sizes.xSmall} />
+                <SEButton
+                    mode={'contained'}
+                    title={'Sign In'}
+                    style={{ flex: 1 }}
+                    onPress={(): void => props.navigation.navigate(ROUTES.LOGIN)}
+                />
+            </View>
+            }
             <View style={[sharedStyles.sectionHeader]}>
                 <Subheading style={listStyles.heading}>{'Latest Lessons'}</Subheading>
                 <SEButton
