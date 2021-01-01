@@ -1,0 +1,43 @@
+LAST ITEMS FOR 3.0.0 RELEASE:
+    FIX:
+
+    TEST:
+    - NAme in drawer not updating after autologout
+    - keyboard not persisting on submit page
+    - Pause videos when opening full lesson
+    - Disable Landscape mode
+    - Disable video preview looping (or stop on end)
+    - IAP Pricing long decimals
+    - Test deep linking
+    - Final Device testing
+    - force users off various screens when no token
+    - Skip button z-index for tablets
+    - error email (lesson) no username
+        should be fixed after switching to real API
+    
+
+
+FUTURE FUNCTIONALITY FOR 3.1.0 RELEASE
+    FIX:
+    - Better error messages when no network
+    - android tablet videos are too large
+    - Optimize bundle size
+    - Record in H.264
+    - Remove unused icon fonts for ios
+    - Cancel purchase causes a refresh
+    - Scrollto not working on submit page
+
+
+    - Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
+    - API for single Blog/Tip
+    - Lazy loading for lists
+    - Loading/Empty states
+    - Account Details Screen + Edit
+    - Order History API
+    - Order History Screen
+    - Contact Us Screen
+    - Store data locally (Async)
+    - Unit tests
+    - App Banners on web
+    - Error logging as SQLite DB
+    - Remote announcements/messages via API
