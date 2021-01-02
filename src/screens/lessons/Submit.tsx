@@ -366,7 +366,6 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                 autoCapitalize={'sentences'}
                                 autoFocus
                                 blurOnSubmit={true}
-                                caretHidden
                                 editable={!lessons.redeemPending}
                                 maxLength={500}
                                 multiline

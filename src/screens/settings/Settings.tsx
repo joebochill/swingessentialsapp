@@ -471,7 +471,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             autoCapitalize={'sentences'}
                             // autoFocus
                             blurOnSubmit={true}
-                            caretHidden
                             // editable={!lessons.redeemPending}
                             maxLength={255}
                             returnKeyType={'done'}

@@ -64,7 +64,7 @@ export const YouTube: React.FC<YouTubeProps> = (props) => {
                 imageHeight="100%"
                 imageWidth="100%"
                 showPlayIcon={true}
-                type="maximum"
+                type="high"
             />
         </View>
     ) : (

@@ -23,6 +23,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B2D1F84ED9D46EA080DD4AE3 /* libPods-swingessentialsapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE0C3154A2EDEFC70CE00336 /* libPods-swingessentialsapp-tvOSTests.a */; };
 		B7D2E0FA920A418E8EEB82E4 /* SFCompactDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C2C1D656F1474B85F1DE62 /* SFCompactDisplay-Bold.otf */; };
+		F21FE8AD259FEEAA009A35D0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F21FE8AC259FEEAA009A35D0 /* StoreKit.framework */; };
 		F5D70F68131C43E0809B0D62 /* SFCompactDisplay-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7674B37AE3A14BF5943B0E3A /* SFCompactDisplay-Semibold.otf */; };
 		F9D6C2D38122616A68A1FA56 /* libPods-swingessentialsapp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8719BAEEEF6860C5C58E3D0 /* libPods-swingessentialsapp-tvOS.a */; };
 /* End PBXBuildFile section */
@@ -77,6 +78,8 @@
 		D250CB26958F90BB3EB07B05 /* libPods-swingessentialsapp-swingessentialsappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-swingessentialsappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F21FE8A7259FEDEA009A35D0 /* swingessentialsapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = swingessentialsapp.entitlements; path = swingessentialsapp/swingessentialsapp.entitlements; sourceTree = "<group>"; };
+		F21FE8AC259FEEAA009A35D0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F8719BAEEEF6860C5C58E3D0 /* libPods-swingessentialsapp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE0C3154A2EDEFC70CE00336 /* libPods-swingessentialsapp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -95,6 +98,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				744EB3C39AB441997407E674 /* libPods-swingessentialsapp.a in Frameworks */,
+				F21FE8AD259FEEAA009A35D0 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,6 +141,7 @@
 		13B07FAE1A68108700A75B9A /* swingessentialsapp */ = {
 			isa = PBXGroup;
 			children = (
+				F21FE8A7259FEDEA009A35D0 /* swingessentialsapp.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -151,6 +156,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F21FE8AC259FEEAA009A35D0 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				9DFFFAECD374F6E5FC4FCE05 /* libPods-swingessentialsapp.a */,
@@ -780,6 +786,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = swingessentialsapp/swingessentialsapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Alan Nelson (U4XC42DW6S)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -809,6 +816,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = swingessentialsapp/swingessentialsapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Alan Nelson (U4XC42DW6S)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;

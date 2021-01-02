@@ -80,7 +80,7 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
                               </View>
                               <YouTube
                                   videoId={lesson.response_video}
-                                  style={{ width: videoWidth, height: videoHeight, backgroundColor: 'magenta' }}
+                                  style={{ width: videoWidth, height: videoHeight }}
                               />
                               <View
                                   style={[
