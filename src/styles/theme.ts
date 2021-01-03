@@ -1,8 +1,8 @@
 import { DefaultTheme, configureFonts } from 'react-native-paper';
-import { white, purple, red, gray, black } from './colors';
+import { white, purple, red, black } from './colors';
 import { spaceUnit, unit } from './sizes';
 
-type FontWeight = 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
+// type FontWeight = 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
 
 const defaultFontConfig = {
     extraBold: {
@@ -32,12 +32,13 @@ const fontConfig = {
     ios: defaultFontConfig,
     android: defaultFontConfig,
 };
-export const theme = {
+export const theme: ReactNativePaper.Theme = {
     ...DefaultTheme,
     dark: false,
     roundness: 0,
     fonts: configureFonts(fontConfig),
     colors: {
+        ...DefaultTheme.colors,
         primary: purple[400],
         background: white[400],
         surface: purple[50],

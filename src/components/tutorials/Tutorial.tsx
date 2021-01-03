@@ -8,10 +8,10 @@ import { useFlexStyles } from '../../styles';
 
 type TutorialProps = {
     visible: boolean;
-    onClose: Function;
+    onClose: () => void;
 };
 
-export const TutorialModal: React.FC<TutorialProps> = props => {
+export const TutorialModal: React.FC<TutorialProps> = (props) => {
     const { visible = true, onClose } = props;
     const theme = useTheme();
     const flexStyles = useFlexStyles(theme);
@@ -24,14 +24,16 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
             style={{ margin: 0, padding: 0 }}
             backdropOpacity={1}
             animationInTiming={750}
-            animationOutTiming={750}>
+            animationOutTiming={750}
+        >
             <SafeAreaView
                 style={{
                     flex: 1,
                     position: 'relative',
                     justifyContent: 'center',
                     backgroundColor: theme.colors.primary,
-                }}>
+                }}
+            >
                 <SEButton
                     uppercase
                     style={{
@@ -44,7 +46,7 @@ export const TutorialModal: React.FC<TutorialProps> = props => {
                     labelStyle={{ color: theme.colors.onPrimary }}
                     mode={'text'}
                     title="Skip"
-                    onPress={() => onClose()}
+                    onPress={onClose}
                 />
                 <View style={{ marginVertical: insets.top }}>
                     <ScrollView contentContainerStyle={flexStyles.paddingHorizontal}>{props.children}</ScrollView>

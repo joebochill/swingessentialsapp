@@ -1,11 +1,12 @@
-import { GET_PACKAGES, LOGOUT, TOKEN_TIMEOUT } from '../actions/types';
+import { GET_PACKAGES, TOKEN_TIMEOUT } from '../actions/types';
 import { PackagesState } from '../../__types__';
+import { ReducerAction } from '.';
 
 const initialState: PackagesState = {
     list: [],
     loading: false,
 };
-export const packagesReducer = (state = initialState, action): PackagesState => {
+export const packagesReducer = (state = initialState, action: ReducerAction): PackagesState => {
     switch (action.type) {
         case GET_PACKAGES.REQUEST:
             return {

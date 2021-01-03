@@ -1,6 +1,7 @@
 import { LOGIN, LOGOUT, CREATE_ACCOUNT, SET_TOKEN, REFRESH_TOKEN, TOKEN_TIMEOUT } from '../actions/types';
 import { getUserRole } from '../../utilities';
 import { LoginState } from '../../__types__';
+import { ReducerAction } from '.';
 
 const initialState: LoginState = {
     token: null,
@@ -11,7 +12,7 @@ const initialState: LoginState = {
     pending: false,
 };
 
-export const loginReducer = (state = initialState, action): LoginState => {
+export const loginReducer = (state = initialState, action: ReducerAction): LoginState => {
     switch (action.type) {
         case LOGIN.REQUEST:
         case REFRESH_TOKEN.REQUEST:

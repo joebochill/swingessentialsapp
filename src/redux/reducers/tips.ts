@@ -1,11 +1,12 @@
 import { GET_TIPS, LOGOUT, TOKEN_TIMEOUT } from '../actions/types';
 import { TipsState } from '../../__types__';
+import { ReducerAction } from '.';
 
 const initialState: TipsState = {
     loading: false,
     tipList: [],
 };
-export const tipsReducer = (state = initialState, action): TipsState => {
+export const tipsReducer = (state = initialState, action: ReducerAction): TipsState => {
     switch (action.type) {
         case GET_TIPS.REQUEST:
             return {

@@ -5,17 +5,18 @@ import { Logger } from '../utilities/logging';
 
 type RouteGroup = {
     name: string;
-    data: Array<Route>;
+    data: Route[];
 };
 type Route = {
     title: string;
     icon: string;
     route?: string;
+    screen?: string;
     iconType?: string;
     nested?: boolean;
     private?: boolean;
     activatePanel?: number;
-    onPress?: Function;
+    onPress?: () => void;
 };
 
 export const mainNavigationItems: RouteGroup = {
@@ -30,7 +31,8 @@ export const mainNavigationItems: RouteGroup = {
             title: 'Your Profile',
             icon: 'person',
             private: true,
-            route: ROUTES.SETTINGS,
+            route: ROUTES.SETTINGS_GROUP,
+            screen: ROUTES.SETTINGS,
         },
         {
             title: 'Your Lessons',
@@ -40,12 +42,17 @@ export const mainNavigationItems: RouteGroup = {
         {
             title: 'Submit Your Swing',
             icon: 'videocam',
-            route: ROUTES.SUBMIT_GROUP,
+            route: ROUTES.SUBMIT,
         },
         {
             title: 'Order More',
             icon: 'shopping-cart',
             route: ROUTES.ORDER,
+        },
+        {
+            title: 'Meet Our Pros',
+            icon: 'face',
+            route: ROUTES.PROS,
         },
         {
             title: 'Tip of the Month',
@@ -89,7 +96,7 @@ export const helpNavigationItems: RouteGroup = {
         {
             title: 'Contact Us',
             icon: 'mail',
-            onPress: () => {
+            onPress: (): void => {
                 Mailer.mail(
                     {
                         subject: 'Swing Essentials App Feedback',
@@ -100,7 +107,7 @@ export const helpNavigationItems: RouteGroup = {
                         if (error && error === 'canceled') {
                             // Do nothing
                         } else if (error) {
-                            Logger.logError({
+                            void Logger.logError({
                                 code: 'CON100',
                                 description: 'Error sending error logs',
                                 rawErrorMessage: error,
@@ -109,18 +116,18 @@ export const helpNavigationItems: RouteGroup = {
                             // message sent successfully
                             Alert.alert(
                                 'Message Sent',
-                                'Your message has been sent successfully. Thank you for helping us improve the app!',
+                                'Your message has been sent successfully. Thank you for helping us improve the app!'
                             );
                         } else if (event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')) {
                             // do nothing
                         } else if (event) {
-                            Logger.logError({
+                            void Logger.logError({
                                 code: 'CON900',
                                 description: 'Error sending feedback email. ',
                                 rawErrorMessage: event,
                             });
                         }
-                    },
+                    }
                 );
             },
             // route: ROUTES.CONTACT,

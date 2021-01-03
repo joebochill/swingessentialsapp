@@ -17,7 +17,7 @@ import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 // Utilities
 import { getLongDate, getDate } from '../../utilities';
 
-export const LessonsTutorial = () => {
+export const LessonsTutorial: React.FC = () => {
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
@@ -53,13 +53,14 @@ export const LessonsTutorial = () => {
                     marginTop: theme.spaces.small,
                     marginBottom: theme.spaces.medium,
                     color: theme.colors.onPrimary,
-                }}>
+                }}
+            >
                 {'When you have submitted your golf swing for analysis, your lessons will appear in this list.'}
             </H7>
             <SectionList
                 style={{ marginTop: theme.spaces.large }}
                 scrollEnabled={false}
-                renderSectionHeader={({ section: { bucketName } }) => (
+                renderSectionHeader={({ section: { bucketName } }): JSX.Element => (
                     <View style={[sharedStyles.sectionHeader]}>
                         <Subheading style={[listStyles.heading, { color: theme.colors.onPrimary }]}>
                             {bucketName}
@@ -67,7 +68,7 @@ export const LessonsTutorial = () => {
                     </View>
                 )}
                 sections={sections}
-                renderItem={({ item, index }) => (
+                renderItem={({ item, index }): JSX.Element => (
                     <>
                         {index === 0 && <Divider />}
                         <List.Item
@@ -76,7 +77,7 @@ export const LessonsTutorial = () => {
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     {item.new && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}
                                     <MatIcon
@@ -90,7 +91,7 @@ export const LessonsTutorial = () => {
                         <Divider />
                     </>
                 )}
-                keyExtractor={(item): string => 'complete_' + item.date}
+                keyExtractor={(item): string => `complete_${item.date}`}
             />
         </>,
     ];
@@ -98,11 +99,14 @@ export const LessonsTutorial = () => {
     return (
         <TutorialModal
             visible={showTutorial.tutorial_lesson_list}
-            onClose={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]))}>
+            onClose={(): void => {
+                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]));
+            }}
+        >
             <View>
                 <Carousel
                     data={slides}
-                    renderItem={({ index }) => slides[index]}
+                    renderItem={({ index }): JSX.Element => slides[index]}
                     sliderWidth={width - 2 * theme.spaces.medium}
                     itemWidth={width - 2 * theme.spaces.medium}
                 />
@@ -110,7 +114,9 @@ export const LessonsTutorial = () => {
                     dark
                     title="GOT IT"
                     style={{ flex: 1, marginTop: theme.spaces.xLarge }}
-                    onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]))}
+                    onPress={(): void => {
+                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]));
+                    }}
                 />
             </View>
         </TutorialModal>

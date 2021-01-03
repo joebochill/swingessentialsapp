@@ -15,7 +15,7 @@ import { ApplicationState } from '../../__types__';
 import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 
-export const OrderTutorial = () => {
+export const OrderTutorial: React.FC = () => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useTheme();
@@ -35,7 +35,8 @@ export const OrderTutorial = () => {
                     marginTop: theme.spaces.small,
                     marginBottom: theme.spaces.medium,
                     color: theme.colors.onPrimary,
-                }}>
+                }}
+            >
                 {
                     'We offer multiple lesson packages at different price points. Ensure that you have a payment method linked to your phone before purchasing.'
                 }
@@ -44,7 +45,7 @@ export const OrderTutorial = () => {
                 scrollEnabled={false}
                 keyboardShouldPersistTaps={'always'}
                 data={packages}
-                renderItem={({ item, index }) => (
+                renderItem={({ item, index }): JSX.Element => (
                     <>
                         {index === 0 && <Divider />}
                         <List.Item
@@ -55,7 +56,7 @@ export const OrderTutorial = () => {
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body>{packages.length > 0 ? `$${item.price}` : '--'}</Body>
                                     {index === 0 && (
@@ -75,7 +76,7 @@ export const OrderTutorial = () => {
                         <Divider />
                     </>
                 )}
-                keyExtractor={item => 'package_' + item.app_sku}
+                keyExtractor={(item): string => `package_${item.app_sku}`}
             />
         </>,
     ];
@@ -83,11 +84,14 @@ export const OrderTutorial = () => {
     return (
         <TutorialModal
             visible={showTutorial.tutorial_order}
-            onClose={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]))}>
+            onClose={(): void => {
+                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]));
+            }}
+        >
             <View>
                 <Carousel
                     data={slides}
-                    renderItem={({ index }) => slides[index]}
+                    renderItem={({ index }): JSX.Element => slides[index]}
                     sliderWidth={width - 2 * theme.spaces.medium}
                     itemWidth={width - 2 * theme.spaces.medium}
                 />
@@ -95,7 +99,9 @@ export const OrderTutorial = () => {
                     dark
                     title="GOT IT"
                     style={{ flex: 1, marginTop: theme.spaces.xLarge }}
-                    onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]))}
+                    onPress={(): void => {
+                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]));
+                    }}
                 />
             </View>
         </TutorialModal>

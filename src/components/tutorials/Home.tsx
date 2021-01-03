@@ -16,7 +16,7 @@ import { ApplicationState } from '../../__types__';
 import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 
-export const HomeTutorial = () => {
+export const HomeTutorial: React.FC = () => {
     const [activePanel, setActivePanel] = useState(0);
     const [showButton, setShowButton] = useState(false);
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
@@ -35,7 +35,8 @@ export const HomeTutorial = () => {
                     marginTop: theme.spaces.small,
                     marginBottom: theme.spaces.medium,
                     color: theme.colors.onPrimary,
-                }}>
+                }}
+            >
                 {'The Swing Essentials app gives you quick access to everything you need to keep improving your swing.'}
             </H7>
         </>,
@@ -50,7 +51,8 @@ export const HomeTutorial = () => {
                     marginTop: theme.spaces.small,
                     marginBottom: theme.spaces.medium,
                     color: theme.colors.onPrimary,
-                }}>
+                }}
+            >
                 {'You can sign in or register for an account by clicking the account icon in the header.'}
             </H7>
             <MatIcon
@@ -65,14 +67,17 @@ export const HomeTutorial = () => {
     return (
         <TutorialModal
             visible={showTutorial.tutorial_home}
-            onClose={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]))}>
+            onClose={(): void => {
+                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]));
+            }}
+        >
             <View>
                 <Carousel
                     data={slides}
-                    renderItem={({ index }) => slides[index]}
+                    renderItem={({ index }: { index: number }): JSX.Element => slides[index]}
                     sliderWidth={width - 2 * theme.spaces.medium}
                     itemWidth={width - 2 * theme.spaces.medium}
-                    onSnapToItem={index => {
+                    onSnapToItem={(index: number): void => {
                         setActivePanel(index);
                         if (index === slides.length - 1) {
                             setShowButton(true);
@@ -97,7 +102,9 @@ export const HomeTutorial = () => {
                     title="GOT IT"
                     disabled={!showButton}
                     style={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}
-                    onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]))}
+                    onPress={(): void => {
+                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]));
+                    }}
                 />
             </View>
         </TutorialModal>

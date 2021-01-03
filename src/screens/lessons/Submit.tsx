@@ -13,6 +13,8 @@ import {
     StyleSheet,
     Alert,
     Keyboard,
+    StyleProp,
+    ViewStyle,
 } from 'react-native';
 import {
     CollapsibleHeaderLayout,
@@ -46,13 +48,29 @@ import { submitLesson } from '../../redux/actions';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
 const RNFS = require('react-native-fs');
 
-export const Submit = props => {
+const useStyles = (
+    theme: ReactNativePaper.Theme
+): StyleSheet.NamedStyles<{
+    dashButton: StyleProp<ViewStyle>;
+}> =>
+    StyleSheet.create({
+        dashButton: {
+            padding: theme.spaces.medium,
+            minHeight: theme.sizes.xLarge,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+    });
+
+export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = (props) => {
     const { navigation } = props;
-    const [fo_video, setFO] = useState('');
-    const [dtl_video, setDTL] = useState('');
+    const [foVideo, setFO] = useState('');
+    const [dtlVideo, setDTL] = useState('');
     const [useNotes, setUseNotes] = useState(false);
     const [notes, setNotes] = useState('');
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -77,7 +95,7 @@ export const Submit = props => {
 
     const previousPendingStatus = usePrevious(lessons.redeemPending);
 
-    const _clearFields = useCallback(() => {
+    const clearAllFields = useCallback(() => {
         setFO('');
         setDTL('');
         setNotes('');
@@ -86,24 +104,24 @@ export const Submit = props => {
     }, [setFO, setDTL, setNotes, setUseNotes, setUploadProgress]);
 
     useEffect(() => {
-        let timeout: number = 0;
+        // let timeout = 0;
         // Submission finished
         if (previousPendingStatus && !lessons.redeemPending) {
             if (lessons.redeemSuccess) {
                 // Successful redeem
-                _clearFields();
-                timeout = setTimeout(() => {
+                clearAllFields();
+                /*timeout = */ setTimeout(() => {
                     Alert.alert(
                         'Success!',
                         'Your lesson request was submitted successfully. We are working on your analysis.',
-                        [{ text: 'OK', onPress: () => navigation.navigate(ROUTES.LESSONS) }],
-                        { cancelable: false },
+                        [{ text: 'OK', onPress: (): void => navigation.navigate(ROUTES.LESSONS) }],
+                        { cancelable: false }
                     );
                 }, 700);
                 // return () => clearTimeout(timeout);
             } else {
                 // Fail redeem
-                Logger.logError({
+                void Logger.logError({
                     code: 'SUB100',
                     description: 'Failed to submit lesson.',
                     rawErrorCode: lessons.redeemError,
@@ -111,13 +129,13 @@ export const Submit = props => {
                 // 400701 means files were stripped for size
                 // 400702 too large
                 setUploadProgress(0);
-                timeout = setTimeout(() => {
+                /*timeout = */ setTimeout(() => {
                     Alert.alert(
                         'Oops:',
                         lessons.redeemError === 400701 || lessons.redeemError === 400703
                             ? 'The videos you have submitted are too large. Please edit the videos to be smaller and/or avoid the use of slow-motion video. If this error persists, please contact us.'
                             : 'There was an unexpected error while submitting your swing videos. Please try again later or contact us if the problem persists.',
-                        [{ text: 'OK' }],
+                        [{ text: 'OK' }]
                     );
                 }, 700);
                 // return () => clearTimeout(timeout);
@@ -128,45 +146,45 @@ export const Submit = props => {
         previousPendingStatus,
         lessons.redeemError,
         lessons.redeemSuccess,
-        _clearFields,
+        clearAllFields,
         navigation,
     ]);
 
-    const _canSubmit = useCallback(() => {
-        return (
+    const canSubmit = useCallback(
+        () =>
             roleError.length === 0 &&
             !lessons.redeemPending &&
-            fo_video !== '' &&
-            dtl_video !== '' &&
-            lessons.pending.length <= 0
-        );
-    }, [roleError, lessons, fo_video, dtl_video]);
+            foVideo !== '' &&
+            dtlVideo !== '' &&
+            lessons.pending.length <= 0,
+        [roleError, lessons, foVideo, dtlVideo]
+    );
 
-    const _submitLesson = useCallback(() => {
+    const dispatchSubmitLesson = useCallback(() => {
         Keyboard.dismiss();
         if (role !== 'customer' && role !== 'administrator') {
-            Logger.logError({
+            void Logger.logError({
                 code: 'SUB200',
                 description: 'Unverified users cannot submit lessons.',
             });
             return;
         }
         if (lessons.pending.length > 0) {
-            Logger.logError({
+            void Logger.logError({
                 code: 'SUB300',
                 description: 'You may not submit a new lesson with a current lesson pending.',
             });
             return;
         }
         if (credits < 1) {
-            Logger.logError({
+            void Logger.logError({
                 code: 'SUB350',
                 description: 'You may not submit a new lesson without any credits.',
             });
             return;
         }
-        if (!fo_video || !dtl_video) {
-            Logger.logError({
+        if (!foVideo || !dtlVideo) {
+            void Logger.logError({
                 code: 'SUB400',
                 description: 'Missing required video in lesson submission.',
             });
@@ -175,12 +193,12 @@ export const Submit = props => {
         const data = new FormData();
         data.append('fo', {
             name: 'fo.mov',
-            uri: fo_video,
+            uri: foVideo,
             type: Platform.OS === 'android' ? 'video/mp4' : 'video/mov',
         });
         data.append('dtl', {
             name: 'dtl.mov',
-            uri: dtl_video,
+            uri: dtlVideo,
             type: Platform.OS === 'android' ? 'video/mp4' : 'video/mov',
         });
         data.append('notes', notes);
@@ -188,24 +206,24 @@ export const Submit = props => {
         dispatch(
             submitLesson(data, (event: ProgressEvent) => {
                 setUploadProgress((event.loaded / event.total) * 100);
-            }),
+            })
         );
-    }, [role, credits, lessons.pending.length, fo_video, dtl_video, notes, dispatch]);
+    }, [role, credits, lessons.pending.length, foVideo, dtlVideo, notes, dispatch]);
 
-    const _setVideoURI = useCallback(
-        async (swing: 'fo' | 'dtl', uri: string) => {
+    const setVideoURI = useCallback(
+        async (swing: 'fo' | 'dtl', uri: string): Promise<void> => {
             try {
                 const stats = await RNFS.stat(uri);
                 if (stats.size > 10 * 1024 * 1024) {
                     Alert.alert(
                         `The video you have selected is too large (${(stats.size / (1024 * 1024)).toFixed(
-                            1,
-                        )} MB). The maximum allowable file size is 10MB.`,
+                            1
+                        )} MB). The maximum allowable file size is 10MB.`
                     );
                     return;
                 }
             } catch (err) {
-                Logger.logError({
+                void Logger.logError({
                     code: 'SUB450',
                     description: 'Error while reading local file size. ',
                     rawErrorCode: err.code,
@@ -218,17 +236,17 @@ export const Submit = props => {
             } else if (swing === 'dtl') {
                 setDTL(uri);
             } else {
-                Logger.logError({
+                void Logger.logError({
                     code: 'SUB500',
                     description: 'Invalid video type selection.',
                 });
             }
         },
-        [setFO, setDTL],
+        [setFO, setDTL]
     );
 
-    const _showPicker = useCallback(
-        (swing: 'fo' | 'dtl') => {
+    const showPickerMenu = useCallback(
+        (swing: 'fo' | 'dtl'): void => {
             ImagePicker.showImagePicker(
                 {
                     title: undefined,
@@ -243,7 +261,7 @@ export const Submit = props => {
                         path: 'images',
                     },
                 },
-                response => {
+                (response) => {
                     if (response.didCancel) {
                         /*do nothing*/
                     } else if (response.error) {
@@ -251,27 +269,30 @@ export const Submit = props => {
                     } else if (response.customButton === 'record') {
                         navigation.push(ROUTES.RECORD, {
                             swing,
-                            onReturn: (uri: string) => _setVideoURI(swing, uri),
+                            onReturn: (uri: string) => setVideoURI(swing, uri),
                         });
                     } else {
-                        _setVideoURI(swing, response.uri);
+                        void setVideoURI(swing, response.uri);
                     }
-                },
+                }
             );
         },
-        [_setVideoURI, navigation],
+        [setVideoURI, navigation]
     );
 
     return (
         <CollapsibleHeaderLayout
             title={'Submit Your Swing'}
             subtitle={'Request a personalized lesson'}
-            backgroundImage={bg}>
+            backgroundImage={bg}
+            navigation={navigation}
+        >
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView
                     keyboardShouldPersistTaps={'always'}
                     contentContainerStyle={flexStyles.paddingHorizontal}
-                    ref={scroller}>
+                    ref={scroller}
+                >
                     <ErrorBox show={roleError !== ''} error={roleError} style={formStyles.errorBox} />
                     <ErrorBox
                         show={lessons.pending.length > 0}
@@ -289,7 +310,7 @@ export const Submit = props => {
                         <Subheading style={listStyles.heading}>{'Your Swing Videos'}</Subheading>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        {!fo_video ? (
+                        {!foVideo ? (
                             <SEVideoPlaceholder
                                 title={'Face-On'}
                                 icon={<Image source={fo} resizeMethod={'resize'} style={sharedStyles.image} />}
@@ -300,12 +321,12 @@ export const Submit = props => {
                                         size={theme.sizes.small}
                                     />
                                 }
-                                onPress={() => _showPicker('fo')}
+                                onPress={(): void => showPickerMenu('fo')}
                             />
                         ) : (
-                            <SEVideo editable source={fo_video} onEdit={() => _showPicker('fo')} />
+                            <SEVideo editable source={foVideo} onEdit={(): void => showPickerMenu('fo')} />
                         )}
-                        {!dtl_video ? (
+                        {!dtlVideo ? (
                             <SEVideoPlaceholder
                                 title={'Down-the-Line'}
                                 icon={<Image source={dtl} resizeMethod={'resize'} style={sharedStyles.image} />}
@@ -316,14 +337,14 @@ export const Submit = props => {
                                         size={theme.sizes.small}
                                     />
                                 }
-                                onPress={() => _showPicker('dtl')}
+                                onPress={(): void => showPickerMenu('dtl')}
                             />
                         ) : (
                             <SEVideo
                                 editable
-                                source={dtl_video}
+                                source={dtlVideo}
                                 style={{ marginLeft: theme.spaces.medium }}
-                                onEdit={() => _showPicker('dtl')}
+                                onEdit={(): void => showPickerMenu('dtl')}
                             />
                         )}
                     </View>
@@ -334,7 +355,8 @@ export const Submit = props => {
                         <TouchableOpacity
                             activeOpacity={0.8}
                             style={[formStyles.dashed, styles.dashButton]}
-                            onPress={() => setUseNotes(true)}>
+                            onPress={(): void => setUseNotes(true)}
+                        >
                             <MatIcon name={'add-circle'} color={theme.colors.accent} size={24} />
                         </TouchableOpacity>
                     )}
@@ -344,12 +366,11 @@ export const Submit = props => {
                                 autoCapitalize={'sentences'}
                                 autoFocus
                                 blurOnSubmit={true}
-                                caretHidden
                                 editable={!lessons.redeemPending}
                                 maxLength={500}
                                 multiline
-                                onChangeText={val => setNotes(val)}
-                                onFocus={() => {
+                                onChangeText={(val): void => setNotes(val)}
+                                onFocus={(): void => {
                                     if (scroller.current) {
                                         scroller.current.scrollTo({ x: 0, y: 350, animated: true });
                                     }
@@ -362,14 +383,15 @@ export const Submit = props => {
                                 placeholder={'e.g., Help me with my slice!'}
                                 style={[formStyles.active]}
                             />
-                            <Caption style={{ alignSelf: 'flex-end', marginTop: theme.spaces.small }}>{`${500 -
-                                notes.length} Characters Left`}</Caption>
+                            <Caption style={{ alignSelf: 'flex-end', marginTop: theme.spaces.small }}>{`${
+                                500 - notes.length
+                            } Characters Left`}</Caption>
                         </>
                     )}
                     <SEButton
-                        style={[formStyles.formField, _canSubmit() ? {} : { opacity: 0.6 }]}
+                        style={[formStyles.formField, canSubmit() ? {} : { opacity: 0.6 }]}
                         title={'SUBMIT'}
-                        onPress={_canSubmit() ? () => _submitLesson() : undefined}
+                        onPress={canSubmit() ? (): void => dispatchSubmitLesson() : undefined}
                     />
                 </ScrollView>
             </KeyboardAvoidingView>
@@ -378,13 +400,3 @@ export const Submit = props => {
         </CollapsibleHeaderLayout>
     );
 };
-
-const useStyles = (theme: Theme) =>
-    StyleSheet.create({
-        dashButton: {
-            padding: theme.spaces.medium,
-            minHeight: theme.sizes.xLarge,
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-    });

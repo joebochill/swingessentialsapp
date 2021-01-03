@@ -24,8 +24,10 @@ import { ApplicationState } from '../../__types__';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
-export const Order = props => {
+export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (props) => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
     const credits = useSelector((state: ApplicationState) => state.credits);
     const packagesProcessing = useSelector((state: ApplicationState) => state.packages.loading);
@@ -49,18 +51,18 @@ export const Order = props => {
 
     useEffect(() => {
         if (packages) {
-            let skus: Array<string> = [];
+            const skus: string[] = [];
             for (let i = 0; i < packages.length; i++) {
                 skus.push(packages[i].app_sku);
             }
-            const loadProducts = async () => {
+            const loadProducts = async (): Promise<void> => {
                 try {
                     await RNIap.initConnection();
                     const verifiedProducts = await RNIap.getProducts(skus);
                     setProducts(verifiedProducts.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)));
                     setSelected(0);
                 } catch (err) {
-                    Logger.logError({
+                    void Logger.logError({
                         code: 'IAP100',
                         description: 'Failed to load in-app purchases.',
                         rawErrorCode: err.code,
@@ -68,7 +70,7 @@ export const Order = props => {
                     });
                 }
             };
-            loadProducts();
+            void loadProducts();
         }
     }, [packages]);
 
@@ -77,7 +79,7 @@ export const Order = props => {
             Alert.alert('Purchase Complete', 'Your order has finished processing. Thank you for your purchase!', [
                 {
                     text: 'Submit Your Swing Now',
-                    onPress: () => {
+                    onPress: (): void => {
                         props.navigation.navigate(ROUTES.SUBMIT);
                     },
                 },
@@ -104,7 +106,7 @@ export const Order = props => {
                 await RNIap.requestPurchase(sku, false);
             } catch (error) {
                 if (error.code !== RNIap.IAPErrorCode.E_USER_CANCELLED) {
-                    Logger.logError({
+                    void Logger.logError({
                         code: 'IAP200',
                         description: 'Failed to request in-app purchase.',
                         rawErrorCode: error.code,
@@ -114,7 +116,7 @@ export const Order = props => {
             }
             // Purchase response is handled in RNIAPCallbacks.tsx
         },
-        [role, roleError.length],
+        [role, roleError.length]
     );
 
     return (
@@ -123,10 +125,12 @@ export const Order = props => {
             subtitle={'Multiple packages available'}
             backgroundImage={bg}
             refreshing={credits.inProgress}
-            onRefresh={() => {
+            onRefresh={(): void => {
                 dispatch(loadCredits());
                 dispatch(loadPackages());
-            }}>
+            }}
+            navigation={props.navigation}
+        >
             <ErrorBox
                 show={roleError !== ''}
                 error={roleError}
@@ -146,7 +150,8 @@ export const Order = props => {
                             borderColor: theme.colors.light,
                             marginBottom: theme.spaces.jumbo,
                         },
-                    ]}>
+                    ]}
+                >
                     <H4 style={{ lineHeight: unit(32) }} color={'primary'}>
                         {credits.count}
                     </H4>
@@ -161,7 +166,7 @@ export const Order = props => {
                 keyboardShouldPersistTaps={'always'}
                 data={packages}
                 extraData={products}
-                renderItem={({ item, index }) => (
+                renderItem={({ item, index }): JSX.Element => (
                     <>
                         {index === 0 && <Divider />}
                         <List.Item
@@ -169,11 +174,11 @@ export const Order = props => {
                             description={item.description}
                             titleNumberOfLines={2}
                             titleEllipsizeMode={'tail'}
-                            onPress={() => setSelected(index)}
+                            onPress={(): void => setSelected(index)}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body>{products.length > 0 ? `${products[index].localizedPrice}` : '--'}</Body>
                                     {selected === index && (
@@ -193,7 +198,7 @@ export const Order = props => {
                         <Divider />
                     </>
                 )}
-                keyExtractor={item => 'package_' + item.app_sku}
+                keyExtractor={(item): string => `package_${item.app_sku}`}
             />
             <SEButton
                 style={[
@@ -204,7 +209,9 @@ export const Order = props => {
                 title={'PURCHASE'}
                 onPress={
                     roleError.length === 0 && !packagesProcessing && !credits.inProgress
-                        ? () => onPurchase(packages[selected].app_sku, packages[selected].shortcode)
+                        ? (): void => {
+                              void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
+                          }
                         : undefined
                 }
             />

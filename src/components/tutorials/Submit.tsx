@@ -24,7 +24,7 @@ import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 import { RecordButton } from '../videos';
 
-export const SubmitTutorial = () => {
+export const SubmitTutorial: React.FC = () => {
     const [activePanel, setActivePanel] = useState(0);
     const [showButton, setShowButton] = useState(false);
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
@@ -44,7 +44,8 @@ export const SubmitTutorial = () => {
                     marginTop: theme.spaces.small,
                     marginBottom: theme.spaces.medium,
                     color: theme.colors.onPrimary,
-                }}>
+                }}
+            >
                 {
                     'When you are ready to submit your swing, click on the golfer images to upload Face-On and Down-the-Line videos.'
                 }
@@ -75,12 +76,13 @@ export const SubmitTutorial = () => {
                     marginTop: theme.spaces.small,
                     marginBottom: theme.spaces.medium,
                     color: theme.colors.onPrimary,
-                }}>
+                }}
+            >
                 {'Press the Record button to start recording your swing.'}
             </H7>
             <RecordButton
                 recording={false}
-                onPress={() => {}}
+                onPress={(): void => {}}
                 style={{ alignSelf: 'center', marginTop: theme.spaces.large }}
             />
             <H7
@@ -90,7 +92,8 @@ export const SubmitTutorial = () => {
                     marginTop: theme.spaces.xLarge,
                     marginBottom: theme.spaces.xLarge,
                     color: theme.colors.onPrimary,
-                }}>
+                }}
+            >
                 {'You can adjust your settings for recording length and delay by clicking the settings icon.'}
             </H7>
             <MatIcon
@@ -105,14 +108,17 @@ export const SubmitTutorial = () => {
     return (
         <TutorialModal
             visible={showTutorial.tutorial_submit_swing}
-            onClose={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]))}>
+            onClose={(): void => {
+                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]));
+            }}
+        >
             <View>
                 <Carousel
                     data={slides}
-                    renderItem={({ index }) => slides[index]}
+                    renderItem={({ index }): JSX.Element => slides[index]}
                     sliderWidth={width - 2 * theme.spaces.medium}
                     itemWidth={width - 2 * theme.spaces.medium}
-                    onSnapToItem={index => {
+                    onSnapToItem={(index): void => {
                         setActivePanel(index);
                         if (index === slides.length - 1) {
                             setShowButton(true);
@@ -137,7 +143,9 @@ export const SubmitTutorial = () => {
                     title="GOT IT"
                     disabled={!showButton}
                     style={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}
-                    onPress={() => dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]))}
+                    onPress={(): void => {
+                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]));
+                    }}
                 />
             </View>
         </TutorialModal>

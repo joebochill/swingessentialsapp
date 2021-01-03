@@ -17,8 +17,11 @@ import { useDispatch } from 'react-redux';
 
 // Constants
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
-export const ForgotPassword = () => {
+export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'ResetPassword'>> = (props) => {
+    const { navigation } = props;
     const [email, setEmail] = useState('');
     const [activeField, setActiveField] = useState<'email' | null>(null);
     const [complete, setComplete] = useState(false);
@@ -28,8 +31,8 @@ export const ForgotPassword = () => {
     const formStyles = useFormStyles(theme);
     const flexStyles = useFlexStyles(theme);
 
-    const _sendPasswordReset = useCallback(() => {
-        if (email.match(EMAIL_REGEX)) {
+    const sendPasswordReset = useCallback(() => {
+        if (EMAIL_REGEX.test(email)) {
             dispatch(requestPasswordReset({ email }));
             setComplete(true);
         }
@@ -37,7 +40,13 @@ export const ForgotPassword = () => {
 
     return (
         <View style={sharedStyles.pageContainer}>
-            <SEHeader title={'Forgot Password'} subtitle={'Request a reset'} mainAction={'back'} showAuth={false} />
+            <SEHeader
+                title={'Forgot Password'}
+                subtitle={'Request a reset'}
+                mainAction={'back'}
+                showAuth={false}
+                navigation={navigation}
+            />
             <KeyboardAvoidingView
                 style={[
                     sharedStyles.pageContainer,
@@ -46,7 +55,8 @@ export const ForgotPassword = () => {
                         backgroundColor: theme.colors.primary,
                     },
                 ]}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            >
                 <BackgroundImage style={{ top: HEADER_COLLAPSED_HEIGHT }} />
                 {!complete && (
                     <ScrollView
@@ -56,7 +66,8 @@ export const ForgotPassword = () => {
                                 paddingBottom: height * 0.5,
                             },
                         ]}
-                        keyboardShouldPersistTaps={'always'}>
+                        keyboardShouldPersistTaps={'always'}
+                    >
                         <Body color={'onPrimary'}>
                             {
                                 'Enter the email address you used to register for your account below and we will send you instructions for resetting your password.'
@@ -71,10 +82,10 @@ export const ForgotPassword = () => {
                                 formStyles.formField,
                                 activeField === 'email' || email.length > 0 ? formStyles.active : formStyles.inactive,
                             ]}
-                            onFocus={() => setActiveField('email')}
-                            onBlur={() => setActiveField(null)}
-                            onChangeText={(value: string) => setEmail(value.substr(0, 128))}
-                            onSubmitEditing={(): void => _sendPasswordReset()}
+                            onFocus={(): void => setActiveField('email')}
+                            onBlur={(): void => setActiveField(null)}
+                            onChangeText={(value: string): void => setEmail(value.substr(0, 128))}
+                            onSubmitEditing={(): void => sendPasswordReset()}
                             returnKeyType={'send'}
                             underlineColorAndroid={transparent}
                             value={email}
@@ -82,8 +93,8 @@ export const ForgotPassword = () => {
                         <SEButton
                             dark
                             title={'REQUEST RESET'}
-                            onPress={email.match(EMAIL_REGEX) ? (): void => _sendPasswordReset() : undefined}
-                            style={[formStyles.formField, email.match(EMAIL_REGEX) ? {} : { opacity: 0.6 }]}
+                            onPress={EMAIL_REGEX.test(email) ? (): void => sendPasswordReset() : undefined}
+                            style={[formStyles.formField, EMAIL_REGEX.test(email) ? {} : { opacity: 0.6 }]}
                         />
                     </ScrollView>
                 )}

@@ -1,5 +1,6 @@
 import { GET_SETTINGS, LOGOUT, TOKEN_TIMEOUT } from '../actions/types';
 import { SettingsState } from '../../__types__';
+import { ReducerAction } from '.';
 
 const initialState: SettingsState = {
     loading: false,
@@ -11,7 +12,7 @@ const initialState: SettingsState = {
     avatar: '',
 };
 
-export const settingsReducer = (state = initialState, action): SettingsState => {
+export const settingsReducer = (state = initialState, action: ReducerAction): SettingsState => {
     switch (action.type) {
         case GET_SETTINGS.REQUEST:
             return {

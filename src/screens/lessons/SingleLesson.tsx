@@ -18,13 +18,15 @@ import { ROUTES } from '../../constants/routes';
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
 // Types
-import { ApplicationState, Lesson } from 'src/__types__';
+import { ApplicationState } from 'src/__types__';
 
 // Actions
 import { markLessonViewed } from '../../redux/actions';
 import { useTheme, Subheading } from 'react-native-paper';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
-export const SingleLesson = props => {
+export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson'>> = (props) => {
     const token = useSelector((state: ApplicationState) => state.login.token);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const placeholder = useSelector((state: ApplicationState) => state.config.placeholder);
@@ -34,7 +36,7 @@ export const SingleLesson = props => {
     const listStyles = useListStyles(theme);
     const flexStyles = useFlexStyles(theme);
 
-    let lesson: Lesson = props.navigation.getParam('lesson', null);
+    let { lesson } = props.route.params;
     if (lesson === null) {
         lesson = placeholder;
     }
@@ -65,10 +67,12 @@ export const SingleLesson = props => {
                       title={lesson.request_date}
                       subtitle={lesson.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson'}
                       mainAction={'back'}
+                      navigation={props.navigation}
                   />
                   <ScrollView
                       contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
-                      keyboardShouldPersistTaps={'always'}>
+                      keyboardShouldPersistTaps={'always'}
+                  >
                       {lesson.response_video && (
                           <>
                               <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
@@ -76,19 +80,21 @@ export const SingleLesson = props => {
                               </View>
                               <YouTube
                                   videoId={lesson.response_video}
-                                  style={{ width: videoWidth, height: videoHeight, backgroundColor: 'magenta' }}
+                                  style={{ width: videoWidth, height: videoHeight }}
                               />
                               <View
                                   style={[
                                       sharedStyles.sectionHeader,
                                       { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
-                                  ]}>
+                                  ]}
+                              >
                                   <Subheading style={listStyles.heading}>{'Comments'}</Subheading>
                               </View>
                               {splitParagraphs(lesson.response_notes).map((p, ind) => (
                                   <Body
                                       key={`${lesson.request_id}_p_${ind}`}
-                                      style={[ind > 0 ? sharedStyles.paragraph : {}]}>
+                                      style={[ind > 0 ? sharedStyles.paragraph : {}]}
+                                  >
                                       {p}
                                   </Body>
                               ))}
@@ -100,19 +106,20 @@ export const SingleLesson = props => {
                                   style={[
                                       sharedStyles.sectionHeader,
                                       { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
-                                  ]}>
+                                  ]}
+                              >
                                   <Subheading style={listStyles.heading}>{'Recommended Tips'}</Subheading>
                               </View>
 
                               <Carousel
                                   data={lesson.tips.slice(0, 3)}
-                                  renderItem={({ item }) => (
+                                  renderItem={({ item }): JSX.Element => (
                                       <VideoCard
                                           headerTitle={getLongDate(item.date)}
                                           headerSubtitle={item.title}
                                           style={{ marginBottom: theme.spaces.medium }}
                                           video={item.video}
-                                          onExpand={() => props.navigation.push(ROUTES.TIP, { tip: item })}
+                                          onExpand={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
                                       />
                                   )}
                                   sliderWidth={width}
@@ -128,7 +135,8 @@ export const SingleLesson = props => {
                                   style={[
                                       sharedStyles.sectionHeader,
                                       { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
-                                  ]}>
+                                  ]}
+                              >
                                   <Subheading style={listStyles.heading}>{'Your Swing Videos'}</Subheading>
                               </View>
                               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -148,13 +156,15 @@ export const SingleLesson = props => {
                                   style={[
                                       sharedStyles.sectionHeader,
                                       { marginHorizontal: 0, marginTop: theme.spaces.jumbo },
-                                  ]}>
+                                  ]}
+                              >
                                   <Subheading style={listStyles.heading}>{'Your Special Requests'}</Subheading>
                               </View>
                               {splitParagraphs(lesson.request_notes).map((p, ind) => (
                                   <Body
                                       key={`${lesson.request_id}_p_${ind}`}
-                                      style={[ind > 0 ? sharedStyles.paragraph : {}]}>
+                                      style={[ind > 0 ? sharedStyles.paragraph : {}]}
+                                  >
                                       {p}
                                   </Body>
                               ))}

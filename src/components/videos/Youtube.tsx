@@ -1,6 +1,6 @@
 import React from 'react';
 // Components
-import { Platform, View, ViewProperties } from 'react-native';
+import { Platform, View, ViewProps } from 'react-native';
 import YT, { YouTubeStandaloneAndroid } from 'react-native-youtube';
 import { Thumbnail } from 'react-native-thumbnail-video';
 
@@ -10,7 +10,7 @@ import { YOUTUBE_API_KEY } from '../../constants';
 // Utilities
 import { Logger } from '../../utilities/logging';
 
-type YouTubeProps = ViewProperties & {
+type YouTubeProps = ViewProps & {
     apiKey?: string;
     videoId: string;
     playlistId?: string;
@@ -24,7 +24,7 @@ type YouTubeProps = ViewProperties & {
     origin?: string;
     rel?: boolean;
     resumePlayAndroid?: boolean;
-    onError?: Function;
+    onError?: () => void;
 };
 
 const openStandaloneAndroidPlayer = (id: string): void => {
@@ -34,7 +34,7 @@ const openStandaloneAndroidPlayer = (id: string): void => {
         autoplay: true,
         startTime: 0,
     }).catch((errorMessage: string) => {
-        Logger.logError({
+        void Logger.logError({
             code: 'YT100',
             description: 'YouTube Player error.',
             rawErrorMessage: errorMessage,
@@ -42,7 +42,7 @@ const openStandaloneAndroidPlayer = (id: string): void => {
     });
 };
 
-export const YouTube = (props: YouTubeProps) => {
+export const YouTube: React.FC<YouTubeProps> = (props) => {
     const {
         videoId,
         apiKey = YOUTUBE_API_KEY,
@@ -60,16 +60,16 @@ export const YouTube = (props: YouTubeProps) => {
         <View {...props.style}>
             <Thumbnail
                 url={`https://www.youtube.com/watch?v=${videoId}`}
-                onPress={() => openStandaloneAndroidPlayer(videoId)}
+                onPress={(): void => openStandaloneAndroidPlayer(videoId)}
                 imageHeight="100%"
                 imageWidth="100%"
                 showPlayIcon={true}
-                type="maximum"
+                type="high"
             />
         </View>
     ) : (
         <YT
-            key={videoId + Date.now()}
+            key={`${videoId}${Date.now()}`}
             apiKey={apiKey}
             videoId={props.videoId}
             play={play}

@@ -2,13 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { ActivityIndicator, Modal, ModalProps, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Modal, ModalProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Body, SEButton } from '../';
 
 // Styles
 import { whiteOpacity } from '../../styles/colors';
 import { useSharedStyles, useListStyles } from '../../styles';
-import { useTheme, Theme, Subheading } from 'react-native-paper';
+import { useTheme, Subheading } from 'react-native-paper';
 
 // Types
 import { ApplicationState } from '../../__types__';
@@ -19,7 +19,22 @@ import { atob } from '../../utilities';
 // Redux
 import { requestLogout, refreshToken, checkToken } from '../../redux/actions';
 
-const useStyles = (theme: Theme) =>
+const formatTime = (remaining: number): string => {
+    if (!remaining || remaining <= 0) {
+        return '00:00';
+    }
+
+    const min = Math.floor(remaining / 60);
+    const sec = Math.floor(remaining - min * 60);
+
+    return `${min < 10 ? `0${min}` : min}:${sec < 10 ? `0${sec}` : sec}`;
+};
+
+const useStyles = (
+    theme: ReactNativePaper.Theme
+): StyleSheet.NamedStyles<{
+    modalBackground: StyleProp<ViewStyle>;
+}> =>
     StyleSheet.create({
         modalBackground: {
             flex: 1,
@@ -30,7 +45,7 @@ const useStyles = (theme: Theme) =>
         },
     });
 
-export const TokenModal = (props: ModalProps) => {
+export const TokenModal: React.FC<ModalProps> = (props) => {
     const { ...other } = props;
     const token = useSelector((state: ApplicationState) => state.login.token);
     const role = useSelector((state: ApplicationState) => state.login.role);
@@ -64,7 +79,7 @@ export const TokenModal = (props: ModalProps) => {
             const interval = setInterval(() => {
                 dispatch(checkToken());
             }, 20 * 1000);
-            return () => clearInterval(interval);
+            return (): void => clearInterval(interval);
         }
     }, [token, dispatch, role]);
 
@@ -85,7 +100,7 @@ export const TokenModal = (props: ModalProps) => {
         if (!token || !engageCountdown) {
             return;
         }
-        let interval: number = 0;
+        let interval = 0;
         if (timeRemaining > 0) {
             interval = setInterval(() => {
                 // setTimeRemaining(timeRemaining => timeRemaining - updateRate);
@@ -97,17 +112,18 @@ export const TokenModal = (props: ModalProps) => {
             dispatch(requestLogout());
         }
 
-        return () => clearInterval(interval);
+        return (): void => clearInterval(interval);
     }, [timeRemaining, engageCountdown, token, updateRate, updateRefreshRate, dispatch]);
 
     return (
         <Modal
             animationType="slide"
             transparent={true}
-            onRequestClose={() => {}}
-            onDismiss={() => {}}
+            onRequestClose={(): void => {}}
+            onDismiss={(): void => {}}
             visible={token !== null && timeRemaining <= 3 * 60 && timeRemaining > 0}
-            {...other}>
+            {...other}
+        >
             <View style={styles.modalBackground}>
                 <View
                     style={[
@@ -116,10 +132,11 @@ export const TokenModal = (props: ModalProps) => {
                             backgroundColor: theme.colors.surface,
                             padding: theme.spaces.medium,
                         },
-                    ]}>
+                    ]}
+                >
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                         <Subheading style={listStyles.heading}>{'Automatic Logout'}</Subheading>
-                        <Body>{_formatTime(timeRemaining)}</Body>
+                        <Body>{formatTime(timeRemaining)}</Body>
                     </View>
                     <Body>{'Your current session is about to expire. Click below to stay signed in.'}</Body>
 
@@ -127,7 +144,7 @@ export const TokenModal = (props: ModalProps) => {
                         <SEButton
                             title="KEEP ME SIGNED IN"
                             style={{ marginTop: theme.spaces.medium }}
-                            onPress={() => dispatch(refreshToken())}
+                            onPress={(): void => dispatch(refreshToken())}
                         />
                     )}
                     {refreshing && (
@@ -141,15 +158,4 @@ export const TokenModal = (props: ModalProps) => {
             </View>
         </Modal>
     );
-};
-
-const _formatTime = (remaining: number): string => {
-    if (!remaining || remaining <= 0) {
-        return '00:00';
-    }
-
-    const min = Math.floor(remaining / 60);
-    const sec = Math.floor(remaining - min * 60);
-
-    return (min < 10 ? '0' + min : min) + ':' + (sec < 10 ? '0' + sec : sec);
 };
