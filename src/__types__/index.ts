@@ -25,6 +25,15 @@ export type Blog = {
     title: string;
     body: string;
 };
+export type Pro = {
+    id: string;
+    name: string;
+    title?: string;
+    bio: string;
+    image: string;
+    imageSize?: string;
+    imagePosition?: string;
+};
 
 export type Lesson = {
     dtl_swing: string;
@@ -104,6 +113,9 @@ export type BlogsState = {
     loading: boolean;
     blogList: Blog[];
 };
+export type ProsState = {
+    prosList: Pro[];
+};
 export type PackagesState = {
     list: Package[];
     loading: boolean;
@@ -161,6 +173,7 @@ export type ApplicationState = {
     userData: UserDataState;
     credits: CreditsState;
     blogs: BlogsState;
+    pros: ProsState;
     packages: PackagesState;
     settings: SettingsState;
     registration: RegistrationState;

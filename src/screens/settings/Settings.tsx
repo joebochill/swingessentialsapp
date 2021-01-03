@@ -1,4 +1,4 @@
-import React, { ReactText, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
@@ -6,6 +6,7 @@ import { View, Image, RefreshControl, ScrollView, TouchableHighlight, Keyboard }
 import { Body, Caption, SEButton, SEHeader } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
+import RNPickerSelect from 'react-native-picker-select';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
@@ -20,13 +21,11 @@ import { ApplicationState, Average } from '../../__types__';
 import { loadSettings } from '../../redux/actions/SettingsActions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { getLongDate } from '../../utilities';
-import { transparent } from '../../styles/colors';
+import { blackOpacity, transparent } from '../../styles/colors';
 import { setUserData, loadUserInfo, setUserAvatar } from '../../redux/actions/user-data-actions';
 import { width, height } from '../../utilities/dimensions';
 import { HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { Picker } from '@react-native-picker/picker';
-import { BottomSheet } from '../../components/bottomsheet/BottomSheet';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { format } from 'date-fns';
 
@@ -423,44 +422,37 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             style={[formStyles.formField, formStyles.active, { opacity: 0.6 }]}
                             underlineColorAndroid={transparent}
                         />
-                        <TextInput
-                            label={'Avg. Score (18 Holes)'}
-                            value={mapAverageToLabel(personal.average)}
-                            autoCorrect={false}
-                            autoCapitalize={'none'}
-                            style={[
-                                formStyles.formField,
-                                activeField === 'average' || (personal.average || '').length > 0
-                                    ? formStyles.active
-                                    : formStyles.inactive,
+                        <RNPickerSelect
+                            placeholder={{ label: 'Choose One...', value: '', color: blackOpacity(0.25) }}
+                            items={[
+                                { label: 'Under 70', value: '60' },
+                                { label: '70-79', value: '70' },
+                                { label: '80-89', value: '80' },
+                                { label: '90-99', value: '90' },
+                                { label: '100-149', value: '100' },
+                                { label: '150+', value: '150' },
                             ]}
-                            onFocus={(): void => {
-                                setActiveField('average');
-                                Keyboard.dismiss();
+                            onOpen={(): void => setActiveField('average')}
+                            onClose={(): void => setActiveField(null)}
+                            onValueChange={(value: string): void => {
+                                setPersonal({ ...personal, average: value as Average });
                             }}
-                            underlineColorAndroid={transparent}
-                        />
-                        <BottomSheet
-                            show={activeField === 'average'}
-                            dismissBottomSheet={(): void => {
-                                setActiveField(null);
-                            }}
+                            value={personal.average}
+                            useNativeAndroidPickerStyle={false}
                         >
-                            <Picker
-                                selectedValue={personal.average}
-                                itemStyle={{ backgroundColor: 'white' }}
-                                onValueChange={(value: ReactText): void =>
-                                    setPersonal({ ...personal, average: value as Average })
-                                }
-                            >
-                                <Picker.Item label="Under 70" value="60" />
-                                <Picker.Item label="70-79" value="70" />
-                                <Picker.Item label="80-89" value="80" />
-                                <Picker.Item label="90-99" value="90" />
-                                <Picker.Item label="100-149" value="100" />
-                                <Picker.Item label="150+" value="150" />
-                            </Picker>
-                        </BottomSheet>
+                            <TextInput
+                                editable={false}
+                                style={[
+                                    formStyles.formField,
+                                    activeField === 'average' || (personal.average || '').length > 0
+                                        ? formStyles.active
+                                        : formStyles.inactive,
+                                ]}
+                                label={'Avg. Score (18 Holes)'}
+                                underlineColorAndroid={transparent}
+                                value={mapAverageToLabel(personal.average)}
+                            />
+                        </RNPickerSelect>
 
                         <TextInput
                             label={'Golf Goals'}

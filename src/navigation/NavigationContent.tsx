@@ -50,6 +50,11 @@ export const mainNavigationItems: RouteGroup = {
             route: ROUTES.ORDER,
         },
         {
+            title: 'Meet Our Pros',
+            icon: 'face',
+            route: ROUTES.PROS,
+        },
+        {
             title: 'Tip of the Month',
             icon: 'today',
             route: ROUTES.TIPS,

@@ -8,7 +8,6 @@
         "start": "react-native start",
         "test": "jest",
         "lint": "eslint \"**/**.{ts,tsx}\"",
-        "lin": "eslint",
         "lint:fix": "eslint \"**/**.{ts,tsx}\" --fix",
         "prettier": "prettier \"**/**.{ts,tsx,js,jsx,json,css,scss,html}\" --write",
         "prettier:check": "prettier \"**/**.{ts,tsx,js,jsx,json,css,scss,html}\" --check",

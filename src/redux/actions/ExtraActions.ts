@@ -13,6 +13,7 @@ import { Logger, LOG_TYPE } from '../../utilities/logging';
 import { success, failure } from '../../api/http-helper';
 import { Platform } from 'react-native';
 import { loadUserInfo } from './user-data-actions';
+import { loadPros } from './ProsActions';
 
 export function loadInitialData(): (dispatch: ThunkDispatch<any, void, any>) => void {
     return async (dispatch: ThunkDispatch<any, void, any>): Promise<void> => {
@@ -26,6 +27,7 @@ export function loadInitialData(): (dispatch: ThunkDispatch<any, void, any>) => 
         dispatch(loadBlogs());
         dispatch(loadPackages());
         dispatch(loadFAQ());
+        dispatch(loadPros());
         dispatch(loadTutorials());
     };
 }

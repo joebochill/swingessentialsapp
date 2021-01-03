@@ -31,6 +31,7 @@ import {
 } from '../screens';
 import { width } from '../utilities/dimensions';
 import { Blog, Lesson, SettingsState, SwingType, Tip } from '../__types__';
+import { Pros } from '../screens/help/Pros';
 
 export type RootStackParamList = {
     Register: undefined;
@@ -52,6 +53,7 @@ export type RootStackParamList = {
     FAQ: undefined;
     Home: undefined;
     Order: undefined;
+    Pros: undefined;
     Submit: undefined;
     Blogs: undefined;
     Tips: undefined;
@@ -86,6 +88,7 @@ const StackNavigator: React.FC = () => (
 
         <AppStack.Screen name={ROUTES.ABOUT} component={About} />
         <AppStack.Screen name={ROUTES.FAQ} component={FAQ} />
+        <AppStack.Screen name={ROUTES.PROS} component={Pros} />
 
         <AppStack.Screen name={ROUTES.LOGS} component={ErrorLogs} />
 

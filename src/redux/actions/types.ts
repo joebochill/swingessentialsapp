@@ -34,6 +34,9 @@ export const GET_TIPS = createAction('GET_TIPS', 'tips');
 /* Blogs Actions */
 export const GET_BLOGS = createAction('GET_BLOGS', 'blogs');
 
+/* Pros Actions */
+export const GET_PROS = createAction('GET_PROS', 'bios');
+
 /* Package Actions */
 export const GET_PACKAGES = createAction('GET_PACKAGES', 'packages');
 

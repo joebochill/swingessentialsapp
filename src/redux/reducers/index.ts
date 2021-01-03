@@ -12,6 +12,7 @@ import { faqReducer } from './faq';
 import { logsReducer } from './logs';
 import { tutorialReducer } from './tutorials';
 import { configReducer } from './config';
+import { prosReducer } from './pros';
 
 export type ReducerAction = Action & {
     payload: any;
@@ -25,6 +26,7 @@ export const AppReducer = combineReducers({
     config: configReducer,
     credits: creditsReducer,
     blogs: blogsReducer,
+    pros: prosReducer,
     packages: packagesReducer,
     settings: settingsReducer,
     registration: registrationReducer,
