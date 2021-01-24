@@ -11,11 +11,12 @@ import { useTheme, List, Divider } from 'react-native-paper';
 
 // Types
 import { SettingsState, ApplicationState } from '../../__types__';
-import { NavigationStackScreenProps } from 'react-navigation-stack';
+import { StackScreenProps } from '@react-navigation/stack';
 // Redux
 import { putSettings } from '../../redux/actions/SettingsActions';
 // Constants
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
 type SettingType = {
     name: keyof Exclude<SettingsState, 'loading'>;
@@ -63,11 +64,11 @@ const caseSame = (val1: string | number, val2: string | number): boolean => {
     return val1 === val2;
 };
 
-export const SingleSetting = (props: NavigationStackScreenProps) => {
-    const { navigation } = props;
+export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'SingleSetting'>> = (props) => {
+    const { navigation, route } = props;
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
-    const currentSettingName: keyof SettingsState = navigation.getParam('setting', null);
+    const { setting: currentSettingName } = route.params;
 
     const dispatch = useDispatch();
     const theme = useTheme();
@@ -77,18 +78,18 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
 
     const [value, setValue] = useState(settings[currentSettingName]);
 
-    const _updateSetting = useCallback(() => {
+    const updateSetting = useCallback(() => {
         if (currentSettingName === 'notifications') {
             dispatch(
                 putSettings({
                     subscribe: value,
-                }),
+                })
             );
         } else {
             dispatch(
                 putSettings({
                     [currentSettingName]: value,
-                }),
+                })
             );
         }
     }, [dispatch, currentSettingName, value]);
@@ -103,7 +104,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
         navigation.pop();
         return null;
     }
-    const currentSetting: SettingType = SETTINGS.filter(setting => setting.name === currentSettingName)[0];
+    const currentSetting: SettingType = SETTINGS.filter((setting) => setting.name === currentSettingName)[0];
 
     return (
         <View style={sharedStyles.pageContainer}>
@@ -112,7 +113,8 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                 title={'Settings'}
                 subtitle={currentSetting.label}
                 showAuth={false}
-                onNavigate={() => _updateSetting()}
+                onNavigate={(): void => updateSetting()}
+                navigation={navigation}
             />
             <View
                 style={[
@@ -120,7 +122,8 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                     {
                         paddingTop: HEADER_COLLAPSED_HEIGHT + theme.spaces.medium,
                     },
-                ]}>
+                ]}
+            >
                 {currentSetting.values.map((val, index) => (
                     <View key={`option_${index}`}>
                         {index === 0 && <Divider />}
@@ -132,7 +135,7 @@ export const SingleSetting = (props: NavigationStackScreenProps) => {
                             onPress={(): void => setValue(val)}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     {caseSame(value, val) && (
                                         <MatIcon

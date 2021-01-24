@@ -1,4 +1,3 @@
-import { Dispatch } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
 import * as ACTIONS from './types';
@@ -11,7 +10,7 @@ export function loadUserInfo() {
     return (dispatch: ThunkDispatch<any, void, any>): void => {
         dispatch({ type: ACTIONS.GET_BLOGS.REQUEST });
 
-        HttpRequest.get(ACTIONS.GET_USER_DATA.API)
+        void HttpRequest.get(ACTIONS.GET_USER_DATA.API)
             .onSuccess((body: any) => {
                 dispatch(success(ACTIONS.GET_USER_DATA.SUCCESS, body));
             })
@@ -25,14 +24,17 @@ export function loadUserInfo() {
 export type UserDataChange = {
     firstName?: string;
     lastName?: string;
-    phone?: string;
+    // phone?: string;
     location?: string;
+    average?: number;
+    birthday?: string;
+    goals?: string;
 };
 export function setUserData(data: UserDataChange) {
     return (dispatch: ThunkDispatch<any, void, any>): void => {
         dispatch({ type: ACTIONS.SET_USER_DATA.REQUEST });
 
-        HttpRequest.put(ACTIONS.SET_USER_DATA.API)
+        void HttpRequest.put(ACTIONS.SET_USER_DATA.API)
             .withBody(data)
             .onSuccess((response: any) => {
                 dispatch(success(ACTIONS.SET_USER_DATA.SUCCESS, response));
@@ -53,7 +55,7 @@ export function setUserAvatar(data: SetAvatar) {
     return (dispatch: ThunkDispatch<any, void, any>): void => {
         dispatch({ type: ACTIONS.CHANGE_AVATAR.REQUEST });
 
-        HttpRequest.post(ACTIONS.CHANGE_AVATAR.API)
+        void HttpRequest.post(ACTIONS.CHANGE_AVATAR.API)
             .withBody(data)
             .onSuccess((response: any) => {
                 dispatch(success(ACTIONS.CHANGE_AVATAR.SUCCESS, response));

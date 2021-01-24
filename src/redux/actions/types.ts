@@ -34,6 +34,9 @@ export const GET_TIPS = createAction('GET_TIPS', 'tips');
 /* Blogs Actions */
 export const GET_BLOGS = createAction('GET_BLOGS', 'blogs');
 
+/* Pros Actions */
+export const GET_PROS = createAction('GET_PROS', 'bios');
+
 /* Package Actions */
 export const GET_PACKAGES = createAction('GET_PACKAGES', 'packages');
 
@@ -41,7 +44,7 @@ export const GET_PACKAGES = createAction('GET_PACKAGES', 'packages');
 export const GET_CREDITS = createAction('GET_CREDITS', 'credits');
 export const PURCHASE_CREDITS = createAction(
     'PURCHASE_CREDITS',
-    Platform.OS === 'android' ? 'executeandroidpayment' : 'executeiospayment',
+    Platform.OS === 'android' ? 'executeandroidpayment' : 'executeiospayment'
 );
 
 /* FAQ Actions */

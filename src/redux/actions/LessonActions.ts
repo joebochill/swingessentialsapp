@@ -5,10 +5,10 @@ import * as ACTIONS from './types';
 import { ThunkDispatch } from 'redux-thunk';
 
 export function loadLessons() {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch): void => {
         dispatch({ type: ACTIONS.GET_LESSONS.REQUEST });
 
-        HttpRequest.get(ACTIONS.GET_LESSONS.API)
+        void HttpRequest.get(ACTIONS.GET_LESSONS.API)
             .onSuccess((body: any) => {
                 dispatch(success(ACTIONS.GET_LESSONS.SUCCESS, body));
             })
@@ -21,10 +21,10 @@ export function loadLessons() {
 
 /* Lets a user redeem a credit and submit a new lesson request */
 export function submitLesson(data: FormData, onUpdateProgress: (this: XMLHttpRequest, ev: ProgressEvent) => any) {
-    return (dispatch: ThunkDispatch<any, void, any>) => {
+    return (dispatch: ThunkDispatch<any, void, any>): void => {
         dispatch({ type: ACTIONS.SUBMIT_LESSON.REQUEST });
 
-        HttpRequest.post(ACTIONS.SUBMIT_LESSON.API)
+        void HttpRequest.post(ACTIONS.SUBMIT_LESSON.API)
             .withBody(data, false)
             .onSuccess((body: any) => {
                 dispatch(success(ACTIONS.SUBMIT_LESSON.SUCCESS, body));
@@ -38,12 +38,12 @@ export function submitLesson(data: FormData, onUpdateProgress: (this: XMLHttpReq
 }
 
 /* Marks a new lesson as viewed by the user */
-export function markLessonViewed(lesson_id: number) {
-    return (dispatch: ThunkDispatch<any, void, any>) => {
+export function markLessonViewed(lessonID: number) {
+    return (dispatch: ThunkDispatch<any, void, any>): void => {
         dispatch({ type: ACTIONS.MARK_VIEWED.REQUEST });
 
-        HttpRequest.put(ACTIONS.MARK_VIEWED.API)
-            .withBody({ id: lesson_id })
+        void HttpRequest.put(ACTIONS.MARK_VIEWED.API)
+            .withBody({ id: lessonID })
             .onSuccess((body: any) => {
                 dispatch(success(ACTIONS.MARK_VIEWED.SUCCESS, body));
                 dispatch(loadLessons());

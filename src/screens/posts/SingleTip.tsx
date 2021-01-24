@@ -11,9 +11,11 @@ import { splitParagraphs, getLongDate } from '../../utilities';
 // Constants
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { useTheme, Subheading } from 'react-native-paper';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
-export const SingleTip = props => {
-    const tip = props.navigation.getParam('tip', null);
+export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip'>> = (props) => {
+    const { tip } = props.route.params;
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const listStyles = useListStyles(theme);
@@ -28,10 +30,11 @@ export const SingleTip = props => {
     return (
         tip && (
             <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
-                <SEHeader title={getLongDate(tip.date)} mainAction={'back'} />
+                <SEHeader title={getLongDate(tip.date)} mainAction={'back'} navigation={props.navigation} />
                 <ScrollView
                     contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
-                    keyboardShouldPersistTaps={'always'}>
+                    keyboardShouldPersistTaps={'always'}
+                >
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                         <Subheading style={listStyles.heading}>{tip.title}</Subheading>
                     </View>

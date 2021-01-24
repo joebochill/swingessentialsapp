@@ -1,5 +1,6 @@
 import { GET_CREDITS, LOGOUT, PURCHASE_CREDITS, TOKEN_TIMEOUT } from '../actions/types';
 import { CreditsState } from '../../__types__';
+import { ReducerAction } from '.';
 
 const initialState: CreditsState = {
     count: 0,
@@ -7,7 +8,7 @@ const initialState: CreditsState = {
     success: false,
     fail: false,
 };
-export const creditsReducer = (state = initialState, action): CreditsState => {
+export const creditsReducer = (state = initialState, action: ReducerAction): CreditsState => {
     switch (action.type) {
         case GET_CREDITS.REQUEST:
             return {

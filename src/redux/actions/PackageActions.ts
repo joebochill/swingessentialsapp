@@ -4,10 +4,10 @@ import { Dispatch } from 'redux';
 import * as ACTIONS from './types';
 
 export function loadPackages() {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch): void => {
         dispatch({ type: ACTIONS.GET_PACKAGES.REQUEST });
 
-        HttpRequest.get(ACTIONS.GET_PACKAGES.API)
+        void HttpRequest.get(ACTIONS.GET_PACKAGES.API)
             .onSuccess((body: any) => {
                 dispatch(success(ACTIONS.GET_PACKAGES.SUCCESS, body));
             })

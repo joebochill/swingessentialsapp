@@ -12,9 +12,11 @@ import { height } from '../../utilities/dimensions';
 // Constants
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { useTheme, Subheading } from 'react-native-paper';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
-export const SingleBlog = props => {
-    const blog = props.navigation.getParam('blog', null);
+export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBlog'>> = (props) => {
+    const { blog } = props.route.params;
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
     const flexStyles = useFlexStyles(theme);
@@ -26,10 +28,11 @@ export const SingleBlog = props => {
     return (
         blog && (
             <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
-                <SEHeader title={getLongDate(blog.date)} mainAction={'back'} />
+                <SEHeader title={getLongDate(blog.date)} mainAction={'back'} navigation={props.navigation} />
                 <ScrollView
                     contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
-                    keyboardShouldPersistTaps={'always'}>
+                    keyboardShouldPersistTaps={'always'}
+                >
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                         <Subheading style={listStyles.heading}>{blog.title}</Subheading>
                     </View>

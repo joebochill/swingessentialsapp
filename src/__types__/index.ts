@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export type HandednessType = 'right' | 'left';
 export type CameraType = 'front' | 'back';
 export type SwingType = 'dtl' | 'fo';
@@ -5,23 +6,6 @@ export type UserRole = 'administrator' | 'anonymous' | 'customer' | 'pending';
 export type NavType = 'menu' | 'back' | 'none';
 export type LessonType = 'in-person' | 'single';
 
-export type ColorDef = {
-    50: string;
-    100: string;
-    200: string;
-    300: string;
-    400: string;
-    500: string;
-    600: string;
-    700: string;
-    800: string;
-    900: string;
-    A100?: string;
-    A200?: string;
-    A400?: string;
-    A700?: string;
-    contrastDefaultColor?: string;
-};
 export type UserSettingsType = {
     duration?: number;
     delay?: number;
@@ -41,6 +25,16 @@ export type Blog = {
     title: string;
     body: string;
 };
+export type Pro = {
+    id: string;
+    name: string;
+    title?: string;
+    bio: string;
+    image: string;
+    imageSize?: string;
+    imagePosition?: string;
+};
+
 export type Lesson = {
     dtl_swing: string;
     fo_swing: string;
@@ -55,6 +49,7 @@ export type Lesson = {
     username?: string;
     viewed: number | boolean;
 };
+
 export type Package = {
     // TODO: update API to return proper types for numbers
     id: string | number;
@@ -95,6 +90,7 @@ export type TipsState = {
     loading: boolean;
     tipList: Tip[];
 };
+export type Average = '60' | '70' | '80' | '90' | '100' | '150';
 export type UserDataState = {
     username: string;
     firstName: string;
@@ -102,12 +98,13 @@ export type UserDataState = {
     email: string;
     joined: number;
     location?: string;
-    phone?: string;
+    // phone?: string;
+    birthday?: string;
+    average?: Average;
+    goals?: string;
 };
 export type CreditsState = {
     count: number;
-    // unlimited: number,
-    // unlimitedExpires: number,
     inProgress: boolean;
     success: boolean;
     fail: boolean;
@@ -115,6 +112,9 @@ export type CreditsState = {
 export type BlogsState = {
     loading: boolean;
     blogList: Blog[];
+};
+export type ProsState = {
+    prosList: Pro[];
 };
 export type PackagesState = {
     list: Package[];
@@ -132,9 +132,7 @@ export type SettingsState = {
 export type RegistrationState = {
     pending: boolean;
     userAvailable: boolean;
-    // lastUserChecked: string;
     emailAvailable: boolean;
-    // lastEmailChecked: string;
     success: boolean;
     emailVerified: boolean;
     error: number;
@@ -159,6 +157,7 @@ export type ConfigState = {
 export type LogsState = {
     loading: boolean;
 };
+
 export type TutorialsState = {
     tutorial_lesson_list: boolean;
     tutorial_lesson: boolean;
@@ -174,6 +173,7 @@ export type ApplicationState = {
     userData: UserDataState;
     credits: CreditsState;
     blogs: BlogsState;
+    pros: ProsState;
     packages: PackagesState;
     settings: SettingsState;
     registration: RegistrationState;

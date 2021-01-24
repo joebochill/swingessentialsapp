@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { getDate } from '../utilities';
 import { Lesson } from '../__types__';
 

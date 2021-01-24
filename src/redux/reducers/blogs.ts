@@ -1,11 +1,12 @@
 import { GET_BLOGS, LOGOUT, TOKEN_TIMEOUT } from '../actions/types';
 import { BlogsState } from '../../__types__';
+import { ReducerAction } from '.';
 
 const initialState: BlogsState = {
     loading: false,
     blogList: [],
 };
-export const blogsReducer = (state = initialState, action): BlogsState => {
+export const blogsReducer = (state = initialState, action: ReducerAction): BlogsState => {
     switch (action.type) {
         case GET_BLOGS.REQUEST:
             return {

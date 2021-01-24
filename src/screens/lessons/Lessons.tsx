@@ -21,9 +21,12 @@ import { getLongDate, makeGroups } from '../../utilities';
 import { ApplicationState } from '../../__types__';
 // Actions
 import { loadLessons } from '../../redux/actions';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
 const AddIcon = wrapIcon({ IconClass: MatIcon, name: 'add-circle' });
 
+/* eslint-disable @typescript-eslint/naming-convention */
 type Lesson = {
     request_id: number;
     dtl_swing: string;
@@ -36,8 +39,9 @@ type Lesson = {
     username: string;
     viewed: boolean;
 };
+/* eslint-enable @typescript-eslint/naming-convention */
 
-export const Lessons = props => {
+export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> = (props) => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const myLessons = lessons.pending.concat(lessons.closed);
@@ -54,15 +58,17 @@ export const Lessons = props => {
             subtitle={"See how far you've come"}
             backgroundImage={bg}
             refreshing={lessons.loading}
-            onRefresh={() => dispatch(loadLessons())}
+            onRefresh={(): void => dispatch(loadLessons())}
             actionItems={[
                 {
                     icon: AddIcon,
-                    onPress: () => props.navigation.navigate(ROUTES.SUBMIT),
+                    onPress: (): void => props.navigation.navigate(ROUTES.SUBMIT),
                 },
-            ]}>
+            ]}
+            navigation={props.navigation}
+        >
             <SectionList
-                renderSectionHeader={({ section: { bucketName, index } }) => (
+                renderSectionHeader={({ section: { bucketName, index } }): JSX.Element => (
                     <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: theme.spaces.jumbo } : {}]}>
                         <Subheading style={listStyles.heading}>{bucketName}</Subheading>
                     </View>
@@ -74,11 +80,11 @@ export const Lessons = props => {
                         <Divider />
                         <List.Item
                             title={'Welcome to Swing Essentials!'}
-                            onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: null })}
+                            onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: null })}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>
                                     <MatIcon
@@ -92,7 +98,7 @@ export const Lessons = props => {
                         <Divider />
                     </>
                 }
-                renderItem={({ item, index }) =>
+                renderItem={({ item, index }): JSX.Element =>
                     item.response_video ? (
                         <>
                             {index === 0 && <Divider />}
@@ -105,11 +111,11 @@ export const Lessons = props => {
                                         ? 'In-person lesson'
                                         : 'Remote lesson'
                                 }
-                                onPress={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
+                                onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                                 style={listStyles.item}
                                 titleStyle={{ marginLeft: -8 }}
                                 descriptionStyle={{ marginLeft: -8 }}
-                                right={({ style, ...rightProps }) => (
+                                right={({ style, ...rightProps }): JSX.Element => (
                                     <View style={[flexStyles.row, style]} {...rightProps}>
                                         {!item.viewed && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}
                                         <MatIcon
@@ -137,7 +143,7 @@ export const Lessons = props => {
                                 style={listStyles.item}
                                 titleStyle={{ marginLeft: -8 }}
                                 descriptionStyle={{ marginLeft: -8 }}
-                                right={({ style, ...rightProps }) => (
+                                right={({ style, ...rightProps }): JSX.Element => (
                                     <View style={[flexStyles.row, style]} {...rightProps}>
                                         <Body style={{ marginRight: theme.spaces.small }}>IN PROGRESS</Body>
                                     </View>
@@ -147,7 +153,7 @@ export const Lessons = props => {
                         </>
                     )
                 }
-                keyExtractor={(item): string => 'complete_' + item.request_id}
+                keyExtractor={(item): string => `complete_${item.request_id}`}
             />
             <LessonsTutorial />
         </CollapsibleHeaderLayout>

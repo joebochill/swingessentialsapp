@@ -1,5 +1,6 @@
 import { GET_LESSONS, LOGOUT, SUBMIT_LESSON, TOKEN_TIMEOUT } from '../actions/types';
 import { LessonsState } from '../../__types__';
+import { ReducerAction } from '.';
 
 const initialState: LessonsState = {
     loading: false,
@@ -10,7 +11,7 @@ const initialState: LessonsState = {
     redeemError: null,
 };
 
-export const lessonsReducer = (state = initialState, action): LessonsState => {
+export const lessonsReducer = (state = initialState, action: ReducerAction): LessonsState => {
     switch (action.type) {
         case GET_LESSONS.REQUEST:
             return {

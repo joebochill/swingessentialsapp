@@ -4,10 +4,10 @@ import { Dispatch } from 'redux';
 import * as ACTIONS from './types';
 
 export function loadBlogs() {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch): void => {
         dispatch({ type: ACTIONS.GET_BLOGS.REQUEST });
 
-        HttpRequest.get(ACTIONS.GET_BLOGS.API)
+        void HttpRequest.get(ACTIONS.GET_BLOGS.API)
             .onSuccess((body: any) => {
                 dispatch(success(ACTIONS.GET_BLOGS.SUCCESS, body));
             })

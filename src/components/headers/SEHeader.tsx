@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withNavigation, NavigationInjectedProps } from 'react-navigation';
+// import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 // Components
 import { Alert, Animated } from 'react-native';
-import { ResizableHeader } from './ResizableHeader';
+import { ResizableHeader, ResizableHeaderProps } from './ResizableHeader';
 
 // Utilities
 import { wrapIcon, HeaderIcon } from '../IconWrapper';
@@ -16,7 +16,6 @@ import topology from '../../images/topology_20.png';
 
 // Types
 import { ApplicationState, NavType } from '../../__types__';
-import { ResizableHeaderProps } from './ResizableHeader';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
@@ -24,6 +23,7 @@ import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
 // Redux
 import { requestLogout } from '../../redux/actions';
+// import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 
 const MenuIcon = wrapIcon({ IconClass: MatIcon, name: 'menu' });
 const BackIcon = wrapIcon({ IconClass: MatIcon, name: 'arrow-back' });
@@ -35,37 +35,44 @@ export type SEHeaderProps = Omit<ResizableHeaderProps, 'headerHeight'> & {
     showAuth?: boolean;
     dynamic?: boolean;
     headerHeight?: Animated.AnimatedInterpolation;
-    onNavigate?: Function;
+    onNavigate?: () => void;
+    navigation: any;
 };
 
-export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjectedProps) => {
+export const SEHeader: React.FC<SEHeaderProps> = (props) => {
     const {
         mainAction = 'back',
         showAuth = true,
-        navigation,
         backgroundImage = topology,
         actionItems = [],
         onNavigate,
+        navigation: navigationProp,
         ...other
     } = props;
+
     const token = useSelector((state: ApplicationState) => state.login.token);
     const dispatch = useDispatch();
 
-    const defaultActions: Array<HeaderIcon> = showAuth
+    const defaultActions: HeaderIcon[] = showAuth
         ? [
               token
                   ? {
                         icon: LogoutIcon,
-                        onPress: () => {
+                        onPress: (): void => {
                             Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-                                { text: 'Sign Out', onPress: () => dispatch(requestLogout()) },
+                                {
+                                    text: 'Sign Out',
+                                    onPress: (): void => {
+                                        dispatch(requestLogout());
+                                    },
+                                },
                                 { text: 'Cancel' },
                             ]);
                         },
                     }
                   : {
                         icon: AccountIcon,
-                        onPress: () => props.navigation.navigate({ routeName: ROUTES.LOGIN, key: ROUTES.LOGIN }),
+                        onPress: (): void => navigationProp.navigate({ name: ROUTES.LOGIN, key: ROUTES.LOGIN }),
                     },
           ]
         : [];
@@ -76,8 +83,8 @@ export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjecte
                 mainAction === 'menu'
                     ? {
                           icon: MenuIcon,
-                          onPress: () => {
-                              navigation.openDrawer();
+                          onPress: (): void => {
+                              navigationProp.openDrawer();
                               if (onNavigate) {
                                   onNavigate();
                               }
@@ -86,8 +93,8 @@ export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjecte
                     : mainAction === 'back'
                     ? {
                           icon: BackIcon,
-                          onPress: () => {
-                              navigation.pop();
+                          onPress: (): void => {
+                              navigationProp.pop();
                               if (onNavigate) {
                                   onNavigate();
                               }
@@ -101,4 +108,4 @@ export const SEHeader = withNavigation((props: SEHeaderProps & NavigationInjecte
             {...other}
         />
     );
-});
+};

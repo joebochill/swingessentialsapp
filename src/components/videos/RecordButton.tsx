@@ -7,6 +7,9 @@ import {
     TouchableOpacityProps,
     GestureResponderEvent,
     TouchableOpacity,
+    StyleProp,
+    ViewStyle,
+    TextStyle,
 } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -17,10 +20,18 @@ import { transparent, blackOpacity } from '../../styles/colors';
 import { unit } from '../../styles/sizes';
 
 // Utilities
-import { useSafeArea } from 'react-native-safe-area-context';
-import { useTheme, Theme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTheme } from 'react-native-paper';
 
-const useStyles = (theme: Theme) =>
+const useStyles = (
+    theme: ReactNativePaper.Theme
+): StyleSheet.NamedStyles<{
+    recordRow: StyleProp<ViewStyle>;
+    recordButton: StyleProp<ViewStyle>;
+    innerRecord: StyleProp<ViewStyle>;
+    innerStop: StyleProp<ViewStyle>;
+    label: StyleProp<TextStyle>;
+}> =>
     StyleSheet.create({
         recordRow: {
             position: 'absolute',
@@ -62,17 +73,18 @@ const useStyles = (theme: Theme) =>
     });
 type RecordButtonProps = TouchableOpacityProps & {
     recording: boolean;
-    onPress: Function;
+    onPress: () => void;
 };
-export const RecordButton = (props: RecordButtonProps) => {
+export const RecordButton: React.FC<RecordButtonProps> = (props) => {
     const { recording, style, onPress, ...other } = props;
     const theme = useTheme();
     const styles = useStyles(theme);
     return (
         <TouchableOpacity
-            onPress={(evt: GestureResponderEvent) => onPress(evt)}
+            onPress={(evt: GestureResponderEvent): void => onPress(evt)}
             style={StyleSheet.flatten([styles.recordButton, style])}
-            {...other}>
+            {...other}
+        >
             {!recording ? <View style={styles.innerRecord} /> : <View style={styles.innerStop} />}
         </TouchableOpacity>
     );
@@ -81,13 +93,13 @@ export const RecordButton = (props: RecordButtonProps) => {
 type VideoControlRowProps = ViewProps & {
     mode: 'record' | 'play';
     active: boolean;
-    onAction: Function;
-    onBack: Function;
-    onNext: Function;
+    onAction: () => void;
+    onBack: () => void;
+    onNext: () => void;
 };
-export const VideoControls = (props: VideoControlRowProps) => {
+export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
     const { mode, active, onAction, onBack, onNext, ...other } = props;
-    const insets = useSafeArea();
+    const insets = useSafeAreaInsets();
     const theme = useTheme();
     const styles = useStyles(theme);
     return (
@@ -99,8 +111,9 @@ export const VideoControls = (props: VideoControlRowProps) => {
                     backgroundColor: active ? transparent : blackOpacity(0.5),
                 },
             ]}
-            {...other}>
-            <TouchableOpacity onPress={() => onBack()} disabled={active} style={{ flex: 1 }}>
+            {...other}
+        >
+            <TouchableOpacity onPress={onBack} disabled={active} style={{ flex: 1 }}>
                 {!active && <Body style={styles.label}>{mode === 'record' ? 'Cancel' : 'Retake'}</Body>}
             </TouchableOpacity>
             {mode === 'play' && (
@@ -110,11 +123,11 @@ export const VideoControls = (props: VideoControlRowProps) => {
                     underlayColor={transparent}
                     color={theme.colors.onPrimary}
                     style={{ flex: 0 }}
-                    onPress={() => onAction()}
+                    onPress={onAction}
                 />
             )}
-            {mode === 'record' && <RecordButton style={{ flex: 0 }} recording={active} onPress={() => onAction()} />}
-            <TouchableOpacity onPress={() => onNext()} disabled={active} style={{ flex: 1, alignItems: 'flex-end' }}>
+            {mode === 'record' && <RecordButton style={{ flex: 0 }} recording={active} onPress={onAction} />}
+            <TouchableOpacity onPress={onNext} disabled={active} style={{ flex: 1, alignItems: 'flex-end' }}>
                 {!active && mode === 'play' && <Body style={styles.label}>Use Video</Body>}
                 {!active && mode === 'record' && (
                     <MaterialCommunityIcon
@@ -122,7 +135,7 @@ export const VideoControls = (props: VideoControlRowProps) => {
                         size={theme.sizes.medium}
                         underlayColor={transparent}
                         color={theme.colors.onPrimary}
-                        onPress={() => onNext()}
+                        onPress={onNext}
                     />
                 )}
             </TouchableOpacity>

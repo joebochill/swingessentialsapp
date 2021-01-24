@@ -24,8 +24,11 @@ import { ApplicationState } from '../../__types__';
 // Redux
 import { loadUserContent } from '../../redux/actions';
 import { unit } from '../../styles/sizes';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
+import { Spacer } from '@pxblue/react-native-components';
 
-export const Home = props => {
+export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (props) => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
     const tips = useSelector((state: ApplicationState) => state.tips);
     const placeholder = useSelector((state: ApplicationState) => state.config.placeholder);
@@ -45,27 +48,59 @@ export const Home = props => {
             subtitle={'The pro in your pocket'}
             mainAction={'menu'}
             refreshing={lessons.loading || credits.inProgress || tips.loading}
-            onRefresh={() => {
+            onRefresh={(): void => {
                 dispatch(loadUserContent());
             }}
-            bottomPad={false}>
+            bottomPad={false}
+            navigation={props.navigation}
+        >
+            {role === 'anonymous' && (
+                <View
+                    style={[
+                        flexStyles.centered,
+                        flexStyles.paddingMedium,
+                        {
+                            marginTop: -1 * theme.spaces.medium,
+                            marginBottom: theme.spaces.medium,
+                            backgroundColor: theme.colors.surface,
+                            flexDirection: 'row',
+                            borderWidth: unit(1),
+                            borderColor: theme.colors.light,
+                        },
+                    ]}
+                >
+                    <SEButton
+                        mode={'contained'}
+                        title={'Sign Up Today'}
+                        style={{ flex: 1 }}
+                        onPress={(): void => props.navigation.navigate(ROUTES.REGISTER)}
+                    />
+                    <Spacer flex={0} width={theme.sizes.xSmall} />
+                    <SEButton
+                        mode={'contained'}
+                        title={'Sign In'}
+                        style={{ flex: 1 }}
+                        onPress={(): void => props.navigation.navigate(ROUTES.LOGIN)}
+                    />
+                </View>
+            )}
             <View style={[sharedStyles.sectionHeader]}>
                 <Subheading style={listStyles.heading}>{'Latest Lessons'}</Subheading>
                 <SEButton
                     mode={'outlined'}
                     title={'View All'}
-                    onPress={() => props.navigation.navigate(ROUTES.LESSONS)}
+                    onPress={(): void => props.navigation.navigate(ROUTES.LESSONS)}
                 />
             </View>
             <Carousel
                 data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)}
-                renderItem={({ item }) => (
+                renderItem={({ item }): JSX.Element => (
                     <VideoCard
                         // headerIcon={item.type === 'in-person' ? 'settings-remote' : 'settings-remote'}
                         headerTitle={item.request_date}
                         headerSubtitle={role === 'administrator' ? item.username : undefined}
                         video={item.response_video}
-                        onExpand={() => props.navigation.push(ROUTES.LESSON, { lesson: item })}
+                        onExpand={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                     />
                 )}
                 sliderWidth={width}
@@ -78,7 +113,7 @@ export const Home = props => {
                 <SEButton
                     mode={'outlined'}
                     title={'Order More'}
-                    onPress={() => props.navigation.navigate(ROUTES.ORDER)}
+                    onPress={(): void => props.navigation.navigate(ROUTES.ORDER)}
                 />
             </View>
             <View style={[flexStyles.row, flexStyles.paddingHorizontal, { justifyContent: 'space-between' }]}>
@@ -92,7 +127,8 @@ export const Home = props => {
                             borderRadius: theme.roundness,
                         },
                         { backgroundColor: theme.colors.surface, borderColor: theme.colors.light },
-                    ]}>
+                    ]}
+                >
                     <H4 style={{ lineHeight: unit(32) }} color={'primary'}>
                         {credits.count}
                     </H4>
@@ -103,7 +139,7 @@ export const Home = props => {
                             title={'Submit a Swing'}
                             icon={'publish'}
                             style={{ marginTop: theme.spaces.medium }}
-                            onPress={() => props.navigation.navigate(ROUTES.SUBMIT)}
+                            onPress={(): void => props.navigation.navigate(ROUTES.SUBMIT)}
                         />
                     )}
                 </View>
@@ -116,18 +152,18 @@ export const Home = props => {
                         <SEButton
                             mode={'outlined'}
                             title={'View All'}
-                            onPress={() => props.navigation.navigate(ROUTES.TIPS)}
+                            onPress={(): void => props.navigation.navigate(ROUTES.TIPS)}
                         />
                     </View>
                     <Carousel
                         data={tips.tipList.slice(0, 3)}
-                        renderItem={({ item }) => (
+                        renderItem={({ item }): JSX.Element => (
                             <VideoCard
                                 // headerIcon={'event'}
                                 headerTitle={item.title}
                                 headerSubtitle={role === 'administrator' ? getLongDate(item.date) : ''}
                                 video={item.video}
-                                onExpand={() => props.navigation.push(ROUTES.TIP, { tip: item })}
+                                onExpand={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
                             />
                         )}
                         sliderWidth={width}

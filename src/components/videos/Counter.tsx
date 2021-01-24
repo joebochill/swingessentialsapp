@@ -11,25 +11,25 @@ import { useTheme } from 'react-native-paper';
 export type CountDownProps = ViewProps & {
     startValue: number;
     endValue?: number;
-    onFinish?: Function;
+    onFinish?: () => void;
 };
-export const CountDown = (props: CountDownProps) => {
-    const { startValue, endValue = 0, onFinish = () => {} } = props;
+export const CountDown: React.FC<CountDownProps> = (props) => {
+    const { startValue, endValue = 0, onFinish = (): void => {} } = props;
     const [seconds, setSeconds] = useState(startValue);
     const theme = useTheme();
     const sharedStyles = useSharedStyles(theme);
 
     useEffect(() => {
-        let interval: number = 0;
+        let interval = 0;
         if (seconds > endValue) {
             interval = setInterval(() => {
-                setSeconds(sec => sec - 1);
+                setSeconds((sec) => sec - 1);
             }, 1000);
         } else {
             onFinish();
         }
 
-        return () => clearInterval(interval);
+        return (): void => clearInterval(interval);
     }, [endValue, onFinish, seconds]);
 
     return seconds > endValue ? (
@@ -39,7 +39,8 @@ export const CountDown = (props: CountDownProps) => {
                 sharedStyles.centered,
                 { backgroundColor: blackOpacity(0.25) },
                 props.style,
-            ]}>
+            ]}
+        >
             <Body style={{ color: theme.colors.onPrimary, fontSize: unit(128) }}>{seconds}</Body>
         </View>
     ) : null;
@@ -51,16 +52,16 @@ export type VideoTimerProps = ViewProps & {
     offset?: number;
 };
 
-export const VideoTimer = (props: VideoTimerProps) => {
+export const VideoTimer: React.FC<VideoTimerProps> = (props) => {
     const { visible, startValue = 0, offset = -1 } = props;
     const [seconds, setSeconds] = useState(startValue);
     const theme = useTheme();
 
     useEffect(() => {
-        let interval = setInterval(() => {
-            setSeconds(sec => sec + 1);
+        const interval = setInterval(() => {
+            setSeconds((sec) => sec + 1);
         }, 1000);
-        return () => clearInterval(interval);
+        return (): void => clearInterval(interval);
     }, [seconds]);
 
     const displaySeconds = Math.max(0, seconds + offset);
@@ -76,7 +77,8 @@ export const VideoTimer = (props: VideoTimerProps) => {
                     left: -2 * unit(5),
                     bottom: 0,
                     right: 0,
-                }}>
+                }}
+            >
                 <View
                     style={{
                         height: unit(5),
@@ -87,7 +89,7 @@ export const VideoTimer = (props: VideoTimerProps) => {
                 />
             </View>
             <Body style={{ fontSize: theme.fontSizes[14], color: theme.colors.onPrimary }}>
-                {'00:00:' + (displaySeconds < 10 ? '0' : '') + displaySeconds}
+                {`00:00:${displaySeconds < 10 ? '0' : ''}${displaySeconds}`}
             </Body>
         </View>
     ) : null;

@@ -1,6 +1,7 @@
 import { MARK_TUTORIAL } from '../actions/types';
 import { TutorialsState } from '../../__types__';
 import { TUTORIALS } from '../../constants';
+import { ReducerAction } from '.';
 
 const initialState: TutorialsState = {
     [TUTORIALS.lessonList]: false,
@@ -9,7 +10,7 @@ const initialState: TutorialsState = {
     [TUTORIALS.order]: false,
     [TUTORIALS.home]: false,
 };
-export const tutorialReducer = (state = initialState, action): TutorialsState => {
+export const tutorialReducer = (state = initialState, action: ReducerAction): TutorialsState => {
     switch (action.type) {
         case MARK_TUTORIAL.VIEWED:
             return {

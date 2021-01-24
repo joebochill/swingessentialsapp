@@ -18,6 +18,8 @@ import { makeGroups } from '../../utilities';
 import { loadBlogs } from '../../redux/actions';
 // Types
 import { ApplicationState } from '../../__types__';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigator';
 
 type Blog = {
     id: number;
@@ -26,7 +28,7 @@ type Blog = {
     title: string;
 };
 
-export const Blogs = props => {
+export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (props) => {
     const blogs = useSelector((state: ApplicationState) => state.blogs);
     const sections = makeGroups(blogs.blogList, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
@@ -41,11 +43,13 @@ export const Blogs = props => {
             subtitle={'Stories from the field'}
             backgroundImage={bg}
             refreshing={blogs.loading}
-            onRefresh={() => {
+            onRefresh={(): void => {
                 dispatch(loadBlogs());
-            }}>
+            }}
+            navigation={props.navigation}
+        >
             <SectionList
-                renderSectionHeader={({ section: { bucketName, index } }) => (
+                renderSectionHeader={({ section: { bucketName, index } }): JSX.Element => (
                     <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: theme.spaces.jumbo } : {}]}>
                         <Subheading style={listStyles.heading}>{bucketName}</Subheading>
                     </View>
@@ -59,18 +63,18 @@ export const Blogs = props => {
                         <Divider />
                     </>
                 }
-                renderItem={({ item, index }) => (
+                renderItem={({ item, index }): JSX.Element => (
                     <>
                         {index === 0 && <Divider />}
                         <List.Item
                             title={item.title}
                             titleNumberOfLines={2}
                             titleEllipsizeMode={'tail'}
-                            onPress={() => props.navigation.push(ROUTES.BLOG, { blog: item })}
+                            onPress={(): void => props.navigation.push(ROUTES.BLOG, { blog: item })}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }) => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <MatIcon
                                         name={'chevron-right'}

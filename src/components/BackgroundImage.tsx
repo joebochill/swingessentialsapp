@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, Image, ImageProps, ImageSourcePropType } from 'react-native';
+import { StyleSheet, Image, ImageProps, ImageSourcePropType, ImageStyle } from 'react-native';
 import bg from '../images/banners/landing.jpg';
 
-const useStyles = () =>
+const useStyles = (): StyleSheet.NamedStyles<{
+    image: ImageStyle;
+}> =>
     StyleSheet.create({
         image: {
             position: 'absolute',
@@ -17,7 +19,7 @@ type BGImageProps = Omit<ImageProps, 'source'> & {
     source?: ImageSourcePropType;
 };
 
-export const BackgroundImage: React.FC<BGImageProps> = props => {
+export const BackgroundImage: React.FC<BGImageProps> = (props) => {
     const { style, source = bg, ...other } = props;
     const styles = useStyles();
     return <Image source={source} resizeMethod={'resize'} style={[styles.image, style]} {...other} />;

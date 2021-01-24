@@ -1,4 +1,4 @@
-import { ColorDef } from 'src/__types__';
+import { PXBlueColor } from '@pxblue/types';
 
 export const transparent = 'transparent';
 
@@ -11,7 +11,7 @@ export const whiteOpacity = (opacity: number): string => {
     return `rgba(255,255,255,${op})`;
 };
 
-export const purple: ColorDef = {
+export const purple: PXBlueColor = {
     50: '#e5e4ec',
     100: '#bdbcd0',
     200: '#918fb0',
@@ -22,13 +22,13 @@ export const purple: ColorDef = {
     700: '#1a174f',
     800: '#151245',
     900: '#0c0a33',
-    A100: '#726eff',
-    A200: '#413bff',
-    A400: '#0f08ff',
-    A700: '#0700ed',
+    // A100: '#726eff',
+    // A200: '#413bff',
+    // A400: '#0f08ff',
+    // A700: '#0700ed',
     contrastDefaultColor: 'light',
 };
-export const white: ColorDef = {
+export const white: PXBlueColor = {
     50: '#ffffff',
     100: '#fdfdfd',
     200: '#f8f8f8',
@@ -41,7 +41,7 @@ export const white: ColorDef = {
     900: '#e5e5e5',
     contrastDefaultColor: 'dark',
 };
-export const red: ColorDef = {
+export const red: PXBlueColor = {
     50: '#f9e8e8',
     100: '#efc5c5',
     200: '#e59e9e',
@@ -52,13 +52,13 @@ export const red: ColorDef = {
     700: '#bd2e2f',
     800: '#b72727',
     900: '#ab1a1a',
-    A100: '#ff3333',
-    A200: '#ca3c3d',
-    A400: '#bd2e2f',
-    A700: '#ab1a1a',
+    // A100: '#ff3333',
+    // A200: '#ca3c3d',
+    // A400: '#bd2e2f',
+    // A700: '#ab1a1a',
     contrastDefaultColor: 'light',
 };
-export const black: ColorDef = {
+export const black: PXBlueColor = {
     50: '#e8eaea',
     100: '#c6cacc',
     200: '#a1a7aa',
@@ -69,14 +69,14 @@ export const black: ColorDef = {
     700: '#333d43',
     800: '#2b353a',
     900: '#1d2529',
-    A100: '#101417',
-    A200: '#181f22',
-    A400: '#0b0e10',
-    A700: '#000000',
+    // A100: '#101417',
+    // A200: '#181f22',
+    // A400: '#0b0e10',
+    // A700: '#000000',
     contrastDefaultColor: 'light',
 };
 
-export const gray: ColorDef = {
+export const gray: PXBlueColor = {
     50: '#eef0f0',
     100: '#d5d8da',
     200: '#b9bfc2',
@@ -87,13 +87,13 @@ export const gray: ColorDef = {
     700: '#5f6b71',
     800: '#556167',
     900: '#424e54',
-    A100: '#f0f5fd',
-    A200: '#c2dafe',
-    A400: '#268fca',
-    A700: '#007bc1',
+    // A100: '#f0f5fd',
+    // A200: '#c2dafe',
+    // A400: '#268fca',
+    // A700: '#007bc1',
     contrastDefaultColor: 'light',
 };
-export const oledBlack: ColorDef = {
+export const oledBlack: PXBlueColor = {
     50: '#202224',
     100: '#202224',
     200: '#182022',
@@ -106,7 +106,7 @@ export const oledBlack: ColorDef = {
     900: '#000000',
     contrastDefaultColor: 'light',
 };
-export const green: ColorDef = {
+export const green: PXBlueColor = {
     50: '#e7f6e4',
     100: '#c4e9bc',
     200: '#9cdb90',
@@ -117,14 +117,14 @@ export const green: ColorDef = {
     700: '#2ca618',
     800: '#249e13',
     900: '#178e0b',
-    A100: '#e8fff1',
-    A200: '#9bffc4',
-    A400: '#4dff96',
-    A700: '#00ff69',
+    // A100: '#e8fff1',
+    // A200: '#9bffc4',
+    // A400: '#4dff96',
+    // A700: '#00ff69',
     contrastDefaultColor: 'light',
 };
 
-export const orange: ColorDef = {
+export const orange: PXBlueColor = {
     50: '#feefe4',
     100: '#fcd6bc',
     200: '#fabb90',
@@ -135,9 +135,9 @@ export const orange: ColorDef = {
     700: '#f16418',
     800: '#ef5a14',
     900: '#ec470b',
-    A100: '#ffefed',
-    A200: '#ffd8d1',
-    A400: '#ffc0b6',
-    A700: '#ffa99a',
+    // A100: '#ffefed',
+    // A200: '#ffd8d1',
+    // A400: '#ffc0b6',
+    // A700: '#ffa99a',
     contrastDefaultColor: 'light',
 };
