@@ -214,11 +214,11 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
         async (swing: 'fo' | 'dtl', uri: string): Promise<void> => {
             try {
                 const stats = await RNFS.stat(uri);
-                if (stats.size > 10 * 1024 * 1024) {
+                if (stats.size > 50 * 1024 * 1024) {
                     Alert.alert(
                         `The video you have selected is too large (${(stats.size / (1024 * 1024)).toFixed(
                             1
-                        )} MB). The maximum allowable file size is 10MB.`
+                        )} MB). The maximum allowable file size is 50MB.`
                     );
                     return;
                 }
