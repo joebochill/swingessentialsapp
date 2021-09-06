@@ -83,6 +83,7 @@ export type LoginState = {
     modalWarning: boolean;
     failCount: number;
     pending: boolean;
+    networkError: boolean;
 };
 export type LessonsState = {
     loading: boolean;

@@ -125,6 +125,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
     const pending = useSelector((state: ApplicationState) => state.login.pending);
     const token = useSelector((state: ApplicationState) => state.login.token);
     const failures = useSelector((state: ApplicationState) => state.login.failCount);
+    const networkFailure = useSelector((state: ApplicationState) => state.login.networkError);
     const failuresChanged = useCompare(failures);
     const dispatch = useDispatch();
     // Refs
@@ -399,6 +400,13 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                     <ErrorBox
                         show={failures > 0 || error}
                         error={'The username / password you entered was not correct.'}
+                        style={[formStyles.formField, { paddingVertical: theme.spaces.small }]}
+                    />
+                    <ErrorBox
+                        show={networkFailure}
+                        error={
+                            'We were unable to process your login request. Check your network connection and try again.'
+                        }
                         style={[formStyles.formField, { paddingVertical: theme.spaces.small }]}
                     />
                     <ErrorBox

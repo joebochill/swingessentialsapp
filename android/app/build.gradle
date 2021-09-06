@@ -132,8 +132,8 @@ android {
         applicationId "com.swingessentials.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 61
-        versionName "3.2.1"
+        versionCode 62
+        versionName "3.3.0"
         missingDimensionStrategy 'react-native-camera', 'general' // <--- insert this line
         multiDexEnabled true
     }
