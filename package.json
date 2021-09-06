@@ -23,10 +23,9 @@
         "@react-native-community/datetimepicker": "^3.0.8",
         "@react-native-community/masked-view": "^0.1.10",
         "@react-native-picker/picker": "^1.9.8",
-        "@react-navigation/drawer": "^5.11.4",
-        "@react-navigation/native": "^5.8.10",
-        "@react-navigation/stack": "^5.12.8",
-
+        "@react-navigation/drawer": "^6.0.0",
+        "@react-navigation/native": "^6.0.0",
+        "@react-navigation/stack": "^6.0.0",
         "color": "^4.0.0",
         "date-fns": "^2.16.1",
         "react": "17.0.2",
@@ -45,9 +44,7 @@
         "react-native-picker-select": "^8.0.0",
         "react-native-reanimated": "^1.13.2",
         "react-native-safe-area-context": "^3.1.9",
-        
         "react-native-screens": "^2.16.1",
-        
         "react-native-snap-carousel": "^3.8.4",
         "react-native-splash-screen": "^3.2.0",
         "react-native-status-bar-height": "^2.4.0",
