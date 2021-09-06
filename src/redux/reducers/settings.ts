@@ -8,7 +8,12 @@ const initialState: SettingsState = {
     delay: 5,
     overlay: true,
     handedness: 'right',
-    notifications: false,
+    notifications: {
+        lessons: true,
+        marketing: true,
+        newsletter: true,
+        reminders: true,
+    },
     avatar: '',
 };
 
@@ -27,7 +32,7 @@ export const settingsReducer = (state = initialState, action: ReducerAction): Se
                 duration: action.payload.camera.duration,
                 overlay: !!action.payload.camera.overlay,
                 handedness: action.payload.handed.toLowerCase(),
-                notifications: action.payload.subbed,
+                notifications: action.payload.notifications,
                 avatar: action.payload.avatar,
             };
         case GET_SETTINGS.FAILURE:

@@ -38,7 +38,9 @@ export type RootStackParamList = {
     Verify: { code: string };
     Settings: undefined;
     Lessons: undefined;
-    SingleSetting: { setting: keyof SettingsState };
+    SingleSetting: {
+        setting: Exclude<keyof SettingsState, 'loading' | 'notifications'> | keyof SettingsState['notifications'];
+    };
     Login: undefined;
     Record: {
         onReturn: () => void;
@@ -104,7 +106,7 @@ const MainNavigator: React.FC = () => (
         <Drawer.Navigator
             initialRouteName={ROUTES.APP_GROUP}
             screenOptions={{
-                drawerStyle:{width: width * 0.9 },
+                drawerStyle: { width: width * 0.9 },
                 headerShown: false,
             }}
             drawerContent={(props): JSX.Element => <NavigationDrawer {...props} />}

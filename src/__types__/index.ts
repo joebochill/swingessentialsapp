@@ -5,6 +5,12 @@ export type SwingType = 'dtl' | 'fo';
 export type UserRole = 'administrator' | 'anonymous' | 'customer' | 'pending';
 export type NavType = 'menu' | 'back' | 'none';
 export type LessonType = 'in-person' | 'single';
+export type NotificationSettings = {
+    lessons: boolean;
+    marketing: boolean;
+    newsletter: boolean;
+    reminders: boolean;
+};
 
 export type UserSettingsType = {
     duration?: number;
@@ -12,7 +18,7 @@ export type UserSettingsType = {
     overlay?: boolean;
     handedness?: HandednessType;
     avatar?: string;
-    notifications?: string;
+    notifications?: NotificationSettings;
 };
 
 export type Credentials = {
@@ -126,7 +132,7 @@ export type SettingsState = {
     delay: number;
     overlay: boolean;
     handedness: HandednessType;
-    notifications: boolean;
+    notifications: NotificationSettings;
     avatar: string;
 };
 export type RegistrationState = {
