@@ -76,6 +76,12 @@ const mapAverageToLabel = (avg: Average | undefined): string => {
 
 export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>> = (props) => {
     const settings = useSelector((state: ApplicationState) => state.settings);
+    const { lessons, marketing, newsletter, reminders } = settings.notifications || {
+        lessons: true,
+        marketing: true,
+        newsletter: true,
+        reminders: true,
+    };
     const token = useSelector((state: ApplicationState) => state.login.token);
     const userData = useSelector((state: ApplicationState) => state.userData);
     const role = useSelector((state: ApplicationState) => state.login.role);
@@ -586,22 +592,74 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                     />
                     <Divider />
                     <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo }]}>
-                        <Subheading style={listStyles.heading}>{'Notifications'}</Subheading>
+                        <Subheading style={listStyles.heading}>{'Email Notifications'}</Subheading>
                     </View>
                     <>
                         <Divider />
                         <List.Item
-                            title={'New Lesson Emails'}
+                            title={'Lessons'}
                             titleEllipsizeMode={'tail'}
-                            onPress={(): void =>
-                                props.navigation.navigate(ROUTES.SETTING, { setting: 'notifications' })
-                            }
+                            onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'lessons' })}
                             style={listStyles.item}
                             titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{`${settings.notifications ? 'On' : 'Off'}`}</Body>
+                                    <Body>{`${lessons ? 'On' : 'Off'}`}</Body>
+                                    <MatIcon
+                                        name={'chevron-right'}
+                                        size={theme.sizes.small}
+                                        style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
+                                    />
+                                </View>
+                            )}
+                        />
+                        <List.Item
+                            title={'Marketing'}
+                            titleEllipsizeMode={'tail'}
+                            onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'marketing' })}
+                            style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            descriptionStyle={{ marginLeft: -8 }}
+                            right={({ style, ...rightProps }): JSX.Element => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <Body>{`${marketing ? 'On' : 'Off'}`}</Body>
+                                    <MatIcon
+                                        name={'chevron-right'}
+                                        size={theme.sizes.small}
+                                        style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
+                                    />
+                                </View>
+                            )}
+                        />
+                        <List.Item
+                            title={'Newsletters'}
+                            titleEllipsizeMode={'tail'}
+                            onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'newsletter' })}
+                            style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            descriptionStyle={{ marginLeft: -8 }}
+                            right={({ style, ...rightProps }): JSX.Element => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <Body>{`${newsletter ? 'On' : 'Off'}`}</Body>
+                                    <MatIcon
+                                        name={'chevron-right'}
+                                        size={theme.sizes.small}
+                                        style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
+                                    />
+                                </View>
+                            )}
+                        />
+                        <List.Item
+                            title={'Reminders'}
+                            titleEllipsizeMode={'tail'}
+                            onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'reminders' })}
+                            style={listStyles.item}
+                            titleStyle={{ marginLeft: -8 }}
+                            descriptionStyle={{ marginLeft: -8 }}
+                            right={({ style, ...rightProps }): JSX.Element => (
+                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <Body>{`${reminders ? 'On' : 'Off'}`}</Body>
                                     <MatIcon
                                         name={'chevron-right'}
                                         size={theme.sizes.small}

@@ -35,16 +35,20 @@ export function loadInitialData(): (dispatch: ThunkDispatch<any, void, any>) => 
 // Send report with log data to swingessentials
 export function sendLogReport(log: string, type: LOG_TYPE) {
     return (dispatch: ThunkDispatch<any, void, any>): void => {
+        if (Logger.isSending()) return;
         dispatch({ type: ACTIONS.SEND_LOGS.REQUEST });
+        Logger.setSending(true);
         void HttpRequest.post(ACTIONS.SEND_LOGS.API)
             .withBody({ platform: Platform.OS, data: log })
             .onSuccess((body: any) => {
                 void Logger.clear(type);
                 void AsyncStorage.setItem(`${ASYNC_PREFIX}logs_sent`, `${Math.floor(Date.now() / 1000)}`);
                 dispatch(success(ACTIONS.SEND_LOGS.SUCCESS, body));
+                Logger.setSending(false);
             })
             .onFailure((response: Response) => {
                 dispatch(failure(ACTIONS.SEND_LOGS.FAILURE, response, 'SendLogs'));
+                Logger.setSending(false);
             })
             .request();
     };

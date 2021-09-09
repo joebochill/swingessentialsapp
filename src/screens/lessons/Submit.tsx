@@ -53,6 +53,26 @@ import { RootStackParamList } from '../../navigation/MainNavigator';
 
 const RNFS = require('react-native-fs');
 
+const getErrorMessage = (code: number | null): string => {
+    switch (code) {
+        // Missing or corrupt video
+        case 400701:
+            return 'One or more of the videos are missing or corrupted. If this error persists, please contact us.';
+
+        // Size too large
+        case 400702:
+            return 'The videos you have submitted are too large. Please edit the videos to be smaller and/or avoid the use of slow-motion video. If this error persists, please contact us.';
+
+        // Invalid video format
+        case 400703:
+            return 'The videos you have submitted are in an unsupported format. We support .mov, .mp4, and .mpeg files. If you continue to see this error, please contact us.';
+
+        // Unknown
+        default:
+            return 'There was an unexpected error while submitting your swing videos. Please try again later or contact us if the problem persists.';
+    }
+};
+
 const useStyles = (
     theme: ReactNativePaper.Theme
 ): StyleSheet.NamedStyles<{
@@ -130,13 +150,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                 // 400702 too large
                 setUploadProgress(0);
                 /*timeout = */ setTimeout(() => {
-                    Alert.alert(
-                        'Oops:',
-                        lessons.redeemError === 400701 || lessons.redeemError === 400703
-                            ? 'The videos you have submitted are too large. Please edit the videos to be smaller and/or avoid the use of slow-motion video. If this error persists, please contact us.'
-                            : 'There was an unexpected error while submitting your swing videos. Please try again later or contact us if the problem persists.',
-                        [{ text: 'OK' }]
-                    );
+                    Alert.alert('Oops:', getErrorMessage(lessons.redeemError), [{ text: 'OK' }]);
                 }, 700);
                 // return () => clearTimeout(timeout);
             }
@@ -372,6 +386,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                 onChangeText={(val): void => setNotes(val)}
                                 onFocus={(): void => {
                                     if (scroller.current) {
+                                        // @ts-ignore
                                         scroller.current.scrollTo({ x: 0, y: 350, animated: true });
                                     }
                                 }}

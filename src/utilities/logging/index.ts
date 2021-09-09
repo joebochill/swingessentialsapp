@@ -18,8 +18,15 @@ export type LogError = {
 
 export type LogType = 'ERROR' | 'LOGS';
 export let LAST_SENT = 0;
+let SENDING = false;
 
 export class Logger {
+    public static setSending(isSending: boolean): void {
+        SENDING = isSending;
+    }
+    public static isSending(): boolean {
+        return SENDING;
+    }
     public static async logMessage(message: string): Promise<void> {
         const timestamp = Date.now();
         const currentLog = await this.readMessages('LOGS');
@@ -66,6 +73,7 @@ export class Logger {
         return fileExists ? RNFS.readFile(path, 'utf8') : '';
     }
     private static async _autoSendEmail(type: LogType): Promise<void> {
+        if (SENDING) return;
         const currentErrors = await this.readMessages(type);
         store.dispatch(sendLogReport(currentErrors, type));
     }
@@ -82,14 +90,16 @@ export class Logger {
                         : `Please see the following:\r\n\r\n\r\n${currentLogs}`
                 }`,
                 isHTML: false,
-                attachment:
+                attachments:
                     Platform.OS === 'ios'
-                        ? {
-                              path: type === 'ERROR' ? errorPath : logPath,
-                              type: 'doc',
-                              name: 'Logs.txt',
-                          }
-                        : null,
+                        ? [
+                              {
+                                  path: type === 'ERROR' ? errorPath : logPath,
+                                  type: 'doc',
+                                  name: 'Logs.txt',
+                              },
+                          ]
+                        : [],
             },
             (error, event) => {
                 if (error && error === 'canceled') {

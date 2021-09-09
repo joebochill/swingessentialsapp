@@ -10,6 +10,7 @@ const initialState: LoginState = {
     modalWarning: false,
     failCount: 0,
     pending: false,
+    networkError: false,
 };
 
 export const loginReducer = (state = initialState, action: ReducerAction): LoginState => {
@@ -19,6 +20,7 @@ export const loginReducer = (state = initialState, action: ReducerAction): Login
             return {
                 ...state,
                 pending: true,
+                networkError: false,
             };
         case LOGIN.SUCCESS:
         case CREATE_ACCOUNT.SUCCESS:
@@ -31,6 +33,7 @@ export const loginReducer = (state = initialState, action: ReducerAction): Login
                 token: action.payload.token,
                 pending: false,
                 role: getUserRole(action.payload.token),
+                networkError: false,
             };
         case LOGIN.FAILURE:
             return {
@@ -40,6 +43,13 @@ export const loginReducer = (state = initialState, action: ReducerAction): Login
                 pending: false,
                 role: 'anonymous',
                 failCount: state.failCount + 1,
+                networkError: false,
+            };
+        case 'NETWORK_FAILURE':
+            return {
+                ...state,
+                networkError: true,
+                pending: false,
             };
         case REFRESH_TOKEN.FAILURE:
             return {
