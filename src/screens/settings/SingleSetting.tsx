@@ -10,7 +10,7 @@ import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
 import { useTheme, List, Divider } from 'react-native-paper';
 
 // Types
-import { SettingsState, ApplicationState } from '../../__types__';
+import { SettingsState, ApplicationState, NotificationSettings } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
 // Redux
 import { putSettings } from '../../redux/actions/SettingsActions';
@@ -19,7 +19,7 @@ import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 
 type SettingType = {
-    name: keyof Exclude<SettingsState, 'loading'>;
+    name: Exclude<keyof SettingsState, 'loading' | 'notifications'> | keyof SettingsState['notifications'];
     label: string;
     description: string;
     values: number[] | string[] | boolean[];
@@ -51,9 +51,27 @@ const SETTINGS: SettingType[] = [
         values: [true, false],
     },
     {
-        name: 'notifications',
-        label: 'New Lesson Email Notification',
-        description: 'Send you an email whenever your swing analysis has been posted or updated.',
+        name: 'lessons',
+        label: 'Lesson Emails',
+        description: 'Receive emails whenever your swing analysis has been posted or updated.',
+        values: [true, false],
+    },
+    {
+        name: 'marketing',
+        label: 'Marketing Emails',
+        description: 'Receive emails about upcoming sales, events, etc.',
+        values: [true, false],
+    },
+    {
+        name: 'newsletter',
+        label: 'Newsletter Emails',
+        description: 'Receive emails about news, tips, or other goings on.',
+        values: [true, false],
+    },
+    {
+        name: 'reminders',
+        label: 'Reminder Emails',
+        description: 'Receive emails about things you might have missed.',
         values: [true, false],
     },
 ];
@@ -76,13 +94,34 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
     const flexStyles = useFlexStyles(theme);
     const listStyles = useListStyles(theme);
 
-    const [value, setValue] = useState(settings[currentSettingName]);
+    const [value, setValue] = useState(() => {
+        if (Object.keys(settings.notifications).includes(currentSettingName)) {
+            return settings.notifications[currentSettingName as keyof NotificationSettings];
+        }
+        return settings[currentSettingName as Exclude<keyof SettingsState, 'loading' | 'notifications'>];
+    });
 
     const updateSetting = useCallback(() => {
-        if (currentSettingName === 'notifications') {
+        if (Object.keys(settings.notifications).includes(currentSettingName)) {
+            let key = 'lessons';
+            switch (currentSettingName) {
+                case 'marketing':
+                    key = 'notify_marketing';
+                    break;
+                case 'newsletter':
+                    key = 'notify_newsletter';
+                    break;
+                case 'reminders':
+                    key = 'notify_reminders';
+                    break;
+                case 'lessons':
+                default:
+                    key = 'notify_new_lessons';
+                    break;
+            }
             dispatch(
                 putSettings({
-                    subscribe: value,
+                    [key]: value,
                 })
             );
         } else {

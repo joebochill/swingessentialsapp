@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { HttpRequest } from '../../api/http';
 import { success, failure } from '../../api/http-helper';
 import { Dispatch } from 'redux';
@@ -23,7 +24,10 @@ export function loadSettings() {
 }
 
 type SettingsUpdateType = Exclude<Exclude<UserSettingsType, 'loading'>, 'notifications'> & {
-    subscribe: boolean;
+    notify_new_lessons: boolean;
+    notify_marketing: boolean;
+    notify_newsletter: boolean;
+    notify_reminders: boolean;
 };
 
 /* Updates the user app settings in the database */

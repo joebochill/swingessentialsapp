@@ -28,6 +28,7 @@ export function loadUserContent() {
 export function requestLogin(userCredentials: Credentials, remember = false, useTouch = false) {
     return (dispatch: ThunkDispatch<any, void, any>): Promise<void> => {
         dispatch({ type: ACTIONS.LOGIN.REQUEST });
+
         return fetch(`${BASEURL}/${ACTIONS.LOGIN.API}`, {
             headers: {
                 [AUTH]: `Basic ${btoa(userCredentials.username)}.${btoa(userCredentials.password)}`,
@@ -61,6 +62,17 @@ export function requestLogin(userCredentials: Credentials, remember = false, use
                 }
             })
             .catch((error): void => {
+                // Network failure
+                if (error.message && error.message.toLowerCase().includes('network request failed')) {
+                    void Logger.logError({
+                        code: 'NETWRK999',
+                        description: `Network failure encountered while executing login request.`,
+                        rawErrorCode: error.code,
+                        rawErrorMessage: error.error,
+                    });
+                    dispatch({ type: 'NETWORK_FAILURE' });
+                    return;
+                }
                 void Keychain.resetGenericPassword();
                 void Logger.logError({
                     code: 'ACTLGN100',
