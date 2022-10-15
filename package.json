@@ -52,7 +52,7 @@
         "react-native-thumbnail-video": "^0.1.2",
         "react-native-touch-id": "^4.4.1",
         "react-native-vector-icons": "^8.0.0",
-        "react-native-video": "^5.0.2",
+        "react-native-video": "^5.2.1",
         "react-native-youtube": "^2.0.0",
         "react-navigation-redux-helpers": "^4.0.1",
         "react-redux": "^7.1.3",
