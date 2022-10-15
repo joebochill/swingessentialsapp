@@ -1,4 +1,4 @@
-import { PXBlueColor } from '@pxblue/types';
+import { BLUIColor } from '@brightlayer-ui/types';
 
 export const transparent = 'transparent';
 
@@ -11,7 +11,7 @@ export const whiteOpacity = (opacity: number): string => {
     return `rgba(255,255,255,${op})`;
 };
 
-export const purple: PXBlueColor = {
+export const purple: BLUIColor = {
     50: '#e5e4ec',
     100: '#bdbcd0',
     200: '#918fb0',
@@ -28,7 +28,7 @@ export const purple: PXBlueColor = {
     // A700: '#0700ed',
     contrastDefaultColor: 'light',
 };
-export const white: PXBlueColor = {
+export const white: BLUIColor = {
     50: '#ffffff',
     100: '#fdfdfd',
     200: '#f8f8f8',
@@ -41,7 +41,7 @@ export const white: PXBlueColor = {
     900: '#e5e5e5',
     contrastDefaultColor: 'dark',
 };
-export const red: PXBlueColor = {
+export const red: BLUIColor = {
     50: '#f9e8e8',
     100: '#efc5c5',
     200: '#e59e9e',
@@ -58,7 +58,7 @@ export const red: PXBlueColor = {
     // A700: '#ab1a1a',
     contrastDefaultColor: 'light',
 };
-export const black: PXBlueColor = {
+export const black: BLUIColor = {
     50: '#e8eaea',
     100: '#c6cacc',
     200: '#a1a7aa',
@@ -76,7 +76,7 @@ export const black: PXBlueColor = {
     contrastDefaultColor: 'light',
 };
 
-export const gray: PXBlueColor = {
+export const gray: BLUIColor = {
     50: '#eef0f0',
     100: '#d5d8da',
     200: '#b9bfc2',
@@ -93,7 +93,7 @@ export const gray: PXBlueColor = {
     // A700: '#007bc1',
     contrastDefaultColor: 'light',
 };
-export const oledBlack: PXBlueColor = {
+export const oledBlack: BLUIColor = {
     50: '#202224',
     100: '#202224',
     200: '#182022',
@@ -106,7 +106,7 @@ export const oledBlack: PXBlueColor = {
     900: '#000000',
     contrastDefaultColor: 'light',
 };
-export const green: PXBlueColor = {
+export const green: BLUIColor = {
     50: '#e7f6e4',
     100: '#c4e9bc',
     200: '#9cdb90',
@@ -124,7 +124,7 @@ export const green: PXBlueColor = {
     contrastDefaultColor: 'light',
 };
 
-export const orange: PXBlueColor = {
+export const orange: BLUIColor = {
     50: '#feefe4',
     100: '#fcd6bc',
     200: '#fabb90',

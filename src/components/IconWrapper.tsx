@@ -7,11 +7,11 @@ type IconSetArg = {
     name: string;
 };
 
-type PxBlueIconArg = {
+type BLUIIconArg = {
     IconClass: ComponentType<SvgProps>;
 };
 
-type IconArg = IconSetArg | PxBlueIconArg;
+type IconArg = IconSetArg | BLUIIconArg;
 
 export type HeaderIcon = {
     /** Name of the icon */
@@ -21,7 +21,7 @@ export type HeaderIcon = {
     onPress: () => void;
 };
 
-const isIconSetArg = (x: IconSetArg | PxBlueIconArg): x is IconSetArg => (x as any).name !== undefined;
+const isIconSetArg = (x: IconSetArg | BLUIIconArg): x is IconSetArg => (x as any).name !== undefined;
 
 export const wrapIcon = (arg: IconArg): ((props: { size: number; color: string }) => JSX.Element) => {
     if (isIconSetArg(arg)) {

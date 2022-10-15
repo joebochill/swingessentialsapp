@@ -15,10 +15,11 @@
     },
     "dependencies": {
         "@callstack/react-theme-provider": "^3.0.0",
-        "@pxblue/colors": "^3.0.0",
-        "@pxblue/icons-svg": "^1.6.0",
-        "@pxblue/react-native-components": "^5.0.0",
-        "@pxblue/react-native-themes": "^5.0.0",
+        "@brightlayer-ui/colors": "^3.1.1",
+        "@brightlayer-ui/icons-svg": "^1.11.0",
+        "@brightlayer-ui/react-native-vector-icons": "^1.7.0",
+        "@brightlayer-ui/react-native-components": "^6.0.3",
+        "@brightlayer-ui/react-native-themes": "^6.0.0",
         "@react-native-community/async-storage": "^1.6.3",
         "@react-native-community/datetimepicker": "^3.0.8",
         "@react-native-community/masked-view": "^0.1.10",
@@ -51,7 +52,7 @@
         "react-native-svg": "^12.0.0",
         "react-native-thumbnail-video": "^0.1.2",
         "react-native-touch-id": "^4.4.1",
-        "react-native-vector-icons": "^8.0.0",
+        "react-native-vector-icons": "^9.0.0",
         "react-native-video": "^5.2.1",
         "react-native-youtube": "^2.0.0",
         "react-navigation-redux-helpers": "^4.0.1",
@@ -62,8 +63,8 @@
     "devDependencies": {
         "@babel/core": "^7.8.4",
         "@babel/runtime": "^7.8.4",
-        "@pxblue/eslint-config": "^2.0.2",
-        "@pxblue/prettier-config": "^1.0.2",
+        "@brightlayer-ui/eslint-config": "^3.0.1",
+        "@brightlayer-ui/prettier-config": "^1.0.3",
         "@react-native-community/eslint-config": "^1.1.0",
         "@types/jest": "^25.2.3",
         "@types/prop-types": "^15.7.3",
@@ -98,5 +99,5 @@
             "node"
         ]
     },
-    "prettier": "@pxblue/prettier-config"
+    "prettier": "@brightlayer-ui/prettier-config"
 }
