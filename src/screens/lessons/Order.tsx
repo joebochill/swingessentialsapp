@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View, FlatList, Alert } from 'react-native';
 import { Body, Label, H4, CollapsibleHeaderLayout, ErrorBox, SEButton, OrderTutorial } from '../../components';
-import * as RNIap from 'react-native-iap';
+import { requestPurchase, useIAP, IAPErrorCode } from 'react-native-iap';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
@@ -34,45 +34,75 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
     const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
     const theme = useTheme();
+    const {
+        connected,
+        products,
+        subscriptions,
+        getProducts,
+        getSubscriptions,
+        finishTransaction,
+        currentPurchase,
+        currentPurchaseError,
+    } = useIAP();
     const sharedStyles = useSharedStyles(theme);
     const formStyles = useFormStyles(theme);
     const flexStyles = useFlexStyles(theme);
     const listStyles = useListStyles(theme);
 
     const [selected, setSelected] = useState(-1);
-    const [products, setProducts] = useState<RNIap.Product[]>([]);
 
     const roleError =
         role === 'anonymous'
             ? 'You must be signed in to purchase lessons.'
             : role === 'pending'
-            ? 'You must validate your email address before you can purchase lessons'
-            : '';
+                ? 'You must validate your email address before you can purchase lessons'
+                : '';
 
     useEffect(() => {
-        if (packages) {
-            const skus: string[] = [];
-            for (let i = 0; i < packages.length; i++) {
-                skus.push(packages[i].app_sku);
-            }
-            const loadProducts = async (): Promise<void> => {
-                try {
-                    await RNIap.initConnection();
-                    const verifiedProducts = await RNIap.getProducts(skus);
-                    setProducts(verifiedProducts.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)));
-                    setSelected(0);
-                } catch (err) {
-                    void Logger.logError({
-                        code: 'IAP100',
-                        description: 'Failed to load in-app purchases.',
-                        rawErrorCode: err.code,
-                        rawErrorMessage: err.message,
-                    });
+        if (packages && connected) {
+            try {
+                const skus: string[] = [];
+                for (let i = 0; i < packages.length; i++) {
+                    skus.push(packages[i].app_sku);
                 }
-            };
-            void loadProducts();
+                getProducts(skus);
+                setSelected(0);
+            }
+            catch (err) {
+                void Logger.logError({
+                    code: 'IAP100',
+                    description: 'Failed to load in-app purchases.',
+                    rawErrorCode: err.code,
+                    rawErrorMessage: err.message,
+                });
+            }
         }
-    }, [packages]);
+    }, [getProducts, packages]);
+
+    // useEffect(() => {
+    //     if (packages) {
+    //         const skus: string[] = [];
+    //         for (let i = 0; i < packages.length; i++) {
+    //             skus.push(packages[i].app_sku);
+    //         }
+    //         const loadProducts = async (): Promise<void> => {
+    //             try {
+    //                 await RNIap.initConnection();
+    //                 const verifiedProducts = await RNIap.getProducts(skus);
+    //                 setProducts(verifiedProducts.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)));
+    //                 setSelected(0);
+    //             } catch (err) {
+    //                 void Logger.logError({
+    //                     code: 'IAP100',
+    //                     description: 'Failed to load in-app purchases.',
+    //                     rawErrorCode: err.code,
+    //                     rawErrorMessage: err.message,
+    //                 });
+    //             }
+    //         };
+    //         void loadProducts();
+    //     }
+    // }, [packages]);
 
     useEffect(() => {
         if (credits.success) {
@@ -103,9 +133,9 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 return;
             }
             try {
-                await RNIap.requestPurchase(sku, false);
+                await requestPurchase(sku, false);
             } catch (error) {
-                if (error.code !== RNIap.IAPErrorCode.E_USER_CANCELLED) {
+                if (error.code !== IAPErrorCode.E_USER_CANCELLED) {
                     void Logger.logError({
                         code: 'IAP200',
                         description: 'Failed to request in-app purchase.',
@@ -165,7 +195,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 scrollEnabled={false}
                 keyboardShouldPersistTaps={'always'}
                 data={packages}
-                extraData={products}
+                extraData={products.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10))}
                 renderItem={({ item, index }): JSX.Element => (
                     <>
                         {index === 0 && <Divider />}
@@ -210,8 +240,8 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 onPress={
                     roleError.length === 0 && !packagesProcessing && !credits.inProgress
                         ? (): void => {
-                              void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
-                          }
+                            void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
+                        }
                         : undefined
                 }
             />

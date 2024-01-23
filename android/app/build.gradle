@@ -135,6 +135,7 @@ android {
         versionCode 62
         versionName "3.3.0"
         missingDimensionStrategy 'react-native-camera', 'general' // <--- insert this line
+        missingDimensionStrategy 'store', 'play' // <--- insert this line
         multiDexEnabled true
     }
     splits {

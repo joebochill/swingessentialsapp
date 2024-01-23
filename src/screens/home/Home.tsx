@@ -26,7 +26,7 @@ import { loadUserContent } from '../../redux/actions';
 import { unit } from '../../styles/sizes';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { Spacer } from '@pxblue/react-native-components';
+import { Spacer } from '@brightlayer-ui/react-native-components';
 
 export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (props) => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
