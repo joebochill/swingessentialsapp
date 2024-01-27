@@ -1,4 +1,4 @@
-package com.swingessentialsapp
+package com.swingessentials.app
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

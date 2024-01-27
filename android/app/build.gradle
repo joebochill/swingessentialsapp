@@ -74,9 +74,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.swingessentialsapp"
+    namespace "com.swingessentials.app"
     defaultConfig {
-        applicationId "com.swingessentialsapp"
+        applicationId "com.swingessentials.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

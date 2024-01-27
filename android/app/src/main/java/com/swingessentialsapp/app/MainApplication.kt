@@ -1,4 +1,4 @@
-package com.swingessentialsapp
+package com.swingessentials.app
 
 import android.app.Application
 import com.facebook.react.PackageList
