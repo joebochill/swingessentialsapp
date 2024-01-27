@@ -1,106 +1,118 @@
-import React, { useEffect } from 'react';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
 
-// Components
-import { StatusBar } from 'react-native';
-import { ThemeProvider } from 'react-native-paper';
-import MainNavigator from './src/navigation/MainNavigator';
-import { RNIAPCallbacks } from './src/screens/lessons';
-import SplashScreen from 'react-native-splash-screen';
+import React from 'react';
+import type {PropsWithChildren} from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
 
-// Redux
-import { Provider } from 'react-redux';
-import { loadInitialData } from './src/redux/actions';
+import {
+  Colors,
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
 
-// Utilities
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { theme } from './src/styles/theme';
+type SectionProps = PropsWithChildren<{
+  title: string;
+}>;
 
-// Redux
-import { store } from './src/redux/store';
-
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-declare global {
-    /* eslint-disable-next-line @typescript-eslint/no-namespace */
-    namespace ReactNativePaper {
-        interface ThemeColors {
-            // primary: string;
-            // background: string;
-            // surface: string;
-            // accent: string;
-            // error: string;
-            // text: string;
-            // placeholder: string;
-            onPrimary: string;
-            dark: string;
-            light: string;
-        }
-        // interface ThemeFont {
-        //     fontWeight: 'normal'
-        //     | 'bold'
-        //     | '100'
-        //     | '200'
-        //     | '300'
-        //     | '400'
-        //     | '500'
-        //     | '600'
-        //     | '700'
-        //     | '800'
-        //     | '900';
-        // }
-        interface ThemeFonts {
-            semiBold: ThemeFont;
-        }
-
-        interface Theme {
-            sizes: {
-                xSmall: number;
-                small: number;
-                medium: number;
-                large: number;
-                xLarge: number;
-                jumbo: number;
-            };
-            spaces: {
-                xSmall: number;
-                small: number;
-                medium: number;
-                large: number;
-                xLarge: number;
-                jumbo: number;
-            };
-            fontSizes: {
-                10: number;
-                12: number;
-                14: number;
-                16: number;
-                18: number;
-                20: number;
-                24: number;
-                34: number;
-                48: number;
-                60: number;
-                96: number;
-            };
-        }
-    }
+function Section({children, title}: SectionProps): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
+  return (
+    <View style={styles.sectionContainer}>
+      <Text
+        style={[
+          styles.sectionTitle,
+          {
+            color: isDarkMode ? Colors.white : Colors.black,
+          },
+        ]}>
+        {title}
+      </Text>
+      <Text
+        style={[
+          styles.sectionDescription,
+          {
+            color: isDarkMode ? Colors.light : Colors.dark,
+          },
+        ]}>
+        {children}
+      </Text>
+    </View>
+  );
 }
-/* eslint-enable @typescript-eslint/consistent-type-definitions */
 
-export const App: React.FC = () => {
-    useEffect((): void => {
-        SplashScreen.hide();
-        StatusBar.setBarStyle('light-content', true);
-        store.dispatch(loadInitialData());
-    }, []);
+function App(): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
 
-    return (
-        <Provider store={store}>
-            <SafeAreaProvider>
-                <ThemeProvider theme={theme}>
-                    <RNIAPCallbacks />
-                    <MainNavigator enableURLHandling={false} />
-                </ThemeProvider>
-            </SafeAreaProvider>
-        </Provider>
-    );
-};
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+
+  return (
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <Header />
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          <Section title="Step One">
+            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
+            screen and then come back to see your edits.
+          </Section>
+          <Section title="See Your Changes">
+            <ReloadInstructions />
+          </Section>
+          <Section title="Debug">
+            <DebugInstructions />
+          </Section>
+          <Section title="Learn More">
+            Read the docs to discover what to do next:
+          </Section>
+          <LearnMoreLinks />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+  },
+});
+
+export default App;
