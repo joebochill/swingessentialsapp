@@ -1,118 +1,51 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect } from 'react';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+// Components
+import { StatusBar, /*useColorScheme*/ } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// import { RNIAPCallbacks } from './src/screens/lessons';
+// import SplashScreen from 'react-native-splash-screen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+// Navigation 
+import { NavigationContainer } from '@react-navigation/native';
+import MainNavigator from './src/navigation/MainNavigator';
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+// Redux
+import { Provider } from 'react-redux';
+// import { loadInitialData } from './src/redux/actions';
+import { store } from './src/redux/store';
+
+// Utilities
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { MD3Theme, configureFonts, MD3LightTheme, PaperProvider } from 'react-native-paper';
+import { fontConfig } from './typography/fontConfig';
+import { loadLessons } from './src/redux/actions/lessons';
+// import { theme } from './src/styles/theme';
+
+
+const theme: MD3Theme = {
+  ...MD3LightTheme,
+  fonts: configureFonts({ config: fontConfig, isV3: true }),
+};
+
+// TODO: Support dark mode
+export default function App(): React.JSX.Element {
+  useEffect((): void => {
+    // SplashScreen.hide();
+    StatusBar.setBarStyle('light-content', true);
+    // store.dispatch(loadInitialData());
+    // store.dispatch(loadLessons());
+  }, []);
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <PaperProvider theme={theme}>
+            {/* <RNIAPCallbacks /> */}
+            <MainNavigator /* enableURLHandling={false}*/ />
+          </PaperProvider>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </Provider>
   );
 }
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;

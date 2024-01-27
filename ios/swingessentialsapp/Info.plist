@@ -33,6 +33,16 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>SFCompactDisplay-Black.otf</string>
+		<string>SFCompactDisplay-Bold.otf</string>
+		<string>SFCompactDisplay-Regular.otf</string>
+		<string>SFCompactDisplay-Semibold.otf</string>
+		<string>SFCompactDisplay-Thin.otf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

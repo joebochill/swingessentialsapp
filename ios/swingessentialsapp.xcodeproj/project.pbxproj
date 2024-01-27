@@ -12,6 +12,13 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		256C84FF2B653936007631D7 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 256C84FD2B653936007631D7 /* MaterialCommunityIcons.ttf */; };
+		256C85002B653936007631D7 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 256C84FE2B653936007631D7 /* MaterialIcons.ttf */; };
+		2572B0002B653F33009D1DE2 /* SFCompactDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2572AFFB2B653F33009D1DE2 /* SFCompactDisplay-Bold.otf */; };
+		2572B0012B653F33009D1DE2 /* SFCompactDisplay-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2572AFFC2B653F33009D1DE2 /* SFCompactDisplay-Thin.otf */; };
+		2572B0022B653F33009D1DE2 /* SFCompactDisplay-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2572AFFD2B653F33009D1DE2 /* SFCompactDisplay-Semibold.otf */; };
+		2572B0032B653F33009D1DE2 /* SFCompactDisplay-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2572AFFE2B653F33009D1DE2 /* SFCompactDisplay-Regular.otf */; };
+		2572B0042B653F33009D1DE2 /* SFCompactDisplay-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2572AFFF2B653F33009D1DE2 /* SFCompactDisplay-Black.otf */; };
 		7699B88040F8A987B510C191 /* libPods-swingessentialsapp-swingessentialsappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-swingessentialsapp-swingessentialsappTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -37,6 +44,13 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = swingessentialsapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = swingessentialsapp/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-swingessentialsapp-swingessentialsappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-swingessentialsapp-swingessentialsappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		256C84FD2B653936007631D7 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		256C84FE2B653936007631D7 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		2572AFFB2B653F33009D1DE2 /* SFCompactDisplay-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFCompactDisplay-Bold.otf"; path = "../assets/fonts/SFCompactDisplay-Bold.otf"; sourceTree = "<group>"; };
+		2572AFFC2B653F33009D1DE2 /* SFCompactDisplay-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFCompactDisplay-Thin.otf"; path = "../assets/fonts/SFCompactDisplay-Thin.otf"; sourceTree = "<group>"; };
+		2572AFFD2B653F33009D1DE2 /* SFCompactDisplay-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFCompactDisplay-Semibold.otf"; path = "../assets/fonts/SFCompactDisplay-Semibold.otf"; sourceTree = "<group>"; };
+		2572AFFE2B653F33009D1DE2 /* SFCompactDisplay-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFCompactDisplay-Regular.otf"; path = "../assets/fonts/SFCompactDisplay-Regular.otf"; sourceTree = "<group>"; };
+		2572AFFF2B653F33009D1DE2 /* SFCompactDisplay-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFCompactDisplay-Black.otf"; path = "../assets/fonts/SFCompactDisplay-Black.otf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-swingessentialsapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-swingessentialsapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp.release.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-swingessentialsapp-swingessentialsappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swingessentialsapp-swingessentialsappTests.debug.xcconfig"; path = "Target Support Files/Pods-swingessentialsapp-swingessentialsappTests/Pods-swingessentialsapp-swingessentialsappTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -116,12 +130,20 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				2572AFFF2B653F33009D1DE2 /* SFCompactDisplay-Black.otf */,
+				2572AFFB2B653F33009D1DE2 /* SFCompactDisplay-Bold.otf */,
+				2572AFFE2B653F33009D1DE2 /* SFCompactDisplay-Regular.otf */,
+				2572AFFD2B653F33009D1DE2 /* SFCompactDisplay-Semibold.otf */,
+				2572AFFC2B653F33009D1DE2 /* SFCompactDisplay-Thin.otf */,
+				256C84FD2B653936007631D7 /* MaterialCommunityIcons.ttf */,
+				256C84FE2B653936007631D7 /* MaterialIcons.ttf */,
 				13B07FAE1A68108700A75B9A /* swingessentialsapp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* swingessentialsappTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				AFA5EEB04DF241EFABEA902C /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -135,6 +157,14 @@
 				00E356EE1AD99517003FC87E /* swingessentialsappTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		AFA5EEB04DF241EFABEA902C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -241,7 +271,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2572B0002B653F33009D1DE2 /* SFCompactDisplay-Bold.otf in Resources */,
+				2572B0012B653F33009D1DE2 /* SFCompactDisplay-Thin.otf in Resources */,
+				2572B0022B653F33009D1DE2 /* SFCompactDisplay-Semibold.otf in Resources */,
+				2572B0032B653F33009D1DE2 /* SFCompactDisplay-Regular.otf in Resources */,
+				2572B0042B653F33009D1DE2 /* SFCompactDisplay-Black.otf in Resources */,
+				256C85002B653936007631D7 /* MaterialIcons.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				256C84FF2B653936007631D7 /* MaterialCommunityIcons.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -592,7 +629,10 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -660,7 +700,10 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
