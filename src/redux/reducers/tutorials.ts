@@ -1,8 +1,9 @@
-import { MARK_TUTORIAL } from '../OLD_actions/types';
+import { MARK_TUTORIAL } from '../actions/types';
 import { TutorialsState } from '../../__types__';
 import { TUTORIALS } from '../../constants';
 import { ReducerAction } from '.';
 
+// @ts-ignore
 const initialState: TutorialsState = {
     [TUTORIALS.lessonList]: false,
     [TUTORIALS.lesson]: false,
@@ -15,11 +16,13 @@ export const tutorialReducer = (state = initialState, action: ReducerAction): Tu
         case MARK_TUTORIAL.VIEWED:
             return {
                 ...state,
+                // @ts-ignore
                 [action.data]: false,
             };
         case MARK_TUTORIAL.NEW:
             return {
                 ...state,
+                // @ts-ignore
                 [action.data]: true,
             };
         default:

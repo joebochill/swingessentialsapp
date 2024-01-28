@@ -1,3 +1,28 @@
+Things to get working
+
+- Replace all Typography Components with Text
+    - See where they are being used
+- Build Utility Components
+    - Spacer Component
+    - Stack Component (include textAlign)
+- Extend theme with spacing (sm, md, lg, xl, 2xl)
+- Extend theme with sizes (sm, md, lg, xl, 2xl)
+- Fix SEButton component
+- Fix components folder
+- Fix functionality
+- Fix FontWeight on android
+
+- Update Redux to use toolkit
+- Update to latest RN IAP
+- Screen by screen to update functionality
+- Check if core libraries are deprecated
+
+
+
+
+
+
+
 LAST ITEMS FOR 3.0.0 RELEASE:
     FIX:
 

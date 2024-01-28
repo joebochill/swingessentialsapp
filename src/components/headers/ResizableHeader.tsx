@@ -13,14 +13,14 @@ import {
     ViewStyle,
 } from 'react-native';
 import { AnimatedSafeAreaView } from '../../components';
-import { withTheme } from 'react-native-paper';
+import { MD3Theme, withTheme } from 'react-native-paper';
 
 // Styles
 import { blackOpacity } from '../../styles/colors';
-import { unit } from '../../styles/sizes';
+// import { unit } from '../../styles/sizes';
 
 // Utilities
-import color from 'color';
+// import color from 'color';
 import { interpolate } from '../../utilities';
 
 // Types
@@ -29,7 +29,7 @@ import { HeaderIcon } from '../types';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT_NO_STATUS } from '../../constants';
-import { theme as defaultTheme } from '../../styles/theme';
+// import { theme as defaultTheme } from '../../styles/theme';
 
 const styles = StyleSheet.create({
     bar: {
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
     actionIcon: {
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
-        paddingHorizontal: defaultTheme.spaces.small,
+        // paddingHorizontal: defaultTheme.spaces.small,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -66,11 +66,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'absolute',
-        right: defaultTheme.spaces.small,
+        // right: defaultTheme.spaces.small,
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
     },
     notFirst: {
-        marginLeft: defaultTheme.spaces.small,
+        // marginLeft: defaultTheme.spaces.small,
     },
 });
 
@@ -100,7 +100,7 @@ export type ResizableHeaderProps = {
     backgroundImage?: ImageSourcePropType;
 
     /** Height of the header */
-    headerHeight: Animated.AnimatedInterpolation | number;
+    headerHeight: Animated.AnimatedInterpolation<number> | number;
     // headerHeight: number;
 
     /** Custom content for the header */
@@ -109,7 +109,7 @@ export type ResizableHeaderProps = {
     /**
      * Overrides for theme
      */
-    theme: ReactNativePaper.Theme; //$DeepPartial<ReactNativePaper.Theme>;
+    theme?: MD3Theme; //$DeepPartial<ReactNativePaper.Theme>;
 };
 
 type HeaderState = {
@@ -117,8 +117,8 @@ type HeaderState = {
 };
 
 class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
-    static readonly ICON_SIZE = defaultTheme.sizes.small;
-    static readonly ICON_SPACING = defaultTheme.spaces.medium;
+    static readonly ICON_SIZE = 24;//defaultTheme.sizes.small;
+    static readonly ICON_SPACING = 24;//defaultTheme.spaces.medium;
 
     render(): JSX.Element {
         const barStyle = this._barStyle();
@@ -165,7 +165,7 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
                 <View>
                     <TouchableOpacity
                         onPress={navigation.onPress}
-                        style={[styles.actionIcon, { marginRight: theme.spaces.small }]}
+                        style={[styles.actionIcon, /*{ marginRight: theme.spaces.small }*/]}
                     >
                         {this._icon(navigation.icon)}
                     </TouchableOpacity>
@@ -273,16 +273,18 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
     private _contentStyle(): StyleProp<ViewStyle> {
         const { theme, headerContent, navigation } = this.props;
         const contractedPadding = this.props.subtitle
-            ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.fontSizes[20] + theme.fontSizes[18])) / 2
-            : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - theme.fontSizes[20]) / 2;
+            // ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (theme.fontSizes[20] + theme.fontSizes[18])) / 2
+            // : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - theme.fontSizes[20]) / 2;
+            ? (HEADER_COLLAPSED_HEIGHT_NO_STATUS - (20 + 18)) / 2
+            : (HEADER_COLLAPSED_HEIGHT_NO_STATUS - 20) / 2;
         return [
             styles.content,
             headerContent
                 ? {} // no styles if you pass in custom content (Drawer)
                 : {
-                      paddingHorizontal: navigation ? theme.spaces.small : theme.spaces.medium,
-                      paddingBottom: this._scaleByHeaderHeight(theme.spaces.xLarge, contractedPadding) as number,
-                  },
+                    //   paddingHorizontal: navigation ? theme.spaces.small : theme.spaces.medium,
+                    paddingBottom: this._scaleByHeaderHeight(/*theme.spaces.xLarge*/48, contractedPadding) as number,
+                },
         ];
     }
 
@@ -290,9 +292,9 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
         const { theme } = this.props;
         return {
             color: this._fontColor(),
-            lineHeight: this._scaleByHeaderHeight(unit(30), theme.fontSizes[20]) as number,
-            fontFamily: theme.fonts.semiBold.fontFamily,
-            fontSize: this._scaleByHeaderHeight(unit(30), theme.fontSizes[20]) as number,
+            lineHeight: this._scaleByHeaderHeight(30, /*theme.fontSizes[20]*/20) as number,
+            // fontFamily: theme.fonts.semiBold.fontFamily,
+            fontSize: this._scaleByHeaderHeight(30, /*theme.fontSizes[20]*/20) as number,
         };
     }
 
@@ -300,9 +302,9 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
         const { theme } = this.props;
         return {
             color: this._fontColor(),
-            lineHeight: unit(18),
-            fontFamily: theme.fonts.light.fontFamily,
-            fontSize: unit(18),
+            lineHeight: 18,
+            // fontFamily: theme.fonts.light.fontFamily,
+            fontSize: 18,
         };
     }
 
@@ -310,25 +312,26 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
         const { theme } = this.props;
         return {
             color: this._fontColor(),
-            lineHeight: this._scaleByHeaderHeight(theme.fontSizes[20] * 1.05, 0.1) as number,
+            lineHeight: this._scaleByHeaderHeight(/*theme.fontSizes[20]*/20 * 1.05, 0.1) as number,
             opacity: this._scaleByHeaderHeight(1, 0) as number,
-            fontFamily: theme.fonts.regular.fontFamily,
-            fontSize: this._scaleByHeaderHeight(theme.fontSizes[20], 0.1) as number,
+            // fontFamily: theme.fonts.regular.fontFamily,
+            fontSize: this._scaleByHeaderHeight(/*theme.fontSizes[20]*/20, 0.1) as number,
         };
     }
 
     private _statusBarStyle(): 'light-content' | 'dark-content' {
-        return color(this._backgroundColor()).isDark() ? 'light-content' : 'dark-content';
+        // return color(this._backgroundColor()).isDark() ? 'light-content' : 'dark-content';
+        return 'dark-content';
     }
 
     private _fontColor(): string {
         const { fontColor, theme } = this.props;
-        return fontColor || theme.colors.onPrimary;
+        return fontColor || '';//theme.colors.onPrimary;
     }
 
     private _backgroundColor(): string {
         const { backgroundColor, theme } = this.props;
-        return backgroundColor || theme.colors.primary;
+        return backgroundColor || '';//theme.colors.primary;
     }
 
     private _actionPanelWidth(): number {
@@ -341,7 +344,7 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
         return length * (HeaderClass.ICON_SIZE + HeaderClass.ICON_SPACING);
     }
 
-    private _scaleByHeaderHeight(atLarge: number, atSmall: number): number | Animated.AnimatedInterpolation {
+    private _scaleByHeaderHeight(atLarge: number, atSmall: number): number | Animated.AnimatedInterpolation<number> {
         const { headerHeight } = this.props;
         if (typeof headerHeight === 'number') {
             return interpolate(
@@ -369,4 +372,5 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
  * This component is used to display a title and navigation and action items on the top of a screen.
  * It can be tapped to expand or contract.
  */
+/* @ts-ignore */
 export const ResizableHeader = withTheme(HeaderClass);

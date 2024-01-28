@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 // Components
 import {
     ActivityIndicator,
@@ -21,12 +21,12 @@ import { height } from '../../utilities/dimensions';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT } from '../../constants';
-import { theme } from '../../styles/theme';
+// import { theme } from '../../styles/theme';
 
 const styles = StyleSheet.create({
     scrollContainer: {
-        paddingTop: HEADER_EXPANDED_HEIGHT + theme.spaces.medium,
-        paddingBottom: theme.spaces.jumbo,
+        paddingTop: HEADER_EXPANDED_HEIGHT + 8,//theme.spaces.medium,
+        // paddingBottom: theme.spaces.jumbo,
     },
     nonScrollContainer: {
         marginTop: HEADER_EXPANDED_HEIGHT,
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 type HeaderLayoutState = {
     scrollY: Animated.Value;
 };
-type CollapsibleHeaderLayoutProps = SEHeaderProps & {
+type CollapsibleHeaderLayoutProps = PropsWithChildren<SEHeaderProps & {
     renderScroll?: boolean;
     onRefresh?: () => void;
     onResize?: (scroll: Animated.Value) => void;
@@ -45,7 +45,7 @@ type CollapsibleHeaderLayoutProps = SEHeaderProps & {
     bottomPad?: boolean;
     pageBackground?: ImageSourcePropType;
     navigation?: any;
-};
+}>;
 
 export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLayoutProps, HeaderLayoutState> {
     constructor(props: CollapsibleHeaderLayoutProps) {
@@ -65,7 +65,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
 
         return (
-            <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+            <View style={{ flex: 1, /*backgroundColor: theme.colors.background*/ }}>
                 <StatusBar barStyle={'light-content'} />
                 {this.props.pageBackground && (
                     <Image
@@ -122,7 +122,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                             {refreshing && Platform.OS === 'ios' && (
                                 <ActivityIndicator
                                     size={'large'}
-                                    style={{ marginBottom: theme.spaces.medium, marginTop: -1 * theme.spaces.jumbo }}
+                                    // style={{ marginBottom: theme.spaces.medium, marginTop: -1 * theme.spaces.jumbo }}
                                 />
                             )}
                             {children}
@@ -134,7 +134,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
             </View>
         );
     }
-    scaleByHeaderHeight(atLarge: number, atSmall: number): Animated.AnimatedInterpolation {
+    scaleByHeaderHeight(atLarge: number, atSmall: number): Animated.AnimatedInterpolation<number> {
         return this.state.scrollY.interpolate({
             inputRange: [0, HEADER_EXPANDED_HEIGHT - HEADER_COLLAPSED_HEIGHT],
             outputRange: [atLarge, atSmall],

@@ -1,4 +1,4 @@
-import { GET_BLOGS, LOGOUT, TOKEN_TIMEOUT } from '../OLD_actions/types';
+import { GET_BLOGS, LOGOUT, TOKEN_TIMEOUT } from '../actions/types';
 import { BlogsState } from '../../__types__';
 import { ReducerAction } from '.';
 

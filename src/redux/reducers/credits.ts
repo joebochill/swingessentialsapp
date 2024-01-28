@@ -1,4 +1,4 @@
-import { GET_CREDITS, LOGOUT, PURCHASE_CREDITS, TOKEN_TIMEOUT } from '../OLD_actions/types';
+import { GET_CREDITS, LOGOUT, PURCHASE_CREDITS, TOKEN_TIMEOUT } from '../actions/types';
 import { CreditsState } from '../../__types__';
 import { ReducerAction } from '.';
 

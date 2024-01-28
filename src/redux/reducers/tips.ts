@@ -1,4 +1,4 @@
-import { GET_TIPS, LOGOUT, TOKEN_TIMEOUT } from '../OLD_actions/types';
+import { GET_TIPS, LOGOUT, TOKEN_TIMEOUT } from '../actions/types';
 import { TipsState } from '../../__types__';
 import { ReducerAction } from '.';
 

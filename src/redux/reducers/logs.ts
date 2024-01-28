@@ -1,4 +1,4 @@
-import { LOAD_LOGS } from '../OLD_actions/types';
+import { LOAD_LOGS } from '../actions/types';
 import { LogsState } from '../../__types__';
 import { ReducerAction } from '.';
 

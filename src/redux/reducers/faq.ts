@@ -1,4 +1,4 @@
-import { LOGOUT, GET_FAQ, TOKEN_TIMEOUT } from '../OLD_actions/types';
+import { LOGOUT, GET_FAQ, TOKEN_TIMEOUT } from '../actions/types';
 import { FAQState } from '../../__types__';
 import { ReducerAction } from '.';
 

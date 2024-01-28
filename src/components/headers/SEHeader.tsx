@@ -7,7 +7,7 @@ import { Alert, Animated } from 'react-native';
 import { ResizableHeader, ResizableHeaderProps } from './ResizableHeader';
 
 // Utilities
-import { wrapIcon, HeaderIcon } from '../IconWrapper';
+import { wrapIcon } from '../IconWrapper';
 
 // Icons
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -22,7 +22,8 @@ import { ROUTES } from '../../constants/routes';
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
 // Redux
-import { requestLogout } from '../../redux/OLD_actions';
+import { requestLogout } from '../../redux/actions';
+import { HeaderIcon } from '../types';
 // import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 
 const MenuIcon = wrapIcon({ IconClass: MatIcon, name: 'menu' });
@@ -34,7 +35,7 @@ export type SEHeaderProps = Omit<ResizableHeaderProps, 'headerHeight'> & {
     mainAction?: NavType;
     showAuth?: boolean;
     dynamic?: boolean;
-    headerHeight?: Animated.AnimatedInterpolation;
+    headerHeight?: Animated.AnimatedInterpolation<number>;
     onNavigate?: () => void;
     navigation: any;
 };
@@ -55,52 +56,54 @@ export const SEHeader: React.FC<SEHeaderProps> = (props) => {
 
     const defaultActions: HeaderIcon[] = showAuth
         ? [
-              token
-                  ? {
-                        icon: LogoutIcon,
-                        onPress: (): void => {
-                            Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-                                {
-                                    text: 'Sign Out',
-                                    onPress: (): void => {
-                                        dispatch(requestLogout());
-                                    },
+            token
+                ? {
+                    icon: LogoutIcon,
+                    onPress: (): void => {
+                        Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+                            {
+                                text: 'Sign Out',
+                                onPress: (): void => {
+                                    // @ts-ignore
+                                    dispatch(requestLogout());
                                 },
-                                { text: 'Cancel' },
-                            ]);
-                        },
-                    }
-                  : {
-                        icon: AccountIcon,
-                        onPress: (): void => navigationProp.navigate({ name: ROUTES.LOGIN, key: ROUTES.LOGIN }),
+                            },
+                            { text: 'Cancel' },
+                        ]);
                     },
-          ]
+                }
+                : {
+                    icon: AccountIcon,
+                    onPress: (): void => navigationProp.navigate({ name: ROUTES.LOGIN, key: ROUTES.LOGIN }),
+                },
+        ]
         : [];
 
     return (
         <ResizableHeader
+            // @ts-ignore
             navigation={
                 mainAction === 'menu'
                     ? {
-                          icon: MenuIcon,
-                          onPress: (): void => {
-                              navigationProp.openDrawer();
-                              if (onNavigate) {
-                                  onNavigate();
-                              }
-                          },
-                      }
+                        icon: MenuIcon,
+                        onPress: (): void => {
+                            navigationProp.openDrawer();
+                            if (onNavigate) {
+                                onNavigate();
+                            }
+                        },
+                    }
                     : mainAction === 'back'
-                    ? {
-                          icon: BackIcon,
-                          onPress: (): void => {
-                              navigationProp.pop();
-                              if (onNavigate) {
-                                  onNavigate();
-                              }
-                          },
-                      }
-                    : undefined
+                        ? {
+                            icon: BackIcon,
+                            onPress: (): void => {
+                                navigationProp.pop();
+                                if (onNavigate) {
+                                    onNavigate();
+                                }
+                            },
+                        }
+                        : undefined
             }
             headerHeight={props.headerHeight || HEADER_COLLAPSED_HEIGHT}
             backgroundImage={backgroundImage}

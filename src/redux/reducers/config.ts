@@ -1,4 +1,4 @@
-import { GET_CONFIG } from '../OLD_actions/types';
+import { GET_CONFIG } from '../actions/types';
 import { ConfigState } from '../../__types__';
 import { PlaceholderLesson } from '../../constants/lessons';
 import { ReducerAction } from '.';

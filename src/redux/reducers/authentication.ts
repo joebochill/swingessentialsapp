@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, CREATE_ACCOUNT, SET_TOKEN, REFRESH_TOKEN, TOKEN_TIMEOUT } from '../OLD_actions/types';
+import { LOGIN, LOGOUT, CREATE_ACCOUNT, SET_TOKEN, REFRESH_TOKEN, TOKEN_TIMEOUT } from '../actions/types';
 import { getUserRole } from '../../utilities';
 import { LoginState } from '../../__types__';
 import { ReducerAction } from '.';

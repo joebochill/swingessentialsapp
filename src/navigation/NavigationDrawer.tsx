@@ -31,7 +31,7 @@ import { ROUTES } from '../constants/routes';
 
 // Styles
 import { useListStyles, useFlexStyles } from '../styles';
-import { useTheme, List, Divider } from 'react-native-paper';
+import { useTheme, List, Divider, MD3Theme } from 'react-native-paper';
 
 import { unit } from '../styles/sizes';
 
@@ -41,8 +41,8 @@ import { height } from '../utilities/dimensions';
 import { Logger } from '../utilities/logging';
 
 // Redux
-import { ApplicationState } from 'src/__types__';
-import { loadUserContent, requestLogout } from '../redux/OLD_actions';
+import { ApplicationState } from '../__types__';
+import { loadUserContent, requestLogout } from '../redux/actions';
 
 // Icons
 import se from '../images/logo-small.png';
@@ -51,7 +51,7 @@ import { transparent } from '../styles/colors';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 
 const useStyles = (
-    theme: ReactNativePaper.Theme
+    theme: MD3Theme
 ): StyleSheet.NamedStyles<{
     avatarContainer: StyleProp<ViewStyle>;
     avatar: StyleProp<ViewStyle>;
@@ -73,8 +73,8 @@ const useStyles = (
         },
         content: {
             flex: 1,
-            paddingVertical: theme.spaces.medium,
-            paddingHorizontal: theme.spaces.medium,
+            // paddingVertical: theme.spaces.medium,
+            // paddingHorizontal: theme.spaces.medium,
             flexDirection: 'row',
         },
         headerText: {
@@ -82,7 +82,7 @@ const useStyles = (
             justifyContent: 'center',
         },
         navLabel: {
-            marginLeft: theme.spaces.medium,
+            // marginLeft: theme.spaces.medium,
         },
         drawerBody: {
             flexDirection: 'row',
@@ -96,7 +96,7 @@ const useStyles = (
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: theme.spaces.medium,
+            // padding: theme.spaces.medium,
         },
     });
 
@@ -125,12 +125,11 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
     const nameString =
         userData.firstName && userData.lastName ? `${userData.firstName} ${userData.lastName}` : 'New User';
     const memberString = `Joined ${userData.joined ? getLongDate(userData.joined * 1000) : getLongDate(Date.now())}`;
-    const avatarURL = `https://www.swingessentials.com/images/profiles/${
-        settings.avatar ? `${userData.username}/${settings.avatar}.png` : 'blank.png'
-    }`;
+    const avatarURL = `https://www.swingessentials.com/images/profiles/${settings.avatar ? `${userData.username}/${settings.avatar}.png` : 'blank.png'
+        }`;
 
     const scaleByHeight = useCallback(
-        (atLarge, atSmall) =>
+        (atLarge: number, atSmall: number) =>
             scrollY.interpolate({
                 inputRange: [0, HEADER_EXPANDED_HEIGHT_NO_STATUS - HEADER_COLLAPSED_HEIGHT_NO_STATUS],
                 outputRange: [atLarge, atSmall],
@@ -177,6 +176,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
     const handleAppStateChange = useCallback(
         (nextAppState: AppStateStatus) => {
             if (/inactive|background/.test(appState) && nextAppState === 'active' && token) {
+                {/* @ts-ignore */ }
                 dispatch(loadUserContent());
             }
             setAppState(nextAppState);
@@ -186,8 +186,8 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
 
     // Handles activating a deep link while the app is in the background
     const wakeUpByLink = useCallback(
-        (event) => {
-            const path = event.url.split('/').filter((el) => el.length > 0);
+        (event: any) => {
+            const path = event.url.split('/').filter((el: string) => el.length > 0);
             linkRoute(event.url, path);
         },
         [linkRoute]
@@ -218,8 +218,8 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
 
     useEffect((): (() => void) => {
         // Set Up the State Change listeners
-        AppState.addEventListener('change', handleAppStateChange);
-        Linking.addEventListener('url', wakeUpByLink);
+        const stateChangeListener = AppState.addEventListener('change', handleAppStateChange);
+        const linkingListener = Linking.addEventListener('url', wakeUpByLink);
 
         // Handle the case where the application is opened from a Universal Link
         // if (Platform.OS !== 'ios') {
@@ -239,8 +239,8 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
         // }
 
         return (): void => {
-            AppState.removeEventListener('change', handleAppStateChange);
-            Linking.removeEventListener('url', wakeUpByLink);
+            stateChangeListener.remove();
+            linkingListener.remove();
         };
     }, [handleAppStateChange, linkRoute, wakeUpByLink]);
 
@@ -251,6 +251,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
             navigation={navigation}
             mainAction={'none'}
             onResize={(scroll: Animated.Value): void => {
+                // @ts-ignore
                 scrollY.setValue(scroll._value);
             }}
             subtitle={''}
@@ -272,7 +273,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                                 onPress={
                                     token
                                         ? (): void =>
-                                              navigation.navigate(ROUTES.SETTINGS_GROUP, { screen: ROUTES.SETTINGS })
+                                            navigation.navigate(ROUTES.SETTINGS_GROUP, { screen: ROUTES.SETTINGS })
                                         : undefined
                                 }
                             >
@@ -297,7 +298,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                             </TouchableHighlight>
                         </View>
                         <Animated.View
-                            style={[styles.headerText, { marginLeft: scaleByHeight(theme.spaces.medium, 0) }]}
+                            style={[styles.headerText, { marginLeft: scaleByHeight(/*theme.spaces.medium*/20, 0) }]}
                         >
                             <Animated.Text
                                 style={{
@@ -339,7 +340,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                         </Animated.View>
                     </Animated.View>
                     <View style={[styles.footer]}>
-                        <H7 font={'semiBold'} style={{ color: theme.colors.onPrimary }}>
+                        <H7 /*font={'semiBold'}*/ style={{ color: theme.colors.onPrimary }}>
                             SWING ESSENTIALS®
                         </H7>
                         <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
@@ -349,7 +350,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                 </View>
             }
         >
-            <View style={[styles.drawerBody, { marginTop: -1 * theme.spaces.medium }]}>
+            <View style={[styles.drawerBody, { marginTop: -1 * /*theme.spaces.medium*/20 }]}>
                 {NavigationItems.map((panel, ind) => {
                     const leftPosition = ind === 2 ? left.help : ind === 1 ? left.account : left.main;
                     let panelData = [...panel.data];
@@ -360,17 +361,18 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                             icon: token ? 'exit-to-app' : 'person',
                             onPress: token
                                 ? (): void => {
-                                      Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-                                          {
-                                              text: 'Sign Out',
-                                              onPress: (): void => {
-                                                  dispatch(requestLogout());
-                                                  navigation.closeDrawer();
-                                              },
-                                          },
-                                          { text: 'Cancel' },
-                                      ]);
-                                  }
+                                    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+                                        {
+                                            text: 'Sign Out',
+                                            onPress: (): void => {
+                                                // @ts-ignore
+                                                dispatch(requestLogout());
+                                                navigation.closeDrawer();
+                                            },
+                                        },
+                                        { text: 'Cancel' },
+                                    ]);
+                                }
                                 : (): void => navigation.navigate(ROUTES.LOGIN),
                         });
                     }
@@ -395,45 +397,49 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                                                 item.route
                                                     ? item.route === ROUTES.HOME
                                                         ? (): void => {
-                                                              navigation.closeDrawer();
-                                                          }
+                                                            navigation.closeDrawer();
+                                                        }
                                                         : item.screen
-                                                        ? (): void => {
-                                                              navigation.navigate(item.route, { screen: item.screen });
-                                                          }
-                                                        : (): void => {
-                                                              navigation.navigate(item.route);
-                                                          }
+                                                            ? (): void => {
+                                                                // @ts-ignore
+                                                                navigation.navigate(item.route, { screen: item.screen });
+                                                            }
+                                                            : (): void => {
+                                                                // @ts-ignore
+                                                                navigation.navigate(item.route);
+                                                            }
                                                     : item.activatePanel !== undefined
-                                                    ? (): void => {
-                                                          setActivePanel(item.activatePanel);
-                                                      }
-                                                    : item.onPress
-                                                    ? (): void => item.onPress()
-                                                    : undefined
+                                                        ? (): void => {
+                                                            // @ts-ignore
+                                                            setActivePanel(item.activatePanel);
+                                                        }
+                                                        : item.onPress
+                                                            // @ts-ignore
+                                                            ? (): void => item.onPress()
+                                                            : undefined
                                             }
                                             style={[
                                                 listStyles.item,
                                                 { paddingLeft: 0, paddingVertical: 0, minHeight: 'auto' },
                                             ]}
                                             titleStyle={{
-                                                marginLeft: theme.spaces.small,
-                                                fontSize: theme.fontSizes[16],
+                                                // marginLeft: theme.spaces.small,
+                                                // fontSize: theme.fontSizes[16],
                                             }}
                                             right={
                                                 item.nested
                                                     ? ({ style, ...rightProps }): JSX.Element => (
-                                                          <View style={[flexStyles.row, style]} {...rightProps}>
-                                                              <MatIcon
-                                                                  name={'chevron-right'}
-                                                                  size={theme.sizes.small}
-                                                                  color={theme.colors.accent}
-                                                                  style={{
-                                                                      marginRight: -1 * theme.spaces.small,
-                                                                  }}
-                                                              />
-                                                          </View>
-                                                      )
+                                                        <View style={[flexStyles.row, style]} {...rightProps}>
+                                                            <MatIcon
+                                                                name={'chevron-right'}
+                                                                // size={theme.sizes.small}
+                                                                // color={theme.colors.accent}
+                                                                style={{
+                                                                    marginRight: -1 * 4/*theme.spaces.small*/,
+                                                                }}
+                                                            />
+                                                        </View>
+                                                    )
                                                     : undefined
                                             }
                                         />

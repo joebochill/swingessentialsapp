@@ -1,4 +1,4 @@
-import { GET_LESSONS, LOGOUT, SUBMIT_LESSON, TOKEN_TIMEOUT } from '../OLD_actions/types';
+import { GET_LESSONS, LOGOUT, SUBMIT_LESSON, TOKEN_TIMEOUT } from '../actions/types';
 import { LessonsState } from '../../__types__';
 import { ReducerAction } from '.';
 
@@ -58,6 +58,7 @@ export const lessonsReducer = (state = initialState, action: ReducerAction): Les
                 ...state,
                 redeemPending: false,
                 redeemSuccess: false,
+                // @ts-ignore
                 redeemError: parseInt(action.error, 10),
             };
         default:

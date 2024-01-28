@@ -1,4 +1,4 @@
-import { CREATE_ACCOUNT, CHECK_USERNAME, CHECK_EMAIL, VERIFY_EMAIL } from '../OLD_actions/types';
+import { CREATE_ACCOUNT, CHECK_USERNAME, CHECK_EMAIL, VERIFY_EMAIL } from '../actions/types';
 import { RegistrationState } from '../../__types__';
 import { ReducerAction } from '.';
 
@@ -59,6 +59,7 @@ export const registrationReducer = (state = initialState, action: ReducerAction)
                 ...state,
                 pending: false,
                 emailVerified: false,
+                // @ts-ignore
                 error: isNaN(parseInt(action.error, 10)) ? -1 : parseInt(action.error, 10),
             };
         default:

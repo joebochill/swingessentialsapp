@@ -1,4 +1,4 @@
-import { GET_PACKAGES, TOKEN_TIMEOUT } from '../OLD_actions/types';
+import { GET_PACKAGES, TOKEN_TIMEOUT } from '../actions/types';
 import { PackagesState } from '../../__types__';
 import { ReducerAction } from '.';
 

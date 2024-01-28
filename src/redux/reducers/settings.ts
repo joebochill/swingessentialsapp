@@ -1,4 +1,4 @@
-import { GET_SETTINGS, LOGOUT, TOKEN_TIMEOUT } from '../OLD_actions/types';
+import { GET_SETTINGS, LOGOUT, TOKEN_TIMEOUT } from '../actions/types';
 import { SettingsState } from '../../__types__';
 import { ReducerAction } from '.';
 

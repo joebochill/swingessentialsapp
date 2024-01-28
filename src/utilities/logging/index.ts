@@ -1,7 +1,7 @@
 import { LOG_FILE, ERROR_FILE, ERROR_LIMIT, LOG_LIMIT } from '../../constants';
 import { getDate, getTime } from '../general';
-// import { sendLogReport } from '../../redux/actions/ExtraActions';
-// import Mailer from 'react-native-mail';
+import { sendLogReport } from '../../redux/actions/ExtraActions';
+import Mailer from 'react-native-mail';
 import { store } from '../../redux/store';
 import { Platform, Alert } from 'react-native';
 
@@ -75,60 +75,61 @@ export class Logger {
     private static async _autoSendEmail(type: LogType): Promise<void> {
         if (SENDING) return;
         const currentErrors = await this.readMessages(type);
-        // store.dispatch(sendLogReport(currentErrors, type));
+        // @ts-ignore
+        store.dispatch(sendLogReport(currentErrors, type));
     }
     public static async sendEmail(type: LogType, onDone: () => void = (): void => {}, username = ''): Promise<void> {
         const currentLogs = await this.readMessages(type);
 
-        // Mailer.mail(
-        //     {
-        //         subject: `Swing Essentials Error Report (${username})`,
-        //         recipients: ['info@swingessentials.com'],
-        //         body: `My Swing Essentials app has been encountering errors. ${
-        //             Platform.OS === 'ios'
-        //                 ? 'Please see the attached error log.'
-        //                 : `Please see the following:\r\n\r\n\r\n${currentLogs}`
-        //         }`,
-        //         isHTML: false,
-        //         attachments:
-        //             Platform.OS === 'ios'
-        //                 ? [
-        //                       {
-        //                           path: type === 'ERROR' ? errorPath : logPath,
-        //                           type: 'doc',
-        //                           name: 'Logs.txt',
-        //                       },
-        //                   ]
-        //                 : [],
-        //     },
-        //     (error, event) => {
-        //         if (error && error === 'canceled') {
-        //             // Do nothing
-        //         } else if (error) {
-        //             void this.logError({
-        //                 code: 'LOGS100',
-        //                 description: 'Error sending error logs',
-        //                 rawErrorMessage: error,
-        //             });
-        //         } else if (event && event === 'sent') {
-        //             // message sent successfully
-        //             void this.clear(type);
-        //             Alert.alert(
-        //                 'Error Report Sent',
-        //                 'Your error report has been submitted successfully. Thank you for helping us improve the app!',
-        //                 [{ text: 'DONE', onPress: onDone }]
-        //             );
-        //         } else if (event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')) {
-        //             // do nothing
-        //         } else if (event) {
-        //             void this.logError({
-        //                 code: 'LOGS900',
-        //                 description: 'Error sending error logs',
-        //                 rawErrorMessage: event,
-        //             });
-        //         }
-        //     }
-        // );
+        Mailer.mail(
+            {
+                subject: `Swing Essentials Error Report (${username})`,
+                recipients: ['info@swingessentials.com'],
+                body: `My Swing Essentials app has been encountering errors. ${
+                    Platform.OS === 'ios'
+                        ? 'Please see the attached error log.'
+                        : `Please see the following:\r\n\r\n\r\n${currentLogs}`
+                }`,
+                isHTML: false,
+                attachments:
+                    Platform.OS === 'ios'
+                        ? [
+                              {
+                                  path: type === 'ERROR' ? errorPath : logPath,
+                                  type: 'doc',
+                                  name: 'Logs.txt',
+                              },
+                          ]
+                        : [],
+            },
+            (error, event) => {
+                if (error && error === 'canceled') {
+                    // Do nothing
+                } else if (error) {
+                    void this.logError({
+                        code: 'LOGS100',
+                        description: 'Error sending error logs',
+                        rawErrorMessage: error,
+                    });
+                } else if (event && event === 'sent') {
+                    // message sent successfully
+                    void this.clear(type);
+                    Alert.alert(
+                        'Error Report Sent',
+                        'Your error report has been submitted successfully. Thank you for helping us improve the app!',
+                        [{ text: 'DONE', onPress: onDone }]
+                    );
+                } else if (event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')) {
+                    // do nothing
+                } else if (event) {
+                    void this.logError({
+                        code: 'LOGS900',
+                        description: 'Error sending error logs',
+                        rawErrorMessage: event,
+                    });
+                }
+            }
+        );
     }
     private constructor() {}
 }

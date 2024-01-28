@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, SET_TOKEN, TOKEN_TIMEOUT, REFRESH_TOKEN, CREATE_ACCOUNT } from '../redux/OLD_actions/types';
+import { LOGIN, LOGOUT, SET_TOKEN, TOKEN_TIMEOUT, REFRESH_TOKEN, CREATE_ACCOUNT } from '../redux/actions/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ASYNC_PREFIX } from '../constants';
 import { Middleware } from 'redux';
@@ -11,7 +11,7 @@ function setToken(newToken: string | null): void {
 export const saveAuthToken: Middleware =
     (/*store*/) =>
     (next) =>
-    (action): any => {
+    (action: any): any => {
         if (
             action.type === LOGIN.SUCCESS ||
             action.type === SET_TOKEN.REQUEST ||

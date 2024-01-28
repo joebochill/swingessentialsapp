@@ -1,4 +1,4 @@
-import { GET_PROS } from '../OLD_actions/types';
+import { GET_PROS } from '../actions/types';
 import { ProsState } from '../../__types__';
 import { ReducerAction } from '.';
 
