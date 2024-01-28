@@ -2,12 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
-import { View } from 'react-native';
-import { SEButton, CollapsibleHeaderLayout, wrapIcon, HeaderIcon } from '../../components';
+import { SEButton, CollapsibleHeaderLayout, wrapIcon, HeaderIcon, Stack, Typography } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-
-// Styles
-import { useFlexStyles } from '../../styles';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
@@ -15,9 +11,9 @@ import { Logger } from '../../utilities/logging';
 // Types
 import { LOAD_LOGS } from '../../redux/actions/types';
 import { ApplicationState } from '../../__types__';
-import { useTheme, Caption } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../styles/theme';
 
 // Icons
 const RefreshIcon = wrapIcon({ IconClass: MatIcon, name: 'refresh' });
@@ -29,8 +25,7 @@ export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> =
     const token = useSelector((state: ApplicationState) => state.login.token);
     const loading = useSelector((state: ApplicationState) => state.logs.loading);
     const username = useSelector((state: ApplicationState) => state.userData.username);
-    const theme = useTheme();
-    const flexStyles = useFlexStyles(theme);
+    const theme = useAppTheme();
 
     const getLogs = useCallback(async (): Promise<void> => {
         dispatch({ type: LOAD_LOGS.REQUEST });
@@ -86,14 +81,14 @@ export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> =
             }}
             navigation={props.navigation}
         >
-            <View style={[flexStyles.paddingHorizontal]}>
+            <Stack style={{ paddingHorizontal: theme.spacing.md, marginTop: theme.spacing.md }}>
                 <SEButton
                     title={'SEND ERROR REPORT'}
                     onPress={(): void => sendMail()}
-                    // style={{ marginBottom: theme.spaces.medium }}
+                    style={{ marginBottom: theme.spacing.md }}
                 />
-                <Caption /*style={{ color: theme.colors.text }}*/>{logs}</Caption>
-            </View>
+                <Typography variant={'bodySmall'}>{logs}</Typography>
+            </Stack>
         </CollapsibleHeaderLayout>
     );
 };

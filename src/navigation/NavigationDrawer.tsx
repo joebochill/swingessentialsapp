@@ -173,6 +173,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
             headerContent={
                 <Stack justify={'flex-end'} style={{ width: '100%' }}>
                     <Animated.View
+                        // TODO: Figure out why AnimatedStack doesn't work
                         // direction={'row'}
                         style={[
                             {
