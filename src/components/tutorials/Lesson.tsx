@@ -1,8 +1,8 @@
 import React from 'react';
-import { useTheme } from 'react-native-paper';
+
 // Components
 import { View, Image } from 'react-native';
-import { Typography } from '../index';
+import { Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
@@ -12,30 +12,24 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
 import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
+import { useAppTheme } from '../../styles/theme';
 
 export const LessonTutorial: React.FC = () => {
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
-    const theme = useTheme();
+    const theme = useAppTheme();
     const dispatch = useDispatch();
 
     const slides = [
-        <>
-            <Typography
-                variant={'displayMedium'}
-                fontWeight={'semiBold'}
-                color={'onPrimary'}
-                style={{ textAlign: 'center' }}
-            >
+        <Stack key={1} align={'center'}>
+            <Typography variant={'displaySmall'} fontWeight={'semiBold'} color={'onPrimary'} align={'center'}>
                 {'Swing Analysis'}
             </Typography>
             <Typography
+                variant={'bodyMedium'}
                 fontWeight={'light'}
                 color={'onPrimary'}
-                style={{
-                    textAlign: 'center',
-                    // marginTop: theme.spaces.small,
-                    // marginBottom: theme.spaces.medium,
-                }}
+                align={'center'}
+                style={{ marginTop: theme.spacing.sm }}
             >
                 {
                     'This is where you can view your personalized swing analysis videos. Your analysis will also include comments and recommended tips to improve your game.'
@@ -44,11 +38,12 @@ export const LessonTutorial: React.FC = () => {
             <Image
                 style={{
                     width: '100%',
-                    height: (width - 2 * 8) /*theme.spaces.medium*/ * (9 / 16),
+                    height: (width - 2 * theme.spacing.md) * (9 / 16),
+                    marginTop: theme.spacing.lg,
                 }}
-                source={{ uri: 'https://img.youtube.com/vi/l3Y3iJa6DvE/0.jpg' }}
+                source={{ uri: 'https://img.youtube.com/vi/OoW6v6LDqfM/0.jpg' }}
             />
-        </>,
+        </Stack>,
     ];
 
     return (
@@ -63,13 +58,16 @@ export const LessonTutorial: React.FC = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }: { index: number }): JSX.Element => slides[index]}
-                    sliderWidth={width - 2 * 8 /*theme.spaces.medium*/}
-                    itemWidth={width - 2 * 8 /*theme.spaces.medium*/}
+                    sliderWidth={width - 2 * theme.spacing.md}
+                    itemWidth={width - 2 * theme.spacing.md}
                 />
                 <SEButton
                     dark
+                    mode={'contained'}
+                    uppercase
+                    buttonColor={theme.colors.secondary}
                     title="GOT IT"
-                    style={{ flex: 1 /*marginTop: theme.spaces.xLarge*/ }}
+                    style={{ marginTop: theme.spacing.xl }}
                     onPress={(): void => {
                         // @ts-ignore
                         dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]));

@@ -3,7 +3,15 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, SectionList } from 'react-native';
-import { Typography, CollapsibleHeaderLayout, LessonsTutorial, wrapIcon } from '../../components';
+import {
+    Typography,
+    CollapsibleHeaderLayout,
+    LessonsTutorial,
+    wrapIcon,
+    SectionHeader,
+    Stack,
+    ListItem,
+} from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
@@ -23,6 +31,7 @@ import { ApplicationState } from '../../__types__';
 import { loadLessons } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../styles/theme';
 
 const AddIcon = wrapIcon({ IconClass: MatIcon, name: 'add-circle' });
 
@@ -47,7 +56,7 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
     const myLessons = lessons.pending.concat(lessons.closed);
     // @ts-ignore
     const sections = makeGroups(myLessons, (lesson: Lesson) => getLongDate(lesson.request_date));
-    const theme = useTheme();
+    const theme = useAppTheme();
     const sharedStyles = useSharedStyles(theme);
     const flexStyles = useFlexStyles(theme);
     const listStyles = useListStyles(theme);
@@ -72,41 +81,45 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
         >
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }): JSX.Element => (
-                    <View style={[sharedStyles.sectionHeader, /*index > 0 ? { marginTop: theme.spaces.jumbo } :*/ {}]}>
-                        <Subheading style={listStyles.heading}>{bucketName}</Subheading>
-                    </View>
+                    <SectionHeader
+                        title={bucketName}
+                        style={{ marginTop: theme.spacing.xxl, marginHorizontal: theme.spacing.md }}
+                    />
                 )}
                 sections={sections}
                 stickySectionHeadersEnabled={false}
                 ListEmptyComponent={
-                    <>
+                    <Stack style={{ marginTop: theme.spacing.xxl }}>
                         <Divider />
-                        <List.Item
+                        <ListItem
                             title={'Welcome to Swing Essentials!'}
                             // @ts-ignore
                             onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: null })}
                             style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            descriptionStyle={{ marginLeft: -8 }}
+                            titleStyle={{ marginLeft: -1 * theme.spacing.md }}
+                            descriptionStyle={{ marginLeft: -1 * theme.spacing.md }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Typography /*style={{ marginRight: theme.spaces.small }}*/>NEW</Typography>
+                                <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
+                                    <Typography variant={'labelMedium'} style={{ marginRight: theme.spacing.sm }}>
+                                        NEW
+                                    </Typography>
                                     <MatIcon
                                         name={'chevron-right'}
-                                        // size={theme.sizes.small}
-                                        // style={{ marginRight: -1 * theme.spaces.small }}
+                                        size={theme.size.md}
+                                        color={theme.colors.primary}
+                                        style={{ marginRight: -1 * theme.spacing.md }}
                                     />
-                                </View>
+                                </Stack>
                             )}
                         />
                         <Divider />
-                    </>
+                    </Stack>
                 }
                 renderItem={({ item, index }): JSX.Element =>
                     item.response_video ? (
                         <>
                             {index === 0 && <Divider />}
-                            <List.Item
+                            <ListItem
                                 title={role === 'administrator' ? item.username : item.request_date}
                                 description={
                                     role === 'administrator'
@@ -118,19 +131,25 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                                 // @ts-ignore
                                 onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                                 style={listStyles.item}
-                                titleStyle={{ marginLeft: -8 }}
-                                descriptionStyle={{ marginLeft: -8 }}
+                                titleStyle={{ marginLeft: -1 * theme.spacing.md }}
+                                descriptionStyle={{ marginLeft: -1 * theme.spacing.md }}
                                 right={({ style, ...rightProps }): JSX.Element => (
-                                    <View style={[flexStyles.row, style]} {...rightProps}>
+                                    <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
                                         {!item.viewed && (
-                                            <Typography /*style={{ marginRight: theme.spaces.small }}*/>NEW</Typography>
+                                            <Typography
+                                                variant={'labelMedium'}
+                                                style={{ marginRight: theme.spacing.sm }}
+                                            >
+                                                NEW
+                                            </Typography>
                                         )}
                                         <MatIcon
                                             name={'chevron-right'}
-                                            // size={theme.sizes.small}
-                                            // style={{ marginRight: -1 * theme.spaces.small }}
+                                            size={theme.size.md}
+                                            color={theme.colors.primary}
+                                            style={{ marginRight: -1 * theme.spacing.md }}
                                         />
-                                    </View>
+                                    </Stack>
                                 )}
                             />
                             <Divider />

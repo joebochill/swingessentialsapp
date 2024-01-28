@@ -2,12 +2,20 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { View, Platform, ScrollView } from 'react-native';
-import { Typography, SEHeader, YouTube, SEVideo, VideoCard, LessonTutorial } from '../../components';
+import { Platform, ScrollView } from 'react-native';
+import {
+    SEHeader,
+    YouTube,
+    SEVideo,
+    VideoCard,
+    LessonTutorial,
+    Stack,
+    SectionHeader,
+    Paragraph,
+} from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Styles
-import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
 import { width, height, aspectHeight } from '../../utilities/dimensions';
 
 // Utilities
@@ -22,25 +30,22 @@ import { ApplicationState } from '../../__types__';
 
 // Actions
 import { markLessonViewed } from '../../redux/actions';
-import { useTheme, Subheading } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../styles/theme';
 
 export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson'>> = (props) => {
     const token = useSelector((state: ApplicationState) => state.login.token);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const placeholder = useSelector((state: ApplicationState) => state.config.placeholder);
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const listStyles = useListStyles(theme);
-    const flexStyles = useFlexStyles(theme);
+    const theme = useAppTheme();
 
     let { lesson } = props.route.params;
     if (lesson === null) {
         lesson = placeholder;
     }
-    const videoWidth = width - 2 * 8; /*theme.spaces.medium*/
+    const videoWidth = width - 2 * theme.spacing.md;
     const videoHeight = aspectHeight(videoWidth);
 
     useEffect(() => {
@@ -63,7 +68,15 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
     return !token && lesson.request_id !== -1
         ? null
         : lesson && (
-              <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
+              <Stack
+                  style={[
+                      {
+                          flex: 1,
+                          backgroundColor: theme.colors.background,
+                          paddingTop: HEADER_COLLAPSED_HEIGHT,
+                      },
+                  ]}
+              >
                   {/* @ts-ignore */}
                   <SEHeader
                       title={lesson.request_date}
@@ -72,48 +85,38 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
                       navigation={props.navigation}
                   />
                   <ScrollView
-                      contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
+                      contentContainerStyle={[
+                          {
+                              paddingHorizontal: theme.spacing.md,
+                              paddingTop: theme.spacing.md,
+                              paddingBottom: height * 0.5,
+                          },
+                      ]}
                       keyboardShouldPersistTaps={'always'}
                   >
                       {lesson.response_video && (
                           <>
-                              <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                                  <Subheading style={listStyles.heading}>{'Video Analysis'}</Subheading>
-                              </View>
+                              <SectionHeader title={'Video Analysis'} />
                               <YouTube
                                   videoId={lesson.response_video}
-                                  style={{ width: videoWidth, height: videoHeight }}
+                                  style={{
+                                      width: videoWidth,
+                                      height: videoHeight,
+                                      borderRadius: theme.roundness,
+                                  }}
                               />
-                              <View
-                                  style={[
-                                      sharedStyles.sectionHeader,
-                                      { marginHorizontal: 0 /*marginTop: theme.spaces.jumbo*/ },
-                                  ]}
-                              >
-                                  <Subheading style={listStyles.heading}>{'Comments'}</Subheading>
-                              </View>
-                              {splitParagraphs(lesson.response_notes).map((p, ind) => (
-                                  <Typography
-                                      key={`${lesson.request_id}_p_${ind}`}
-                                      style={[ind > 0 ? sharedStyles.paragraph : {}]}
-                                  >
-                                      {p}
-                                  </Typography>
-                              ))}
+                              <SectionHeader title={'Comments'} style={{ marginTop: theme.spacing.xl }} />
+                              <Stack space={theme.spacing.md}>
+                                  {splitParagraphs(lesson.response_notes).map((p, ind) => (
+                                      <Paragraph key={`${lesson.request_id}_p_${ind}`}>{p}</Paragraph>
+                                  ))}
+                              </Stack>
                           </>
                       )}
                       {/* @ts-ignore */}
                       {lesson.tips && lesson.tips.length > 0 && (
                           <>
-                              <View
-                                  style={[
-                                      sharedStyles.sectionHeader,
-                                      { marginHorizontal: 0 /*marginTop: theme.spaces.jumbo*/ },
-                                  ]}
-                              >
-                                  <Subheading style={listStyles.heading}>{'Recommended Tips'}</Subheading>
-                              </View>
-
+                              <SectionHeader title={'Recommended Tips'} style={{ marginTop: theme.spacing.xl }} />
                               <Carousel
                                   // @ts-ignore
                                   data={lesson.tips.slice(0, 3)}
@@ -121,62 +124,45 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
                                       <VideoCard
                                           headerTitle={getLongDate(item.date)}
                                           headerSubtitle={item.title}
-                                          // style={{ marginBottom: theme.spaces.medium }}
                                           video={item.video}
                                           // @ts-ignore
                                           onExpand={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
                                       />
                                   )}
                                   sliderWidth={width}
-                                  itemWidth={width - 2 * 8 /*theme.spaces.medium*/}
+                                  itemWidth={width - 2 * theme.spacing.md}
                                   inactiveSlideScale={0.95}
+                                  containerCustomStyle={{ marginHorizontal: -1 * theme.spacing.md }}
                               />
                           </>
                       )}
 
                       {Platform.OS === 'ios' && lesson.fo_swing !== '' && lesson.dtl_swing !== '' && (
                           <>
-                              <View
-                                  style={[
-                                      sharedStyles.sectionHeader,
-                                      { marginHorizontal: 0 /*marginTop: theme.spaces.jumbo*/ },
-                                  ]}
-                              >
-                                  <Subheading style={listStyles.heading}>{'Your Swing Videos'}</Subheading>
-                              </View>
-                              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                              <SectionHeader title={'Your Swing Videos'} style={{ marginTop: theme.spacing.xl }} />
+                              <Stack direction={'row'} justify={'space-between'}>
                                   <SEVideo
                                       source={`https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.fo_swing}`}
                                   />
                                   <SEVideo
-                                      // style={{ marginLeft: theme.spaces.medium }}
+                                      style={{ marginLeft: theme.spacing.md }}
                                       source={`https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.dtl_swing}`}
                                   />
-                              </View>
+                              </Stack>
                           </>
                       )}
                       {lesson.request_notes.length > 0 && (
                           <>
-                              <View
-                                  style={[
-                                      sharedStyles.sectionHeader,
-                                      { marginHorizontal: 0 /*marginTop: theme.spaces.jumbo*/ },
-                                  ]}
-                              >
-                                  <Subheading style={listStyles.heading}>{'Your Special Requests'}</Subheading>
-                              </View>
-                              {splitParagraphs(lesson.request_notes).map((p, ind) => (
-                                  <Typography
-                                      key={`${lesson.request_id}_p_${ind}`}
-                                      style={[ind > 0 ? sharedStyles.paragraph : {}]}
-                                  >
-                                      {p}
-                                  </Typography>
-                              ))}
+                              <SectionHeader title={'Your Special Requests'} style={{ marginTop: theme.spacing.xl }} />
+                              <Stack space={theme.spacing.md}>
+                                  {splitParagraphs(lesson.request_notes).map((p, ind) => (
+                                      <Paragraph key={`${lesson.request_id}_p_${ind}`}>{p}</Paragraph>
+                                  ))}
+                              </Stack>
                           </>
                       )}
                   </ScrollView>
                   <LessonTutorial />
-              </View>
+              </Stack>
           );
 };

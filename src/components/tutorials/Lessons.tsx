@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme, List, Divider, Subheading } from 'react-native-paper';
 // Components
 import { View, SectionList } from 'react-native';
-import { Typography } from '../index';
+import { ListItem, SectionHeader, Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
@@ -16,10 +16,11 @@ import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 // Utilities
 import { getLongDate, getDate } from '../../utilities';
+import { useAppTheme } from '../../styles/theme';
 
 export const LessonsTutorial: React.FC = () => {
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
-    const theme = useTheme();
+    const theme = useAppTheme();
     const sharedStyles = useSharedStyles(theme);
     const flexStyles = useFlexStyles(theme);
     const listStyles = useListStyles(theme);
@@ -42,63 +43,55 @@ export const LessonsTutorial: React.FC = () => {
     ];
 
     const slides = [
-        <>
-            <Typography
-                variant={'displayMedium'}
-                fontWeight={'semiBold'}
-                color={'onPrimary'}
-                style={{ textAlign: 'center' }}
-            >
+        <Stack key={1}>
+            <Typography variant={'displaySmall'} fontWeight={'semiBold'} color={'onPrimary'} align={'center'}>
                 {'Your Lessons'}
             </Typography>
             <Typography
+                variant={'bodyMedium'}
                 fontWeight={'light'}
                 color={'onPrimary'}
-                style={{
-                    textAlign: 'center',
-                    // marginTop: theme.spaces.small,
-                    // marginBottom: theme.spaces.medium,
-                }}
+                align={'center'}
+                style={{ marginTop: theme.spacing.sm }}
             >
                 {'When you have submitted your golf swing for analysis, your lessons will appear in this list.'}
             </Typography>
             <SectionList
-                // style={{ marginTop: theme.spaces.large }}
+                style={{ marginTop: theme.spacing.lg }}
                 scrollEnabled={false}
                 renderSectionHeader={({ section: { bucketName } }): JSX.Element => (
-                    <View style={[sharedStyles.sectionHeader]}>
-                        <Subheading style={[listStyles.heading, { color: theme.colors.onPrimary }]}>
-                            {bucketName}
-                        </Subheading>
-                    </View>
+                    <SectionHeader
+                        title={bucketName}
+                        titleStyle={{ color: theme.colors.onPrimary }}
+                        style={{ marginHorizontal: theme.spacing.md }}
+                    />
                 )}
                 sections={sections}
                 renderItem={({ item, index }): JSX.Element => (
                     <>
                         {index === 0 && <Divider />}
-                        <List.Item
+                        <ListItem
                             title={item.date}
                             description={'Remote Lesson'}
                             style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            descriptionStyle={{ marginLeft: -8 }}
+                            titleStyle={{ marginLeft: -1 * theme.spacing.md }}
+                            descriptionStyle={{ marginLeft: -1 * theme.spacing.md }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     {item.new && (
                                         <Typography
-                                            style={
-                                                {
-                                                    /*marginRight: theme.spaces.small*/
-                                                }
-                                            }
+                                            style={{
+                                                marginRight: theme.spacing.sm,
+                                            }}
                                         >
                                             NEW
                                         </Typography>
                                     )}
                                     <MatIcon
                                         name={'chevron-right'}
-                                        // size={theme.sizes.small}
-                                        style={{ marginRight: -1 * 4 /*theme.spaces.small*/ }}
+                                        size={theme.size.md}
+                                        color={theme.colors.primary}
+                                        style={{ marginRight: -1 * theme.spacing.md }}
                                     />
                                 </View>
                             )}
@@ -108,7 +101,7 @@ export const LessonsTutorial: React.FC = () => {
                 )}
                 keyExtractor={(item): string => `complete_${item.date}`}
             />
-        </>,
+        </Stack>,
     ];
 
     return (
@@ -123,13 +116,16 @@ export const LessonsTutorial: React.FC = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }): JSX.Element => slides[index]}
-                    sliderWidth={width - 2 * 8 /*theme.spaces.medium*/}
-                    itemWidth={width - 2 * 8 /*theme.spaces.medium*/}
+                    sliderWidth={width - 2 * theme.spacing.md}
+                    itemWidth={width - 2 * theme.spacing.md}
                 />
                 <SEButton
                     dark
+                    mode={'contained'}
+                    uppercase
+                    buttonColor={theme.colors.secondary}
                     title="GOT IT"
-                    style={{ flex: 1 /*marginTop: theme.spaces.xLarge*/ }}
+                    style={{ marginTop: theme.spacing.xl }}
                     onPress={(): void => {
                         // @ts-ignore
                         dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]));

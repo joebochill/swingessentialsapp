@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { SectionTitle } from '../typography';
 import { useAppTheme } from '../../styles/theme';
 import { Stack } from './Stack';
@@ -8,9 +8,10 @@ type SectionHeaderProps = {
     title: string;
     action?: JSX.Element;
     style?: StyleProp<ViewStyle>;
+    titleStyle?: StyleProp<TextStyle>;
 };
 export const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
-    const { title, action, style } = props;
+    const { title, titleStyle, action, style } = props;
     const theme = useAppTheme();
     return (
         <Stack
@@ -19,7 +20,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
             justify={'space-between'}
             style={[{ marginBottom: theme.spacing.md }, ...(Array.isArray(style) ? style : [style])]}
         >
-            <SectionTitle>{title}</SectionTitle>
+            <SectionTitle style={titleStyle}>{title}</SectionTitle>
             {action}
         </Stack>
     );

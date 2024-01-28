@@ -26,7 +26,7 @@ export const HomeTutorial: React.FC = () => {
     const dispatch = useDispatch();
 
     const slides = [
-        <Stack key={1} align={'center'}>
+        <Stack key={1}>
             <Typography variant={'displaySmall'} fontWeight={'semiBold'} color={'onPrimary'} align={'center'}>
                 {'Welcome to Swing Essentials®!'}
             </Typography>
