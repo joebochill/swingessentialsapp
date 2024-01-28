@@ -201,7 +201,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                                         {
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            backgroundColor: theme.colors.background,
+                                            backgroundColor: theme.colors.primaryContainer,
                                             height: scaleByHeight(80, 0),
                                             width: scaleByHeight(80, 0),
                                             borderRadius: scaleByHeight(80 / 2, 0),

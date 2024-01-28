@@ -46,14 +46,7 @@ class CollapsibleHeaderLayoutRender extends React.Component<CollapsibleHeaderLay
         };
     }
     render(): JSX.Element {
-        const {
-            theme,
-            renderScroll = true,
-            children,
-            refreshing = false,
-            onRefresh,
-            bottomPad = true,
-        } = this.props;
+        const { theme, renderScroll = true, children, refreshing = false, onRefresh, bottomPad = true } = this.props;
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
 
         return (

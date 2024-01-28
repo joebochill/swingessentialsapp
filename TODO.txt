@@ -2,8 +2,8 @@ Things to get working
 
 - Fix Design By Screen
 X Home
-    - Check on refresh indicator
-- Navigation Drawer
+X Check on refresh indicator
+X Navigation Drawer
 - Profile
 - Setting
 - Lessons
@@ -12,7 +12,7 @@ X Home
 - Record
 - Order More
 - Pros
--Tips
+- Tips
 - Individual Tip
 - Blogs
 - Individual Blogs
