@@ -8,7 +8,6 @@ import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
-import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
@@ -21,9 +20,6 @@ import { useAppTheme } from '../../styles/theme';
 export const LessonsTutorial: React.FC = () => {
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useAppTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
     const dispatch = useDispatch();
 
     const sections = [
@@ -73,11 +69,8 @@ export const LessonsTutorial: React.FC = () => {
                         <ListItem
                             title={item.date}
                             description={'Remote Lesson'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -1 * theme.spacing.md }}
-                            descriptionStyle={{ marginLeft: -1 * theme.spacing.md }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
                                     {item.new && (
                                         <Typography
                                             style={{
@@ -93,7 +86,7 @@ export const LessonsTutorial: React.FC = () => {
                                         color={theme.colors.primary}
                                         style={{ marginRight: -1 * theme.spacing.md }}
                                     />
-                                </View>
+                                </Stack>
                             )}
                         />
                         <Divider />

@@ -58,7 +58,7 @@ export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (p
                 ListEmptyComponent={
                     <Stack style={{ marginTop: theme.spacing.xxl }}>
                         <Divider />
-                        <ListItem title={'No Posts Yet!'} titleStyle={{ marginLeft: -1 * theme.spacing.md }} />
+                        <ListItem title={'No Posts Yet!'} />
                         <Divider />
                     </Stack>
                 }
@@ -71,8 +71,6 @@ export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (p
                             titleEllipsizeMode={'tail'}
                             // @ts-ignore
                             onPress={(): void => props.navigation.push(ROUTES.BLOG, { blog: item })}
-                            titleStyle={{ marginLeft: -1 * theme.spacing.md }}
-                            descriptionStyle={{ marginLeft: -1 * theme.spacing.md }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[style]} {...rightProps}>
                                     <MatIcon

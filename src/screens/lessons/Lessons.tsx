@@ -96,8 +96,6 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                             // @ts-ignore
                             onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: null })}
                             style={listStyles.item}
-                            titleStyle={{ marginLeft: -1 * theme.spacing.md }}
-                            descriptionStyle={{ marginLeft: -1 * theme.spacing.md }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
                                     <Typography variant={'labelMedium'} style={{ marginRight: theme.spacing.sm }}>
@@ -131,8 +129,6 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                                 // @ts-ignore
                                 onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                                 style={listStyles.item}
-                                titleStyle={{ marginLeft: -1 * theme.spacing.md }}
-                                descriptionStyle={{ marginLeft: -1 * theme.spacing.md }}
                                 right={({ style, ...rightProps }): JSX.Element => (
                                     <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
                                         {!item.viewed && (

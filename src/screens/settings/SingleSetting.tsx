@@ -3,11 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
-import { Typography, SEHeader } from '../../components/index';
+import { Typography, SEHeader, Stack, ListItem } from '../../components/index';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
-import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
-import { useTheme, List, Divider } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 
 // Types
 import { SettingsState, ApplicationState, NotificationSettings } from '../../__types__';
@@ -17,6 +16,7 @@ import { putSettings } from '../../redux/actions/SettingsActions';
 // Constants
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../styles/theme';
 
 type SettingType = {
     name: Exclude<keyof SettingsState, 'loading' | 'notifications'> | keyof SettingsState['notifications'];
@@ -87,12 +87,8 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
     const { setting: currentSettingName } = route.params;
-
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
+    const theme = useAppTheme();
 
     const [value, setValue] = useState(() => {
         if (Object.keys(settings.notifications).includes(currentSettingName)) {
@@ -148,7 +144,15 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
     const currentSetting: SettingType = SETTINGS.filter((setting) => setting.name === currentSettingName)[0];
 
     return (
-        <View style={sharedStyles.pageContainer}>
+        <Stack
+            style={[
+                {
+                    flex: 1,
+                    backgroundColor: theme.colors.background,
+                    paddingTop: HEADER_COLLAPSED_HEIGHT,
+                },
+            ]}
+        >
             {/* @ts-ignore */}
             <SEHeader
                 mainAction={'back'}
@@ -158,50 +162,37 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
                 onNavigate={(): void => updateSetting()}
                 navigation={navigation}
             />
-            <View
-                style={[
-                    sharedStyles.pageContainer,
-                    {
-                        paddingTop: HEADER_COLLAPSED_HEIGHT + 8 /*theme.spaces.medium*/,
-                    },
-                ]}
-            >
+            <Stack style={{ marginTop: theme.spacing.md }}>
                 {currentSetting.values.map((val, index) => (
                     <View key={`option_${index}`}>
                         {index === 0 && <Divider />}
-                        <List.Item
+                        <ListItem
                             title={`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
                                 typeof val === 'number' ? 's' : ''
                             }`}
                             titleEllipsizeMode={'tail'}
                             onPress={(): void => setValue(val)}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
                                     {/* @ts-ignore */}
                                     {caseSame(value, val) && (
                                         <MatIcon
                                             name={'check'}
-                                            // size={theme.sizes.small}
-                                            // color={theme.colors.accent}
-                                            style={
-                                                {
-                                                    // marginRight: -1 * theme.spaces.xSmall,
-                                                }
-                                            }
+                                            size={theme.size.md}
+                                            color={theme.colors.primary}
+                                            style={{ marginRight: -1 * theme.spacing.md }}
                                         />
                                     )}
-                                </View>
+                                </Stack>
                             )}
                         />
                         <Divider />
                     </View>
                 ))}
-                <Typography style={[flexStyles.paddingHorizontal /*{ marginTop: theme.spaces.medium }*/]}>
+                <Typography style={{ marginTop: theme.spacing.sm, marginHorizontal: theme.spacing.md }}>
                     {currentSetting.description}
                 </Typography>
-            </View>
-        </View>
+            </Stack>
+        </Stack>
     );
 };

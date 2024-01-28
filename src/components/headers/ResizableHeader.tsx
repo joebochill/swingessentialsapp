@@ -233,7 +233,7 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
                                 style={[
                                     { paddingHorizontal: theme.spacing.sm },
                                     styles.actionIcon,
-                                    index !== 0 ? { marginLeft: theme.spacing.sm } : {},
+                                    // index !== 0 ? { marginLeft: 0 } : {},
                                 ]}
                             >
                                 {this._icon(actionItem.icon)}

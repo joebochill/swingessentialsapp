@@ -62,7 +62,7 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
                 ListEmptyComponent={
                     <Stack style={{ marginTop: theme.spacing.xxl }}>
                         <Divider />
-                        <ListItem title={'No Tips Yet!'} titleStyle={{ marginLeft: -1 * theme.spacing.md }} />
+                        <ListItem title={'No Tips Yet!'} />
                         <Divider />
                     </Stack>
                 }
@@ -75,8 +75,6 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
                             titleEllipsizeMode={'tail'}
                             // @ts-ignore
                             onPress={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
-                            titleStyle={{ marginLeft: -1 * theme.spacing.md }}
-                            descriptionStyle={{ marginLeft: -1 * theme.spacing.md }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[style]} {...rightProps}>
                                     <MatIcon

@@ -4,18 +4,18 @@ Things to get working
 X Home
 X Check on refresh indicator
 X Navigation Drawer
-- Profile
-- Setting
-- Lessons
-- Individual Lesson
+X Profile
+X Setting
+X Lessons
+X Individual Lesson
 - submit
 - Record
 - Order More
 X Pros
-- Tips
-- Individual Tip
-- Blogs
-- Individual Blogs
+X Tips
+X Individual Tip
+X Blogs
+X Individual Blogs
 X About
 X FAQ
 - Contact
@@ -24,8 +24,15 @@ X Logs
 - Registration
 - Token Timeout
 - Tutorials
+    X Home
+    X Lesson
+    X Lessons
+    - Order
+    - Submit
 
 
+Get the DateTime Picker working
+Fix settings not saving
 
 
 - Fix components folder

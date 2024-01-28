@@ -62,7 +62,7 @@ export const SETheme = {
         sm: 16,
         md: 24,
         lg: 40,
-        xl: 48,
+        xl: 52,
         xxl: 64,
     },
 };

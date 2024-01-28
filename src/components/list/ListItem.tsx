@@ -2,21 +2,19 @@ import { List, ListItemProps } from 'react-native-paper';
 import { useAppTheme } from '../../styles/theme';
 
 export const ListItem: React.FC<ListItemProps> = (props) => {
-    const { style, titleStyle, ...other } = props;
+    const { style, left, titleStyle, descriptionStyle, ...other } = props;
     const theme = useAppTheme();
     return (
         <List.Item
             {...other}
+            left={left}
             style={[
                 {
                     backgroundColor: theme.colors.surface,
                     paddingHorizontal: theme.spacing.md,
-                    // paddingLeft: 0,
-                    // paddingVertical: 0,
                     flexDirection: 'row',
                     alignItems: 'center',
                     minHeight: theme.size.xl,
-                    // minHeight: 'auto'
                 },
                 ...(Array.isArray(style) ? style : [style]),
             ]}
@@ -25,7 +23,15 @@ export const ListItem: React.FC<ListItemProps> = (props) => {
                     marginLeft: theme.spacing.sm,
                     fontSize: 16,
                 },
+                !left ? { marginLeft: -1 * theme.spacing.md } : {},
                 ...(Array.isArray(titleStyle) ? titleStyle : [titleStyle]),
+            ]}
+            descriptionStyle={[
+                {
+                    marginLeft: theme.spacing.sm,
+                },
+                !left ? { marginLeft: -1 * theme.spacing.md } : {},
+                ...(Array.isArray(descriptionStyle) ? descriptionStyle : [descriptionStyle]),
             ]}
         />
     );
