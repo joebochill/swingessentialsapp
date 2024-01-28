@@ -97,7 +97,7 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                         onPress={(): void => props.navigation.navigate(ROUTES.LESSONS)}
                     />
                 }
-                style={{ marginTop: theme.spacing.md }}
+                style={{ marginTop: theme.spacing.md, marginHorizontal: theme.spacing.md }}
             />
             <Carousel
                 data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)}
@@ -126,7 +126,7 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                         onPress={(): void => props.navigation.navigate(ROUTES.ORDER)}
                     />
                 }
-                style={{ marginTop: theme.spacing.md }}
+                style={{ marginTop: theme.spacing.md, marginHorizontal: theme.spacing.md }}
             />
             <Stack
                 align={'center'}
@@ -170,6 +170,7 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                                 onPress={(): void => props.navigation.navigate(ROUTES.TIPS)}
                             />
                         }
+                        style={{ marginHorizontal: theme.spacing.md }}
                     />
                     <Carousel
                         data={tips.tipList.slice(0, 3)}

@@ -77,16 +77,13 @@ export const Pros: React.FC<StackScreenProps<RootStackParamList, 'About'>> = (pr
                             </Typography>
                         ) : null}
                         <Spacer size={theme.spacing.md} />
-                        {splitParagraphs(pro.bio).map((p, ind) => (
-                            <Typography
-                                variant={'bodyLarge'}
-                                fontWeight={'light'}
-                                key={`${pro.id}_p_${ind}`}
-                                style={[ind > 0 ? { marginTop: theme.spacing.md } : {}]}
-                            >
-                                {p}
-                            </Typography>
-                        ))}
+                        <Stack space={theme.spacing.md}>
+                            {splitParagraphs(pro.bio).map((p, ind) => (
+                                <Typography variant={'bodyLarge'} fontWeight={'light'} key={`${pro.id}_p_${ind}`}>
+                                    {p}
+                                </Typography>
+                            ))}
+                        </Stack>
                     </View>
                 ))}
             </Stack>

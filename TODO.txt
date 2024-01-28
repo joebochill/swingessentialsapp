@@ -11,12 +11,12 @@ X Navigation Drawer
 - submit
 - Record
 - Order More
-- Pros
+X Pros
 - Tips
 - Individual Tip
 - Blogs
 - Individual Blogs
-- About
+X About
 - FAQ
 - Contact
 - Logs

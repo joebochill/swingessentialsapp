@@ -17,10 +17,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
             direction={'row'}
             align={'center'}
             justify={'space-between'}
-            style={[
-                { marginHorizontal: theme.spacing.md, marginBottom: theme.spacing.md },
-                ...(Array.isArray(style) ? style : [style]),
-            ]}
+            style={[{ marginBottom: theme.spacing.md }, ...(Array.isArray(style) ? style : [style])]}
         >
             <SectionTitle>{title}</SectionTitle>
             {action}

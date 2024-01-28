@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, StyleSheet, Platform, StyleProp, ViewStyle } from 'react-native';
-import { CollapsibleHeaderLayout, Typography, YouTube } from '../../components';
+import { CollapsibleHeaderLayout, SectionHeader, Stack, Typography, YouTube } from '../../components';
 
 // Styles
 import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
@@ -20,6 +20,7 @@ import { loadFAQ } from '../../redux/actions';
 import { useTheme, Subheading, MD3Theme } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../styles/theme';
 
 const useStyles = (
     theme: MD3Theme
@@ -36,7 +37,7 @@ const useStyles = (
 export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props) => {
     const faqState = useSelector((state: ApplicationState) => state.faq);
     const dispatch = useDispatch();
-    const theme = useTheme();
+    const theme = useAppTheme();
     const styles = useStyles(theme);
     const sharedStyles = useSharedStyles(theme);
     const listStyles = useListStyles(theme);
@@ -53,50 +54,41 @@ export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props
             }}
             navigation={props.navigation}
         >
-            <View style={[sharedStyles.pageContainer, flexStyles.paddingHorizontal]}>
+            <Stack
+                space={theme.spacing.xxl}
+                style={{ paddingHorizontal: theme.spacing.md, marginTop: theme.spacing.md }}
+            >
                 {faqState.questions.map((faq, ind) => (
-                    <React.Fragment key={`FAQ_${ind}`}>
-                        <View
-                            style={[
-                                sharedStyles.sectionHeader,
-                                // { marginTop: ind > 0 ? theme.spaces.jumbo : 0, marginHorizontal: 0 },
-                            ]}
-                        >
-                            <Subheading style={listStyles.heading}>{faq.question}</Subheading>
-                        </View>
-
-                        {!faq.platform_specific ? (
-                            splitParagraphs(faq.answer).map((p: string, pInd: number) => (
-                                <Typography key={`faq-${ind}-${pInd}`} style={[pInd > 0 ? sharedStyles.paragraph : {}]}>
+                    <Stack key={`FAQ_${ind}`}>
+                        <SectionHeader title={faq.question} />
+                        <Stack space={theme.spacing.md}>
+                            {splitParagraphs(
+                                !faq.platform_specific
+                                    ? faq.answer
+                                    : Platform.OS === 'ios'
+                                    ? faq.answer_ios
+                                    : Platform.OS === 'android'
+                                    ? faq.answer_android
+                                    : ''
+                            ).map((p: string, pInd: number) => (
+                                <Typography key={`faq-${ind}-${pInd}`} variant={'bodyLarge'} fontWeight={'light'}>
                                     {p}
                                 </Typography>
-                            ))
-                        ) : (
-                            <>
-                                {Platform.OS === 'ios' &&
-                                    splitParagraphs(faq.answer_ios).map((p: string, pInd: number) => (
-                                        <Typography
-                                            key={`faq-${ind}-${pInd}`}
-                                            style={[pInd > 0 ? sharedStyles.paragraph : {}]}
-                                        >
-                                            {p}
-                                        </Typography>
-                                    ))}
-                                {Platform.OS === 'android' &&
-                                    splitParagraphs(faq.answer_android).map((p: string, pInd: number) => (
-                                        <Typography
-                                            key={`faq-${ind}-${pInd}`}
-                                            style={[pInd > 0 ? sharedStyles.paragraph : {}]}
-                                        >
-                                            {p}
-                                        </Typography>
-                                    ))}
-                            </>
+                            ))}
+                        </Stack>
+                        {faq.video === '' ? null : (
+                            <YouTube
+                                videoId={faq.video}
+                                style={{
+                                    height: (width - 2 * theme.spacing.md) * (9 / 16),
+                                    marginTop: theme.spacing.xl,
+                                    borderRadius: theme.roundness,
+                                }}
+                            />
                         )}
-                        {faq.video === '' ? null : <YouTube videoId={faq.video} style={styles.video} />}
-                    </React.Fragment>
+                    </Stack>
                 ))}
-            </View>
+            </Stack>
         </CollapsibleHeaderLayout>
     );
 };
