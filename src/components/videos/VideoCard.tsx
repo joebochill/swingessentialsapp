@@ -1,30 +1,27 @@
 import React, { useState } from 'react';
-import { useTheme, ActivityIndicator, MD3Theme } from 'react-native-paper'; //'../../styles/theme';
+import { ActivityIndicator } from 'react-native-paper'; //'../../styles/theme';
 
 // Components
 import { View, StyleSheet, TouchableOpacity, Platform, StyleProp, ViewStyle } from 'react-native';
-import { Subtitle } from '../';
+import { Stack, Typography } from '../';
 import { YouTube } from './Youtube';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { width, aspectHeight } from '../../utilities/dimensions';
-import { unit } from '../../styles/sizes';
 import { black } from '../../styles/colors';
+import { AppTheme, useAppTheme } from '../../styles/theme';
 
 // Types
 // import { Theme } from '../../styles/theme';
 
 const useStyles = (
-    theme: MD3Theme
+    theme: AppTheme
 ): StyleSheet.NamedStyles<{
     actionItem: StyleProp<ViewStyle>;
     card: StyleProp<ViewStyle>;
     header: StyleProp<ViewStyle>;
 }> =>
     StyleSheet.create({
-        actionItem: {
-            // marginLeft: theme.spaces.small,
-        },
         card: {
             shadowColor: black[900],
             shadowOpacity: 0.4,
@@ -39,11 +36,12 @@ const useStyles = (
             borderRadius: theme.roundness,
         },
         header: {
-            height: unit(52),
-            // paddingHorizontal: theme.spaces.medium,
+            height: theme.size.xl,
+            paddingHorizontal: theme.spacing.md,
             overflow: 'hidden',
-            flexDirection: 'row',
-            alignItems: 'center',
+        },
+        actionItem: {
+            marginLeft: theme.spacing.xs,
         },
     });
 
@@ -51,15 +49,15 @@ export type VideoCardProps = {
     headerColor?: string;
     headerTitle: string;
     headerSubtitle?: string;
-    headerIcon?: string;
+    // headerIcon?: string;
     headerFontColor?: string;
     video?: string;
     onExpand?: () => void;
 };
 
 export const VideoCard: React.FC<VideoCardProps> = (props) => {
-    const { video, onExpand, headerIcon, headerTitle, headerSubtitle } = props;
-    const theme = useTheme();
+    const { video, onExpand, headerTitle, headerSubtitle } = props;
+    const theme = useAppTheme();
     const { headerColor = theme.colors.primary, headerFontColor = theme.colors.onPrimary } = props;
     const styles = useStyles(theme);
 
@@ -67,33 +65,35 @@ export const VideoCard: React.FC<VideoCardProps> = (props) => {
     const [play, setPlay] = useState(false);
     const [ready, setReady] = useState(Platform.OS === 'android');
 
-    const videoWidth = width - 2 * 8/*theme.spaces.medium*/;
+    const videoWidth = width - 2 * theme.spacing.md;
     const videoHeight = aspectHeight(videoWidth);
 
     return (
         <View style={[styles.card]}>
-            <View
+            {/* outer shadow gets clipped without this inner view */}
+            <Stack
                 style={{
                     borderRadius: theme.roundness,
                     overflow: 'hidden',
                 }}
             >
-                <View style={[styles.header, { backgroundColor: headerColor }]}>
-                    {headerIcon && (
-                        <MatIcon
-                            name={headerIcon}
-                            color={headerFontColor}
-                            size={24}
-                            // style={{ marginRight: theme.spaces.medium }}
-                        />
-                    )}
-                    <View style={{ flex: 1 }}>
-                        <Subtitle style={{ color: headerFontColor }}>{headerTitle}</Subtitle>
+                <Stack
+                    direction={'row'}
+                    align={'center'}
+                    justify={'space-between'}
+                    style={[styles.header, { backgroundColor: headerColor }]}
+                >
+                    <Stack style={{ flex: 1 }}>
+                        <Typography variant={'bodyMedium'} style={{ color: headerFontColor }}>
+                            {headerTitle}
+                        </Typography>
 
-                        {headerSubtitle ? (
-                            <Subtitle style={{ color: headerFontColor }}>{headerSubtitle}</Subtitle>
-                        ) : null}
-                    </View>
+                        {headerSubtitle && (
+                            <Typography variant={'bodyMedium'} style={{ color: headerFontColor }}>
+                                {headerSubtitle}
+                            </Typography>
+                        )}
+                    </Stack>
                     {onExpand && (
                         <TouchableOpacity
                             onPress={(): void => {
@@ -103,10 +103,10 @@ export const VideoCard: React.FC<VideoCardProps> = (props) => {
                             }}
                             style={styles.actionItem}
                         >
-                            <MatIcon name={'open-in-new'} color={headerFontColor} /*size={theme.sizes.small}*/ />
+                            <MatIcon name={'open-in-new'} color={headerFontColor} size={theme.size.sm} />
                         </TouchableOpacity>
                     )}
-                </View>
+                </Stack>
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     {video && (
                         <YouTube
@@ -124,7 +124,7 @@ export const VideoCard: React.FC<VideoCardProps> = (props) => {
                         />
                     )}
                 </View>
-            </View>
+            </Stack>
         </View>
     );
 };

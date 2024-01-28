@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Body } from '../';
+import { Typography } from '../';
 
 // Styles
 import { transparent, blackOpacity } from '../../styles/colors';
@@ -114,7 +114,7 @@ export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
             {...other}
         >
             <TouchableOpacity onPress={onBack} disabled={active} style={{ flex: 1 }}>
-                {!active && <Body style={styles.label}>{mode === 'record' ? 'Cancel' : 'Retake'}</Body>}
+                {!active && <Typography style={styles.label}>{mode === 'record' ? 'Cancel' : 'Retake'}</Typography>}
             </TouchableOpacity>
             {mode === 'play' && (
                 <MatIcon
@@ -128,7 +128,7 @@ export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
             )}
             {mode === 'record' && <RecordButton style={{ flex: 0 }} recording={active} onPress={onAction} />}
             <TouchableOpacity onPress={onNext} disabled={active} style={{ flex: 1, alignItems: 'flex-end' }}>
-                {!active && mode === 'play' && <Body style={styles.label}>Use Video</Body>}
+                {!active && mode === 'play' && <Typography style={styles.label}>Use Video</Typography>}
                 {!active && mode === 'record' && (
                     <MaterialCommunityIcon
                         name={'camera-switch'}

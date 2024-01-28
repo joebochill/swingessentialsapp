@@ -3,7 +3,7 @@ import { useTheme, List, Divider } from 'react-native-paper';
 // Components
 import { View, FlatList } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import { H7, H4, Body } from '../index';
+import { Typography } from '../index';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
@@ -25,22 +25,27 @@ export const OrderTutorial: React.FC = () => {
 
     const slides = [
         <>
-            <H4 /*font={'semiBold'}*/ style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
+            <Typography
+                variant={'displayMedium'}
+                fontWeight={'semiBold'}
+                color={'onPrimary'}
+                style={{ textAlign: 'center' }}
+            >
                 {'Lesson Packages'}
-            </H4>
-            <H7
-                font={'light'}
+            </Typography>
+            <Typography
+                fontWeight={'light'}
+                color={'onPrimary'}
                 style={{
                     textAlign: 'center',
                     // marginTop: theme.spaces.small,
                     // marginBottom: theme.spaces.medium,
-                    color: theme.colors.onPrimary,
                 }}
             >
                 {
                     'We offer multiple lesson packages at different price points. Ensure that you have a payment method linked to your phone before purchasing.'
                 }
-            </H7>
+            </Typography>
             <FlatList
                 scrollEnabled={false}
                 keyboardShouldPersistTaps={'always'}
@@ -58,16 +63,18 @@ export const OrderTutorial: React.FC = () => {
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{packages.length > 0 ? `$${item.price}` : '--'}</Body>
+                                    <Typography>{packages.length > 0 ? `$${item.price}` : '--'}</Typography>
                                     {index === 0 && (
                                         <MatIcon
                                             name={'check'}
                                             // size={theme.sizes.small}
                                             // color={theme.colors.accent}
-                                            style={{
-                                                // marginLeft: theme.spaces.small,
-                                                // marginRight: -1 * theme.spaces.xSmall,
-                                            }}
+                                            style={
+                                                {
+                                                    // marginLeft: theme.spaces.small,
+                                                    // marginRight: -1 * theme.spaces.xSmall,
+                                                }
+                                            }
                                         />
                                     )}
                                 </View>
@@ -93,13 +100,13 @@ export const OrderTutorial: React.FC = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }): JSX.Element => slides[index]}
-                    sliderWidth={width - 2 * 8/*theme.spaces.medium*/}
-                    itemWidth={width - 2 * 8/*theme.spaces.medium*/}
+                    sliderWidth={width - 2 * 8 /*theme.spaces.medium*/}
+                    itemWidth={width - 2 * 8 /*theme.spaces.medium*/}
                 />
                 <SEButton
                     dark
                     title="GOT IT"
-                    style={{ flex: 1, /*marginTop: theme.spaces.xLarge*/ }}
+                    style={{ flex: 1 /*marginTop: theme.spaces.xLarge*/ }}
                     onPress={(): void => {
                         // @ts-ignore
                         dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]));

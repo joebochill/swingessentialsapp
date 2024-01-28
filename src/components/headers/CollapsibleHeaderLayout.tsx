@@ -11,7 +11,6 @@ import {
     SafeAreaView,
     ScrollView,
     StatusBar,
-    StyleSheet,
     View,
 } from 'react-native';
 import { SEHeader, SEHeaderProps } from './SEHeader';
@@ -21,33 +20,25 @@ import { height } from '../../utilities/dimensions';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT } from '../../constants';
-// import { theme } from '../../styles/theme';
-
-const styles = StyleSheet.create({
-    scrollContainer: {
-        paddingTop: HEADER_EXPANDED_HEIGHT + 8,//theme.spaces.medium,
-        // paddingBottom: theme.spaces.jumbo,
-    },
-    nonScrollContainer: {
-        marginTop: HEADER_EXPANDED_HEIGHT,
-        flex: 1,
-    },
-});
+import { withTheme } from 'react-native-paper';
+import { AppTheme } from '../../styles/theme';
 
 type HeaderLayoutState = {
     scrollY: Animated.Value;
 };
-type CollapsibleHeaderLayoutProps = PropsWithChildren<SEHeaderProps & {
-    renderScroll?: boolean;
-    onRefresh?: () => void;
-    onResize?: (scroll: Animated.Value) => void;
-    refreshing?: boolean;
-    bottomPad?: boolean;
-    pageBackground?: ImageSourcePropType;
-    navigation?: any;
-}>;
+type CollapsibleHeaderLayoutProps = PropsWithChildren<
+    SEHeaderProps & {
+        renderScroll?: boolean;
+        onRefresh?: () => void;
+        onResize?: (scroll: Animated.Value) => void;
+        refreshing?: boolean;
+        bottomPad?: boolean;
+        pageBackground?: ImageSourcePropType;
+        navigation?: any;
+    } & { theme: AppTheme }
+>;
 
-export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLayoutProps, HeaderLayoutState> {
+class CollapsibleHeaderLayoutRender extends React.Component<CollapsibleHeaderLayoutProps, HeaderLayoutState> {
     constructor(props: CollapsibleHeaderLayoutProps) {
         super(props);
         this.state = {
@@ -56,6 +47,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
     }
     render(): JSX.Element {
         const {
+            theme,
             renderScroll = true,
             children,
             refreshing = false,
@@ -65,7 +57,7 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
 
         return (
-            <View style={{ flex: 1, /*backgroundColor: theme.colors.background*/ }}>
+            <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
                 <StatusBar barStyle={'light-content'} />
                 {this.props.pageBackground && (
                     <Image
@@ -85,10 +77,10 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                     {renderScroll && (
                         <ScrollView
                             keyboardShouldPersistTaps={'always'}
-                            contentContainerStyle={[
-                                styles.scrollContainer,
-                                bottomPad ? { paddingBottom: height * 0.5 } : {},
-                            ]}
+                            contentContainerStyle={{
+                                paddingTop: HEADER_EXPANDED_HEIGHT,
+                                paddingBottom: bottomPad ? height * 0.5 : theme.spacing.md,
+                            }}
                             refreshControl={
                                 onRefresh ? (
                                     <RefreshControl
@@ -122,13 +114,13 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
                             {refreshing && Platform.OS === 'ios' && (
                                 <ActivityIndicator
                                     size={'large'}
-                                    // style={{ marginBottom: theme.spaces.medium, marginTop: -1 * theme.spaces.jumbo }}
+                                    style={{ marginBottom: theme.spacing.md, marginTop: -1 * theme.spacing.xl }}
                                 />
                             )}
                             {children}
                         </ScrollView>
                     )}
-                    {!renderScroll && <View style={[styles.nonScrollContainer]}>{children}</View>}
+                    {!renderScroll && <View style={{ flex: 1, marginTop: HEADER_EXPANDED_HEIGHT }}>{children}</View>}
                     <SafeAreaView />
                 </KeyboardAvoidingView>
             </View>
@@ -142,3 +134,4 @@ export class CollapsibleHeaderLayout extends React.Component<CollapsibleHeaderLa
         });
     }
 }
+export const CollapsibleHeaderLayout = withTheme(CollapsibleHeaderLayoutRender);

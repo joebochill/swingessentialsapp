@@ -51,7 +51,7 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
         >
             <SectionList
                 renderSectionHeader={({ section: { bucketName, index } }): JSX.Element => (
-                    <View style={[sharedStyles.sectionHeader,/* index > 0 ? { marginTop: theme.spaces.jumbo } :*/ {}]}>
+                    <View style={[sharedStyles.sectionHeader, /* index > 0 ? { marginTop: theme.spaces.jumbo } :*/ {}]}>
                         <Subheading style={listStyles.heading}>{bucketName}</Subheading>
                     </View>
                 )}
@@ -80,8 +80,8 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
                                 <View style={[flexStyles.row, style]} {...rightProps}>
                                     <MatIcon
                                         name={'chevron-right'}
-                                    // size={theme.sizes.small}
-                                    // style={{ marginRight: -1 * theme.spaces.small }}
+                                        // size={theme.sizes.small}
+                                        // style={{ marginRight: -1 * theme.spaces.small }}
                                     />
                                 </View>
                             )}

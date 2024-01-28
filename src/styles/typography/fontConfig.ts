@@ -1,30 +1,61 @@
-import { Platform } from "react-native";
-import { Font } from "react-native-paper/lib/typescript/types";
+import { Platform } from 'react-native';
+import { Font } from 'react-native-paper/lib/typescript/types';
 
+const lightFont = Platform.select({
+    web: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
+    ios: 'SFCompactDisplay-Thin',
+    android: 'SFCompactDisplay-Thin',
+    default: 'SFCompactDisplay-Thin',
+});
 const regularFont = Platform.select({
     web: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
     ios: 'SFCompactDisplay-Regular',
     android: 'SFCompactDisplay-Regular',
     default: 'SFCompactDisplay-Regular',
 });
-const mediumFont = Platform.select({
+const semiBoldFont = Platform.select({
     web: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
     ios: 'SFCompactDisplay-Semibold',
     android: 'SFCompactDisplay-Semibold',
     default: 'SFCompactDisplay-Semibold',
 });
-const regularType = {
+const boldFont = Platform.select({
+    web: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
+    ios: 'SFCompactDisplay-Bold',
+    android: 'SFCompactDisplay-Bold',
+    default: 'SFCompactDisplay-Bold',
+});
+const extraBoldFont = Platform.select({
+    web: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
+    ios: 'SFCompactDisplay-Black',
+    android: 'SFCompactDisplay-Black',
+    default: 'SFCompactDisplay-Black',
+});
+export const lightType = {
+    fontFamily: lightFont,
+    // letterSpacing: 0,
+    fontWeight: '300' as Font['fontWeight'],
+};
+export const regularType = {
     fontFamily: regularFont,
-    letterSpacing: 0,
+    // letterSpacing: 0,
     fontWeight: '400' as Font['fontWeight'],
 };
-
-const mediumType = {
-    fontFamily: mediumFont,
-    letterSpacing: 0.15,
+export const semiBoldType = {
+    fontFamily: semiBoldFont,
+    // letterSpacing: 0.15,
     fontWeight: '500' as Font['fontWeight'],
 };
-
+export const boldType = {
+    fontFamily: boldFont,
+    // letterSpacing: 0.15,
+    fontWeight: '700' as Font['fontWeight'],
+};
+export const extraBoldType = {
+    fontFamily: extraBoldFont,
+    // letterSpacing: 0.15,
+    fontWeight: '800' as Font['fontWeight'],
+};
 export const fontConfig = {
     displayLarge: {
         ...regularType,
@@ -64,30 +95,30 @@ export const fontConfig = {
         fontSize: 22,
     },
     titleMedium: {
-        ...mediumType,
+        ...semiBoldType,
         lineHeight: 24,
         fontSize: 16,
     },
     titleSmall: {
-        ...mediumType,
+        ...semiBoldType,
         letterSpacing: 0.1,
         lineHeight: 20,
         fontSize: 14,
     },
     labelLarge: {
-        ...mediumType,
+        ...semiBoldType,
         letterSpacing: 0.1,
         lineHeight: 20,
         fontSize: 14,
     },
     labelMedium: {
-        ...mediumType,
+        ...semiBoldType,
         letterSpacing: 0.5,
         lineHeight: 16,
         fontSize: 12,
     },
     labelSmall: {
-        ...mediumType,
+        ...semiBoldType,
         letterSpacing: 0.5,
         lineHeight: 16,
         fontSize: 11,

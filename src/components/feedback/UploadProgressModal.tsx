@@ -1,7 +1,7 @@
 import React from 'react';
 // Components
 import { ActivityIndicator, Modal, ModalProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { Body } from '../../components';
+import { Typography } from '../../components';
 
 // Styles
 import { useSharedStyles, useListStyles } from '../../styles';
@@ -51,8 +51,10 @@ export const UploadProgressModal: React.FC<ProgressModalProps> = (props) => {
                                 <Subheading style={listStyles.heading}>{'Submitting Lesson'}</Subheading>
                                 <ActivityIndicator /*color={theme.colors.accent}*/ />
                             </View>
-                            <Body style={{ textAlign: 'left' }}>{`Uploading Videos... ${progress.toFixed(0)}%`}</Body>
-                            {progress >= 100 && <Body>{'Creating Lesson...'}</Body>}
+                            <Typography style={{ textAlign: 'left' }}>{`Uploading Videos... ${progress.toFixed(
+                                0
+                            )}%`}</Typography>
+                            {progress >= 100 && <Typography>{'Creating Lesson...'}</Typography>}
                         </View>
                         <View style={{ flex: 0, justifyContent: 'center' }} />
                     </View>

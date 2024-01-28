@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { ActivityIndicator, Modal, ModalProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { Body, SEButton } from '../';
+import { Typography, SEButton } from '../';
 
 // Styles
 import { whiteOpacity } from '../../styles/colors';
@@ -101,7 +101,7 @@ export const TokenModal: React.FC<ModalProps> = (props) => {
         if (!token || !engageCountdown) {
             return;
         }
-        let interval:any = 0;
+        let interval: any = 0;
         if (timeRemaining > 0) {
             interval = setInterval(() => {
                 // setTimeRemaining(timeRemaining => timeRemaining - updateRate);
@@ -138,9 +138,9 @@ export const TokenModal: React.FC<ModalProps> = (props) => {
                 >
                     <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
                         <Subheading style={listStyles.heading}>{'Automatic Logout'}</Subheading>
-                        <Body>{formatTime(timeRemaining)}</Body>
+                        <Typography>{formatTime(timeRemaining)}</Typography>
                     </View>
-                    <Body>{'Your current session is about to expire. Click below to stay signed in.'}</Body>
+                    <Typography>{'Your current session is about to expire. Click below to stay signed in.'}</Typography>
 
                     {!refreshing && (
                         <SEButton

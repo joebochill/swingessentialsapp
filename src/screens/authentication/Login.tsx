@@ -37,7 +37,7 @@ import { useFormStyles } from '../../styles';
 import logo from '../../images/logo-big.png';
 
 // SE Components
-import { SEButton, ErrorBox, BackgroundImage, Body } from '../../components';
+import { SEButton, ErrorBox, BackgroundImage, Typography } from '../../components';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
@@ -249,7 +249,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
         try {
             await TouchID.authenticate('Secure Sign In');
             onLogin(credentials.savedCredentials.username, credentials.savedCredentials.password);
-        } catch (err:any) {
+        } catch (err: any) {
             const label = biometry.type === 'None' ? 'Biometric authentication' : biometry.type;
             switch (err.name) {
                 case 'LAErrorAuthenticationFailed':
@@ -369,9 +369,9 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                     {/* Remember Me Row */}
                     <View style={[formStyles.formField, formStyles.fieldRow]}>
                         <View style={styles.toggle}>
-                            <Body style={styles.toggleLabel} color={'onPrimary'}>
+                            <Typography style={styles.toggleLabel} color={'onPrimary'}>
                                 Save Username
-                            </Body>
+                            </Typography>
                             <Switch
                                 value={remember}
                                 onValueChange={(val: boolean): void => {
@@ -388,7 +388,10 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                         </View>
                         {biometry.available && (
                             <View style={styles.toggle}>
-                                <Body color={'onPrimary'} style={[styles.toggleLabel]}>{`Use ${biometry.type}`}</Body>
+                                <Typography
+                                    color={'onPrimary'}
+                                    style={[styles.toggleLabel]}
+                                >{`Use ${biometry.type}`}</Typography>
                                 <Switch
                                     value={useBiometry}
                                     onValueChange={(val: boolean): void => {
@@ -406,19 +409,19 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                     <ErrorBox
                         show={failures > 0 || error}
                         error={'The username / password you entered was not correct.'}
-                        style={[formStyles.formField, /*{ paddingVertical: theme.spaces.small }*/]}
+                        style={[formStyles.formField /*{ paddingVertical: theme.spaces.small }*/]}
                     />
                     <ErrorBox
                         show={networkFailure}
                         error={
                             'We were unable to process your login request. Check your network connection and try again.'
                         }
-                        style={[formStyles.formField, /*{ paddingVertical: theme.spaces.small }*/]}
+                        style={[formStyles.formField /*{ paddingVertical: theme.spaces.small }*/]}
                     />
                     <ErrorBox
                         show={touchFail.length > 0 && failures <= 0}
                         error={touchFail}
-                        style={[formStyles.formField, /*{ paddingVertical: theme.spaces.small }*/]}
+                        style={[formStyles.formField /*{ paddingVertical: theme.spaces.small }*/]}
                     />
 
                     {/* Log In Buttons */}

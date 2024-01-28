@@ -59,7 +59,7 @@ export const YouTube: React.FC<YouTubeProps> = (props) => {
     } = props;
 
     return Platform.OS === 'android' ? (
-        <View {...props.style as {}}>
+        <View {...(props.style as {})}>
             <Thumbnail
                 url={`https://www.youtube.com/watch?v=${videoId}`}
                 onPress={(): void => openStandaloneAndroidPlayer(videoId)}

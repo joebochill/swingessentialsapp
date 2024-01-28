@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
-import { Body, SEHeader } from '../../components/index';
+import { Typography, SEHeader } from '../../components/index';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
@@ -162,7 +162,7 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
                 style={[
                     sharedStyles.pageContainer,
                     {
-                        paddingTop: HEADER_COLLAPSED_HEIGHT + 8/*theme.spaces.medium*/,
+                        paddingTop: HEADER_COLLAPSED_HEIGHT + 8 /*theme.spaces.medium*/,
                     },
                 ]}
             >
@@ -185,9 +185,11 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
                                             name={'check'}
                                             // size={theme.sizes.small}
                                             // color={theme.colors.accent}
-                                            style={{
-                                                // marginRight: -1 * theme.spaces.xSmall,
-                                            }}
+                                            style={
+                                                {
+                                                    // marginRight: -1 * theme.spaces.xSmall,
+                                                }
+                                            }
                                         />
                                     )}
                                 </View>
@@ -196,9 +198,9 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
                         <Divider />
                     </View>
                 ))}
-                <Body style={[flexStyles.paddingHorizontal, /*{ marginTop: theme.spaces.medium }*/]}>
+                <Typography style={[flexStyles.paddingHorizontal /*{ marginTop: theme.spaces.medium }*/]}>
                     {currentSetting.description}
-                </Body>
+                </Typography>
             </View>
         </View>
     );

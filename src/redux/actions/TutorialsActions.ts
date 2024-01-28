@@ -3,7 +3,6 @@ import { APP_VERSION, ASYNC_PREFIX, TUTORIALS, TUTORIAL_VERSIONS } from '../../c
 import { MARK_TUTORIAL } from './types';
 import { ThunkDispatch } from 'redux-thunk';
 import { checkVersionGreater } from '../../utilities';
-import { TutorialsState } from '../../__types__';
 
 /* Updates the store and AsyncStorage so that a tutorial is only shown once */
 export function tutorialViewed(tutorial: string) {

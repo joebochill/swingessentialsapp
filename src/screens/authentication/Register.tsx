@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { TextInput, useTheme } from 'react-native-paper';
-import { H7, ErrorBox, SEButton, SEHeader, BackgroundImage } from '../../components';
+import { ErrorBox, SEButton, SEHeader, BackgroundImage, Typography } from '../../components';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
 
 // Types
@@ -121,9 +121,9 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
                 {verification.pending && (
                     <>
                         <ActivityIndicator size={'large'} color={theme.colors.onPrimary} />
-                        <H7 font={'regular'} color={'onPrimary'} style={{ textAlign: 'center' }}>
+                        <Typography color={'onPrimary'} style={{ textAlign: 'center' }}>
                             Verifying your email address...
-                        </H7>
+                        </Typography>
                     </>
                 )}
                 {!verification.pending && (
@@ -134,12 +134,13 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
                             color={theme.colors.onPrimary}
                             style={{ alignSelf: 'center' }}
                         />
-                        <H7 font={'regular'} color={'onPrimary'} style={{ textAlign: 'center' }}>
+                        <Typography color={'onPrimary'} style={{ textAlign: 'center' }}>
                             {verification.emailVerified
-                                ? `Your email address has been confirmed. ${token ? "Let's get started!" : 'Please sign in to view your account.'
-                                }`
+                                ? `Your email address has been confirmed. ${
+                                      token ? "Let's get started!" : 'Please sign in to view your account.'
+                                  }`
                                 : getRegistrationErrorMessage(verification.error)}
-                        </H7>
+                        </Typography>
                         {verification.emailVerified && (
                             <SEButton
                                 dark
@@ -258,8 +259,8 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                 fields.email.length > 0 && !EMAIL_REGEX.test(fields.email)
                     ? 'Invalid Email Address'
                     : !registration.emailAvailable
-                        ? 'Email address is already registered'
-                        : '',
+                    ? 'Email address is already registered'
+                    : '',
             onChange: (value): void => {
                 setFields({
                     ...fields,
@@ -329,11 +330,11 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                                         field.onChange
                                             ? field.onChange
                                             : (value: string): void => {
-                                                setFields({
-                                                    ...fields,
-                                                    [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
-                                                });
-                                            }
+                                                  setFields({
+                                                      ...fields,
+                                                      [field.property]: value.replace(/[^A-Z- .]/gi, '').substr(0, 32),
+                                                  });
+                                              }
                                     }
                                     value={fields[field.property]}
                                     useNativeAndroidPickerStyle={false}
@@ -378,23 +379,23 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                                             field.onChange
                                                 ? field.onChange
                                                 : (value: string): void => {
-                                                    setFields({
-                                                        ...fields,
-                                                        [field.property]: value
-                                                            .replace(/[^A-Z- .]/gi, '')
-                                                            .substr(0, 32),
-                                                    });
-                                                }
+                                                      setFields({
+                                                          ...fields,
+                                                          [field.property]: value
+                                                              .replace(/[^A-Z- .]/gi, '')
+                                                              .substr(0, 32),
+                                                      });
+                                                  }
                                         }
                                         onSubmitEditing={
                                             field.onSubmit
                                                 ? field.onSubmit
                                                 : (): void => {
-                                                    if (refs[(index + 1) % refs.length].current) {
-                                                        // @ts-ignore
-                                                        refs[(index + 1) % refs.length].current.focus();
-                                                    }
-                                                }
+                                                      if (refs[(index + 1) % refs.length].current) {
+                                                          // @ts-ignore
+                                                          refs[(index + 1) % refs.length].current.focus();
+                                                      }
+                                                  }
                                         }
                                         returnKeyType={'next'}
                                         underlineColorAndroid={transparent}
@@ -437,12 +438,12 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                         onPress={
                             canSubmit() && !registration.pending
                                 ? (): void => {
-                                    submitRegistration();
-                                    if (scroller.current) {
-                                        // @ts-ignore
-                                        scroller.current.scrollTo({ x: 0, y: 0, animated: true });
-                                    }
-                                }
+                                      submitRegistration();
+                                      if (scroller.current) {
+                                          // @ts-ignore
+                                          scroller.current.scrollTo({ x: 0, y: 0, animated: true });
+                                      }
+                                  }
                                 : undefined
                         }
                         style={[formStyles.formField, canSubmit() ? {} : { opacity: 0.6 }]}

@@ -19,10 +19,10 @@ export const purple = {
     80: '#918fb0', // light
     90: '#bdbcd0',
     95: '#e5e4ec', // 50
-    100:'#FFF',
-}
+    100: '#FFF',
+};
 
-export const old_purple = {
+export const oldPurple = {
     50: '#e5e4ec',
     100: '#bdbcd0',
     200: '#918fb0',

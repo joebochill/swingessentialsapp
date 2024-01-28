@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, SectionList } from 'react-native';
-import { Body, CollapsibleHeaderLayout, LessonsTutorial, wrapIcon } from '../../components';
+import { Typography, CollapsibleHeaderLayout, LessonsTutorial, wrapIcon } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
@@ -90,11 +90,11 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body /*style={{ marginRight: theme.spaces.small }}*/>NEW</Body>
+                                    <Typography /*style={{ marginRight: theme.spaces.small }}*/>NEW</Typography>
                                     <MatIcon
                                         name={'chevron-right'}
-                                    // size={theme.sizes.small}
-                                    // style={{ marginRight: -1 * theme.spaces.small }}
+                                        // size={theme.sizes.small}
+                                        // style={{ marginRight: -1 * theme.spaces.small }}
                                     />
                                 </View>
                             )}
@@ -112,8 +112,8 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                                     role === 'administrator'
                                         ? item.request_date
                                         : item.type === 'in-person'
-                                            ? 'In-person lesson'
-                                            : 'Remote lesson'
+                                        ? 'In-person lesson'
+                                        : 'Remote lesson'
                                 }
                                 // @ts-ignore
                                 onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
@@ -122,11 +122,13 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                                 descriptionStyle={{ marginLeft: -8 }}
                                 right={({ style, ...rightProps }): JSX.Element => (
                                     <View style={[flexStyles.row, style]} {...rightProps}>
-                                        {!item.viewed && <Body /*style={{ marginRight: theme.spaces.small }}*/>NEW</Body>}
+                                        {!item.viewed && (
+                                            <Typography /*style={{ marginRight: theme.spaces.small }}*/>NEW</Typography>
+                                        )}
                                         <MatIcon
                                             name={'chevron-right'}
-                                        // size={theme.sizes.small}
-                                        // style={{ marginRight: -1 * theme.spaces.small }}
+                                            // size={theme.sizes.small}
+                                            // style={{ marginRight: -1 * theme.spaces.small }}
                                         />
                                     </View>
                                 )}
@@ -142,15 +144,17 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                                     role === 'administrator'
                                         ? item.request_date
                                         : item.type === 'in-person'
-                                            ? 'In-person lesson'
-                                            : 'Remote lesson'
+                                        ? 'In-person lesson'
+                                        : 'Remote lesson'
                                 }
                                 style={listStyles.item}
                                 titleStyle={{ marginLeft: -8 }}
                                 descriptionStyle={{ marginLeft: -8 }}
                                 right={({ style, ...rightProps }): JSX.Element => (
                                     <View style={[flexStyles.row, style]} {...rightProps}>
-                                        <Body /*style={{ marginRight: theme.spaces.small }}*/>IN PROGRESS</Body>
+                                        <Typography /*style={{ marginRight: theme.spaces.small }}*/>
+                                            IN PROGRESS
+                                        </Typography>
                                     </View>
                                 )}
                             />

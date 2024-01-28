@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Platform, ScrollView } from 'react-native';
-import { Body, SEHeader, YouTube, SEVideo, VideoCard, LessonTutorial } from '../../components';
+import { Typography, SEHeader, YouTube, SEVideo, VideoCard, LessonTutorial } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Styles
@@ -40,7 +40,7 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
     if (lesson === null) {
         lesson = placeholder;
     }
-    const videoWidth = width - 2 * 8/*theme.spaces.medium*/;
+    const videoWidth = width - 2 * 8; /*theme.spaces.medium*/
     const videoHeight = aspectHeight(videoWidth);
 
     useEffect(() => {
@@ -63,120 +63,120 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
     return !token && lesson.request_id !== -1
         ? null
         : lesson && (
-            <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
-                {/* @ts-ignore */}
-                <SEHeader
-                    title={lesson.request_date}
-                    subtitle={lesson.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson'}
-                    mainAction={'back'}
-                    navigation={props.navigation}
-                />
-                <ScrollView
-                    contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
-                    keyboardShouldPersistTaps={'always'}
-                >
-                    {lesson.response_video && (
-                        <>
-                            <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                                <Subheading style={listStyles.heading}>{'Video Analysis'}</Subheading>
-                            </View>
-                            <YouTube
-                                videoId={lesson.response_video}
-                                style={{ width: videoWidth, height: videoHeight }}
-                            />
-                            <View
-                                style={[
-                                    sharedStyles.sectionHeader,
-                                    { marginHorizontal: 0, /*marginTop: theme.spaces.jumbo*/ },
-                                ]}
-                            >
-                                <Subheading style={listStyles.heading}>{'Comments'}</Subheading>
-                            </View>
-                            {splitParagraphs(lesson.response_notes).map((p, ind) => (
-                                <Body
-                                    key={`${lesson.request_id}_p_${ind}`}
-                                    style={[ind > 0 ? sharedStyles.paragraph : {}]}
-                                >
-                                    {p}
-                                </Body>
-                            ))}
-                        </>
-                    )}
-                    {/* @ts-ignore */}
-                    {lesson.tips && lesson.tips.length > 0 && (
-                        <>
-                            <View
-                                style={[
-                                    sharedStyles.sectionHeader,
-                                    { marginHorizontal: 0, /*marginTop: theme.spaces.jumbo*/ },
-                                ]}
-                            >
-                                <Subheading style={listStyles.heading}>{'Recommended Tips'}</Subheading>
-                            </View>
+              <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
+                  {/* @ts-ignore */}
+                  <SEHeader
+                      title={lesson.request_date}
+                      subtitle={lesson.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson'}
+                      mainAction={'back'}
+                      navigation={props.navigation}
+                  />
+                  <ScrollView
+                      contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
+                      keyboardShouldPersistTaps={'always'}
+                  >
+                      {lesson.response_video && (
+                          <>
+                              <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
+                                  <Subheading style={listStyles.heading}>{'Video Analysis'}</Subheading>
+                              </View>
+                              <YouTube
+                                  videoId={lesson.response_video}
+                                  style={{ width: videoWidth, height: videoHeight }}
+                              />
+                              <View
+                                  style={[
+                                      sharedStyles.sectionHeader,
+                                      { marginHorizontal: 0 /*marginTop: theme.spaces.jumbo*/ },
+                                  ]}
+                              >
+                                  <Subheading style={listStyles.heading}>{'Comments'}</Subheading>
+                              </View>
+                              {splitParagraphs(lesson.response_notes).map((p, ind) => (
+                                  <Typography
+                                      key={`${lesson.request_id}_p_${ind}`}
+                                      style={[ind > 0 ? sharedStyles.paragraph : {}]}
+                                  >
+                                      {p}
+                                  </Typography>
+                              ))}
+                          </>
+                      )}
+                      {/* @ts-ignore */}
+                      {lesson.tips && lesson.tips.length > 0 && (
+                          <>
+                              <View
+                                  style={[
+                                      sharedStyles.sectionHeader,
+                                      { marginHorizontal: 0 /*marginTop: theme.spaces.jumbo*/ },
+                                  ]}
+                              >
+                                  <Subheading style={listStyles.heading}>{'Recommended Tips'}</Subheading>
+                              </View>
 
-                            <Carousel
-                                // @ts-ignore
-                                data={lesson.tips.slice(0, 3)}
-                                renderItem={({ item }:{item: any}): JSX.Element => (
-                                    <VideoCard
-                                        headerTitle={getLongDate(item.date)}
-                                        headerSubtitle={item.title}
-                                        // style={{ marginBottom: theme.spaces.medium }}
-                                        video={item.video}
-                                        // @ts-ignore
-                                        onExpand={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
-                                    />
-                                )}
-                                sliderWidth={width}
-                                itemWidth={width - 2 * 8/*theme.spaces.medium*/}
-                                inactiveSlideScale={0.95}
-                            />
-                        </>
-                    )}
+                              <Carousel
+                                  // @ts-ignore
+                                  data={lesson.tips.slice(0, 3)}
+                                  renderItem={({ item }: { item: any }): JSX.Element => (
+                                      <VideoCard
+                                          headerTitle={getLongDate(item.date)}
+                                          headerSubtitle={item.title}
+                                          // style={{ marginBottom: theme.spaces.medium }}
+                                          video={item.video}
+                                          // @ts-ignore
+                                          onExpand={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
+                                      />
+                                  )}
+                                  sliderWidth={width}
+                                  itemWidth={width - 2 * 8 /*theme.spaces.medium*/}
+                                  inactiveSlideScale={0.95}
+                              />
+                          </>
+                      )}
 
-                    {Platform.OS === 'ios' && lesson.fo_swing !== '' && lesson.dtl_swing !== '' && (
-                        <>
-                            <View
-                                style={[
-                                    sharedStyles.sectionHeader,
-                                    { marginHorizontal: 0, /*marginTop: theme.spaces.jumbo*/ },
-                                ]}
-                            >
-                                <Subheading style={listStyles.heading}>{'Your Swing Videos'}</Subheading>
-                            </View>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <SEVideo
-                                    source={`https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.fo_swing}`}
-                                />
-                                <SEVideo
-                                    // style={{ marginLeft: theme.spaces.medium }}
-                                    source={`https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.dtl_swing}`}
-                                />
-                            </View>
-                        </>
-                    )}
-                    {lesson.request_notes.length > 0 && (
-                        <>
-                            <View
-                                style={[
-                                    sharedStyles.sectionHeader,
-                                    { marginHorizontal: 0, /*marginTop: theme.spaces.jumbo*/ },
-                                ]}
-                            >
-                                <Subheading style={listStyles.heading}>{'Your Special Requests'}</Subheading>
-                            </View>
-                            {splitParagraphs(lesson.request_notes).map((p, ind) => (
-                                <Body
-                                    key={`${lesson.request_id}_p_${ind}`}
-                                    style={[ind > 0 ? sharedStyles.paragraph : {}]}
-                                >
-                                    {p}
-                                </Body>
-                            ))}
-                        </>
-                    )}
-                </ScrollView>
-                <LessonTutorial />
-            </View>
-        );
+                      {Platform.OS === 'ios' && lesson.fo_swing !== '' && lesson.dtl_swing !== '' && (
+                          <>
+                              <View
+                                  style={[
+                                      sharedStyles.sectionHeader,
+                                      { marginHorizontal: 0 /*marginTop: theme.spaces.jumbo*/ },
+                                  ]}
+                              >
+                                  <Subheading style={listStyles.heading}>{'Your Swing Videos'}</Subheading>
+                              </View>
+                              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                  <SEVideo
+                                      source={`https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.fo_swing}`}
+                                  />
+                                  <SEVideo
+                                      // style={{ marginLeft: theme.spaces.medium }}
+                                      source={`https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.dtl_swing}`}
+                                  />
+                              </View>
+                          </>
+                      )}
+                      {lesson.request_notes.length > 0 && (
+                          <>
+                              <View
+                                  style={[
+                                      sharedStyles.sectionHeader,
+                                      { marginHorizontal: 0 /*marginTop: theme.spaces.jumbo*/ },
+                                  ]}
+                              >
+                                  <Subheading style={listStyles.heading}>{'Your Special Requests'}</Subheading>
+                              </View>
+                              {splitParagraphs(lesson.request_notes).map((p, ind) => (
+                                  <Typography
+                                      key={`${lesson.request_id}_p_${ind}`}
+                                      style={[ind > 0 ? sharedStyles.paragraph : {}]}
+                                  >
+                                      {p}
+                                  </Typography>
+                              ))}
+                          </>
+                      )}
+                  </ScrollView>
+                  <LessonTutorial />
+              </View>
+          );
 };

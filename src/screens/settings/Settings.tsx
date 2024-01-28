@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Image, RefreshControl, ScrollView, TouchableHighlight, Keyboard } from 'react-native';
-import { Body, Caption, SEButton, SEHeader } from '../../components';
+import { Typography, Caption, SEButton, SEHeader } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
@@ -214,7 +214,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                     )}
                 </View>
 
-                <View style={[sharedStyles.sectionHeader, /*{ marginTop: theme.spaces.large }*/]}>
+                <View style={[sharedStyles.sectionHeader /*{ marginTop: theme.spaces.large }*/]}>
                     <Subheading style={listStyles.heading}>{'About Me'}</Subheading>
                     <SEButton
                         mode={'outlined'}
@@ -236,7 +236,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.firstName}</Body>
+                                    <Typography>{userData.firstName}</Typography>
                                 </View>
                             )}
                         />
@@ -248,7 +248,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.lastName}</Body>
+                                    <Typography>{userData.lastName}</Typography>
                                 </View>
                             )}
                         />
@@ -260,7 +260,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.location}</Body>
+                                    <Typography>{userData.location}</Typography>
                                 </View>
                             )}
                         />
@@ -272,7 +272,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.birthday || '--'}</Body>
+                                    <Typography>{userData.birthday || '--'}</Typography>
                                 </View>
                             )}
                         />
@@ -286,7 +286,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.email}</Body>
+                                    <Typography>{userData.email}</Typography>
                                 </View>
                             )}
                         />
@@ -298,7 +298,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{mapAverageToLabel(userData.average)}</Body>
+                                    <Typography>{mapAverageToLabel(userData.average)}</Typography>
                                 </View>
                             )}
                         />
@@ -310,7 +310,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{`${(userData.goals || '').substr(0, 18)}...`}</Body>
+                                    <Typography>{`${(userData.goals || '').substr(0, 18)}...`}</Typography>
                                 </View>
                             )}
                         />
@@ -322,7 +322,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.phone}</Body>
+                                    <Typography>{userData.phone}</Typography>
                                 </View>
                             )}
                         />
@@ -491,7 +491,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             onChangeText={(value: string): void => setPersonal({ ...personal, goals: value })}
                             underlineColorAndroid={transparent}
                         />
-                        <Caption style={{ alignSelf: 'flex-end', /*marginTop: theme.spaces.small*/ }}>{`${
+                        <Caption style={{ alignSelf: 'flex-end' /*marginTop: theme.spaces.small*/ }}>{`${
                             255 - (personal.goals || '').length
                         } Characters Left`}</Caption>
                         {!objectsEqual(personal, userData) && (
@@ -509,7 +509,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                     </View>
                 )}
 
-                <View style={[sharedStyles.sectionHeader, /*{ marginTop: theme.spaces.jumbo }*/]}>
+                <View style={[sharedStyles.sectionHeader /*{ marginTop: theme.spaces.jumbo }*/]}>
                     <Subheading style={listStyles.heading}>{'User Settings'}</Subheading>
                 </View>
                 <>
@@ -524,9 +524,9 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         descriptionStyle={{ marginLeft: -8 }}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[flexStyles.row, style]} {...rightProps}>
-                                <Body>
+                                <Typography>
                                     {settings.handedness.charAt(0).toUpperCase() + settings.handedness.substr(1)}
-                                </Body>
+                                </Typography>
                                 <MatIcon
                                     name={'chevron-right'}
                                     // size={theme.sizes.small}
@@ -537,7 +537,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                     />
                     <Divider />
                 </>
-                <View style={[sharedStyles.sectionHeader, /*{ marginTop: theme.spaces.jumbo }*/]}>
+                <View style={[sharedStyles.sectionHeader /*{ marginTop: theme.spaces.jumbo }*/]}>
                     <Subheading style={listStyles.heading}>{'Camera Settings'}</Subheading>
                 </View>
                 <>
@@ -552,7 +552,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         descriptionStyle={{ marginLeft: -8 }}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[flexStyles.row, style]} {...rightProps}>
-                                <Body>{`${settings.duration}s`}</Body>
+                                <Typography>{`${settings.duration}s`}</Typography>
                                 <MatIcon
                                     name={'chevron-right'}
                                     // size={theme.sizes.small}
@@ -572,7 +572,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         descriptionStyle={{ marginLeft: -8 }}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[flexStyles.row, style]} {...rightProps}>
-                                <Body>{`${settings.delay}s`}</Body>
+                                <Typography>{`${settings.delay}s`}</Typography>
                                 <MatIcon
                                     name={'chevron-right'}
                                     // size={theme.sizes.small}
@@ -592,7 +592,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         descriptionStyle={{ marginLeft: -8 }}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[flexStyles.row, style]} {...rightProps}>
-                                <Body>{`${settings.overlay ? 'On' : 'Off'}`}</Body>
+                                <Typography>{`${settings.overlay ? 'On' : 'Off'}`}</Typography>
                                 <MatIcon
                                     name={'chevron-right'}
                                     // size={theme.sizes.small}
@@ -602,7 +602,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         )}
                     />
                     <Divider />
-                    <View style={[sharedStyles.sectionHeader, /*{ marginTop: theme.spaces.jumbo }*/]}>
+                    <View style={[sharedStyles.sectionHeader /*{ marginTop: theme.spaces.jumbo }*/]}>
                         <Subheading style={listStyles.heading}>{'Email Notifications'}</Subheading>
                     </View>
                     <>
@@ -617,7 +617,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{`${lessons ? 'On' : 'Off'}`}</Body>
+                                    <Typography>{`${lessons ? 'On' : 'Off'}`}</Typography>
                                     <MatIcon
                                         name={'chevron-right'}
                                         // size={theme.sizes.small}
@@ -636,7 +636,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{`${marketing ? 'On' : 'Off'}`}</Body>
+                                    <Typography>{`${marketing ? 'On' : 'Off'}`}</Typography>
                                     <MatIcon
                                         name={'chevron-right'}
                                         // size={theme.sizes.small}
@@ -655,7 +655,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{`${newsletter ? 'On' : 'Off'}`}</Body>
+                                    <Typography>{`${newsletter ? 'On' : 'Off'}`}</Typography>
                                     <MatIcon
                                         name={'chevron-right'}
                                         // size={theme.sizes.small}
@@ -674,7 +674,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{`${reminders ? 'On' : 'Off'}`}</Body>
+                                    <Typography>{`${reminders ? 'On' : 'Off'}`}</Typography>
                                     <MatIcon
                                         name={'chevron-right'}
                                         // size={theme.sizes.small}

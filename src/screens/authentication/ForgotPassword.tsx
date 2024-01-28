@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 
 // Components
 import { View, Platform, ScrollView, KeyboardAvoidingView } from 'react-native';
-import { Body, H7, SEHeader, SEButton, BackgroundImage } from '../../components';
+import { Typography, SEHeader, SEButton, BackgroundImage } from '../../components';
 
 // Styles
 import { transparent } from '../../styles/colors';
@@ -70,11 +70,11 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
                         ]}
                         keyboardShouldPersistTaps={'always'}
                     >
-                        <Body color={'onPrimary'}>
+                        <Typography color={'onPrimary'}>
                             {
                                 'Enter the email address you used to register for your account below and we will send you instructions for resetting your password.'
                             }
-                        </Body>
+                        </Typography>
                         <TextInput
                             autoCorrect={false}
                             autoCapitalize={'none'}
@@ -108,9 +108,9 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
                             color={theme.colors.onPrimary}
                             style={{ alignSelf: 'center' }}
                         />
-                        <H7 font={'regular'} color={'onPrimary'} style={[{ textAlign: 'center' }]}>
+                        <Typography color={'onPrimary'} style={[{ textAlign: 'center' }]}>
                             {'Your password reset request was received. Check your email for further instructions.'}
-                        </H7>
+                        </Typography>
                     </View>
                 )}
             </KeyboardAvoidingView>

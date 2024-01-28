@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // Components
 import { View, ViewProps } from 'react-native';
-import { Body } from '../';
+import { Typography } from '../';
 // Styles
 import { useSharedStyles } from '../../styles';
 import { blackOpacity } from '../../styles/colors';
@@ -20,7 +20,7 @@ export const CountDown: React.FC<CountDownProps> = (props) => {
     const sharedStyles = useSharedStyles(theme);
 
     useEffect(() => {
-        let interval:any = 0;
+        let interval: any = 0;
         if (seconds > endValue) {
             interval = setInterval(() => {
                 setSeconds((sec) => sec - 1);
@@ -41,7 +41,7 @@ export const CountDown: React.FC<CountDownProps> = (props) => {
                 props.style,
             ]}
         >
-            <Body style={{ color: theme.colors.onPrimary, fontSize: unit(128) }}>{seconds}</Body>
+            <Typography style={{ color: theme.colors.onPrimary, fontSize: unit(128) }}>{seconds}</Typography>
         </View>
     ) : null;
 };
@@ -88,9 +88,9 @@ export const VideoTimer: React.FC<VideoTimerProps> = (props) => {
                     }}
                 />
             </View>
-            <Body style={{ fontSize: 14/*theme.fontSizes[14]*/, color: theme.colors.onPrimary }}>
+            <Typography style={{ fontSize: 14 /*theme.fontSizes[14]*/, color: theme.colors.onPrimary }}>
                 {`00:00:${displaySeconds < 10 ? '0' : ''}${displaySeconds}`}
-            </Body>
+            </Typography>
         </View>
     ) : null;
 };

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Image } from 'react-native';
-import { H7, H4 } from '../index';
+import { Typography } from '../index';
 import { SEButton, SEVideoPlaceholder } from '..';
 import { TutorialModal } from '.';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -34,22 +34,27 @@ export const SubmitTutorial: React.FC = () => {
 
     const slides = [
         <>
-            <H4 /*font={'semiBold'}*/ style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
+            <Typography
+                variant={'displayMedium'}
+                fontWeight={'semiBold'}
+                color={'onPrimary'}
+                style={{ textAlign: 'center' }}
+            >
                 {'Submitting Your Swing'}
-            </H4>
-            <H7
-                font={'light'}
+            </Typography>
+            <Typography
+                fontWeight={'light'}
+                color={'onPrimary'}
                 style={{
                     textAlign: 'center',
                     // marginTop: theme.spaces.small,
                     // marginBottom: theme.spaces.medium,
-                    color: theme.colors.onPrimary,
                 }}
             >
                 {
                     'When you are ready to submit your swing, click on the golfer images to upload Face-On and Down-the-Line videos.'
                 }
-            </H7>
+            </Typography>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <SEVideoPlaceholder
                     disabled
@@ -68,36 +73,41 @@ export const SubmitTutorial: React.FC = () => {
             </View>
         </>,
         <>
-            <H4 /*font={'semiBold'}*/ style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
+            <Typography
+                variant={'displayMedium'}
+                fontWeight={'semiBold'}
+                color={'onPrimary'}
+                style={{ textAlign: 'center' }}
+            >
                 {'Using the Camera'}
-            </H4>
-            <H7
-                font={'light'}
+            </Typography>
+            <Typography
+                fontWeight={'light'}
+                color={'onPrimary'}
                 style={{
                     textAlign: 'center',
                     // marginTop: theme.spaces.small,
                     // marginBottom: theme.spaces.medium,
-                    color: theme.colors.onPrimary,
                 }}
             >
                 {'Press the Record button to start recording your swing.'}
-            </H7>
+            </Typography>
             <RecordButton
                 recording={false}
-                onPress={(): void => { }}
-                style={{ alignSelf: 'center', /*marginTop: theme.spaces.large*/ }}
+                onPress={(): void => {}}
+                style={{ alignSelf: 'center' /*marginTop: theme.spaces.large*/ }}
             />
-            <H7
-                font={'light'}
+            <Typography
+                fontWeight={'light'}
+                color={'onPrimary'}
                 style={{
                     textAlign: 'center',
                     // marginTop: theme.spaces.xLarge,
                     // marginBottom: theme.spaces.xLarge,
-                    color: theme.colors.onPrimary,
                 }}
             >
                 {'You can adjust your settings for recording length and delay by clicking the settings icon.'}
-            </H7>
+            </Typography>
             <MatIcon
                 name="settings"
                 color={theme.colors.onPrimary}
@@ -119,8 +129,8 @@ export const SubmitTutorial: React.FC = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }): JSX.Element => slides[index]}
-                    sliderWidth={width - 2 * 8/*theme.spaces.medium*/}
-                    itemWidth={width - 2 * 8/*theme.spaces.medium*/}
+                    sliderWidth={width - 2 * 8 /*theme.spaces.medium*/}
+                    itemWidth={width - 2 * 8 /*theme.spaces.medium*/}
                     onSnapToItem={(index): void => {
                         setActivePanel(index);
                         if (index === slides.length - 1) {

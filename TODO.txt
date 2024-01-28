@@ -1,13 +1,33 @@
 Things to get working
 
-- Replace all Typography Components with Text
-    - See where they are being used
-- Build Utility Components
-    - Spacer Component
-    - Stack Component (include textAlign)
-- Extend theme with spacing (sm, md, lg, xl, 2xl)
-- Extend theme with sizes (sm, md, lg, xl, 2xl)
-- Fix SEButton component
+- Fix Design By Screen
+X Home
+    - Check on refresh indicator
+- Navigation Drawer
+- Profile
+- Setting
+- Lessons
+- Individual Lesson
+- submit
+- Record
+- Order More
+- Pros
+-Tips
+- Individual Tip
+- Blogs
+- Individual Blogs
+- About
+- FAQ
+- Contact
+- Logs
+- Log In
+- Registration
+- Token Timeout
+- Tutorials
+
+
+
+
 - Fix components folder
 - Fix functionality
 - Fix FontWeight on android

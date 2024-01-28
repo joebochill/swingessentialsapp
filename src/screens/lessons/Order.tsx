@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, FlatList, Alert } from 'react-native';
-import { Body, Label, H4, CollapsibleHeaderLayout, ErrorBox, SEButton, OrderTutorial } from '../../components';
+import { Typography, CollapsibleHeaderLayout, ErrorBox, SEButton, OrderTutorial } from '../../components';
 import { requestPurchase, useIAP, ErrorCode } from 'react-native-iap';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
@@ -55,8 +55,8 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
         role === 'anonymous'
             ? 'You must be signed in to purchase lessons.'
             : role === 'pending'
-                ? 'You must validate your email address before you can purchase lessons'
-                : '';
+            ? 'You must validate your email address before you can purchase lessons'
+            : '';
 
     useEffect(() => {
         if (packages && connected) {
@@ -65,10 +65,9 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 for (let i = 0; i < packages.length; i++) {
                     skus.push(packages[i].app_sku);
                 }
-                getProducts({skus});
+                getProducts({ skus });
                 setSelected(0);
-            }
-            catch (err: any) {
+            } catch (err: any) {
                 void Logger.logError({
                     code: 'IAP100',
                     description: 'Failed to load in-app purchases.',
@@ -137,7 +136,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 await requestPurchase({
                     sku,
                     andDangerouslyFinishTransactionAutomaticallyIOS: false,
-                  });
+                });
             } catch (error: any) {
                 if (error.code !== ErrorCode.E_USER_CANCELLED) {
                     void Logger.logError({
@@ -170,7 +169,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
             <ErrorBox
                 show={roleError !== ''}
                 error={roleError}
-                style={[formStyles.errorBox, /*{ marginHorizontal: theme.spaces.medium }*/]}
+                style={[formStyles.errorBox /*{ marginHorizontal: theme.spaces.medium }*/]}
             />
             {roleError.length === 0 && (
                 <View
@@ -188,10 +187,12 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                         },
                     ]}
                 >
-                    <H4 style={{ lineHeight: unit(32) }} color={'primary'}>
+                    <Typography variant={'displayMedium'} style={{ lineHeight: unit(32) }} color={'primary'}>
                         {credits.count}
-                    </H4>
-                    <Label color={'primary'}>{`Credit${credits.count !== 1 ? 's' : ''} Remaining`}</Label>
+                    </Typography>
+                    <Typography variant={'labelMedium'} color={'primary'}>{`Credit${
+                        credits.count !== 1 ? 's' : ''
+                    } Remaining`}</Typography>
                 </View>
             )}
             <View style={[sharedStyles.sectionHeader]}>
@@ -216,16 +217,20 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{products.length > 0 ? `${products[index].localizedPrice}` : '--'}</Body>
+                                    <Typography>
+                                        {products.length > 0 ? `${products[index].localizedPrice}` : '--'}
+                                    </Typography>
                                     {selected === index && (
                                         <MatIcon
                                             name={'check'}
                                             // size={theme.sizes.small}
                                             // color={theme.colors.accent}
-                                            style={{
-                                                // marginLeft: theme.spaces.small,
-                                                // marginRight: -1 * theme.spaces.xSmall,
-                                            }}
+                                            style={
+                                                {
+                                                    // marginLeft: theme.spaces.small,
+                                                    // marginRight: -1 * theme.spaces.xSmall,
+                                                }
+                                            }
                                         />
                                     )}
                                 </View>
@@ -246,8 +251,8 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 onPress={
                     roleError.length === 0 && !packagesProcessing && !credits.inProgress
                         ? (): void => {
-                            void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
-                        }
+                              void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
+                          }
                         : undefined
                 }
             />

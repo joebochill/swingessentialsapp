@@ -1,7 +1,7 @@
 import * as React from 'react';
 // Components
 import { View, ScrollView } from 'react-native';
-import { Body, SEHeader } from '../../components/index';
+import { Typography, SEHeader } from '../../components/index';
 // Styles
 import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
 
@@ -38,9 +38,9 @@ export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBl
                         <Subheading style={listStyles.heading}>{blog.title}</Subheading>
                     </View>
                     {splitParagraphs(blog.body).map((p, ind) => (
-                        <Body key={`${blog.id}_p_${ind}`} style={[ind > 0 ? sharedStyles.paragraph : {}]}>
+                        <Typography key={`${blog.id}_p_${ind}`} style={[ind > 0 ? sharedStyles.paragraph : {}]}>
                             {p}
-                        </Body>
+                        </Typography>
                     ))}
                 </ScrollView>
             </View>

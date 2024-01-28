@@ -366,7 +366,9 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                             />
                         )}
                     </View>
-                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0, /*marginTop: theme.spaces.jumbo*/ }]}>
+                    <View
+                        style={[sharedStyles.sectionHeader, { marginHorizontal: 0 /*marginTop: theme.spaces.jumbo*/ }]}
+                    >
                         <Subheading style={listStyles.heading}>{'Special Requests / Comments'}</Subheading>
                     </View>
                     {!useNotes && (
@@ -402,7 +404,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                 placeholder={'e.g., Help me with my slice!'}
                                 style={[formStyles.active]}
                             />
-                            <Caption style={{ alignSelf: 'flex-end', /*marginTop: theme.spaces.small*/ }}>{`${
+                            <Caption style={{ alignSelf: 'flex-end' /*marginTop: theme.spaces.small*/ }}>{`${
                                 500 - notes.length
                             } Characters Left`}</Caption>
                         </>

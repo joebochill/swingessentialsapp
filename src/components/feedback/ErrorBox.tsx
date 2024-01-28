@@ -1,7 +1,7 @@
 import React from 'react';
 // Components
 import { StyleProp, StyleSheet, TextProps, TextStyle } from 'react-native';
-import { Body } from '../../components';
+import { Typography } from '../../components';
 import { MD3Theme, useTheme } from 'react-native-paper';
 
 const useStyles = (
@@ -28,5 +28,5 @@ export const ErrorBox: React.FC<ErrorBoxProps> = (props) => {
     const theme = useTheme();
     const styles = useStyles(theme);
 
-    return props.show ? <Body style={[styles.error, style]}>{props.error}</Body> : null;
+    return props.show ? <Typography style={[styles.error, style]}>{props.error}</Typography> : null;
 };

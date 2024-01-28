@@ -17,7 +17,7 @@ const useStyles = (
     portrait: ViewStyle;
     bottomPanel: ViewStyle;
 }> => {
-    const portraitWidth = (width - 3 * 8/*theme.spaces.medium*/) / 2;
+    const portraitWidth = (width - 3 * 8) /*theme.spaces.medium*/ / 2;
     const portraitHeight = aspectWidth(portraitWidth);
     return StyleSheet.create({
         fullCentered: {
@@ -160,7 +160,7 @@ export const SEVideoPlaceholder: React.FC<PlaceholderProps> = (props) => {
                 onPress={onPress}
             >
                 <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                    <Subheading style={[listStyles.heading, /*{ marginVertical: theme.spaces.medium }*/]}>
+                    <Subheading style={[listStyles.heading /*{ marginVertical: theme.spaces.medium }*/]}>
                         {props.title}
                     </Subheading>
                 </View>

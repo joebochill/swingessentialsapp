@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme, List, Divider, Subheading } from 'react-native-paper';
 // Components
 import { View, SectionList } from 'react-native';
-import { H7, H4, Body } from '../index';
+import { Typography } from '../index';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
@@ -43,20 +43,25 @@ export const LessonsTutorial: React.FC = () => {
 
     const slides = [
         <>
-            <H4 /*font={'semiBold'}*/ style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
+            <Typography
+                variant={'displayMedium'}
+                fontWeight={'semiBold'}
+                color={'onPrimary'}
+                style={{ textAlign: 'center' }}
+            >
                 {'Your Lessons'}
-            </H4>
-            <H7
-                font={'light'}
+            </Typography>
+            <Typography
+                fontWeight={'light'}
+                color={'onPrimary'}
                 style={{
                     textAlign: 'center',
                     // marginTop: theme.spaces.small,
                     // marginBottom: theme.spaces.medium,
-                    color: theme.colors.onPrimary,
                 }}
             >
                 {'When you have submitted your golf swing for analysis, your lessons will appear in this list.'}
-            </H7>
+            </Typography>
             <SectionList
                 // style={{ marginTop: theme.spaces.large }}
                 scrollEnabled={false}
@@ -79,11 +84,21 @@ export const LessonsTutorial: React.FC = () => {
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <View style={[flexStyles.row, style]} {...rightProps}>
-                                    {item.new && <Body style={{ /*marginRight: theme.spaces.small*/ }}>NEW</Body>}
+                                    {item.new && (
+                                        <Typography
+                                            style={
+                                                {
+                                                    /*marginRight: theme.spaces.small*/
+                                                }
+                                            }
+                                        >
+                                            NEW
+                                        </Typography>
+                                    )}
                                     <MatIcon
                                         name={'chevron-right'}
                                         // size={theme.sizes.small}
-                                        style={{ marginRight: -1 * 4/*theme.spaces.small*/ }}
+                                        style={{ marginRight: -1 * 4 /*theme.spaces.small*/ }}
                                     />
                                 </View>
                             )}
@@ -108,13 +123,13 @@ export const LessonsTutorial: React.FC = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }): JSX.Element => slides[index]}
-                    sliderWidth={width - 2 * 8/*theme.spaces.medium*/}
-                    itemWidth={width - 2 * 8/*theme.spaces.medium*/}
+                    sliderWidth={width - 2 * 8 /*theme.spaces.medium*/}
+                    itemWidth={width - 2 * 8 /*theme.spaces.medium*/}
                 />
                 <SEButton
                     dark
                     title="GOT IT"
-                    style={{ flex: 1, /*marginTop: theme.spaces.xLarge*/ }}
+                    style={{ flex: 1 /*marginTop: theme.spaces.xLarge*/ }}
                     onPress={(): void => {
                         // @ts-ignore
                         dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]));

@@ -56,27 +56,27 @@ export const SEHeader: React.FC<SEHeaderProps> = (props) => {
 
     const defaultActions: HeaderIcon[] = showAuth
         ? [
-            token
-                ? {
-                    icon: LogoutIcon,
-                    onPress: (): void => {
-                        Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-                            {
-                                text: 'Sign Out',
-                                onPress: (): void => {
-                                    // @ts-ignore
-                                    dispatch(requestLogout());
+              token
+                  ? {
+                        icon: LogoutIcon,
+                        onPress: (): void => {
+                            Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+                                {
+                                    text: 'Sign Out',
+                                    onPress: (): void => {
+                                        // @ts-ignore
+                                        dispatch(requestLogout());
+                                    },
                                 },
-                            },
-                            { text: 'Cancel' },
-                        ]);
+                                { text: 'Cancel' },
+                            ]);
+                        },
+                    }
+                  : {
+                        icon: AccountIcon,
+                        onPress: (): void => navigationProp.navigate({ name: ROUTES.LOGIN, key: ROUTES.LOGIN }),
                     },
-                }
-                : {
-                    icon: AccountIcon,
-                    onPress: (): void => navigationProp.navigate({ name: ROUTES.LOGIN, key: ROUTES.LOGIN }),
-                },
-        ]
+          ]
         : [];
 
     return (
@@ -85,25 +85,25 @@ export const SEHeader: React.FC<SEHeaderProps> = (props) => {
             navigation={
                 mainAction === 'menu'
                     ? {
-                        icon: MenuIcon,
-                        onPress: (): void => {
-                            navigationProp.openDrawer();
-                            if (onNavigate) {
-                                onNavigate();
-                            }
-                        },
-                    }
+                          icon: MenuIcon,
+                          onPress: (): void => {
+                              navigationProp.openDrawer();
+                              if (onNavigate) {
+                                  onNavigate();
+                              }
+                          },
+                      }
                     : mainAction === 'back'
-                        ? {
-                            icon: BackIcon,
-                            onPress: (): void => {
-                                navigationProp.pop();
-                                if (onNavigate) {
-                                    onNavigate();
-                                }
-                            },
-                        }
-                        : undefined
+                    ? {
+                          icon: BackIcon,
+                          onPress: (): void => {
+                              navigationProp.pop();
+                              if (onNavigate) {
+                                  onNavigate();
+                              }
+                          },
+                      }
+                    : undefined
             }
             headerHeight={props.headerHeight || HEADER_COLLAPSED_HEIGHT}
             backgroundImage={backgroundImage}

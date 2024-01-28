@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, StyleSheet, Platform, StyleProp, ViewStyle } from 'react-native';
-import { CollapsibleHeaderLayout, Body, YouTube } from '../../components';
+import { CollapsibleHeaderLayout, Typography, YouTube } from '../../components';
 
 // Styles
 import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
@@ -28,7 +28,7 @@ const useStyles = (
 }> =>
     StyleSheet.create({
         video: {
-            height: (width - 2 * 8/*theme.spaces.medium*/) * (9 / 16),
+            height: (width - 2 * 8) /*theme.spaces.medium*/ * (9 / 16),
             // marginTop: theme.spaces.xLarge,
         },
     });
@@ -67,29 +67,29 @@ export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props
 
                         {!faq.platform_specific ? (
                             splitParagraphs(faq.answer).map((p: string, pInd: number) => (
-                                <Body key={`faq-${ind}-${pInd}`} style={[pInd > 0 ? sharedStyles.paragraph : {}]}>
+                                <Typography key={`faq-${ind}-${pInd}`} style={[pInd > 0 ? sharedStyles.paragraph : {}]}>
                                     {p}
-                                </Body>
+                                </Typography>
                             ))
                         ) : (
                             <>
                                 {Platform.OS === 'ios' &&
                                     splitParagraphs(faq.answer_ios).map((p: string, pInd: number) => (
-                                        <Body
+                                        <Typography
                                             key={`faq-${ind}-${pInd}`}
                                             style={[pInd > 0 ? sharedStyles.paragraph : {}]}
                                         >
                                             {p}
-                                        </Body>
+                                        </Typography>
                                     ))}
                                 {Platform.OS === 'android' &&
                                     splitParagraphs(faq.answer_android).map((p: string, pInd: number) => (
-                                        <Body
+                                        <Typography
                                             key={`faq-${ind}-${pInd}`}
                                             style={[pInd > 0 ? sharedStyles.paragraph : {}]}
                                         >
                                             {p}
-                                        </Body>
+                                        </Typography>
                                     ))}
                             </>
                         )}

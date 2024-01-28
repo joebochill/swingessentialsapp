@@ -1,7 +1,7 @@
 import * as React from 'react';
 // Components
 import { View, ScrollView } from 'react-native';
-import { Body, SEHeader, YouTube } from '../../components/index';
+import { Typography, SEHeader, YouTube } from '../../components/index';
 // Styles
 import { useSharedStyles, useListStyles, useFlexStyles } from '../../styles';
 import { width, height, aspectHeight } from '../../utilities/dimensions';
@@ -24,7 +24,7 @@ export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip
     if (tip === null) {
         props.navigation.pop();
     }
-    const videoWidth = width - 2 * 8/*theme.spaces.medium*/;
+    const videoWidth = width - 2 * 8; /*theme.spaces.medium*/
     const videoHeight = aspectHeight(videoWidth);
 
     return (
@@ -40,13 +40,15 @@ export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip
                         <Subheading style={listStyles.heading}>{tip.title}</Subheading>
                     </View>
                     <YouTube videoId={tip.video} style={{ width: videoWidth, height: videoHeight }} />
-                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0, /*marginTop: theme.spaces.jumbo*/ }]}>
+                    <View
+                        style={[sharedStyles.sectionHeader, { marginHorizontal: 0 /*marginTop: theme.spaces.jumbo*/ }]}
+                    >
                         <Subheading style={listStyles.heading}>{'Description'}</Subheading>
                     </View>
                     {splitParagraphs(tip.comments).map((p, ind) => (
-                        <Body key={`${tip.id}_p_${ind}`} style={[ind > 0 ? sharedStyles.paragraph : {}]}>
+                        <Typography key={`${tip.id}_p_${ind}`} style={[ind > 0 ? sharedStyles.paragraph : {}]}>
                             {p}
-                        </Body>
+                        </Typography>
                     ))}
                 </ScrollView>
             </View>

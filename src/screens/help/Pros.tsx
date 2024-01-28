@@ -2,7 +2,7 @@ import * as React from 'react';
 
 // Components
 import { Image, TouchableHighlight, View } from 'react-native';
-import { Body, CollapsibleHeaderLayout, H6, H7 } from '../../components';
+import { CollapsibleHeaderLayout, Typography } from '../../components';
 
 // Styles
 import { useSharedStyles, useFlexStyles } from '../../styles';
@@ -60,34 +60,34 @@ export const Pros: React.FC<StackScreenProps<RootStackParamList, 'About'>> = (pr
                                 style={{ width: '100%', height: '100%' }}
                             />
                         </TouchableHighlight>
-                        <H6
-                            // font={'semiBold'}
+                        <Typography
+                            fontWeight={'semiBold'}
+                            color={'primary'}
                             style={{
                                 textAlign: 'center',
                                 // marginTop: theme.spaces.medium,
                                 // marginBottom: pro.title ? 0 : theme.spaces.medium,
-                                color: theme.colors.primary,
                             }}
                         >
                             {pro.name}
-                        </H6>
+                        </Typography>
                         {pro.title ? (
-                            <H7
-                                font={'light'}
+                            <Typography
+                                fontWeight={'light'}
+                                color={'primary'}
                                 style={{
                                     textAlign: 'center',
                                     // marginBottom: theme.spaces.medium,
-                                    color: theme.colors.primary,
                                 }}
                             >
                                 {pro.title}
-                            </H7>
+                            </Typography>
                         ) : null}
 
                         {splitParagraphs(pro.bio).map((p, ind) => (
-                            <Body key={`${pro.id}_p_${ind}`} style={[ind > 0 ? sharedStyles.paragraph : {}]}>
+                            <Typography key={`${pro.id}_p_${ind}`} style={[ind > 0 ? sharedStyles.paragraph : {}]}>
                                 {p}
-                            </Body>
+                            </Typography>
                         ))}
                     </View>
                 ))}
