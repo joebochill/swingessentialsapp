@@ -9,7 +9,7 @@ module.exports = {
         'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
         'react/display-name': 'off',
         '@typescript-eslint/naming-convention': [
-            "error",
+            'error',
             {
                 selector: 'default',
                 format: ['camelCase', 'PascalCase'],

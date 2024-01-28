@@ -51,7 +51,7 @@ class CollapsibleHeaderLayoutRender extends React.Component<CollapsibleHeaderLay
             renderScroll = true,
             children,
             refreshing = false,
-            onRefresh = (): void => {},
+            onRefresh,
             bottomPad = true,
         } = this.props;
         const headerHeight = this.scaleByHeaderHeight(HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT);
@@ -111,12 +111,12 @@ class CollapsibleHeaderLayoutRender extends React.Component<CollapsibleHeaderLay
                             )}
                             scrollEventThrottle={32}
                         >
-                            {refreshing && Platform.OS === 'ios' && (
+                            {/* {refreshing && Platform.OS === 'ios' && (
                                 <ActivityIndicator
                                     size={'large'}
                                     style={{ marginBottom: theme.spacing.md, marginTop: -1 * theme.spacing.xl }}
                                 />
-                            )}
+                            )} */}
                             {children}
                         </ScrollView>
                     )}

@@ -1,24 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // Components
-import {
-    Animated,
-    AppState,
-    AppStateStatus,
-    Image,
-    FlatList,
-    Linking,
-    SafeAreaView,
-    StyleSheet,
-    View,
-    Alert,
-    StyleProp,
-    ViewStyle,
-    TextStyle,
-} from 'react-native';
+import { Animated, AppState, AppStateStatus, Image, FlatList, Linking, SafeAreaView, View, Alert } from 'react-native';
 import { NavigationItems } from './NavigationContent';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import { Typography, TokenModal, CollapsibleHeaderLayout } from '../components';
+import { Typography, TokenModal, CollapsibleHeaderLayout, Stack, AnimatedStack, ListItem } from '../components';
 
 // Constants
 import {
@@ -30,10 +16,7 @@ import {
 import { ROUTES } from '../constants/routes';
 
 // Styles
-import { useListStyles, useFlexStyles } from '../styles';
-import { useTheme, List, Divider, MD3Theme } from 'react-native-paper';
-
-import { unit } from '../styles/sizes';
+import { List, Divider } from 'react-native-paper';
 
 // Utilities
 import { getLongDate } from '../utilities';
@@ -47,64 +30,12 @@ import { loadUserContent, requestLogout } from '../redux/actions';
 // Icons
 import se from '../images/logo-small.png';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { transparent } from '../styles/colors';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
-
-const useStyles = (
-    theme: MD3Theme
-): StyleSheet.NamedStyles<{
-    avatarContainer: StyleProp<ViewStyle>;
-    avatar: StyleProp<ViewStyle>;
-    content: StyleProp<ViewStyle>;
-    headerText: StyleProp<ViewStyle>;
-    navLabel: StyleProp<TextStyle>;
-    drawerBody: StyleProp<ViewStyle>;
-    panel: StyleProp<ViewStyle>;
-    footer: StyleProp<ViewStyle>;
-}> =>
-    StyleSheet.create({
-        avatarContainer: {
-            justifyContent: 'center',
-        },
-        avatar: {
-            borderRadius: 100,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        content: {
-            flex: 1,
-            // paddingVertical: theme.spaces.medium,
-            // paddingHorizontal: theme.spaces.medium,
-            flexDirection: 'row',
-        },
-        headerText: {
-            flex: 1,
-            justifyContent: 'center',
-        },
-        navLabel: {
-            // marginLeft: theme.spaces.medium,
-        },
-        drawerBody: {
-            flexDirection: 'row',
-        },
-        panel: {
-            width: DRAWER_WIDTH,
-        },
-        footer: {
-            flex: 0,
-            height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            // padding: theme.spaces.medium,
-        },
-    });
+import { useAppTheme } from '../styles/theme';
+import { lightType, semiBoldType } from '../styles/typography/fontConfig';
 
 export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) => {
-    const theme = useTheme();
-    const styles = useStyles(theme);
-    const listStyles = useListStyles(theme);
-    const flexStyles = useFlexStyles(theme);
+    const theme = useAppTheme();
 
     const dispatch = useDispatch();
     const [scrollY] = useState(new Animated.Value(0));
@@ -132,7 +63,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
     const scaleByHeight = useCallback(
         (atLarge: number, atSmall: number) =>
             scrollY.interpolate({
-                inputRange: [0, HEADER_EXPANDED_HEIGHT_NO_STATUS - HEADER_COLLAPSED_HEIGHT_NO_STATUS],
+                inputRange: [0, HEADER_EXPANDED_HEIGHT_NO_STATUS - (HEADER_COLLAPSED_HEIGHT_NO_STATUS + 24)],
                 outputRange: [atLarge, atSmall],
                 extrapolate: 'clamp',
             }),
@@ -177,9 +108,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
     const handleAppStateChange = useCallback(
         (nextAppState: AppStateStatus) => {
             if (/inactive|background/.test(appState) && nextAppState === 'active' && token) {
-                {
-                    /* @ts-ignore */
-                }
+                // @ts-ignore
                 dispatch(loadUserContent());
             }
             setAppState(nextAppState);
@@ -224,23 +153,6 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
         const stateChangeListener = AppState.addEventListener('change', handleAppStateChange);
         const linkingListener = Linking.addEventListener('url', wakeUpByLink);
 
-        // Handle the case where the application is opened from a Universal Link
-        // if (Platform.OS !== 'ios') {
-        //     Linking.getInitialURL()
-        //         .then(url => {
-        //             if (url) {
-        //                 let path = url.split('/').filter(el => el.length > 0);
-        //                 linkRoute(url, path);
-        //             }
-        //         })
-        //         .catch((): void => {
-        //             Logger.logError({
-        //                 code: 'DRW100',
-        //                 description: 'Deep link failed to load',
-        //             });
-        //         });
-        // }
-
         return (): void => {
             stateChangeListener.remove();
             linkingListener.remove();
@@ -259,20 +171,22 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
             }}
             subtitle={''}
             headerContent={
-                <View style={{ width: '100%', justifyContent: 'flex-end' }}>
+                <Stack justify={'flex-end'} style={{ width: '100%' }}>
                     <Animated.View
+                        // direction={'row'}
                         style={[
-                            styles.content,
                             {
                                 flex: 1,
+                                flexDirection: 'row',
+                                padding: theme.spacing.md,
                                 opacity: scaleByHeight(1, 0),
                                 overflow: 'hidden',
                             },
                         ]}
                     >
-                        <View style={[styles.avatarContainer]}>
+                        <Stack justify={'center'}>
                             <TouchableHighlight
-                                underlayColor={transparent}
+                                underlayColor={'transparent'}
                                 onPress={
                                     token
                                         ? (): void =>
@@ -281,13 +195,16 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                                 }
                             >
                                 <Animated.View
+                                    // align={'center'}
+                                    // justify={'center'}
                                     style={[
-                                        styles.avatar,
                                         {
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
                                             backgroundColor: theme.colors.background,
-                                            height: scaleByHeight(unit(80), 0),
-                                            width: scaleByHeight(unit(80), 0),
-                                            borderRadius: scaleByHeight(unit(80) / 2, 0),
+                                            height: scaleByHeight(80, 0),
+                                            width: scaleByHeight(80, 0),
+                                            borderRadius: scaleByHeight(80 / 2, 0),
                                             overflow: 'hidden',
                                         },
                                     ]}
@@ -299,16 +216,23 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                                     />
                                 </Animated.View>
                             </TouchableHighlight>
-                        </View>
+                        </Stack>
                         <Animated.View
-                            style={[styles.headerText, { marginLeft: scaleByHeight(/*theme.spaces.medium*/ 20, 0) }]}
+                            // justify={'center'}
+                            style={[
+                                {
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    marginLeft: scaleByHeight(theme.spacing.md, 0),
+                                },
+                            ]}
                         >
                             <Animated.Text
                                 style={{
-                                    color: 'white',
-                                    lineHeight: scaleByHeight(unit(24), 0.1),
-                                    fontSize: scaleByHeight(unit(24), 0.1),
-                                    fontWeight: '600',
+                                    color: theme.colors.onPrimary,
+                                    ...semiBoldType,
+                                    lineHeight: scaleByHeight(24, 0.1),
+                                    fontSize: scaleByHeight(24, 0.1),
                                 }}
                                 numberOfLines={1}
                                 ellipsizeMode={'tail'}
@@ -317,10 +241,10 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                             </Animated.Text>
                             <Animated.Text
                                 style={{
-                                    color: 'white',
-                                    lineHeight: scaleByHeight(unit(16), 0.1),
-                                    fontSize: scaleByHeight(unit(16), 0.1),
-                                    fontWeight: '500',
+                                    color: theme.colors.onPrimary,
+                                    ...semiBoldType,
+                                    lineHeight: scaleByHeight(16, 0.1),
+                                    fontSize: scaleByHeight(16, 0.1),
                                 }}
                                 numberOfLines={1}
                                 ellipsizeMode={'tail'}
@@ -329,11 +253,11 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                             </Animated.Text>
                             <Animated.Text
                                 style={{
-                                    color: 'white',
-                                    lineHeight: scaleByHeight(unit(14), 0.1),
-                                    fontSize: scaleByHeight(unit(14), 0.1),
+                                    color: theme.colors.onPrimary,
+                                    ...lightType,
+                                    lineHeight: scaleByHeight(14, 0.1),
+                                    fontSize: scaleByHeight(14, 0.1),
                                     opacity: scaleByHeight(1, 0),
-                                    fontWeight: '300',
                                 }}
                                 numberOfLines={1}
                                 ellipsizeMode={'tail'}
@@ -342,18 +266,32 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                             </Animated.Text>
                         </Animated.View>
                     </Animated.View>
-                    <View style={[styles.footer]}>
+                    <Stack
+                        direction={'row'}
+                        align={'center'}
+                        justify={'space-between'}
+                        style={{
+                            flex: 0,
+                            padding: theme.spacing.md,
+                            height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
+                        }}
+                    >
                         <Typography fontWeight={'semiBold'} color={'onPrimary'}>
                             SWING ESSENTIALS®
                         </Typography>
                         <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
                             <Typography color={'onPrimary'} fontWeight={'light'}>{`v${APP_VERSION}`}</Typography>
                         </Animated.View>
-                    </View>
-                </View>
+                    </Stack>
+                </Stack>
             }
         >
-            <View style={[styles.drawerBody, { marginTop: -1 * /*theme.spaces.medium*/ 20 }]}>
+            <Stack
+                direction={'row'}
+                // style={[
+                //     { marginTop: -1 * theme.spacing.md }
+                // ]}
+            >
                 {NavigationItems.map((panel, ind) => {
                     const leftPosition = ind === 2 ? left.help : ind === 1 ? left.account : left.main;
                     let panelData = [...panel.data];
@@ -380,13 +318,16 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                         });
                     }
                     return (
-                        <Animated.View key={`Panel_${panel.name}`} style={[styles.panel, { left: leftPosition }]}>
+                        <Animated.View
+                            key={`Panel_${panel.name}`}
+                            style={[{ width: DRAWER_WIDTH, left: leftPosition }]}
+                        >
                             <FlatList
                                 data={ind === activePanel ? panelData : []}
                                 keyExtractor={(item, index): string => `${index}`}
                                 renderItem={({ item }): JSX.Element => (
                                     <>
-                                        <List.Item
+                                        <ListItem
                                             title={item.title}
                                             titleEllipsizeMode={'tail'}
                                             left={(): JSX.Element => (
@@ -422,28 +363,30 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                                                     : undefined
                                             }
                                             style={[
-                                                listStyles.item,
-                                                { paddingLeft: 0, paddingVertical: 0, minHeight: 'auto' },
-                                            ]}
-                                            titleStyle={
                                                 {
-                                                    // marginLeft: theme.spaces.small,
-                                                    // fontSize: theme.fontSizes[16],
-                                                }
-                                            }
+                                                    // paddingLeft: 0,
+                                                    // paddingVertical: 0,
+                                                    minHeight: 'auto',
+                                                },
+                                            ]}
                                             right={
                                                 item.nested
                                                     ? ({ style, ...rightProps }): JSX.Element => (
-                                                          <View style={[flexStyles.row, style]} {...rightProps}>
+                                                          <Stack
+                                                              direction={'row'}
+                                                              align={'center'}
+                                                              style={[style]}
+                                                              {...rightProps}
+                                                          >
                                                               <MatIcon
                                                                   name={'chevron-right'}
-                                                                  // size={theme.sizes.small}
-                                                                  // color={theme.colors.accent}
+                                                                  size={theme.size.sm}
+                                                                  color={theme.colors.primary}
                                                                   style={{
-                                                                      marginRight: -1 * 4 /*theme.spaces.small*/,
+                                                                      marginRight: -1 * theme.spacing.sm,
                                                                   }}
                                                               />
-                                                          </View>
+                                                          </Stack>
                                                       )
                                                     : undefined
                                             }
@@ -455,7 +398,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                         </Animated.View>
                     );
                 })}
-            </View>
+            </Stack>
             <View style={{ height: height * 0.2 }} />
             <SafeAreaView />
             <TokenModal />

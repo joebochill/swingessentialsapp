@@ -9,3 +9,4 @@ export * from './tutorials';
 export * from './IconWrapper';
 export * from './BackgroundImage';
 export * from './layout/';
+export * from './list';

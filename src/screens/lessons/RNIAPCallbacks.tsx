@@ -32,7 +32,7 @@ import { Logger } from '../../utilities/logging';
 let PURCHASE_UPDATE_SUBSCRIPTION: EmitterSubscription | null;
 let PURCHASE_ERROR_SUBSCRIPTION: EmitterSubscription | null;
 
-export const RNIAPCallbacks: React.FC = () => 
+export const RNIAPCallbacks: React.FC = () =>
     // const dispatch = useDispatch();
     // const packages = useSelector((state: ApplicationState) => state.packages.list);
 
@@ -142,5 +142,4 @@ export const RNIAPCallbacks: React.FC = () =>
     //     };
     // }, [dispatch, packages]);
 
-     null
-;
+    null;

@@ -37,7 +37,12 @@ export type TypographyProps<T> = {
     align?: TextStyle['textAlign'];
 } & TextProps<T>;
 
-const getFontWeight = (weight: FontWeight):{fontFamily: string; fontWeight?: "bold" | "300" | "normal" | "100" | "200" | "400" | "500" | "600" | "700" | "800" | "900"} => {
+const getFontWeight = (
+    weight: FontWeight
+): {
+    fontFamily: string;
+    fontWeight?: 'bold' | '300' | 'normal' | '100' | '200' | '400' | '500' | '600' | '700' | '800' | '900';
+} => {
     switch (weight) {
         case 'light':
             return lightType;

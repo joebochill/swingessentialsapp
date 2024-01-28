@@ -1,2 +1,2 @@
 export * from './Typography';
-export * from './StyledTypography';
+export * from './SectionTitle';
