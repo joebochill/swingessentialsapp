@@ -57,7 +57,7 @@ export function getDate(unix: number): string {
     return `${yyyy}-${mm}-${dd}`;
 }
 
-export function getLongDate(unix: number): string {
+export function getLongDate(unix: string | number | Date): string {
     const day = new Date(unix);
     return `${MONTHS[day.getUTCMonth()]} ${day.getUTCFullYear()}`;
 }

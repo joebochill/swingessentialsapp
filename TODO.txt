@@ -17,9 +17,9 @@ X Pros
 - Blogs
 - Individual Blogs
 X About
-- FAQ
+X FAQ
 - Contact
-- Logs
+X Logs
 - Log In
 - Registration
 - Token Timeout

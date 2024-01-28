@@ -2,15 +2,14 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View, SectionList } from 'react-native';
-import { CollapsibleHeaderLayout } from '../../components';
+import { CollapsibleHeaderLayout, ListItem, SectionHeader, Stack } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
 // Styles
 import bg from '../../images/banners/19th.jpg';
-import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
-import { useTheme, Divider, List, Subheading } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 
 // Utilities
 import { makeGroups } from '../../utilities';
@@ -20,6 +19,7 @@ import { loadBlogs } from '../../redux/actions';
 import { ApplicationState } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../styles/theme';
 
 type Blog = {
     id: number;
@@ -32,10 +32,7 @@ export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (p
     const blogs = useSelector((state: ApplicationState) => state.blogs);
     const sections = makeGroups(blogs.blogList, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
+    const theme = useAppTheme();
 
     return (
         <CollapsibleHeaderLayout
@@ -50,38 +47,39 @@ export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (p
             navigation={props.navigation}
         >
             <SectionList
-                renderSectionHeader={({ section: { bucketName, index } }): JSX.Element => (
-                    <View style={[sharedStyles.sectionHeader, /*index > 0 ? { marginTop: theme.spaces.jumbo } :*/ {}]}>
-                        <Subheading style={listStyles.heading}>{bucketName}</Subheading>
-                    </View>
+                renderSectionHeader={({ section: { bucketName } }): JSX.Element => (
+                    <SectionHeader
+                        title={bucketName}
+                        style={{ marginTop: theme.spacing.xxl, marginHorizontal: theme.spacing.md }}
+                    />
                 )}
                 sections={sections}
                 stickySectionHeadersEnabled={false}
                 ListEmptyComponent={
-                    <>
+                    <Stack style={{ marginTop: theme.spacing.xxl }}>
                         <Divider />
-                        <List.Item title={'No Posts Yet!'} style={listStyles.item} titleStyle={{ marginLeft: -8 }} />
+                        <ListItem title={'No Posts Yet!'} titleStyle={{ marginLeft: -1 * theme.spacing.md }} />
                         <Divider />
-                    </>
+                    </Stack>
                 }
                 renderItem={({ item, index }): JSX.Element => (
                     <>
                         {index === 0 && <Divider />}
-                        <List.Item
+                        <ListItem
                             title={item.title}
                             titleNumberOfLines={2}
                             titleEllipsizeMode={'tail'}
                             // @ts-ignore
                             onPress={(): void => props.navigation.push(ROUTES.BLOG, { blog: item })}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            descriptionStyle={{ marginLeft: -8 }}
+                            titleStyle={{ marginLeft: -1 * theme.spacing.md }}
+                            descriptionStyle={{ marginLeft: -1 * theme.spacing.md }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
+                                <View style={[style]} {...rightProps}>
                                     <MatIcon
                                         name={'chevron-right'}
-                                        // size={theme.sizes.small}
-                                        // style={{ marginRight: -1 * theme.spaces.small }}
+                                        size={theme.size.md}
+                                        color={theme.colors.primary}
+                                        style={{ marginRight: -1 * theme.spacing.md }}
                                     />
                                 </View>
                             )}

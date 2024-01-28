@@ -2,7 +2,7 @@ import * as React from 'react';
 
 // Components
 import { Image, TouchableHighlight, View } from 'react-native';
-import { CollapsibleHeaderLayout, Spacer, Stack, Typography } from '../../components';
+import { CollapsibleHeaderLayout, Paragraph, Spacer, Stack, Typography } from '../../components';
 
 // Styles
 import { StackScreenProps } from '@react-navigation/stack';
@@ -79,9 +79,7 @@ export const Pros: React.FC<StackScreenProps<RootStackParamList, 'About'>> = (pr
                         <Spacer size={theme.spacing.md} />
                         <Stack space={theme.spacing.md}>
                             {splitParagraphs(pro.bio).map((p, ind) => (
-                                <Typography variant={'bodyLarge'} fontWeight={'light'} key={`${pro.id}_p_${ind}`}>
-                                    {p}
-                                </Typography>
+                                <Paragraph key={`${pro.id}_p_${ind}`}>{p}</Paragraph>
                             ))}
                         </Stack>
                     </View>

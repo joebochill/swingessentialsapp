@@ -1,9 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 // Components
-import { View, ScrollView } from 'react-native';
-import { Typography, SEHeader } from '../../components/index';
-// Styles
-import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
+import { ScrollView } from 'react-native';
+import { SEHeader, Stack, SectionHeader, Paragraph } from '../../components/index';
 
 // Utilities
 import { splitParagraphs, getLongDate } from '../../utilities';
@@ -11,39 +9,48 @@ import { height } from '../../utilities/dimensions';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
-import { useTheme, Subheading } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../styles/theme';
 
 export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBlog'>> = (props) => {
     const { blog } = props.route.params;
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
+    const theme = useAppTheme();
 
     if (blog === null) {
         props.navigation.pop();
     }
     return (
         blog && (
-            <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
+            <Stack
+                style={[
+                    {
+                        flex: 1,
+                        backgroundColor: theme.colors.background,
+                        paddingTop: HEADER_COLLAPSED_HEIGHT,
+                    },
+                ]}
+            >
                 {/* @ts-ignore */}
                 <SEHeader title={getLongDate(blog.date)} mainAction={'back'} navigation={props.navigation} />
                 <ScrollView
-                    contentContainerStyle={[flexStyles.paddingMedium, { paddingBottom: height * 0.5 }]}
+                    contentContainerStyle={[
+                        {
+                            paddingHorizontal: theme.spacing.md,
+                            paddingTop: theme.spacing.md,
+                            paddingBottom: height * 0.5,
+                        },
+                    ]}
                     keyboardShouldPersistTaps={'always'}
                 >
-                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                        <Subheading style={listStyles.heading}>{blog.title}</Subheading>
-                    </View>
-                    {splitParagraphs(blog.body).map((p, ind) => (
-                        <Typography key={`${blog.id}_p_${ind}`} style={[ind > 0 ? sharedStyles.paragraph : {}]}>
-                            {p}
-                        </Typography>
-                    ))}
+                    <SectionHeader title={blog.title} />
+                    <Stack space={theme.spacing.md}>
+                        {splitParagraphs(blog.body).map((p, ind) => (
+                            <Paragraph key={`${blog.id}_p_${ind}`}>{p}</Paragraph>
+                        ))}
+                    </Stack>
                 </ScrollView>
-            </View>
+            </Stack>
         )
     );
 };
