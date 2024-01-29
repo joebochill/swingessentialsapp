@@ -10,7 +10,7 @@ X Lessons
 X Individual Lesson
 X Submit
 - Record
-- Order More
+X Order More
 X Pros
 X Tips
 X Individual Tip
@@ -32,6 +32,7 @@ X Token Timeout
     X Submit
 X UploadProgressModal
 
+Clean Up styles of all remaining components, e.g. Counter
 
 Get the DateTime Picker working
 Fix settings not saving

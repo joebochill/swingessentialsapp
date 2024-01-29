@@ -2,9 +2,10 @@ import { StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 // import { unit } from './sizes';
 // import { theme as defaultTheme, Theme } from './theme';
 import { MD3Theme } from 'react-native-paper';
+import { AppTheme } from './theme';
 
 export const useFormStyles = (
-    theme: MD3Theme
+    theme: AppTheme
 ): StyleSheet.NamedStyles<{
     fieldRow: StyleProp<ViewStyle>;
     formField: StyleProp<ViewStyle>;
@@ -44,7 +45,7 @@ export const useFormStyles = (
     });
 
 export const useFlexStyles = (
-    theme: MD3Theme
+    theme: AppTheme
 ): StyleSheet.NamedStyles<{
     row: StyleProp<ViewStyle>;
     centered: StyleProp<ViewStyle>;
