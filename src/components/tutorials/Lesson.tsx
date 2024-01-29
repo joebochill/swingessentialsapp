@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
 import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 export const LessonTutorial: React.FC = () => {
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);

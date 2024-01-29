@@ -30,7 +30,7 @@ import { ApplicationState } from '../../__types__';
 import { loadLessons } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 const AddIcon = wrapIcon({ IconClass: MatIcon, name: 'add-circle' });
 

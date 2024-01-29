@@ -7,7 +7,7 @@ import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { width, aspectWidth } from '../../utilities/dimensions';
 import { ActivityIndicator } from 'react-native-paper';
-import { AppTheme, useAppTheme } from '../../styles/theme';
+import { AppTheme, useAppTheme } from '../../theme';
 import { SectionHeader } from '..';
 
 const useStyles = (

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Image } from 'react-native';
-import { Typography } from '../index';
+import { Typography } from '../';
 import { SEButton, SEVideoPlaceholder, Stack } from '..';
 import { TutorialModal } from '.';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -19,7 +19,7 @@ import { tutorialViewed } from '../../redux/actions';
 // Constants
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 import { RecordButton } from '../videos';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 export const SubmitTutorial: React.FC = () => {
     const [activePanel, setActivePanel] = useState(0);

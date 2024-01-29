@@ -13,7 +13,7 @@ import { atob } from '../../utilities';
 
 // Redux
 import { requestLogout, refreshToken, checkToken } from '../../redux/actions';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 const formatTime = (remaining: number): string => {
     if (!remaining || remaining <= 0) {

@@ -20,7 +20,7 @@ import { height } from '../../utilities/dimensions';
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT } from '../../constants';
 import { withTheme } from 'react-native-paper';
-import { AppTheme } from '../../styles/theme';
+import { AppTheme } from '../../theme';
 
 type HeaderLayoutState = {
     scrollY: Animated.Value;

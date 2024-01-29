@@ -1,7 +1,7 @@
 import React from 'react';
 // Components
 import { ScrollView } from 'react-native';
-import { SEHeader, YouTube, Stack, SectionHeader } from '../../components/index';
+import { SEHeader, YouTube, Stack, SectionHeader } from '../../components';
 // Styles
 import { width, height, aspectHeight } from '../../utilities/dimensions';
 
@@ -12,7 +12,7 @@ import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { Paragraph } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip'>> = (props) => {
     const { tip } = props.route.params;

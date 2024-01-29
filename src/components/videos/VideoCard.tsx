@@ -8,8 +8,7 @@ import { YouTube } from './Youtube';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { width, aspectHeight } from '../../utilities/dimensions';
-import { black } from '../../styles/colors';
-import { AppTheme, useAppTheme } from '../../styles/theme';
+import { AppTheme, useAppTheme } from '../../theme';
 
 // Types
 // import { Theme } from '../../styles/theme';
@@ -23,7 +22,7 @@ const useStyles = (
 }> =>
     StyleSheet.create({
         card: {
-            shadowColor: black[900],
+            shadowColor: '#000',
             shadowOpacity: 0.4,
             shadowRadius: 3,
             shadowOffset: {

@@ -8,7 +8,7 @@ import { Typography, CollapsibleHeaderLayout, Stack, SectionHeader, Spacer, Para
 // Styles
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 export const About: React.FC<StackScreenProps<RootStackParamList, 'About'>> = (props) => {
     const theme = useAppTheme();

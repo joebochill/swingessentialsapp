@@ -18,7 +18,7 @@ import { store } from './src/redux/store';
 // Utilities
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PaperProvider } from 'react-native-paper';
-import { SETheme } from './src/styles/theme';
+import { SETheme } from './src/theme';
 
 // TODO: Support dark mode
 export default function App(): React.JSX.Element {

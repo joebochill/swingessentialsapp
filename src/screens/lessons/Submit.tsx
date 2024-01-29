@@ -20,7 +20,6 @@ import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 
 // Styles
-import { transparent } from '../../styles/colors';
 import { TextInput } from 'react-native-paper';
 import bg from '../../images/banners/submit.jpg';
 import dtl from '../../images/down-the-line.png';
@@ -39,7 +38,7 @@ import { submitLesson } from '../../redux/actions';
 import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 const RNFS = require('react-native-fs');
 
@@ -366,6 +365,22 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                         )}
                     </Stack>
 
+                    <Stack
+                        style={{
+                            marginTop: theme.spacing.sm,
+                            padding: theme.spacing.md,
+                            borderWidth: 1,
+                            borderRadius: theme.roundness,
+                            borderColor: theme.colors.outline,
+                            backgroundColor: theme.colors.primaryContainer,
+                        }}
+                    >
+                        <Typography
+                            variant={'bodySmall'}
+                            color={'primary'}
+                        >{`Please do not submit slo-mo videos to ensure your video is below the file size limit.`}</Typography>
+                    </Stack>
+
                     <SectionHeader title={'Special Requests / Comments'} style={{ marginTop: theme.spacing.xl }} />
                     {!useNotes && (
                         <TouchableOpacity
@@ -375,7 +390,6 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                     borderWidth: 1,
                                     borderRadius: theme.roundness,
                                     borderStyle: 'dashed',
-                                    // borderColor: theme.colors.dark,
                                     backgroundColor: theme.colors.surface,
                                     padding: theme.spacing.md,
                                     minHeight: 2 * theme.size.xl,

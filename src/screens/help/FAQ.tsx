@@ -18,7 +18,7 @@ import { ApplicationState } from '../../__types__';
 import { loadFAQ } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props) => {
     const faqState = useSelector((state: ApplicationState) => state.faq);

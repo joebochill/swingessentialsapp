@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
-import { Typography, SEHeader, Stack, ListItem } from '../../components/index';
+import { Typography, SEHeader, Stack, ListItem } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { Divider } from 'react-native-paper';
@@ -16,7 +16,7 @@ import { putSettings } from '../../redux/actions/SettingsActions';
 // Constants
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 type SettingType = {
     name: Exclude<keyof SettingsState, 'loading' | 'notifications'> | keyof SettingsState['notifications'];

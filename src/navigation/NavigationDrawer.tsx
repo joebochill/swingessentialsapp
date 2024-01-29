@@ -31,8 +31,8 @@ import { loadUserContent, requestLogout } from '../redux/actions';
 import se from '../images/logo-small.png';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
-import { useAppTheme } from '../styles/theme';
-import { lightType, semiBoldType } from '../styles/typography/fontConfig';
+import { useAppTheme } from '../theme';
+import { lightType, semiBoldType } from '../theme/typography/fontConfig';
 
 export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) => {
     const theme = useAppTheme();

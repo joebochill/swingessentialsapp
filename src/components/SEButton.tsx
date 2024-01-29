@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, ButtonProps } from 'react-native-paper';
-import { regularType } from '../styles/typography/fontConfig';
+import { regularType } from '../theme/typography/fontConfig';
 
 type SEButtonProps = Omit<ButtonProps, 'children'> & {
     title: string;

@@ -7,21 +7,14 @@ import {
     Platform,
     SafeAreaView,
     StatusBar,
-    StyleSheet,
     TouchableOpacity,
     View,
     ActivityIndicator,
     ImageSourcePropType,
-    StyleProp,
-    ViewStyle,
 } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { VideoControls, CountDown, VideoTimer, Stack } from '../../components';
 import Video from 'react-native-video';
-
-// Styles
-import { useSharedStyles } from '../../styles';
-import { oledBlack, blackOpacity } from '../../styles/colors';
 
 // Utilities
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -39,39 +32,11 @@ import downthelineRH from '../../images/overlay-dtl-rh.png';
 import { ROUTES } from '../../constants/routes';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { Logger } from '../../utilities/logging';
-import { MD3Theme, useTheme } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 // const DESIRED_RATIO = '16:9';
-
-const useStyles = (
-    theme: MD3Theme
-): StyleSheet.NamedStyles<{
-    bar: StyleProp<ViewStyle>;
-    content: StyleProp<ViewStyle>;
-}> =>
-    StyleSheet.create({
-        bar: {
-            width: '100%',
-            top: 0,
-            left: 0,
-            paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
-            position: 'absolute',
-            justifyContent: 'flex-end',
-            zIndex: 1000,
-            backgroundColor: blackOpacity(0.5),
-        },
-        content: {
-            flex: 1,
-            position: 'relative',
-            // paddingHorizontal: theme.spaces.medium,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-    });
 
 const getOverlayImage = (swing: SwingType, handedness: HandednessType, camera: CameraType): ImageSourcePropType => {
     const options: ImageSourcePropType[] = swing === 'dtl' ? [downthelineRH, downthelineLH] : [faceonRH, faceonLH];
@@ -265,7 +230,7 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
                         position: 'absolute',
                         justifyContent: 'flex-end',
                         zIndex: 1000,
-                        backgroundColor: blackOpacity(0.5),
+                        backgroundColor: 'rgba(0,0,0,0.5)',
                     }}
                 >
                     <StatusBar barStyle={'light-content'} />

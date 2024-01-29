@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { APP_VERSION, ASYNC_PREFIX, TUTORIALS, TUTORIAL_VERSIONS } from '../../constants/index';
+import { APP_VERSION, ASYNC_PREFIX, TUTORIALS, TUTORIAL_VERSIONS } from '../../constants';
 import { MARK_TUTORIAL } from './types';
 import { ThunkDispatch } from 'redux-thunk';
 import { checkVersionGreater } from '../../utilities';

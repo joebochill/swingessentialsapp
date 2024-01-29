@@ -8,7 +8,7 @@ import { Typography } from '../';
 
 // Utilities
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 type RecordButtonProps = TouchableOpacityProps & {
     recording: boolean;

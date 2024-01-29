@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 // Components
 import { View, ViewProps } from 'react-native';
-import { Typography } from '../';
+import { Stack, Typography } from '../';
 // Styles
-import { useSharedStyles } from '../../styles';
-import { blackOpacity } from '../../styles/colors';
-import { unit } from '../../styles/sizes';
-import { useTheme } from 'react-native-paper';
+import { useAppTheme } from '../../theme';
 
 export type CountDownProps = ViewProps & {
     startValue: number;
@@ -16,8 +13,7 @@ export type CountDownProps = ViewProps & {
 export const CountDown: React.FC<CountDownProps> = (props) => {
     const { startValue, endValue = 0, onFinish = (): void => {} } = props;
     const [seconds, setSeconds] = useState(startValue);
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
+    const theme = useAppTheme();
 
     useEffect(() => {
         let interval: any = 0;
@@ -33,16 +29,23 @@ export const CountDown: React.FC<CountDownProps> = (props) => {
     }, [endValue, onFinish, seconds]);
 
     return seconds > endValue ? (
-        <View
+        <Stack
+            align={'center'}
+            justify={'center'}
             style={[
-                sharedStyles.absoluteFull,
-                sharedStyles.centered,
-                { backgroundColor: blackOpacity(0.25) },
+                {
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                },
+                { backgroundColor: 'rgba(0,0,0,0.25)' },
                 props.style,
             ]}
         >
-            <Typography style={{ color: theme.colors.onPrimary, fontSize: unit(128) }}>{seconds}</Typography>
-        </View>
+            <Typography style={{ color: theme.colors.onPrimary, fontSize: 128 }}>{seconds}</Typography>
+        </Stack>
     ) : null;
 };
 
@@ -55,7 +58,7 @@ export type VideoTimerProps = ViewProps & {
 export const VideoTimer: React.FC<VideoTimerProps> = (props) => {
     const { visible, startValue = 0, offset = -1 } = props;
     const [seconds, setSeconds] = useState(startValue);
-    const theme = useTheme();
+    const theme = useAppTheme();
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -68,27 +71,27 @@ export const VideoTimer: React.FC<VideoTimerProps> = (props) => {
 
     return visible ? (
         <View {...props}>
-            <View
+            <Stack
+                align={'flex-start'}
+                justify={'center'}
                 style={{
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
                     position: 'absolute',
                     top: 0,
-                    left: -2 * unit(5),
+                    left: -10,
                     bottom: 0,
                     right: 0,
                 }}
             >
                 <View
                     style={{
-                        height: unit(5),
-                        width: unit(5),
-                        borderRadius: unit(5),
+                        height: 5,
+                        width: 5,
+                        borderRadius: 5,
                         backgroundColor: 'red',
                     }}
                 />
-            </View>
-            <Typography style={{ fontSize: 14 /*theme.fontSizes[14]*/, color: theme.colors.onPrimary }}>
+            </Stack>
+            <Typography style={{ fontSize: 14, color: theme.colors.onPrimary }}>
                 {`00:00:${displaySeconds < 10 ? '0' : ''}${displaySeconds}`}
             </Typography>
         </View>

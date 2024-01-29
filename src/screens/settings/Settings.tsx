@@ -26,7 +26,7 @@ import { HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT } from '../../constants
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { format } from 'date-fns';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 const objectsEqual = (a: Record<string, unknown>, b: Record<string, unknown>): boolean => {
     // Create arrays of property names

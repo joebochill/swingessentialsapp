@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { SectionTitle } from '../typography';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 import { Stack } from './Stack';
 
 type SectionHeaderProps = {

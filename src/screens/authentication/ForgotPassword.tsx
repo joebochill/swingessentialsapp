@@ -5,7 +5,6 @@ import { Platform, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { Typography, SEHeader, SEButton, BackgroundImage, Stack } from '../../components';
 
 // Styles
-import { transparent } from '../../styles/colors';
 import { height } from '../../utilities/dimensions';
 import { TextInput } from 'react-native-paper';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
@@ -18,7 +17,7 @@ import { useDispatch } from 'react-redux';
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'ResetPassword'>> = (props) => {
     const { navigation } = props;
@@ -80,7 +79,7 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
                                 onChangeText={(value: string): void => setEmail(value.substr(0, 128))}
                                 onSubmitEditing={(): void => sendPasswordReset()}
                                 returnKeyType={'send'}
-                                underlineColorAndroid={transparent}
+                                underlineColorAndroid={'transparent'}
                                 value={email}
                             />
                             <SEButton

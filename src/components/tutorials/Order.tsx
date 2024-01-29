@@ -1,20 +1,19 @@
 import React from 'react';
-import { useTheme, List, Divider } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 // Components
 import { View, FlatList } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import { ListItem, Stack, Typography } from '../index';
+import { ListItem, Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
 // Styles
-import { useListStyles, useFlexStyles } from '../../styles';
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
 import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 export const OrderTutorial: React.FC = () => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);

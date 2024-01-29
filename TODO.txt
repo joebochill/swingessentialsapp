@@ -9,7 +9,7 @@ X Setting
 X Lessons
 X Individual Lesson
 X Submit
-- Record
+X Record
 X Order More
 X Pros
 X Tips
@@ -18,17 +18,17 @@ X Blogs
 X Individual Blogs
 X About
 X FAQ
-- Contact
+X Contact (NOT A SCREEN — JUST A FUNCTION)
 X Logs
 X Log In
 X Registration
 X Forgot Password
 X Token Timeout
-- Tutorials
+X Tutorials
     X Home
     X Lesson
     X Lessons
-    - Order
+    X Order
     X Submit
 X UploadProgressModal
 
@@ -40,7 +40,8 @@ Fix Video Picker broken
 Fix Video Recording
 Get biometric login working
 Fix registration against existing username / other registration validators
-
+Video not recording
+Recording not respecting record duration props
 
 
 - Fix components folder

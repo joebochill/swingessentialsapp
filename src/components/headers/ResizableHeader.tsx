@@ -15,23 +15,16 @@ import {
 import { AnimatedSafeAreaView } from '../../components';
 import { withTheme } from 'react-native-paper';
 
-// Styles
-import { blackOpacity } from '../../styles/colors';
-// import { unit } from '../../styles/sizes';
-
 // Utilities
-// import color from 'color';
 import { interpolate } from '../../utilities';
 
 // Types
 import { HeaderIcon } from '../types';
-// import { $DeepPartial } from '@callstack/react-theme-provider';
 
 // Constants
 import { HEADER_COLLAPSED_HEIGHT, HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT_NO_STATUS } from '../../constants';
-import { AppTheme } from '../../styles/theme';
-import { lightType, regularType, semiBoldType } from '../../styles/typography/fontConfig';
-// import { theme as defaultTheme } from '../../styles/theme';
+import { AppTheme } from '../../theme';
+import { lightType, regularType, semiBoldType } from '../../theme/typography/fontConfig';
 import color from 'color';
 
 const styles = StyleSheet.create({
@@ -44,7 +37,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         position: 'absolute',
-        // right: defaultTheme.spaces.small,
         height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
     },
 });
@@ -254,7 +246,7 @@ class HeaderClass extends Component<ResizableHeaderProps, HeaderState> {
                 position: 'absolute',
                 justifyContent: 'flex-end',
                 zIndex: 1000,
-                shadowColor: blackOpacity(0.3),
+                shadowColor: 'rgba(0,0,0,0.3)',
                 shadowOffset: {
                     width: 0,
                     height: 1,

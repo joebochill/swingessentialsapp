@@ -1,7 +1,7 @@
 import React from 'react';
 // Components
 import { ScrollView } from 'react-native';
-import { SEHeader, Stack, SectionHeader, Paragraph } from '../../components/index';
+import { SEHeader, Stack, SectionHeader, Paragraph } from '../../components';
 
 // Utilities
 import { splitParagraphs, getLongDate } from '../../utilities';
@@ -11,7 +11,7 @@ import { height } from '../../utilities/dimensions';
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBlog'>> = (props) => {
     const { blog } = props.route.params;

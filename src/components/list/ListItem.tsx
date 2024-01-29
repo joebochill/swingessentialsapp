@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, ListItemProps } from 'react-native-paper';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 export const ListItem: React.FC<ListItemProps> = (props) => {
     const { style, left, titleStyle, descriptionStyle, ...other } = props;

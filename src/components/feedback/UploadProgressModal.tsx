@@ -4,7 +4,7 @@ import { ActivityIndicator, Modal, ModalProps, View } from 'react-native';
 import { Paragraph, SectionHeader, Stack } from '../../components';
 
 // Styles
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 type ProgressModalProps = ModalProps & {
     visible?: boolean;

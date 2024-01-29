@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { ApplicationState, Pro } from '../../__types__';
 import { width } from '../../utilities/dimensions';
 import { splitParagraphs } from '../../utilities';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 export const Pros: React.FC<StackScreenProps<RootStackParamList, 'About'>> = (props) => {
     const theme = useAppTheme();

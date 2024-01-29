@@ -19,7 +19,7 @@ import { loadBlogs } from '../../redux/actions';
 import { ApplicationState } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 type Blog = {
     id: number;

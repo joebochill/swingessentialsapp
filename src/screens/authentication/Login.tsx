@@ -32,7 +32,7 @@ import { ROUTES } from '../../constants/routes';
 import { requestLogin } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 type BiometryState = {
     available: boolean;

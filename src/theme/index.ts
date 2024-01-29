@@ -1,6 +1,16 @@
 import { configureFonts, MD3LightTheme, useTheme } from 'react-native-paper';
-import { purple } from './colors';
 import { fontConfig } from './typography/fontConfig';
+
+const purple = {
+    0: '#000',
+    10: '#0c0a33',
+    20: '#151245', // dark
+    50: '#4F4C81', // main
+    80: '#918fb0', // light
+    90: '#bdbcd0',
+    95: '#e5e4ec', // 50
+    100: '#FFF',
+};
 
 export const SETheme = {
     ...MD3LightTheme,

@@ -13,7 +13,7 @@ import { LOAD_LOGS } from '../../redux/actions/types';
 import { ApplicationState } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 // Icons
 const RefreshIcon = wrapIcon({ IconClass: MatIcon, name: 'refresh' });

@@ -35,7 +35,7 @@ import { checkUsernameAvailability, checkEmailAvailability, createAccount, verif
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { ROUTES } from '../../constants/routes';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useAppTheme } from '../../styles/theme';
+import { useAppTheme } from '../../theme';
 
 const getRegistrationErrorMessage = (code: number): string => {
     switch (code) {
