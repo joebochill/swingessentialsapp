@@ -231,43 +231,52 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
         },
         [setFO, setDTL]
     );
-
     const showPickerMenu = useCallback(
-        (swing: 'fo' | 'dtl'): void => {
+        (swing: 'fo' | 'dtl') => {
             // @ts-ignore
-            ImagePicker.showImagePicker(
-                {
-                    title: undefined,
-                    takePhotoButtonTitle: undefined,
-                    chooseFromLibraryButtonTitle: 'Choose From Library',
-                    customButtons: [{ name: 'record', title: 'Record a New Video' }],
-                    videoQuality: 'high',
-                    mediaType: 'video',
-                    durationLimit: 10,
-                    storageOptions: {
-                        skipBackup: true,
-                        path: 'images',
-                    },
-                },
-                (response: any) => {
-                    if (response.didCancel) {
-                        /*do nothing*/
-                    } else if (response.error) {
-                        Alert.alert('There was an error choosing a video. Try again later.');
-                    } else if (response.customButton === 'record') {
-                        // @ts-ignore
-                        navigation.push(ROUTES.RECORD, {
-                            swing,
-                            onReturn: (uri: string) => setVideoURI(swing, uri),
-                        });
-                    } else {
-                        void setVideoURI(swing, response.uri);
-                    }
-                }
-            );
+            navigation.push(ROUTES.RECORD, {
+                swing,
+                onReturn: (uri: string) => setVideoURI(swing, uri),
+            });
         },
-        [setVideoURI, navigation]
+        [navigation]
     );
+    // const showPickerMenu = useCallback(
+    //     (swing: 'fo' | 'dtl'): void => {
+    //         // @ts-ignore
+    //         ImagePicker.showImagePicker(
+    //             {
+    //                 title: undefined,
+    //                 takePhotoButtonTitle: undefined,
+    //                 chooseFromLibraryButtonTitle: 'Choose From Library',
+    //                 customButtons: [{ name: 'record', title: 'Record a New Video' }],
+    //                 videoQuality: 'high',
+    //                 mediaType: 'video',
+    //                 durationLimit: 10,
+    //                 storageOptions: {
+    //                     skipBackup: true,
+    //                     path: 'images',
+    //                 },
+    //             },
+    //             (response: any) => {
+    //                 if (response.didCancel) {
+    //                     /*do nothing*/
+    //                 } else if (response.error) {
+    //                     Alert.alert('There was an error choosing a video. Try again later.');
+    //                 } else if (response.customButton === 'record') {
+    //                     // @ts-ignore
+    //                     navigation.push(ROUTES.RECORD, {
+    //                         swing,
+    //                         onReturn: (uri: string) => setVideoURI(swing, uri),
+    //                     });
+    //                 } else {
+    //                     void setVideoURI(swing, response.uri);
+    //                 }
+    //             }
+    //         );
+    //     },
+    //     [setVideoURI, navigation]
+    // );
 
     return (
         <CollapsibleHeaderLayout

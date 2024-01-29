@@ -16,7 +16,7 @@ import {
     ViewStyle,
 } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import { VideoControls, CountDown, VideoTimer } from '../../components';
+import { VideoControls, CountDown, VideoTimer, Stack } from '../../components';
 import Video from 'react-native-video';
 
 // Styles
@@ -42,6 +42,7 @@ import { Logger } from '../../utilities/logging';
 import { MD3Theme, useTheme } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../styles/theme';
 
 // const DESIRED_RATIO = '16:9';
 
@@ -86,9 +87,7 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
     const { navigation } = props;
     const cameraRef = useRef(null);
     const videoRef = useRef(null);
-    const theme = useTheme();
-    const styles = useStyles(theme);
-    const sharedStyles = useSharedStyles(theme);
+    const theme = useAppTheme();
     const { onReturn, swing } = props.route.params;
 
     const settings = useSelector((state: ApplicationState) => state.settings);
@@ -224,31 +223,63 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
         />
     );
     return (
-        <View style={{ flex: 1, alignItems: 'stretch', backgroundColor: oledBlack[900] }}>
+        <View style={{ flex: 1, alignItems: 'stretch', backgroundColor: theme.colors.primary[0] }}>
             {recordingMode && VideoRecorder}
             {!recordingMode && VideoPlayer}
             {!recordingMode &&
                 !previewReady && ( // TODO: this was added after the iOS release
                     <ActivityIndicator
-                        // size={theme.sizes.xLarge}
+                        size={theme.size.xl}
                         color={theme.colors.onPrimary}
                         style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
                     />
                 )}
             {recordingMode && settings.overlay && (
-                <View style={[sharedStyles.absoluteFull, sharedStyles.centered]}>
+                <Stack
+                    align={'center'}
+                    justify={'center'}
+                    style={[
+                        {
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                        },
+                    ]}
+                >
                     <Image
                         resizeMethod="resize"
                         style={{ height: '100%', width: '100%', opacity: 0.35, resizeMode: 'contain' }}
                         source={getOverlayImage(swing, settings.handedness, cameras[cameraType])}
                     />
-                </View>
+                </Stack>
             )}
             {recordingMode && (
-                <View style={styles.bar}>
+                <View
+                    style={{
+                        width: '100%',
+                        top: 0,
+                        left: 0,
+                        paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
+                        position: 'absolute',
+                        justifyContent: 'flex-end',
+                        zIndex: 1000,
+                        backgroundColor: blackOpacity(0.5),
+                    }}
+                >
                     <StatusBar barStyle={'light-content'} />
                     <SafeAreaView style={{ height: HEADER_COLLAPSED_HEIGHT }}>
-                        <View style={styles.content}>
+                        <Stack
+                            direction={'row'}
+                            align={'center'}
+                            justify={'center'}
+                            style={{
+                                flex: 1,
+                                position: 'relative',
+                                paddingHorizontal: theme.spacing.md,
+                            }}
+                        >
                             {recordingMode && !isRecording && <View style={{ flex: 1 }} />}
                             {isRecording && !showCountDown && <VideoTimer visible={isRecording} />}
                             {recordingMode && !isRecording && token && (
@@ -257,13 +288,13 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
                                     <TouchableOpacity onPress={(): void => navigation.push(ROUTES.SETTINGS_GROUP)}>
                                         <MatIcon
                                             name={'settings'}
-                                            // size={theme.sizes.small}
+                                            size={theme.size.md}
                                             color={theme.colors.onPrimary}
                                         />
                                     </TouchableOpacity>
                                 </View>
                             )}
-                        </View>
+                        </Stack>
                     </SafeAreaView>
                 </View>
             )}

@@ -92,12 +92,7 @@ export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
         >
             <TouchableOpacity onPress={onBack} disabled={active} style={{ flex: 1 }}>
                 {!active && (
-                    <Typography
-                        style={{
-                            fontSize: 16,
-                            color: theme.colors.onPrimary,
-                        }}
-                    >
+                    <Typography variant={'bodyLarge'} color={'onPrimary'}>
                         {mode === 'record' ? 'Cancel' : 'Retake'}
                     </Typography>
                 )}
@@ -105,7 +100,7 @@ export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
             {mode === 'play' && (
                 <MatIcon
                     name={active ? 'pause' : 'play-arrow'}
-                    // size={theme.sizes.xLarge}
+                    size={theme.size.xl}
                     // underlayColor={transparent}
                     color={theme.colors.onPrimary}
                     style={{ flex: 0 }}
@@ -115,19 +110,14 @@ export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
             {mode === 'record' && <RecordButton style={{ flex: 0 }} recording={active} onPress={onAction} />}
             <TouchableOpacity onPress={onNext} disabled={active} style={{ flex: 1, alignItems: 'flex-end' }}>
                 {!active && mode === 'play' && (
-                    <Typography
-                        style={{
-                            fontSize: 16,
-                            color: theme.colors.onPrimary,
-                        }}
-                    >
+                    <Typography variant={'bodyLarge'} color={'onPrimary'}>
                         Use Video
                     </Typography>
                 )}
                 {!active && mode === 'record' && (
                     <MaterialCommunityIcon
                         name={'camera-switch'}
-                        // size={theme.sizes.medium}
+                        size={theme.size.md}
                         // underlayColor={transparent}
                         color={theme.colors.onPrimary}
                         onPress={onNext}
