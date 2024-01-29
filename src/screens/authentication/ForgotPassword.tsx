@@ -1,14 +1,13 @@
 import React, { useState, useCallback } from 'react';
 
 // Components
-import { View, Platform, ScrollView, KeyboardAvoidingView } from 'react-native';
-import { Typography, SEHeader, SEButton, BackgroundImage } from '../../components';
+import { Platform, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { Typography, SEHeader, SEButton, BackgroundImage, Stack } from '../../components';
 
 // Styles
 import { transparent } from '../../styles/colors';
-import { useSharedStyles, useFormStyles, useFlexStyles } from '../../styles';
 import { height } from '../../utilities/dimensions';
-import { useTheme, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Redux
@@ -19,17 +18,14 @@ import { useDispatch } from 'react-redux';
 import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../styles/theme';
 
 export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'ResetPassword'>> = (props) => {
     const { navigation } = props;
     const [email, setEmail] = useState('');
-    const [activeField, setActiveField] = useState<'email' | null>(null);
     const [complete, setComplete] = useState(false);
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const formStyles = useFormStyles(theme);
-    const flexStyles = useFlexStyles(theme);
+    const theme = useAppTheme();
 
     const sendPasswordReset = useCallback(() => {
         if (EMAIL_REGEX.test(email)) {
@@ -40,7 +36,7 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
     }, [email, dispatch, setComplete]);
 
     return (
-        <View style={sharedStyles.pageContainer}>
+        <Stack style={{ flex: 1, backgroundColor: theme.colors.primary }}>
             {/* @ts-ignore */}
             <SEHeader
                 title={'Forgot Password'}
@@ -51,8 +47,8 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
             />
             <KeyboardAvoidingView
                 style={[
-                    sharedStyles.pageContainer,
                     {
+                        flex: 1,
                         paddingTop: HEADER_COLLAPSED_HEIGHT,
                         backgroundColor: theme.colors.primary,
                     },
@@ -63,57 +59,49 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
                 {!complete && (
                     <ScrollView
                         contentContainerStyle={[
-                            flexStyles.paddingMedium,
                             {
+                                padding: theme.spacing.md,
                                 paddingBottom: height * 0.5,
                             },
                         ]}
                         keyboardShouldPersistTaps={'always'}
                     >
-                        <Typography color={'onPrimary'}>
-                            {
-                                'Enter the email address you used to register for your account below and we will send you instructions for resetting your password.'
-                            }
-                        </Typography>
-                        <TextInput
-                            autoCorrect={false}
-                            autoCapitalize={'none'}
-                            keyboardType={'email-address'}
-                            label={'Email Address'}
-                            style={[
-                                formStyles.formField,
-                                activeField === 'email' || email.length > 0 ? formStyles.active : formStyles.inactive,
-                            ]}
-                            onFocus={(): void => setActiveField('email')}
-                            onBlur={(): void => setActiveField(null)}
-                            onChangeText={(value: string): void => setEmail(value.substr(0, 128))}
-                            onSubmitEditing={(): void => sendPasswordReset()}
-                            returnKeyType={'send'}
-                            underlineColorAndroid={transparent}
-                            value={email}
-                        />
-                        <SEButton
-                            dark
-                            title={'REQUEST RESET'}
-                            onPress={EMAIL_REGEX.test(email) ? (): void => sendPasswordReset() : undefined}
-                            style={[formStyles.formField, EMAIL_REGEX.test(email) ? {} : { opacity: 0.6 }]}
-                        />
+                        <Stack space={theme.spacing.md}>
+                            <Typography variant={'bodyLarge'} color={'onPrimary'}>
+                                {
+                                    'Enter the email address you used to register for your account below and we will send you instructions for resetting your password.'
+                                }
+                            </Typography>
+                            <TextInput
+                                autoCorrect={false}
+                                autoCapitalize={'none'}
+                                keyboardType={'email-address'}
+                                label={'Email Address'}
+                                onChangeText={(value: string): void => setEmail(value.substr(0, 128))}
+                                onSubmitEditing={(): void => sendPasswordReset()}
+                                returnKeyType={'send'}
+                                underlineColorAndroid={transparent}
+                                value={email}
+                            />
+                            <SEButton
+                                dark
+                                buttonColor={theme.colors.secondary}
+                                title={'REQUEST RESET'}
+                                onPress={EMAIL_REGEX.test(email) ? (): void => sendPasswordReset() : undefined}
+                                style={[EMAIL_REGEX.test(email) ? {} : { opacity: 0.6 }]}
+                            />
+                        </Stack>
                     </ScrollView>
                 )}
                 {complete && (
-                    <View style={[flexStyles.paddingMedium, sharedStyles.centered, { flex: 1 }]}>
-                        <MatIcon
-                            name={'check-circle'}
-                            // size={theme.sizes.jumbo}
-                            color={theme.colors.onPrimary}
-                            style={{ alignSelf: 'center' }}
-                        />
-                        <Typography color={'onPrimary'} style={[{ textAlign: 'center' }]}>
+                    <Stack align={'center'} justify={'center'} style={[{ flex: 1, padding: theme.spacing.md }]}>
+                        <MatIcon name={'check-circle'} size={theme.size.xxl} color={theme.colors.onPrimary} />
+                        <Typography variant={'bodyLarge'} color={'onPrimary'} align={'center'}>
                             {'Your password reset request was received. Check your email for further instructions.'}
                         </Typography>
-                    </View>
+                    </Stack>
                 )}
             </KeyboardAvoidingView>
-        </View>
+        </Stack>
     );
 };

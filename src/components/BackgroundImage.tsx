@@ -1,19 +1,6 @@
 import React from 'react';
-import { StyleSheet, Image, ImageProps, ImageSourcePropType, ImageStyle } from 'react-native';
+import { Image, ImageProps, ImageSourcePropType } from 'react-native';
 import bg from '../images/banners/landing.jpg';
-
-const useStyles = (): StyleSheet.NamedStyles<{
-    image: ImageStyle;
-}> =>
-    StyleSheet.create({
-        image: {
-            position: 'absolute',
-            width: '100%',
-            resizeMode: 'cover',
-            height: '100%',
-            opacity: 0.3,
-        },
-    });
 
 type BGImageProps = Omit<ImageProps, 'source'> & {
     source?: ImageSourcePropType;
@@ -21,7 +8,22 @@ type BGImageProps = Omit<ImageProps, 'source'> & {
 
 export const BackgroundImage: React.FC<BGImageProps> = (props) => {
     const { style, source = bg, ...other } = props;
-    const styles = useStyles();
     // @ts-ignore
-    return <Image source={source} resizeMethod={'resize'} style={[styles.image, style]} {...other} />;
+    return (
+        <Image
+            source={source}
+            resizeMethod={'resize'}
+            style={[
+                {
+                    position: 'absolute',
+                    width: '100%',
+                    resizeMode: 'cover',
+                    height: '100%',
+                    opacity: 0.3,
+                },
+                ...(Array.isArray(style) ? style : [style]),
+            ]}
+            {...other}
+        />
+    );
 };

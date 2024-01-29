@@ -8,7 +8,7 @@ X Profile
 X Setting
 X Lessons
 X Individual Lesson
-- submit
+X Submit
 - Record
 - Order More
 X Pros
@@ -20,25 +20,29 @@ X About
 X FAQ
 - Contact
 X Logs
-- Log In
+X Log In
 - Registration
+- Forgot Password
 - Token Timeout
 - Tutorials
     X Home
     X Lesson
     X Lessons
     - Order
-    - Submit
+    X Submit
 
 
 Get the DateTime Picker working
 Fix settings not saving
 Fix Video Picker broken
+Fix Video Recording
+Get biometric login working
 
 
 - Fix components folder
 - Fix functionality
 - Fix FontWeight on android
+- Get biometric login working
 
 - Update Redux to use toolkit
 - Update to latest RN IAP
