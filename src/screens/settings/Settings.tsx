@@ -12,8 +12,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { ROUTES } from '../../constants/routes';
 
 // Styles
-import { useSharedStyles, useListStyles, useFlexStyles, useFormStyles } from '../../styles';
-import { useTheme, List, Subheading, Divider, TextInput, IconButton } from 'react-native-paper';
+import { Divider, TextInput, IconButton } from 'react-native-paper';
 
 // Types
 import { ApplicationState, Average } from '../../__types__';
@@ -21,7 +20,6 @@ import { ApplicationState, Average } from '../../__types__';
 import { loadSettings } from '../../redux/actions/SettingsActions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { getLongDate } from '../../utilities';
-import { blackOpacity } from '../../styles/colors';
 import { setUserData, loadUserInfo, setUserAvatar } from '../../redux/actions/user-data-actions';
 import { width, height } from '../../utilities/dimensions';
 import { HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT } from '../../constants';
@@ -89,15 +87,12 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
 
     const dispatch = useDispatch();
     const theme = useAppTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const listStyles = useListStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const formStyles = useFormStyles(theme);
 
     const [editAbout, setEditAbout] = useState(false);
-    const [activeField, setActiveField] = useState<
-        'first' | 'last' | 'location' | 'birthday' | 'average' | 'goals' | null
-    >(null);
+    // const [activeField, setActiveField] = useState<
+    //     'first' | 'last' | 'location' | 'birthday' | 'average' | 'goals' | null
+    // >(null);
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const [personal, setPersonal] = useState(userData);
 
     const memberString = `Joined ${userData.joined ? getLongDate(userData.joined * 1000) : getLongDate(Date.now())}`;
@@ -373,8 +368,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             value={personal.firstName}
                             autoCorrect={false}
                             autoCapitalize={'none'}
-                            onFocus={(): void => setActiveField('first')}
-                            onBlur={(): void => setActiveField(null)}
                             onChangeText={(value: string): void => setPersonal({ ...personal, firstName: value })}
                             underlineColorAndroid={'transparent'}
                         />
@@ -383,8 +376,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             value={personal.lastName}
                             autoCorrect={false}
                             autoCapitalize={'none'}
-                            onFocus={(): void => setActiveField('last')}
-                            onBlur={(): void => setActiveField(null)}
                             onChangeText={(value: string): void => setPersonal({ ...personal, lastName: value })}
                             underlineColorAndroid={'transparent'}
                         />
@@ -394,8 +385,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             placeholder={'e.g., Denver, CO'}
                             autoCorrect={false}
                             autoCapitalize={'none'}
-                            onFocus={(): void => setActiveField('location')}
-                            onBlur={(): void => setActiveField(null)}
                             onChangeText={(value: string): void => setPersonal({ ...personal, location: value })}
                             underlineColorAndroid={'transparent'}
                         />
@@ -421,7 +410,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 autoCorrect={false}
                                 autoCapitalize={'none'}
                                 onFocus={(): void => {
-                                    setActiveField('birthday');
+                                    setShowDatePicker(true);
                                     Keyboard.dismiss();
                                 }}
                                 underlineColorAndroid={'transparent'}
@@ -429,12 +418,12 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             {/* TODO: Fix the date picker */}
                             <DateTimePicker
                                 date={new Date(personal.birthday || Date.now())}
-                                isVisible={activeField === 'birthday'}
+                                isVisible={showDatePicker}
                                 onConfirm={(date): void => {
                                     setPersonal({ ...personal, birthday: format(new Date(date), 'MM/dd/yyyy') });
-                                    setActiveField(null);
+                                    setShowDatePicker(false);
                                 }}
-                                onCancel={(): void => setActiveField(null)}
+                                onCancel={(): void => setShowDatePicker(false)}
                             />
                         </Stack>
                         <TextInput
@@ -456,8 +445,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 { label: '100-149', value: '100' },
                                 { label: '150+', value: '150' },
                             ]}
-                            onOpen={(): void => setActiveField('average')}
-                            onClose={(): void => setActiveField(null)}
                             onValueChange={(value: string): void => {
                                 setPersonal({ ...personal, average: value as Average });
                             }}
@@ -484,8 +471,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             returnKeyType={'done'}
                             spellCheck
                             textAlignVertical={'top'}
-                            onFocus={(): void => setActiveField('goals')}
-                            onBlur={(): void => setActiveField(null)}
                             onChangeText={(value: string): void => setPersonal({ ...personal, goals: value })}
                             underlineColorAndroid={'transparent'}
                         />

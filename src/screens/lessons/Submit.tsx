@@ -417,7 +417,9 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                     />
                 </ScrollView>
             </KeyboardAvoidingView>
-            {lessons.redeemPending && <UploadProgressModal progress={uploadProgress} visible={lessons.redeemPending} />}
+            {lessons.redeemPending && (
+                <UploadProgressModal progress={uploadProgress} visible={true /*lessons.redeemPending*/} />
+            )}
             <SubmitTutorial />
         </CollapsibleHeaderLayout>
     );

@@ -15,8 +15,8 @@ const useStyles = (
 ): StyleSheet.NamedStyles<{
     fullCentered: ViewStyle;
     bottomPanel: ViewStyle;
-}> => {
-    return StyleSheet.create({
+}> =>
+    StyleSheet.create({
         fullCentered: {
             position: 'absolute',
             top: 0,
@@ -36,7 +36,6 @@ const useStyles = (
             zIndex: 100,
         },
     });
-};
 
 type VideoProps = ViewProps & {
     source: string;

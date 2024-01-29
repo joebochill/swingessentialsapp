@@ -8,8 +8,7 @@ import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { ROUTES } from '../../constants/routes';
 // Styles
 import bg from '../../images/banners/tips.jpg';
-import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
-import { useTheme, Divider, List, Subheading } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 
 // Utilities
 import { makeGroups } from '../../utilities';
@@ -34,9 +33,6 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
     const sections = makeGroups(tips.tipList, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
     const theme = useAppTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
 
     return (
         <CollapsibleHeaderLayout

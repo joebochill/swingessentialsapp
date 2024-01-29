@@ -9,9 +9,7 @@ import { TutorialModal } from './Tutorial';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 // Styles
-import { unit } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
-import { whiteOpacity } from '../../styles/colors';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
 import { tutorialViewed } from '../../redux/actions';

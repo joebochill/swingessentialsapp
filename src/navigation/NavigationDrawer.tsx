@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Animated, AppState, AppStateStatus, Image, FlatList, Linking, SafeAreaView, View, Alert } from 'react-native';
 import { NavigationItems } from './NavigationContent';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import { Typography, TokenModal, CollapsibleHeaderLayout, Stack, AnimatedStack, ListItem } from '../components';
+import { Typography, TokenModal, CollapsibleHeaderLayout, Stack, ListItem } from '../components';
 
 // Constants
 import {

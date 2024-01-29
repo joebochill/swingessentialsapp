@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTheme } from 'react-native-paper';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
@@ -10,10 +9,7 @@ import { TutorialModal } from '.';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
-import { useSharedStyles } from '../../styles';
-import { unit } from '../../styles/sizes';
 import { width } from '../../utilities/dimensions';
-import { whiteOpacity } from '../../styles/colors';
 // Images
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
@@ -30,7 +26,6 @@ export const SubmitTutorial: React.FC = () => {
     const [showButton, setShowButton] = useState(false);
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
     const theme = useAppTheme();
-    const sharedStyles = useSharedStyles(theme);
     const dispatch = useDispatch();
 
     const slides = [

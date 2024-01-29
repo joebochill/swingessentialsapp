@@ -1,3 +1,4 @@
+import React from 'react';
 import { List, ListItemProps } from 'react-native-paper';
 import { useAppTheme } from '../../styles/theme';
 

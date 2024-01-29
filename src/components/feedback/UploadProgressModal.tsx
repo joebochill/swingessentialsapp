@@ -1,7 +1,7 @@
 import React from 'react';
 // Components
 import { ActivityIndicator, Modal, ModalProps, View } from 'react-native';
-import { SectionHeader, Stack, Typography } from '../../components';
+import { Paragraph, SectionHeader, Stack } from '../../components';
 
 // Styles
 import { useAppTheme } from '../../styles/theme';
@@ -20,7 +20,7 @@ export const UploadProgressModal: React.FC<ProgressModalProps> = (props) => {
                 justify={'center'}
                 style={{
                     flex: 1,
-                    padding: theme.spacing.xl,
+                    padding: theme.spacing.md,
                     backgroundColor: 'rgba(255,255,255,0.75)',
                 }}
             >
@@ -41,8 +41,8 @@ export const UploadProgressModal: React.FC<ProgressModalProps> = (props) => {
                                 title={'Submitting Lesson'}
                                 action={<ActivityIndicator color={theme.colors.onPrimaryContainer} />}
                             />
-                            <Typography>{`Uploading Videos... ${progress.toFixed(0)}%`}</Typography>
-                            {progress >= 100 && <Typography>{'Creating Lesson...'}</Typography>}
+                            <Paragraph>{`Uploading Videos... ${progress.toFixed(0)}%`}</Paragraph>
+                            {progress >= 100 && <Paragraph>{'Creating Lesson...'}</Paragraph>}
                         </Stack>
                     </Stack>
                 </View>

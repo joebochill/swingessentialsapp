@@ -87,9 +87,6 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
     const verification = useSelector((state: ApplicationState) => state.registration);
     const dispatch = useDispatch();
     const theme = useAppTheme();
-    // const sharedStyles = useSharedStyles(theme);
-    // const formStyles = useFormStyles(theme);
-    // const flexStyles = useFlexStyles(theme);
 
     useEffect(() => {
         if (code) {
@@ -162,9 +159,7 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
 const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> = (props) => {
     const { navigation } = props;
     const theme = useAppTheme();
-    // const sharedStyles = useSharedStyles(theme);
-    // const formStyles = useFormStyles(theme);
-    // const flexStyles = useFlexStyles(theme);
+
     const [fields, setFields] = useState(defaultKeys);
     const [showPassword, setShowPassword] = useState(false);
     const emailRef = useRef(null);

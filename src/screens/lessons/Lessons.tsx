@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { View, SectionList } from 'react-native';
+import { SectionList } from 'react-native';
 import {
     Typography,
     CollapsibleHeaderLayout,
@@ -15,8 +15,7 @@ import {
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
-import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
-import { useTheme, List, Divider, Subheading } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 import bg from '../../images/banners/lessons.jpg';
 
 // Constants
@@ -57,9 +56,6 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
     // @ts-ignore
     const sections = makeGroups(myLessons, (lesson: Lesson) => getLongDate(lesson.request_date));
     const theme = useAppTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
     const dispatch = useDispatch();
 
     return (
@@ -80,7 +76,7 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
             navigation={props.navigation}
         >
             <SectionList
-                renderSectionHeader={({ section: { bucketName, index } }): JSX.Element => (
+                renderSectionHeader={({ section: { bucketName } }): JSX.Element => (
                     <SectionHeader
                         title={bucketName}
                         style={{ marginTop: theme.spacing.xxl, marginHorizontal: theme.spacing.md }}
@@ -95,7 +91,6 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                             title={'Welcome to Swing Essentials!'}
                             // @ts-ignore
                             onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: null })}
-                            style={listStyles.item}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
                                     <Typography variant={'labelMedium'} style={{ marginRight: theme.spacing.sm }}>
@@ -128,7 +123,6 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                                 }
                                 // @ts-ignore
                                 onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
-                                style={listStyles.item}
                                 right={({ style, ...rightProps }): JSX.Element => (
                                     <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
                                         {!item.viewed && (
@@ -153,7 +147,7 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                     ) : (
                         <>
                             {index === 0 && <Divider />}
-                            <List.Item
+                            <ListItem
                                 title={role === 'administrator' ? item.username : item.request_date}
                                 description={
                                     role === 'administrator'
@@ -162,15 +156,10 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                                         ? 'In-person lesson'
                                         : 'Remote lesson'
                                 }
-                                style={listStyles.item}
-                                titleStyle={{ marginLeft: -8 }}
-                                descriptionStyle={{ marginLeft: -8 }}
                                 right={({ style, ...rightProps }): JSX.Element => (
-                                    <View style={[flexStyles.row, style]} {...rightProps}>
-                                        <Typography /*style={{ marginRight: theme.spaces.small }}*/>
-                                            IN PROGRESS
-                                        </Typography>
-                                    </View>
+                                    <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
+                                        <Typography style={{ marginRight: theme.spacing.md }}>IN PROGRESS</Typography>
+                                    </Stack>
                                 )}
                             />
                             <Divider />

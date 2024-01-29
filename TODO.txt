@@ -21,15 +21,16 @@ X FAQ
 - Contact
 X Logs
 X Log In
-- Registration
-- Forgot Password
-- Token Timeout
+X Registration
+X Forgot Password
+X Token Timeout
 - Tutorials
     X Home
     X Lesson
     X Lessons
     - Order
     X Submit
+X UploadProgressModal
 
 
 Get the DateTime Picker working
@@ -37,6 +38,8 @@ Fix settings not saving
 Fix Video Picker broken
 Fix Video Recording
 Get biometric login working
+Fix registration against existing username / other registration validators
+
 
 
 - Fix components folder

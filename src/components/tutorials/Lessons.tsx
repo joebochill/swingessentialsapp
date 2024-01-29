@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme, List, Divider, Subheading } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 // Components
 import { View, SectionList } from 'react-native';
 import { ListItem, SectionHeader, Stack, Typography } from '../';

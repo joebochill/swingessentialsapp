@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 // Components
 import {
-    ActivityIndicator,
     Animated,
     Image,
     ImageSourcePropType,
