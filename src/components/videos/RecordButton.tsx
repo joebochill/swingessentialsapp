@@ -1,91 +1,63 @@
 import React from 'react';
+
 // Components
-import {
-    StyleSheet,
-    View,
-    ViewProps,
-    TouchableOpacityProps,
-    GestureResponderEvent,
-    TouchableOpacity,
-    StyleProp,
-    ViewStyle,
-    TextStyle,
-} from 'react-native';
+import { View, ViewProps, TouchableOpacityProps, GestureResponderEvent, TouchableOpacity } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Typography } from '../';
 
-// Styles
-import { transparent, blackOpacity } from '../../styles/colors';
-import { unit } from '../../styles/sizes';
-
 // Utilities
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { MD3Theme, useTheme } from 'react-native-paper';
+import { useAppTheme } from '../../styles/theme';
 
-const useStyles = (
-    theme: MD3Theme
-): StyleSheet.NamedStyles<{
-    recordRow: StyleProp<ViewStyle>;
-    recordButton: StyleProp<ViewStyle>;
-    innerRecord: StyleProp<ViewStyle>;
-    innerStop: StyleProp<ViewStyle>;
-    label: StyleProp<TextStyle>;
-}> =>
-    StyleSheet.create({
-        recordRow: {
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            flexDirection: 'row',
-            alignItems: 'center',
-            // padding: theme.spaces.medium,
-        },
-        recordButton: {
-            flex: 0,
-            borderColor: theme.colors.onPrimary,
-            borderWidth: unit(6),
-            // borderRadius: theme.sizes.xLarge,
-            // height: theme.sizes.xLarge,
-            // width: theme.sizes.xLarge,
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: unit(2),
-        },
-        innerRecord: {
-            flex: 1,
-            width: '100%',
-            height: '100%',
-            alignSelf: 'stretch',
-            backgroundColor: 'red',
-            // borderRadius: theme.sizes.xLarge,
-        },
-        innerStop: {
-            // height: theme.sizes.small,
-            // width: theme.sizes.small,
-            backgroundColor: 'red',
-            borderRadius: unit(2),
-        },
-        label: {
-            // fontSize: theme.fontSizes[16],
-            color: theme.colors.onPrimary,
-        },
-    });
 type RecordButtonProps = TouchableOpacityProps & {
     recording: boolean;
     onPress: () => void;
 };
 export const RecordButton: React.FC<RecordButtonProps> = (props) => {
     const { recording, style, onPress, ...other } = props;
-    const theme = useTheme();
-    const styles = useStyles(theme);
+    const theme = useAppTheme();
+
     return (
         <TouchableOpacity
             onPress={(evt: GestureResponderEvent): void => onPress(evt)}
-            style={StyleSheet.flatten([styles.recordButton, style])}
+            style={[
+                {
+                    flex: 0,
+                    borderColor: theme.colors.onPrimary,
+                    borderWidth: theme.spacing.xs,
+                    borderRadius: theme.size.xl,
+                    height: theme.size.xl,
+                    width: theme.size.xl,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: theme.spacing.xs / 2,
+                },
+                ...(Array.isArray(style) ? style : [style]),
+            ]}
             {...other}
         >
-            {!recording ? <View style={styles.innerRecord} /> : <View style={styles.innerStop} />}
+            {!recording ? (
+                <View
+                    style={{
+                        flex: 1,
+                        width: '100%',
+                        height: '100%',
+                        alignSelf: 'stretch',
+                        backgroundColor: 'red',
+                        borderRadius: theme.size.xl,
+                    }}
+                />
+            ) : (
+                <View
+                    style={{
+                        height: theme.size.md,
+                        width: theme.size.md,
+                        backgroundColor: 'red',
+                        borderRadius: theme.spacing.xs / 2,
+                    }}
+                />
+            )}
         </TouchableOpacity>
     );
 };
@@ -100,21 +72,35 @@ type VideoControlRowProps = ViewProps & {
 export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
     const { mode, active, onAction, onBack, onNext, ...other } = props;
     const insets = useSafeAreaInsets();
-    const theme = useTheme();
-    const styles = useStyles(theme);
+    const theme = useAppTheme();
+
     return (
         <View
             style={[
-                styles.recordRow,
                 {
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: theme.spacing.md,
                     bottom: insets.bottom,
-                    backgroundColor: active ? transparent : blackOpacity(0.5),
+                    backgroundColor: active ? 'transparent' : 'rgba(0,0,0,0.5)',
                 },
             ]}
             {...other}
         >
             <TouchableOpacity onPress={onBack} disabled={active} style={{ flex: 1 }}>
-                {!active && <Typography style={styles.label}>{mode === 'record' ? 'Cancel' : 'Retake'}</Typography>}
+                {!active && (
+                    <Typography
+                        style={{
+                            fontSize: 16,
+                            color: theme.colors.onPrimary,
+                        }}
+                    >
+                        {mode === 'record' ? 'Cancel' : 'Retake'}
+                    </Typography>
+                )}
             </TouchableOpacity>
             {mode === 'play' && (
                 <MatIcon
@@ -128,7 +114,16 @@ export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
             )}
             {mode === 'record' && <RecordButton style={{ flex: 0 }} recording={active} onPress={onAction} />}
             <TouchableOpacity onPress={onNext} disabled={active} style={{ flex: 1, alignItems: 'flex-end' }}>
-                {!active && mode === 'play' && <Typography style={styles.label}>Use Video</Typography>}
+                {!active && mode === 'play' && (
+                    <Typography
+                        style={{
+                            fontSize: 16,
+                            color: theme.colors.onPrimary,
+                        }}
+                    >
+                        Use Video
+                    </Typography>
+                )}
                 {!active && mode === 'record' && (
                     <MaterialCommunityIcon
                         name={'camera-switch'}

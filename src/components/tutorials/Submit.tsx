@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View, Image } from 'react-native';
 import { Typography } from '../index';
-import { SEButton, SEVideoPlaceholder } from '..';
+import { SEButton, SEVideoPlaceholder, Stack } from '..';
 import { TutorialModal } from '.';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
@@ -23,71 +23,80 @@ import { tutorialViewed } from '../../redux/actions';
 // Constants
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 import { RecordButton } from '../videos';
+import { useAppTheme } from '../../styles/theme';
 
 export const SubmitTutorial: React.FC = () => {
     const [activePanel, setActivePanel] = useState(0);
     const [showButton, setShowButton] = useState(false);
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
-    const theme = useTheme();
+    const theme = useAppTheme();
     const sharedStyles = useSharedStyles(theme);
     const dispatch = useDispatch();
 
     const slides = [
-        <>
-            <Typography
-                variant={'displayMedium'}
-                fontWeight={'semiBold'}
-                color={'onPrimary'}
-                style={{ textAlign: 'center' }}
-            >
+        <Stack key={1}>
+            <Typography variant={'displaySmall'} fontWeight={'semiBold'} color={'onPrimary'} align={'center'}>
                 {'Submitting Your Swing'}
             </Typography>
             <Typography
+                variant={'bodyMedium'}
                 fontWeight={'light'}
                 color={'onPrimary'}
-                style={{
-                    textAlign: 'center',
-                    // marginTop: theme.spaces.small,
-                    // marginBottom: theme.spaces.medium,
-                }}
+                align={'center'}
+                style={{ marginTop: theme.spacing.sm }}
             >
                 {
                     'When you are ready to submit your swing, click on the golfer images to upload Face-On and Down-the-Line videos.'
                 }
             </Typography>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Stack direction={'row'} justify={'space-between'} style={{ marginTop: theme.spacing.md }}>
                 <SEVideoPlaceholder
                     disabled
                     title={'Face-On'}
                     // @ts-ignore
-                    icon={<Image source={fo} resizeMethod={'resize'} style={[sharedStyles.image]} />}
-                    editIcon={<MatIcon name={'add-a-photo'} /*color={theme.colors.accent} size={theme.sizes.small}*/ />}
+                    icon={
+                        <Image
+                            source={fo}
+                            resizeMethod={'resize'}
+                            style={{
+                                height: '100%',
+                                width: '100%',
+                                resizeMode: 'contain',
+                            }}
+                        />
+                    }
+                    editIcon={<MatIcon name={'add-a-photo'} color={theme.colors.onBackground} size={theme.size.md} />}
                 />
                 <SEVideoPlaceholder
                     disabled
                     title={'Down-the-Line'}
                     // @ts-ignore
-                    icon={<Image source={dtl} resizeMethod={'resize'} style={sharedStyles.image} />}
-                    editIcon={<MatIcon name={'add-a-photo'} /*color={theme.colors.accent} size={theme.sizes.small}*/ />}
+                    icon={
+                        <Image
+                            source={dtl}
+                            resizeMethod={'resize'}
+                            style={{
+                                height: '100%',
+                                width: '100%',
+                                resizeMode: 'contain',
+                            }}
+                        />
+                    }
+                    editIcon={<MatIcon name={'add-a-photo'} color={theme.colors.onBackground} size={theme.size.md} />}
                 />
-            </View>
-        </>,
-        <>
-            <Typography
-                variant={'displayMedium'}
-                fontWeight={'semiBold'}
-                color={'onPrimary'}
-                style={{ textAlign: 'center' }}
-            >
+            </Stack>
+        </Stack>,
+        <Stack key={2}>
+            <Typography variant={'displaySmall'} fontWeight={'semiBold'} color={'onPrimary'} align={'center'}>
                 {'Using the Camera'}
             </Typography>
             <Typography
+                variant={'bodyMedium'}
                 fontWeight={'light'}
                 color={'onPrimary'}
+                align={'center'}
                 style={{
-                    textAlign: 'center',
-                    // marginTop: theme.spaces.small,
-                    // marginBottom: theme.spaces.medium,
+                    marginTop: theme.spacing.sm,
                 }}
             >
                 {'Press the Record button to start recording your swing.'}
@@ -95,15 +104,15 @@ export const SubmitTutorial: React.FC = () => {
             <RecordButton
                 recording={false}
                 onPress={(): void => {}}
-                style={{ alignSelf: 'center' /*marginTop: theme.spaces.large*/ }}
+                style={{ alignSelf: 'center', marginTop: theme.spacing.lg }}
             />
             <Typography
+                variant={'bodyMedium'}
                 fontWeight={'light'}
                 color={'onPrimary'}
+                align={'center'}
                 style={{
-                    textAlign: 'center',
-                    // marginTop: theme.spaces.xLarge,
-                    // marginBottom: theme.spaces.xLarge,
+                    marginTop: theme.spacing.xl,
                 }}
             >
                 {'You can adjust your settings for recording length and delay by clicking the settings icon.'}
@@ -111,10 +120,10 @@ export const SubmitTutorial: React.FC = () => {
             <MatIcon
                 name="settings"
                 color={theme.colors.onPrimary}
-                // size={theme.sizes.xLarge}
-                style={{ alignSelf: 'center' }}
+                size={theme.size.xl}
+                style={{ alignSelf: 'center', marginTop: theme.spacing.lg }}
             />
-        </>,
+        </Stack>,
     ];
 
     return (
@@ -128,9 +137,9 @@ export const SubmitTutorial: React.FC = () => {
             <View>
                 <Carousel
                     data={slides}
-                    renderItem={({ index }): JSX.Element => slides[index]}
-                    sliderWidth={width - 2 * 8 /*theme.spaces.medium*/}
-                    itemWidth={width - 2 * 8 /*theme.spaces.medium*/}
+                    renderItem={({ index }: { index: number }): JSX.Element => slides[index]}
+                    sliderWidth={width - 2 * theme.spacing.md}
+                    itemWidth={width - 2 * theme.spacing.md}
                     onSnapToItem={(index): void => {
                         setActivePanel(index);
                         if (index === slides.length - 1) {
@@ -142,20 +151,23 @@ export const SubmitTutorial: React.FC = () => {
                     dotsLength={slides.length}
                     activeDotIndex={activePanel}
                     dotStyle={{
-                        width: unit(10),
-                        height: unit(10),
-                        borderRadius: unit(10),
+                        width: 10,
+                        height: 10,
+                        borderRadius: 10,
                         marginHorizontal: 0,
-                        backgroundColor: whiteOpacity(0.9),
+                        backgroundColor: 'rgba(255,255,255,0.9)',
                     }}
                     inactiveDotOpacity={0.5}
                     inactiveDotScale={0.8}
                 />
                 <SEButton
                     dark
-                    title="GOT IT"
+                    mode={'contained'}
+                    uppercase
+                    title={'Got It'}
                     disabled={!showButton}
-                    style={{ flex: 1, marginTop: 0, opacity: showButton ? 1 : 0 }}
+                    buttonColor={theme.colors.secondary}
+                    style={{ opacity: showButton ? 1 : 0 }}
                     onPress={(): void => {
                         // @ts-ignore
                         dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]));

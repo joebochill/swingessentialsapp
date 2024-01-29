@@ -33,6 +33,7 @@ X Logs
 
 Get the DateTime Picker working
 Fix settings not saving
+Fix Video Picker broken
 
 
 - Fix components folder

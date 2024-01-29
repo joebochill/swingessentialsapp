@@ -3,19 +3,7 @@ import { usePrevious } from '../../utilities';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import {
-    Platform,
-    View,
-    KeyboardAvoidingView,
-    ScrollView,
-    TouchableOpacity,
-    Image,
-    StyleSheet,
-    Alert,
-    Keyboard,
-    StyleProp,
-    ViewStyle,
-} from 'react-native';
+import { Platform, KeyboardAvoidingView, ScrollView, TouchableOpacity, Image, Alert, Keyboard } from 'react-native';
 import {
     CollapsibleHeaderLayout,
     SEVideo,
@@ -24,15 +12,16 @@ import {
     ErrorBox,
     UploadProgressModal,
     SubmitTutorial,
-    Caption,
+    SectionHeader,
+    Stack,
+    Typography,
 } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-picker';
 
 // Styles
-import { useSharedStyles, useListStyles, useFormStyles, useFlexStyles } from '../../styles';
 import { transparent } from '../../styles/colors';
-import { useTheme, Subheading, TextInput, MD3Theme } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import bg from '../../images/banners/submit.jpg';
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
@@ -50,6 +39,7 @@ import { submitLesson } from '../../redux/actions';
 import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../styles/theme';
 
 const RNFS = require('react-native-fs');
 
@@ -73,20 +63,6 @@ const getErrorMessage = (code: number | null): string => {
     }
 };
 
-const useStyles = (
-    theme: MD3Theme
-): StyleSheet.NamedStyles<{
-    dashButton: StyleProp<ViewStyle>;
-}> =>
-    StyleSheet.create({
-        dashButton: {
-            // padding: theme.spaces.medium,
-            // minHeight: theme.sizes.xLarge,
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-    });
-
 export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = (props) => {
     const { navigation } = props;
     const [foVideo, setFO] = useState('');
@@ -99,12 +75,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
     const role = useSelector((state: ApplicationState) => state.login.role);
     const scroller = useRef(null);
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const styles = useStyles(theme);
-    const sharedStyles = useSharedStyles(theme);
-    const listStyles = useListStyles(theme);
-    const formStyles = useFormStyles(theme);
-    const flexStyles = useFlexStyles(theme);
+    const theme = useAppTheme();
 
     const roleError =
         role === 'anonymous'
@@ -308,35 +279,44 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView
                     keyboardShouldPersistTaps={'always'}
-                    contentContainerStyle={flexStyles.paddingHorizontal}
+                    contentContainerStyle={{ paddingHorizontal: theme.spacing.md }}
                     ref={scroller}
                 >
-                    <ErrorBox show={roleError !== ''} error={roleError} style={formStyles.errorBox} />
+                    <ErrorBox show={roleError !== ''} error={roleError} style={{ marginTop: theme.spacing.md }} />
                     <ErrorBox
                         show={lessons.pending.length > 0}
                         error={
                             'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.'
                         }
-                        style={formStyles.errorBox}
+                        style={{ marginTop: theme.spacing.md }}
                     />
                     <ErrorBox
                         show={roleError.length === 0 && lessons.pending.length === 0 && credits < 1}
                         error={"You don't have any credits left. Head over to the Order page to get more."}
-                        style={formStyles.errorBox}
+                        style={{ marginTop: theme.spacing.md }}
                     />
-                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                        <Subheading style={listStyles.heading}>{'Your Swing Videos'}</Subheading>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                    <SectionHeader title={'Your Swing Videos'} style={{ marginTop: theme.spacing.md }} />
+                    <Stack direction={'row'} justify={'space-between'}>
                         {!foVideo ? (
                             <SEVideoPlaceholder
                                 title={'Face-On'}
-                                icon={<Image source={fo} resizeMethod={'resize'} /*style={sharedStyles.image}*/ />}
+                                icon={
+                                    <Image
+                                        source={fo}
+                                        resizeMethod={'resize'}
+                                        style={{
+                                            height: '100%',
+                                            width: '100%',
+                                            resizeMode: 'contain',
+                                        }}
+                                    />
+                                }
                                 editIcon={
                                     <MatIcon
                                         name={'add-a-photo'}
-                                        // color={theme.colors.accent}
-                                        // size={theme.sizes.small}
+                                        color={theme.colors.onPrimaryContainer}
+                                        size={theme.size.md}
                                     />
                                 }
                                 onPress={(): void => showPickerMenu('fo')}
@@ -347,12 +327,22 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                         {!dtlVideo ? (
                             <SEVideoPlaceholder
                                 title={'Down-the-Line'}
-                                icon={<Image source={dtl} resizeMethod={'resize'} /*style={sharedStyles.image}*/ />}
+                                icon={
+                                    <Image
+                                        source={dtl}
+                                        resizeMethod={'resize'}
+                                        style={{
+                                            height: '100%',
+                                            width: '100%',
+                                            resizeMode: 'contain',
+                                        }}
+                                    />
+                                }
                                 editIcon={
                                     <MatIcon
                                         name={'add-a-photo'}
-                                        // color={theme.colors.accent}
-                                        // size={theme.sizes.small}
+                                        color={theme.colors.onPrimaryContainer}
+                                        size={theme.size.md}
                                     />
                                 }
                                 onPress={(): void => showPickerMenu('dtl')}
@@ -361,23 +351,32 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                             <SEVideo
                                 editable
                                 source={dtlVideo}
-                                // style={{ marginLeft: theme.spaces.medium }}
+                                style={{ marginLeft: theme.spacing.md }}
                                 onEdit={(): void => showPickerMenu('dtl')}
                             />
                         )}
-                    </View>
-                    <View
-                        style={[sharedStyles.sectionHeader, { marginHorizontal: 0 /*marginTop: theme.spaces.jumbo*/ }]}
-                    >
-                        <Subheading style={listStyles.heading}>{'Special Requests / Comments'}</Subheading>
-                    </View>
+                    </Stack>
+
+                    <SectionHeader title={'Special Requests / Comments'} style={{ marginTop: theme.spacing.xl }} />
                     {!useNotes && (
                         <TouchableOpacity
                             activeOpacity={0.8}
-                            style={[formStyles.dashed, styles.dashButton]}
+                            style={[
+                                {
+                                    borderWidth: 1,
+                                    borderRadius: theme.roundness,
+                                    borderStyle: 'dashed',
+                                    // borderColor: theme.colors.dark,
+                                    backgroundColor: theme.colors.surface,
+                                    padding: theme.spacing.md,
+                                    minHeight: 2 * theme.size.xl,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                },
+                            ]}
                             onPress={(): void => setUseNotes(true)}
                         >
-                            <MatIcon name={'add-circle'} /*color={theme.colors.accent}*/ size={24} />
+                            <MatIcon name={'add-circle'} color={theme.colors.onPrimaryContainer} size={theme.size.md} />
                         </TouchableOpacity>
                     )}
                     {useNotes && (
@@ -401,16 +400,18 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                 textAlignVertical={'top'}
                                 underlineColorAndroid={transparent}
                                 value={notes}
+                                style={{
+                                    minHeight: 2 * theme.size.xl,
+                                }}
                                 placeholder={'e.g., Help me with my slice!'}
-                                style={[formStyles.active]}
                             />
-                            <Caption style={{ alignSelf: 'flex-end' /*marginTop: theme.spaces.small*/ }}>{`${
+                            <Typography style={{ alignSelf: 'flex-end', marginTop: theme.spacing.sm }}>{`${
                                 500 - notes.length
-                            } Characters Left`}</Caption>
+                            } Characters Left`}</Typography>
                         </>
                     )}
                     <SEButton
-                        style={[formStyles.formField, canSubmit() ? {} : { opacity: 0.6 }]}
+                        style={[{ marginTop: theme.spacing.md }, canSubmit() ? {} : { opacity: 0.6 }]}
                         title={'SUBMIT'}
                         onPress={canSubmit() ? (): void => dispatchSubmitLesson() : undefined}
                     />

@@ -84,11 +84,11 @@ export const HomeTutorial: React.FC = () => {
                     dotsLength={slides.length}
                     activeDotIndex={activePanel}
                     dotStyle={{
-                        width: unit(10),
-                        height: unit(10),
-                        borderRadius: unit(10),
+                        width: 10,
+                        height: 10,
+                        borderRadius: 10,
                         marginHorizontal: 0,
-                        backgroundColor: whiteOpacity(0.9),
+                        backgroundColor: 'rgba(255,255,255,0.9)',
                     }}
                     inactiveDotOpacity={0.5}
                     inactiveDotScale={0.8}
