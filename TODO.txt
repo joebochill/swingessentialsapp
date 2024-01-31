@@ -42,6 +42,7 @@ Get biometric login working
 Fix registration against existing username / other registration validators
 Video not recording
 Recording not respecting record duration props
+Deep linking / android
 
 
 - Fix components folder

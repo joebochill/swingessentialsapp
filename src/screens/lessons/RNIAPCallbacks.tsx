@@ -5,20 +5,20 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 import { Platform, EmitterSubscription } from 'react-native';
-import {
-    // InAppPurchase,
-    PurchaseError,
-    SubscriptionPurchase,
-    // acknowledgePurchaseAndroid,
-    // consumePurchaseAndroid,
-    finishTransaction,
-    // finishTransactionIOS,
-    purchaseErrorListener,
-    purchaseUpdatedListener,
-    initConnection,
-    // consumeAllItemsAndroid,
-    flushFailedPurchasesCachedAsPendingAndroid,
-} from 'react-native-iap';
+// import {
+//     // InAppPurchase,
+//     PurchaseError,
+//     SubscriptionPurchase,
+//     // acknowledgePurchaseAndroid,
+//     // consumePurchaseAndroid,
+//     finishTransaction,
+//     // finishTransactionIOS,
+//     purchaseErrorListener,
+//     purchaseUpdatedListener,
+//     initConnection,
+//     // consumeAllItemsAndroid,
+//     flushFailedPurchasesCachedAsPendingAndroid,
+// } from 'react-native-iap';
 
 // Redux
 import { purchaseCredits } from '../../redux/actions';
