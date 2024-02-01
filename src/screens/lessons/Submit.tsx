@@ -421,7 +421,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                 returnKeyType={'done'}
                                 spellCheck
                                 textAlignVertical={'top'}
-                                underlineColorAndroid={transparent}
+                                underlineColorAndroid={'transparent'}
                                 value={notes}
                                 style={{
                                     minHeight: 2 * theme.size.xl,

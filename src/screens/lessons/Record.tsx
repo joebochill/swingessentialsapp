@@ -37,7 +37,7 @@ import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Camera, useCameraDevice } from 'react-native-vision-camera';
 import { useIsFocused } from '@react-navigation/native';
-import { useAppState} from '@react-native-community/hooks';
+import { useAppState } from '@react-native-community/hooks';
 
 // const DESIRED_RATIO = '16:9';
 
@@ -59,9 +59,9 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
     const { onReturn, swing } = props.route.params;
     const backCamera = useCameraDevice('back');
     const frontCamera = useCameraDevice('front');
-    const isScreenFocused = useIsFocused()
+    const isScreenFocused = useIsFocused();
     const appState = useAppState();
-    const isActive = isScreenFocused && appState === "active";
+    const isActive = isScreenFocused && appState === 'active';
     const camera = useRef<Camera>(null);
 
     const settings = useSelector((state: ApplicationState) => state.settings);
@@ -80,19 +80,18 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
     const [recordedVideo, setRecordedVideo] = useState('');
 
     const startRecording = useCallback(async () => {
-
         setCountdownStarted(false);
 
         // log error if null
         camera?.current?.startRecording({
             onRecordingFinished: async (video) => {
-                const path = video.path
+                const path = video.path;
                 // await CameraRoll.save(`file://${path}`, {
                 //   type: 'video',
                 // })
-              },
-            onRecordingError: (error) => console.error(error)
-          })
+            },
+            onRecordingError: (error) => console.error(error),
+        });
         // if (!cameraRef || !cameraRef.current) {
         //     void Logger.logError({
         //         code: 'REC100',
@@ -126,7 +125,7 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
 
     const endRecording = useCallback(async () => {
         setCountdownStarted(false);
-        await camera?.current?.stopRecording()
+        await camera?.current?.stopRecording();
         // if (!cameraRef || !cameraRef.current) {
         //     void Logger.logError({
         //         code: 'REC200',
@@ -154,38 +153,36 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
     //     }
     // }, [cameraRef, cameraRef.current]);
 
-    const VideoRecorder = (
-        backCamera && <Camera ref={camera} device={backCamera} video={true} isActive={isActive} />
-        // <RNCamera
-        //     ref={cameraRef}
-        //     style={{
-        //         position: 'absolute',
-        //         top: 0,
-        //         left: 0,
-        //         right: 0,
-        //         bottom: 0,
-        //         alignItems: 'center',
-        //         justifyContent: 'center',
-        //     }}
-        //     type={RNCamera.Constants.Type[cameras[cameraType]]}
-        //     // onCameraReady={() => setRecordingMode(true)}
-        //     flashMode={showCountDown ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
-        //     captureAudio={false}
-        //     // ratio={cameraRatios.find(ratio => ratio === DESIRED_RATIO) || cameraRatios[cameraRatios.length - 1]}
-        //     androidCameraPermissionOptions={{
-        //         title: 'Permission to use camera',
-        //         message: 'We need your permission to use your camera',
-        //         buttonPositive: 'Ok',
-        //         buttonNegative: 'Cancel',
-        //     }}
-        //     androidRecordAudioPermissionOptions={{
-        //         title: 'Permission to use audio recording',
-        //         message: 'We need your permission to use your audio',
-        //         buttonPositive: 'Ok',
-        //         buttonNegative: 'Cancel',
-        //     }}
-        // />
-    );
+    const VideoRecorder = backCamera && <Camera ref={camera} device={backCamera} video={true} isActive={isActive} />;
+    // <RNCamera
+    //     ref={cameraRef}
+    //     style={{
+    //         position: 'absolute',
+    //         top: 0,
+    //         left: 0,
+    //         right: 0,
+    //         bottom: 0,
+    //         alignItems: 'center',
+    //         justifyContent: 'center',
+    //     }}
+    //     type={RNCamera.Constants.Type[cameras[cameraType]]}
+    //     // onCameraReady={() => setRecordingMode(true)}
+    //     flashMode={showCountDown ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
+    //     captureAudio={false}
+    //     // ratio={cameraRatios.find(ratio => ratio === DESIRED_RATIO) || cameraRatios[cameraRatios.length - 1]}
+    //     androidCameraPermissionOptions={{
+    //         title: 'Permission to use camera',
+    //         message: 'We need your permission to use your camera',
+    //         buttonPositive: 'Ok',
+    //         buttonNegative: 'Cancel',
+    //     }}
+    //     androidRecordAudioPermissionOptions={{
+    //         title: 'Permission to use audio recording',
+    //         message: 'We need your permission to use your audio',
+    //         buttonPositive: 'Ok',
+    //         buttonNegative: 'Cancel',
+    //     }}
+    // />
     const VideoPlayer = (
         <Video
             ref={videoRef}
@@ -293,40 +290,40 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
                 onAction={
                     recordingMode
                         ? (): void => {
-                            // Start / End recording
-                            if (!isRecording) {
-                                setCountdownStarted(true);
-                                setIsRecording(true);
-                            } else {
-                                endRecording();
-                            }
-                        }
+                              // Start / End recording
+                              if (!isRecording) {
+                                  setCountdownStarted(true);
+                                  setIsRecording(true);
+                              } else {
+                                  endRecording();
+                              }
+                          }
                         : (): void => {
-                            // Play / Pause the video
-                            setIsPlaying(!isPlaying);
-                        }
+                              // Play / Pause the video
+                              setIsPlaying(!isPlaying);
+                          }
                 }
                 onBack={
                     recordingMode
                         ? (): void => props.navigation.pop() // Go Back
                         : (): void => {
-                            setRecordingMode(true);
-                            setRecordedVideo('');
-                        }
+                              setRecordingMode(true);
+                              setRecordedVideo('');
+                          }
                 }
                 onNext={
                     recordingMode
                         ? (): void => {
-                            // Toggle Camera
-                            setCameraType((cameraType + 1) % cameras.length);
-                        }
+                              // Toggle Camera
+                              setCameraType((cameraType + 1) % cameras.length);
+                          }
                         : (): void => {
-                            // Use-Video
-                            // @ts-ignore
-                            onReturn(recordedVideo);
-                            setPreviewReady(false);
-                            props.navigation.pop();
-                        }
+                              // Use-Video
+                              // @ts-ignore
+                              onReturn(recordedVideo);
+                              setPreviewReady(false);
+                              props.navigation.pop();
+                          }
                 }
             />
         </View>

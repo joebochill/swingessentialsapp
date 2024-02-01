@@ -186,7 +186,7 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                             />
                         )}
                         sliderWidth={width}
-                        itemWidth={width - 2 * 8 /*theme.spaces.medium*/}
+                        itemWidth={width - 2 * theme.spacing.md}
                         inactiveSlideScale={0.95}
                     />
                 </View>

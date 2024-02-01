@@ -100,12 +100,15 @@ export const helpNavigationItems: RouteGroup = {
                 Mailer.mail(
                     {
                         subject: 'Swing Essentials App Feedback',
-                        recipients: ['info@swingessentials.com'],
+                        // recipients: ['info@swingessentials.com'],
+                        recipients: ['boyle.p.joseph@gmail.com'],
                         isHTML: true,
                     },
                     (error, event) => {
+                        console.log(error, event);
                         if (error && error === 'canceled') {
                             // Do nothing
+                            console.log('mail canceled');
                         } else if (error) {
                             void Logger.logError({
                                 code: 'CON100',

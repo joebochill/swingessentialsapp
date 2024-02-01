@@ -3,7 +3,7 @@ export * from './SEButton';
 export * from './videos';
 export * from './headers';
 export * from './feedback';
-export * from './AnimatedSafeAreaView';
+export * from './layout/AnimatedSafeAreaView';
 export * from './typography';
 export * from './tutorials';
 export * from './IconWrapper';
