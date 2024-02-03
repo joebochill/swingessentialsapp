@@ -25,27 +25,25 @@ import { SETheme } from './src/theme';
 // TODO: Support dark mode
 export default function App(): React.JSX.Element {
     const { hasPermission: hasVideoPermission, requestPermission: requestVideoPermission } = useCameraPermission();
-    const { hasPermission: hasMicrophonePermission, requestPermission: requestMicrophonePermission } =
-        useMicrophonePermission();
+    const { hasPermission: hasMicrophonePermission, requestPermission: requestMicrophonePermission } = useMicrophonePermission();
 
     useEffect((): void => {
-        // SplashScreen.hide();
-        // StatusBar.setBarStyle('light-content', true);
         // @ts-ignore
         store.dispatch(loadInitialData());
-        if (!hasVideoPermission) requestVideoPermission();
-        if (!hasMicrophonePermission) requestMicrophonePermission();
+        if (!hasVideoPermission) {
+            const result = requestVideoPermission();
+            if (!result) {
+                // TODO: Tell them to give permission in settings
+            }
+        }
+        if (!hasMicrophonePermission) {
+            const result = requestMicrophonePermission();
+            if (!result) {
+                // TODO: Tell them to give permission in settings
+            }
+        }
     }, []);
-    // useEffect(() => {
-    // const init = async () => {
-    //     // …do multiple sync or async tasks
-    // };
 
-    // init().finally(async () => {
-    //     await BootSplash.hide({ fade: true });
-    //     console.log("BootSplash has been hidden successfully");
-    // });
-    // }, []);
     return (
         <Provider store={store}>
             <SafeAreaProvider>

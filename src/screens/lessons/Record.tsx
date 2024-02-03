@@ -35,7 +35,7 @@ import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
-import { Camera, useCameraDevice } from 'react-native-vision-camera';
+import { Camera, CameraDevice, RecordVideoOptions, useCameraDevice, useCameraDevices, useCameraFormat } from 'react-native-vision-camera';
 import { useIsFocused } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks';
 
@@ -53,7 +53,7 @@ const getOverlayImage = (swing: SwingType, handedness: HandednessType, camera: C
 
 export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = (props) => {
     const { navigation } = props;
-    const cameraRef = useRef(null);
+    // const cameraRef = useRef(null);
     const videoRef = useRef(null);
     const theme = useAppTheme();
     const { onReturn, swing } = props.route.params;
@@ -63,12 +63,16 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
     const appState = useAppState();
     const isActive = isScreenFocused && appState === 'active';
     const camera = useRef<Camera>(null);
+    const cameraDevices = [backCamera, frontCamera];
+    const [cameraInitialized, setCameraInitialized] = useState(false);
+    const [activeCameraIndex, setActiveCameraIndex] = useState(0);
+    const currentCameraDevice = cameraDevices[activeCameraIndex] as CameraDevice;
 
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
 
-    const cameras: CameraType[] = ['back', 'front'];
-    const [cameraType, setCameraType] = useState(0);
+    // const cameras: CameraType[] = ['back', 'front'];
+    // const [cameraType, setCameraType] = useState(0);
     // const [cameraRatios, setCameraRatios] = useState([]);
 
     const [recordingMode, setRecordingMode] = useState(true);
@@ -81,17 +85,34 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
 
     const startRecording = useCallback(async () => {
         setCountdownStarted(false);
-
-        // log error if null
-        camera?.current?.startRecording({
+        console.log(`CAMERA INITIALIZED: ${cameraInitialized}`);
+        console.log('STARTING RECORDING', camera.current);
+        if (!camera || !camera.current || !cameraInitialized) {
+            // TODO: Log an error
+            console.log('CAMERA REF IS NOT DEFINED');
+            setIsRecording(false);
+            return;
+        }
+        camera.current.startRecording({
+            fileType: 'mp4',
+            videoCodec: 'h264',
             onRecordingFinished: async (video) => {
-                const path = video.path;
+                console.log('FINISHED RECORDING');
+                console.log(video.path);
+                setRecordedVideo(`file://${video.path}`);
+                // setIsRecording(false);
+                // setRecordingMode(false);
+
                 // await CameraRoll.save(`file://${path}`, {
                 //   type: 'video',
                 // })
             },
-            onRecordingError: (error) => console.error(error),
+            onRecordingError: (error) => {
+                console.log('CAMERA RECORDING ERROR');
+                console.error(error)
+            },
         });
+        setTimeout(() => { endRecording() }, settings.duration * 1000)
         // if (!cameraRef || !cameraRef.current) {
         //     void Logger.logError({
         //         code: 'REC100',
@@ -121,11 +142,18 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
         //         rawErrorMessage: error.message,
         //     });
         // }
-    }, [cameraRef, settings]);
+    }, [camera, settings]);
 
     const endRecording = useCallback(async () => {
         setCountdownStarted(false);
-        await camera?.current?.stopRecording();
+        console.log('END RECORDING');
+        if (isRecording) {
+            console.log('IS RECORDING');
+            await camera?.current?.stopRecording();
+            setIsRecording(false);
+        }
+
+
         // if (!cameraRef || !cameraRef.current) {
         //     void Logger.logError({
         //         code: 'REC200',
@@ -139,8 +167,9 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
         // }
 
         // setRecordedVideo('');
-        // setIsRecording(false);
-    }, [isRecording]);
+        setIsRecording(false);
+        // setRecordingMode(false);
+    }, [isRecording, camera.current]);
 
     // This effect causing a null object reference in Android
     // useEffect(() => {
@@ -153,7 +182,32 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
     //     }
     // }, [cameraRef, cameraRef.current]);
 
-    const VideoRecorder = backCamera && <Camera ref={camera} device={backCamera} video={true} isActive={isActive} />;
+    console.log('XXXXXXXXXXXXXXX');
+    console.log('XXXXXXXXXXXXXXX');
+    console.log(`AVAILABLE CAMERAS: ${useCameraDevices()}`)
+    console.log(`CAMERA DEVICES: ${cameraDevices}`);
+    console.log(`ACTIVE INDEX: ${activeCameraIndex}`);
+    console.log(`CURRENT DEVICE: ${currentCameraDevice}`);
+    console.log(`ACTIVE: ${isActive}`);
+    console.log(`CAMERA INITIALIZED: ${cameraInitialized}`)
+    console.log('XXXXXXXXXXXXXXX');
+    console.log('XXXXXXXXXXXXXXX');
+
+    const VideoRecorder =
+        cameraDevices[activeCameraIndex] &&
+        <Camera
+            ref={camera}
+            device={currentCameraDevice}
+            format={useCameraFormat(currentCameraDevice, [
+                { videoAspectRatio: 16 / 9 },
+                { videoResolution: { width: 1280, height: 720 } },
+                { fps: 60 }
+            ])
+            }
+            video={true}
+            isActive={isActive}
+            onInitialized={(): void => setCameraInitialized(true)}
+        />;
     // <RNCamera
     //     ref={cameraRef}
     //     style={{
@@ -235,7 +289,7 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
                     <Image
                         resizeMethod="resize"
                         style={{ height: '100%', width: '100%', opacity: 0.35, resizeMode: 'contain' }}
-                        source={getOverlayImage(swing, settings.handedness, cameras[cameraType])}
+                        source={getOverlayImage(swing, settings.handedness, activeCameraIndex === 0 ? 'back' : 'front')}
                     />
                 </Stack>
             )}
@@ -290,40 +344,42 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
                 onAction={
                     recordingMode
                         ? (): void => {
-                              // Start / End recording
-                              if (!isRecording) {
-                                  setCountdownStarted(true);
-                                  setIsRecording(true);
-                              } else {
-                                  endRecording();
-                              }
-                          }
+                            // Start / End recording
+                            if (!isRecording) {
+                                setCountdownStarted(true);
+                                setIsRecording(true);
+                            } else {
+                                endRecording();
+                            }
+                        }
                         : (): void => {
-                              // Play / Pause the video
-                              setIsPlaying(!isPlaying);
-                          }
+                            // Play / Pause the video
+                            setIsPlaying(!isPlaying);
+                        }
                 }
                 onBack={
                     recordingMode
                         ? (): void => props.navigation.pop() // Go Back
                         : (): void => {
-                              setRecordingMode(true);
-                              setRecordedVideo('');
-                          }
+                            setRecordingMode(true);
+                            setRecordedVideo('');
+                        }
                 }
                 onNext={
-                    recordingMode
+                    recordingMode && cameraDevices[(activeCameraIndex + 1) % cameraDevices.length]
                         ? (): void => {
-                              // Toggle Camera
-                              setCameraType((cameraType + 1) % cameras.length);
-                          }
+
+                            // Toggle Camera
+                            setCameraInitialized(false);
+                            setActiveCameraIndex((i) => (i + 1) % cameraDevices.length);
+                        }
                         : (): void => {
-                              // Use-Video
-                              // @ts-ignore
-                              onReturn(recordedVideo);
-                              setPreviewReady(false);
-                              props.navigation.pop();
-                          }
+                            // Use-Video
+                            // @ts-ignore
+                            onReturn(recordedVideo);
+                            setPreviewReady(false);
+                            props.navigation.pop();
+                        }
                 }
             />
         </View>

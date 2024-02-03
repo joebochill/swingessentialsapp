@@ -104,7 +104,7 @@ export const SEVideo: React.FC<VideoProps> = (props) => {
                 {!ready && (
                     <ActivityIndicator
                         size={theme.size.xl}
-                        color={theme.colors.onPrimary}
+                        color={theme.colors.onPrimaryContainer}
                         style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
                     />
                 )}
@@ -117,8 +117,8 @@ export const SEVideo: React.FC<VideoProps> = (props) => {
                     <TouchableOpacity
                         activeOpacity={0.8}
                         style={[
-                            { alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.2)' },
                             styles.bottomPanel,
+                            { alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.2)' },
                         ]}
                         onPress={onEdit}
                     >

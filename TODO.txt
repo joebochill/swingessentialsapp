@@ -1,58 +1,46 @@
 Things to get working
 
-- Fix Design By Screen
-X Home
-X Check on refresh indicator
-X Navigation Drawer
-X Profile
-X Setting
-X Lessons
-X Individual Lesson
-X Submit
-X Record
-X Order More
-X Pros
-X Tips
-X Individual Tip
-X Blogs
-X Individual Blogs
-X About
-X FAQ
-X Contact (NOT A SCREEN — JUST A FUNCTION)
-X Logs
-X Log In
-X Registration
-X Forgot Password
-X Token Timeout
-X Tutorials
-    X Home
-    X Lesson
-    X Lessons
-    X Order
-    X Submit
-X UploadProgressModal
+- Hook up IAP
+- Hook up camera/video recording
+- Fix Date Picker
+- Fix File Picker
 
-Clean Up styles of all remaining components, e.g. Counter
+Verify All Capabilities
+- Change Every Setting
+- Change Profile Image
+- Contact
+- Send Error Report
+- View Lessons
+- Play Lessons
+- Submit New Swing
+- Record a Video
+- Video Timing settings
+- Video overlay settings
+- Video duration settings
+- Video uses flash correctly
+- Choose Video from Camera Roll
+- Load Packages
+- Order New Packages
+- Log In
+- Log Out
+- Biometric login
+- Remember Username functionality
+- Register
+- Validator on exiting username/others
+- Verify email
+- Deep linking
+- Automatic Logout
 
-Get the DateTime Picker working
-Fix settings not saving
-Fix Video Picker broken
-Fix Video Recording
-Get biometric login working
-Fix registration against existing username / other registration validators
-Video not recording
-Recording not respecting record duration props
-Deep linking / android
+- Test on a Real Device
 
+Enhancements
 
-- Fix components folder
-- Fix functionality
-- Fix FontWeight on android
-- Get biometric login working
+- Upgrade to use Redux toolkit
+- 
+
 
 - Update Redux to use toolkit
 - Update to latest RN IAP
-- Screen by screen to update functionality
 - Check if core libraries are deprecated
 
 

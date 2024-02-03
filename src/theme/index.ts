@@ -33,7 +33,7 @@ export const SETheme = {
         onBackground: purple[20],
         surface: '#FFF',
         onSurface: purple[20],
-        surfaceVariant: purple[95],
+        surfaceVariant: purple[100],
         onSurfaceVariant: purple[20],
         outline: purple[80],
         error: '#ca3c3d',
