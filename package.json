@@ -54,6 +54,7 @@
         "react-native-bootsplash": "^5.3.0",
         "react-native-fs": "^2.20.0",
         "react-native-gesture-handler": "^2.14.1",
+        "react-native-iap": "^12.12.2",
         "react-native-image-crop-picker": "^0.40.2",
         "react-native-image-picker": "^7.1.0",
         "react-native-keychain": "^8.1.2",

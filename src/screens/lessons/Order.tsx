@@ -13,7 +13,7 @@ import {
     ListItem,
     Stack,
 } from '../../components';
-// import { requestPurchase, useIAP, ErrorCode } from 'react-native-iap';
+import { requestPurchase, useIAP, ErrorCode } from 'react-native-iap';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
@@ -42,16 +42,22 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
     const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
     const theme = useAppTheme();
-    // const {
-    //     connected,
-    //     products,
-    //     subscriptions,
-    //     getProducts,
-    //     getSubscriptions,
-    //     finishTransaction,
-    //     currentPurchase,
-    //     currentPurchaseError,
-    // } = useIAP();
+    const {
+        connected,
+        // products,
+        // promotedProductsIOS,
+        // subscriptions,
+        // purchaseHistories,
+        // availablePurchases,
+        // currentPurchase,
+        // currentPurchaseError,
+        // initConnectionError,
+        // finishTransaction,
+        getProducts,
+        // getSubscriptions,
+        // getAvailablePurchases,
+        // getPurchaseHistories,
+    } = useIAP();
 
     const [selected, setSelected] = useState(-1);
 
@@ -62,52 +68,28 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
             ? 'You must validate your email address before you can purchase lessons'
             : '';
 
-    // useEffect(() => {
-    //     if (packages && connected) {
-    //         try {
-    //             const skus: string[] = [];
-    //             for (let i = 0; i < packages.length; i++) {
-    //                 skus.push(packages[i].app_sku);
-    //             }
-    //             getProducts({ skus });
-    //             setSelected(0);
-    //         } catch (err: any) {
-    //             void Logger.logError({
-    //                 code: 'IAP100',
-    //                 description: 'Failed to load in-app purchases.',
-    //                 rawErrorCode: err.code,
-    //                 rawErrorMessage: err.message,
-    //             });
-    //         }
-    //     }
-    // }, [getProducts, packages]);
+    // Load the products from IAP
+    useEffect(() => {
+        if (packages && connected) {
+            try {
+                const skus: string[] = [];
+                for (let i = 0; i < packages.length; i++) {
+                    skus.push(packages[i].app_sku);
+                }
+                void getProducts({ skus }); // await?
+                setSelected(0);
+            } catch (err: any) {
+                void Logger.logError({
+                    code: 'IAP100',
+                    description: 'Failed to load in-app purchases.',
+                    rawErrorCode: err.code,
+                    rawErrorMessage: err.message,
+                });
+            }
+        }
+    }, [getProducts, packages, connected]);
 
-    // OLD IMPLEMENTATION
-    // useEffect(() => {
-    //     if (packages) {
-    //         const skus: string[] = [];
-    //         for (let i = 0; i < packages.length; i++) {
-    //             skus.push(packages[i].app_sku);
-    //         }
-    //         const loadProducts = async (): Promise<void> => {
-    //             try {
-    //                 await RNIap.initConnection();
-    //                 const verifiedProducts = await RNIap.getProducts(skus);
-    //                 setProducts(verifiedProducts.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)));
-    //                 setSelected(0);
-    //             } catch (err) {
-    //                 void Logger.logError({
-    //                     code: 'IAP100',
-    //                     description: 'Failed to load in-app purchases.',
-    //                     rawErrorCode: err.code,
-    //                     rawErrorMessage: err.message,
-    //                 });
-    //             }
-    //         };
-    //         void loadProducts();
-    //     }
-    // }, [packages]);
-
+    // Purchase Completed
     useEffect(() => {
         if (credits.success) {
             Alert.alert('Purchase Complete', 'Your order has finished processing. Thank you for your purchase!', [
@@ -123,40 +105,39 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
         }
     }, [credits.success, props.navigation]);
 
-    const onPurchase = () => {};
-    // const onPurchase = useCallback(
-    //     async (sku: string, shortcode: string) => {
-    //         if (roleError.length > 0) {
-    //             // logLocalError('137: Purchase request not sent: ' + this.state.error);
-    //             return;
-    //         }
-    //         if (role !== 'customer' && role !== 'administrator') {
-    //             // logLocalError('137XX: Purchase request not sent: ' + this.state.error);
-    //             return;
-    //         }
-    //         if (!sku || !shortcode) {
-    //             // logLocalError('138: Purchase: missing data');
-    //             return;
-    //         }
-    //         try {
-    //             await requestPurchase({
-    //                 sku,
-    //                 andDangerouslyFinishTransactionAutomaticallyIOS: false,
-    //             });
-    //         } catch (error: any) {
-    //             if (error.code !== ErrorCode.E_USER_CANCELLED) {
-    //                 void Logger.logError({
-    //                     code: 'IAP200',
-    //                     description: 'Failed to request in-app purchase.',
-    //                     rawErrorCode: error.code,
-    //                     rawErrorMessage: error.message,
-    //                 });
-    //             }
-    //         }
-    //         // Purchase response is handled in RNIAPCallbacks.tsx
-    //     },
-    //     [role, roleError.length]
-    // );
+    const onPurchase = useCallback(
+        async (sku: string, shortcode: string) => {
+            if (roleError.length > 0) {
+                // logLocalError('137: Purchase request not sent: ' + this.state.error);
+                return;
+            }
+            if (role !== 'customer' && role !== 'administrator') {
+                // logLocalError('137XX: Purchase request not sent: ' + this.state.error);
+                return;
+            }
+            if (!sku || !shortcode) {
+                // logLocalError('138: Purchase: missing data');
+                return;
+            }
+            try {
+                await requestPurchase({
+                    sku,
+                    // andDangerouslyFinishTransactionAutomaticallyIOS: false,
+                });
+            } catch (error: any) {
+                if (error.code !== ErrorCode.E_USER_CANCELLED) {
+                    void Logger.logError({
+                        code: 'IAP200',
+                        description: 'Failed to request in-app purchase.',
+                        rawErrorCode: error.code,
+                        rawErrorMessage: error.message,
+                    });
+                }
+            }
+            // Purchase response is handled in RNIAPCallbacks.tsx
+        },
+        [role, roleError.length]
+    );
 
     return (
         <CollapsibleHeaderLayout
@@ -252,7 +233,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 onPress={
                     roleError.length === 0 && !packagesProcessing && !credits.inProgress
                         ? (): void => {
-                              void (onPurchase(/*packages[selected].app_sku, packages[selected].shortcode*/));
+                              void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
                           }
                         : undefined
                 }

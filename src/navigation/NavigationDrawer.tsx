@@ -102,6 +102,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                     rawErrorMessage: err.message,
                 });
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Handle the app coming into the foreground after being backgrounded
@@ -113,7 +114,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
             }
             setAppState(nextAppState);
         },
-        [appState, token]
+        [appState, token, dispatch]
     );
 
     // Handles activating a deep link while the app is in the background

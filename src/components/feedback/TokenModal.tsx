@@ -82,7 +82,6 @@ export const TokenModal: React.FC<ModalProps> = (props) => {
         let interval: any = 0;
         if (timeRemaining > 0) {
             interval = setInterval(() => {
-                // setTimeRemaining(timeRemaining => timeRemaining - updateRate);
                 const exp = JSON.parse(atob(token.split('.')[1])).exp;
                 setTimeRemaining(exp - Date.now() / 1000);
             }, updateRate * 1000);
@@ -129,7 +128,7 @@ export const TokenModal: React.FC<ModalProps> = (props) => {
                     />
                     <Paragraph>{'Your current session is about to expire. Click below to stay signed in.'}</Paragraph>
 
-                    {refreshing && (
+                    {!refreshing && (
                         <SEButton
                             title="KEEP ME SIGNED IN"
                             style={{ marginTop: theme.spacing.md }}
@@ -137,7 +136,7 @@ export const TokenModal: React.FC<ModalProps> = (props) => {
                             onPress={(): void => dispatch(refreshToken())}
                         />
                     )}
-                    {!refreshing && (
+                    {refreshing && (
                         <ActivityIndicator
                             style={{ marginTop: theme.spacing.lg }}
                             size={'large'}

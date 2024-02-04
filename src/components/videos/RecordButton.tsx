@@ -81,10 +81,11 @@ export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
                     position: 'absolute',
                     left: 0,
                     right: 0,
+                    bottom: 0,
                     flexDirection: 'row',
                     alignItems: 'center',
                     padding: theme.spacing.md,
-                    bottom: insets.bottom,
+                    paddingBottom: theme.spacing.md + insets.bottom,
                     backgroundColor: active ? 'transparent' : 'rgba(0,0,0,0.5)',
                 },
             ]}

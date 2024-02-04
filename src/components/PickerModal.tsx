@@ -8,7 +8,7 @@ import { Divider } from 'react-native-paper';
 type PickerMenuOption = {
     label: string;
     onPress?: (() => void) | (() => Promise<void>);
-}
+};
 type PickerMenuProps = Partial<Omit<ModalProps, 'children'>> & {
     menuOptions: PickerMenuOption[];
 };
@@ -22,7 +22,10 @@ export const PickerModal: React.FC<PickerMenuProps> = (props) => {
             backdropOpacity={0.5}
             supportedOrientations={['portrait', 'landscape']}
             statusBarTranslucent
-            style={[{ justifyContent: 'flex-end', margin: 0, height: '100%', flex: 1 }, ...Array.isArray(style) ? style : [style]]}
+            style={[
+                { justifyContent: 'flex-end', margin: 0, height: '100%', flex: 1 },
+                ...(Array.isArray(style) ? style : [style]),
+            ]}
             {...otherModalProps}
         >
             <SafeAreaView style={[{ backgroundColor: theme.colors.surface }]}>
@@ -35,7 +38,6 @@ export const PickerModal: React.FC<PickerMenuProps> = (props) => {
                             titleNumberOfLines={1}
                             titleEllipsizeMode={'tail'}
                             onPress={option.onPress}
-
                         />
                     </Fragment>
                 ))}

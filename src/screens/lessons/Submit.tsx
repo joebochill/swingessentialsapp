@@ -17,8 +17,7 @@ import {
     Typography,
 } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import Modal from 'react-native-modal';
-import ImagePicker, { launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 // Styles
 import { TextInput } from 'react-native-paper';
@@ -83,8 +82,8 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
         role === 'anonymous'
             ? 'You must be signed in to submit lessons.'
             : role === 'pending'
-                ? 'You must validate your email address before you can submit lessons'
-                : '';
+            ? 'You must validate your email address before you can submit lessons'
+            : '';
 
     const previousPendingStatus = usePrevious(lessons.redeemPending);
 
@@ -233,51 +232,6 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
         },
         [setFO, setDTL]
     );
-    // NOT THE REAL IMPLEMENTATION
-    const showPickerMenu = useCallback(
-        (swing: 'fo' | 'dtl') => {
-            if (!swing) return;
-
-            setShowPicker(swing);
-        },
-        []
-    );
-    // const showPickerMenu = useCallback(
-    //     (swing: 'fo' | 'dtl'): void => {
-    //         // @ts-ignore
-    //         ImagePicker.showImagePicker(
-    //             {
-    //                 title: undefined,
-    //                 takePhotoButtonTitle: undefined,
-    //                 chooseFromLibraryButtonTitle: 'Choose From Library',
-    //                 customButtons: [{ name: 'record', title: 'Record a New Video' }],
-    //                 videoQuality: 'high',
-    //                 mediaType: 'video',
-    //                 durationLimit: 10,
-    //                 storageOptions: {
-    //                     skipBackup: true,
-    //                     path: 'images',
-    //                 },
-    //             },
-    //             (response: any) => {
-    //                 if (response.didCancel) {
-    //                     /*do nothing*/
-    //                 } else if (response.error) {
-    //                     Alert.alert('There was an error choosing a video. Try again later.');
-    //                 } else if (response.customButton === 'record') {
-    //                     // @ts-ignore
-    //                     navigation.push(ROUTES.RECORD, {
-    //                         swing,
-    //                         onReturn: (uri: string) => setVideoURI(swing, uri),
-    //                     });
-    //                 } else {
-    //                     void setVideoURI(swing, response.uri);
-    //                 }
-    //             }
-    //         );
-    //     },
-    //     [setVideoURI, navigation]
-    // );
 
     return (
         <>
@@ -378,10 +332,10 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                 backgroundColor: theme.colors.primaryContainer,
                             }}
                         >
-                            <Typography
-                                variant={'bodySmall'}
-                                color={'primary'}
-                            ><Typography fontWeight={'semiBold'}>{`TIP: `}</Typography>{`Avoid slo-mo videos to stay below the file size limit.`}</Typography>
+                            <Typography variant={'bodySmall'} color={'primary'}>
+                                <Typography fontWeight={'semiBold'}>{`TIP: `}</Typography>
+                                {`Avoid slo-mo videos to stay below the file size limit.`}
+                            </Typography>
                         </Stack>
 
                         <SectionHeader title={'Special Requests / Comments'} style={{ marginTop: theme.spacing.xl }} />
@@ -402,7 +356,11 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                 ]}
                                 onPress={(): void => setUseNotes(true)}
                             >
-                                <MatIcon name={'add-circle'} color={theme.colors.onPrimaryContainer} size={theme.size.md} />
+                                <MatIcon
+                                    name={'add-circle'}
+                                    color={theme.colors.onPrimaryContainer}
+                                    size={theme.size.md}
+                                />
                             </TouchableOpacity>
                         )}
                         {useNotes && (
@@ -431,8 +389,9 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                     }}
                                     placeholder={'e.g., Help me with my slice!'}
                                 />
-                                <Typography style={{ alignSelf: 'flex-end', marginTop: theme.spacing.sm }}>{`${500 - notes.length
-                                    } Characters Left`}</Typography>
+                                <Typography style={{ alignSelf: 'flex-end', marginTop: theme.spacing.sm }}>{`${
+                                    500 - notes.length
+                                } Characters Left`}</Typography>
                             </>
                         )}
                         <SEButton
@@ -461,22 +420,20 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                             });
                             if (result.didCancel) {
                                 /*do nothing*/
-                            }
-                            else if (result.errorCode) {
-                                Alert.alert(`There was an error choosing a video. Try again later. ${result.errorMessage}`);
+                            } else if (result.errorCode) {
+                                Alert.alert(
+                                    `There was an error choosing a video. Try again later. ${result.errorMessage}`
+                                );
                                 setShowPicker(false);
-                            }
-                            else {
+                            } else {
                                 if (result.assets && result.assets.length > 0) {
-                                    console.log(result?.assets?.[0]?.fileSize);
                                     void setVideoURI(showPicker as 'fo' | 'dtl', result.assets[0].uri || '');
-                                }
-                                else {
-                                    // TODO: Log an error, skip
+                                } else {
+                                    Alert.alert(`There was no video selected. Try again later.`);
                                 }
                                 setShowPicker(false);
                             }
-                        }
+                        },
                     },
                     {
                         label: 'Record a New Video',
@@ -485,11 +442,13 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                             // @ts-ignore
                             navigation.push(ROUTES.RECORD, {
                                 swing: showPicker as 'fo' | 'dtl',
-                                onReturn: (uri: string) => setVideoURI(showPicker as 'fo' | 'dtl', uri),
+                                onReturn: (uri: string) => {
+                                    void setVideoURI(showPicker as 'fo' | 'dtl', uri);
+                                },
                             });
-                        }
+                        },
                     },
-                    { label: 'Cancel', onPress: (): void => setShowPicker(false) }
+                    { label: 'Cancel', onPress: (): void => setShowPicker(false) },
                 ]}
             />
         </>

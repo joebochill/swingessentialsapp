@@ -129,7 +129,7 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
                 })
             );
         }
-    }, [dispatch, currentSettingName, value]);
+    }, [dispatch, currentSettingName, value, settings.notifications]);
 
     useEffect(() => {
         if (!token) {

@@ -15,7 +15,7 @@ import { Platform } from 'react-native';
 import { loadUserInfo } from './user-data-actions';
 import { loadPros } from './ProsActions';
 
-export function loadInitialData(): (dispatch: ThunkDispatch<any, void, any>) => void {
+export function loadInitialData(): (dispatch: ThunkDispatch<any, void, any>) => Promise<void> {
     return async (dispatch: ThunkDispatch<any, void, any>): Promise<void> => {
         const token = await AsyncStorage.getItem(`${ASYNC_PREFIX}token`);
         if (token) dispatch(setToken(token));

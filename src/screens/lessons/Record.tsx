@@ -12,7 +12,6 @@ import {
     ActivityIndicator,
     ImageSourcePropType,
 } from 'react-native';
-// import { RNCamera } from 'react-native-camera';
 import { VideoControls, CountDown, VideoTimer, Stack } from '../../components';
 import Video from 'react-native-video';
 
@@ -35,7 +34,7 @@ import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
-import { Camera, CameraDevice, RecordVideoOptions, useCameraDevice, useCameraDevices, useCameraFormat } from 'react-native-vision-camera';
+import { Camera, CameraDevice, useCameraDevice, useCameraDevices, useCameraFormat } from 'react-native-vision-camera';
 import { useIsFocused } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks';
 
@@ -67,6 +66,11 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
     const [cameraInitialized, setCameraInitialized] = useState(false);
     const [activeCameraIndex, setActiveCameraIndex] = useState(0);
     const currentCameraDevice = cameraDevices[activeCameraIndex] as CameraDevice;
+    const cameraFormat = useCameraFormat(currentCameraDevice, [
+        { videoAspectRatio: 16 / 9 },
+        { videoResolution: { width: 1280, height: 720 } },
+        { fps: 60 },
+    ]);
 
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -76,167 +80,95 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
     // const [cameraRatios, setCameraRatios] = useState([]);
 
     const [recordingMode, setRecordingMode] = useState(true);
-    const [showCountDown, setCountdownStarted] = useState(false);
+    const [showCountDown, setShowCountDown] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [previewReady, setPreviewReady] = useState(false);
 
     const [recordedVideo, setRecordedVideo] = useState('');
 
-    const startRecording = useCallback(async () => {
-        setCountdownStarted(false);
-        console.log(`CAMERA INITIALIZED: ${cameraInitialized}`);
-        console.log('STARTING RECORDING', camera.current);
+    const endRecording = useCallback(async () => {
+        setShowCountDown(false); // hide the countdown timer (if you stop before recording started)
+
+        if (!camera || !camera.current) {
+            void Logger.logError({
+                code: 'REC200',
+                description: 'No camera object was found.',
+            });
+            return;
+        }
+        if (isRecording) {
+            await camera?.current?.stopRecording();
+            setIsRecording(false);
+        }
+        setIsRecording(false);
+    }, [isRecording, camera]);
+
+    const startRecording = useCallback(() => {
+        setShowCountDown(false);
         if (!camera || !camera.current || !cameraInitialized) {
-            // TODO: Log an error
-            console.log('CAMERA REF IS NOT DEFINED');
+            void Logger.logError({
+                code: 'REC100',
+                description: 'No camera object was found/initialized.',
+            });
             setIsRecording(false);
             return;
         }
         camera.current.startRecording({
             fileType: 'mp4',
             videoCodec: 'h264',
-            onRecordingFinished: async (video) => {
-                console.log('FINISHED RECORDING');
-                console.log(video.path);
+            onRecordingFinished: (video) => {
                 setRecordedVideo(`file://${video.path}`);
-                // setIsRecording(false);
-                // setRecordingMode(false);
-
-                // await CameraRoll.save(`file://${path}`, {
-                //   type: 'video',
-                // })
+                setRecordingMode(false);
             },
             onRecordingError: (error) => {
-                console.log('CAMERA RECORDING ERROR');
-                console.error(error)
+                setRecordedVideo('');
+                void Logger.logError({
+                    code: 'REC200',
+                    description: `Recording error: ${error.message}`,
+                });
             },
         });
-        setTimeout(() => { endRecording() }, settings.duration * 1000)
-        // if (!cameraRef || !cameraRef.current) {
-        //     void Logger.logError({
-        //         code: 'REC100',
-        //         description: 'No camera object was found.',
-        //     });
-        //     return;
-        // }
-        // const options = {
-        //     maxFileSize: 9.5 * 1024 * 1024,
-        //     maxDuration: settings.duration,
-        //     orientation: 'portrait',
-        //     // quality: RNCamera.Constants.VideoQuality['720p'],
-        // };
+        setTimeout(() => {
+            void endRecording();
+        }, settings.duration * 1000);
+    }, [camera, settings, cameraInitialized, endRecording]);
 
-        // try {
-        //     // @ts-ignore
-        //     const videoResult = await cameraRef.current.recordAsync(options);
+    /* eslint-disable no-console */
+    // console.log('XXXXXXXXXXXXXXX');
+    // console.log('XXXXXXXXXXXXXXX');
+    // console.log(`AVAILABLE CAMERAS: ${(useCameraDevices() || '').toString()}`);
+    // console.log(`CAMERA DEVICES: ${cameraDevices.toString()}`);
+    // console.log(`ACTIVE INDEX: ${activeCameraIndex}`);
+    // console.log(`CURRENT DEVICE: ${currentCameraDevice.id}`);
+    // console.log(`ACTIVE: ${isActive}`);
+    // console.log(`CAMERA INITIALIZED: ${cameraInitialized}`);
+    // console.log('XXXXXXXXXXXXXXX');
+    // console.log('XXXXXXXXXXXXXXX');
+    /* eslint-enable no-console */
 
-        //     setRecordedVideo(videoResult.uri);
-        //     setIsRecording(false);
-        //     setRecordingMode(false);
-        // } catch (error: any) {
-        //     void Logger.logError({
-        //         code: 'REC150',
-        //         description: 'Async Video Recording failed.',
-        //         rawErrorCode: error.code,
-        //         rawErrorMessage: error.message,
-        //     });
-        // }
-    }, [camera, settings]);
-
-    const endRecording = useCallback(async () => {
-        setCountdownStarted(false);
-        console.log('END RECORDING');
-        if (isRecording) {
-            console.log('IS RECORDING');
-            await camera?.current?.stopRecording();
-            setIsRecording(false);
-        }
-
-
-        // if (!cameraRef || !cameraRef.current) {
-        //     void Logger.logError({
-        //         code: 'REC200',
-        //         description: 'No camera object was found.',
-        //     });
-        //     return;
-        // }
-        // if (isRecording) {
-        //     // @ts-ignore
-        //     cameraRef.current.stopRecording();
-        // }
-
-        // setRecordedVideo('');
-        setIsRecording(false);
-        // setRecordingMode(false);
-    }, [isRecording, camera.current]);
-
-    // This effect causing a null object reference in Android
-    // useEffect(() => {
-    //     if (Platform.OS === 'android' && cameraRef && cameraRef.current) {
-    //         const getAvailableRatios = async () => {
-    //             const ratios = await cameraRef.current.getSupportedRatiosAsync();
-    //             setCameraRatios(ratios);
-    //         };
-    //         getAvailableRatios();
-    //     }
-    // }, [cameraRef, cameraRef.current]);
-
-    console.log('XXXXXXXXXXXXXXX');
-    console.log('XXXXXXXXXXXXXXX');
-    console.log(`AVAILABLE CAMERAS: ${useCameraDevices()}`)
-    console.log(`CAMERA DEVICES: ${cameraDevices}`);
-    console.log(`ACTIVE INDEX: ${activeCameraIndex}`);
-    console.log(`CURRENT DEVICE: ${currentCameraDevice}`);
-    console.log(`ACTIVE: ${isActive}`);
-    console.log(`CAMERA INITIALIZED: ${cameraInitialized}`)
-    console.log('XXXXXXXXXXXXXXX');
-    console.log('XXXXXXXXXXXXXXX');
-
-    const VideoRecorder =
-        cameraDevices[activeCameraIndex] &&
+    const VideoRecorder = cameraDevices[activeCameraIndex] && (
         <Camera
             ref={camera}
             device={currentCameraDevice}
-            format={useCameraFormat(currentCameraDevice, [
-                { videoAspectRatio: 16 / 9 },
-                { videoResolution: { width: 1280, height: 720 } },
-                { fps: 60 }
-            ])
-            }
+            format={cameraFormat}
             video={true}
             isActive={isActive}
+            audio={false}
+            torch={currentCameraDevice.hasTorch && showCountDown ? 'on' : 'off'}
             onInitialized={(): void => setCameraInitialized(true)}
-        />;
-    // <RNCamera
-    //     ref={cameraRef}
-    //     style={{
-    //         position: 'absolute',
-    //         top: 0,
-    //         left: 0,
-    //         right: 0,
-    //         bottom: 0,
-    //         alignItems: 'center',
-    //         justifyContent: 'center',
-    //     }}
-    //     type={RNCamera.Constants.Type[cameras[cameraType]]}
-    //     // onCameraReady={() => setRecordingMode(true)}
-    //     flashMode={showCountDown ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
-    //     captureAudio={false}
-    //     // ratio={cameraRatios.find(ratio => ratio === DESIRED_RATIO) || cameraRatios[cameraRatios.length - 1]}
-    //     androidCameraPermissionOptions={{
-    //         title: 'Permission to use camera',
-    //         message: 'We need your permission to use your camera',
-    //         buttonPositive: 'Ok',
-    //         buttonNegative: 'Cancel',
-    //     }}
-    //     androidRecordAudioPermissionOptions={{
-    //         title: 'Permission to use audio recording',
-    //         message: 'We need your permission to use your audio',
-    //         buttonPositive: 'Ok',
-    //         buttonNegative: 'Cancel',
-    //     }}
-    // />
+            style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        />
+    );
+
     const VideoPlayer = (
         <Video
             ref={videoRef}
@@ -344,42 +276,42 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
                 onAction={
                     recordingMode
                         ? (): void => {
-                            // Start / End recording
-                            if (!isRecording) {
-                                setCountdownStarted(true);
-                                setIsRecording(true);
-                            } else {
-                                endRecording();
-                            }
-                        }
+                              // Start / End recording
+                              if (!isRecording) {
+                                  setShowCountDown(true);
+                                  setIsRecording(true);
+                              } else {
+                                  void endRecording();
+                              }
+                          }
                         : (): void => {
-                            // Play / Pause the video
-                            setIsPlaying(!isPlaying);
-                        }
+                              // Play / Pause the video
+                              setIsPlaying(!isPlaying);
+                          }
                 }
                 onBack={
                     recordingMode
-                        ? (): void => props.navigation.pop() // Go Back
+                        ? (): void => props.navigation.pop() // Cancel
                         : (): void => {
-                            setRecordingMode(true);
-                            setRecordedVideo('');
-                        }
+                              // Retake
+                              setRecordingMode(true);
+                              setRecordedVideo('');
+                          }
                 }
                 onNext={
-                    recordingMode && cameraDevices[(activeCameraIndex + 1) % cameraDevices.length]
+                    recordingMode
                         ? (): void => {
-
-                            // Toggle Camera
-                            setCameraInitialized(false);
-                            setActiveCameraIndex((i) => (i + 1) % cameraDevices.length);
-                        }
+                              // Toggle Camera
+                              setCameraInitialized(false);
+                              setActiveCameraIndex((i) => (i + 1) % cameraDevices.length);
+                          }
                         : (): void => {
-                            // Use-Video
-                            // @ts-ignore
-                            onReturn(recordedVideo);
-                            setPreviewReady(false);
-                            props.navigation.pop();
-                        }
+                              // Use-Video
+                              // @ts-ignore
+                              onReturn(recordedVideo);
+                              setPreviewReady(false);
+                              props.navigation.pop();
+                          }
                 }
             />
         </View>

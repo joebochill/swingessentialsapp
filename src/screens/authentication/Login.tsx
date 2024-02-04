@@ -100,6 +100,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
             }
         };
         void loadSavedSettings();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -118,6 +119,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
             }
         };
         void touchCheck();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -127,20 +129,20 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                 const keychainCredentials = await Keychain.getGenericPassword();
 
                 if (keychainCredentials) {
-                    setCredentials({
-                        ...credentials,
+                    setCredentials((c) => ({
+                        ...c,
                         stored: true,
                         savedCredentials: keychainCredentials,
-                    });
+                    }));
                     if (remember) {
                         setUsername(keychainCredentials.username);
                     }
                 } else {
-                    setCredentials({
-                        ...credentials,
+                    setCredentials((c) => ({
+                        ...c,
                         stored: false,
                         savedCredentials: undefined,
-                    });
+                    }));
                 }
             } catch (err: any) {
                 void Logger.logError({

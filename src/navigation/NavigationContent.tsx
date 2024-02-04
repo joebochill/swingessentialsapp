@@ -105,10 +105,8 @@ export const helpNavigationItems: RouteGroup = {
                         isHTML: true,
                     },
                     (error, event) => {
-                        console.log(error, event);
                         if (error && error === 'canceled') {
                             // Do nothing
-                            console.log('mail canceled');
                         } else if (error) {
                             void Logger.logError({
                                 code: 'CON100',
