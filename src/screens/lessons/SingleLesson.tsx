@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { Platform, ScrollView } from 'react-native';
-import { SEHeader, LessonTutorial, Stack, SectionHeader, Paragraph, YoutubeCard } from '../../components';
+import { LessonTutorial, Stack, SectionHeader, Paragraph, YoutubeCard } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Styles
-import { width, height, aspectHeight } from '../../utilities/dimensions';
+import { width, height } from '../../utilities/dimensions';
 
 // Utilities
 import { splitParagraphs, getLongDate } from '../../utilities';
@@ -25,6 +25,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../../components/videos/SwingVideo';
+import { Header } from '../../components/CollapsibleHeader/Header';
 
 export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson'>> = (props) => {
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -38,7 +39,6 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
         lesson = placeholder;
     }
     const videoWidth = width - 2 * theme.spacing.md;
-    const videoHeight = aspectHeight(videoWidth);
 
     useEffect(() => {
         if (!token && lesson.request_id !== -1) {
@@ -69,12 +69,12 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
                       },
                   ]}
               >
-                  {/* @ts-ignore */}
-                  <SEHeader
+                  <Header
                       title={lesson.request_date}
                       subtitle={lesson.type === 'in-person' ? 'In-Person Lesson' : 'Remote Lesson'}
                       mainAction={'back'}
                       navigation={props.navigation}
+                      fixed
                   />
                   <ScrollView
                       contentContainerStyle={[
@@ -89,10 +89,7 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
                       {lesson.response_video && (
                           <>
                               <SectionHeader title={'Video Analysis'} />
-                              <YoutubeCard
-                                  video={lesson.response_video}
-                                  videoWidth={videoWidth}
-                              />
+                              <YoutubeCard video={lesson.response_video} videoWidth={videoWidth} />
                               <SectionHeader title={'Comments'} style={{ marginTop: theme.spacing.xl }} />
                               <Stack space={theme.spacing.md}>
                                   {splitParagraphs(lesson.response_notes).map((p, ind) => (

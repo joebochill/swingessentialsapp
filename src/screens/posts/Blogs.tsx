@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // Components
-import { View, SectionList } from 'react-native';
-import { CollapsibleHeaderLayout, ListItem, SectionHeader, Stack } from '../../components';
+import { View, SectionList, RefreshControl } from 'react-native';
+import { ListItem, SectionHeader, Stack } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Constants
@@ -20,6 +20,7 @@ import { ApplicationState } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
+import { EXPANDED_HEIGHT, useCollapsibleHeader, Header } from '../../components/CollapsibleHeader';
 
 type Blog = {
     id: number;
@@ -33,20 +34,20 @@ export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (p
     const sections = makeGroups(blogs.blogList, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
     const theme = useAppTheme();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     return (
-        <CollapsibleHeaderLayout
-            title={'The 19th Hole'}
-            subtitle={'Stories from the field'}
-            backgroundImage={bg}
-            refreshing={blogs.loading}
-            onRefresh={(): void => {
-                // @ts-ignore
-                dispatch(loadBlogs());
-            }}
-            navigation={props.navigation}
-        >
+        <>
+            <Header
+                title={'The 19th Hole'}
+                subtitle={'Stories from the field'}
+                backgroundImage={bg}
+                navigation={props.navigation}
+                {...headerProps}
+            />
             <SectionList
+                {...scrollProps}
+                contentContainerStyle={contentProps.contentContainerStyle}
                 renderSectionHeader={({ section: { bucketName } }): JSX.Element => (
                     <SectionHeader
                         title={bucketName}
@@ -61,6 +62,16 @@ export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (p
                         <ListItem title={'No Posts Yet!'} />
                         <Divider />
                     </Stack>
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={blogs.loading}
+                        onRefresh={(): void => {
+                            // @ts-ignore
+                            dispatch(loadBlogs());
+                        }}
+                        progressViewOffset={EXPANDED_HEIGHT}
+                    />
                 }
                 renderItem={({ item, index }): JSX.Element => (
                     <>
@@ -87,6 +98,6 @@ export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (p
                 )}
                 keyExtractor={(item): string => `blog_${item.id}`}
             />
-        </CollapsibleHeaderLayout>
+        </>
     );
 };

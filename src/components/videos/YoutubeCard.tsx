@@ -2,9 +2,9 @@ import React, { useCallback, useState } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 
 // Components
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ViewProps } from 'react-native';
 import { Stack, Typography } from '..';
-import YoutubePlayer from "react-native-youtube-iframe";
+import YoutubePlayer from 'react-native-youtube-iframe';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { width as deviceWidth, aspectHeight } from '../../utilities/dimensions';
@@ -14,7 +14,7 @@ type YoutubeCardHeaderProps = {
     title?: string;
     subtitle?: string;
     onExpand?: () => void;
-}
+};
 export const YoutubeCardHeader: React.FC<YoutubeCardHeaderProps> = (props) => {
     const { title, subtitle, onExpand } = props;
     const theme = useAppTheme();
@@ -25,7 +25,6 @@ export const YoutubeCardHeader: React.FC<YoutubeCardHeaderProps> = (props) => {
             justify={'space-between'}
             style={[
                 {
-
                     height: theme.size.xl,
                     paddingHorizontal: theme.spacing.md,
                     overflow: 'hidden',
@@ -45,17 +44,15 @@ export const YoutubeCardHeader: React.FC<YoutubeCardHeaderProps> = (props) => {
                 )}
             </Stack>
             {onExpand && (
-                <TouchableOpacity
-                    onPress={onExpand}
-                    style={{ marginLeft: theme.spacing.sm }}
-                >
+                <TouchableOpacity onPress={onExpand} style={{ marginLeft: theme.spacing.sm }}>
                     <MatIcon name={'open-in-new'} color={theme.colors.onPrimary} size={theme.size.sm} />
                 </TouchableOpacity>
             )}
         </Stack>
-    )
-}
+    );
+};
 export type YoutubeCardProps = {
+    style?: ViewProps['style'];
     videoWidth?: number;
     headerTitle?: string;
     headerSubtitle?: string;
@@ -66,35 +63,43 @@ export type YoutubeCardProps = {
 export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
     const theme = useAppTheme();
     const width = deviceWidth - 2 * theme.spacing.md;
-    const { videoWidth = width, headerTitle, headerSubtitle, video, onExpand } = props;
+    const { videoWidth = width, headerTitle, headerSubtitle, video, onExpand, style } = props;
     const [videoReady, setVideoReady] = useState(false);
     const [playing, setPlaying] = useState(false);
-
 
     const onStateChange = useCallback((state: string) => {
         switch (state) {
             case 'ended':
             case 'paused':
                 setPlaying(false);
+                break;
             case 'playing':
                 setPlaying(true);
+                break;
+            default:
+                return;
         }
     }, []);
 
     return (
-        <View style={{
-            shadowColor: '#000',
-            shadowOpacity: 0.4,
-            shadowRadius: 3,
-            shadowOffset: {
-                width: 0,
-                height: 1,
-            },
-            elevation: 1,
-            flex: 1,
-            backgroundColor: theme.colors.surface,
-            borderRadius: theme.roundness,
-        }}>
+        <View
+            style={[
+                {
+                    shadowColor: '#000',
+                    shadowOpacity: 0.4,
+                    shadowRadius: 3,
+                    shadowOffset: {
+                        width: 0,
+                        height: 1,
+                    },
+                    elevation: 1,
+                    flex: 1,
+                    backgroundColor: theme.colors.surface,
+                    borderRadius: theme.roundness,
+                },
+                ...(Array.isArray(style) ? style : [style]),
+            ]}
+        >
             {/* outer shadow gets clipped without this inner view */}
             <Stack
                 style={{
@@ -102,7 +107,9 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                     overflow: 'hidden',
                 }}
             >
-                {(headerTitle || headerSubtitle || onExpand) && <YoutubeCardHeader title={headerTitle} subtitle={headerSubtitle} onExpand={onExpand} />}
+                {(headerTitle || headerSubtitle || onExpand) && (
+                    <YoutubeCardHeader title={headerTitle} subtitle={headerSubtitle} onExpand={onExpand} />
+                )}
                 <View>
                     <YoutubePlayer
                         height={aspectHeight(videoWidth)}
@@ -121,5 +128,5 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                 </View>
             </Stack>
         </View>
-    )
-}
+    );
+};

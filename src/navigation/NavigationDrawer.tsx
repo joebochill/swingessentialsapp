@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Animated, AppState, AppStateStatus, Image, FlatList, Linking, SafeAreaView, View, Alert } from 'react-native';
 import { NavigationItems } from './NavigationContent';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import { Typography, TokenModal, CollapsibleHeaderLayout, Stack, ListItem } from '../components';
+import { Typography, TokenModal, Stack, ListItem } from '../components';
 
 // Constants
 import {
@@ -29,13 +29,15 @@ import { loadUserContent, requestLogout } from '../redux/actions';
 
 // Icons
 import se from '../images/logo-small.png';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { useAppTheme } from '../theme';
 import { lightType, semiBoldType } from '../theme/typography/fontConfig';
+import { Header, useCollapsibleHeader } from '../components/CollapsibleHeader';
 
 export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) => {
     const theme = useAppTheme();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     const dispatch = useDispatch();
     const [scrollY] = useState(new Animated.Value(0));
@@ -160,250 +162,261 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
         };
     }, [handleAppStateChange, linkRoute, wakeUpByLink]);
 
+    const handleScroll = Animated.event(
+        [
+            {
+                nativeEvent: {
+                    contentOffset: {
+                        y: scrollY,
+                    },
+                },
+            },
+        ],
+        {
+            useNativeDriver: false,
+        }
+    );
+
     return (
-        <CollapsibleHeaderLayout
-            title={''}
-            info={''}
-            navigation={navigation}
-            mainAction={'none'}
-            onResize={(scroll: Animated.Value): void => {
-                // @ts-ignore
-                scrollY.setValue(scroll._value);
-            }}
-            subtitle={''}
-            headerContent={
-                <Stack justify={'flex-end'} style={{ width: '100%' }}>
-                    <Animated.View
-                        // TODO: Figure out why AnimatedStack doesn't work
-                        // direction={'row'}
-                        style={[
-                            {
-                                flex: 1,
-                                flexDirection: 'row',
-                                padding: theme.spacing.md,
-                                opacity: scaleByHeight(1, 0),
-                                overflow: 'hidden',
-                            },
-                        ]}
-                    >
-                        <Stack justify={'center'}>
-                            <TouchableHighlight
-                                underlayColor={'transparent'}
-                                onPress={
-                                    token
-                                        ? (): void =>
-                                              navigation.navigate(ROUTES.SETTINGS_GROUP, { screen: ROUTES.SETTINGS })
-                                        : undefined
-                                }
-                            >
-                                <Animated.View
-                                    // align={'center'}
-                                    // justify={'center'}
-                                    style={[
-                                        {
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            backgroundColor: theme.colors.primaryContainer,
-                                            height: scaleByHeight(80, 0),
-                                            width: scaleByHeight(80, 0),
-                                            borderRadius: scaleByHeight(80 / 2, 0),
-                                            overflow: 'hidden',
-                                        },
-                                    ]}
-                                >
-                                    <Image
-                                        resizeMethod="resize"
-                                        style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-                                        source={settings.avatar ? { uri: avatarURL } : se}
-                                    />
-                                </Animated.View>
-                            </TouchableHighlight>
-                        </Stack>
+        <>
+            <Header
+                title={''}
+                navigation={navigation}
+                mainAction={'none'}
+                content={
+                    <Stack justify={'flex-end'} style={{ flex: 1, marginRight: -1 * theme.size.md }}>
                         <Animated.View
-                            // justify={'center'}
                             style={[
                                 {
                                     flex: 1,
-                                    justifyContent: 'center',
-                                    marginLeft: scaleByHeight(theme.spacing.md, 0),
+                                    flexDirection: 'row',
+                                    opacity: scaleByHeight(1, 0),
+                                    overflow: 'hidden',
                                 },
                             ]}
                         >
-                            <Animated.Text
-                                style={{
-                                    color: theme.colors.onPrimary,
-                                    ...semiBoldType,
-                                    lineHeight: scaleByHeight(24, 0.1),
-                                    fontSize: scaleByHeight(24, 0.1),
-                                }}
-                                numberOfLines={1}
-                                ellipsizeMode={'tail'}
-                            >
-                                {userString}
-                            </Animated.Text>
-                            <Animated.Text
-                                style={{
-                                    color: theme.colors.onPrimary,
-                                    ...semiBoldType,
-                                    lineHeight: scaleByHeight(16, 0.1),
-                                    fontSize: scaleByHeight(16, 0.1),
-                                }}
-                                numberOfLines={1}
-                                ellipsizeMode={'tail'}
-                            >
-                                {nameString}
-                            </Animated.Text>
-                            <Animated.Text
-                                style={{
-                                    color: theme.colors.onPrimary,
-                                    ...lightType,
-                                    lineHeight: scaleByHeight(14, 0.1),
-                                    fontSize: scaleByHeight(14, 0.1),
-                                    opacity: scaleByHeight(1, 0),
-                                }}
-                                numberOfLines={1}
-                                ellipsizeMode={'tail'}
-                            >
-                                {memberString}
-                            </Animated.Text>
-                        </Animated.View>
-                    </Animated.View>
-                    <Stack
-                        direction={'row'}
-                        align={'center'}
-                        justify={'space-between'}
-                        style={{
-                            flex: 0,
-                            padding: theme.spacing.md,
-                            height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
-                        }}
-                    >
-                        <Typography fontWeight={'semiBold'} color={'onPrimary'}>
-                            SWING ESSENTIALS®
-                        </Typography>
-                        <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
-                            <Typography color={'onPrimary'} fontWeight={'light'}>{`v${APP_VERSION}`}</Typography>
-                        </Animated.View>
-                    </Stack>
-                </Stack>
-            }
-        >
-            <Stack
-                direction={'row'}
-                // style={[
-                //     { marginTop: -1 * theme.spacing.md }
-                // ]}
-            >
-                {NavigationItems.map((panel, ind) => {
-                    const leftPosition = ind === 2 ? left.help : ind === 1 ? left.account : left.main;
-                    let panelData = [...panel.data];
-                    panelData = token ? panelData : panelData.filter((item) => !item.private);
-                    if (ind === 0) {
-                        panelData.push({
-                            title: token ? 'Sign Out' : 'Sign In',
-                            icon: token ? 'exit-to-app' : 'person',
-                            onPress: token
-                                ? (): void => {
-                                      Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-                                          {
-                                              text: 'Sign Out',
-                                              onPress: (): void => {
-                                                  // @ts-ignore
-                                                  dispatch(requestLogout());
-                                                  navigation.closeDrawer();
-                                              },
-                                          },
-                                          { text: 'Cancel' },
-                                      ]);
-                                  }
-                                : (): void => navigation.navigate(ROUTES.LOGIN),
-                        });
-                    }
-                    return (
-                        <Animated.View
-                            key={`Panel_${panel.name}`}
-                            style={[{ width: DRAWER_WIDTH, left: leftPosition }]}
-                        >
-                            <FlatList
-                                data={ind === activePanel ? panelData : []}
-                                keyExtractor={(item, index): string => `${index}`}
-                                renderItem={({ item }): JSX.Element => (
-                                    <>
-                                        <ListItem
-                                            title={item.title}
-                                            titleEllipsizeMode={'tail'}
-                                            left={(): JSX.Element => (
-                                                <List.Icon
-                                                    icon={({ size, color }): JSX.Element => (
-                                                        <MatIcon name={item.icon} size={size} color={color} />
-                                                    )}
-                                                />
-                                            )}
-                                            onPress={
-                                                item.route
-                                                    ? item.route === ROUTES.HOME
-                                                        ? (): void => {
-                                                              navigation.closeDrawer();
-                                                          }
-                                                        : item.screen
-                                                        ? (): void => {
-                                                              // @ts-ignore
-                                                              navigation.navigate(item.route, { screen: item.screen });
-                                                          }
-                                                        : (): void => {
-                                                              // @ts-ignore
-                                                              navigation.navigate(item.route);
-                                                          }
-                                                    : item.activatePanel !== undefined
-                                                    ? (): void => {
-                                                          // @ts-ignore
-                                                          setActivePanel(item.activatePanel);
-                                                      }
-                                                    : item.onPress
-                                                    ? // @ts-ignore
-                                                      (): void => item.onPress()
-                                                    : undefined
-                                            }
-                                            style={[
-                                                {
-                                                    // paddingLeft: 0,
-                                                    // paddingVertical: 0,
-                                                    minHeight: 'auto',
-                                                },
-                                            ]}
-                                            right={
-                                                item.nested
-                                                    ? ({ style, ...rightProps }): JSX.Element => (
-                                                          <Stack
-                                                              direction={'row'}
-                                                              align={'center'}
-                                                              style={[style]}
-                                                              {...rightProps}
-                                                          >
-                                                              <MatIcon
-                                                                  name={'chevron-right'}
-                                                                  size={theme.size.sm}
-                                                                  color={theme.colors.primary}
-                                                                  style={{
-                                                                      marginRight: -1 * theme.spacing.sm,
-                                                                  }}
-                                                              />
-                                                          </Stack>
-                                                      )
-                                                    : undefined
-                                            }
+                            <Stack justify={'center'}>
+                                <TouchableHighlight
+                                    underlayColor={'transparent'}
+                                    onPress={
+                                        token
+                                            ? (): void =>
+                                                  navigation.navigate(ROUTES.SETTINGS_GROUP, {
+                                                      screen: ROUTES.SETTINGS,
+                                                  })
+                                            : undefined
+                                    }
+                                >
+                                    <Animated.View
+                                        style={[
+                                            {
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                backgroundColor: theme.colors.primaryContainer,
+                                                height: scaleByHeight(80, 0),
+                                                width: scaleByHeight(80, 0),
+                                                borderRadius: scaleByHeight(80 / 2, 0),
+                                                overflow: 'hidden',
+                                            },
+                                        ]}
+                                    >
+                                        <Image
+                                            resizeMethod="resize"
+                                            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+                                            source={settings.avatar ? { uri: avatarURL } : se}
                                         />
-                                        <Divider />
-                                    </>
-                                )}
-                            />
+                                    </Animated.View>
+                                </TouchableHighlight>
+                            </Stack>
+                            <Animated.View
+                                style={[
+                                    {
+                                        flex: 1,
+                                        justifyContent: 'center',
+                                        marginLeft: scaleByHeight(theme.spacing.md, 0),
+                                    },
+                                ]}
+                            >
+                                <Animated.Text
+                                    style={{
+                                        color: theme.colors.onPrimary,
+                                        ...semiBoldType,
+                                        lineHeight: scaleByHeight(24, 0.1),
+                                        fontSize: scaleByHeight(24, 0.1),
+                                    }}
+                                    numberOfLines={1}
+                                    ellipsizeMode={'tail'}
+                                >
+                                    {userString}
+                                </Animated.Text>
+                                <Animated.Text
+                                    style={{
+                                        color: theme.colors.onPrimary,
+                                        ...semiBoldType,
+                                        lineHeight: scaleByHeight(16, 0.1),
+                                        fontSize: scaleByHeight(16, 0.1),
+                                    }}
+                                    numberOfLines={1}
+                                    ellipsizeMode={'tail'}
+                                >
+                                    {nameString}
+                                </Animated.Text>
+                                <Animated.Text
+                                    style={{
+                                        color: theme.colors.onPrimary,
+                                        ...lightType,
+                                        lineHeight: scaleByHeight(14, 0.1),
+                                        fontSize: scaleByHeight(14, 0.1),
+                                        opacity: scaleByHeight(1, 0),
+                                    }}
+                                    numberOfLines={1}
+                                    ellipsizeMode={'tail'}
+                                >
+                                    {memberString}
+                                </Animated.Text>
+                            </Animated.View>
                         </Animated.View>
-                    );
-                })}
-            </Stack>
-            <View style={{ height: height * 0.2 }} />
-            <SafeAreaView />
+                        <Stack
+                            direction={'row'}
+                            align={'center'}
+                            justify={'space-between'}
+                            style={{
+                                flex: 0,
+                                paddingVertical: theme.spacing.md,
+                                height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
+                            }}
+                        >
+                            <Typography fontWeight={'semiBold'} color={'onPrimary'}>
+                                SWING ESSENTIALS®
+                            </Typography>
+                            <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
+                                <Typography color={'onPrimary'} fontWeight={'light'}>{`v${APP_VERSION}`}</Typography>
+                            </Animated.View>
+                        </Stack>
+                    </Stack>
+                }
+                {...headerProps}
+            />
+            <ScrollView
+                {...scrollProps}
+                contentContainerStyle={contentProps.contentContainerStyle}
+                onScroll={(e) => {
+                    handleScroll(e);
+                    scrollProps.onScroll(e);
+                }}
+            >
+                <Stack direction={'row'}>
+                    {NavigationItems.map((panel, ind) => {
+                        const leftPosition = ind === 2 ? left.help : ind === 1 ? left.account : left.main;
+                        let panelData = [...panel.data];
+                        panelData = token ? panelData : panelData.filter((item) => !item.private);
+                        if (ind === 0) {
+                            panelData.push({
+                                title: token ? 'Sign Out' : 'Sign In',
+                                icon: token ? 'exit-to-app' : 'person',
+                                onPress: token
+                                    ? (): void => {
+                                          Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+                                              {
+                                                  text: 'Sign Out',
+                                                  onPress: (): void => {
+                                                      // @ts-ignore
+                                                      dispatch(requestLogout());
+                                                      navigation.closeDrawer();
+                                                  },
+                                              },
+                                              { text: 'Cancel' },
+                                          ]);
+                                      }
+                                    : (): void => navigation.navigate(ROUTES.LOGIN),
+                            });
+                        }
+                        return (
+                            <Animated.View
+                                key={`Panel_${panel.name}`}
+                                style={[{ width: DRAWER_WIDTH, left: leftPosition }]}
+                            >
+                                <FlatList
+                                    data={ind === activePanel ? panelData : []}
+                                    keyExtractor={(item, index): string => `${index}`}
+                                    renderItem={({ item }): JSX.Element => (
+                                        <>
+                                            <ListItem
+                                                title={item.title}
+                                                titleEllipsizeMode={'tail'}
+                                                left={(): JSX.Element => (
+                                                    <List.Icon
+                                                        icon={({ size, color }): JSX.Element => (
+                                                            <MatIcon name={item.icon} size={size} color={color} />
+                                                        )}
+                                                    />
+                                                )}
+                                                onPress={
+                                                    item.route
+                                                        ? item.route === ROUTES.HOME
+                                                            ? (): void => {
+                                                                  navigation.closeDrawer();
+                                                              }
+                                                            : item.screen
+                                                            ? (): void => {
+                                                                  // @ts-ignore
+                                                                  navigation.navigate(item.route, {
+                                                                      screen: item.screen,
+                                                                  });
+                                                              }
+                                                            : (): void => {
+                                                                  // @ts-ignore
+                                                                  navigation.navigate(item.route);
+                                                              }
+                                                        : item.activatePanel !== undefined
+                                                        ? (): void => {
+                                                              // @ts-ignore
+                                                              setActivePanel(item.activatePanel);
+                                                          }
+                                                        : item.onPress
+                                                        ? // @ts-ignore
+                                                          (): void => item.onPress()
+                                                        : undefined
+                                                }
+                                                style={[
+                                                    {
+                                                        minHeight: 'auto',
+                                                    },
+                                                ]}
+                                                right={
+                                                    item.nested
+                                                        ? ({ style, ...rightProps }): JSX.Element => (
+                                                              <Stack
+                                                                  direction={'row'}
+                                                                  align={'center'}
+                                                                  style={[style]}
+                                                                  {...rightProps}
+                                                              >
+                                                                  <MatIcon
+                                                                      name={'chevron-right'}
+                                                                      size={theme.size.sm}
+                                                                      color={theme.colors.primary}
+                                                                      style={{
+                                                                          marginRight: -1 * theme.spacing.sm,
+                                                                      }}
+                                                                  />
+                                                              </Stack>
+                                                          )
+                                                        : undefined
+                                                }
+                                            />
+                                            <Divider />
+                                        </>
+                                    )}
+                                />
+                            </Animated.View>
+                        );
+                    })}
+                </Stack>
+                <View style={{ height: height * 0.2 }} />
+                <SafeAreaView />
+            </ScrollView>
             <TokenModal />
-        </CollapsibleHeaderLayout>
+        </>
     );
 };

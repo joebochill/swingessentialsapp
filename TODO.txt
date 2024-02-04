@@ -6,14 +6,11 @@ Things to get working
 - Fix File Picker
 - Updated graphics for splash screen
 - Contact Us cancel button doesn't close
-- Tip of the month videos are not rounded
-- Video controls leave a safe area gap below
-- Switch to react native youtube iframe library
-- Componentize VideoPlayerPicker
 - Purchase worked but crashed the application — credits do not increment
 - Navigating back to login from register crashes the application
 - Youtube videos don't load on cellular
 - Administrator collapsed header clipping icons and text
+- Clean up unused types / components
 
 
 

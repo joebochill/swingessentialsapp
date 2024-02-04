@@ -1,7 +1,7 @@
 import React from 'react';
 // Components
 import { ScrollView } from 'react-native';
-import { SEHeader, Stack, SectionHeader, Paragraph } from '../../components';
+import { Stack, SectionHeader, Paragraph } from '../../components';
 
 // Utilities
 import { splitParagraphs, getLongDate } from '../../utilities';
@@ -12,6 +12,7 @@ import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
+import { Header } from '../../components/CollapsibleHeader/Header';
 
 export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBlog'>> = (props) => {
     const { blog } = props.route.params;
@@ -31,8 +32,7 @@ export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBl
                     },
                 ]}
             >
-                {/* @ts-ignore */}
-                <SEHeader title={getLongDate(blog.date)} mainAction={'back'} navigation={props.navigation} />
+                <Header title={getLongDate(blog.date)} mainAction={'back'} navigation={props.navigation} />
                 <ScrollView
                     contentContainerStyle={[
                         {

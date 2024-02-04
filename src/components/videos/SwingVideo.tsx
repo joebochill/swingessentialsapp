@@ -115,7 +115,7 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                               borderRadius: theme.roundness,
                               borderStyle: 'dashed',
                               borderColor: theme.colors.primary,
-                              backgroundColor: 'blue', //theme.colors.surface,
+                              backgroundColor: theme.colors.surface,
                           },
                     ...(Array.isArray(style) ? style : [style]),
                 ]}

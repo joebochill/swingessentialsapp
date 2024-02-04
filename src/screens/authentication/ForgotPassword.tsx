@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 
 // Components
 import { Platform, ScrollView, KeyboardAvoidingView } from 'react-native';
-import { Typography, SEHeader, SEButton, BackgroundImage, Stack } from '../../components';
+import { Typography, SEButton, BackgroundImage, Stack } from '../../components';
 
 // Styles
 import { height } from '../../utilities/dimensions';
@@ -18,6 +18,7 @@ import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
+import { Header } from '../../components/CollapsibleHeader/Header';
 
 export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'ResetPassword'>> = (props) => {
     const { navigation } = props;
@@ -36,8 +37,7 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
 
     return (
         <Stack style={{ flex: 1, backgroundColor: theme.colors.primary }}>
-            {/* @ts-ignore */}
-            <SEHeader
+            <Header
                 title={'Forgot Password'}
                 subtitle={'Request a reset'}
                 mainAction={'back'}

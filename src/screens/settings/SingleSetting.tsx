@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
-import { Typography, SEHeader, Stack, ListItem } from '../../components';
+import { Typography, Stack, ListItem } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { Divider } from 'react-native-paper';
@@ -17,6 +17,7 @@ import { putSettings } from '../../redux/actions/SettingsActions';
 import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
+import { Header } from '../../components/CollapsibleHeader/Header';
 
 type SettingType = {
     name: Exclude<keyof SettingsState, 'loading' | 'notifications'> | keyof SettingsState['notifications'];
@@ -153,8 +154,7 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
                 },
             ]}
         >
-            {/* @ts-ignore */}
-            <SEHeader
+            <Header
                 mainAction={'back'}
                 title={'Settings'}
                 subtitle={currentSetting.label}

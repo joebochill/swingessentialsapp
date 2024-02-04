@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // Components
-import { View, SectionList } from 'react-native';
-import { CollapsibleHeaderLayout, ListItem, SectionHeader, Stack } from '../../components';
+import { View, SectionList, RefreshControl } from 'react-native';
+import { ListItem, SectionHeader, Stack } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Constants
 import { ROUTES } from '../../constants/routes';
@@ -19,6 +19,8 @@ import { ApplicationState } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
+import { EXPANDED_HEIGHT, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { Header } from '../../components/CollapsibleHeader/Header';
 
 type Tip = {
     id: number;
@@ -33,20 +35,20 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
     const sections = makeGroups(tips.tipList, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
     const theme = useAppTheme();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     return (
-        <CollapsibleHeaderLayout
-            title={'Tip of the Month'}
-            subtitle={'Keep your game sharp'}
-            backgroundImage={bg}
-            refreshing={tips.loading}
-            onRefresh={(): void => {
-                // @ts-ignore
-                dispatch(loadTips());
-            }}
-            navigation={props.navigation}
-        >
+        <>
+            <Header
+                title={'Tip of the Month'}
+                subtitle={'Keep your game sharp'}
+                backgroundImage={bg}
+                navigation={props.navigation}
+                {...headerProps}
+            />
             <SectionList
+                {...scrollProps}
+                contentContainerStyle={contentProps.contentContainerStyle}
                 renderSectionHeader={({ section: { bucketName } }): JSX.Element => (
                     <SectionHeader
                         title={bucketName}
@@ -61,6 +63,16 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
                         <ListItem title={'No Tips Yet!'} />
                         <Divider />
                     </Stack>
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={tips.loading}
+                        onRefresh={(): void => {
+                            // @ts-ignore
+                            dispatch(loadTips());
+                        }}
+                        progressViewOffset={EXPANDED_HEIGHT}
+                    />
                 }
                 renderItem={({ item, index }): JSX.Element => (
                     <>
@@ -87,6 +99,6 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
                 )}
                 keyExtractor={(item): string => `tip_${item.id}`}
             />
-        </CollapsibleHeaderLayout>
+        </>
     );
 };

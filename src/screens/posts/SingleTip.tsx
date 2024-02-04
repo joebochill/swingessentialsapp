@@ -1,9 +1,9 @@
 import React from 'react';
 // Components
 import { ScrollView } from 'react-native';
-import { SEHeader, Stack, SectionHeader, YoutubeCard } from '../../components';
+import { Stack, SectionHeader, YoutubeCard } from '../../components';
 // Styles
-import { width, height, aspectHeight } from '../../utilities/dimensions';
+import { height } from '../../utilities/dimensions';
 
 // Utilities
 import { splitParagraphs, getLongDate } from '../../utilities';
@@ -13,6 +13,7 @@ import { Paragraph } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
+import { Header } from '../../components/CollapsibleHeader/Header';
 
 export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip'>> = (props) => {
     const { tip } = props.route.params;
@@ -21,8 +22,6 @@ export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip
     if (tip === null) {
         props.navigation.pop();
     }
-    const videoWidth = width - 2 * theme.spacing.md;
-    const videoHeight = aspectHeight(videoWidth);
 
     return (
         tip && (
@@ -35,8 +34,7 @@ export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip
                     },
                 ]}
             >
-                {/* @ts-ignore */}
-                <SEHeader title={getLongDate(tip.date)} mainAction={'back'} navigation={props.navigation} />
+                <Header title={getLongDate(tip.date)} mainAction={'back'} navigation={props.navigation} />
                 <ScrollView
                     contentContainerStyle={[
                         {

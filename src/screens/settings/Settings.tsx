@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Image, RefreshControl, ScrollView, TouchableHighlight, Keyboard } from 'react-native';
-import { Typography, SEButton, SEHeader, Stack, SectionHeader, ListItem } from '../../components';
+import { Typography, SEButton, Stack, SectionHeader, ListItem } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
@@ -27,6 +27,7 @@ import { RootStackParamList } from '../../navigation/MainNavigator';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { format } from 'date-fns';
 import { useAppTheme } from '../../theme';
+import { Header } from '../../components/CollapsibleHeader/Header';
 
 const objectsEqual = (a: Record<string, unknown>, b: Record<string, unknown>): boolean => {
     // Create arrays of property names
@@ -120,8 +121,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                 },
             ]}
         >
-            {/* @ts-ignore */}
-            <SEHeader
+            <Header
                 title={userData.username}
                 subtitle={memberString}
                 mainAction={'back'}

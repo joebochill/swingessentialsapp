@@ -2,17 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { FlatList, Alert } from 'react-native';
-import {
-    Typography,
-    CollapsibleHeaderLayout,
-    ErrorBox,
-    SEButton,
-    OrderTutorial,
-    SectionHeader,
-    ListItem,
-    Stack,
-} from '../../components';
+import { FlatList, Alert, ScrollView, RefreshControl } from 'react-native';
+import { Typography, ErrorBox, SEButton, OrderTutorial, SectionHeader, ListItem, Stack } from '../../components';
 import { requestPurchase, useIAP, ErrorCode } from 'react-native-iap';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
@@ -34,6 +25,7 @@ import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
+import { EXPANDED_HEIGHT, Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
 
 export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (props) => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
@@ -42,6 +34,8 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
     const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
     const theme = useAppTheme();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
+
     const {
         connected,
         // products,
@@ -140,105 +134,117 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
     );
 
     return (
-        <CollapsibleHeaderLayout
-            title={'Order More Lessons'}
-            subtitle={'Multiple packages available'}
-            backgroundImage={bg}
-            refreshing={credits.inProgress}
-            onRefresh={(): void => {
-                // @ts-ignore
-                dispatch(loadCredits());
-                // @ts-ignore
-                dispatch(loadPackages());
-            }}
-            navigation={props.navigation}
-        >
-            <ErrorBox
-                show={roleError !== ''}
-                error={roleError}
-                style={{ marginHorizontal: theme.spacing.md, marginTop: theme.spacing.md }}
+        <>
+            <Header
+                title={'Order More Lessons'}
+                subtitle={'Multiple packages available'}
+                backgroundImage={bg}
+                navigation={props.navigation}
+                {...headerProps}
             />
-            {roleError.length === 0 && (
-                <Stack
-                    align={'center'}
-                    style={{
-                        marginTop: theme.spacing.md,
-                        marginHorizontal: theme.spacing.md,
-                        padding: theme.spacing.md,
-                        borderWidth: 1,
-                        borderRadius: theme.roundness,
-                        borderColor: theme.colors.outline,
-                        backgroundColor: theme.colors.primaryContainer,
-                    }}
-                >
-                    <Typography variant={'displaySmall'} color={'primary'}>
-                        {credits.count}
-                    </Typography>
-                    <Typography variant={'bodyLarge'} color={'primary'}>{`Credit${
-                        credits.count !== 1 ? 's' : ''
-                    } Remaining`}</Typography>
-                </Stack>
-            )}
-            <SectionHeader
-                title={'Available Packages'}
-                style={{ marginTop: theme.spacing.xl, marginHorizontal: theme.spacing.md }}
-            />
-            <FlatList
-                scrollEnabled={false}
-                keyboardShouldPersistTaps={'always'}
-                data={packages}
-                // extraData={products.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10))}
-                renderItem={({ item, index }): JSX.Element => (
-                    <>
-                        {index === 0 && <Divider />}
-                        <ListItem
-                            title={item.name}
-                            description={item.description}
-                            titleNumberOfLines={2}
-                            titleEllipsizeMode={'tail'}
-                            onPress={(): void => setSelected(index)}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <Stack
-                                    direction={'row'}
-                                    align={'center'}
-                                    style={[{ marginRight: -1 * theme.spacing.md }, style]}
-                                    {...rightProps}
-                                >
-                                    <Typography variant={'labelMedium'}>
-                                        {packages.length > 0 ? `${packages[index].price}` : '--'}
-                                        {/* {products.length > 0 ? `${products[index].localizedPrice}` : '--'} */}
-                                    </Typography>
-                                    {selected === index && (
-                                        <MatIcon
-                                            name={'check'}
-                                            size={theme.size.md}
-                                            color={theme.colors.primary}
-                                            style={{ marginLeft: theme.spacing.sm }}
-                                        />
-                                    )}
-                                </Stack>
-                            )}
-                        />
-                        <Divider />
-                    </>
-                )}
-                keyExtractor={(item): string => `package_${item.app_sku}`}
-            />
-            <SEButton
-                style={[
-                    { margin: theme.spacing.md },
-                    roleError.length === 0 && !packagesProcessing && !credits.inProgress ? {} : { opacity: 0.6 },
-                ]}
-                title={'PURCHASE'}
-                onPress={
-                    roleError.length === 0 && !packagesProcessing && !credits.inProgress
-                        ? (): void => {
-                              void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
-                          }
-                        : undefined
+            <ScrollView
+                {...scrollProps}
+                contentContainerStyle={contentProps.contentContainerStyle}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={credits.inProgress}
+                        onRefresh={(): void => {
+                            // @ts-ignore
+                            dispatch(loadCredits());
+                            // @ts-ignore
+                            dispatch(loadPackages());
+                        }}
+                        progressViewOffset={EXPANDED_HEIGHT}
+                    />
                 }
-            />
+            >
+                <ErrorBox
+                    show={roleError !== ''}
+                    error={roleError}
+                    style={{ marginHorizontal: theme.spacing.md, marginTop: theme.spacing.md }}
+                />
+                {roleError.length === 0 && (
+                    <Stack
+                        align={'center'}
+                        style={{
+                            marginTop: theme.spacing.md,
+                            marginHorizontal: theme.spacing.md,
+                            padding: theme.spacing.md,
+                            borderWidth: 1,
+                            borderRadius: theme.roundness,
+                            borderColor: theme.colors.outline,
+                            backgroundColor: theme.colors.primaryContainer,
+                        }}
+                    >
+                        <Typography variant={'displaySmall'} color={'primary'}>
+                            {credits.count}
+                        </Typography>
+                        <Typography variant={'bodyLarge'} color={'primary'}>{`Credit${
+                            credits.count !== 1 ? 's' : ''
+                        } Remaining`}</Typography>
+                    </Stack>
+                )}
+                <SectionHeader
+                    title={'Available Packages'}
+                    style={{ marginTop: theme.spacing.xl, marginHorizontal: theme.spacing.md }}
+                />
+                <FlatList
+                    scrollEnabled={false}
+                    keyboardShouldPersistTaps={'always'}
+                    data={packages}
+                    // extraData={products.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10))}
+                    renderItem={({ item, index }): JSX.Element => (
+                        <>
+                            {index === 0 && <Divider />}
+                            <ListItem
+                                title={item.name}
+                                description={item.description}
+                                titleNumberOfLines={2}
+                                titleEllipsizeMode={'tail'}
+                                onPress={(): void => setSelected(index)}
+                                right={({ style, ...rightProps }): JSX.Element => (
+                                    <Stack
+                                        direction={'row'}
+                                        align={'center'}
+                                        style={[{ marginRight: -1 * theme.spacing.md }, style]}
+                                        {...rightProps}
+                                    >
+                                        <Typography variant={'labelMedium'}>
+                                            {packages.length > 0 ? `${packages[index].price}` : '--'}
+                                            {/* {products.length > 0 ? `${products[index].localizedPrice}` : '--'} */}
+                                        </Typography>
+                                        {selected === index && (
+                                            <MatIcon
+                                                name={'check'}
+                                                size={theme.size.md}
+                                                color={theme.colors.primary}
+                                                style={{ marginLeft: theme.spacing.sm }}
+                                            />
+                                        )}
+                                    </Stack>
+                                )}
+                            />
+                            <Divider />
+                        </>
+                    )}
+                    keyExtractor={(item): string => `package_${item.app_sku}`}
+                />
+                <SEButton
+                    style={[
+                        { margin: theme.spacing.md },
+                        roleError.length === 0 && !packagesProcessing && !credits.inProgress ? {} : { opacity: 0.6 },
+                    ]}
+                    title={'PURCHASE'}
+                    onPress={
+                        roleError.length === 0 && !packagesProcessing && !credits.inProgress
+                            ? (): void => {
+                                  void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
+                              }
+                            : undefined
+                    }
+                />
+            </ScrollView>
             <OrderTutorial />
-        </CollapsibleHeaderLayout>
+        </>
     );
 };

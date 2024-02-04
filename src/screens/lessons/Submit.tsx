@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { Platform, KeyboardAvoidingView, ScrollView, TouchableOpacity, Alert, Keyboard } from 'react-native';
 import {
-    CollapsibleHeaderLayout,
     SEButton,
     ErrorBox,
     UploadProgressModal,
@@ -37,6 +36,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../../components/videos/SwingVideo';
+import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
 
 const RNFS = require('react-native-fs');
 
@@ -73,13 +73,14 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
     const scroller = useRef(null);
     const dispatch = useDispatch();
     const theme = useAppTheme();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     const roleError =
         role === 'anonymous'
             ? 'You must be signed in to submit lessons.'
             : role === 'pending'
-                ? 'You must validate your email address before you can submit lessons'
-                : '';
+            ? 'You must validate your email address before you can submit lessons'
+            : '';
 
     const previousPendingStatus = usePrevious(lessons.redeemPending);
 
@@ -230,16 +231,22 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
     );
 
     return (
-        <CollapsibleHeaderLayout
-            title={'Submit Your Swing'}
-            subtitle={'Request a personalized lesson'}
-            backgroundImage={bg}
-            navigation={navigation}
-        >
+        <>
+            <Header
+                title={'Submit Your Swing'}
+                subtitle={'Request a personalized lesson'}
+                backgroundImage={bg}
+                navigation={navigation}
+                {...headerProps}
+            />
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView
+                    {...scrollProps}
+                    contentContainerStyle={{
+                        ...contentProps.contentContainerStyle,
+                        paddingHorizontal: theme.spacing.md,
+                    }}
                     keyboardShouldPersistTaps={'always'}
-                    contentContainerStyle={{ paddingHorizontal: theme.spacing.md }}
                     ref={scroller}
                 >
                     <ErrorBox show={roleError !== ''} error={roleError} style={{ marginTop: theme.spacing.md }} />
@@ -345,8 +352,9 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                 }}
                                 placeholder={'e.g., Help me with my slice!'}
                             />
-                            <Typography style={{ alignSelf: 'flex-end', marginTop: theme.spacing.sm }}>{`${500 - notes.length
-                                } Characters Left`}</Typography>
+                            <Typography style={{ alignSelf: 'flex-end', marginTop: theme.spacing.sm }}>{`${
+                                500 - notes.length
+                            } Characters Left`}</Typography>
                         </>
                     )}
                     <SEButton
@@ -358,6 +366,6 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
             </KeyboardAvoidingView>
             {lessons.redeemPending && <UploadProgressModal progress={uploadProgress} visible={lessons.redeemPending} />}
             <SubmitTutorial />
-        </CollapsibleHeaderLayout>
+        </>
     );
 };

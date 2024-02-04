@@ -2,16 +2,8 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { SectionList } from 'react-native';
-import {
-    Typography,
-    CollapsibleHeaderLayout,
-    LessonsTutorial,
-    wrapIcon,
-    SectionHeader,
-    Stack,
-    ListItem,
-} from '../../components';
+import { RefreshControl, SectionList } from 'react-native';
+import { Typography, LessonsTutorial, SectionHeader, Stack, ListItem } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
@@ -27,12 +19,11 @@ import { getLongDate, makeGroups } from '../../utilities';
 // Types
 import { ApplicationState } from '../../__types__';
 // Actions
-import { loadLessons } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
-
-const AddIcon = wrapIcon({ IconClass: MatIcon, name: 'add-circle' });
+import { CollapsibleHeader } from '../../components/CollapsibleHeader/CollapsibleHeader';
+import { EXPANDED_HEIGHT, useCollapsibleHeader } from '../../components/CollapsibleHeader/useCollapsibleHeader';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 type Lesson = {
@@ -57,25 +48,40 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
     const sections = makeGroups(myLessons, (lesson: Lesson) => getLongDate(lesson.request_date));
     const theme = useAppTheme();
     const dispatch = useDispatch();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     return (
-        <CollapsibleHeaderLayout
-            title={'Your Lessons'}
-            subtitle={"See how far you've come"}
-            backgroundImage={bg}
-            refreshing={lessons.loading}
-            // @ts-ignore
-            onRefresh={(): void => dispatch(loadLessons())}
-            actionItems={[
-                {
-                    icon: AddIcon,
+        <>
+            <CollapsibleHeader
+                title={'Your Lessons'}
+                subtitle={"See how far you've come"}
+                backgroundImage={bg}
+                navigationIcon={{
+                    name: 'arrow-back',
                     // @ts-ignore
-                    onPress: (): void => props.navigation.navigate(ROUTES.SUBMIT),
-                },
-            ]}
-            navigation={props.navigation}
-        >
+                    onPress: () => props.navigation.pop(),
+                }}
+                actionItems={[
+                    {
+                        name: 'add-circle',
+                        // @ts-ignore
+                        onPress: (): void => props.navigation.navigate(ROUTES.SUBMIT),
+                    },
+                ]}
+                {...headerProps}
+            />
             <SectionList
+                {...scrollProps}
+                style={{ zIndex: 1 }}
+                contentContainerStyle={contentProps.contentContainerStyle}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={lessons.loading}
+                        // @ts-ignore
+                        onRefresh={(): void => dispatch(loadLessons())}
+                        progressViewOffset={EXPANDED_HEIGHT}
+                    />
+                }
                 renderSectionHeader={({ section: { bucketName } }): JSX.Element => (
                     <SectionHeader
                         title={bucketName}
@@ -169,6 +175,6 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                 keyExtractor={(item): string => `complete_${item.request_id}`}
             />
             <LessonsTutorial />
-        </CollapsibleHeaderLayout>
+        </>
     );
 };

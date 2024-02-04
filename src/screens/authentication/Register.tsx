@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { TextInput } from 'react-native-paper';
-import { ErrorBox, SEButton, SEHeader, BackgroundImage, Typography, Stack } from '../../components';
+import { ErrorBox, SEButton, BackgroundImage, Typography, Stack } from '../../components';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
 
 // Types
@@ -36,6 +36,7 @@ import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { ROUTES } from '../../constants/routes';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
+import { Header } from '../../components/CollapsibleHeader/Header';
 
 const getRegistrationErrorMessage = (code: number): string => {
     switch (code) {
@@ -97,8 +98,7 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
 
     return (
         <Stack style={[{ flex: 1, backgroundColor: theme.colors.primary }]}>
-            {/* @ts-ignore */}
-            <SEHeader
+            <Header
                 title={'Sign Up'}
                 subtitle={'Confirm your email'}
                 mainAction={'back'}
@@ -292,8 +292,7 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
 
     return (
         <Stack style={{ flex: 1 }}>
-            {/* @ts-ignore */}
-            <SEHeader
+            <Header
                 title={'Sign Up'}
                 subtitle={'Create an account'}
                 mainAction={'back'}
