@@ -22,12 +22,12 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { getLongDate } from '../../utilities';
 import { setUserData, loadUserInfo, setUserAvatar } from '../../redux/actions/user-data-actions';
 import { width, height } from '../../utilities/dimensions';
-import { HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { format } from 'date-fns';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
+import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
 
 const objectsEqual = (a: Record<string, unknown>, b: Record<string, unknown>): boolean => {
     // Create arrays of property names
@@ -117,7 +117,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                 {
                     flex: 1,
                     backgroundColor: theme.colors.background,
-                    paddingTop: HEADER_COLLAPSED_HEIGHT,
+                    paddingTop: COLLAPSED_HEIGHT,
                 },
             ]}
         >
@@ -126,6 +126,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                 subtitle={memberString}
                 mainAction={'back'}
                 navigation={props.navigation}
+                fixed
             />
             <ScrollView
                 contentContainerStyle={[
@@ -145,7 +146,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             // @ts-ignore
                             dispatch(loadUserInfo());
                         }}
-                        progressViewOffset={HEADER_EXPANDED_HEIGHT}
                     />
                 }
             >

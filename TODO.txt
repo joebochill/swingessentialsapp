@@ -11,6 +11,7 @@ Things to get working
 - Youtube videos don't load on cellular
 - Administrator collapsed header clipping icons and text
 - Clean up unused types / components
+- Add debugging Alerts to replace the Logger
 
 
 

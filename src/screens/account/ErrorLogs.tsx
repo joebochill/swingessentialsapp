@@ -13,7 +13,7 @@ import { ApplicationState } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
-import { EXPANDED_HEIGHT, Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
 import { RefreshControl, ScrollView } from 'react-native';
 
 export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> = (props) => {
@@ -86,7 +86,7 @@ export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> =
                         onRefresh={(): void => {
                             void getLogs();
                         }}
-                        progressViewOffset={EXPANDED_HEIGHT}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
                 }
             >

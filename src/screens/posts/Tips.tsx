@@ -19,7 +19,7 @@ import { ApplicationState } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
-import { EXPANDED_HEIGHT, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { useCollapsibleHeader } from '../../components/CollapsibleHeader';
 import { Header } from '../../components/CollapsibleHeader/Header';
 
 type Tip = {
@@ -71,7 +71,7 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
                             // @ts-ignore
                             dispatch(loadTips());
                         }}
-                        progressViewOffset={EXPANDED_HEIGHT}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
                 }
                 renderItem={({ item, index }): JSX.Element => (

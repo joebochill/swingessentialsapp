@@ -109,10 +109,13 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                 style={[
                     { width, height },
                     source
-                        ? { backgroundColor: 'red' } //theme.colors.primaryContainer }
+                        ? {
+                              backgroundColor: theme.colors.primaryContainer,
+                              borderRadius: theme.roundness,
+                              overflow: 'hidden',
+                          }
                         : {
                               borderWidth: 1,
-                              borderRadius: theme.roundness,
                               borderStyle: 'dashed',
                               borderColor: theme.colors.primary,
                               backgroundColor: theme.colors.surface,

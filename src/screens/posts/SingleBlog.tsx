@@ -32,7 +32,7 @@ export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBl
                     },
                 ]}
             >
-                <Header title={getLongDate(blog.date)} mainAction={'back'} navigation={props.navigation} />
+                <Header title={getLongDate(blog.date)} mainAction={'back'} navigation={props.navigation} fixed />
                 <ScrollView
                     contentContainerStyle={[
                         {

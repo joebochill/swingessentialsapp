@@ -1,29 +1,19 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-// Components
 import { RefreshControl, SectionList } from 'react-native';
 import { Typography, LessonsTutorial, SectionHeader, Stack, ListItem } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-
-// Styles
 import { Divider } from 'react-native-paper';
 import bg from '../../images/banners/lessons.jpg';
-
-// Constants
 import { ROUTES } from '../../constants/routes';
-
-// Utilities
 import { getLongDate, makeGroups } from '../../utilities';
-
-// Types
 import { ApplicationState } from '../../__types__';
-// Actions
+import { loadLessons } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { CollapsibleHeader } from '../../components/CollapsibleHeader/CollapsibleHeader';
-import { EXPANDED_HEIGHT, useCollapsibleHeader } from '../../components/CollapsibleHeader/useCollapsibleHeader';
+import { useCollapsibleHeader } from '../../components/CollapsibleHeader/useCollapsibleHeader';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 type Lesson = {
@@ -79,7 +69,7 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                         refreshing={lessons.loading}
                         // @ts-ignore
                         onRefresh={(): void => dispatch(loadLessons())}
-                        progressViewOffset={EXPANDED_HEIGHT}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
                 }
                 renderSectionHeader={({ section: { bucketName } }): JSX.Element => (

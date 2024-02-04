@@ -161,6 +161,7 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
                 showAuth={false}
                 onNavigate={(): void => updateSetting()}
                 navigation={navigation}
+                fixed
             />
             <Stack style={{ marginTop: theme.spacing.md }}>
                 {currentSetting.values.map((val, index) => (

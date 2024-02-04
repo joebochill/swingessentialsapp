@@ -34,7 +34,7 @@ export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip
                     },
                 ]}
             >
-                <Header title={getLongDate(tip.date)} mainAction={'back'} navigation={props.navigation} />
+                <Header title={getLongDate(tip.date)} mainAction={'back'} navigation={props.navigation} fixed />
                 <ScrollView
                     contentContainerStyle={[
                         {

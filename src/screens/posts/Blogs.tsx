@@ -20,7 +20,7 @@ import { ApplicationState } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
-import { EXPANDED_HEIGHT, useCollapsibleHeader, Header } from '../../components/CollapsibleHeader';
+import { useCollapsibleHeader, Header } from '../../components/CollapsibleHeader';
 
 type Blog = {
     id: number;
@@ -70,7 +70,7 @@ export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (p
                             // @ts-ignore
                             dispatch(loadBlogs());
                         }}
-                        progressViewOffset={EXPANDED_HEIGHT}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
                 }
                 renderItem={({ item, index }): JSX.Element => (

@@ -19,7 +19,7 @@ import { loadFAQ } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
-import { EXPANDED_HEIGHT, Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
 
 export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props) => {
     const faqState = useSelector((state: ApplicationState) => state.faq);
@@ -41,11 +41,11 @@ export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props
                 refreshControl={
                     <RefreshControl
                         refreshing={faqState.loading}
-                        // @ts-ignore
                         onRefresh={(): void => {
+                            // @ts-ignore
                             dispatch(loadFAQ());
                         }}
-                        progressViewOffset={EXPANDED_HEIGHT}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
                 }
             >

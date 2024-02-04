@@ -24,7 +24,7 @@ import { loadUserContent } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
-import { EXPANDED_HEIGHT, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { useCollapsibleHeader } from '../../components/CollapsibleHeader';
 import { Header } from '../../components/CollapsibleHeader/Header';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -60,7 +60,7 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                             // @ts-ignore
                             dispatch(loadUserContent());
                         }}
-                        progressViewOffset={EXPANDED_HEIGHT}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
                 }
             >

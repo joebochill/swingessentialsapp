@@ -25,7 +25,7 @@ import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
-import { EXPANDED_HEIGHT, Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
 
 export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (props) => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
@@ -154,7 +154,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                             // @ts-ignore
                             dispatch(loadPackages());
                         }}
-                        progressViewOffset={EXPANDED_HEIGHT}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
                 }
             >

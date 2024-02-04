@@ -151,8 +151,8 @@ export const CollapsibleHeader: React.FC<CollapsibleHeaderProps> = (props) => {
                                     }}
                                 >
                                     <Animated.Text
-                                        {...semiBoldType}
                                         style={{
+                                            ...semiBoldType,
                                             color: theme.colors.onPrimary,
                                             lineHeight: scaleByHeaderHeight(30, 20),
                                             fontSize: scaleByHeaderHeight(30, 20),
@@ -164,8 +164,8 @@ export const CollapsibleHeader: React.FC<CollapsibleHeaderProps> = (props) => {
                                     </Animated.Text>
                                     {subtitle && (
                                         <Animated.Text
-                                            {...lightType}
                                             style={{
+                                                ...lightType,
                                                 color: theme.colors.onPrimary,
                                                 lineHeight: 18,
                                                 fontSize: 18,

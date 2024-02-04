@@ -5,7 +5,6 @@ export * from './feedback';
 export * from './typography';
 export * from './tutorials';
 export * from './Icon';
-export * from './IconWrapper';
 export * from './BackgroundImage';
 export * from './layout/';
 export * from './list';
