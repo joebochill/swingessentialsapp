@@ -24,7 +24,6 @@ import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 // Redux
 import { requestLogout } from '../../redux/actions';
 import { HeaderIcon } from '../types';
-// import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
 
 const MenuIcon = wrapIcon({ IconClass: MatIcon, name: 'menu' });
 const BackIcon = wrapIcon({ IconClass: MatIcon, name: 'arrow-back' });

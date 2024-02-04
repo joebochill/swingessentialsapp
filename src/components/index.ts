@@ -6,6 +6,7 @@ export * from './feedback';
 export * from './layout/AnimatedSafeAreaView';
 export * from './typography';
 export * from './tutorials';
+export * from './Icon';
 export * from './IconWrapper';
 export * from './BackgroundImage';
 export * from './layout/';

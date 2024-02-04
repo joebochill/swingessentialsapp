@@ -1,4 +1,4 @@
-export * from './Lessons';
+export * from './Lessons_new';
 export * from './SingleLesson';
 export * from './Order';
 export * from './Submit';

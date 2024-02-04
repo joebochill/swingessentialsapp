@@ -1,17 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 // Components
-import {
-    Animated,
-    Image,
-    ImageSourcePropType,
-    KeyboardAvoidingView,
-    Platform,
-    RefreshControl,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    View,
-} from 'react-native';
+import { Animated, KeyboardAvoidingView, Platform, RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
 import { SEHeader, SEHeaderProps } from './SEHeader';
 
 // Styles
@@ -32,7 +21,6 @@ type CollapsibleHeaderLayoutProps = PropsWithChildren<
         onResize?: (scroll: Animated.Value) => void;
         refreshing?: boolean;
         bottomPad?: boolean;
-        pageBackground?: ImageSourcePropType;
         navigation?: any;
     } & { theme: AppTheme }
 >;
@@ -50,20 +38,7 @@ class CollapsibleHeaderLayoutRender extends React.Component<CollapsibleHeaderLay
 
         return (
             <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-                <StatusBar barStyle={'light-content'} />
-                {this.props.pageBackground && (
-                    <Image
-                        source={this.props.pageBackground}
-                        resizeMethod={'resize'}
-                        style={{
-                            position: 'absolute',
-                            width: '100%',
-                            resizeMode: 'cover',
-                            height: '100%',
-                            opacity: 0.15,
-                        }}
-                    />
-                )}
+                {/* <StatusBar barStyle={'light-content'} /> */}
                 <SEHeader {...this.props} headerHeight={headerHeight} />
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                     {renderScroll && (

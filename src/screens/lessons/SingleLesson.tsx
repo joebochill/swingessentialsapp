@@ -3,16 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { Platform, ScrollView } from 'react-native';
-import {
-    SEHeader,
-    YouTube,
-    SEVideo,
-    VideoCard,
-    LessonTutorial,
-    Stack,
-    SectionHeader,
-    Paragraph,
-} from '../../components';
+import { SEHeader, YouTube, VideoCard, LessonTutorial, Stack, SectionHeader, Paragraph } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Styles
@@ -33,6 +24,7 @@ import { markLessonViewed } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
+import { SwingVideo } from '../../components/videos/SwingVideo';
 
 export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson'>> = (props) => {
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -141,12 +133,17 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
                           <>
                               <SectionHeader title={'Your Swing Videos'} style={{ marginTop: theme.spacing.xl }} />
                               <Stack direction={'row'} justify={'space-between'}>
-                                  <SEVideo
-                                      source={`https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.fo_swing}`}
+                                  <SwingVideo
+                                      type={'fo'}
+                                      source={{
+                                          uri: `https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.fo_swing}`,
+                                      }}
                                   />
-                                  <SEVideo
-                                      style={{ marginLeft: theme.spacing.md }}
-                                      source={`https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.dtl_swing}`}
+                                  <SwingVideo
+                                      type={'dtl'}
+                                      source={{
+                                          uri: `https://www.swingessentials.com/video_links/${lesson.request_url}/${lesson.dtl_swing}`,
+                                      }}
                                   />
                               </Stack>
                           </>

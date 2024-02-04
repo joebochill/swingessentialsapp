@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import { Typography } from '../';
-import { SEButton, SEVideoPlaceholder, Stack } from '..';
+import { SEButton, Stack } from '..';
 import { TutorialModal } from '.';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { width } from '../../utilities/dimensions';
-// Images
-import dtl from '../../images/down-the-line.png';
-import fo from '../../images/face-on.png';
+
 // Redux
 import { ApplicationState } from '../../__types__';
 import { tutorialViewed } from '../../redux/actions';
@@ -20,6 +18,7 @@ import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 import { RecordButton } from '../videos';
 import { useAppTheme } from '../../theme';
+import { SwingVideo } from '../videos/SwingVideo';
 
 export const SubmitTutorial: React.FC = () => {
     const [activePanel, setActivePanel] = useState(0);
@@ -45,40 +44,8 @@ export const SubmitTutorial: React.FC = () => {
                 }
             </Typography>
             <Stack direction={'row'} justify={'space-between'} style={{ marginTop: theme.spacing.md }}>
-                <SEVideoPlaceholder
-                    disabled
-                    title={'Face-On'}
-                    // @ts-ignore
-                    icon={
-                        <Image
-                            source={fo}
-                            resizeMethod={'resize'}
-                            style={{
-                                height: '100%',
-                                width: '100%',
-                                resizeMode: 'contain',
-                            }}
-                        />
-                    }
-                    editIcon={<MatIcon name={'add-a-photo'} color={theme.colors.onBackground} size={theme.size.md} />}
-                />
-                <SEVideoPlaceholder
-                    disabled
-                    title={'Down-the-Line'}
-                    // @ts-ignore
-                    icon={
-                        <Image
-                            source={dtl}
-                            resizeMethod={'resize'}
-                            style={{
-                                height: '100%',
-                                width: '100%',
-                                resizeMode: 'contain',
-                            }}
-                        />
-                    }
-                    editIcon={<MatIcon name={'add-a-photo'} color={theme.colors.onBackground} size={theme.size.md} />}
-                />
+                <SwingVideo type={'fo'} disabled />
+                <SwingVideo type={'dtl'} disabled />
             </Stack>
         </Stack>,
         <Stack key={2}>

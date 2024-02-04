@@ -13,6 +13,8 @@ Things to get working
 - Purchase worked but crashed the application — credits do not increment
 - Navigating back to login from register crashes the application
 - Youtube videos don't load on cellular
+- Administrator collapsed header clipping icons and text
+
 
 
 

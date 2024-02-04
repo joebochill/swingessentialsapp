@@ -34,7 +34,12 @@ import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
-import { Camera, CameraDevice, useCameraDevice, useCameraDevices, useCameraFormat } from 'react-native-vision-camera';
+import {
+    Camera,
+    CameraDevice,
+    useCameraDevice,
+    /*useCameraDevices,*/ useCameraFormat,
+} from 'react-native-vision-camera';
 import { useIsFocused } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks';
 
