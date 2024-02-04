@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View } from 'react-native';
 import {
-    VideoCard,
+    YoutubeCard,
     CollapsibleHeaderLayout,
     HomeTutorial,
     SEButton,
@@ -102,7 +102,7 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
             <Carousel
                 data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)}
                 renderItem={({ item }): JSX.Element => (
-                    <VideoCard
+                    <YoutubeCard
                         headerTitle={item.request_date}
                         headerSubtitle={role === 'administrator' ? item.username : undefined}
                         video={item.response_video}
@@ -113,6 +113,8 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                 sliderWidth={width}
                 itemWidth={width - 2 * theme.spacing.md}
                 inactiveSlideScale={0.95}
+                style={{paddingBottom: theme.spacing.lg}}
+                containerCustomStyle={{overflow: 'visible'}}
             />
 
             {/* LESSON CREDITS */}
@@ -175,10 +177,8 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                     <Carousel
                         data={tips.tipList.slice(0, 3)}
                         renderItem={({ item }): JSX.Element => (
-                            <VideoCard
-                                // headerIcon={'event'}
+                            <YoutubeCard
                                 headerTitle={item.title}
-                                // @ts-ignore
                                 headerSubtitle={role === 'administrator' ? getLongDate(item.date) : ''}
                                 video={item.video}
                                 // @ts-ignore

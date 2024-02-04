@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { Platform, ScrollView } from 'react-native';
-import { SEHeader, YouTube, VideoCard, LessonTutorial, Stack, SectionHeader, Paragraph } from '../../components';
+import { SEHeader, LessonTutorial, Stack, SectionHeader, Paragraph, YoutubeCard } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Styles
@@ -89,13 +89,9 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
                       {lesson.response_video && (
                           <>
                               <SectionHeader title={'Video Analysis'} />
-                              <YouTube
-                                  videoId={lesson.response_video}
-                                  style={{
-                                      width: videoWidth,
-                                      height: videoHeight,
-                                      borderRadius: theme.roundness,
-                                  }}
+                              <YoutubeCard
+                                  video={lesson.response_video}
+                                  videoWidth={videoWidth}
                               />
                               <SectionHeader title={'Comments'} style={{ marginTop: theme.spacing.xl }} />
                               <Stack space={theme.spacing.md}>
@@ -113,7 +109,7 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
                                   // @ts-ignore
                                   data={lesson.tips.slice(0, 3)}
                                   renderItem={({ item }: { item: any }): JSX.Element => (
-                                      <VideoCard
+                                      <YoutubeCard
                                           headerTitle={getLongDate(item.date)}
                                           headerSubtitle={item.title}
                                           video={item.video}

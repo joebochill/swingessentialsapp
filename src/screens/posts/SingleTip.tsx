@@ -1,7 +1,7 @@
 import React from 'react';
 // Components
 import { ScrollView } from 'react-native';
-import { SEHeader, YouTube, Stack, SectionHeader } from '../../components';
+import { SEHeader, Stack, SectionHeader, YoutubeCard } from '../../components';
 // Styles
 import { width, height, aspectHeight } from '../../utilities/dimensions';
 
@@ -48,7 +48,7 @@ export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip
                     keyboardShouldPersistTaps={'always'}
                 >
                     <SectionHeader title={tip.title} />
-                    <YouTube videoId={tip.video} style={{ width: videoWidth, height: videoHeight }} />
+                    <YoutubeCard video={tip.video} />
                     <SectionHeader title={'Summary'} style={{ marginTop: theme.spacing.xl }} />
                     <Stack space={theme.spacing.md}>
                         {splitParagraphs(tip.comments).map((p, ind) => (
