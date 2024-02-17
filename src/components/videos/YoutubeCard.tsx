@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 
 // Components
-import { View, TouchableOpacity, ViewProps } from 'react-native';
+import { View, TouchableOpacity, ViewProps, Alert } from 'react-native';
 import { Stack, Typography } from '..';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
@@ -118,6 +118,8 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                         videoId={video}
                         onChangeState={onStateChange}
                         onReady={(): void => setVideoReady(true)}
+                        // TODO: Remove/replace with a real log
+                        onError={(e): void => Alert.alert('Youtube Error', e)}
                     />
                     {!videoReady && (
                         <ActivityIndicator

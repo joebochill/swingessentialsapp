@@ -107,19 +107,22 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
             <TouchableOpacity
                 activeOpacity={0.8}
                 style={[
-                    { width, height },
+                    {
+                        width,
+                        height,
+                        borderRadius: theme.roundness,
+                        overflow: 'hidden',
+                    },
                     source
                         ? {
-                              backgroundColor: theme.colors.primaryContainer,
-                              borderRadius: theme.roundness,
-                              overflow: 'hidden',
-                          }
+                            backgroundColor: theme.colors.primaryContainer,
+                        }
                         : {
-                              borderWidth: 1,
-                              borderStyle: 'dashed',
-                              borderColor: theme.colors.primary,
-                              backgroundColor: theme.colors.surface,
-                          },
+                            borderWidth: 1,
+                            borderStyle: 'dashed',
+                            borderColor: theme.colors.primary,
+                            backgroundColor: theme.colors.surface,
+                        },
                     ...(Array.isArray(style) ? style : [style]),
                 ]}
                 onPress={handlePress}

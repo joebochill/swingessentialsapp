@@ -43,6 +43,7 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
                 mainAction={'back'}
                 showAuth={false}
                 navigation={navigation}
+                fixed
             />
             <KeyboardAvoidingView
                 style={[

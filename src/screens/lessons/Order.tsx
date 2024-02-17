@@ -38,7 +38,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
 
     const {
         connected,
-        // products,
+        products,
         // promotedProductsIOS,
         // subscriptions,
         // purchaseHistories,
@@ -192,7 +192,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                     scrollEnabled={false}
                     keyboardShouldPersistTaps={'always'}
                     data={packages}
-                    // extraData={products.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10))}
+                    extraData={products.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10))}
                     renderItem={({ item, index }): JSX.Element => (
                         <>
                             {index === 0 && <Divider />}
@@ -210,8 +210,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                                         {...rightProps}
                                     >
                                         <Typography variant={'labelMedium'}>
-                                            {packages.length > 0 ? `${packages[index].price}` : '--'}
-                                            {/* {products.length > 0 ? `${products[index].localizedPrice}` : '--'} */}
+                                            {products.length > 0 ? `${products[index].localizedPrice}` : '--'}
                                         </Typography>
                                         {selected === index && (
                                             <MatIcon

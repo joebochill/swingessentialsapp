@@ -2,7 +2,7 @@ Things to get working
 
 - Hook up IAP
 - Hook up camera/video recording
-- Fix Date Picker
+- Fix Date Picker (only crashes on simulator)
 - Fix File Picker
 - Updated graphics for splash screen
 - Contact Us cancel button doesn't close
@@ -12,6 +12,17 @@ Things to get working
 - Administrator collapsed header clipping icons and text
 - Clean up unused types / components
 - Add debugging Alerts to replace the Logger
+- Eliminate BackgroundImage component
+
+- Need some loading indicators when loading video from camera Roll
+- Fix the camera record timer is not aligned (2s late)
+- Fix long delay when clicking purchase button
+- Purchase completes but doesn't trigger an update to the database
+- Profile image is hidden behind header
+- Drawer is accessible on auth screens 
+- Sometimes youtube videos show white screen without spinner
+- No play/reselect controls on picked swing videos
+
 
 
 

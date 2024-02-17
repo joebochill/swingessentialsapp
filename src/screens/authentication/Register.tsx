@@ -104,6 +104,7 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
                 mainAction={'back'}
                 showAuth={false}
                 navigation={navigation}
+                fixed
             />
             <BackgroundImage />
             <Stack

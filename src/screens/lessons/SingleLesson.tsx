@@ -117,7 +117,7 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
                                   sliderWidth={width}
                                   itemWidth={width - 2 * theme.spacing.md}
                                   inactiveSlideScale={0.95}
-                                  containerCustomStyle={{ marginHorizontal: -1 * theme.spacing.md }}
+                                  containerCustomStyle={{ marginHorizontal: -1 * theme.spacing.md, overflow:'visible' }}
                               />
                           </>
                       )}
