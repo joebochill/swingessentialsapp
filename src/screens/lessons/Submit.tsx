@@ -269,6 +269,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                             navigation={navigation}
                             type={'fo'}
                             source={foVideo ? { uri: foVideo } : undefined}
+                            editable
                             PlaceholderProps={{
                                 backgroundImage: fo,
                             }}
@@ -280,6 +281,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                             navigation={navigation}
                             type={'dtl'}
                             source={dtlVideo ? { uri: dtlVideo } : undefined}
+                            editable
                             PlaceholderProps={{
                                 backgroundImage: dtl,
                             }}

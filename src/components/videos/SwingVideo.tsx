@@ -70,6 +70,8 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
     const [videoPlaying, setVideoPlaying] = useState(false);
     // Choose Video
     const [showPicker, setShowPicker] = useState(false);
+    // Video loading
+    const [processing, setProcessing] = useState(false);
 
     const {
         type,
@@ -115,14 +117,14 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                     },
                     source
                         ? {
-                            backgroundColor: theme.colors.primaryContainer,
-                        }
+                              backgroundColor: theme.colors.primaryContainer,
+                          }
                         : {
-                            borderWidth: 1,
-                            borderStyle: 'dashed',
-                            borderColor: theme.colors.primary,
-                            backgroundColor: theme.colors.surface,
-                        },
+                              borderWidth: 1,
+                              borderStyle: 'dashed',
+                              borderColor: theme.colors.primary,
+                              backgroundColor: theme.colors.surface,
+                          },
                     ...(Array.isArray(style) ? style : [style]),
                 ]}
                 onPress={handlePress}
@@ -154,7 +156,7 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         style={{ height: '100%', width: '100%', backgroundColor: theme.colors.primaryContainer }}
                     />
                 )}
-                {((source && !videoReady) || loading) && (
+                {((source && !videoReady) || loading || processing) && (
                     <ActivityIndicator
                         size={theme.size.xl}
                         color={theme.colors.onPrimaryContainer}
@@ -168,7 +170,7 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         }}
                     />
                 )}
-                {videoReady && !loading && (
+                {videoReady && !loading && !processing && (
                     <Icon
                         name={'play-arrow'}
                         size={theme.size.xl}
@@ -183,7 +185,7 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         }}
                     />
                 )}
-                {source && !videoPlaying && editable && (
+                {source && !videoPlaying && editable && !processing && (
                     <TouchableOpacity
                         activeOpacity={0.8}
                         style={[
@@ -206,16 +208,20 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
             </TouchableOpacity>
             <PickerModal
                 isVisible={showPicker}
-                onBackdropPress={() => setShowPicker(false)}
+                onBackdropPress={processing ? undefined : (): void => setShowPicker(false)}
+                style={{ opacity: processing ? 0 : 1 }}
+                backdropOpacity={processing ? 0 : undefined}
                 menuOptions={[
                     {
                         label: 'Choose From Library',
                         onPress: async (): Promise<void> => {
+                            setProcessing(true);
                             const result = await launchImageLibrary({
                                 mediaType: 'video',
                                 videoQuality: 'high',
                                 formatAsMp4: true,
                             });
+                            setProcessing(false);
                             if (result.didCancel) {
                                 /*do nothing*/
                             } else if (result.errorCode) {

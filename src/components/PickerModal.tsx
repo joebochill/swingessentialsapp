@@ -14,12 +14,12 @@ type PickerMenuProps = Partial<Omit<ModalProps, 'children'>> & {
 };
 
 export const PickerModal: React.FC<PickerMenuProps> = (props) => {
-    const { menuOptions, style, ...otherModalProps } = props;
+    const { menuOptions, style, backdropOpacity = 0.5, ...otherModalProps } = props;
     const theme = useAppTheme();
 
     return (
         <Modal
-            backdropOpacity={0.5}
+            backdropOpacity={backdropOpacity}
             supportedOrientations={['portrait', 'landscape']}
             statusBarTranslucent
             style={[

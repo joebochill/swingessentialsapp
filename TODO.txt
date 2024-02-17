@@ -1,30 +1,21 @@
 Things to get working
 
-- Hook up IAP
-- Hook up camera/video recording
-- Fix Date Picker (only crashes on simulator)
-- Fix File Picker
 - Updated graphics for splash screen
-- Contact Us cancel button doesn't close
-- Purchase worked but crashed the application — credits do not increment
-- Navigating back to login from register crashes the application
-- Youtube videos don't load on cellular
-- Administrator collapsed header clipping icons and text
+
 - Clean up unused types / components
-- Add debugging Alerts to replace the Logger
 - Eliminate BackgroundImage component
 
-- Need some loading indicators when loading video from camera Roll
-- Fix the camera record timer is not aligned (2s late)
+- Fix the camera record timer is not synced (2s late)
 - Fix long delay when clicking purchase button
-- Purchase completes but doesn't trigger an update to the database
+- Purchase completes but doesn't trigger an update to the database — credits do not increment (not resolving the purchase)
 - Profile image is hidden behind header
 - Drawer is accessible on auth screens 
 - Sometimes youtube videos show white screen without spinner
-- No play/reselect controls on picked swing videos
 
-
-
+SPORADIC ISSUES:
+- Contact Us cancel button doesn't close
+- Navigating back to login from register crashes the application
+- Youtube videos don't load on cellular
 
 
 Verify All Capabilities

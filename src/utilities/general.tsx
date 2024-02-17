@@ -62,6 +62,12 @@ export function getLongDate(unix: string | number | Date): string {
     return `${MONTHS[day.getUTCMonth()]} ${day.getUTCFullYear()}`;
 }
 
+export function getJSDate(dateString: string | undefined): Date {
+    if (!dateString) return new Date(Date.now());
+    const dateSegments = dateString.split('/');
+    return new Date(parseInt(dateSegments[2], 10), parseInt(dateSegments[0], 10) - 1, parseInt(dateSegments[1], 10));
+}
+
 export function getTime(unix: number): string {
     const day = new Date(unix);
     let hh: number | string = day.getUTCHours();

@@ -19,7 +19,7 @@ import { ApplicationState, Average } from '../../__types__';
 // Redux
 import { loadSettings } from '../../redux/actions/SettingsActions';
 import { StackScreenProps } from '@react-navigation/stack';
-import { getLongDate } from '../../utilities';
+import { getJSDate, getLongDate } from '../../utilities';
 import { setUserData, loadUserInfo, setUserAvatar } from '../../redux/actions/user-data-actions';
 import { width, height } from '../../utilities/dimensions';
 import { RootStackParamList } from '../../navigation/MainNavigator';
@@ -416,8 +416,9 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 underlineColorAndroid={'transparent'}
                             />
                             {/* TODO: Fix the date picker */}
+
                             <DateTimePicker
-                                date={new Date(personal.birthday || Date.now())}
+                                date={getJSDate(personal.birthday)}
                                 isVisible={showDatePicker}
                                 onConfirm={(date): void => {
                                     setPersonal({ ...personal, birthday: format(new Date(date), 'MM/dd/yyyy') });

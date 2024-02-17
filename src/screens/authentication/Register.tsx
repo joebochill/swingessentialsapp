@@ -299,6 +299,7 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                 mainAction={'back'}
                 showAuth={false}
                 navigation={navigation}
+                fixed
             />
             <KeyboardAvoidingView
                 style={[
