@@ -8,15 +8,17 @@ import { splitParagraphs, getLongDate } from '../../utilities';
 import { height } from '../../utilities/dimensions';
 
 // Constants
-import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
+import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBlog'>> = (props) => {
     const { blog } = props.route.params;
     const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
 
     if (blog === null) {
         props.navigation.pop();
@@ -28,7 +30,7 @@ export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBl
                     {
                         flex: 1,
                         backgroundColor: theme.colors.background,
-                        paddingTop: HEADER_COLLAPSED_HEIGHT,
+                        paddingTop: COLLAPSED_HEIGHT + insets.top,
                     },
                 ]}
             >

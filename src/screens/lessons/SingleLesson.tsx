@@ -14,7 +14,6 @@ import { splitParagraphs, getLongDate } from '../../utilities';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
-import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
 // Types
 import { ApplicationState } from '../../__types__';
@@ -26,6 +25,8 @@ import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../../components/videos/SwingVideo';
 import { Header } from '../../components/CollapsibleHeader/Header';
+import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson'>> = (props) => {
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -33,6 +34,7 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
     const placeholder = useSelector((state: ApplicationState) => state.config.placeholder);
     const dispatch = useDispatch();
     const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
 
     let { lesson } = props.route.params;
     if (lesson === null) {
@@ -65,7 +67,7 @@ export const SingleLesson: React.FC<StackScreenProps<RootStackParamList, 'Lesson
                       {
                           flex: 1,
                           backgroundColor: theme.colors.background,
-                          paddingTop: HEADER_COLLAPSED_HEIGHT,
+                          paddingTop: COLLAPSED_HEIGHT + insets.top,
                       },
                   ]}
               >

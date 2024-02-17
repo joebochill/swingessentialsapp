@@ -7,12 +7,7 @@ import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { Typography, TokenModal, Stack, ListItem } from '../components';
 
 // Constants
-import {
-    APP_VERSION,
-    HEADER_COLLAPSED_HEIGHT_NO_STATUS,
-    HEADER_EXPANDED_HEIGHT_NO_STATUS,
-    DRAWER_WIDTH,
-} from '../constants';
+import { APP_VERSION, DRAWER_WIDTH } from '../constants';
 import { ROUTES } from '../constants/routes';
 
 // Styles
@@ -33,7 +28,7 @@ import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { useAppTheme } from '../theme';
 import { lightType, semiBoldType } from '../theme/typography/fontConfig';
-import { Header, useCollapsibleHeader } from '../components/CollapsibleHeader';
+import { COLLAPSED_HEIGHT, EXPANDED_HEIGHT, Header, useCollapsibleHeader } from '../components/CollapsibleHeader';
 
 export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) => {
     const theme = useAppTheme();
@@ -65,7 +60,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
     const scaleByHeight = useCallback(
         (atLarge: number, atSmall: number) =>
             scrollY.interpolate({
-                inputRange: [0, HEADER_EXPANDED_HEIGHT_NO_STATUS - (HEADER_COLLAPSED_HEIGHT_NO_STATUS + 24)],
+                inputRange: [0, EXPANDED_HEIGHT - (COLLAPSED_HEIGHT + 16)],
                 outputRange: [atLarge, atSmall],
                 extrapolate: 'clamp',
             }),
@@ -283,7 +278,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                             style={{
                                 flex: 0,
                                 paddingVertical: theme.spacing.md,
-                                height: HEADER_COLLAPSED_HEIGHT_NO_STATUS,
+                                height: COLLAPSED_HEIGHT,
                             }}
                         >
                             <Typography fontWeight={'semiBold'} color={'onPrimary'}>

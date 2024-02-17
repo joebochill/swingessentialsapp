@@ -14,10 +14,11 @@ import { StackScreenProps } from '@react-navigation/stack';
 // Redux
 import { putSettings } from '../../redux/actions/SettingsActions';
 // Constants
-import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
 
 type SettingType = {
     name: Exclude<keyof SettingsState, 'loading' | 'notifications'> | keyof SettingsState['notifications'];
@@ -90,6 +91,7 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
     const { setting: currentSettingName } = route.params;
     const dispatch = useDispatch();
     const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
 
     const [value, setValue] = useState(() => {
         if (Object.keys(settings.notifications).includes(currentSettingName)) {
@@ -150,7 +152,7 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
                 {
                     flex: 1,
                     backgroundColor: theme.colors.background,
-                    paddingTop: HEADER_COLLAPSED_HEIGHT,
+                    paddingTop: COLLAPSED_HEIGHT + insets.top,
                 },
             ]}
         >

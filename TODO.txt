@@ -1,21 +1,16 @@
 Things to get working
 
 - Updated graphics for splash screen
-
-- Clean up unused types / components
-- Eliminate BackgroundImage component
-
 - Fix the camera record timer is not synced (2s late)
 - Fix long delay when clicking purchase button
 - Purchase completes but doesn't trigger an update to the database — credits do not increment (not resolving the purchase)
-- Profile image is hidden behind header
-- Drawer is accessible on auth screens 
-- Sometimes youtube videos show white screen without spinner
+
 
 SPORADIC ISSUES:
 - Contact Us cancel button doesn't close
 - Navigating back to login from register crashes the application
 - Youtube videos don't load on cellular
+- Sometimes youtube videos show white screen without spinner
 
 
 Verify All Capabilities

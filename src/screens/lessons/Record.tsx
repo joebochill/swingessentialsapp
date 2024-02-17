@@ -15,13 +15,8 @@ import {
 import { VideoControls, CountDown, VideoTimer, Stack } from '../../components';
 import Video from 'react-native-video';
 
-// Utilities
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-
 // Types
 import { HandednessType, SwingType, CameraType, ApplicationState } from '../../__types__';
-// Constants
-import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 
 // Overlay images
 import faceonLH from '../../images/overlay-fo-lh.png';
@@ -42,6 +37,8 @@ import {
 } from 'react-native-vision-camera';
 import { useIsFocused } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks';
+import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // const DESIRED_RATIO = '16:9';
 
@@ -60,6 +57,7 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
     // const cameraRef = useRef(null);
     const videoRef = useRef(null);
     const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
     const { onReturn, swing } = props.route.params;
     const backCamera = useCameraDevice('back');
     const frontCamera = useCameraDevice('front');
@@ -79,10 +77,6 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
 
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
-
-    // const cameras: CameraType[] = ['back', 'front'];
-    // const [cameraType, setCameraType] = useState(0);
-    // const [cameraRatios, setCameraRatios] = useState([]);
 
     const [recordingMode, setRecordingMode] = useState(true);
     const [showCountDown, setShowCountDown] = useState(false);
@@ -138,19 +132,6 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
             void endRecording();
         }, settings.duration * 1000);
     }, [camera, settings, cameraInitialized, endRecording]);
-
-    /* eslint-disable no-console */
-    // console.log('XXXXXXXXXXXXXXX');
-    // console.log('XXXXXXXXXXXXXXX');
-    // console.log(`AVAILABLE CAMERAS: ${(useCameraDevices() || '').toString()}`);
-    // console.log(`CAMERA DEVICES: ${cameraDevices.toString()}`);
-    // console.log(`ACTIVE INDEX: ${activeCameraIndex}`);
-    // console.log(`CURRENT DEVICE: ${currentCameraDevice.id}`);
-    // console.log(`ACTIVE: ${isActive}`);
-    // console.log(`CAMERA INITIALIZED: ${cameraInitialized}`);
-    // console.log('XXXXXXXXXXXXXXX');
-    // console.log('XXXXXXXXXXXXXXX');
-    /* eslint-enable no-console */
 
     const VideoRecorder = cameraDevices[activeCameraIndex] && (
         <Camera
@@ -236,7 +217,6 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
                         width: '100%',
                         top: 0,
                         left: 0,
-                        paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
                         position: 'absolute',
                         justifyContent: 'flex-end',
                         zIndex: 1000,
@@ -244,7 +224,7 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
                     }}
                 >
                     <StatusBar barStyle={'light-content'} />
-                    <SafeAreaView style={{ height: HEADER_COLLAPSED_HEIGHT }}>
+                    <SafeAreaView style={{ height: COLLAPSED_HEIGHT + insets.top }}>
                         <Stack
                             direction={'row'}
                             align={'center'}

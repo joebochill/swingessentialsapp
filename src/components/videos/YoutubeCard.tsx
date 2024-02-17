@@ -67,19 +67,23 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
     const [videoReady, setVideoReady] = useState(false);
     const [playing, setPlaying] = useState(false);
 
-    const onStateChange = useCallback((state: string) => {
-        switch (state) {
-            case 'ended':
-            case 'paused':
-                setPlaying(false);
-                break;
-            case 'playing':
-                setPlaying(true);
-                break;
-            default:
-                return;
-        }
-    }, []);
+    const onStateChange = useCallback(
+        (state: string) => {
+            Alert.alert('Video State Change', `${video}: ${state}`);
+            switch (state) {
+                case 'ended':
+                case 'paused':
+                    setPlaying(false);
+                    break;
+                case 'playing':
+                    setPlaying(true);
+                    break;
+                default:
+                    return;
+            }
+        },
+        [video]
+    );
 
     return (
         <View

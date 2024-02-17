@@ -32,11 +32,13 @@ import { height } from '../../utilities/dimensions';
 import { checkUsernameAvailability, checkEmailAvailability, createAccount, verifyEmail } from '../../redux/actions';
 
 // Constants
-import { EMAIL_REGEX, HEADER_COLLAPSED_HEIGHT } from '../../constants';
+import { EMAIL_REGEX } from '../../constants';
 import { ROUTES } from '../../constants/routes';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
 
 const getRegistrationErrorMessage = (code: number): string => {
     switch (code) {
@@ -88,6 +90,7 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
     const verification = useSelector((state: ApplicationState) => state.registration);
     const dispatch = useDispatch();
     const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
 
     useEffect(() => {
         if (code) {
@@ -106,53 +109,54 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
                 navigation={navigation}
                 fixed
             />
-            <BackgroundImage />
-            <Stack
-                justify={'center'}
-                style={[
-                    {
-                        flex: 1,
-                        padding: theme.spacing.md,
-                        paddingTop: HEADER_COLLAPSED_HEIGHT,
-                    },
-                ]}
-            >
-                {verification.pending && (
-                    <>
-                        <ActivityIndicator size={'large'} color={theme.colors.onPrimary} />
-                        <Typography variant={'bodyLarge'} align={'center'} color={'onPrimary'}>
-                            Verifying your email address...
-                        </Typography>
-                    </>
-                )}
-                {!verification.pending && (
-                    <>
-                        <MatIcon
-                            name={verification.emailVerified ? 'check-circle' : 'error'}
-                            size={theme.size.xxl}
-                            color={theme.colors.onPrimary}
-                            style={{ alignSelf: 'center' }}
-                        />
-                        <Typography variant={'bodyLarge'} color={'onPrimary'} align={'center'}>
-                            {verification.emailVerified
-                                ? `Your email address has been confirmed. ${
-                                      token ? "Let's get started!" : 'Please sign in to view your account.'
-                                  }`
-                                : getRegistrationErrorMessage(verification.error)}
-                        </Typography>
-                        {verification.emailVerified && (
-                            <SEButton
-                                dark
-                                buttonColor={theme.colors.secondary}
-                                title={token ? 'GET STARTED' : 'SIGN IN'}
-                                // @ts-ignore
-                                onPress={(): void => navigation.replace(ROUTES.LOGIN)}
-                                style={{ marginTop: theme.spacing.md }}
+            <BackgroundImage>
+                <Stack
+                    justify={'center'}
+                    style={[
+                        {
+                            flex: 1,
+                            padding: theme.spacing.md,
+                            paddingTop: COLLAPSED_HEIGHT + insets.top,
+                        },
+                    ]}
+                >
+                    {verification.pending && (
+                        <>
+                            <ActivityIndicator size={'large'} color={theme.colors.onPrimary} />
+                            <Typography variant={'bodyLarge'} align={'center'} color={'onPrimary'}>
+                                Verifying your email address...
+                            </Typography>
+                        </>
+                    )}
+                    {!verification.pending && (
+                        <>
+                            <MatIcon
+                                name={verification.emailVerified ? 'check-circle' : 'error'}
+                                size={theme.size.xxl}
+                                color={theme.colors.onPrimary}
+                                style={{ alignSelf: 'center' }}
                             />
-                        )}
-                    </>
-                )}
-            </Stack>
+                            <Typography variant={'bodyLarge'} color={'onPrimary'} align={'center'}>
+                                {verification.emailVerified
+                                    ? `Your email address has been confirmed. ${
+                                          token ? "Let's get started!" : 'Please sign in to view your account.'
+                                      }`
+                                    : getRegistrationErrorMessage(verification.error)}
+                            </Typography>
+                            {verification.emailVerified && (
+                                <SEButton
+                                    dark
+                                    buttonColor={theme.colors.secondary}
+                                    title={token ? 'GET STARTED' : 'SIGN IN'}
+                                    // @ts-ignore
+                                    onPress={(): void => navigation.replace(ROUTES.LOGIN)}
+                                    style={{ marginTop: theme.spacing.md }}
+                                />
+                            )}
+                        </>
+                    )}
+                </Stack>
+            </BackgroundImage>
         </Stack>
     );
 };
@@ -160,6 +164,7 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
 const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> = (props) => {
     const { navigation } = props;
     const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
 
     const [fields, setFields] = useState(defaultKeys);
     const [showPassword, setShowPassword] = useState(false);
@@ -305,81 +310,34 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                 style={[
                     {
                         flex: 1,
-                        paddingTop: HEADER_COLLAPSED_HEIGHT,
+                        paddingTop: COLLAPSED_HEIGHT + insets.top,
                         backgroundColor: theme.colors.primary,
                     },
                 ]}
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             >
-                <BackgroundImage style={{ top: HEADER_COLLAPSED_HEIGHT }} />
-                <ScrollView
-                    ref={scroller}
-                    contentContainerStyle={[{ padding: theme.spacing.md, paddingBottom: height * 0.5 }]}
-                    keyboardShouldPersistTaps={'always'}
-                >
-                    <Stack space={theme.spacing.md}>
-                        {regProperties.map((field: RegistrationProperty, index: number) => (
-                            <Stack key={`registration_property_${field.property}`}>
-                                {field.type === 'select' ? (
-                                    <RNPickerSelect
-                                        ref={refs[index]}
-                                        disabled={registration.pending}
-                                        placeholder={{ label: 'Choose One...', value: '', color: 'rgba(0,0,0,0.25)' }}
-                                        items={field.items || []}
-                                        // onOpen={(): void => setActiveField(field.property)}
-                                        // onClose={(): void => setActiveField(null)}
-                                        onValueChange={
-                                            field.onChange
-                                                ? field.onChange
-                                                : (value: string): void => {
-                                                      setFields({
-                                                          ...fields,
-                                                          [field.property]: value
-                                                              .replace(/[^A-Z- .]/gi, '')
-                                                              .substr(0, 32),
-                                                      });
-                                                  }
-                                        }
-                                        value={fields[field.property]}
-                                        useNativeAndroidPickerStyle={false}
-                                    >
-                                        <TextInput
-                                            editable={false}
-                                            // style={[
-                                            //     index > 0 ? formStyles.formField : {},
-                                            //     activeField === field.property || fields[field.property].length > 0
-                                            //         ? formStyles.active
-                                            //         : formStyles.inactive,
-                                            // ]}
-                                            label={field.label}
-                                            underlineColorAndroid={'transparent'}
-                                            value={fields[field.property]}
-                                        />
-                                    </RNPickerSelect>
-                                ) : (
-                                    <View>
-                                        <TextInput
+                <BackgroundImage>
+                    <ScrollView
+                        ref={scroller}
+                        contentContainerStyle={[{ padding: theme.spacing.md, paddingBottom: height * 0.5 }]}
+                        keyboardShouldPersistTaps={'always'}
+                    >
+                        <Stack space={theme.spacing.md}>
+                            {regProperties.map((field: RegistrationProperty, index: number) => (
+                                <Stack key={`registration_property_${field.property}`}>
+                                    {field.type === 'select' ? (
+                                        <RNPickerSelect
                                             ref={refs[index]}
-                                            secureTextEntry={field.secure}
-                                            autoCorrect={false}
-                                            autoCapitalize={'none'}
-                                            // style={[
-                                            //     activeField === field.property || fields[field.property].length > 0
-                                            //         ? formStyles.active
-                                            //         : formStyles.inactive,
-                                            // ]}
-                                            // onFocus={(): void => setActiveField(field.property)}
-                                            onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>): void => {
-                                                // setActiveField(null);
-                                                if (field.onBlur) {
-                                                    field.onBlur(e);
-                                                }
+                                            disabled={registration.pending}
+                                            placeholder={{
+                                                label: 'Choose One...',
+                                                value: '',
+                                                color: 'rgba(0,0,0,0.25)',
                                             }}
-                                            editable={!registration.pending}
-                                            error={field.errorMessage !== undefined && field.errorMessage.length > 0}
-                                            keyboardType={field.keyboard}
-                                            label={field.label}
-                                            onChangeText={
+                                            items={field.items || []}
+                                            // onOpen={(): void => setActiveField(field.property)}
+                                            // onClose={(): void => setActiveField(null)}
+                                            onValueChange={
                                                 field.onChange
                                                     ? field.onChange
                                                     : (value: string): void => {
@@ -391,69 +349,123 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                                                           });
                                                       }
                                             }
-                                            onSubmitEditing={
-                                                field.onSubmit
-                                                    ? field.onSubmit
-                                                    : (): void => {
-                                                          if (refs[(index + 1) % refs.length].current) {
-                                                              // @ts-ignore
-                                                              refs[(index + 1) % refs.length].current.focus();
-                                                          }
-                                                      }
-                                            }
-                                            returnKeyType={'next'}
-                                            underlineColorAndroid={'transparent'}
                                             value={fields[field.property]}
-                                        />
-                                        {field.property === 'password' && (
-                                            <View
-                                                style={{
-                                                    position: 'absolute',
-                                                    right: theme.spacing.md,
-                                                    bottom: 0,
-                                                    height: '100%',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
+                                            useNativeAndroidPickerStyle={false}
+                                        >
+                                            <TextInput
+                                                editable={false}
+                                                // style={[
+                                                //     index > 0 ? formStyles.formField : {},
+                                                //     activeField === field.property || fields[field.property].length > 0
+                                                //         ? formStyles.active
+                                                //         : formStyles.inactive,
+                                                // ]}
+                                                label={field.label}
+                                                underlineColorAndroid={'transparent'}
+                                                value={fields[field.property]}
+                                            />
+                                        </RNPickerSelect>
+                                    ) : (
+                                        <View>
+                                            <TextInput
+                                                ref={refs[index]}
+                                                secureTextEntry={field.secure}
+                                                autoCorrect={false}
+                                                autoCapitalize={'none'}
+                                                // style={[
+                                                //     activeField === field.property || fields[field.property].length > 0
+                                                //         ? formStyles.active
+                                                //         : formStyles.inactive,
+                                                // ]}
+                                                // onFocus={(): void => setActiveField(field.property)}
+                                                onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>): void => {
+                                                    // setActiveField(null);
+                                                    if (field.onBlur) {
+                                                        field.onBlur(e);
+                                                    }
                                                 }}
-                                            >
-                                                <MatIcon
-                                                    name={field.secure ? 'visibility' : 'visibility-off'}
-                                                    size={theme.size.md}
-                                                    color={theme.colors.onPrimaryContainer}
-                                                    // underlayColor={'transparent'}
-                                                    onPress={(): void => setShowPassword(!showPassword)}
-                                                />
-                                            </View>
-                                        )}
-                                    </View>
-                                )}
-                                <ErrorBox
-                                    show={field.errorMessage !== undefined && field.errorMessage.length > 0}
-                                    error={field.errorMessage || `Invalid ${field.label}`}
-                                    style={{ marginTop: theme.spacing.md }}
-                                />
-                            </Stack>
-                        ))}
-                    </Stack>
-                    <SEButton
-                        dark
-                        buttonColor={theme.colors.secondary}
-                        title={!registration.pending ? 'SUBMIT' : 'SUBMITTING'}
-                        loading={registration.pending}
-                        onPress={
-                            canSubmit() && !registration.pending
-                                ? (): void => {
-                                      submitRegistration();
-                                      if (scroller.current) {
-                                          // @ts-ignore
-                                          scroller.current.scrollTo({ x: 0, y: 0, animated: true });
+                                                editable={!registration.pending}
+                                                error={
+                                                    field.errorMessage !== undefined && field.errorMessage.length > 0
+                                                }
+                                                keyboardType={field.keyboard}
+                                                label={field.label}
+                                                onChangeText={
+                                                    field.onChange
+                                                        ? field.onChange
+                                                        : (value: string): void => {
+                                                              setFields({
+                                                                  ...fields,
+                                                                  [field.property]: value
+                                                                      .replace(/[^A-Z- .]/gi, '')
+                                                                      .substr(0, 32),
+                                                              });
+                                                          }
+                                                }
+                                                onSubmitEditing={
+                                                    field.onSubmit
+                                                        ? field.onSubmit
+                                                        : (): void => {
+                                                              if (refs[(index + 1) % refs.length].current) {
+                                                                  // @ts-ignore
+                                                                  refs[(index + 1) % refs.length].current.focus();
+                                                              }
+                                                          }
+                                                }
+                                                returnKeyType={'next'}
+                                                underlineColorAndroid={'transparent'}
+                                                value={fields[field.property]}
+                                            />
+                                            {field.property === 'password' && (
+                                                <View
+                                                    style={{
+                                                        position: 'absolute',
+                                                        right: theme.spacing.md,
+                                                        bottom: 0,
+                                                        height: '100%',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                    }}
+                                                >
+                                                    <MatIcon
+                                                        name={field.secure ? 'visibility' : 'visibility-off'}
+                                                        size={theme.size.md}
+                                                        color={theme.colors.onPrimaryContainer}
+                                                        // underlayColor={'transparent'}
+                                                        onPress={(): void => setShowPassword(!showPassword)}
+                                                    />
+                                                </View>
+                                            )}
+                                        </View>
+                                    )}
+                                    <ErrorBox
+                                        show={field.errorMessage !== undefined && field.errorMessage.length > 0}
+                                        error={field.errorMessage || `Invalid ${field.label}`}
+                                        style={{ marginTop: theme.spacing.md }}
+                                    />
+                                </Stack>
+                            ))}
+                        </Stack>
+                        <SEButton
+                            dark
+                            buttonColor={theme.colors.secondary}
+                            title={!registration.pending ? 'SUBMIT' : 'SUBMITTING'}
+                            loading={registration.pending}
+                            onPress={
+                                canSubmit() && !registration.pending
+                                    ? (): void => {
+                                          submitRegistration();
+                                          if (scroller.current) {
+                                              // @ts-ignore
+                                              scroller.current.scrollTo({ x: 0, y: 0, animated: true });
+                                          }
                                       }
-                                  }
-                                : undefined
-                        }
-                        style={[{ marginTop: theme.spacing.md }, canSubmit() ? {} : { opacity: 0.6 }]}
-                    />
-                </ScrollView>
+                                    : undefined
+                            }
+                            style={[{ marginTop: theme.spacing.md }, canSubmit() ? {} : { opacity: 0.6 }]}
+                        />
+                    </ScrollView>
+                </BackgroundImage>
             </KeyboardAvoidingView>
         </Stack>
     );

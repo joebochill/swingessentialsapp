@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, ViewProps } from 'react-native';
 import { Stack, Typography } from '..';
 import { useAppTheme } from '../../theme';
@@ -6,22 +6,40 @@ import { useAppTheme } from '../../theme';
 export type VideoTimerProps = ViewProps & {
     visible: boolean;
     startValue?: number;
-    offset?: number;
 };
 
 export const VideoTimer: React.FC<VideoTimerProps> = (props) => {
-    const { visible, startValue = 0, offset = -1 } = props;
-    const [seconds, setSeconds] = useState(startValue);
+    const { visible, startValue = 0 } = props;
+
+    const [startTime, setStartTime] = useState(0);
+    const [currentTime, setCurrentTime] = useState(0);
+    const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
     const theme = useAppTheme();
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setSeconds((sec) => sec + 1);
-        }, 1000);
-        return (): void => clearInterval(interval);
-    }, [seconds]);
+        if (visible) {
+            const now = Date.now();
+            setStartTime(now);
+            setCurrentTime(now);
+            if (intervalRef.current) clearInterval(intervalRef.current);
+            intervalRef.current = setInterval(() => {
+                setCurrentTime(Date.now());
+            }, 10);
+        } else {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+        }
+        return () => {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+        };
+    }, [visible]);
 
-    const displaySeconds = Math.max(0, seconds + offset);
+    let secondsPassed = 0;
+    if (startTime !== null && currentTime !== null) {
+        secondsPassed = (currentTime - startTime) / 1000;
+    }
+
+    const displaySeconds = Math.floor(Math.max(0, secondsPassed + startValue));
 
     return visible ? (
         <View {...props}>

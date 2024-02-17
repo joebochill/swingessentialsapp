@@ -92,13 +92,5 @@ export const Header: React.FC<HeaderProps> = (props) => {
             {...other}
             expandedHeight={fixed ? COLLAPSED_HEIGHT : props.expandedHeight}
         />
-        // <ResizableHeader
-        //     // @ts-ignore
-
-        //     headerHeight={props.headerHeight || HEADER_COLLAPSED_HEIGHT}
-        //     backgroundImage={backgroundImage}
-        //     actionItems={actionItems.concat(defaultActions)}
-        //     {...other}
-        // />
     );
 };

@@ -10,7 +10,6 @@ import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Logger } from '../../utilities/logging';
 
 // Types
@@ -33,6 +32,7 @@ import { requestLogin } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type BiometryState = {
     available: boolean;
@@ -59,6 +59,7 @@ const initialCredentials: CredentialsState = {
 
 export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (props) => {
     const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
 
     // Local Component State
     const [username, setUsername] = useState('');
@@ -235,202 +236,206 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
             style={[{ flex: 1, backgroundColor: theme.colors.primary }]}
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
-            <BackgroundImage />
-            <ScrollView
-                style={{ flex: 1 }}
-                contentContainerStyle={{
-                    minHeight: height - getStatusBarHeight(),
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    paddingHorizontal: theme.spacing.md,
-                }}
-                keyboardShouldPersistTaps={'always'}
-            >
-                {/* LOGO */}
-                <View style={{ width: '100%', maxWidth: 500 }}>
-                    {/* @ts-ignore */}
-                    <Image
-                        source={logo}
-                        resizeMethod="resize"
-                        style={{
-                            height: 60,
-                            width: '100%',
-                            resizeMode: 'contain',
-                            marginBottom: theme.spacing.md,
-                        }}
-                    />
-
-                    {/* Username Field */}
-                    <Stack>
-                        <TextInput
-                            autoCorrect={false}
-                            autoCapitalize={'none'}
-                            editable={!pending}
-                            label={'Username'}
-                            onChangeText={(val: string): void => setUsername(val)}
-                            onSubmitEditing={(): void => {
-                                if (passField.current) {
-                                    // @ts-ignore
-                                    passField.current.focus();
-                                }
+            <BackgroundImage>
+                <ScrollView
+                    style={{ flex: 1 }}
+                    contentContainerStyle={{
+                        minHeight: height - insets.top,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        paddingHorizontal: theme.spacing.md,
+                    }}
+                    keyboardShouldPersistTaps={'always'}
+                >
+                    {/* LOGO */}
+                    <View style={{ width: '100%', maxWidth: 500 }}>
+                        {/* @ts-ignore */}
+                        <Image
+                            source={logo}
+                            resizeMethod="resize"
+                            style={{
+                                height: 60,
+                                width: '100%',
+                                resizeMode: 'contain',
+                                marginBottom: theme.spacing.md,
                             }}
-                            placeholder="Enter your username or email address"
-                            returnKeyType={'next'}
-                            underlineColorAndroid={'transparent'}
-                            value={username}
                         />
-                        {biometry.available && useBiometry && credentials.stored && (
-                            <View
-                                style={{
-                                    position: 'absolute',
-                                    right: theme.spacing.md,
-                                    bottom: 0,
-                                    height: '100%',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                <MatIcon
-                                    name={'fingerprint'}
-                                    size={theme.size.md}
-                                    color={theme.colors.onPrimaryContainer}
-                                    // @ts-ignore
-                                    underlayColor={'transparent'}
-                                    // @ts-ignore
-                                    onPress={(): void => showBiometricLogin()}
-                                />
-                            </View>
-                        )}
-                    </Stack>
 
-                    {/* Password Field */}
-                    <TextInput
-                        autoCapitalize={'none'}
-                        editable={!pending}
-                        label={'Password'}
-                        onChangeText={(val: string): void => setPassword(val)}
-                        onSubmitEditing={(): void => onLogin(username, password)}
-                        placeholder="Enter your password"
-                        ref={passField}
-                        returnKeyType={'go'}
-                        secureTextEntry
-                        underlineColorAndroid={'transparent'}
-                        value={password}
-                        style={{ marginTop: theme.spacing.md }}
-                    />
-
-                    {/* Remember Me Row */}
-                    <Stack
-                        direction={'row'}
-                        align={'center'}
-                        justify={'space-between'}
-                        style={{ marginTop: theme.spacing.md }}
-                    >
-                        <Stack direction={'row'} align={'center'}>
-                            <Typography style={{ marginRight: theme.spacing.sm }} color={'onPrimary'}>
-                                Save Username
-                            </Typography>
-                            <Switch
-                                value={remember}
-                                onValueChange={(val: boolean): void => {
-                                    setRemember(val);
-                                    void AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
-                                    if (!val) {
-                                        void AsyncStorage.removeItem('@SwingEssentials:lastUser');
-                                        setUsername('');
+                        {/* Username Field */}
+                        <Stack>
+                            <TextInput
+                                autoCorrect={false}
+                                autoCapitalize={'none'}
+                                editable={!pending}
+                                label={'Username'}
+                                onChangeText={(val: string): void => setUsername(val)}
+                                onSubmitEditing={(): void => {
+                                    if (passField.current) {
+                                        // @ts-ignore
+                                        passField.current.focus();
                                     }
                                 }}
-                                ios_backgroundColor={theme.colors.primaryContainer}
-                                trackColor={{ false: theme.colors.outline, true: theme.colors.onPrimaryContainer }}
+                                placeholder="Enter your username or email address"
+                                returnKeyType={'next'}
+                                underlineColorAndroid={'transparent'}
+                                value={username}
                             />
+                            {biometry.available && useBiometry && credentials.stored && (
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        right: theme.spacing.md,
+                                        bottom: 0,
+                                        height: '100%',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <MatIcon
+                                        name={'fingerprint'}
+                                        size={theme.size.md}
+                                        color={theme.colors.onPrimaryContainer}
+                                        // @ts-ignore
+                                        underlayColor={'transparent'}
+                                        // @ts-ignore
+                                        onPress={(): void => showBiometricLogin()}
+                                    />
+                                </View>
+                            )}
                         </Stack>
-                        {biometry.available && (
+
+                        {/* Password Field */}
+                        <TextInput
+                            autoCapitalize={'none'}
+                            editable={!pending}
+                            label={'Password'}
+                            onChangeText={(val: string): void => setPassword(val)}
+                            onSubmitEditing={(): void => onLogin(username, password)}
+                            placeholder="Enter your password"
+                            ref={passField}
+                            returnKeyType={'go'}
+                            secureTextEntry
+                            underlineColorAndroid={'transparent'}
+                            value={password}
+                            style={{ marginTop: theme.spacing.md }}
+                        />
+
+                        {/* Remember Me Row */}
+                        <Stack
+                            direction={'row'}
+                            align={'center'}
+                            justify={'space-between'}
+                            style={{ marginTop: theme.spacing.md }}
+                        >
                             <Stack direction={'row'} align={'center'}>
-                                <Typography
-                                    color={'onPrimary'}
-                                    style={{ marginRight: theme.spacing.sm }}
-                                >{`Use ${biometry.type}`}</Typography>
+                                <Typography style={{ marginRight: theme.spacing.sm }} color={'onPrimary'}>
+                                    Save Username
+                                </Typography>
                                 <Switch
-                                    value={useBiometry}
+                                    value={remember}
                                     onValueChange={(val: boolean): void => {
-                                        setUseBiometry(val);
-                                        void AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
+                                        setRemember(val);
+                                        void AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
+                                        if (!val) {
+                                            void AsyncStorage.removeItem('@SwingEssentials:lastUser');
+                                            setUsername('');
+                                        }
                                     }}
                                     ios_backgroundColor={theme.colors.primaryContainer}
                                     trackColor={{ false: theme.colors.outline, true: theme.colors.onPrimaryContainer }}
                                 />
                             </Stack>
-                        )}
-                    </Stack>
+                            {biometry.available && (
+                                <Stack direction={'row'} align={'center'}>
+                                    <Typography
+                                        color={'onPrimary'}
+                                        style={{ marginRight: theme.spacing.sm }}
+                                    >{`Use ${biometry.type}`}</Typography>
+                                    <Switch
+                                        value={useBiometry}
+                                        onValueChange={(val: boolean): void => {
+                                            setUseBiometry(val);
+                                            void AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
+                                        }}
+                                        ios_backgroundColor={theme.colors.primaryContainer}
+                                        trackColor={{
+                                            false: theme.colors.outline,
+                                            true: theme.colors.onPrimaryContainer,
+                                        }}
+                                    />
+                                </Stack>
+                            )}
+                        </Stack>
 
-                    {/* Error Messages */}
-                    <ErrorBox
-                        show={failures > 0 || error}
-                        error={'The username / password you entered was not correct.'}
-                        style={{ marginTop: theme.spacing.md }}
-                    />
-                    <ErrorBox
-                        show={networkFailure}
-                        error={
-                            'We were unable to process your login request. Check your network connection and try again.'
-                        }
-                        style={{ marginTop: theme.spacing.md }}
-                    />
-                    <ErrorBox
-                        show={touchFail.length > 0 && failures <= 0}
-                        error={touchFail}
-                        style={{ marginTop: theme.spacing.md }}
-                    />
+                        {/* Error Messages */}
+                        <ErrorBox
+                            show={failures > 0 || error}
+                            error={'The username / password you entered was not correct.'}
+                            style={{ marginTop: theme.spacing.md }}
+                        />
+                        <ErrorBox
+                            show={networkFailure}
+                            error={
+                                'We were unable to process your login request. Check your network connection and try again.'
+                            }
+                            style={{ marginTop: theme.spacing.md }}
+                        />
+                        <ErrorBox
+                            show={touchFail.length > 0 && failures <= 0}
+                            error={touchFail}
+                            style={{ marginTop: theme.spacing.md }}
+                        />
 
-                    {/* Log In Buttons */}
-                    <Stack
-                        direction={'row'}
-                        align={'center'}
-                        space={theme.spacing.sm}
-                        style={{ marginTop: theme.spacing.md }}
-                    >
-                        <SEButton
-                            dark
-                            title={'Sign In'}
-                            buttonColor={theme.colors.secondary}
-                            loading={pending}
-                            style={{ flex: 1 }}
-                            onPress={(): void => onLogin(username, password)}
-                        />
-                        <SEButton
-                            mode={'text'}
-                            disabled={pending}
-                            labelStyle={{ color: theme.colors.onPrimary }}
-                            style={{ flex: 0 }}
-                            title="CANCEL"
-                            onPress={(): void => props.navigation.pop()}
-                        />
-                    </Stack>
+                        {/* Log In Buttons */}
+                        <Stack
+                            direction={'row'}
+                            align={'center'}
+                            space={theme.spacing.sm}
+                            style={{ marginTop: theme.spacing.md }}
+                        >
+                            <SEButton
+                                dark
+                                title={'Sign In'}
+                                buttonColor={theme.colors.secondary}
+                                loading={pending}
+                                style={{ flex: 1 }}
+                                onPress={(): void => onLogin(username, password)}
+                            />
+                            <SEButton
+                                mode={'text'}
+                                disabled={pending}
+                                labelStyle={{ color: theme.colors.onPrimary }}
+                                style={{ flex: 0 }}
+                                title="CANCEL"
+                                onPress={(): void => props.navigation.pop()}
+                            />
+                        </Stack>
 
-                    {/* Registration Links */}
-                    <Stack
-                        direction={'row'}
-                        align={'center'}
-                        justify={'space-between'}
-                        style={{ marginTop: theme.spacing.xs }}
-                    >
-                        <SEButton
-                            mode={'text'}
-                            labelStyle={{ color: theme.colors.onPrimary }}
-                            title="Forgot Password?"
-                            // @ts-ignore
-                            onPress={(): void => props.navigation.push(ROUTES.RESET_PASSWORD)}
-                        />
-                        <SEButton
-                            mode={'text'}
-                            labelStyle={{ color: theme.colors.onPrimary }}
-                            title="Need an Account?"
-                            // @ts-ignore
-                            onPress={(): void => props.navigation.push(ROUTES.REGISTER)}
-                        />
-                    </Stack>
-                </View>
-            </ScrollView>
+                        {/* Registration Links */}
+                        <Stack
+                            direction={'row'}
+                            align={'center'}
+                            justify={'space-between'}
+                            style={{ marginTop: theme.spacing.xs }}
+                        >
+                            <SEButton
+                                mode={'text'}
+                                labelStyle={{ color: theme.colors.onPrimary }}
+                                title="Forgot Password?"
+                                // @ts-ignore
+                                onPress={(): void => props.navigation.push(ROUTES.RESET_PASSWORD)}
+                            />
+                            <SEButton
+                                mode={'text'}
+                                labelStyle={{ color: theme.colors.onPrimary }}
+                                title="Need an Account?"
+                                // @ts-ignore
+                                onPress={(): void => props.navigation.push(ROUTES.REGISTER)}
+                            />
+                        </Stack>
+                    </View>
+                </ScrollView>
+            </BackgroundImage>
         </KeyboardAvoidingView>
     );
 };

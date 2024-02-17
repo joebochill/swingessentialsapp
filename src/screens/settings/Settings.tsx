@@ -28,6 +28,7 @@ import { format } from 'date-fns';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
 import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const objectsEqual = (a: Record<string, unknown>, b: Record<string, unknown>): boolean => {
     // Create arrays of property names
@@ -88,11 +89,9 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
 
     const dispatch = useDispatch();
     const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
 
     const [editAbout, setEditAbout] = useState(false);
-    // const [activeField, setActiveField] = useState<
-    //     'first' | 'last' | 'location' | 'birthday' | 'average' | 'goals' | null
-    // >(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [personal, setPersonal] = useState(userData);
 
@@ -117,7 +116,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                 {
                     flex: 1,
                     backgroundColor: theme.colors.background,
-                    paddingTop: COLLAPSED_HEIGHT,
+                    paddingTop: COLLAPSED_HEIGHT + insets.top,
                 },
             ]}
         >
@@ -348,16 +347,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             )}
                         />
                         <Divider />
-                        {/* < ListItem
-                            title={'Phone Number'}
-                            titleEllipsizeMode={'tail'}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <Stack direction={'row'} align={'center'} style={[style, {marginRight: 0}]} {...rightProps}>
-                                    <Typography>{userData.phone}</Typography>
-                                </Stack>
-                            )}
-                        />
-                        <Divider /> */}
                     </Stack>
                 )}
                 {/* Write Mode */}
@@ -388,20 +377,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             onChangeText={(value: string): void => setPersonal({ ...personal, location: value })}
                             underlineColorAndroid={'transparent'}
                         />
-                        {/* 
-                                <TextInput
-                                    label={'Phone Number'}
-                                    value={personal.phone}
-                                    placeholder={'e.g., 123-456-7890'}
-                                    autoCorrect={false}
-                                    autoCapitalize={'none'}
-                                    onFocus={(): void => setActiveField('phone')}
-                                    onBlur={(): void => setActiveField(null)}
-                                    onChangeText={(value: string): void => setPersonal({ ...personal, phone: value })}
-                                    underlineColorAndroid={'transparent'}
-                                />
-                                <Divider /> 
-                            */}
                         <Stack>
                             <TextInput
                                 label={'Date of Birth'}
@@ -415,8 +390,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 }}
                                 underlineColorAndroid={'transparent'}
                             />
-                            {/* TODO: Fix the date picker */}
-
                             <DateTimePicker
                                 date={getJSDate(personal.birthday)}
                                 isVisible={showDatePicker}

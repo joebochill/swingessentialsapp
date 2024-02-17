@@ -17,14 +17,12 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PaperProvider } from 'react-native-paper';
 import { SETheme } from './src/theme';
 import { withIAPContext } from 'react-native-iap';
-import { useRNIAP } from './src/screens/lessons/RNIAPConfig';
 
 // TODO: Support dark mode
 function App(): React.JSX.Element {
     const { hasPermission: hasVideoPermission, requestPermission: requestVideoPermission } = useCameraPermission();
     const { hasPermission: hasMicrophonePermission, requestPermission: requestMicrophonePermission } =
         useMicrophonePermission();
-    useRNIAP();
 
     // Initialize redux store data
     useEffect(() => {

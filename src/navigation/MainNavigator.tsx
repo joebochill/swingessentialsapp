@@ -27,10 +27,12 @@ import {
     SingleTip,
     Submit,
     Tips,
+    useRNIAP,
 } from '../screens';
 import { width } from '../utilities/dimensions';
 import { Blog, Lesson, SettingsState, SwingType, Tip } from '../__types__';
 import { Pros } from '../screens/help/Pros';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 
 export type RootStackParamList = {
     Register: undefined;
@@ -120,16 +122,27 @@ const StackNavigator: React.FC = () => (
         <AppStack.Screen name={ROUTES.RESET_PASSWORD} component={ForgotPassword} />
     </AppStack.Navigator>
 );
-const MainNavigator: React.FC = () => (
-    <Drawer.Navigator
-        initialRouteName={ROUTES.APP_GROUP}
-        screenOptions={{
-            drawerStyle: { width: width * 0.9 },
-            headerShown: false,
-        }}
-        drawerContent={(props): JSX.Element => <NavigationDrawer {...props} />}
-    >
-        <Drawer.Screen name={ROUTES.APP_GROUP} component={StackNavigator} />
-    </Drawer.Navigator>
-);
+const MainNavigator: React.FC = () => {
+    useRNIAP();
+    return (
+        <Drawer.Navigator
+            initialRouteName={ROUTES.APP_GROUP}
+            screenOptions={{
+                drawerStyle: { width: width * 0.9 },
+                headerShown: false,
+            }}
+            drawerContent={(props): JSX.Element => <NavigationDrawer {...props} />}
+        >
+            <Drawer.Screen
+                name={ROUTES.APP_GROUP}
+                component={StackNavigator}
+                options={({ route }) => ({
+                    swipeEnabled: ![ROUTES.LOGIN, ROUTES.RESET_PASSWORD, ROUTES.REGISTER].includes(
+                        getFocusedRouteNameFromRoute(route) || ''
+                    ),
+                })}
+            />
+        </Drawer.Navigator>
+    );
+};
 export default MainNavigator;

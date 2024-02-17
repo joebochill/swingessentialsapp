@@ -8,16 +8,18 @@ import { height } from '../../utilities/dimensions';
 // Utilities
 import { splitParagraphs, getLongDate } from '../../utilities';
 // Constants
-import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { Paragraph } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
+import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip'>> = (props) => {
     const { tip } = props.route.params;
     const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
 
     if (tip === null) {
         props.navigation.pop();
@@ -30,7 +32,7 @@ export const SingleTip: React.FC<StackScreenProps<RootStackParamList, 'SingleTip
                     {
                         flex: 1,
                         backgroundColor: theme.colors.background,
-                        paddingTop: HEADER_COLLAPSED_HEIGHT,
+                        paddingTop: COLLAPSED_HEIGHT + insets.top,
                     },
                 ]}
             >
