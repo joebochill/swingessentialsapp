@@ -179,7 +179,7 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
         />
     );
     return (
-        <View style={{ flex: 1, alignItems: 'stretch', backgroundColor: theme.colors.primary[0] }}>
+        <View style={{ flex: 1, alignItems: 'stretch', backgroundColor: 'rgba(0,0,0,0.5)' }}>
             {recordingMode && VideoRecorder}
             {!recordingMode && VideoPlayer}
             {!recordingMode &&

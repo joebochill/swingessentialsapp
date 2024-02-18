@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Animated, ImageSourcePropType, Platform, SafeAreaView, StatusBar, View, ViewProps } from 'react-native';
+import { Animated, ImageSourcePropType, SafeAreaView, View, ViewProps } from 'react-native';
 import { Icon, IconProps } from '..';
 import { COLLAPSED_HEIGHT, EXPANDED_HEIGHT } from './useCollapsibleHeader';
 import { useAppTheme } from '../../theme';
@@ -97,10 +97,10 @@ export const CollapsibleHeader: React.FC<CollapsibleHeaderProps> = (props) => {
                 shadowRadius: 2,
                 shadowOpacity: 1,
                 elevation: 0,
-                paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+                paddingTop: 0,
                 height: getDynamicHeaderHeight(),
                 position: 'absolute',
-                zIndex: 100,
+                zIndex: 1000,
             }}
         >
             <AnimatedImageBackground
@@ -109,7 +109,7 @@ export const CollapsibleHeader: React.FC<CollapsibleHeaderProps> = (props) => {
                 imageStyle={{ resizeMode: 'cover', opacity: scaleByHeaderHeight(0.3, 0.2) }}
                 style={{ flex: 1 }}
             >
-                <SafeAreaView style={{ flex: 1 }}>
+                <SafeAreaView style={{ flex: 1, paddingTop: insets.top }}>
                     <Animated.View
                         style={{
                             flexDirection: 'row',

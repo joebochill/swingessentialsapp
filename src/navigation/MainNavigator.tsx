@@ -130,6 +130,7 @@ const MainNavigator: React.FC = () => {
             screenOptions={{
                 drawerStyle: { width: width * 0.9 },
                 headerShown: false,
+                drawerType: 'slide',
             }}
             drawerContent={(props): JSX.Element => <NavigationDrawer {...props} />}
         >

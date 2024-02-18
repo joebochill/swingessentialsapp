@@ -62,7 +62,6 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
             />
             <SectionList
                 {...scrollProps}
-                style={{ zIndex: 1 }}
                 contentContainerStyle={contentProps.contentContainerStyle}
                 refreshControl={
                     <RefreshControl

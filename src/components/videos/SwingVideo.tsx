@@ -141,13 +141,12 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         muted={false}
                         paused={!videoPlaying}
                         onLoad={(): void => {
-                            // TODO: this was added for Android after iOS release
                             setVideoReady(true);
                             // @ts-ignore
-                            if (videoRef.current && Platform.OS === 'android') vid.current.seek(0);
+                            if (videoRef.current && Platform.OS === 'android') videoRef.current.seek(0);
                         }}
                         onEnd={(): void => setVideoPlaying(false)}
-                        onReadyForDisplay={() => setVideoReady(true)} //TODO: this was changed after iOS release
+                        onReadyForDisplay={() => setVideoReady(true)}
                         resizeMode="contain"
                         repeat={Platform.OS === 'ios'}
                         playInBackground={false}
@@ -166,7 +165,6 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                             width: '100%',
                             top: 0,
                             left: 0,
-                            // backgroundColor: 'rgba(255,255,255,0.75)',
                         }}
                     />
                 )}

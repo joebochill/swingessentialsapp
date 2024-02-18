@@ -1,9 +1,8 @@
 Things to get working
 
 - Updated graphics for splash screen
-- Fix the camera record timer is not synced (2s late)
-- Fix long delay when clicking purchase button
-- Purchase completes but doesn't trigger an update to the database — credits do not increment (not resolving the purchase)
+- Update the documentation / Readme
+- Update the version requirements for Tutorials
 
 
 SPORADIC ISSUES:
@@ -11,6 +10,7 @@ SPORADIC ISSUES:
 - Navigating back to login from register crashes the application
 - Youtube videos don't load on cellular
 - Sometimes youtube videos show white screen without spinner
+- Fix long delay when clicking purchase button (sandbox only maybe)
 
 
 Verify All Capabilities

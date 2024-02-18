@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import {
     Purchase,
     PurchaseError,
+    clearProductsIOS,
     // endConnection,
     // initConnection,
     purchaseErrorListener,
@@ -12,6 +13,7 @@ import { Logger } from '../../utilities/logging';
 import { useDispatch, useSelector } from 'react-redux';
 import { ApplicationState } from '../../__types__';
 import { purchaseCredits } from '../../redux/actions';
+import { Platform } from 'react-native';
 
 export const useRNIAP = (): void => {
     const {
@@ -32,6 +34,10 @@ export const useRNIAP = (): void => {
     } = useIAP();
     const dispatch = useDispatch();
     const packages = useSelector((state: ApplicationState) => state.packages.list);
+
+    useEffect(() => {
+        if (Platform.OS === 'ios') void clearProductsIOS();
+    }, []);
 
     // listen for IAP errors
     useEffect(() => {

@@ -19,10 +19,11 @@ export const TutorialModal: React.FC<PropsWithChildren<TutorialProps>> = (props)
         <Modal
             isVisible={visible}
             backdropColor={theme.colors.primary}
-            style={{ margin: 0, padding: 0 }}
+            style={{ flex: 1, margin: 0, padding: 0 }}
             backdropOpacity={1}
             animationInTiming={750}
             animationOutTiming={750}
+            statusBarTranslucent
         >
             <SafeAreaView
                 style={{

@@ -34,6 +34,8 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
     useEffect(() => {
         StatusBar.setBarStyle('light-content');
+        StatusBar.setBackgroundColor('transparent');
+        StatusBar.setTranslucent(true);
     });
 
     const defaultActions: IconProps[] = showAuth

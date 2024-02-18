@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // Components
-import { Animated, AppState, AppStateStatus, Image, FlatList, Linking, SafeAreaView, View, Alert } from 'react-native';
+import { Animated, AppState, AppStateStatus, Image, FlatList, Linking, Alert } from 'react-native';
 import { NavigationItems } from './NavigationContent';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { Typography, TokenModal, Stack, ListItem } from '../components';
@@ -15,7 +15,6 @@ import { List, Divider } from 'react-native-paper';
 
 // Utilities
 import { getLongDate } from '../utilities';
-import { height } from '../utilities/dimensions';
 import { Logger } from '../utilities/logging';
 
 // Redux
@@ -174,124 +173,6 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
 
     return (
         <>
-            <Header
-                title={''}
-                navigation={navigation}
-                mainAction={'none'}
-                content={
-                    <Stack justify={'flex-end'} style={{ flex: 1, marginRight: -1 * theme.size.md }}>
-                        <Animated.View
-                            style={[
-                                {
-                                    flex: 1,
-                                    flexDirection: 'row',
-                                    opacity: scaleByHeight(1, 0),
-                                    overflow: 'hidden',
-                                },
-                            ]}
-                        >
-                            <Stack justify={'center'}>
-                                <TouchableHighlight
-                                    underlayColor={'transparent'}
-                                    onPress={
-                                        token
-                                            ? (): void =>
-                                                  navigation.navigate(ROUTES.SETTINGS_GROUP, {
-                                                      screen: ROUTES.SETTINGS,
-                                                  })
-                                            : undefined
-                                    }
-                                >
-                                    <Animated.View
-                                        style={[
-                                            {
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                backgroundColor: theme.colors.primaryContainer,
-                                                height: scaleByHeight(80, 0),
-                                                width: scaleByHeight(80, 0),
-                                                borderRadius: scaleByHeight(80 / 2, 0),
-                                                overflow: 'hidden',
-                                            },
-                                        ]}
-                                    >
-                                        <Image
-                                            resizeMethod="resize"
-                                            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-                                            source={settings.avatar ? { uri: avatarURL } : se}
-                                        />
-                                    </Animated.View>
-                                </TouchableHighlight>
-                            </Stack>
-                            <Animated.View
-                                style={[
-                                    {
-                                        flex: 1,
-                                        justifyContent: 'center',
-                                        marginLeft: scaleByHeight(theme.spacing.md, 0),
-                                    },
-                                ]}
-                            >
-                                <Animated.Text
-                                    style={{
-                                        color: theme.colors.onPrimary,
-                                        ...semiBoldType,
-                                        lineHeight: scaleByHeight(24, 0.1),
-                                        fontSize: scaleByHeight(24, 0.1),
-                                    }}
-                                    numberOfLines={1}
-                                    ellipsizeMode={'tail'}
-                                >
-                                    {userString}
-                                </Animated.Text>
-                                <Animated.Text
-                                    style={{
-                                        color: theme.colors.onPrimary,
-                                        ...semiBoldType,
-                                        lineHeight: scaleByHeight(16, 0.1),
-                                        fontSize: scaleByHeight(16, 0.1),
-                                    }}
-                                    numberOfLines={1}
-                                    ellipsizeMode={'tail'}
-                                >
-                                    {nameString}
-                                </Animated.Text>
-                                <Animated.Text
-                                    style={{
-                                        color: theme.colors.onPrimary,
-                                        ...lightType,
-                                        lineHeight: scaleByHeight(14, 0.1),
-                                        fontSize: scaleByHeight(14, 0.1),
-                                        opacity: scaleByHeight(1, 0),
-                                    }}
-                                    numberOfLines={1}
-                                    ellipsizeMode={'tail'}
-                                >
-                                    {memberString}
-                                </Animated.Text>
-                            </Animated.View>
-                        </Animated.View>
-                        <Stack
-                            direction={'row'}
-                            align={'center'}
-                            justify={'space-between'}
-                            style={{
-                                flex: 0,
-                                paddingVertical: theme.spacing.md,
-                                height: COLLAPSED_HEIGHT,
-                            }}
-                        >
-                            <Typography fontWeight={'semiBold'} color={'onPrimary'}>
-                                SWING ESSENTIALS®
-                            </Typography>
-                            <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
-                                <Typography color={'onPrimary'} fontWeight={'light'}>{`v${APP_VERSION}`}</Typography>
-                            </Animated.View>
-                        </Stack>
-                    </Stack>
-                }
-                {...headerProps}
-            />
             <ScrollView
                 {...scrollProps}
                 contentContainerStyle={contentProps.contentContainerStyle}
@@ -408,9 +289,125 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                         );
                     })}
                 </Stack>
-                <View style={{ height: height * 0.2 }} />
-                <SafeAreaView />
             </ScrollView>
+            <Header
+                title={''}
+                navigation={navigation}
+                mainAction={'none'}
+                content={
+                    <Stack justify={'flex-end'} style={{ flex: 1, marginRight: -1 * theme.size.md }}>
+                        <Animated.View
+                            style={[
+                                {
+                                    flex: 1,
+                                    flexDirection: 'row',
+                                    opacity: scaleByHeight(1, 0),
+                                    overflow: 'hidden',
+                                },
+                            ]}
+                        >
+                            <Stack justify={'center'}>
+                                <TouchableHighlight
+                                    underlayColor={'transparent'}
+                                    onPress={
+                                        token
+                                            ? (): void =>
+                                                  navigation.navigate(ROUTES.SETTINGS_GROUP, {
+                                                      screen: ROUTES.SETTINGS,
+                                                  })
+                                            : undefined
+                                    }
+                                >
+                                    <Animated.View
+                                        style={[
+                                            {
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                backgroundColor: theme.colors.primaryContainer,
+                                                height: scaleByHeight(80, 0),
+                                                width: scaleByHeight(80, 0),
+                                                borderRadius: scaleByHeight(80 / 2, 0),
+                                                overflow: 'hidden',
+                                            },
+                                        ]}
+                                    >
+                                        <Image
+                                            resizeMethod="resize"
+                                            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+                                            source={settings.avatar ? { uri: avatarURL } : se}
+                                        />
+                                    </Animated.View>
+                                </TouchableHighlight>
+                            </Stack>
+                            <Animated.View
+                                style={[
+                                    {
+                                        flex: 1,
+                                        justifyContent: 'center',
+                                        marginLeft: scaleByHeight(theme.spacing.md, 0),
+                                    },
+                                ]}
+                            >
+                                <Animated.Text
+                                    style={{
+                                        color: theme.colors.onPrimary,
+                                        ...semiBoldType,
+                                        lineHeight: scaleByHeight(24, 0.1),
+                                        fontSize: scaleByHeight(24, 0.1),
+                                    }}
+                                    numberOfLines={1}
+                                    ellipsizeMode={'tail'}
+                                >
+                                    {userString}
+                                </Animated.Text>
+                                <Animated.Text
+                                    style={{
+                                        color: theme.colors.onPrimary,
+                                        ...semiBoldType,
+                                        lineHeight: scaleByHeight(16, 0.1),
+                                        fontSize: scaleByHeight(16, 0.1),
+                                    }}
+                                    numberOfLines={1}
+                                    ellipsizeMode={'tail'}
+                                >
+                                    {nameString}
+                                </Animated.Text>
+                                <Animated.Text
+                                    style={{
+                                        color: theme.colors.onPrimary,
+                                        ...lightType,
+                                        lineHeight: scaleByHeight(14, 0.1),
+                                        fontSize: scaleByHeight(14, 0.1),
+                                        opacity: scaleByHeight(1, 0),
+                                    }}
+                                    numberOfLines={1}
+                                    ellipsizeMode={'tail'}
+                                >
+                                    {memberString}
+                                </Animated.Text>
+                            </Animated.View>
+                        </Animated.View>
+                        <Stack
+                            direction={'row'}
+                            align={'center'}
+                            justify={'space-between'}
+                            style={{
+                                flex: 0,
+                                paddingVertical: theme.spacing.md,
+                                height: COLLAPSED_HEIGHT,
+                            }}
+                        >
+                            <Typography variant={'titleMedium'} fontWeight={'semiBold'} color={'onPrimary'}>
+                                SWING ESSENTIALS®
+                            </Typography>
+                            <Animated.View style={{ opacity: scaleByHeight(1, 0) }}>
+                                <Typography color={'onPrimary'} fontWeight={'light'}>{`v${APP_VERSION}`}</Typography>
+                            </Animated.View>
+                        </Stack>
+                    </Stack>
+                }
+                {...headerProps}
+            />
             <TokenModal />
         </>
     );
