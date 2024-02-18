@@ -52,8 +52,6 @@ export class Logger {
         const timestamp = Date.now();
         const currentLog = await this.readMessages('ERROR');
 
-        Alert.alert('Debug Mode: Error', composedMessage);
-
         await RNFS.writeFile(
             errorPath,
             `${currentLog + getDate(timestamp)} ${getTime(timestamp)} (${(timestamp / 1000).toFixed(

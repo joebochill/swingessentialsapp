@@ -2,13 +2,14 @@ import React, { useCallback, useState } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 
 // Components
-import { View, TouchableOpacity, ViewProps, Alert } from 'react-native';
+import { View, TouchableOpacity, ViewProps } from 'react-native';
 import { Stack, Typography } from '..';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Styles
 import { width as deviceWidth, aspectHeight } from '../../utilities/dimensions';
 import { useAppTheme } from '../../theme';
+import { Logger } from '../../utilities/logging';
 
 type YoutubeCardHeaderProps = {
     title?: string;
@@ -67,23 +68,19 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
     const [videoReady, setVideoReady] = useState(false);
     const [playing, setPlaying] = useState(false);
 
-    const onStateChange = useCallback(
-        (state: string) => {
-            Alert.alert('Video State Change', `${video}: ${state}`);
-            switch (state) {
-                case 'ended':
-                case 'paused':
-                    setPlaying(false);
-                    break;
-                case 'playing':
-                    setPlaying(true);
-                    break;
-                default:
-                    return;
-            }
-        },
-        [video]
-    );
+    const onStateChange = useCallback((state: string) => {
+        switch (state) {
+            case 'ended':
+            case 'paused':
+                setPlaying(false);
+                break;
+            case 'playing':
+                setPlaying(true);
+                break;
+            default:
+                return;
+        }
+    }, []);
 
     return (
         <View
@@ -122,8 +119,14 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                         videoId={video}
                         onChangeState={onStateChange}
                         onReady={(): void => setVideoReady(true)}
-                        // TODO: Remove/replace with a real log
-                        onError={(e): void => Alert.alert('Youtube Error', e)}
+                        onError={(e): void => {
+                            void Logger.logError({
+                                code: 'YTB-001',
+                                description: `Youtube player encountered an error.`,
+                                rawErrorCode: '000',
+                                rawErrorMessage: e,
+                            });
+                        }}
                     />
                     {!videoReady && (
                         <ActivityIndicator
