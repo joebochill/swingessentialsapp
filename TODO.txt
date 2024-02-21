@@ -2,7 +2,6 @@ Things to get working
 
 - Updated graphics for splash screen
 - Update the documentation / Readme
-- Update the version requirements for Tutorials
 
 
 SPORADIC ISSUES:
@@ -14,32 +13,44 @@ SPORADIC ISSUES:
 
 
 Verify All Capabilities
-- Change Every Setting
-- Change Profile Image
-- Contact
-- Send Error Report
-- View Lessons
-- Play Lessons
+X Change Every Setting
+X Change Profile Image
+X Contact
+X Send Error Report
+X View Lessons
+X Play Lessons
 - Submit New Swing
-- Record a Video
-- Video Timing settings
-- Video overlay settings
-- Video duration settings
-- Video uses flash correctly
-- Choose Video from Camera Roll
-- Load Packages
-- Order New Packages
-- Log In
-- Log Out
-- Biometric login
-- Remember Username functionality
-- Register
-- Validator on exiting username/others
-- Verify email
-- Deep linking
+X Record a Video
+X Video Timing settings
+X Video overlay settings
+X Video duration settings
+X Video uses flash correctly
+X Choose Video from Camera Roll
+X Load Packages
+X Order New Packages
+X Log In
+X Log Out
+X Biometric login
+X Remember Username functionality
+X Submit Registration
+X Complete Registration / Validate Email
+X Validator on exiting username/others
+X Deep linking
 - Automatic Logout
 
 - Test on a Real Device
+
+ISSUES IDENTIFIED
+- Sign in/out (especially out) is very slow/laggy
+- IOS receipts not getting logged in DB
+- Registration Deep Links are not working
+- Purchases work, but they are SLOW (sandbox only issue I hope)
+- contact us email is being sent to my personal email (don't do this)
+- changing profile photo works but is slow
+- changing settings works but is slow
+- (sporadic) refresh indicators getting stuck open
+
+
 
 Enhancements
 

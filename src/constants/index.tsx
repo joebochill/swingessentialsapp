@@ -1,6 +1,6 @@
 import { width } from '../utilities/dimensions';
 
-export const APP_VERSION = '4.0.0';
+export const APP_VERSION = '4.0.0-build.9';
 export const ASYNC_PREFIX = '@SwingEssentials:';
 export const ERROR_FILE = 'error_log.txt';
 export const LOG_FILE = 'message_log.txt';
@@ -34,9 +34,9 @@ export const TUTORIALS = {
 };
 
 export const TUTORIAL_VERSIONS = {
-    [TUTORIAL_KEYS.LESSON_LIST]: '4.0.1',
-    [TUTORIAL_KEYS.LESSON]: '4.0.1',
-    [TUTORIAL_KEYS.SUBMIT_SWING]: '4.0.1',
+    [TUTORIAL_KEYS.LESSON_LIST]: '3.0.1',
+    [TUTORIAL_KEYS.LESSON]: '3.0.1',
+    [TUTORIAL_KEYS.SUBMIT_SWING]: '3.0.1',
     [TUTORIAL_KEYS.ORDER]: '3.0.1',
     [TUTORIAL_KEYS.HOME]: '3.0.1',
 };

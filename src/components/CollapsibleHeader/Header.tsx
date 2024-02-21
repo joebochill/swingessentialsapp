@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Alert, StatusBar } from 'react-native';
+import { Alert, Platform, StatusBar } from 'react-native';
 import topology from '../../images/topology_20.png';
 import { ApplicationState, NavType } from '../../__types__';
 import { ROUTES } from '../../constants/routes';
@@ -34,8 +34,10 @@ export const Header: React.FC<HeaderProps> = (props) => {
 
     useEffect(() => {
         StatusBar.setBarStyle('light-content');
-        StatusBar.setBackgroundColor('transparent');
-        StatusBar.setTranslucent(true);
+        if (Platform.OS === 'android') {
+            StatusBar.setBackgroundColor('transparent');
+            StatusBar.setTranslucent(true);
+        }
     });
 
     const defaultActions: IconProps[] = showAuth

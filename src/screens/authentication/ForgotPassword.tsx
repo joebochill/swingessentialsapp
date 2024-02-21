@@ -48,17 +48,16 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
                 navigation={navigation}
                 fixed
             />
-            <KeyboardAvoidingView
-                style={[
-                    {
-                        flex: 1,
-                        paddingTop: COLLAPSED_HEIGHT + insets.top,
-                        backgroundColor: theme.colors.primary,
-                    },
-                ]}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            >
-                <BackgroundImage style={{ paddingTop: 0 }}>
+            <BackgroundImage style={{ paddingTop: 0, backgroundColor: theme.colors.primary }}>
+                <KeyboardAvoidingView
+                    style={[
+                        {
+                            flex: 1,
+                            paddingTop: COLLAPSED_HEIGHT + insets.top,
+                        },
+                    ]}
+                    behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                >
                     {!complete && (
                         <ScrollView
                             contentContainerStyle={[
@@ -104,8 +103,8 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
                             </Typography>
                         </Stack>
                     )}
-                </BackgroundImage>
-            </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
+            </BackgroundImage>
         </Stack>
     );
 };

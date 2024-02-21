@@ -100,7 +100,7 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
     }, [code, dispatch]);
 
     return (
-        <Stack style={[{ flex: 1, backgroundColor: theme.colors.primary }]}>
+        <Stack style={[{ flex: 1 }]}>
             <Header
                 title={'Sign Up'}
                 subtitle={'Confirm your email'}
@@ -109,7 +109,7 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
                 navigation={navigation}
                 fixed
             />
-            <BackgroundImage>
+            <BackgroundImage style={{ backgroundColor: theme.colors.primary }}>
                 <Stack
                     justify={'center'}
                     style={[
@@ -306,17 +306,16 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                 navigation={navigation}
                 fixed
             />
-            <KeyboardAvoidingView
-                style={[
-                    {
-                        flex: 1,
-                        paddingTop: COLLAPSED_HEIGHT + insets.top,
-                        backgroundColor: theme.colors.primary,
-                    },
-                ]}
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            >
-                <BackgroundImage>
+            <BackgroundImage style={{ backgroundColor: theme.colors.primary }}>
+                <KeyboardAvoidingView
+                    style={[
+                        {
+                            flex: 1,
+                            paddingTop: COLLAPSED_HEIGHT + insets.top,
+                        },
+                    ]}
+                    behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                >
                     <ScrollView
                         ref={scroller}
                         contentContainerStyle={[{ padding: theme.spacing.md, paddingBottom: height * 0.5 }]}
@@ -465,8 +464,8 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                             style={[{ marginTop: theme.spacing.md }, canSubmit() ? {} : { opacity: 0.6 }]}
                         />
                     </ScrollView>
-                </BackgroundImage>
-            </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
+            </BackgroundImage>
         </Stack>
     );
 };

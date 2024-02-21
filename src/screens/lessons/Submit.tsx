@@ -16,7 +16,7 @@ import {
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
-import { TextInput } from 'react-native-paper';
+import { Paragraph, TextInput } from 'react-native-paper';
 import bg from '../../images/banners/submit.jpg';
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
@@ -37,6 +37,7 @@ import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../../components/videos/SwingVideo';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { Gesture, GestureDetector, TapGestureHandler } from 'react-native-gesture-handler';
 
 const RNFS = require('react-native-fs');
 
@@ -66,6 +67,8 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
     const [dtlVideo, setDTLVideo] = useState('');
     const [useNotes, setUseNotes] = useState(false);
     const [notes, setNotes] = useState('');
+    const [showVideoSize, setShowVideoSize] = useState(false);
+    const [videoSize, setVideoSize] = useState({ fo: 0, dtl: 0 });
     const [uploadProgress, setUploadProgress] = useState(0);
     const credits = useSelector((state: ApplicationState) => state.credits.count);
     const lessons = useSelector((state: ApplicationState) => state.lessons);
@@ -197,13 +200,15 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
 
     const setVideoURI = useCallback(
         async (swing: 'fo' | 'dtl', uri: string): Promise<void> => {
+            let sizeMB: number = 0;
             try {
                 const stats = await RNFS.stat(uri);
-                if (stats.size > 50 * 1024 * 1024) {
+                sizeMB = stats.size / (1024 * 1024);
+                if (sizeMB > 50) {
                     Alert.alert(
-                        `The video you have selected is too large (${(stats.size / (1024 * 1024)).toFixed(
+                        `The video you have selected is too large (${sizeMB.toFixed(
                             1
-                        )} MB). The maximum allowable file size is 50MB.`
+                        )} MB). The maximum allowable file size is 50 MB.`
                     );
                     return;
                 }
@@ -218,8 +223,10 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
 
             if (swing === 'fo') {
                 setFOVideo(uri);
+                setVideoSize((v) => ({ ...v, fo: sizeMB }));
             } else if (swing === 'dtl') {
                 setDTLVideo(uri);
+                setVideoSize((v) => ({ ...v, dtl: sizeMB }));
             } else {
                 void Logger.logError({
                     code: 'SUB500',
@@ -229,6 +236,14 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
         },
         [setFOVideo, setDTLVideo]
     );
+
+    const doubleTap = Gesture.Tap()
+        .maxDuration(250)
+        .numberOfTaps(2)
+        .runOnJS(true)
+        .onStart(() => {
+            setShowVideoSize((s) => !s);
+        });
 
     return (
         <>
@@ -263,32 +278,40 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                         style={{ marginTop: theme.spacing.md }}
                     />
 
-                    <SectionHeader title={'Your Swing Videos'} style={{ marginTop: theme.spacing.md }} />
+                    <GestureDetector gesture={doubleTap}>
+                        <SectionHeader title={'Your Swing Videos'} style={{ marginTop: theme.spacing.md }} />
+                    </GestureDetector>
                     <Stack direction={'row'} justify={'space-between'}>
-                        <SwingVideo
-                            navigation={navigation}
-                            type={'fo'}
-                            source={foVideo ? { uri: foVideo } : undefined}
-                            editable
-                            PlaceholderProps={{
-                                backgroundImage: fo,
-                            }}
-                            onSourceChange={(src) => {
-                                void setVideoURI('fo', src.uri || '');
-                            }}
-                        />
-                        <SwingVideo
-                            navigation={navigation}
-                            type={'dtl'}
-                            source={dtlVideo ? { uri: dtlVideo } : undefined}
-                            editable
-                            PlaceholderProps={{
-                                backgroundImage: dtl,
-                            }}
-                            onSourceChange={(src) => {
-                                void setVideoURI('dtl', src.uri || '');
-                            }}
-                        />
+                        <Stack align={'center'}>
+                            <SwingVideo
+                                navigation={navigation}
+                                type={'fo'}
+                                source={foVideo ? { uri: foVideo } : undefined}
+                                editable
+                                PlaceholderProps={{
+                                    backgroundImage: fo,
+                                }}
+                                onSourceChange={(src) => {
+                                    void setVideoURI('fo', src.uri || '');
+                                }}
+                            />
+                            {showVideoSize && <Paragraph>{`${videoSize.fo.toFixed(1)} MB`}</Paragraph>}
+                        </Stack>
+                        <Stack align={'center'}>
+                            <SwingVideo
+                                navigation={navigation}
+                                type={'dtl'}
+                                source={dtlVideo ? { uri: dtlVideo } : undefined}
+                                editable
+                                PlaceholderProps={{
+                                    backgroundImage: dtl,
+                                }}
+                                onSourceChange={(src) => {
+                                    void setVideoURI('dtl', src.uri || '');
+                                }}
+                            />
+                            {showVideoSize && <Paragraph>{`${videoSize.dtl.toFixed(1)} MB`}</Paragraph>}
+                        </Stack>
                     </Stack>
 
                     <Stack

@@ -232,11 +232,8 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
     }, [token, useBiometry, biometry.available, credentials.stored, showBiometricLogin]);
 
     return (
-        <KeyboardAvoidingView
-            style={[{ flex: 1, backgroundColor: theme.colors.primary }]}
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        >
-            <BackgroundImage>
+        <BackgroundImage style={{ backgroundColor: theme.colors.primary }}>
+            <KeyboardAvoidingView style={[{ flex: 1 }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView
                     style={{ flex: 1 }}
                     contentContainerStyle={{
@@ -435,7 +432,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                         </Stack>
                     </View>
                 </ScrollView>
-            </BackgroundImage>
-        </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
+        </BackgroundImage>
     );
 };
