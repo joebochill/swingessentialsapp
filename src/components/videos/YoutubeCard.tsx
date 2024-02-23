@@ -111,30 +111,44 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                 {(headerTitle || headerSubtitle || onExpand) && (
                     <YoutubeCardHeader title={headerTitle} subtitle={headerSubtitle} onExpand={onExpand} />
                 )}
-                <View>
-                    <YoutubePlayer
-                        height={aspectHeight(videoWidth)}
-                        width={videoWidth}
-                        play={playing}
-                        videoId={video}
-                        onChangeState={onStateChange}
-                        onReady={(): void => setVideoReady(true)}
-                        onError={(e): void => {
-                            void Logger.logError({
-                                code: 'YTB-001',
-                                description: `Youtube player encountered an error.`,
-                                rawErrorCode: '000',
-                                rawErrorMessage: e,
-                            });
-                        }}
-                    />
-                    {!videoReady && (
-                        <ActivityIndicator
-                            size={theme.size.xl}
-                            style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => {
+                        setPlaying((p) => !p);
+                    }}
+                >
+                    <View pointerEvents={'none'}>
+                        <YoutubePlayer
+                            height={aspectHeight(videoWidth)}
+                            width={videoWidth}
+                            play={playing}
+                            videoId={video}
+                            onChangeState={onStateChange}
+                            onReady={(): void => setVideoReady(true)}
+                            webViewProps={{
+                                androidLayerType: 'hardware',
+                            }}
+                            onError={(e): void => {
+                                void Logger.logError({
+                                    code: 'YTB-001',
+                                    description: `Youtube player encountered an error.`,
+                                    rawErrorCode: '000',
+                                    rawErrorMessage: e,
+                                });
+                            }}
+                            initialPlayerParams={{
+                                modestbranding: true,
+                                controls: false,
+                            }}
                         />
-                    )}
-                </View>
+                        {!videoReady && (
+                            <ActivityIndicator
+                                size={theme.size.xl}
+                                style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
+                            />
+                        )}
+                    </View>
+                </TouchableOpacity>
             </Stack>
         </View>
     );

@@ -2,8 +2,8 @@ import React from 'react';
 import { List, ListItemProps } from 'react-native-paper';
 import { useAppTheme } from '../../theme';
 
-export const ListItem: React.FC<ListItemProps> = (props) => {
-    const { style, left, titleStyle, descriptionStyle, ...other } = props;
+export const ListItem: React.FC<ListItemProps & { bottomDivider?: boolean; topDivider?: boolean }> = (props) => {
+    const { style, left, titleStyle, descriptionStyle, bottomDivider, topDivider, ...other } = props;
     const theme = useAppTheme();
     return (
         <List.Item
@@ -17,6 +17,8 @@ export const ListItem: React.FC<ListItemProps> = (props) => {
                     alignItems: 'center',
                     minHeight: theme.size.xl,
                 },
+                topDivider ? { borderTopWidth: 1, borderTopColor: 'rgba(0,0,0,0.1)' } : {},
+                bottomDivider ? { borderBottomWidth: 1, borderBottomColor: 'rgba(0,0,0,0.1)' } : {},
                 ...(Array.isArray(style) ? style : [style]),
             ]}
             titleStyle={[

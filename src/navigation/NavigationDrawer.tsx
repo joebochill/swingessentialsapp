@@ -1,29 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// Components
-import { Animated, AppState, AppStateStatus, Image, FlatList, Linking, Alert } from 'react-native';
+import { Animated, AppState, AppStateStatus, Image, Alert, ScrollView } from 'react-native';
 import { NavigationItems } from './NavigationContent';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { Typography, TokenModal, Stack, ListItem } from '../components';
-
-// Constants
 import { APP_VERSION, DRAWER_WIDTH } from '../constants';
 import { ROUTES } from '../constants/routes';
-
-// Styles
-import { List, Divider } from 'react-native-paper';
-
-// Utilities
+import { List } from 'react-native-paper';
 import { getLongDate } from '../utilities';
-import { Logger } from '../utilities/logging';
-
-// Redux
 import { ApplicationState } from '../__types__';
 import { loadUserContent, requestLogout } from '../redux/actions';
-
-// Icons
 import se from '../images/logo-small.png';
-import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { useAppTheme } from '../theme';
 import { lightType, semiBoldType } from '../theme/typography/fontConfig';
@@ -66,41 +54,6 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
         [scrollY]
     );
 
-    const linkRoute = useCallback(
-        (url: string, path: string) => {
-            if (url.match(/\/lessons\/?/gi)) {
-                if (token) {
-                    navigation.navigate(ROUTES.LESSONS);
-                }
-            } else if (url.match(/\/register\/[A-Z0-9]+\/?$/gi)) {
-                navigation.navigate(ROUTES.REGISTER, { code: path[path.length - 1] });
-            } else if (url.match(/\/register\/?$/gi)) {
-                navigation.navigate(ROUTES.REGISTER);
-            }
-            // TODO: Reset Password (needs to be added to app site association first)
-        },
-        [token, navigation]
-    );
-
-    useEffect(() => {
-        // handle launching from a deep link
-        Linking.getInitialURL()
-            .then((url) => {
-                if (url) {
-                    const path: any = url.split('/').filter((el) => el.length > 0);
-                    linkRoute(url, path);
-                }
-            })
-            .catch((err) => {
-                void Logger.logError({
-                    code: 'DRW999',
-                    description: 'Deep link failed to launch the app',
-                    rawErrorMessage: err.message,
-                });
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     // Handle the app coming into the foreground after being backgrounded
     const handleAppStateChange = useCallback(
         (nextAppState: AppStateStatus) => {
@@ -111,15 +64,6 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
             setAppState(nextAppState);
         },
         [appState, token, dispatch]
-    );
-
-    // Handles activating a deep link while the app is in the background
-    const wakeUpByLink = useCallback(
-        (event: any) => {
-            const path = event.url.split('/').filter((el: string) => el.length > 0);
-            linkRoute(event.url, path);
-        },
-        [linkRoute]
     );
 
     useEffect(() => {
@@ -148,13 +92,11 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
     useEffect((): (() => void) => {
         // Set Up the State Change listeners
         const stateChangeListener = AppState.addEventListener('change', handleAppStateChange);
-        const linkingListener = Linking.addEventListener('url', wakeUpByLink);
 
         return (): void => {
             stateChangeListener.remove();
-            linkingListener.remove();
         };
-    }, [handleAppStateChange, linkRoute, wakeUpByLink]);
+    }, [handleAppStateChange]);
 
     const handleScroll = Animated.event(
         [
@@ -212,79 +154,76 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                                 key={`Panel_${panel.name}`}
                                 style={[{ width: DRAWER_WIDTH, left: leftPosition }]}
                             >
-                                <FlatList
-                                    data={ind === activePanel ? panelData : []}
-                                    keyExtractor={(item, index): string => `${index}`}
-                                    renderItem={({ item }): JSX.Element => (
-                                        <>
-                                            <ListItem
-                                                title={item.title}
-                                                titleEllipsizeMode={'tail'}
-                                                left={(): JSX.Element => (
-                                                    <List.Icon
-                                                        icon={({ size, color }): JSX.Element => (
-                                                            <MatIcon name={item.icon} size={size} color={color} />
-                                                        )}
-                                                    />
-                                                )}
-                                                onPress={
-                                                    item.route
-                                                        ? item.route === ROUTES.HOME
-                                                            ? (): void => {
-                                                                  navigation.closeDrawer();
-                                                              }
-                                                            : item.screen
-                                                            ? (): void => {
-                                                                  // @ts-ignore
-                                                                  navigation.navigate(item.route, {
-                                                                      screen: item.screen,
-                                                                  });
-                                                              }
-                                                            : (): void => {
-                                                                  // @ts-ignore
-                                                                  navigation.navigate(item.route);
-                                                              }
-                                                        : item.activatePanel !== undefined
+                                <Stack>
+                                    {(ind === activePanel ? panelData : []).map((item, index) => (
+                                        <ListItem
+                                            key={index}
+                                            bottomDivider
+                                            title={item.title}
+                                            titleEllipsizeMode={'tail'}
+                                            left={(): JSX.Element => (
+                                                <List.Icon
+                                                    icon={({ size, color }): JSX.Element => (
+                                                        <MatIcon name={item.icon} size={size} color={color} />
+                                                    )}
+                                                />
+                                            )}
+                                            onPress={
+                                                item.route
+                                                    ? item.route === ROUTES.HOME
+                                                        ? (): void => {
+                                                              navigation.closeDrawer();
+                                                          }
+                                                        : item.screen
                                                         ? (): void => {
                                                               // @ts-ignore
-                                                              setActivePanel(item.activatePanel);
+                                                              navigation.navigate(item.route, {
+                                                                  screen: item.screen,
+                                                              });
                                                           }
-                                                        : item.onPress
-                                                        ? // @ts-ignore
-                                                          (): void => item.onPress()
-                                                        : undefined
-                                                }
-                                                style={[
-                                                    {
-                                                        minHeight: 'auto',
-                                                    },
-                                                ]}
-                                                right={
-                                                    item.nested
-                                                        ? ({ style, ...rightProps }): JSX.Element => (
-                                                              <Stack
-                                                                  direction={'row'}
-                                                                  align={'center'}
-                                                                  style={[style]}
-                                                                  {...rightProps}
-                                                              >
-                                                                  <MatIcon
-                                                                      name={'chevron-right'}
-                                                                      size={theme.size.sm}
-                                                                      color={theme.colors.primary}
-                                                                      style={{
-                                                                          marginRight: -1 * theme.spacing.sm,
-                                                                      }}
-                                                                  />
-                                                              </Stack>
-                                                          )
-                                                        : undefined
-                                                }
-                                            />
-                                            <Divider />
-                                        </>
-                                    )}
-                                />
+                                                        : (): void => {
+                                                              // @ts-ignore
+                                                              navigation.navigate(item.route);
+                                                          }
+                                                    : item.activatePanel !== undefined
+                                                    ? (): void => {
+                                                          // @ts-ignore
+                                                          setActivePanel(item.activatePanel);
+                                                      }
+                                                    : item.onPress
+                                                    ? // @ts-ignore
+                                                      (): void => item.onPress()
+                                                    : undefined
+                                            }
+                                            style={[
+                                                {
+                                                    minHeight: 'auto',
+                                                },
+                                            ]}
+                                            right={
+                                                item.nested
+                                                    ? ({ style, ...rightProps }): JSX.Element => (
+                                                          <Stack
+                                                              direction={'row'}
+                                                              align={'center'}
+                                                              style={[style]}
+                                                              {...rightProps}
+                                                          >
+                                                              <MatIcon
+                                                                  name={'chevron-right'}
+                                                                  size={theme.size.sm}
+                                                                  color={theme.colors.primary}
+                                                                  style={{
+                                                                      marginRight: -1 * theme.spacing.sm,
+                                                                  }}
+                                                              />
+                                                          </Stack>
+                                                      )
+                                                    : undefined
+                                            }
+                                        />
+                                    ))}
+                                </Stack>
                             </Animated.View>
                         );
                     })}

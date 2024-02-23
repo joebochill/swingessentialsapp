@@ -2,13 +2,12 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { View, SectionList, RefreshControl } from 'react-native';
-import { ListItem, SectionHeader, Stack } from '../../components';
+import { ListItem, SectionHeader } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Constants
 import { ROUTES } from '../../constants/routes';
 // Styles
 import bg from '../../images/banners/tips.jpg';
-import { Divider } from 'react-native-paper';
 
 // Utilities
 import { makeGroups } from '../../utilities';
@@ -58,11 +57,12 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
                 sections={sections}
                 stickySectionHeadersEnabled={false}
                 ListEmptyComponent={
-                    <Stack style={{ marginTop: theme.spacing.xxl }}>
-                        <Divider />
-                        <ListItem title={'No Tips Yet!'} />
-                        <Divider />
-                    </Stack>
+                    <ListItem
+                        topDivider
+                        bottomDivider
+                        style={{ marginTop: theme.spacing.xxl }}
+                        title={'No Tips Yet!'}
+                    />
                 }
                 refreshControl={
                     <RefreshControl
@@ -75,27 +75,25 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
                     />
                 }
                 renderItem={({ item, index }): JSX.Element => (
-                    <>
-                        {index === 0 && <Divider />}
-                        <ListItem
-                            title={item.title}
-                            titleNumberOfLines={2}
-                            titleEllipsizeMode={'tail'}
-                            // @ts-ignore
-                            onPress={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[style]} {...rightProps}>
-                                    <MatIcon
-                                        name={'chevron-right'}
-                                        size={theme.size.md}
-                                        color={theme.colors.primary}
-                                        style={{ marginRight: -1 * theme.spacing.md }}
-                                    />
-                                </View>
-                            )}
-                        />
-                        <Divider />
-                    </>
+                    <ListItem
+                        bottomDivider
+                        topDivider={index === 0}
+                        title={item.title}
+                        titleNumberOfLines={2}
+                        titleEllipsizeMode={'tail'}
+                        // @ts-ignore
+                        onPress={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <View style={[style]} {...rightProps}>
+                                <MatIcon
+                                    name={'chevron-right'}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                />
+                            </View>
+                        )}
+                    />
                 )}
                 keyExtractor={(item): string => `tip_${item.id}`}
             />

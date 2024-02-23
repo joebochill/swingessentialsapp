@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { RefreshControl, View } from 'react-native';
+import { RefreshControl, View, ScrollView } from 'react-native';
 import { YoutubeCard, HomeTutorial, SEButton, Typography, Stack, SectionHeader } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
@@ -26,7 +26,6 @@ import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { useCollapsibleHeader } from '../../components/CollapsibleHeader';
 import { Header } from '../../components/CollapsibleHeader/Header';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (props) => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);

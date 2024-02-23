@@ -37,7 +37,6 @@ import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../../components/videos/SwingVideo';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
-import { Gesture, GestureDetector, TapGestureHandler } from 'react-native-gesture-handler';
 
 const RNFS = require('react-native-fs');
 
@@ -67,7 +66,6 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
     const [dtlVideo, setDTLVideo] = useState('');
     const [useNotes, setUseNotes] = useState(false);
     const [notes, setNotes] = useState('');
-    const [showVideoSize, setShowVideoSize] = useState(false);
     const [videoSize, setVideoSize] = useState({ fo: 0, dtl: 0 });
     const [uploadProgress, setUploadProgress] = useState(0);
     const credits = useSelector((state: ApplicationState) => state.credits.count);
@@ -237,14 +235,6 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
         [setFOVideo, setDTLVideo]
     );
 
-    const doubleTap = Gesture.Tap()
-        .maxDuration(250)
-        .numberOfTaps(2)
-        .runOnJS(true)
-        .onStart(() => {
-            setShowVideoSize((s) => !s);
-        });
-
     return (
         <>
             <Header
@@ -278,9 +268,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                         style={{ marginTop: theme.spacing.md }}
                     />
 
-                    <GestureDetector gesture={doubleTap}>
-                        <SectionHeader title={'Your Swing Videos'} style={{ marginTop: theme.spacing.md }} />
-                    </GestureDetector>
+                    <SectionHeader title={'Your Swing Videos'} style={{ marginTop: theme.spacing.md }} />
                     <Stack direction={'row'} justify={'space-between'}>
                         <Stack align={'center'}>
                             <SwingVideo
@@ -295,7 +283,9 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                     void setVideoURI('fo', src.uri || '');
                                 }}
                             />
-                            {showVideoSize && <Paragraph>{`${videoSize.fo.toFixed(1)} MB`}</Paragraph>}
+                            {!!videoSize.fo && (
+                                <Paragraph style={{ fontSize: 10 }}>{`${videoSize.fo.toFixed(1)} MB`}</Paragraph>
+                            )}
                         </Stack>
                         <Stack align={'center'}>
                             <SwingVideo
@@ -310,7 +300,9 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                     void setVideoURI('dtl', src.uri || '');
                                 }}
                             />
-                            {showVideoSize && <Paragraph>{`${videoSize.dtl.toFixed(1)} MB`}</Paragraph>}
+                            {!!videoSize.dtl && (
+                                <Paragraph style={{ fontSize: 10 }}>{`${videoSize.dtl.toFixed(1)} MB`}</Paragraph>
+                            )}
                         </Stack>
                     </Stack>
 

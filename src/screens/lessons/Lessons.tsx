@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RefreshControl, SectionList } from 'react-native';
 import { Typography, LessonsTutorial, SectionHeader, Stack, ListItem } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import { Divider } from 'react-native-paper';
 import bg from '../../images/banners/lessons.jpg';
 import { ROUTES } from '../../constants/routes';
 import { getLongDate, makeGroups } from '../../utilities';
@@ -80,17 +79,50 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                 sections={sections}
                 stickySectionHeadersEnabled={false}
                 ListEmptyComponent={
-                    <Stack style={{ marginTop: theme.spacing.xxl }}>
-                        <Divider />
+                    <ListItem
+                        topDivider
+                        bottomDivider
+                        title={'Welcome to Swing Essentials!'}
+                        style={{ marginTop: theme.spacing.xxl }}
+                        // @ts-ignore
+                        onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: null })}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
+                                <Typography variant={'labelMedium'} style={{ marginRight: theme.spacing.sm }}>
+                                    NEW
+                                </Typography>
+                                <MatIcon
+                                    name={'chevron-right'}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                />
+                            </Stack>
+                        )}
+                    />
+                }
+                renderItem={({ item, index }): JSX.Element =>
+                    item.response_video ? (
                         <ListItem
-                            title={'Welcome to Swing Essentials!'}
+                            bottomDivider
+                            topDivider={index === 0}
+                            title={role === 'administrator' ? item.username : item.request_date}
+                            description={
+                                role === 'administrator'
+                                    ? item.request_date
+                                    : item.type === 'in-person'
+                                    ? 'In-person lesson'
+                                    : 'Remote lesson'
+                            }
                             // @ts-ignore
-                            onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: null })}
+                            onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
                             right={({ style, ...rightProps }): JSX.Element => (
                                 <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
-                                    <Typography variant={'labelMedium'} style={{ marginRight: theme.spacing.sm }}>
-                                        NEW
-                                    </Typography>
+                                    {!item.viewed && (
+                                        <Typography variant={'labelMedium'} style={{ marginRight: theme.spacing.sm }}>
+                                            NEW
+                                        </Typography>
+                                    )}
                                     <MatIcon
                                         name={'chevron-right'}
                                         size={theme.size.md}
@@ -100,65 +132,24 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
                                 </Stack>
                             )}
                         />
-                        <Divider />
-                    </Stack>
-                }
-                renderItem={({ item, index }): JSX.Element =>
-                    item.response_video ? (
-                        <>
-                            {index === 0 && <Divider />}
-                            <ListItem
-                                title={role === 'administrator' ? item.username : item.request_date}
-                                description={
-                                    role === 'administrator'
-                                        ? item.request_date
-                                        : item.type === 'in-person'
-                                        ? 'In-person lesson'
-                                        : 'Remote lesson'
-                                }
-                                // @ts-ignore
-                                onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
-                                right={({ style, ...rightProps }): JSX.Element => (
-                                    <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
-                                        {!item.viewed && (
-                                            <Typography
-                                                variant={'labelMedium'}
-                                                style={{ marginRight: theme.spacing.sm }}
-                                            >
-                                                NEW
-                                            </Typography>
-                                        )}
-                                        <MatIcon
-                                            name={'chevron-right'}
-                                            size={theme.size.md}
-                                            color={theme.colors.primary}
-                                            style={{ marginRight: -1 * theme.spacing.md }}
-                                        />
-                                    </Stack>
-                                )}
-                            />
-                            <Divider />
-                        </>
                     ) : (
-                        <>
-                            {index === 0 && <Divider />}
-                            <ListItem
-                                title={role === 'administrator' ? item.username : item.request_date}
-                                description={
-                                    role === 'administrator'
-                                        ? item.request_date
-                                        : item.type === 'in-person'
-                                        ? 'In-person lesson'
-                                        : 'Remote lesson'
-                                }
-                                right={({ style, ...rightProps }): JSX.Element => (
-                                    <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
-                                        <Typography style={{ marginRight: theme.spacing.md }}>IN PROGRESS</Typography>
-                                    </Stack>
-                                )}
-                            />
-                            <Divider />
-                        </>
+                        <ListItem
+                            bottomDivider
+                            topDivider={index === 0}
+                            title={role === 'administrator' ? item.username : item.request_date}
+                            description={
+                                role === 'administrator'
+                                    ? item.request_date
+                                    : item.type === 'in-person'
+                                    ? 'In-person lesson'
+                                    : 'Remote lesson'
+                            }
+                            right={({ style, ...rightProps }): JSX.Element => (
+                                <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
+                                    <Typography style={{ marginRight: theme.spacing.md }}>IN PROGRESS</Typography>
+                                </Stack>
+                            )}
+                        />
                     )
                 }
                 keyExtractor={(item): string => `complete_${item.request_id}`}

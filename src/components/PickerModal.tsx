@@ -1,9 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { SafeAreaView } from 'react-native';
 import Modal, { ModalProps } from 'react-native-modal';
 import { useAppTheme } from '../theme';
 import { ListItem } from '.';
-import { Divider } from 'react-native-paper';
 
 type PickerMenuOption = {
     label: string;
@@ -30,16 +29,14 @@ export const PickerModal: React.FC<PickerMenuProps> = (props) => {
         >
             <SafeAreaView style={[{ backgroundColor: theme.colors.surface }]}>
                 {menuOptions.map((option, index) => (
-                    <Fragment key={index}>
-                        {index > 0 && <Divider />}
-                        <ListItem
-                            key={index}
-                            title={option.label}
-                            titleNumberOfLines={1}
-                            titleEllipsizeMode={'tail'}
-                            onPress={option.onPress}
-                        />
-                    </Fragment>
+                    <ListItem
+                        key={index}
+                        topDivider={index > 0}
+                        title={option.label}
+                        titleNumberOfLines={1}
+                        titleEllipsizeMode={'tail'}
+                        onPress={option.onPress}
+                    />
                 ))}
             </SafeAreaView>
         </Modal>

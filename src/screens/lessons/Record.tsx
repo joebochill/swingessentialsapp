@@ -115,9 +115,9 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
         }
         camera.current.startRecording({
             fileType: 'mp4',
-            videoCodec: 'h264',
+            videoCodec: 'h264', // TODO: TEST 'h264',
             onRecordingFinished: (video) => {
-                setRecordedVideo(`file://${video.path}`);
+                setRecordedVideo(`${video.path}`);
                 setRecordingMode(false);
             },
             onRecordingError: (error) => {

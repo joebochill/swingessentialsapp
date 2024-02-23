@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // Components
-import { Image, TouchableHighlight, View } from 'react-native';
+import { Image, TouchableHighlight, View, ScrollView } from 'react-native';
 import { Paragraph, Spacer, Stack, Typography } from '../../components';
 
 // Styles
@@ -13,7 +13,6 @@ import { width } from '../../utilities/dimensions';
 import { splitParagraphs } from '../../utilities';
 import { useAppTheme } from '../../theme';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export const Pros: React.FC<StackScreenProps<RootStackParamList, 'About'>> = (props) => {
     const theme = useAppTheme();

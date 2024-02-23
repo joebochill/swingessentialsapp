@@ -1,44 +1,36 @@
-Things to get working
+Remaining Work:
 
 - Updated graphics for splash screen
 - Update the documentation / Readme
 
 
-SPORADIC ISSUES:
-- Contact Us cancel button doesn't close
-- Navigating back to login from register crashes the application
-- Youtube videos don't load on cellular
-- Sometimes youtube videos show white screen without spinner
-- Fix long delay when clicking purchase button (sandbox only maybe)
+Test Scenarios: [XX] = Both platforms tested [X] iOS only tested
 
+XX  Change Every Setting
+XX  Change Profile Image
+XX  Contact
+XX  Send Error Report
+XX  View Lessons
+XX  Play Lessons
+X   Submit New Swing
+XX  Record a Video
+XX  Video Timing settings
+XX  Video overlay settings
+XX  Video duration settings
+XX  Video uses flash correctly
+XX  Choose Video from Camera Roll
+XX  Load Packages
+X   Order New Packages
+XX  Log In
+XX  Log Out
+X-  Biometric login
+XX  Remember Username functionality
+X   Submit Registration
+X   Complete Registration / Validate Email
+XX  Validator on exiting username/others
+X   Deep linking
+XX  Automatic Logout
 
-Verify All Capabilities
-X Change Every Setting
-X Change Profile Image
-X Contact
-X Send Error Report
-X View Lessons
-X Play Lessons
-- Submit New Swing
-X Record a Video
-X Video Timing settings
-X Video overlay settings
-X Video duration settings
-X Video uses flash correctly
-X Choose Video from Camera Roll
-X Load Packages
-X Order New Packages
-X Log In
-X Log Out
-X Biometric login
-X Remember Username functionality
-X Submit Registration
-X Complete Registration / Validate Email
-X Validator on exiting username/others
-X Deep linking
-- Automatic Logout
-
-- Test on a Real Device
 
 ISSUES IDENTIFIED
 - Sign in/out (especially out) is very slow/laggy
@@ -49,65 +41,34 @@ ISSUES IDENTIFIED
 - changing profile photo works but is slow
 - changing settings works but is slow
 - (sporadic) refresh indicators getting stuck open
+- ANDROID: youtube videos are playing when scrolling view
+- ANDROID: pull to refresh not working on Home screen
+- ANDROID: every other list item missing divider
+- ANDROID: IAP not working (IAP200): "skus is required for Android purchase"
+- ANDROID: When changing birthday, have to dismiss date picker twice
+- ANDROID: Scrolling on settings page is difficult - textinputs block
 
 
+SPORADIC ISSUES:
+- Contact Us cancel button doesn't close
+- Navigating back to login from register crashes the application
+- Youtube videos don't load on cellular
+- Sometimes youtube videos show white screen without spinner (replicated latest 2-23)
+- Fix long delay when clicking purchase button (sandbox only maybe)
 
-Enhancements
 
-- Upgrade to use Redux toolkit
-- 
-
+Future Enhancements
 
 - Update Redux to use toolkit
-- Update to latest RN IAP
-- Check if core libraries are deprecated
-
-
-
-
-
-
-
-LAST ITEMS FOR 3.0.0 RELEASE:
-    FIX:
-
-    TEST:
-    - NAme in drawer not updating after autologout
-    - keyboard not persisting on submit page
-    - Pause videos when opening full lesson
-    - Disable Landscape mode
-    - Disable video preview looping (or stop on end)
-    - IAP Pricing long decimals
-    - Test deep linking
-    - Final Device testing
-    - force users off various screens when no token
-    - Skip button z-index for tablets
-    - error email (lesson) no username
-        should be fixed after switching to real API
-    
-
-
-FUTURE FUNCTIONALITY FOR 3.1.0 RELEASE
-    FIX:
-    - Better error messages when no network
-    - android tablet videos are too large
-    - Optimize bundle size
-    - Record in H.264
-    - Remove unused icon fonts for ios
-    - Cancel purchase causes a refresh
-    - Scrollto not working on submit page
-
-
-    - Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
-    - API for single Blog/Tip
-    - Lazy loading for lists
-    - Loading/Empty states
-    - Account Details Screen + Edit
-    - Order History API
-    - Order History Screen
-    - Contact Us Screen
-    - Store data locally (Async)
-    - Unit tests
-    - App Banners on web
-    - Error logging as SQLite DB
-    - Remote announcements/messages via API
+- Better error messages when no network
+- Local caching of data (lessons, tips, blogs)
+- Unit tests
+- App Banners on web
+- Error logging as SQLite DB
+- Remote announcements/messages via API
+- Order History API
+- Order History Screen
+- Contact Us Screen
+- Loading/Empty states
+- Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
+- Convert back-end to NodeJS

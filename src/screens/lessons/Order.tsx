@@ -2,14 +2,13 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { FlatList, Alert, ScrollView, RefreshControl } from 'react-native';
+import { Alert, ScrollView, RefreshControl, Platform } from 'react-native';
 import { Typography, ErrorBox, SEButton, OrderTutorial, SectionHeader, ListItem, Stack } from '../../components';
 import { requestPurchase, useIAP, ErrorCode } from 'react-native-iap';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
 import bg from '../../images/banners/order.jpg';
-import { Divider } from 'react-native-paper';
 
 // Redux
 import { loadCredits, loadPackages } from '../../redux/actions';
@@ -114,10 +113,11 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 return;
             }
             try {
-                await requestPurchase({
-                    sku,
-                    // andDangerouslyFinishTransactionAutomaticallyIOS: false,
-                });
+                await requestPurchase(
+                    Platform.OS === 'android'
+                        ? { skus: [sku] }
+                        : { sku, andDangerouslyFinishTransactionAutomaticallyIOS: false }
+                );
             } catch (error: any) {
                 if (error.code !== ErrorCode.E_USER_CANCELLED) {
                     void Logger.logError({
@@ -188,46 +188,40 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                     title={'Available Packages'}
                     style={{ marginTop: theme.spacing.xl, marginHorizontal: theme.spacing.md }}
                 />
-                <FlatList
-                    scrollEnabled={false}
-                    keyboardShouldPersistTaps={'always'}
-                    data={packages}
-                    extraData={products.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10))}
-                    renderItem={({ item, index }): JSX.Element => (
-                        <>
-                            {index === 0 && <Divider />}
-                            <ListItem
-                                title={item.name}
-                                description={item.description}
-                                titleNumberOfLines={2}
-                                titleEllipsizeMode={'tail'}
-                                onPress={(): void => setSelected(index)}
-                                right={({ style, ...rightProps }): JSX.Element => (
-                                    <Stack
-                                        direction={'row'}
-                                        align={'center'}
-                                        style={[{ marginRight: -1 * theme.spacing.md }, style]}
-                                        {...rightProps}
-                                    >
-                                        <Typography variant={'labelMedium'}>
-                                            {products.length > 0 ? `${products[index].localizedPrice}` : '--'}
-                                        </Typography>
-                                        {selected === index && (
-                                            <MatIcon
-                                                name={'check'}
-                                                size={theme.size.md}
-                                                color={theme.colors.primary}
-                                                style={{ marginLeft: theme.spacing.sm }}
-                                            />
-                                        )}
-                                    </Stack>
-                                )}
-                            />
-                            <Divider />
-                        </>
-                    )}
-                    keyExtractor={(item): string => `package_${item.app_sku}`}
-                />
+                <Stack>
+                    {packages.map((item, index) => (
+                        <ListItem
+                            key={index}
+                            bottomDivider
+                            topDivider={index === 0}
+                            title={item.name}
+                            description={item.description}
+                            titleNumberOfLines={2}
+                            titleEllipsizeMode={'tail'}
+                            onPress={(): void => setSelected(index)}
+                            right={({ style, ...rightProps }): JSX.Element => (
+                                <Stack
+                                    direction={'row'}
+                                    align={'center'}
+                                    style={[{ marginRight: -1 * theme.spacing.md }, style]}
+                                    {...rightProps}
+                                >
+                                    <Typography variant={'labelMedium'}>
+                                        {products.length > 0 ? `${products[index].localizedPrice}` : '--'}
+                                    </Typography>
+                                    {selected === index && (
+                                        <MatIcon
+                                            name={'check'}
+                                            size={theme.size.md}
+                                            color={theme.colors.primary}
+                                            style={{ marginLeft: theme.spacing.sm }}
+                                        />
+                                    )}
+                                </Stack>
+                            )}
+                        />
+                    ))}
+                </Stack>
                 <SEButton
                     style={[
                         { margin: theme.spacing.md },

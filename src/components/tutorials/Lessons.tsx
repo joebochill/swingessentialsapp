@@ -1,19 +1,15 @@
 import React from 'react';
-import { Divider } from 'react-native-paper';
-// Components
 import { View, SectionList } from 'react-native';
 import { ListItem, SectionHeader, Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-// Styles
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
 import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
-// Utilities
 import { getLongDate, getDate } from '../../utilities';
 import { useAppTheme } from '../../theme';
 
@@ -64,33 +60,31 @@ export const LessonsTutorial: React.FC = () => {
                 )}
                 sections={sections}
                 renderItem={({ item, index }): JSX.Element => (
-                    <>
-                        {index === 0 && <Divider />}
-                        <ListItem
-                            title={item.date}
-                            description={'Remote Lesson'}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
-                                    {item.new && (
-                                        <Typography
-                                            style={{
-                                                marginRight: theme.spacing.sm,
-                                            }}
-                                        >
-                                            NEW
-                                        </Typography>
-                                    )}
-                                    <MatIcon
-                                        name={'chevron-right'}
-                                        size={theme.size.md}
-                                        color={theme.colors.primary}
-                                        style={{ marginRight: -1 * theme.spacing.md }}
-                                    />
-                                </Stack>
-                            )}
-                        />
-                        <Divider />
-                    </>
+                    <ListItem
+                        bottomDivider
+                        topDivider={index === 0}
+                        title={item.date}
+                        description={'Remote Lesson'}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
+                                {item.new && (
+                                    <Typography
+                                        style={{
+                                            marginRight: theme.spacing.sm,
+                                        }}
+                                    >
+                                        NEW
+                                    </Typography>
+                                )}
+                                <MatIcon
+                                    name={'chevron-right'}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                />
+                            </Stack>
+                        )}
+                    />
                 )}
                 keyExtractor={(item): string => `complete_${item.date}`}
             />

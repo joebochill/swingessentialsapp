@@ -4,8 +4,8 @@ import BootSplash from 'react-native-bootsplash';
 import { useCameraPermission, useMicrophonePermission } from 'react-native-vision-camera';
 
 // Navigation
-import { NavigationContainer } from '@react-navigation/native';
-import MainNavigator from './src/navigation/MainNavigator';
+import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
+import MainNavigator, { RootStackParamList } from './src/navigation/MainNavigator';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -17,6 +17,21 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PaperProvider } from 'react-native-paper';
 import { SETheme } from './src/theme';
 import { withIAPContext } from 'react-native-iap';
+import { ROUTES } from './src/constants/routes';
+
+const linkingConfig: LinkingOptions<RootStackParamList> = {
+    prefixes: ['https://www.swingessentials.com'],
+    config: {
+        screens: {
+            [ROUTES.APP_GROUP]: {
+                screens: {
+                    [ROUTES.REGISTER]: 'register/:code?',
+                    [ROUTES.LESSONS]: 'lessons',
+                },
+            },
+        },
+    },
+};
 
 // TODO: Support dark mode
 function App(): React.JSX.Element {
@@ -55,6 +70,7 @@ function App(): React.JSX.Element {
                     onReady={() => {
                         void BootSplash.hide({ fade: true });
                     }}
+                    linking={linkingConfig}
                 >
                     <PaperProvider theme={SETheme}>
                         {/* <RNIAPCallbacks /> */}

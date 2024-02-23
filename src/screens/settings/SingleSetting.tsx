@@ -1,19 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-// Components
-import { View } from 'react-native';
 import { Typography, Stack, ListItem } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-// Styles
-import { Divider } from 'react-native-paper';
-
-// Types
 import { SettingsState, ApplicationState, NotificationSettings } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
-// Redux
 import { putSettings } from '../../redux/actions/SettingsActions';
-// Constants
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
@@ -167,30 +158,29 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
             />
             <Stack style={{ marginTop: theme.spacing.md }}>
                 {currentSetting.values.map((val, index) => (
-                    <View key={`option_${index}`}>
-                        {index === 0 && <Divider />}
-                        <ListItem
-                            title={`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
-                                typeof val === 'number' ? 's' : ''
-                            }`}
-                            titleEllipsizeMode={'tail'}
-                            onPress={(): void => setValue(val)}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
-                                    {/* @ts-ignore */}
-                                    {caseSame(value, val) && (
-                                        <MatIcon
-                                            name={'check'}
-                                            size={theme.size.md}
-                                            color={theme.colors.primary}
-                                            style={{ marginRight: -1 * theme.spacing.md }}
-                                        />
-                                    )}
-                                </Stack>
-                            )}
-                        />
-                        <Divider />
-                    </View>
+                    <ListItem
+                        key={`option_${index}`}
+                        topDivider={index === 0}
+                        bottomDivider
+                        title={`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
+                            typeof val === 'number' ? 's' : ''
+                        }`}
+                        titleEllipsizeMode={'tail'}
+                        onPress={(): void => setValue(val)}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
+                                {/* @ts-ignore */}
+                                {caseSame(value, val) && (
+                                    <MatIcon
+                                        name={'check'}
+                                        size={theme.size.md}
+                                        color={theme.colors.primary}
+                                        style={{ marginRight: -1 * theme.spacing.md }}
+                                    />
+                                )}
+                            </Stack>
+                        )}
+                    />
                 ))}
                 <Typography style={{ marginTop: theme.spacing.sm, marginHorizontal: theme.spacing.md }}>
                     {currentSetting.description}

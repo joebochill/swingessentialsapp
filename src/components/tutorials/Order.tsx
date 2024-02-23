@@ -1,7 +1,6 @@
 import React from 'react';
-import { Divider } from 'react-native-paper';
 // Components
-import { View, FlatList } from 'react-native';
+import { View } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import { ListItem, Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
@@ -37,45 +36,39 @@ export const OrderTutorial: React.FC = () => {
                     'We offer multiple lesson packages at different price points. Ensure that you have a payment method linked to your phone before purchasing.'
                 }
             </Typography>
-            <FlatList
-                scrollEnabled={false}
-                keyboardShouldPersistTaps={'always'}
-                data={packages}
-                style={{ marginTop: theme.spacing.lg }}
-                renderItem={({ item, index }): JSX.Element => (
-                    <>
-                        {index === 0 && <Divider />}
-                        <ListItem
-                            title={item.name}
-                            description={item.description}
-                            titleNumberOfLines={2}
-                            titleEllipsizeMode={'tail'}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <Stack
-                                    direction={'row'}
-                                    align={'center'}
-                                    style={[{ marginRight: -1 * theme.spacing.md }, style]}
-                                    {...rightProps}
-                                >
-                                    <Typography variant={'labelMedium'}>
-                                        {packages.length > 0 ? `$${item.price}` : '--'}
-                                    </Typography>
-                                    {index === 0 && (
-                                        <MatIcon
-                                            name={'check'}
-                                            size={theme.size.md}
-                                            color={theme.colors.primary}
-                                            style={{ marginLeft: theme.spacing.sm }}
-                                        />
-                                    )}
-                                </Stack>
-                            )}
-                        />
-                        <Divider />
-                    </>
-                )}
-                keyExtractor={(item): string => `package_${item.app_sku}`}
-            />
+            <Stack style={{ marginTop: theme.spacing.lg }}>
+                {packages.map((item, index) => (
+                    <ListItem
+                        key={index}
+                        bottomDivider
+                        topDivider={index === 0}
+                        title={item.name}
+                        description={item.description}
+                        titleNumberOfLines={2}
+                        titleEllipsizeMode={'tail'}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <Stack
+                                direction={'row'}
+                                align={'center'}
+                                style={[{ marginRight: -1 * theme.spacing.md }, style]}
+                                {...rightProps}
+                            >
+                                <Typography variant={'labelMedium'}>
+                                    {packages.length > 0 ? `$${item.price}` : '--'}
+                                </Typography>
+                                {index === 0 && (
+                                    <MatIcon
+                                        name={'check'}
+                                        size={theme.size.md}
+                                        color={theme.colors.primary}
+                                        style={{ marginLeft: theme.spacing.sm }}
+                                    />
+                                )}
+                            </Stack>
+                        )}
+                    />
+                ))}
+            </Stack>
         </Stack>,
     ];
 

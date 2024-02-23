@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Animated, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import { Animated, ScrollViewProps } from 'react-native';
 import { height } from '../../utilities/dimensions';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -7,14 +7,8 @@ export const COLLAPSED_HEIGHT = 56;
 export const EXPANDED_HEIGHT = 200;
 
 type CollapsibleHeaderHookValues = {
-    scrollProps: {
+    scrollProps: Pick<ScrollViewProps, 'contentOffset' | 'scrollEventThrottle' | 'onScroll'> & {
         ref: React.MutableRefObject<null>;
-        contentOffset: {
-            x: number;
-            y: number;
-        };
-        scrollEventThrottle: number;
-        onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
     };
     headerProps: {
         scrollPosition: Animated.Value;

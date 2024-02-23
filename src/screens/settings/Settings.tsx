@@ -12,7 +12,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { ROUTES } from '../../constants/routes';
 
 // Styles
-import { Divider, TextInput, IconButton } from 'react-native-paper';
+import { TextInput, IconButton } from 'react-native-paper';
 
 // Types
 import { ApplicationState, Average } from '../../__types__';
@@ -239,8 +239,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                 {/* Read Mode */}
                 {!editAbout && (
                     <Stack style={{ marginHorizontal: -1 * theme.spacing.md }}>
-                        <Divider />
                         <ListItem
+                            topDivider
                             title={'First Name'}
                             titleEllipsizeMode={'tail'}
                             right={({ style, ...rightProps }): JSX.Element => (
@@ -254,8 +254,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 </Stack>
                             )}
                         />
-                        <Divider />
                         <ListItem
+                            topDivider
                             title={'Last Name'}
                             titleEllipsizeMode={'tail'}
                             right={({ style, ...rightProps }): JSX.Element => (
@@ -269,8 +269,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 </Stack>
                             )}
                         />
-                        <Divider />
                         <ListItem
+                            topDivider
                             title={'Location'}
                             titleEllipsizeMode={'tail'}
                             right={({ style, ...rightProps }): JSX.Element => (
@@ -284,8 +284,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 </Stack>
                             )}
                         />
-                        <Divider />
                         <ListItem
+                            topDivider
                             title={'Date of Birth'}
                             titleEllipsizeMode={'tail'}
                             right={({ style, ...rightProps }): JSX.Element => (
@@ -299,8 +299,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 </Stack>
                             )}
                         />
-                        <Divider />
                         <ListItem
+                            topDivider
                             title={`Email Address`}
                             description={role === 'pending' ? 'unverified' : undefined}
                             titleEllipsizeMode={'tail'}
@@ -316,8 +316,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 </Stack>
                             )}
                         />
-                        <Divider />
                         <ListItem
+                            topDivider
                             title={'Avg. Score (18 Holes)'}
                             titleEllipsizeMode={'tail'}
                             right={({ style, ...rightProps }): JSX.Element => (
@@ -331,8 +331,9 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 </Stack>
                             )}
                         />
-                        <Divider />
                         <ListItem
+                            topDivider
+                            bottomDivider
                             title={'Golf Goals'}
                             titleEllipsizeMode={'tail'}
                             right={({ style, ...rightProps }): JSX.Element => (
@@ -346,7 +347,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 </Stack>
                             )}
                         />
-                        <Divider />
                     </Stack>
                 )}
                 {/* Write Mode */}
@@ -356,6 +356,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             label={'First Name'}
                             value={personal.firstName}
                             autoCorrect={false}
+                            // TODO: Check if this worked and apply it to the others
+                            style={{ paddingVertical: 0 }}
                             autoCapitalize={'none'}
                             onChangeText={(value: string): void => setPersonal({ ...personal, firstName: value })}
                             underlineColorAndroid={'transparent'}
@@ -394,8 +396,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 date={getJSDate(personal.birthday)}
                                 isVisible={showDatePicker}
                                 onConfirm={(date): void => {
-                                    setPersonal({ ...personal, birthday: format(new Date(date), 'MM/dd/yyyy') });
                                     setShowDatePicker(false);
+                                    setPersonal({ ...personal, birthday: format(new Date(date), 'MM/dd/yyyy') });
                                 }}
                                 onCancel={(): void => setShowDatePicker(false)}
                             />
@@ -466,41 +468,36 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                 )}
 
                 <SectionHeader title={'User Settings'} style={{ marginTop: theme.spacing.xl }} />
-                <Stack style={{ marginHorizontal: -1 * theme.spacing.md }}>
-                    <Divider />
-                    <ListItem
-                        title={'Swing Handedness'}
-                        titleEllipsizeMode={'tail'}
-                        // @ts-ignore
-                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
-                        right={({ style, ...rightProps }): JSX.Element => (
-                            <Stack
-                                direction={'row'}
-                                align={'center'}
-                                style={[style, { marginRight: 0 }]}
-                                {...rightProps}
-                            >
-                                <Typography>
-                                    {settings.handedness.charAt(0).toUpperCase() + settings.handedness.substring(1)}
-                                </Typography>
-                                <MatIcon
-                                    name={'chevron-right'}
-                                    size={theme.size.md}
-                                    color={theme.colors.primary}
-                                    style={{ marginRight: -1 * theme.spacing.md }}
-                                />
-                            </Stack>
-                        )}
-                    />
-                    <Divider />
-                </Stack>
+                <ListItem
+                    title={'Swing Handedness'}
+                    titleEllipsizeMode={'tail'}
+                    topDivider
+                    bottomDivider
+                    style={{ marginHorizontal: -1 * theme.spacing.md }}
+                    // @ts-ignore
+                    onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
+                    right={({ style, ...rightProps }): JSX.Element => (
+                        <Stack direction={'row'} align={'center'} style={[style, { marginRight: 0 }]} {...rightProps}>
+                            <Typography>
+                                {settings.handedness.charAt(0).toUpperCase() + settings.handedness.substring(1)}
+                            </Typography>
+                            <MatIcon
+                                name={'chevron-right'}
+                                size={theme.size.md}
+                                color={theme.colors.primary}
+                                style={{ marginRight: -1 * theme.spacing.md }}
+                            />
+                        </Stack>
+                    )}
+                />
 
                 <SectionHeader title={'Camera Settings'} style={{ marginTop: theme.spacing.xl }} />
                 <Stack style={{ marginHorizontal: -1 * theme.spacing.md }}>
-                    <Divider />
                     <ListItem
                         title={'Recording Duration'}
                         titleEllipsizeMode={'tail'}
+                        topDivider
+                        bottomDivider
                         // @ts-ignore
                         onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'duration' })}
                         right={({ style, ...rightProps }): JSX.Element => (
@@ -520,10 +517,10 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             </Stack>
                         )}
                     />
-                    <Divider />
                     <ListItem
                         title={'Recording Delay'}
                         titleEllipsizeMode={'tail'}
+                        bottomDivider
                         // @ts-ignore
                         onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'delay' })}
                         right={({ style, ...rightProps }): JSX.Element => (
@@ -543,10 +540,10 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             </Stack>
                         )}
                     />
-                    <Divider />
                     <ListItem
                         title={'Stance Overlay'}
                         titleEllipsizeMode={'tail'}
+                        bottomDivider
                         // @ts-ignore
                         onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'overlay' })}
                         right={({ style, ...rightProps }): JSX.Element => (
@@ -566,13 +563,13 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             </Stack>
                         )}
                     />
-                    <Divider />
                 </Stack>
 
                 <SectionHeader title={'Email Notifications'} style={{ marginTop: theme.spacing.xl }} />
                 <Stack style={{ marginHorizontal: -1 * theme.spacing.md }}>
-                    <Divider />
                     <ListItem
+                        topDivider
+                        bottomDivider
                         title={'Lessons'}
                         titleEllipsizeMode={'tail'}
                         // @ts-ignore
@@ -594,8 +591,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             </Stack>
                         )}
                     />
-                    <Divider />
                     <ListItem
+                        bottomDivider
                         title={'Marketing'}
                         titleEllipsizeMode={'tail'}
                         // @ts-ignore
@@ -617,8 +614,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             </Stack>
                         )}
                     />
-                    <Divider />
                     <ListItem
+                        bottomDivider
                         title={'Newsletters'}
                         titleEllipsizeMode={'tail'}
                         // @ts-ignore
@@ -640,8 +637,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             </Stack>
                         )}
                     />
-                    <Divider />
                     <ListItem
+                        bottomDivider
                         title={'Reminders'}
                         titleEllipsizeMode={'tail'}
                         // @ts-ignore
@@ -663,7 +660,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             </Stack>
                         )}
                     />
-                    <Divider />
                 </Stack>
             </ScrollView>
         </Stack>
