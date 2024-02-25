@@ -199,8 +199,13 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
     const setVideoURI = useCallback(
         async (swing: 'fo' | 'dtl', uri: string): Promise<void> => {
             let sizeMB: number = 0;
+            let platformURI: string = uri;
+            if (Platform.OS === 'android' && uri[0] === '/') {
+                platformURI = `file://${uri}`;
+                platformURI = platformURI.replace(/%/g, '%25');
+            }
             try {
-                const stats = await RNFS.stat(uri);
+                const stats = await RNFS.stat(platformURI);
                 sizeMB = stats.size / (1024 * 1024);
                 if (sizeMB > 50) {
                     Alert.alert(
@@ -220,10 +225,10 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
             }
 
             if (swing === 'fo') {
-                setFOVideo(uri);
+                setFOVideo(platformURI);
                 setVideoSize((v) => ({ ...v, fo: sizeMB }));
             } else if (swing === 'dtl') {
-                setDTLVideo(uri);
+                setDTLVideo(platformURI);
                 setVideoSize((v) => ({ ...v, dtl: sizeMB }));
             } else {
                 void Logger.logError({

@@ -1,6 +1,6 @@
 import { width } from '../utilities/dimensions';
 
-export const APP_VERSION = '4.0.0-build.11';
+export const APP_VERSION = '4.0.0-build.14';
 export const ASYNC_PREFIX = '@SwingEssentials:';
 export const ERROR_FILE = 'error_log.txt';
 export const LOG_FILE = 'message_log.txt';
@@ -12,7 +12,7 @@ export const DRAWER_WIDTH = 0.9 * width;
 export const BASEURL_DEV = 'https://www.swingessentials.com/dev_apis/swingessentials.php';
 export const BASEURL_PROD = 'https://www.swingessentials.com/apis/swingessentials.php';
 
-export const BASEURL = BASEURL_DEV;
+export const BASEURL = BASEURL_PROD;
 export const AUTH = 'Message';
 
 export const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;

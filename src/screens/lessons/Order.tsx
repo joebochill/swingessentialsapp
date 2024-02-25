@@ -52,6 +52,11 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
         // getPurchaseHistories,
     } = useIAP();
 
+    const syncedPackages = packages.map((p) => ({
+        ...p,
+        localPrice: products.find((product) => product.productId === p.app_sku)?.localizedPrice ?? `--`,
+    }));
+
     const [selected, setSelected] = useState(-1);
 
     const roleError =
@@ -189,7 +194,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                     style={{ marginTop: theme.spacing.xl, marginHorizontal: theme.spacing.md }}
                 />
                 <Stack>
-                    {packages.map((item, index) => (
+                    {syncedPackages.map((item, index) => (
                         <ListItem
                             key={index}
                             bottomDivider
@@ -206,9 +211,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                                     style={[{ marginRight: -1 * theme.spacing.md }, style]}
                                     {...rightProps}
                                 >
-                                    <Typography variant={'labelMedium'}>
-                                        {products.length > 0 ? `${products[index].localizedPrice}` : '--'}
-                                    </Typography>
+                                    <Typography variant={'labelMedium'}>{item.localPrice ?? '--'}</Typography>
                                     {selected === index && (
                                         <MatIcon
                                             name={'check'}

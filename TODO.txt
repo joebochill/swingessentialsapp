@@ -1,7 +1,7 @@
 Remaining Work:
 
-- Updated graphics for splash screen
 - Update the documentation / Readme
+- Check all TODO comments
 
 
 Test Scenarios: [XX] = Both platforms tested [X] iOS only tested
@@ -35,27 +35,20 @@ XX  Automatic Logout
 ISSUES IDENTIFIED
 - Sign in/out (especially out) is very slow/laggy
 - IOS receipts not getting logged in DB
-- Registration Deep Links are not working
+- ANDROID: Registration Deep Links are not working
 - Purchases work, but they are SLOW (sandbox only issue I hope)
-- contact us email is being sent to my personal email (don't do this)
-- changing profile photo works but is slow
-- changing settings works but is slow
-- (sporadic) refresh indicators getting stuck open
-- ANDROID: youtube videos are playing when scrolling view
-- ANDROID: pull to refresh not working on Home screen
-- ANDROID: every other list item missing divider
-- ANDROID: IAP not working (IAP200): "skus is required for Android purchase"
-- ANDROID: When changing birthday, have to dismiss date picker twice
-- ANDROID: Scrolling on settings page is difficult - textinputs block
+- Order screen prices are reversed
 
 
 SPORADIC ISSUES:
 - Contact Us cancel button doesn't close
+- (sporadic) refresh indicators getting stuck open
 - Navigating back to login from register crashes the application
 - Youtube videos don't load on cellular
 - Sometimes youtube videos show white screen without spinner (replicated latest 2-23)
 - Fix long delay when clicking purchase button (sandbox only maybe)
-
+- changing profile photo works but is slow
+- changing settings works but is slow
 
 Future Enhancements
 

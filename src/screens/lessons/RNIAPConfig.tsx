@@ -115,7 +115,7 @@ export const useRNIAP = (): void => {
     useEffect(() => {
         // ... listen to currentPurchaseError, to check if any error happened
         void Logger.logError({
-            code: 'IAP200-TODO',
+            code: 'IAP221',
             description: 'Purchase Error',
             rawErrorCode: currentPurchaseError?.code,
             rawErrorMessage: currentPurchaseError?.message,
@@ -125,7 +125,7 @@ export const useRNIAP = (): void => {
     useEffect(() => {
         // ... listen to currentPurchase, to check if the purchase went through
         void Logger.logError({
-            code: 'IAP200-TODO',
+            code: 'IAP222',
             description: 'Current Purchase Change',
             rawErrorCode: currentPurchase?.productId,
             rawErrorMessage: currentPurchase?.verificationResultIOS,

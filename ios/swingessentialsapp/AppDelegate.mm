@@ -36,7 +36,7 @@
                                           moduleName:moduleName
                                            initProps:initProps];
 
-  [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView]; // ⬅️ initialize the splash screen
+  [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView]; // ⬅️ initialize the splash screen
 
   return rootView;
 }

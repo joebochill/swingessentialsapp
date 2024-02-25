@@ -100,8 +100,7 @@ export const helpNavigationItems: RouteGroup = {
                 Mailer.mail(
                     {
                         subject: 'Swing Essentials App Feedback',
-                        // recipients: ['info@swingessentials.com'],
-                        recipients: ['boyle.p.joseph@gmail.com'],
+                        recipients: ['info@swingessentials.com'],
                         isHTML: true,
                     },
                     (error, event) => {

@@ -356,11 +356,13 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             label={'First Name'}
                             value={personal.firstName}
                             autoCorrect={false}
-                            // TODO: Check if this worked and apply it to the others
-                            style={{ paddingVertical: 0 }}
                             autoCapitalize={'none'}
                             onChangeText={(value: string): void => setPersonal({ ...personal, firstName: value })}
                             underlineColorAndroid={'transparent'}
+                            multiline
+                            numberOfLines={1}
+                            blurOnSubmit={true}
+                            returnKeyType={'done'}
                         />
                         <TextInput
                             label={'Last Name'}
@@ -369,6 +371,10 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             autoCapitalize={'none'}
                             onChangeText={(value: string): void => setPersonal({ ...personal, lastName: value })}
                             underlineColorAndroid={'transparent'}
+                            multiline
+                            numberOfLines={1}
+                            blurOnSubmit={true}
+                            returnKeyType={'done'}
                         />
                         <TextInput
                             label={'Location'}
@@ -378,6 +384,10 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             autoCapitalize={'none'}
                             onChangeText={(value: string): void => setPersonal({ ...personal, location: value })}
                             underlineColorAndroid={'transparent'}
+                            multiline
+                            numberOfLines={1}
+                            blurOnSubmit={true}
+                            returnKeyType={'done'}
                         />
                         <Stack>
                             <TextInput
@@ -391,6 +401,10 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                     Keyboard.dismiss();
                                 }}
                                 underlineColorAndroid={'transparent'}
+                                multiline
+                                numberOfLines={1}
+                                blurOnSubmit={true}
+                                returnKeyType={'done'}
                             />
                             <DateTimePicker
                                 date={getJSDate(personal.birthday)}
@@ -410,6 +424,10 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             autoCapitalize={'none'}
                             disabled
                             underlineColorAndroid={'transparent'}
+                            multiline
+                            numberOfLines={1}
+                            blurOnSubmit={true}
+                            returnKeyType={'done'}
                         />
                         <RNPickerSelect
                             placeholder={{ label: 'Choose One...', value: '', color: theme.colors.primary }}
@@ -432,6 +450,10 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 label={'Avg. Score (18 Holes)'}
                                 underlineColorAndroid={'transparent'}
                                 value={mapAverageToLabel(personal.average)}
+                                multiline
+                                numberOfLines={1}
+                                blurOnSubmit={true}
+                                returnKeyType={'done'}
                             />
                         </RNPickerSelect>
 
@@ -457,7 +479,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             <SEButton
                                 title={'Save Changes'}
                                 onPress={(): void => {
-                                    /* TODO Save the settings */
                                     // @ts-ignore
                                     dispatch(setUserData(personal));
                                     setEditAbout(false);

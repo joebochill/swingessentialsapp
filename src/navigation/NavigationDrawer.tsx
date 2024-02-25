@@ -120,7 +120,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                 contentContainerStyle={contentProps.contentContainerStyle}
                 onScroll={(e) => {
                     handleScroll(e);
-                    scrollProps.onScroll(e);
+                    scrollProps.onScroll?.(e);
                 }}
             >
                 <Stack direction={'row'}>
@@ -234,7 +234,7 @@ export const NavigationDrawer: React.FC<DrawerContentComponentProps> = (props) =
                 navigation={navigation}
                 mainAction={'none'}
                 content={
-                    <Stack justify={'flex-end'} style={{ flex: 1, marginRight: -1 * theme.size.md }}>
+                    <Stack justify={'flex-end'} style={{ flex: 1, marginRight: -1 * theme.size.md - theme.spacing.xs }}>
                         <Animated.View
                             style={[
                                 {
