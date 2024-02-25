@@ -1,6 +1,6 @@
 import { width } from '../utilities/dimensions';
 
-export const APP_VERSION = '4.0.0-build.14';
+export const APP_VERSION = '4.0.0';
 export const ASYNC_PREFIX = '@SwingEssentials:';
 export const ERROR_FILE = 'error_log.txt';
 export const LOG_FILE = 'message_log.txt';

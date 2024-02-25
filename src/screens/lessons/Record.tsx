@@ -85,6 +85,7 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
     const [previewReady, setPreviewReady] = useState(false);
 
     const [recordedVideo, setRecordedVideo] = useState('');
+    const autoEndTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const endRecording = useCallback(async () => {
         setShowCountDown(false); // hide the countdown timer (if you stop before recording started)
@@ -98,9 +99,9 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
         }
         if (isRecording) {
             await camera?.current?.stopRecording();
-            setIsRecording(false);
         }
         setIsRecording(false);
+        if (autoEndTimeout.current) clearTimeout(autoEndTimeout.current);
     }, [isRecording, camera]);
 
     const startRecording = useCallback(() => {
@@ -128,7 +129,7 @@ export const Record: React.FC<StackScreenProps<RootStackParamList, 'Record'>> = 
                 });
             },
         });
-        setTimeout(() => {
+        autoEndTimeout.current = setTimeout(() => {
             void endRecording();
         }, settings.duration * 1000);
     }, [camera, settings, cameraInitialized, endRecording]);

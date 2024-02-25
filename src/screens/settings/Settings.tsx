@@ -363,6 +363,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             numberOfLines={1}
                             blurOnSubmit={true}
                             returnKeyType={'done'}
+                            scrollEnabled={false}
                         />
                         <TextInput
                             label={'Last Name'}
@@ -375,6 +376,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             numberOfLines={1}
                             blurOnSubmit={true}
                             returnKeyType={'done'}
+                            scrollEnabled={false}
                         />
                         <TextInput
                             label={'Location'}
@@ -388,6 +390,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             numberOfLines={1}
                             blurOnSubmit={true}
                             returnKeyType={'done'}
+                            scrollEnabled={false}
                         />
                         <Stack>
                             <TextInput
@@ -405,6 +408,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 numberOfLines={1}
                                 blurOnSubmit={true}
                                 returnKeyType={'done'}
+                                scrollEnabled={false}
                             />
                             <DateTimePicker
                                 date={getJSDate(personal.birthday)}
@@ -428,6 +432,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             numberOfLines={1}
                             blurOnSubmit={true}
                             returnKeyType={'done'}
+                            scrollEnabled={false}
                         />
                         <RNPickerSelect
                             placeholder={{ label: 'Choose One...', value: '', color: theme.colors.primary }}
@@ -454,6 +459,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 numberOfLines={1}
                                 blurOnSubmit={true}
                                 returnKeyType={'done'}
+                                scrollEnabled={false}
                             />
                         </RNPickerSelect>
 
