@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View, Image, RefreshControl, ScrollView, TouchableHighlight, Keyboard } from 'react-native';
-import { Body, Caption, SEButton, SEHeader } from '../../components';
+import { Typography, SEButton, Stack, SectionHeader, ListItem } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
@@ -12,22 +12,23 @@ import RNPickerSelect from 'react-native-picker-select';
 import { ROUTES } from '../../constants/routes';
 
 // Styles
-import { useSharedStyles, useListStyles, useFlexStyles, useFormStyles } from '../../styles';
-import { useTheme, List, Subheading, Divider, TextInput, IconButton } from 'react-native-paper';
+import { TextInput, IconButton } from 'react-native-paper';
 
 // Types
 import { ApplicationState, Average } from '../../__types__';
 // Redux
 import { loadSettings } from '../../redux/actions/SettingsActions';
 import { StackScreenProps } from '@react-navigation/stack';
-import { getLongDate } from '../../utilities';
-import { blackOpacity, transparent } from '../../styles/colors';
+import { getJSDate, getLongDate } from '../../utilities';
 import { setUserData, loadUserInfo, setUserAvatar } from '../../redux/actions/user-data-actions';
 import { width, height } from '../../utilities/dimensions';
-import { HEADER_EXPANDED_HEIGHT, HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { format } from 'date-fns';
+import { useAppTheme } from '../../theme';
+import { Header } from '../../components/CollapsibleHeader/Header';
+import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const objectsEqual = (a: Record<string, unknown>, b: Record<string, unknown>): boolean => {
     // Create arrays of property names
@@ -87,16 +88,11 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
     const role = useSelector((state: ApplicationState) => state.login.role);
 
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const listStyles = useListStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const formStyles = useFormStyles(theme);
+    const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
 
     const [editAbout, setEditAbout] = useState(false);
-    const [activeField, setActiveField] = useState<
-        'first' | 'last' | 'location' | 'birthday' | 'average' | 'goals' | null
-    >(null);
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const [personal, setPersonal] = useState(userData);
 
     const memberString = `Joined ${userData.joined ? getLongDate(userData.joined * 1000) : getLongDate(Date.now())}`;
@@ -115,30 +111,44 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
     }, [userData, setPersonal]);
 
     return (
-        <View style={[sharedStyles.pageContainer, { paddingTop: HEADER_COLLAPSED_HEIGHT }]}>
-            <SEHeader
+        <Stack
+            style={[
+                {
+                    flex: 1,
+                    backgroundColor: theme.colors.background,
+                    paddingTop: COLLAPSED_HEIGHT + insets.top,
+                },
+            ]}
+        >
+            <Header
                 title={userData.username}
                 subtitle={memberString}
                 mainAction={'back'}
                 navigation={props.navigation}
+                fixed
             />
             <ScrollView
                 contentContainerStyle={[
-                    flexStyles.paddingMedium,
-                    { paddingHorizontal: 0, paddingBottom: height * 0.5 },
+                    {
+                        paddingHorizontal: theme.spacing.md,
+                        paddingTop: theme.spacing.md,
+                        paddingBottom: height * 0.5,
+                    },
                 ]}
                 keyboardShouldPersistTaps={'always'}
                 refreshControl={
                     <RefreshControl
                         refreshing={settings.loading}
                         onRefresh={(): void => {
+                            // @ts-ignore
                             dispatch(loadSettings());
+                            // @ts-ignore
                             dispatch(loadUserInfo());
                         }}
-                        progressViewOffset={HEADER_EXPANDED_HEIGHT}
                     />
                 }
             >
+                {/* AVATAR SECTION */}
                 <View style={{ alignSelf: 'center' }}>
                     <TouchableHighlight
                         underlayColor={theme.colors.onPrimary}
@@ -152,8 +162,10 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             })
                                 .then((image) => {
                                     dispatch(
+                                        // @ts-ignore
                                         setUserAvatar({
                                             useAvatar: 1,
+                                            // @ts-ignore
                                             avatar: image.data,
                                         })
                                     );
@@ -170,17 +182,17 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             alignSelf: 'center',
                             borderRadius: width / 4,
                             overflow: 'hidden',
-                            backgroundColor: theme.colors.surface,
+                            backgroundColor: theme.colors.primaryContainer,
                         }}
                     >
                         <>
                             <Image source={{ uri: avatarURL }} style={{ width: '100%', height: '100%' }} />
                             <View style={{ position: 'absolute', bottom: 0, width: '100%', alignItems: 'center' }}>
                                 <IconButton
+                                    mode={'contained'}
                                     icon="pencil"
-                                    color={theme.colors.onPrimary}
-                                    size={theme.sizes.small}
-                                    style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+                                    iconColor={theme.colors.onPrimary}
+                                    containerColor={'rgba(0,0,0,0.5)'}
                                 />
                             </View>
                         </>
@@ -188,16 +200,17 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                     {settings.avatar !== '' && (
                         <IconButton
                             icon="close"
-                            color={theme.colors.onPrimary}
-                            size={theme.sizes.xSmall}
+                            mode={'contained'}
+                            iconColor={theme.colors.onPrimary}
+                            containerColor={'rgba(0,0,0,0.5)'}
                             style={{
-                                backgroundColor: 'rgba(0,0,0,0.5)',
                                 position: 'absolute',
                                 top: 0,
                                 right: 0,
                             }}
                             onPress={(): void => {
                                 dispatch(
+                                    // @ts-ignore
                                     setUserAvatar({
                                         useAvatar: 0,
                                         avatar: '',
@@ -208,154 +221,162 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                     )}
                 </View>
 
-                <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.large }]}>
-                    <Subheading style={listStyles.heading}>{'About Me'}</Subheading>
-                    <SEButton
-                        mode={'outlined'}
-                        title={editAbout ? 'Cancel' : 'Edit'}
-                        onPress={(): void => {
-                            setEditAbout(!editAbout);
-                            setPersonal(userData);
-                        }}
-                    />
-                </View>
+                {/* SETTINGS SECTION */}
+                <SectionHeader
+                    title={'About Me'}
+                    action={
+                        <SEButton
+                            mode={'outlined'}
+                            title={editAbout ? 'Cancel' : 'Edit'}
+                            onPress={(): void => {
+                                setEditAbout(!editAbout);
+                                setPersonal(userData);
+                            }}
+                        />
+                    }
+                />
+
                 {/* Read Mode */}
                 {!editAbout && (
-                    <>
-                        <Divider />
-                        <List.Item
+                    <Stack style={{ marginHorizontal: -1 * theme.spacing.md }}>
+                        <ListItem
+                            topDivider
                             title={'First Name'}
                             titleEllipsizeMode={'tail'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.firstName}</Body>
-                                </View>
+                                <Stack
+                                    direction={'row'}
+                                    align={'center'}
+                                    style={[style, { marginRight: 0 }]}
+                                    {...rightProps}
+                                >
+                                    <Typography>{userData.firstName}</Typography>
+                                </Stack>
                             )}
                         />
-                        <Divider />
-                        <List.Item
+                        <ListItem
+                            topDivider
                             title={'Last Name'}
                             titleEllipsizeMode={'tail'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.lastName}</Body>
-                                </View>
+                                <Stack
+                                    direction={'row'}
+                                    align={'center'}
+                                    style={[style, { marginRight: 0 }]}
+                                    {...rightProps}
+                                >
+                                    <Typography>{userData.lastName}</Typography>
+                                </Stack>
                             )}
                         />
-                        <Divider />
-                        <List.Item
+                        <ListItem
+                            topDivider
                             title={'Location'}
                             titleEllipsizeMode={'tail'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.location}</Body>
-                                </View>
+                                <Stack
+                                    direction={'row'}
+                                    align={'center'}
+                                    style={[style, { marginRight: 0 }]}
+                                    {...rightProps}
+                                >
+                                    <Typography>{userData.location}</Typography>
+                                </Stack>
                             )}
                         />
-                        <Divider />
-                        <List.Item
+                        <ListItem
+                            topDivider
                             title={'Date of Birth'}
                             titleEllipsizeMode={'tail'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.birthday || '--'}</Body>
-                                </View>
+                                <Stack
+                                    direction={'row'}
+                                    align={'center'}
+                                    style={[style, { marginRight: 0 }]}
+                                    {...rightProps}
+                                >
+                                    <Typography>{userData.birthday || '--'}</Typography>
+                                </Stack>
                             )}
                         />
-                        <Divider />
-                        <List.Item
+                        <ListItem
+                            topDivider
                             title={`Email Address`}
                             description={role === 'pending' ? 'unverified' : undefined}
                             titleEllipsizeMode={'tail'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
                             descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.email}</Body>
-                                </View>
+                                <Stack
+                                    direction={'row'}
+                                    align={'center'}
+                                    style={[style, { marginRight: 0 }]}
+                                    {...rightProps}
+                                >
+                                    <Typography>{userData.email}</Typography>
+                                </Stack>
                             )}
                         />
-                        <Divider />
-                        <List.Item
+                        <ListItem
+                            topDivider
                             title={'Avg. Score (18 Holes)'}
                             titleEllipsizeMode={'tail'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{mapAverageToLabel(userData.average)}</Body>
-                                </View>
+                                <Stack
+                                    direction={'row'}
+                                    align={'center'}
+                                    style={[style, { marginRight: 0 }]}
+                                    {...rightProps}
+                                >
+                                    <Typography>{mapAverageToLabel(userData.average)}</Typography>
+                                </Stack>
                             )}
                         />
-                        <Divider />
-                        <List.Item
+                        <ListItem
+                            topDivider
+                            bottomDivider
                             title={'Golf Goals'}
                             titleEllipsizeMode={'tail'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{`${(userData.goals || '').substr(0, 18)}...`}</Body>
-                                </View>
+                                <Stack
+                                    direction={'row'}
+                                    align={'center'}
+                                    style={[style, { marginRight: 0 }]}
+                                    {...rightProps}
+                                >
+                                    <Typography>{`${(userData.goals || '').substr(0, 18)}...`}</Typography>
+                                </Stack>
                             )}
                         />
-                        <Divider />
-                        {/* <List.Item
-                            title={'Phone Number'}
-                            titleEllipsizeMode={'tail'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{userData.phone}</Body>
-                                </View>
-                            )}
-                        />
-                        <Divider /> */}
-                    </>
+                    </Stack>
                 )}
                 {/* Write Mode */}
                 {editAbout && (
-                    <View style={flexStyles.paddingHorizontal}>
+                    <Stack space={theme.spacing.sm}>
                         <TextInput
                             label={'First Name'}
                             value={personal.firstName}
                             autoCorrect={false}
                             autoCapitalize={'none'}
-                            style={[
-                                activeField === 'first' || personal.firstName.length > 0
-                                    ? formStyles.active
-                                    : formStyles.inactive,
-                            ]}
-                            onFocus={(): void => setActiveField('first')}
-                            onBlur={(): void => setActiveField(null)}
                             onChangeText={(value: string): void => setPersonal({ ...personal, firstName: value })}
-                            underlineColorAndroid={transparent}
+                            underlineColorAndroid={'transparent'}
+                            multiline
+                            numberOfLines={1}
+                            blurOnSubmit={true}
+                            returnKeyType={'done'}
+                            scrollEnabled={false}
                         />
                         <TextInput
                             label={'Last Name'}
                             value={personal.lastName}
                             autoCorrect={false}
                             autoCapitalize={'none'}
-                            style={[
-                                formStyles.formField,
-                                activeField === 'last' || personal.lastName.length > 0
-                                    ? formStyles.active
-                                    : formStyles.inactive,
-                            ]}
-                            onFocus={(): void => setActiveField('last')}
-                            onBlur={(): void => setActiveField(null)}
                             onChangeText={(value: string): void => setPersonal({ ...personal, lastName: value })}
-                            underlineColorAndroid={transparent}
+                            underlineColorAndroid={'transparent'}
+                            multiline
+                            numberOfLines={1}
+                            blurOnSubmit={true}
+                            returnKeyType={'done'}
+                            scrollEnabled={false}
                         />
                         <TextInput
                             label={'Location'}
@@ -363,73 +384,58 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             placeholder={'e.g., Denver, CO'}
                             autoCorrect={false}
                             autoCapitalize={'none'}
-                            style={[
-                                formStyles.formField,
-                                activeField === 'location' || (personal.location || '').length > 0
-                                    ? formStyles.active
-                                    : formStyles.inactive,
-                            ]}
-                            onFocus={(): void => setActiveField('location')}
-                            onBlur={(): void => setActiveField(null)}
                             onChangeText={(value: string): void => setPersonal({ ...personal, location: value })}
-                            underlineColorAndroid={transparent}
+                            underlineColorAndroid={'transparent'}
+                            multiline
+                            numberOfLines={1}
+                            blurOnSubmit={true}
+                            returnKeyType={'done'}
+                            scrollEnabled={false}
                         />
-                        {/* <TextInput
-                            label={'Phone Number'}
-                            value={personal.phone}
-                            placeholder={'e.g., 123-456-7890'}
-                            autoCorrect={false}
-                            autoCapitalize={'none'}
-                            style={[
-                                formStyles.formField,
-                                activeField === 'phone' || (personal.phone || '').length > 0
-                                    ? formStyles.active
-                                    : formStyles.inactive,
-                            ]}
-                            onFocus={(): void => setActiveField('phone')}
-                            onBlur={(): void => setActiveField(null)}
-                            onChangeText={(value: string): void => setPersonal({ ...personal, phone: value })}
-                            underlineColorAndroid={transparent}
-                        />
-                        <Divider /> */}
-                        <TextInput
-                            label={'Date of Birth'}
-                            value={personal.birthday}
-                            placeholder={'MM/DD/YYYY'}
-                            autoCorrect={false}
-                            autoCapitalize={'none'}
-                            style={[
-                                formStyles.formField,
-                                activeField === 'birthday' || (personal.birthday || '').length > 0
-                                    ? formStyles.active
-                                    : formStyles.inactive,
-                            ]}
-                            onFocus={(): void => {
-                                setActiveField('birthday');
-                                Keyboard.dismiss();
-                            }}
-                            underlineColorAndroid={transparent}
-                        />
-                        <DateTimePicker
-                            date={new Date(personal.birthday || Date.now())}
-                            isVisible={activeField === 'birthday'}
-                            onConfirm={(date): void => {
-                                setPersonal({ ...personal, birthday: format(new Date(date), 'MM/dd/yyyy') });
-                                setActiveField(null);
-                            }}
-                            onCancel={(): void => setActiveField(null)}
-                        />
+                        <Stack>
+                            <TextInput
+                                label={'Date of Birth'}
+                                value={personal.birthday}
+                                placeholder={'MM/DD/YYYY'}
+                                autoCorrect={false}
+                                autoCapitalize={'none'}
+                                onFocus={(): void => {
+                                    setShowDatePicker(true);
+                                    Keyboard.dismiss();
+                                }}
+                                underlineColorAndroid={'transparent'}
+                                multiline
+                                numberOfLines={1}
+                                blurOnSubmit={true}
+                                returnKeyType={'done'}
+                                scrollEnabled={false}
+                            />
+                            <DateTimePicker
+                                date={getJSDate(personal.birthday)}
+                                isVisible={showDatePicker}
+                                onConfirm={(date): void => {
+                                    setShowDatePicker(false);
+                                    setPersonal({ ...personal, birthday: format(new Date(date), 'MM/dd/yyyy') });
+                                }}
+                                onCancel={(): void => setShowDatePicker(false)}
+                            />
+                        </Stack>
                         <TextInput
                             editable={false}
                             label={'Email Address'}
                             value={personal.email}
                             autoCorrect={false}
                             autoCapitalize={'none'}
-                            style={[formStyles.formField, formStyles.active, { opacity: 0.6 }]}
-                            underlineColorAndroid={transparent}
+                            disabled
+                            underlineColorAndroid={'transparent'}
+                            multiline
+                            numberOfLines={1}
+                            blurOnSubmit={true}
+                            returnKeyType={'done'}
+                            scrollEnabled={false}
                         />
                         <RNPickerSelect
-                            placeholder={{ label: 'Choose One...', value: '', color: blackOpacity(0.25) }}
+                            placeholder={{ label: 'Choose One...', value: '', color: theme.colors.primary }}
                             items={[
                                 { label: 'Under 70', value: '60' },
                                 { label: '70-79', value: '70' },
@@ -438,8 +444,6 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 { label: '100-149', value: '100' },
                                 { label: '150+', value: '150' },
                             ]}
-                            onOpen={(): void => setActiveField('average')}
-                            onClose={(): void => setActiveField(null)}
                             onValueChange={(value: string): void => {
                                 setPersonal({ ...personal, average: value as Average });
                             }}
@@ -448,15 +452,14 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         >
                             <TextInput
                                 editable={false}
-                                style={[
-                                    formStyles.formField,
-                                    activeField === 'average' || (personal.average || '').length > 0
-                                        ? formStyles.active
-                                        : formStyles.inactive,
-                                ]}
                                 label={'Avg. Score (18 Holes)'}
-                                underlineColorAndroid={transparent}
+                                underlineColorAndroid={'transparent'}
                                 value={mapAverageToLabel(personal.average)}
+                                multiline
+                                numberOfLines={1}
+                                blurOnSubmit={true}
+                                returnKeyType={'done'}
+                                scrollEnabled={false}
                             />
                         </RNPickerSelect>
 
@@ -467,211 +470,225 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             placeholder={'I want to be the next Tiger Woods...'}
                             autoCorrect={false}
                             autoCapitalize={'sentences'}
-                            // autoFocus
                             blurOnSubmit={true}
-                            // editable={!lessons.redeemPending}
                             maxLength={255}
                             returnKeyType={'done'}
                             spellCheck
                             textAlignVertical={'top'}
-                            style={[
-                                formStyles.formField,
-                                activeField === 'goals' || (personal.goals || '').length > 0
-                                    ? formStyles.active
-                                    : formStyles.inactive,
-                            ]}
-                            onFocus={(): void => setActiveField('goals')}
-                            onBlur={(): void => setActiveField(null)}
                             onChangeText={(value: string): void => setPersonal({ ...personal, goals: value })}
-                            underlineColorAndroid={transparent}
+                            underlineColorAndroid={'transparent'}
                         />
-                        <Caption style={{ alignSelf: 'flex-end', marginTop: theme.spaces.small }}>{`${
+                        <Typography style={{ alignSelf: 'flex-end', marginTop: theme.spacing.sm }}>{`${
                             255 - (personal.goals || '').length
-                        } Characters Left`}</Caption>
+                        } Characters Left`}</Typography>
                         {!objectsEqual(personal, userData) && (
                             <SEButton
-                                style={formStyles.formField}
                                 title={'Save Changes'}
                                 onPress={(): void => {
-                                    /* TODO Save the settings */
+                                    // @ts-ignore
                                     dispatch(setUserData(personal));
                                     setEditAbout(false);
                                 }}
                             />
                         )}
-                    </View>
+                    </Stack>
                 )}
 
-                <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo }]}>
-                    <Subheading style={listStyles.heading}>{'User Settings'}</Subheading>
-                </View>
-                <>
-                    <Divider />
-                    <List.Item
-                        title={'Swing Handedness'}
-                        titleEllipsizeMode={'tail'}
-                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
-                        style={listStyles.item}
-                        titleStyle={{ marginLeft: -8 }}
-                        descriptionStyle={{ marginLeft: -8 }}
-                        right={({ style, ...rightProps }): JSX.Element => (
-                            <View style={[flexStyles.row, style]} {...rightProps}>
-                                <Body>
-                                    {settings.handedness.charAt(0).toUpperCase() + settings.handedness.substr(1)}
-                                </Body>
-                                <MatIcon
-                                    name={'chevron-right'}
-                                    size={theme.sizes.small}
-                                    style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
-                                />
-                            </View>
-                        )}
-                    />
-                    <Divider />
-                </>
-                <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo }]}>
-                    <Subheading style={listStyles.heading}>{'Camera Settings'}</Subheading>
-                </View>
-                <>
-                    <Divider />
-                    <List.Item
+                <SectionHeader title={'User Settings'} style={{ marginTop: theme.spacing.xl }} />
+                <ListItem
+                    title={'Swing Handedness'}
+                    titleEllipsizeMode={'tail'}
+                    topDivider
+                    bottomDivider
+                    style={{ marginHorizontal: -1 * theme.spacing.md }}
+                    // @ts-ignore
+                    onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
+                    right={({ style, ...rightProps }): JSX.Element => (
+                        <Stack direction={'row'} align={'center'} style={[style, { marginRight: 0 }]} {...rightProps}>
+                            <Typography>
+                                {settings.handedness.charAt(0).toUpperCase() + settings.handedness.substring(1)}
+                            </Typography>
+                            <MatIcon
+                                name={'chevron-right'}
+                                size={theme.size.md}
+                                color={theme.colors.primary}
+                                style={{ marginRight: -1 * theme.spacing.md }}
+                            />
+                        </Stack>
+                    )}
+                />
+
+                <SectionHeader title={'Camera Settings'} style={{ marginTop: theme.spacing.xl }} />
+                <Stack style={{ marginHorizontal: -1 * theme.spacing.md }}>
+                    <ListItem
                         title={'Recording Duration'}
                         titleEllipsizeMode={'tail'}
+                        topDivider
+                        bottomDivider
+                        // @ts-ignore
                         onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'duration' })}
-                        style={listStyles.item}
-                        titleStyle={{ marginLeft: -8 }}
-                        descriptionStyle={{ marginLeft: -8 }}
                         right={({ style, ...rightProps }): JSX.Element => (
-                            <View style={[flexStyles.row, style]} {...rightProps}>
-                                <Body>{`${settings.duration}s`}</Body>
+                            <Stack
+                                direction={'row'}
+                                align={'center'}
+                                style={[style, { marginRight: 0 }]}
+                                {...rightProps}
+                            >
+                                <Typography>{`${settings.duration}s`}</Typography>
                                 <MatIcon
                                     name={'chevron-right'}
-                                    size={theme.sizes.small}
-                                    style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
                                 />
-                            </View>
+                            </Stack>
                         )}
                     />
-                    <Divider />
-                    <List.Item
+                    <ListItem
                         title={'Recording Delay'}
                         titleEllipsizeMode={'tail'}
+                        bottomDivider
+                        // @ts-ignore
                         onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'delay' })}
-                        style={listStyles.item}
-                        titleStyle={{ marginLeft: -8 }}
-                        descriptionStyle={{ marginLeft: -8 }}
                         right={({ style, ...rightProps }): JSX.Element => (
-                            <View style={[flexStyles.row, style]} {...rightProps}>
-                                <Body>{`${settings.delay}s`}</Body>
+                            <Stack
+                                direction={'row'}
+                                align={'center'}
+                                style={[style, { marginRight: 0 }]}
+                                {...rightProps}
+                            >
+                                <Typography>{`${settings.delay}s`}</Typography>
                                 <MatIcon
                                     name={'chevron-right'}
-                                    size={theme.sizes.small}
-                                    style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
                                 />
-                            </View>
+                            </Stack>
                         )}
                     />
-                    <Divider />
-                    <List.Item
+                    <ListItem
                         title={'Stance Overlay'}
                         titleEllipsizeMode={'tail'}
+                        bottomDivider
+                        // @ts-ignore
                         onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'overlay' })}
-                        style={listStyles.item}
-                        titleStyle={{ marginLeft: -8 }}
-                        descriptionStyle={{ marginLeft: -8 }}
                         right={({ style, ...rightProps }): JSX.Element => (
-                            <View style={[flexStyles.row, style]} {...rightProps}>
-                                <Body>{`${settings.overlay ? 'On' : 'Off'}`}</Body>
+                            <Stack
+                                direction={'row'}
+                                align={'center'}
+                                style={[style, { marginRight: 0 }]}
+                                {...rightProps}
+                            >
+                                <Typography>{`${settings.overlay ? 'On' : 'Off'}`}</Typography>
                                 <MatIcon
                                     name={'chevron-right'}
-                                    size={theme.sizes.small}
-                                    style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
                                 />
-                            </View>
+                            </Stack>
                         )}
                     />
-                    <Divider />
-                    <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.jumbo }]}>
-                        <Subheading style={listStyles.heading}>{'Email Notifications'}</Subheading>
-                    </View>
-                    <>
-                        <Divider />
-                        <List.Item
-                            title={'Lessons'}
-                            titleEllipsizeMode={'tail'}
-                            onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'lessons' })}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{`${lessons ? 'On' : 'Off'}`}</Body>
-                                    <MatIcon
-                                        name={'chevron-right'}
-                                        size={theme.sizes.small}
-                                        style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
-                                    />
-                                </View>
-                            )}
-                        />
-                        <List.Item
-                            title={'Marketing'}
-                            titleEllipsizeMode={'tail'}
-                            onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'marketing' })}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{`${marketing ? 'On' : 'Off'}`}</Body>
-                                    <MatIcon
-                                        name={'chevron-right'}
-                                        size={theme.sizes.small}
-                                        style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
-                                    />
-                                </View>
-                            )}
-                        />
-                        <List.Item
-                            title={'Newsletters'}
-                            titleEllipsizeMode={'tail'}
-                            onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'newsletter' })}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{`${newsletter ? 'On' : 'Off'}`}</Body>
-                                    <MatIcon
-                                        name={'chevron-right'}
-                                        size={theme.sizes.small}
-                                        style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
-                                    />
-                                </View>
-                            )}
-                        />
-                        <List.Item
-                            title={'Reminders'}
-                            titleEllipsizeMode={'tail'}
-                            onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'reminders' })}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{`${reminders ? 'On' : 'Off'}`}</Body>
-                                    <MatIcon
-                                        name={'chevron-right'}
-                                        size={theme.sizes.small}
-                                        style={{ marginLeft: theme.spaces.small, marginRight: -1 * theme.spaces.small }}
-                                    />
-                                </View>
-                            )}
-                        />
-                        <Divider />
-                    </>
-                </>
+                </Stack>
+
+                <SectionHeader title={'Email Notifications'} style={{ marginTop: theme.spacing.xl }} />
+                <Stack style={{ marginHorizontal: -1 * theme.spacing.md }}>
+                    <ListItem
+                        topDivider
+                        bottomDivider
+                        title={'Lessons'}
+                        titleEllipsizeMode={'tail'}
+                        // @ts-ignore
+                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'lessons' })}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <Stack
+                                direction={'row'}
+                                align={'center'}
+                                style={[style, { marginRight: 0 }]}
+                                {...rightProps}
+                            >
+                                <Typography>{`${lessons ? 'On' : 'Off'}`}</Typography>
+                                <MatIcon
+                                    name={'chevron-right'}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                />
+                            </Stack>
+                        )}
+                    />
+                    <ListItem
+                        bottomDivider
+                        title={'Marketing'}
+                        titleEllipsizeMode={'tail'}
+                        // @ts-ignore
+                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'marketing' })}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <Stack
+                                direction={'row'}
+                                align={'center'}
+                                style={[style, { marginRight: 0 }]}
+                                {...rightProps}
+                            >
+                                <Typography>{`${marketing ? 'On' : 'Off'}`}</Typography>
+                                <MatIcon
+                                    name={'chevron-right'}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                />
+                            </Stack>
+                        )}
+                    />
+                    <ListItem
+                        bottomDivider
+                        title={'Newsletters'}
+                        titleEllipsizeMode={'tail'}
+                        // @ts-ignore
+                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'newsletter' })}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <Stack
+                                direction={'row'}
+                                align={'center'}
+                                style={[style, { marginRight: 0 }]}
+                                {...rightProps}
+                            >
+                                <Typography>{`${newsletter ? 'On' : 'Off'}`}</Typography>
+                                <MatIcon
+                                    name={'chevron-right'}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                />
+                            </Stack>
+                        )}
+                    />
+                    <ListItem
+                        bottomDivider
+                        title={'Reminders'}
+                        titleEllipsizeMode={'tail'}
+                        // @ts-ignore
+                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'reminders' })}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <Stack
+                                direction={'row'}
+                                align={'center'}
+                                style={[style, { marginRight: 0 }]}
+                                {...rightProps}
+                            >
+                                <Typography>{`${reminders ? 'On' : 'Off'}`}</Typography>
+                                <MatIcon
+                                    name={'chevron-right'}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                />
+                            </Stack>
+                        )}
+                    />
+                </Stack>
             </ScrollView>
-        </View>
+        </Stack>
     );
 };

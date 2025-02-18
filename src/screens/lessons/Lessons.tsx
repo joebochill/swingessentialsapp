@@ -1,30 +1,18 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-// Components
-import { View, SectionList } from 'react-native';
-import { Body, CollapsibleHeaderLayout, LessonsTutorial, wrapIcon } from '../../components';
+import { RefreshControl, SectionList } from 'react-native';
+import { Typography, LessonsTutorial, SectionHeader, Stack, ListItem } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-
-// Styles
-import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
-import { useTheme, List, Divider, Subheading } from 'react-native-paper';
 import bg from '../../images/banners/lessons.jpg';
-
-// Constants
 import { ROUTES } from '../../constants/routes';
-
-// Utilities
 import { getLongDate, makeGroups } from '../../utilities';
-
-// Types
 import { ApplicationState } from '../../__types__';
-// Actions
 import { loadLessons } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-
-const AddIcon = wrapIcon({ IconClass: MatIcon, name: 'add-circle' });
+import { useAppTheme } from '../../theme';
+import { CollapsibleHeader } from '../../components/CollapsibleHeader/CollapsibleHeader';
+import { useCollapsibleHeader } from '../../components/CollapsibleHeader/useCollapsibleHeader';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 type Lesson = {
@@ -45,117 +33,128 @@ export const Lessons: React.FC<StackScreenProps<RootStackParamList, 'Lessons'>> 
     const lessons = useSelector((state: ApplicationState) => state.lessons);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const myLessons = lessons.pending.concat(lessons.closed);
+    // @ts-ignore
     const sections = makeGroups(myLessons, (lesson: Lesson) => getLongDate(lesson.request_date));
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
+    const theme = useAppTheme();
     const dispatch = useDispatch();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     return (
-        <CollapsibleHeaderLayout
-            title={'Your Lessons'}
-            subtitle={"See how far you've come"}
-            backgroundImage={bg}
-            refreshing={lessons.loading}
-            onRefresh={(): void => dispatch(loadLessons())}
-            actionItems={[
-                {
-                    icon: AddIcon,
-                    onPress: (): void => props.navigation.navigate(ROUTES.SUBMIT),
-                },
-            ]}
-            navigation={props.navigation}
-        >
+        <>
+            <CollapsibleHeader
+                title={'Your Lessons'}
+                subtitle={"See how far you've come"}
+                backgroundImage={bg}
+                navigationIcon={{
+                    name: 'arrow-back',
+                    // @ts-ignore
+                    onPress: () => props.navigation.pop(),
+                }}
+                actionItems={[
+                    {
+                        name: 'add-circle',
+                        // @ts-ignore
+                        onPress: (): void => props.navigation.navigate(ROUTES.SUBMIT),
+                    },
+                ]}
+                {...headerProps}
+            />
             <SectionList
-                renderSectionHeader={({ section: { bucketName, index } }): JSX.Element => (
-                    <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: theme.spaces.jumbo } : {}]}>
-                        <Subheading style={listStyles.heading}>{bucketName}</Subheading>
-                    </View>
+                {...scrollProps}
+                contentContainerStyle={contentProps.contentContainerStyle}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={lessons.loading}
+                        // @ts-ignore
+                        onRefresh={(): void => dispatch(loadLessons())}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
+                    />
+                }
+                renderSectionHeader={({ section: { bucketName } }): JSX.Element => (
+                    <SectionHeader
+                        title={bucketName}
+                        style={{ marginTop: theme.spacing.xxl, marginHorizontal: theme.spacing.md }}
+                    />
                 )}
                 sections={sections}
                 stickySectionHeadersEnabled={false}
                 ListEmptyComponent={
-                    <>
-                        <Divider />
-                        <List.Item
-                            title={'Welcome to Swing Essentials!'}
-                            onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: null })}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>
-                                    <MatIcon
-                                        name={'chevron-right'}
-                                        size={theme.sizes.small}
-                                        style={{ marginRight: -1 * theme.spaces.small }}
-                                    />
-                                </View>
-                            )}
-                        />
-                        <Divider />
-                    </>
+                    <ListItem
+                        topDivider
+                        bottomDivider
+                        title={'Welcome to Swing Essentials!'}
+                        style={{ marginTop: theme.spacing.xxl }}
+                        // @ts-ignore
+                        onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: null })}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
+                                <Typography variant={'labelMedium'} style={{ marginRight: theme.spacing.sm }}>
+                                    NEW
+                                </Typography>
+                                <MatIcon
+                                    name={'chevron-right'}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                />
+                            </Stack>
+                        )}
+                    />
                 }
                 renderItem={({ item, index }): JSX.Element =>
                     item.response_video ? (
-                        <>
-                            {index === 0 && <Divider />}
-                            <List.Item
-                                title={role === 'administrator' ? item.username : item.request_date}
-                                description={
-                                    role === 'administrator'
-                                        ? item.request_date
-                                        : item.type === 'in-person'
-                                        ? 'In-person lesson'
-                                        : 'Remote lesson'
-                                }
-                                onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
-                                style={listStyles.item}
-                                titleStyle={{ marginLeft: -8 }}
-                                descriptionStyle={{ marginLeft: -8 }}
-                                right={({ style, ...rightProps }): JSX.Element => (
-                                    <View style={[flexStyles.row, style]} {...rightProps}>
-                                        {!item.viewed && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}
-                                        <MatIcon
-                                            name={'chevron-right'}
-                                            size={theme.sizes.small}
-                                            style={{ marginRight: -1 * theme.spaces.small }}
-                                        />
-                                    </View>
-                                )}
-                            />
-                            <Divider />
-                        </>
+                        <ListItem
+                            bottomDivider
+                            topDivider={index === 0}
+                            title={role === 'administrator' ? item.username : item.request_date}
+                            description={
+                                role === 'administrator'
+                                    ? item.request_date
+                                    : item.type === 'in-person'
+                                    ? 'In-person lesson'
+                                    : 'Remote lesson'
+                            }
+                            // @ts-ignore
+                            onPress={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
+                            right={({ style, ...rightProps }): JSX.Element => (
+                                <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
+                                    {!item.viewed && (
+                                        <Typography variant={'labelMedium'} style={{ marginRight: theme.spacing.sm }}>
+                                            NEW
+                                        </Typography>
+                                    )}
+                                    <MatIcon
+                                        name={'chevron-right'}
+                                        size={theme.size.md}
+                                        color={theme.colors.primary}
+                                        style={{ marginRight: -1 * theme.spacing.md }}
+                                    />
+                                </Stack>
+                            )}
+                        />
                     ) : (
-                        <>
-                            {index === 0 && <Divider />}
-                            <List.Item
-                                title={role === 'administrator' ? item.username : item.request_date}
-                                description={
-                                    role === 'administrator'
-                                        ? item.request_date
-                                        : item.type === 'in-person'
-                                        ? 'In-person lesson'
-                                        : 'Remote lesson'
-                                }
-                                style={listStyles.item}
-                                titleStyle={{ marginLeft: -8 }}
-                                descriptionStyle={{ marginLeft: -8 }}
-                                right={({ style, ...rightProps }): JSX.Element => (
-                                    <View style={[flexStyles.row, style]} {...rightProps}>
-                                        <Body style={{ marginRight: theme.spaces.small }}>IN PROGRESS</Body>
-                                    </View>
-                                )}
-                            />
-                            <Divider />
-                        </>
+                        <ListItem
+                            bottomDivider
+                            topDivider={index === 0}
+                            title={role === 'administrator' ? item.username : item.request_date}
+                            description={
+                                role === 'administrator'
+                                    ? item.request_date
+                                    : item.type === 'in-person'
+                                    ? 'In-person lesson'
+                                    : 'Remote lesson'
+                            }
+                            right={({ style, ...rightProps }): JSX.Element => (
+                                <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
+                                    <Typography style={{ marginRight: theme.spacing.md }}>IN PROGRESS</Typography>
+                                </Stack>
+                            )}
+                        />
                     )
                 }
                 keyExtractor={(item): string => `complete_${item.request_id}`}
             />
             <LessonsTutorial />
-        </CollapsibleHeaderLayout>
+        </>
     );
 };

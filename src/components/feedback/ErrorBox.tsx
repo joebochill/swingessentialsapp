@@ -1,32 +1,34 @@
 import React from 'react';
 // Components
-import { StyleProp, StyleSheet, TextProps, TextStyle } from 'react-native';
-import { Body } from '../../components';
-import { useTheme } from 'react-native-paper';
+import { TextProps } from 'react-native';
+import { Typography } from '../../components';
+import { useAppTheme } from '../../theme';
 
-const useStyles = (
-    theme: ReactNativePaper.Theme
-): StyleSheet.NamedStyles<{
-    error: StyleProp<TextStyle>;
-}> =>
-    StyleSheet.create({
-        error: {
-            margin: 0,
-            paddingVertical: theme.spaces.xSmall, // 4,
-            paddingHorizontal: 16, // to match form field padding from RNP
-            backgroundColor: theme.colors.error,
-            color: theme.colors.onPrimary,
-            fontSize: theme.fontSizes[14],
-        },
-    });
 type ErrorBoxProps = TextProps & {
     show?: boolean;
     error: string;
 };
 export const ErrorBox: React.FC<ErrorBoxProps> = (props) => {
     const { style } = props;
-    const theme = useTheme();
-    const styles = useStyles(theme);
+    const theme = useAppTheme();
 
-    return props.show ? <Body style={[styles.error, style]}>{props.error}</Body> : null;
+    return props.show ? (
+        <Typography
+            variant={'bodyLarge'}
+            style={[
+                {
+                    margin: 0,
+                    paddingVertical: theme.spacing.sm,
+                    paddingHorizontal: theme.spacing.md,
+                    backgroundColor: theme.colors.error,
+                    borderRadius: theme.roundness,
+                    overflow: 'hidden',
+                    color: theme.colors.onError,
+                },
+                ...(Array.isArray(style) ? style : [style]),
+            ]}
+        >
+            {props.error}
+        </Typography>
+    ) : null;
 };

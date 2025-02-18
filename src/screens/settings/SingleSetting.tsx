@@ -1,22 +1,15 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-// Components
-import { View } from 'react-native';
-import { Body, SEHeader } from '../../components/index';
+import { Typography, Stack, ListItem } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-// Styles
-import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
-import { useTheme, List, Divider } from 'react-native-paper';
-
-// Types
 import { SettingsState, ApplicationState, NotificationSettings } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
-// Redux
 import { putSettings } from '../../redux/actions/SettingsActions';
-// Constants
-import { HEADER_COLLAPSED_HEIGHT } from '../../constants';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../theme';
+import { Header } from '../../components/CollapsibleHeader/Header';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
 
 type SettingType = {
     name: Exclude<keyof SettingsState, 'loading' | 'notifications'> | keyof SettingsState['notifications'];
@@ -87,12 +80,9 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
     const settings = useSelector((state: ApplicationState) => state.settings);
     const token = useSelector((state: ApplicationState) => state.login.token);
     const { setting: currentSettingName } = route.params;
-
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
+    const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
 
     const [value, setValue] = useState(() => {
         if (Object.keys(settings.notifications).includes(currentSettingName)) {
@@ -120,18 +110,20 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
                     break;
             }
             dispatch(
+                // @ts-ignore
                 putSettings({
                     [key]: value,
                 })
             );
         } else {
             dispatch(
+                // @ts-ignore
                 putSettings({
                     [currentSettingName]: value,
                 })
             );
         }
-    }, [dispatch, currentSettingName, value]);
+    }, [dispatch, currentSettingName, value, settings.notifications]);
 
     useEffect(() => {
         if (!token) {
@@ -146,56 +138,54 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
     const currentSetting: SettingType = SETTINGS.filter((setting) => setting.name === currentSettingName)[0];
 
     return (
-        <View style={sharedStyles.pageContainer}>
-            <SEHeader
+        <Stack
+            style={[
+                {
+                    flex: 1,
+                    backgroundColor: theme.colors.background,
+                    paddingTop: COLLAPSED_HEIGHT + insets.top,
+                },
+            ]}
+        >
+            <Header
                 mainAction={'back'}
                 title={'Settings'}
                 subtitle={currentSetting.label}
                 showAuth={false}
                 onNavigate={(): void => updateSetting()}
                 navigation={navigation}
+                fixed
             />
-            <View
-                style={[
-                    sharedStyles.pageContainer,
-                    {
-                        paddingTop: HEADER_COLLAPSED_HEIGHT + theme.spaces.medium,
-                    },
-                ]}
-            >
+            <Stack style={{ marginTop: theme.spacing.md }}>
                 {currentSetting.values.map((val, index) => (
-                    <View key={`option_${index}`}>
-                        {index === 0 && <Divider />}
-                        <List.Item
-                            title={`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
-                                typeof val === 'number' ? 's' : ''
-                            }`}
-                            titleEllipsizeMode={'tail'}
-                            onPress={(): void => setValue(val)}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    {caseSame(value, val) && (
-                                        <MatIcon
-                                            name={'check'}
-                                            size={theme.sizes.small}
-                                            color={theme.colors.accent}
-                                            style={{
-                                                marginRight: -1 * theme.spaces.xSmall,
-                                            }}
-                                        />
-                                    )}
-                                </View>
-                            )}
-                        />
-                        <Divider />
-                    </View>
+                    <ListItem
+                        key={`option_${index}`}
+                        topDivider={index === 0}
+                        bottomDivider
+                        title={`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
+                            typeof val === 'number' ? 's' : ''
+                        }`}
+                        titleEllipsizeMode={'tail'}
+                        onPress={(): void => setValue(val)}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
+                                {/* @ts-ignore */}
+                                {caseSame(value, val) && (
+                                    <MatIcon
+                                        name={'check'}
+                                        size={theme.size.md}
+                                        color={theme.colors.primary}
+                                        style={{ marginRight: -1 * theme.spacing.md }}
+                                    />
+                                )}
+                            </Stack>
+                        )}
+                    />
                 ))}
-                <Body style={[flexStyles.paddingHorizontal, { marginTop: theme.spaces.medium }]}>
+                <Typography style={{ marginTop: theme.spacing.sm, marginHorizontal: theme.spacing.md }}>
                     {currentSetting.description}
-                </Body>
-            </View>
-        </View>
+                </Typography>
+            </Stack>
+        </Stack>
     );
 };

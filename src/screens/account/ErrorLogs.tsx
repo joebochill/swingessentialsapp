@@ -2,12 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
-import { View } from 'react-native';
-import { SEButton, CollapsibleHeaderLayout, wrapIcon, HeaderIcon } from '../../components';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
-
-// Styles
-import { useFlexStyles } from '../../styles';
+import { SEButton, Stack, Typography, IconProps } from '../../components';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
@@ -15,13 +10,11 @@ import { Logger } from '../../utilities/logging';
 // Types
 import { LOAD_LOGS } from '../../redux/actions/types';
 import { ApplicationState } from '../../__types__';
-import { useTheme, Caption } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-
-// Icons
-const RefreshIcon = wrapIcon({ IconClass: MatIcon, name: 'refresh' });
-const MailIcon = wrapIcon({ IconClass: MatIcon, name: 'mail' });
+import { useAppTheme } from '../../theme';
+import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { RefreshControl, ScrollView } from 'react-native';
 
 export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> = (props) => {
     const [logs, setLogs] = useState('');
@@ -29,8 +22,8 @@ export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> =
     const token = useSelector((state: ApplicationState) => state.login.token);
     const loading = useSelector((state: ApplicationState) => state.logs.loading);
     const username = useSelector((state: ApplicationState) => state.userData.username);
-    const theme = useTheme();
-    const flexStyles = useFlexStyles(theme);
+    const theme = useAppTheme();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     const getLogs = useCallback(async (): Promise<void> => {
         dispatch({ type: LOAD_LOGS.REQUEST });
@@ -59,9 +52,9 @@ export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> =
         void getLogs();
     }, [getLogs]);
 
-    const actionItems: HeaderIcon[] = [
+    const actionItems: IconProps[] = [
         {
-            icon: RefreshIcon,
+            name: 'refresh',
             onPress: (): void => {
                 void getLogs();
             },
@@ -69,31 +62,43 @@ export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> =
     ];
     if (logs.length > 0) {
         actionItems.push({
-            icon: MailIcon,
+            name: 'mail',
             onPress: () => sendMail(),
         });
     }
     actionItems.reverse();
     return (
-        <CollapsibleHeaderLayout
-            title={'Error Logs'}
-            subtitle={'What went wrong'}
-            refreshing={loading}
-            showAuth={false}
-            actionItems={actionItems}
-            onRefresh={(): void => {
-                void getLogs();
-            }}
-            navigation={props.navigation}
-        >
-            <View style={[flexStyles.paddingHorizontal]}>
-                <SEButton
-                    title={'SEND ERROR REPORT'}
-                    onPress={(): void => sendMail()}
-                    style={{ marginBottom: theme.spaces.medium }}
-                />
-                <Caption style={{ color: theme.colors.text }}>{logs}</Caption>
-            </View>
-        </CollapsibleHeaderLayout>
+        <>
+            <Header
+                title={'Error Logs'}
+                subtitle={'What went wrong'}
+                showAuth={false}
+                actionItems={actionItems}
+                navigation={props.navigation}
+                {...headerProps}
+            />
+            <ScrollView
+                {...scrollProps}
+                contentContainerStyle={contentProps.contentContainerStyle}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={loading}
+                        onRefresh={(): void => {
+                            void getLogs();
+                        }}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
+                    />
+                }
+            >
+                <Stack style={{ paddingHorizontal: theme.spacing.md, marginTop: theme.spacing.md }}>
+                    <SEButton
+                        title={'SEND ERROR REPORT'}
+                        onPress={(): void => sendMail()}
+                        style={{ marginBottom: theme.spacing.md }}
+                    />
+                    <Typography variant={'bodySmall'}>{logs}</Typography>
+                </Stack>
+            </ScrollView>
+        </>
     );
 };

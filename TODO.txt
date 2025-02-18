@@ -1,43 +1,67 @@
-LAST ITEMS FOR 3.0.0 RELEASE:
-    FIX:
+Remaining Work:
 
-    TEST:
-    - NAme in drawer not updating after autologout
-    - keyboard not persisting on submit page
-    - Pause videos when opening full lesson
-    - Disable Landscape mode
-    - Disable video preview looping (or stop on end)
-    - IAP Pricing long decimals
-    - Test deep linking
-    - Final Device testing
-    - force users off various screens when no token
-    - Skip button z-index for tablets
-    - error email (lesson) no username
-        should be fixed after switching to real API
-    
+- Update the documentation / Readme
+- Check all TODO comments
 
 
-FUTURE FUNCTIONALITY FOR 3.1.0 RELEASE
-    FIX:
-    - Better error messages when no network
-    - android tablet videos are too large
-    - Optimize bundle size
-    - Record in H.264
-    - Remove unused icon fonts for ios
-    - Cancel purchase causes a refresh
-    - Scrollto not working on submit page
+Test Scenarios: [XX] = Both platforms tested [X] iOS only tested
+
+XX  Change Every Setting
+XX  Change Profile Image
+XX  Contact
+XX  Send Error Report
+XX  View Lessons
+XX  Play Lessons
+X   Submit New Swing
+XX  Record a Video
+XX  Video Timing settings
+XX  Video overlay settings
+XX  Video duration settings
+XX  Video uses flash correctly
+XX  Choose Video from Camera Roll
+XX  Load Packages
+X   Order New Packages
+XX  Log In
+XX  Log Out
+X-  Biometric login
+XX  Remember Username functionality
+X   Submit Registration
+X   Complete Registration / Validate Email
+XX  Validator on exiting username/others
+X   Deep linking
+XX  Automatic Logout
 
 
-    - Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
-    - API for single Blog/Tip
-    - Lazy loading for lists
-    - Loading/Empty states
-    - Account Details Screen + Edit
-    - Order History API
-    - Order History Screen
-    - Contact Us Screen
-    - Store data locally (Async)
-    - Unit tests
-    - App Banners on web
-    - Error logging as SQLite DB
-    - Remote announcements/messages via API
+ISSUES IDENTIFIED
+- Sign in/out (especially out) is very slow/laggy
+- IOS receipts not getting logged in DB
+- ANDROID: Registration Deep Links are not working
+- Purchases work, but they are SLOW (sandbox only issue I hope)
+- Order screen prices are reversed
+
+
+SPORADIC ISSUES:
+- Contact Us cancel button doesn't close
+- (sporadic) refresh indicators getting stuck open
+- Navigating back to login from register crashes the application
+- Youtube videos don't load on cellular
+- Sometimes youtube videos show white screen without spinner (replicated latest 2-23)
+- Fix long delay when clicking purchase button (sandbox only maybe)
+- changing profile photo works but is slow
+- changing settings works but is slow
+
+Future Enhancements
+
+- Update Redux to use toolkit
+- Better error messages when no network
+- Local caching of data (lessons, tips, blogs)
+- Unit tests
+- App Banners on web
+- Error logging as SQLite DB
+- Remote announcements/messages via API
+- Order History API
+- Order History Screen
+- Contact Us Screen
+- Loading/Empty states
+- Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
+- Convert back-end to NodeJS
