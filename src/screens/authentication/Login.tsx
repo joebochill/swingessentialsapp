@@ -3,25 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useCompare } from '../../utilities';
 
 // Components
-import {
-    Image,
-    ImageStyle,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleProp,
-    StyleSheet,
-    TextStyle,
-    View,
-    ViewStyle,
-} from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Utilities
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Logger } from '../../utilities/logging';
 
 // Types
@@ -29,15 +17,12 @@ import { Logger } from '../../utilities/logging';
 import { ApplicationState } from '../../__types__';
 
 // Styles
-import { transparent } from '../../styles/colors';
-import { unit } from '../../styles/sizes';
-import { useTheme, TextInput, Switch } from 'react-native-paper';
+import { TextInput, Switch } from 'react-native-paper';
 import { height } from '../../utilities/dimensions';
-import { useFormStyles } from '../../styles';
 import logo from '../../images/logo-big.png';
 
 // SE Components
-import { SEButton, ErrorBox, BackgroundImage, Body } from '../../components';
+import { SEButton, ErrorBox, BackgroundImage, Typography, Stack } from '../../components';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
@@ -46,42 +31,8 @@ import { ROUTES } from '../../constants/routes';
 import { requestLogin } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-
-const useStyles = (
-    theme: ReactNativePaper.Theme
-): StyleSheet.NamedStyles<{
-    container: StyleProp<ViewStyle>;
-    logo: ImageStyle;
-    scrollContainer: StyleProp<ViewStyle>;
-    toggle: StyleProp<ViewStyle>;
-    toggleLabel: StyleProp<TextStyle>;
-}> =>
-    StyleSheet.create({
-        container: {
-            flex: 1,
-        },
-        logo: {
-            height: unit(60),
-            width: '100%',
-            resizeMode: 'contain',
-            marginBottom: theme.spaces.medium,
-        },
-        scrollContainer: {
-            minHeight: height - getStatusBarHeight(),
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingHorizontal: theme.spaces.medium,
-        },
-        toggle: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-        },
-        toggleLabel: {
-            fontSize: theme.fontSizes[14],
-            marginRight: theme.spaces.small,
-        },
-    });
+import { useAppTheme } from '../../theme';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type BiometryState = {
     available: boolean;
@@ -107,9 +58,9 @@ const initialCredentials: CredentialsState = {
 };
 
 export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (props) => {
-    const theme = useTheme();
-    const styles = useStyles(theme);
-    const formStyles = useFormStyles(theme);
+    const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
+
     // Local Component State
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -119,7 +70,6 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
     const [touchFail, setTouchFail] = useState('');
     const [biometry, setBiometry] = useState(initialBiometry);
     const [credentials, setCredentials] = useState(initialCredentials);
-    const [activeField, setActiveField] = useState<'username' | 'password' | null>(null);
 
     // Redux State
     const pending = useSelector((state: ApplicationState) => state.login.pending);
@@ -141,7 +91,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                 setUsername(storedUser || username);
                 setRemember(save === 'yes');
                 setUseBiometry(use === 'yes');
-            } catch (err) {
+            } catch (err: any) {
                 void Logger.logError({
                     code: 'LGN100',
                     description: 'Failed to load stored settings.',
@@ -151,6 +101,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
             }
         };
         void loadSavedSettings();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -160,6 +111,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                 const biometricType = await TouchID.isSupported();
                 setBiometry({
                     ...biometry,
+                    // @ts-ignore
                     type: biometricType === true ? 'Fingerprint' : biometricType,
                     available: true,
                 });
@@ -168,6 +120,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
             }
         };
         void touchCheck();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -177,22 +130,22 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                 const keychainCredentials = await Keychain.getGenericPassword();
 
                 if (keychainCredentials) {
-                    setCredentials({
-                        ...credentials,
+                    setCredentials((c) => ({
+                        ...c,
                         stored: true,
                         savedCredentials: keychainCredentials,
-                    });
+                    }));
                     if (remember) {
                         setUsername(keychainCredentials.username);
                     }
                 } else {
-                    setCredentials({
-                        ...credentials,
+                    setCredentials((c) => ({
+                        ...c,
                         stored: false,
                         savedCredentials: undefined,
-                    });
+                    }));
                 }
-            } catch (err) {
+            } catch (err: any) {
                 void Logger.logError({
                     code: 'LGN200',
                     description: 'Failed to load stored credentials.',
@@ -223,12 +176,13 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
     }, [failuresChanged, failures, credentials]);
 
     const onLogin = useCallback(
-        (user, pass) => {
+        (user: string, pass: string) => {
             if (!user || !pass) {
                 setError(true);
                 return;
             }
             setError(false);
+            // @ts-ignore
             dispatch(requestLogin({ username: user, password: pass }, remember, useBiometry));
         },
         [dispatch, useBiometry, remember]
@@ -247,7 +201,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
         try {
             await TouchID.authenticate('Secure Sign In');
             onLogin(credentials.savedCredentials.username, credentials.savedCredentials.password);
-        } catch (err) {
+        } catch (err: any) {
             const label = biometry.type === 'None' ? 'Biometric authentication' : biometry.type;
             switch (err.name) {
                 case 'LAErrorAuthenticationFailed':
@@ -278,179 +232,207 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
     }, [token, useBiometry, biometry.available, credentials.stored, showBiometricLogin]);
 
     return (
-        <KeyboardAvoidingView
-            style={[styles.container, { backgroundColor: theme.colors.primary }]}
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        >
-            <BackgroundImage />
-            <ScrollView
-                style={{ flex: 1 }}
-                contentContainerStyle={styles.scrollContainer}
-                keyboardShouldPersistTaps={'always'}
-            >
-                {/* LOGO */}
-                <View style={{ width: '100%', maxWidth: unit(500) }}>
-                    <Image source={logo} resizeMethod="resize" style={styles.logo} />
-
-                    {/* Username Field */}
-                    <View>
-                        <TextInput
-                            autoCorrect={false}
-                            autoCapitalize={'none'}
-                            editable={!pending}
-                            style={
-                                activeField === 'username' || username.length > 0
-                                    ? formStyles.active
-                                    : formStyles.inactive
-                            }
-                            label={'Username'}
-                            onFocus={(): void => setActiveField('username')}
-                            onBlur={(): void => setActiveField(null)}
-                            onChangeText={(val: string): void => setUsername(val)}
-                            onSubmitEditing={(): void => {
-                                if (passField.current) {
-                                    passField.current.focus();
-                                }
+        <BackgroundImage style={{ backgroundColor: theme.colors.primary }}>
+            <KeyboardAvoidingView style={[{ flex: 1 }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+                <ScrollView
+                    style={{ flex: 1 }}
+                    contentContainerStyle={{
+                        minHeight: height - insets.top,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        paddingHorizontal: theme.spacing.md,
+                    }}
+                    keyboardShouldPersistTaps={'always'}
+                >
+                    {/* LOGO */}
+                    <View style={{ width: '100%', maxWidth: 500 }}>
+                        {/* @ts-ignore */}
+                        <Image
+                            source={logo}
+                            resizeMethod="resize"
+                            style={{
+                                height: 60,
+                                width: '100%',
+                                resizeMode: 'contain',
+                                marginBottom: theme.spacing.md,
                             }}
-                            placeholder="Enter your username or email address"
-                            returnKeyType={'next'}
-                            underlineColorAndroid={transparent}
-                            value={username}
                         />
-                        {biometry.available && useBiometry && credentials.stored && (
-                            <View
-                                style={{
-                                    position: 'absolute',
-                                    right: theme.spaces.medium,
-                                    bottom: 0,
-                                    height: '100%',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                <MatIcon
-                                    name={'fingerprint'}
-                                    size={theme.sizes.small}
-                                    color={theme.colors.text}
-                                    underlayColor={transparent}
-                                    onPress={(): void => showBiometricLogin()}
-                                />
-                            </View>
-                        )}
-                    </View>
 
-                    {/* Password Field */}
-                    <TextInput
-                        autoCapitalize={'none'}
-                        editable={!pending}
-                        label={'Password'}
-                        style={[
-                            formStyles.formField,
-                            activeField === 'password' || password.length > 0 ? formStyles.active : formStyles.inactive,
-                        ]}
-                        onFocus={(): void => setActiveField('password')}
-                        onBlur={(): void => setActiveField(null)}
-                        onChangeText={(val: string): void => setPassword(val)}
-                        onSubmitEditing={(): void => onLogin(username, password)}
-                        placeholder="Enter your password"
-                        ref={passField}
-                        returnKeyType={'go'}
-                        secureTextEntry
-                        underlineColorAndroid={transparent}
-                        value={password}
-                    />
-
-                    {/* Remember Me Row */}
-                    <View style={[formStyles.formField, formStyles.fieldRow]}>
-                        <View style={styles.toggle}>
-                            <Body style={styles.toggleLabel} color={'onPrimary'}>
-                                Save Username
-                            </Body>
-                            <Switch
-                                value={remember}
-                                onValueChange={(val: boolean): void => {
-                                    setRemember(val);
-                                    void AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
-                                    if (!val) {
-                                        void AsyncStorage.removeItem('@SwingEssentials:lastUser');
-                                        setUsername('');
+                        {/* Username Field */}
+                        <Stack>
+                            <TextInput
+                                autoCorrect={false}
+                                autoCapitalize={'none'}
+                                editable={!pending}
+                                label={'Username'}
+                                onChangeText={(val: string): void => setUsername(val)}
+                                onSubmitEditing={(): void => {
+                                    if (passField.current) {
+                                        // @ts-ignore
+                                        passField.current.focus();
                                     }
                                 }}
-                                ios_backgroundColor={theme.colors.light}
-                                trackColor={{ false: theme.colors.onPrimary, true: theme.colors.accent }}
+                                placeholder="Enter your username or email address"
+                                returnKeyType={'next'}
+                                underlineColorAndroid={'transparent'}
+                                value={username}
                             />
-                        </View>
-                        {biometry.available && (
-                            <View style={styles.toggle}>
-                                <Body color={'onPrimary'} style={[styles.toggleLabel]}>{`Use ${biometry.type}`}</Body>
-                                <Switch
-                                    value={useBiometry}
-                                    onValueChange={(val: boolean): void => {
-                                        setUseBiometry(val);
-                                        void AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
+                            {biometry.available && useBiometry && credentials.stored && (
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        right: theme.spacing.md,
+                                        bottom: 0,
+                                        height: '100%',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
                                     }}
-                                    ios_backgroundColor={theme.colors.light}
-                                    trackColor={{ false: theme.colors.onPrimary, true: theme.colors.accent }}
+                                >
+                                    <MatIcon
+                                        name={'fingerprint'}
+                                        size={theme.size.md}
+                                        color={theme.colors.onPrimaryContainer}
+                                        // @ts-ignore
+                                        underlayColor={'transparent'}
+                                        // @ts-ignore
+                                        onPress={(): void => showBiometricLogin()}
+                                    />
+                                </View>
+                            )}
+                        </Stack>
+
+                        {/* Password Field */}
+                        <TextInput
+                            autoCapitalize={'none'}
+                            editable={!pending}
+                            label={'Password'}
+                            onChangeText={(val: string): void => setPassword(val)}
+                            onSubmitEditing={(): void => onLogin(username, password)}
+                            placeholder="Enter your password"
+                            ref={passField}
+                            returnKeyType={'go'}
+                            secureTextEntry
+                            underlineColorAndroid={'transparent'}
+                            value={password}
+                            style={{ marginTop: theme.spacing.md }}
+                        />
+
+                        {/* Remember Me Row */}
+                        <Stack
+                            direction={'row'}
+                            align={'center'}
+                            justify={'space-between'}
+                            style={{ marginTop: theme.spacing.md }}
+                        >
+                            <Stack direction={'row'} align={'center'}>
+                                <Typography style={{ marginRight: theme.spacing.sm }} color={'onPrimary'}>
+                                    Save Username
+                                </Typography>
+                                <Switch
+                                    value={remember}
+                                    onValueChange={(val: boolean): void => {
+                                        setRemember(val);
+                                        void AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
+                                        if (!val) {
+                                            void AsyncStorage.removeItem('@SwingEssentials:lastUser');
+                                            setUsername('');
+                                        }
+                                    }}
+                                    ios_backgroundColor={theme.colors.primaryContainer}
+                                    trackColor={{ false: theme.colors.outline, true: theme.colors.onPrimaryContainer }}
                                 />
-                            </View>
-                        )}
-                    </View>
+                            </Stack>
+                            {biometry.available && (
+                                <Stack direction={'row'} align={'center'}>
+                                    <Typography
+                                        color={'onPrimary'}
+                                        style={{ marginRight: theme.spacing.sm }}
+                                    >{`Use ${biometry.type}`}</Typography>
+                                    <Switch
+                                        value={useBiometry}
+                                        onValueChange={(val: boolean): void => {
+                                            setUseBiometry(val);
+                                            void AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
+                                        }}
+                                        ios_backgroundColor={theme.colors.primaryContainer}
+                                        trackColor={{
+                                            false: theme.colors.outline,
+                                            true: theme.colors.onPrimaryContainer,
+                                        }}
+                                    />
+                                </Stack>
+                            )}
+                        </Stack>
 
-                    {/* Error Messages */}
-                    <ErrorBox
-                        show={failures > 0 || error}
-                        error={'The username / password you entered was not correct.'}
-                        style={[formStyles.formField, { paddingVertical: theme.spaces.small }]}
-                    />
-                    <ErrorBox
-                        show={networkFailure}
-                        error={
-                            'We were unable to process your login request. Check your network connection and try again.'
-                        }
-                        style={[formStyles.formField, { paddingVertical: theme.spaces.small }]}
-                    />
-                    <ErrorBox
-                        show={touchFail.length > 0 && failures <= 0}
-                        error={touchFail}
-                        style={[formStyles.formField, { paddingVertical: theme.spaces.small }]}
-                    />
+                        {/* Error Messages */}
+                        <ErrorBox
+                            show={failures > 0 || error}
+                            error={'The username / password you entered was not correct.'}
+                            style={{ marginTop: theme.spacing.md }}
+                        />
+                        <ErrorBox
+                            show={networkFailure}
+                            error={
+                                'We were unable to process your login request. Check your network connection and try again.'
+                            }
+                            style={{ marginTop: theme.spacing.md }}
+                        />
+                        <ErrorBox
+                            show={touchFail.length > 0 && failures <= 0}
+                            error={touchFail}
+                            style={{ marginTop: theme.spacing.md }}
+                        />
 
-                    {/* Log In Buttons */}
-                    <View style={formStyles.fieldRow}>
-                        <SEButton
-                            dark
-                            title={'Sign In'}
-                            loading={pending}
-                            style={{ flex: 1 }}
-                            onPress={(): void => onLogin(username, password)}
-                        />
-                        <SEButton
-                            mode={'text'}
-                            disabled={pending}
-                            labelStyle={{ color: theme.colors.onPrimary }}
-                            style={{ marginLeft: theme.spaces.medium, flex: 0 }}
-                            title="CANCEL"
-                            onPress={(): void => props.navigation.pop()}
-                        />
-                    </View>
+                        {/* Log In Buttons */}
+                        <Stack
+                            direction={'row'}
+                            align={'center'}
+                            space={theme.spacing.sm}
+                            style={{ marginTop: theme.spacing.md }}
+                        >
+                            <SEButton
+                                dark
+                                title={'Sign In'}
+                                buttonColor={theme.colors.secondary}
+                                loading={pending}
+                                style={{ flex: 1 }}
+                                onPress={(): void => onLogin(username, password)}
+                            />
+                            <SEButton
+                                mode={'text'}
+                                disabled={pending}
+                                labelStyle={{ color: theme.colors.onPrimary }}
+                                style={{ flex: 0 }}
+                                title="CANCEL"
+                                onPress={(): void => props.navigation.pop()}
+                            />
+                        </Stack>
 
-                    {/* Registration Links */}
-                    <View style={[formStyles.fieldRow]}>
-                        <SEButton
-                            mode={'text'}
-                            labelStyle={{ color: theme.colors.onPrimary }}
-                            title="Forgot Password?"
-                            onPress={(): void => props.navigation.push(ROUTES.RESET_PASSWORD)}
-                        />
-                        <SEButton
-                            mode={'text'}
-                            labelStyle={{ color: theme.colors.onPrimary }}
-                            title="Need an Account?"
-                            onPress={(): void => props.navigation.push(ROUTES.REGISTER)}
-                        />
+                        {/* Registration Links */}
+                        <Stack
+                            direction={'row'}
+                            align={'center'}
+                            justify={'space-between'}
+                            style={{ marginTop: theme.spacing.xs }}
+                        >
+                            <SEButton
+                                mode={'text'}
+                                labelStyle={{ color: theme.colors.onPrimary }}
+                                title="Forgot Password?"
+                                // @ts-ignore
+                                onPress={(): void => props.navigation.push(ROUTES.RESET_PASSWORD)}
+                            />
+                            <SEButton
+                                mode={'text'}
+                                labelStyle={{ color: theme.colors.onPrimary }}
+                                title="Need an Account?"
+                                // @ts-ignore
+                                onPress={(): void => props.navigation.push(ROUTES.REGISTER)}
+                            />
+                        </Stack>
                     </View>
-                </View>
-            </ScrollView>
-        </KeyboardAvoidingView>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </BackgroundImage>
     );
 };

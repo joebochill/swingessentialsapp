@@ -12,7 +12,7 @@ import { Credentials } from '../../__types__';
 import { HttpRequest } from '../../api/http';
 import { Logger } from '../../utilities/logging';
 import * as Keychain from 'react-native-keychain';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function loadUserContent() {
     return (dispatch: ThunkDispatch<any, void, any>): void => {
@@ -80,6 +80,7 @@ export function requestLogin(userCredentials: Credentials, remember = false, use
                     rawErrorCode: error.code,
                     rawErrorMessage: error.error,
                 });
+                // @ts-ignore
                 dispatch(failure(ACTIONS.LOGIN.FAILURE, null, 'Login'));
             });
     };

@@ -2,17 +2,15 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { View } from 'react-native';
-import { VideoCard, CollapsibleHeaderLayout, HomeTutorial, SEButton, H4, Label } from '../../components';
+import { RefreshControl, View, ScrollView } from 'react-native';
+import { YoutubeCard, HomeTutorial, SEButton, Typography, Stack, SectionHeader } from '../../components';
 import Carousel from 'react-native-snap-carousel';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
 
 // Styles
-import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
 import { width } from '../../utilities/dimensions';
-import { useTheme, Subheading } from 'react-native-paper';
 import bg from '../../images/banners/landing.jpg';
 
 // Utilities
@@ -23,10 +21,11 @@ import { ApplicationState } from '../../__types__';
 
 // Redux
 import { loadUserContent } from '../../redux/actions';
-import { unit } from '../../styles/sizes';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
-import { Spacer } from '@brightlayer-ui/react-native-components';
+import { useAppTheme } from '../../theme';
+import { useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { Header } from '../../components/CollapsibleHeader/Header';
 
 export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (props) => {
     const lessons = useSelector((state: ApplicationState) => state.lessons);
@@ -35,144 +34,172 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
     const credits = useSelector((state: ApplicationState) => state.credits);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
+    const theme = useAppTheme();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     const latestLessons = lessons.closed.length > 0 ? lessons.closed : [placeholder];
-    return (
-        <CollapsibleHeaderLayout
-            backgroundImage={bg}
-            title={'SWING ESSENTIALS'}
-            subtitle={'The pro in your pocket'}
-            mainAction={'menu'}
-            refreshing={lessons.loading || credits.inProgress || tips.loading}
-            onRefresh={(): void => {
-                dispatch(loadUserContent());
-            }}
-            bottomPad={false}
-            navigation={props.navigation}
-        >
-            {role === 'anonymous' && (
-                <View
-                    style={[
-                        flexStyles.centered,
-                        flexStyles.paddingMedium,
-                        {
-                            marginTop: -1 * theme.spaces.medium,
-                            marginBottom: theme.spaces.medium,
-                            backgroundColor: theme.colors.surface,
-                            flexDirection: 'row',
-                            borderWidth: unit(1),
-                            borderColor: theme.colors.light,
-                        },
-                    ]}
-                >
-                    <SEButton
-                        mode={'contained'}
-                        title={'Sign Up Today'}
-                        style={{ flex: 1 }}
-                        onPress={(): void => props.navigation.navigate(ROUTES.REGISTER)}
-                    />
-                    <Spacer flex={0} width={theme.sizes.xSmall} />
-                    <SEButton
-                        mode={'contained'}
-                        title={'Sign In'}
-                        style={{ flex: 1 }}
-                        onPress={(): void => props.navigation.navigate(ROUTES.LOGIN)}
-                    />
-                </View>
-            )}
-            <View style={[sharedStyles.sectionHeader]}>
-                <Subheading style={listStyles.heading}>{'Latest Lessons'}</Subheading>
-                <SEButton
-                    mode={'outlined'}
-                    title={'View All'}
-                    onPress={(): void => props.navigation.navigate(ROUTES.LESSONS)}
-                />
-            </View>
-            <Carousel
-                data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)}
-                renderItem={({ item }): JSX.Element => (
-                    <VideoCard
-                        // headerIcon={item.type === 'in-person' ? 'settings-remote' : 'settings-remote'}
-                        headerTitle={item.request_date}
-                        headerSubtitle={role === 'administrator' ? item.username : undefined}
-                        video={item.response_video}
-                        onExpand={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
-                    />
-                )}
-                sliderWidth={width}
-                itemWidth={width - 2 * theme.spaces.medium}
-                inactiveSlideScale={0.95}
-            />
 
-            <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.xLarge }]}>
-                <Subheading style={listStyles.heading}>{'Lesson Credits'}</Subheading>
-                <SEButton
-                    mode={'outlined'}
-                    title={'Order More'}
-                    onPress={(): void => props.navigation.navigate(ROUTES.ORDER)}
+    return (
+        <>
+            <Header
+                backgroundImage={bg}
+                title={'SWING ESSENTIALS'}
+                subtitle={'The pro in your pocket'}
+                mainAction={'menu'}
+                navigation={props.navigation}
+                {...headerProps}
+            />
+            <ScrollView
+                {...scrollProps}
+                contentContainerStyle={contentProps.contentContainerStyle}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={lessons.loading || credits.inProgress || tips.loading}
+                        onRefresh={(): void => {
+                            // @ts-ignore
+                            dispatch(loadUserContent());
+                        }}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
+                    />
+                }
+            >
+                {/* LOGIN PANEL */}
+                {role === 'anonymous' && (
+                    <Stack
+                        direction={'row'}
+                        space={theme.spacing.md}
+                        style={{
+                            padding: theme.spacing.md,
+                            borderWidth: 1,
+                            borderColor: theme.colors.outline,
+                            backgroundColor: theme.colors.primaryContainer,
+                        }}
+                    >
+                        <SEButton
+                            mode={'contained'}
+                            title={'Sign Up Today'}
+                            style={{ flex: 1 }}
+                            // @ts-ignore
+                            onPress={(): void => props.navigation.navigate(ROUTES.REGISTER)}
+                        />
+                        <SEButton
+                            mode={'contained'}
+                            title={'Sign In'}
+                            style={{ flex: 1 }}
+                            // @ts-ignore
+                            onPress={(): void => props.navigation.navigate(ROUTES.LOGIN)}
+                        />
+                    </Stack>
+                )}
+
+                {/* LATEST LESSONS */}
+                <SectionHeader
+                    title={'Latest Lessons'}
+                    action={
+                        <SEButton
+                            mode={'outlined'}
+                            title={'View All'}
+                            // @ts-ignore
+                            onPress={(): void => props.navigation.navigate(ROUTES.LESSONS)}
+                        />
+                    }
+                    style={{ marginTop: theme.spacing.md, marginHorizontal: theme.spacing.md }}
                 />
-            </View>
-            <View style={[flexStyles.row, flexStyles.paddingHorizontal, { justifyContent: 'space-between' }]}>
-                <View
-                    style={[
-                        flexStyles.centered,
-                        flexStyles.paddingMedium,
-                        {
-                            flex: 1,
-                            borderWidth: unit(1),
-                            borderRadius: theme.roundness,
-                        },
-                        { backgroundColor: theme.colors.surface, borderColor: theme.colors.light },
-                    ]}
+                <Carousel
+                    data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)}
+                    renderItem={({ item }): JSX.Element => (
+                        <YoutubeCard
+                            headerTitle={item.request_date}
+                            headerSubtitle={role === 'administrator' ? item.username : undefined}
+                            video={item.response_video}
+                            // @ts-ignore
+                            onExpand={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
+                        />
+                    )}
+                    sliderWidth={width}
+                    itemWidth={width - 2 * theme.spacing.md}
+                    inactiveSlideScale={0.95}
+                    style={{ paddingBottom: theme.spacing.lg }}
+                    containerCustomStyle={{ overflow: 'visible' }}
+                />
+
+                {/* LESSON CREDITS */}
+                <SectionHeader
+                    title={'Lesson Credits'}
+                    action={
+                        <SEButton
+                            mode={'outlined'}
+                            title={'Order More'}
+                            // @ts-ignore
+                            onPress={(): void => props.navigation.navigate(ROUTES.ORDER)}
+                        />
+                    }
+                    style={{ marginTop: theme.spacing.md, marginHorizontal: theme.spacing.md }}
+                />
+                <Stack
+                    align={'center'}
+                    style={{
+                        marginHorizontal: theme.spacing.md,
+                        padding: theme.spacing.md,
+                        borderWidth: 1,
+                        borderRadius: theme.roundness,
+                        borderColor: theme.colors.outline,
+                        backgroundColor: theme.colors.primaryContainer,
+                    }}
                 >
-                    <H4 style={{ lineHeight: unit(32) }} color={'primary'}>
+                    <Typography variant={'displaySmall'} color={'primary'}>
                         {credits.count}
-                    </H4>
-                    <Label color={'primary'}>{`Credit${credits.count !== 1 ? 's' : ''} Remaining`}</Label>
+                    </Typography>
+                    <Typography variant={'bodyLarge'} color={'primary'}>{`Credit${
+                        credits.count !== 1 ? 's' : ''
+                    } Remaining`}</Typography>
                     {credits.count > 0 && (
                         <SEButton
                             mode={'outlined'}
                             title={'Submit a Swing'}
                             icon={'publish'}
-                            style={{ marginTop: theme.spaces.medium }}
+                            style={{ marginTop: theme.spacing.md }}
+                            // @ts-ignore
                             onPress={(): void => props.navigation.navigate(ROUTES.SUBMIT)}
                         />
                     )}
-                </View>
-            </View>
+                </Stack>
 
-            {tips.tipList.length > 0 && (
-                <>
-                    <View style={[sharedStyles.sectionHeader, { marginTop: theme.spaces.xLarge }]}>
-                        <Subheading style={listStyles.heading}>{'Tip of the Month'}</Subheading>
-                        <SEButton
-                            mode={'outlined'}
-                            title={'View All'}
-                            onPress={(): void => props.navigation.navigate(ROUTES.TIPS)}
+                {/* TIP OF THE MONTH */}
+                {tips.tipList.length > 0 && (
+                    <View style={{ marginTop: theme.spacing.md }}>
+                        <SectionHeader
+                            title={'Tip of the Month'}
+                            action={
+                                <SEButton
+                                    mode={'outlined'}
+                                    title={'View All'}
+                                    // @ts-ignore
+                                    onPress={(): void => props.navigation.navigate(ROUTES.TIPS)}
+                                />
+                            }
+                            style={{ marginHorizontal: theme.spacing.md }}
+                        />
+                        <Carousel
+                            data={tips.tipList.slice(0, 3)}
+                            renderItem={({ item }): JSX.Element => (
+                                <YoutubeCard
+                                    headerTitle={item.title}
+                                    headerSubtitle={role === 'administrator' ? getLongDate(item.date) : ''}
+                                    video={item.video}
+                                    // @ts-ignore
+                                    onExpand={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
+                                />
+                            )}
+                            sliderWidth={width}
+                            itemWidth={width - 2 * theme.spacing.md}
+                            inactiveSlideScale={0.95}
+                            containerCustomStyle={{ overflow: 'visible' }}
                         />
                     </View>
-                    <Carousel
-                        data={tips.tipList.slice(0, 3)}
-                        renderItem={({ item }): JSX.Element => (
-                            <VideoCard
-                                // headerIcon={'event'}
-                                headerTitle={item.title}
-                                headerSubtitle={role === 'administrator' ? getLongDate(item.date) : ''}
-                                video={item.video}
-                                onExpand={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
-                            />
-                        )}
-                        sliderWidth={width}
-                        itemWidth={width - 2 * theme.spaces.medium}
-                        inactiveSlideScale={0.95}
-                    />
-                </>
-            )}
+                )}
+            </ScrollView>
             <HomeTutorial />
-        </CollapsibleHeaderLayout>
+        </>
     );
 };

@@ -4,7 +4,13 @@
 
 
 This project was bootstrapped using the [React Native CLI](https://github.com/react-native-community/cli) and takes advantage of the following libraries (many thanks to the contributors):
-* [react-native-camera](https://github.com/react-native-community/react-native-camera)
+
+@react-native-async-storage/async-storage
+@react-navigation
+react-native-vector-icons
+
+
+* ~~[react-native-camera](https://github.com/react-native-community/react-native-camera)~~
 * [react-native-paper](https://callstack.github.io/react-native-paper/index.html)
 * [react-native-iap](https://github.com/dooboolab/react-native-iap)
 * [react-native-image-picker](https://github.com/react-community/react-native-image-picker)

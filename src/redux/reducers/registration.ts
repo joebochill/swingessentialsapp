@@ -59,6 +59,7 @@ export const registrationReducer = (state = initialState, action: ReducerAction)
                 ...state,
                 pending: false,
                 emailVerified: false,
+                // @ts-ignore
                 error: isNaN(parseInt(action.error, 10)) ? -1 : parseInt(action.error, 10),
             };
         default:

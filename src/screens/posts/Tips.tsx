@@ -1,15 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // Components
-import { View, SectionList } from 'react-native';
-import { CollapsibleHeaderLayout } from '../../components';
+import { View, SectionList, RefreshControl } from 'react-native';
+import { ListItem, SectionHeader } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 // Constants
 import { ROUTES } from '../../constants/routes';
 // Styles
 import bg from '../../images/banners/tips.jpg';
-import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
-import { useTheme, Divider, List, Subheading } from 'react-native-paper';
 
 // Utilities
 import { makeGroups } from '../../utilities';
@@ -19,6 +17,9 @@ import { loadTips } from '../../redux/actions';
 import { ApplicationState } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../theme';
+import { useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { Header } from '../../components/CollapsibleHeader/Header';
 
 type Tip = {
     id: number;
@@ -32,63 +33,70 @@ export const Tips: React.FC<StackScreenProps<RootStackParamList, 'Tips'>> = (pro
     const tips = useSelector((state: ApplicationState) => state.tips);
     const sections = makeGroups(tips.tipList, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
+    const theme = useAppTheme();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     return (
-        <CollapsibleHeaderLayout
-            title={'Tip of the Month'}
-            subtitle={'Keep your game sharp'}
-            backgroundImage={bg}
-            refreshing={tips.loading}
-            onRefresh={(): void => {
-                dispatch(loadTips());
-            }}
-            navigation={props.navigation}
-        >
+        <>
+            <Header
+                title={'Tip of the Month'}
+                subtitle={'Keep your game sharp'}
+                backgroundImage={bg}
+                navigation={props.navigation}
+                {...headerProps}
+            />
             <SectionList
-                renderSectionHeader={({ section: { bucketName, index } }): JSX.Element => (
-                    <View style={[sharedStyles.sectionHeader, index > 0 ? { marginTop: theme.spaces.jumbo } : {}]}>
-                        <Subheading style={listStyles.heading}>{bucketName}</Subheading>
-                    </View>
+                {...scrollProps}
+                contentContainerStyle={contentProps.contentContainerStyle}
+                renderSectionHeader={({ section: { bucketName } }): JSX.Element => (
+                    <SectionHeader
+                        title={bucketName}
+                        style={{ marginTop: theme.spacing.xxl, marginHorizontal: theme.spacing.md }}
+                    />
                 )}
                 sections={sections}
                 stickySectionHeadersEnabled={false}
                 ListEmptyComponent={
-                    <>
-                        <Divider />
-                        <List.Item title={'No Tips Yet!'} style={listStyles.item} titleStyle={{ marginLeft: -8 }} />
-                        <Divider />
-                    </>
+                    <ListItem
+                        topDivider
+                        bottomDivider
+                        style={{ marginTop: theme.spacing.xxl }}
+                        title={'No Tips Yet!'}
+                    />
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={tips.loading}
+                        onRefresh={(): void => {
+                            // @ts-ignore
+                            dispatch(loadTips());
+                        }}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
+                    />
                 }
                 renderItem={({ item, index }): JSX.Element => (
-                    <>
-                        {index === 0 && <Divider />}
-                        <List.Item
-                            title={item.title}
-                            titleNumberOfLines={2}
-                            titleEllipsizeMode={'tail'}
-                            onPress={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <MatIcon
-                                        name={'chevron-right'}
-                                        size={theme.sizes.small}
-                                        style={{ marginRight: -1 * theme.spaces.small }}
-                                    />
-                                </View>
-                            )}
-                        />
-                        <Divider />
-                    </>
+                    <ListItem
+                        bottomDivider
+                        topDivider={index === 0}
+                        title={item.title}
+                        titleNumberOfLines={2}
+                        titleEllipsizeMode={'tail'}
+                        // @ts-ignore
+                        onPress={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <View style={[style]} {...rightProps}>
+                                <MatIcon
+                                    name={'chevron-right'}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                />
+                            </View>
+                        )}
+                    />
                 )}
                 keyExtractor={(item): string => `tip_${item.id}`}
             />
-        </CollapsibleHeaderLayout>
+        </>
     );
 };

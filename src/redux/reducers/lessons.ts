@@ -58,6 +58,7 @@ export const lessonsReducer = (state = initialState, action: ReducerAction): Les
                 ...state,
                 redeemPending: false,
                 redeemSuccess: false,
+                // @ts-ignore
                 redeemError: parseInt(action.error, 10),
             };
         default:

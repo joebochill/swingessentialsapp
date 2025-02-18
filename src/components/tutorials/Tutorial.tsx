@@ -1,30 +1,29 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { View, ScrollView, SafeAreaView } from 'react-native';
 import { SEButton } from '../';
 import Modal from 'react-native-modal';
-import { useTheme } from 'react-native-paper';
-import { useSafeArea } from 'react-native-safe-area-context';
-import { useFlexStyles } from '../../styles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAppTheme } from '../../theme';
 
 type TutorialProps = {
     visible: boolean;
     onClose: () => void;
 };
 
-export const TutorialModal: React.FC<TutorialProps> = (props) => {
+export const TutorialModal: React.FC<PropsWithChildren<TutorialProps>> = (props) => {
     const { visible = true, onClose } = props;
-    const theme = useTheme();
-    const flexStyles = useFlexStyles(theme);
-    const insets = useSafeArea();
+    const theme = useAppTheme();
+    const insets = useSafeAreaInsets();
 
     return (
         <Modal
             isVisible={visible}
             backdropColor={theme.colors.primary}
-            style={{ margin: 0, padding: 0 }}
+            style={{ flex: 1, margin: 0, padding: 0 }}
             backdropOpacity={1}
             animationInTiming={750}
             animationOutTiming={750}
+            statusBarTranslucent
         >
             <SafeAreaView
                 style={{
@@ -36,20 +35,24 @@ export const TutorialModal: React.FC<TutorialProps> = (props) => {
             >
                 <SEButton
                     uppercase
+                    compact
+                    dark
                     style={{
                         position: 'absolute',
                         top: insets.top,
                         right: 0,
-                        marginRight: theme.spaces.medium,
+                        marginRight: theme.spacing.md,
                         zIndex: 100,
                     }}
-                    labelStyle={{ color: theme.colors.onPrimary }}
+                    labelStyle={{ color: theme.colors.onPrimary, marginHorizontal: 0 }}
                     mode={'text'}
                     title="Skip"
                     onPress={onClose}
                 />
                 <View style={{ marginVertical: insets.top }}>
-                    <ScrollView contentContainerStyle={flexStyles.paddingHorizontal}>{props.children}</ScrollView>
+                    <ScrollView contentContainerStyle={{ paddingHorizontal: theme.spacing.md }}>
+                        {props.children}
+                    </ScrollView>
                 </View>
             </SafeAreaView>
         </Modal>

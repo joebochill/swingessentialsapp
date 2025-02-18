@@ -1,63 +1,52 @@
 import React from 'react';
 // Components
-import { ActivityIndicator, Modal, ModalProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { Body } from '../../components';
+import { ActivityIndicator, Modal, ModalProps, View } from 'react-native';
+import { Paragraph, SectionHeader, Stack } from '../../components';
 
 // Styles
-import { useSharedStyles, useListStyles } from '../../styles';
-import { whiteOpacity } from '../../styles/colors';
-import { useTheme, Subheading } from 'react-native-paper';
+import { useAppTheme } from '../../theme';
 
-const useStyles = (
-    theme: ReactNativePaper.Theme
-): StyleSheet.NamedStyles<{
-    modalBackground: StyleProp<ViewStyle>;
-}> =>
-    StyleSheet.create({
-        modalBackground: {
-            flex: 1,
-            padding: theme.spaces.xLarge,
-            alignItems: 'stretch',
-            justifyContent: 'center',
-            backgroundColor: whiteOpacity(0.75),
-        },
-    });
 type ProgressModalProps = ModalProps & {
     visible?: boolean;
     progress: number;
 };
 export const UploadProgressModal: React.FC<ProgressModalProps> = (props) => {
     const { visible, progress, ...other } = props;
-    const theme = useTheme();
-    const styles = useStyles(theme);
-    const sharedStyles = useSharedStyles(theme);
-    const listStyles = useListStyles(theme);
+    const theme = useAppTheme();
 
     return (
         <Modal animationType="slide" transparent={true} visible={visible} {...other}>
-            <View style={styles.modalBackground}>
+            <Stack
+                justify={'center'}
+                style={{
+                    flex: 1,
+                    padding: theme.spacing.md,
+                    backgroundColor: 'rgba(255,255,255,0.75)',
+                }}
+            >
                 <View
                     style={[
-                        sharedStyles.border,
                         {
-                            backgroundColor: theme.colors.surface,
-                            padding: theme.spaces.medium,
+                            borderWidth: 1,
+                            borderRadius: theme.roundness,
+                            borderColor: theme.colors.primary,
+                            backgroundColor: theme.colors.primaryContainer,
+                            padding: theme.spacing.md,
                         },
                     ]}
                 >
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{ flex: 1 }}>
-                            <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                                <Subheading style={listStyles.heading}>{'Submitting Lesson'}</Subheading>
-                                <ActivityIndicator color={theme.colors.accent} />
-                            </View>
-                            <Body style={{ textAlign: 'left' }}>{`Uploading Videos... ${progress.toFixed(0)}%`}</Body>
-                            {progress >= 100 && <Body>{'Creating Lesson...'}</Body>}
-                        </View>
-                        <View style={{ flex: 0, justifyContent: 'center' }} />
-                    </View>
+                    <Stack direction={'row'}>
+                        <Stack style={{ flex: 1 }}>
+                            <SectionHeader
+                                title={'Submitting Lesson'}
+                                action={<ActivityIndicator color={theme.colors.onPrimaryContainer} />}
+                            />
+                            <Paragraph>{`Uploading Videos... ${progress.toFixed(0)}%`}</Paragraph>
+                            {progress >= 100 && <Paragraph>{'Creating Lesson...'}</Paragraph>}
+                        </Stack>
+                    </Stack>
                 </View>
-            </View>
+            </Stack>
         </Modal>
     );
 };

@@ -1,28 +1,21 @@
 import React from 'react';
-import { useTheme, List, Divider, Subheading } from 'react-native-paper';
-// Components
 import { View, SectionList } from 'react-native';
-import { H7, H4, Body } from '../index';
+import { ListItem, SectionHeader, Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
 import Carousel from 'react-native-snap-carousel';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-// Styles
-import { useSharedStyles, useFlexStyles, useListStyles } from '../../styles';
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../__types__';
 import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
-// Utilities
 import { getLongDate, getDate } from '../../utilities';
+import { useAppTheme } from '../../theme';
 
 export const LessonsTutorial: React.FC = () => {
     const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
-    const theme = useTheme();
-    const sharedStyles = useSharedStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
+    const theme = useAppTheme();
     const dispatch = useDispatch();
 
     const sections = [
@@ -42,64 +35,67 @@ export const LessonsTutorial: React.FC = () => {
     ];
 
     const slides = [
-        <>
-            <H4 font={'semiBold'} style={{ textAlign: 'center', color: theme.colors.onPrimary }}>
+        <Stack key={1}>
+            <Typography variant={'displaySmall'} fontWeight={'semiBold'} color={'onPrimary'} align={'center'}>
                 {'Your Lessons'}
-            </H4>
-            <H7
-                font={'light'}
-                style={{
-                    textAlign: 'center',
-                    marginTop: theme.spaces.small,
-                    marginBottom: theme.spaces.medium,
-                    color: theme.colors.onPrimary,
-                }}
+            </Typography>
+            <Typography
+                variant={'bodyMedium'}
+                fontWeight={'light'}
+                color={'onPrimary'}
+                align={'center'}
+                style={{ marginTop: theme.spacing.sm }}
             >
                 {'When you have submitted your golf swing for analysis, your lessons will appear in this list.'}
-            </H7>
+            </Typography>
             <SectionList
-                style={{ marginTop: theme.spaces.large }}
+                style={{ marginTop: theme.spacing.lg }}
                 scrollEnabled={false}
                 renderSectionHeader={({ section: { bucketName } }): JSX.Element => (
-                    <View style={[sharedStyles.sectionHeader]}>
-                        <Subheading style={[listStyles.heading, { color: theme.colors.onPrimary }]}>
-                            {bucketName}
-                        </Subheading>
-                    </View>
+                    <SectionHeader
+                        title={bucketName}
+                        titleStyle={{ color: theme.colors.onPrimary }}
+                        style={{ marginHorizontal: theme.spacing.md }}
+                    />
                 )}
                 sections={sections}
                 renderItem={({ item, index }): JSX.Element => (
-                    <>
-                        {index === 0 && <Divider />}
-                        <List.Item
-                            title={item.date}
-                            description={'Remote Lesson'}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            descriptionStyle={{ marginLeft: -8 }}
-                            right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    {item.new && <Body style={{ marginRight: theme.spaces.small }}>NEW</Body>}
-                                    <MatIcon
-                                        name={'chevron-right'}
-                                        size={theme.sizes.small}
-                                        style={{ marginRight: -1 * theme.spaces.small }}
-                                    />
-                                </View>
-                            )}
-                        />
-                        <Divider />
-                    </>
+                    <ListItem
+                        bottomDivider
+                        topDivider={index === 0}
+                        title={item.date}
+                        description={'Remote Lesson'}
+                        right={({ style, ...rightProps }): JSX.Element => (
+                            <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
+                                {item.new && (
+                                    <Typography
+                                        style={{
+                                            marginRight: theme.spacing.sm,
+                                        }}
+                                    >
+                                        NEW
+                                    </Typography>
+                                )}
+                                <MatIcon
+                                    name={'chevron-right'}
+                                    size={theme.size.md}
+                                    color={theme.colors.primary}
+                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                />
+                            </Stack>
+                        )}
+                    />
                 )}
                 keyExtractor={(item): string => `complete_${item.date}`}
             />
-        </>,
+        </Stack>,
     ];
 
     return (
         <TutorialModal
             visible={showTutorial.tutorial_lesson_list}
             onClose={(): void => {
+                // @ts-ignore
                 dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]));
             }}
         >
@@ -107,14 +103,18 @@ export const LessonsTutorial: React.FC = () => {
                 <Carousel
                     data={slides}
                     renderItem={({ index }): JSX.Element => slides[index]}
-                    sliderWidth={width - 2 * theme.spaces.medium}
-                    itemWidth={width - 2 * theme.spaces.medium}
+                    sliderWidth={width - 2 * theme.spacing.md}
+                    itemWidth={width - 2 * theme.spacing.md}
                 />
                 <SEButton
                     dark
+                    mode={'contained'}
+                    uppercase
+                    buttonColor={theme.colors.secondary}
                     title="GOT IT"
-                    style={{ flex: 1, marginTop: theme.spaces.xLarge }}
+                    style={{ marginTop: theme.spacing.xl }}
                     onPress={(): void => {
+                        // @ts-ignore
                         dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]));
                     }}
                 />

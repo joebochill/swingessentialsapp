@@ -2,16 +2,13 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { View, FlatList, Alert } from 'react-native';
-import { Body, Label, H4, CollapsibleHeaderLayout, ErrorBox, SEButton, OrderTutorial } from '../../components';
-import { requestPurchase, useIAP, IAPErrorCode } from 'react-native-iap';
+import { Alert, ScrollView, RefreshControl, Platform } from 'react-native';
+import { Typography, ErrorBox, SEButton, OrderTutorial, SectionHeader, ListItem, Stack } from '../../components';
+import { requestPurchase, useIAP, ErrorCode } from 'react-native-iap';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
 
 // Styles
 import bg from '../../images/banners/order.jpg';
-import { useSharedStyles, useFormStyles, useFlexStyles, useListStyles } from '../../styles';
-import { unit } from '../../styles/sizes';
-import { useTheme, Subheading, Divider, List } from 'react-native-paper';
 
 // Redux
 import { loadCredits, loadPackages } from '../../redux/actions';
@@ -26,6 +23,8 @@ import { ApplicationState } from '../../__types__';
 import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../theme';
+import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
 
 export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (props) => {
     const packages = useSelector((state: ApplicationState) => state.packages.list);
@@ -33,21 +32,30 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
     const packagesProcessing = useSelector((state: ApplicationState) => state.packages.loading);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
-    const theme = useTheme();
+    const theme = useAppTheme();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
+
     const {
         connected,
         products,
-        subscriptions,
+        // promotedProductsIOS,
+        // subscriptions,
+        // purchaseHistories,
+        // availablePurchases,
+        // currentPurchase,
+        // currentPurchaseError,
+        // initConnectionError,
+        // finishTransaction,
         getProducts,
-        getSubscriptions,
-        finishTransaction,
-        currentPurchase,
-        currentPurchaseError,
+        // getSubscriptions,
+        // getAvailablePurchases,
+        // getPurchaseHistories,
     } = useIAP();
-    const sharedStyles = useSharedStyles(theme);
-    const formStyles = useFormStyles(theme);
-    const flexStyles = useFlexStyles(theme);
-    const listStyles = useListStyles(theme);
+
+    const syncedPackages = packages.map((p) => ({
+        ...p,
+        localPrice: products.find((product) => product.productId === p.app_sku)?.localizedPrice ?? `--`,
+    }));
 
     const [selected, setSelected] = useState(-1);
 
@@ -55,9 +63,10 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
         role === 'anonymous'
             ? 'You must be signed in to purchase lessons.'
             : role === 'pending'
-                ? 'You must validate your email address before you can purchase lessons'
-                : '';
+            ? 'You must validate your email address before you can purchase lessons'
+            : '';
 
+    // Load the products from IAP
     useEffect(() => {
         if (packages && connected) {
             try {
@@ -65,10 +74,9 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 for (let i = 0; i < packages.length; i++) {
                     skus.push(packages[i].app_sku);
                 }
-                getProducts(skus);
+                void getProducts({ skus }); // await?
                 setSelected(0);
-            }
-            catch (err) {
+            } catch (err: any) {
                 void Logger.logError({
                     code: 'IAP100',
                     description: 'Failed to load in-app purchases.',
@@ -77,39 +85,16 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 });
             }
         }
-    }, [getProducts, packages]);
+    }, [getProducts, packages, connected]);
 
-    // useEffect(() => {
-    //     if (packages) {
-    //         const skus: string[] = [];
-    //         for (let i = 0; i < packages.length; i++) {
-    //             skus.push(packages[i].app_sku);
-    //         }
-    //         const loadProducts = async (): Promise<void> => {
-    //             try {
-    //                 await RNIap.initConnection();
-    //                 const verifiedProducts = await RNIap.getProducts(skus);
-    //                 setProducts(verifiedProducts.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10)));
-    //                 setSelected(0);
-    //             } catch (err) {
-    //                 void Logger.logError({
-    //                     code: 'IAP100',
-    //                     description: 'Failed to load in-app purchases.',
-    //                     rawErrorCode: err.code,
-    //                     rawErrorMessage: err.message,
-    //                 });
-    //             }
-    //         };
-    //         void loadProducts();
-    //     }
-    // }, [packages]);
-
+    // Purchase Completed
     useEffect(() => {
         if (credits.success) {
             Alert.alert('Purchase Complete', 'Your order has finished processing. Thank you for your purchase!', [
                 {
                     text: 'Submit Your Swing Now',
                     onPress: (): void => {
+                        // @ts-ignore
                         props.navigation.navigate(ROUTES.SUBMIT);
                     },
                 },
@@ -119,7 +104,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
     }, [credits.success, props.navigation]);
 
     const onPurchase = useCallback(
-        async (sku, shortcode) => {
+        async (sku: string, shortcode: string) => {
             if (roleError.length > 0) {
                 // logLocalError('137: Purchase request not sent: ' + this.state.error);
                 return;
@@ -133,9 +118,13 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 return;
             }
             try {
-                await requestPurchase(sku, false);
-            } catch (error) {
-                if (error.code !== IAPErrorCode.E_USER_CANCELLED) {
+                await requestPurchase(
+                    Platform.OS === 'android'
+                        ? { skus: [sku] }
+                        : { sku, andDangerouslyFinishTransactionAutomaticallyIOS: false }
+                );
+            } catch (error: any) {
+                if (error.code !== ErrorCode.E_USER_CANCELLED) {
                     void Logger.logError({
                         code: 'IAP200',
                         description: 'Failed to request in-app purchase.',
@@ -150,102 +139,108 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
     );
 
     return (
-        <CollapsibleHeaderLayout
-            title={'Order More Lessons'}
-            subtitle={'Multiple packages available'}
-            backgroundImage={bg}
-            refreshing={credits.inProgress}
-            onRefresh={(): void => {
-                dispatch(loadCredits());
-                dispatch(loadPackages());
-            }}
-            navigation={props.navigation}
-        >
-            <ErrorBox
-                show={roleError !== ''}
-                error={roleError}
-                style={[formStyles.errorBox, { marginHorizontal: theme.spaces.medium }]}
+        <>
+            <Header
+                title={'Order More Lessons'}
+                subtitle={'Multiple packages available'}
+                backgroundImage={bg}
+                navigation={props.navigation}
+                {...headerProps}
             />
-            {roleError.length === 0 && (
-                <View
-                    style={[
-                        flexStyles.centered,
-                        flexStyles.paddingMedium,
-                        {
-                            flex: 1,
-                            borderWidth: unit(1),
+            <ScrollView
+                {...scrollProps}
+                contentContainerStyle={contentProps.contentContainerStyle}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={credits.inProgress}
+                        onRefresh={(): void => {
+                            // @ts-ignore
+                            dispatch(loadCredits());
+                            // @ts-ignore
+                            dispatch(loadPackages());
+                        }}
+                        progressViewOffset={contentProps.contentContainerStyle.paddingTop}
+                    />
+                }
+            >
+                <ErrorBox
+                    show={roleError !== ''}
+                    error={roleError}
+                    style={{ marginHorizontal: theme.spacing.md, marginTop: theme.spacing.md }}
+                />
+                {roleError.length === 0 && (
+                    <Stack
+                        align={'center'}
+                        style={{
+                            marginTop: theme.spacing.md,
+                            marginHorizontal: theme.spacing.md,
+                            padding: theme.spacing.md,
+                            borderWidth: 1,
                             borderRadius: theme.roundness,
-                            marginHorizontal: theme.spaces.medium,
-                            backgroundColor: theme.colors.surface,
-                            borderColor: theme.colors.light,
-                            marginBottom: theme.spaces.jumbo,
-                        },
-                    ]}
-                >
-                    <H4 style={{ lineHeight: unit(32) }} color={'primary'}>
-                        {credits.count}
-                    </H4>
-                    <Label color={'primary'}>{`Credit${credits.count !== 1 ? 's' : ''} Remaining`}</Label>
-                </View>
-            )}
-            <View style={[sharedStyles.sectionHeader]}>
-                <Subheading style={listStyles.heading}>{'Available Packages'}</Subheading>
-            </View>
-            <FlatList
-                scrollEnabled={false}
-                keyboardShouldPersistTaps={'always'}
-                data={packages}
-                extraData={products.sort((a, b) => parseInt(a.price, 10) - parseInt(b.price, 10))}
-                renderItem={({ item, index }): JSX.Element => (
-                    <>
-                        {index === 0 && <Divider />}
-                        <List.Item
+                            borderColor: theme.colors.outline,
+                            backgroundColor: theme.colors.primaryContainer,
+                        }}
+                    >
+                        <Typography variant={'displaySmall'} color={'primary'}>
+                            {credits.count}
+                        </Typography>
+                        <Typography variant={'bodyLarge'} color={'primary'}>{`Credit${
+                            credits.count !== 1 ? 's' : ''
+                        } Remaining`}</Typography>
+                    </Stack>
+                )}
+                <SectionHeader
+                    title={'Available Packages'}
+                    style={{ marginTop: theme.spacing.xl, marginHorizontal: theme.spacing.md }}
+                />
+                <Stack>
+                    {syncedPackages.map((item, index) => (
+                        <ListItem
+                            key={index}
+                            bottomDivider
+                            topDivider={index === 0}
                             title={item.name}
                             description={item.description}
                             titleNumberOfLines={2}
                             titleEllipsizeMode={'tail'}
                             onPress={(): void => setSelected(index)}
-                            style={listStyles.item}
-                            titleStyle={{ marginLeft: -8 }}
-                            descriptionStyle={{ marginLeft: -8 }}
                             right={({ style, ...rightProps }): JSX.Element => (
-                                <View style={[flexStyles.row, style]} {...rightProps}>
-                                    <Body>{products.length > 0 ? `${products[index].localizedPrice}` : '--'}</Body>
+                                <Stack
+                                    direction={'row'}
+                                    align={'center'}
+                                    style={[{ marginRight: -1 * theme.spacing.md }, style]}
+                                    {...rightProps}
+                                >
+                                    <Typography variant={'labelMedium'}>{item.localPrice ?? '--'}</Typography>
                                     {selected === index && (
                                         <MatIcon
                                             name={'check'}
-                                            size={theme.sizes.small}
-                                            color={theme.colors.accent}
-                                            style={{
-                                                marginLeft: theme.spaces.small,
-                                                marginRight: -1 * theme.spaces.xSmall,
-                                            }}
+                                            size={theme.size.md}
+                                            color={theme.colors.primary}
+                                            style={{ marginLeft: theme.spacing.sm }}
                                         />
                                     )}
-                                </View>
+                                </Stack>
                             )}
                         />
-                        <Divider />
-                    </>
-                )}
-                keyExtractor={(item): string => `package_${item.app_sku}`}
-            />
-            <SEButton
-                style={[
-                    formStyles.formField,
-                    { margin: theme.spaces.medium },
-                    roleError.length === 0 && !packagesProcessing && !credits.inProgress ? {} : { opacity: 0.6 },
-                ]}
-                title={'PURCHASE'}
-                onPress={
-                    roleError.length === 0 && !packagesProcessing && !credits.inProgress
-                        ? (): void => {
-                            void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
-                        }
-                        : undefined
-                }
-            />
+                    ))}
+                </Stack>
+                <SEButton
+                    style={[
+                        { margin: theme.spacing.md },
+                        roleError.length === 0 && !packagesProcessing && !credits.inProgress ? {} : { opacity: 0.6 },
+                    ]}
+                    title={'PURCHASE'}
+                    onPress={
+                        roleError.length === 0 && !packagesProcessing && !credits.inProgress
+                            ? (): void => {
+                                  void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
+                              }
+                            : undefined
+                    }
+                />
+            </ScrollView>
             <OrderTutorial />
-        </CollapsibleHeaderLayout>
+        </>
     );
 };

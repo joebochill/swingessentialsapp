@@ -2,13 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
-import { ActivityIndicator, Modal, ModalProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { Body, SEButton } from '../';
-
-// Styles
-import { whiteOpacity } from '../../styles/colors';
-import { useSharedStyles, useListStyles } from '../../styles';
-import { useTheme, Subheading } from 'react-native-paper';
+import { ActivityIndicator, Modal, ModalProps, View } from 'react-native';
+import { Typography, SEButton, Stack, SectionHeader, Paragraph } from '../';
 
 // Types
 import { ApplicationState } from '../../__types__';
@@ -18,6 +13,7 @@ import { atob } from '../../utilities';
 
 // Redux
 import { requestLogout, refreshToken, checkToken } from '../../redux/actions';
+import { useAppTheme } from '../../theme';
 
 const formatTime = (remaining: number): string => {
     if (!remaining || remaining <= 0) {
@@ -30,21 +26,6 @@ const formatTime = (remaining: number): string => {
     return `${min < 10 ? `0${min}` : min}:${sec < 10 ? `0${sec}` : sec}`;
 };
 
-const useStyles = (
-    theme: ReactNativePaper.Theme
-): StyleSheet.NamedStyles<{
-    modalBackground: StyleProp<ViewStyle>;
-}> =>
-    StyleSheet.create({
-        modalBackground: {
-            flex: 1,
-            padding: theme.spaces.xLarge,
-            alignItems: 'stretch',
-            justifyContent: 'center',
-            backgroundColor: whiteOpacity(0.75),
-        },
-    });
-
 export const TokenModal: React.FC<ModalProps> = (props) => {
     const { ...other } = props;
     const token = useSelector((state: ApplicationState) => state.login.token);
@@ -56,10 +37,7 @@ export const TokenModal: React.FC<ModalProps> = (props) => {
     const [updateRate, setUpdateRate] = useState(1);
 
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const styles = useStyles(theme);
-    const sharedStyles = useSharedStyles(theme);
-    const listStyles = useListStyles(theme);
+    const theme = useAppTheme();
 
     const updateRefreshRate = useCallback(() => {
         if (timeRemaining <= 3 * 60) {
@@ -77,6 +55,7 @@ export const TokenModal: React.FC<ModalProps> = (props) => {
         // timer to check for pending user registration
         if (role === 'pending') {
             const interval = setInterval(() => {
+                // @ts-ignore
                 dispatch(checkToken());
             }, 20 * 1000);
             return (): void => clearInterval(interval);
@@ -100,15 +79,15 @@ export const TokenModal: React.FC<ModalProps> = (props) => {
         if (!token || !engageCountdown) {
             return;
         }
-        let interval = 0;
+        let interval: any = 0;
         if (timeRemaining > 0) {
             interval = setInterval(() => {
-                // setTimeRemaining(timeRemaining => timeRemaining - updateRate);
                 const exp = JSON.parse(atob(token.split('.')[1])).exp;
                 setTimeRemaining(exp - Date.now() / 1000);
             }, updateRate * 1000);
             updateRefreshRate();
         } else {
+            // @ts-ignore
             dispatch(requestLogout());
         }
 
@@ -124,38 +103,48 @@ export const TokenModal: React.FC<ModalProps> = (props) => {
             visible={token !== null && timeRemaining <= 3 * 60 && timeRemaining > 0}
             {...other}
         >
-            <View style={styles.modalBackground}>
+            <Stack
+                justify={'center'}
+                style={{
+                    flex: 1,
+                    backgroundColor: 'rgba(255,255,255,0.75)',
+                    padding: theme.spacing.md,
+                }}
+            >
                 <View
                     style={[
-                        sharedStyles.border,
                         {
-                            backgroundColor: theme.colors.surface,
-                            padding: theme.spaces.medium,
+                            borderWidth: 1,
+                            borderRadius: theme.roundness,
+                            borderColor: theme.colors.primary,
+                            backgroundColor: theme.colors.primaryContainer,
+                            padding: theme.spacing.md,
                         },
                     ]}
                 >
-                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                        <Subheading style={listStyles.heading}>{'Automatic Logout'}</Subheading>
-                        <Body>{formatTime(timeRemaining)}</Body>
-                    </View>
-                    <Body>{'Your current session is about to expire. Click below to stay signed in.'}</Body>
+                    <SectionHeader
+                        title={'Automatic Logout'}
+                        action={<Typography>{formatTime(timeRemaining)}</Typography>}
+                    />
+                    <Paragraph>{'Your current session is about to expire. Click below to stay signed in.'}</Paragraph>
 
                     {!refreshing && (
                         <SEButton
                             title="KEEP ME SIGNED IN"
-                            style={{ marginTop: theme.spaces.medium }}
+                            style={{ marginTop: theme.spacing.md }}
+                            // @ts-ignore
                             onPress={(): void => dispatch(refreshToken())}
                         />
                     )}
                     {refreshing && (
                         <ActivityIndicator
-                            style={{ marginTop: theme.spaces.xLarge }}
+                            style={{ marginTop: theme.spacing.lg }}
                             size={'large'}
-                            color={theme.colors.accent}
+                            color={theme.colors.onPrimaryContainer}
                         />
                     )}
                 </View>
-            </View>
+            </Stack>
         </Modal>
     );
 };

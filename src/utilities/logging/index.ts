@@ -75,6 +75,7 @@ export class Logger {
     private static async _autoSendEmail(type: LogType): Promise<void> {
         if (SENDING) return;
         const currentErrors = await this.readMessages(type);
+        // @ts-ignore
         store.dispatch(sendLogReport(currentErrors, type));
     }
     public static async sendEmail(type: LogType, onDone: () => void = (): void => {}, username = ''): Promise<void> {

@@ -4,18 +4,18 @@ import { loadTips } from './TipActions';
 import { loadBlogs } from './BlogActions';
 import { loadPackages } from './PackageActions';
 import { loadFAQ, loadPlaceholder } from './FAQActions';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ASYNC_PREFIX } from '../../constants';
 import { setToken } from './LoginActions';
 import { loadTutorials } from './TutorialsActions';
 import { HttpRequest } from '../../api/http';
-import { Logger, LOG_TYPE } from '../../utilities/logging';
+import { Logger, LogType } from '../../utilities/logging';
 import { success, failure } from '../../api/http-helper';
 import { Platform } from 'react-native';
 import { loadUserInfo } from './user-data-actions';
 import { loadPros } from './ProsActions';
 
-export function loadInitialData(): (dispatch: ThunkDispatch<any, void, any>) => void {
+export function loadInitialData(): (dispatch: ThunkDispatch<any, void, any>) => Promise<void> {
     return async (dispatch: ThunkDispatch<any, void, any>): Promise<void> => {
         const token = await AsyncStorage.getItem(`${ASYNC_PREFIX}token`);
         if (token) dispatch(setToken(token));
@@ -33,7 +33,7 @@ export function loadInitialData(): (dispatch: ThunkDispatch<any, void, any>) => 
 }
 
 // Send report with log data to swingessentials
-export function sendLogReport(log: string, type: LOG_TYPE) {
+export function sendLogReport(log: string, type: LogType) {
     return (dispatch: ThunkDispatch<any, void, any>): void => {
         if (Logger.isSending()) return;
         dispatch({ type: ACTIONS.SEND_LOGS.REQUEST });

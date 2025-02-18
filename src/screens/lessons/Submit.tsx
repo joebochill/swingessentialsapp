@@ -3,36 +3,20 @@ import { usePrevious } from '../../utilities';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
+import { Platform, KeyboardAvoidingView, ScrollView, TouchableOpacity, Alert, Keyboard } from 'react-native';
 import {
-    Platform,
-    View,
-    KeyboardAvoidingView,
-    ScrollView,
-    TouchableOpacity,
-    Image,
-    StyleSheet,
-    Alert,
-    Keyboard,
-    StyleProp,
-    ViewStyle,
-} from 'react-native';
-import {
-    CollapsibleHeaderLayout,
-    SEVideo,
-    SEVideoPlaceholder,
     SEButton,
     ErrorBox,
     UploadProgressModal,
     SubmitTutorial,
-    Caption,
+    SectionHeader,
+    Stack,
+    Typography,
 } from '../../components';
 import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import ImagePicker from 'react-native-image-picker';
 
 // Styles
-import { useSharedStyles, useListStyles, useFormStyles, useFlexStyles } from '../../styles';
-import { transparent } from '../../styles/colors';
-import { useTheme, Subheading, TextInput } from 'react-native-paper';
+import { Paragraph, TextInput } from 'react-native-paper';
 import bg from '../../images/banners/submit.jpg';
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
@@ -50,6 +34,9 @@ import { submitLesson } from '../../redux/actions';
 import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigator';
+import { useAppTheme } from '../../theme';
+import { SwingVideo } from '../../components/videos/SwingVideo';
+import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
 
 const RNFS = require('react-native-fs');
 
@@ -73,38 +60,21 @@ const getErrorMessage = (code: number | null): string => {
     }
 };
 
-const useStyles = (
-    theme: ReactNativePaper.Theme
-): StyleSheet.NamedStyles<{
-    dashButton: StyleProp<ViewStyle>;
-}> =>
-    StyleSheet.create({
-        dashButton: {
-            padding: theme.spaces.medium,
-            minHeight: theme.sizes.xLarge,
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-    });
-
 export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = (props) => {
     const { navigation } = props;
-    const [foVideo, setFO] = useState('');
-    const [dtlVideo, setDTL] = useState('');
+    const [foVideo, setFOVideo] = useState('');
+    const [dtlVideo, setDTLVideo] = useState('');
     const [useNotes, setUseNotes] = useState(false);
     const [notes, setNotes] = useState('');
+    const [videoSize, setVideoSize] = useState({ fo: 0, dtl: 0 });
     const [uploadProgress, setUploadProgress] = useState(0);
     const credits = useSelector((state: ApplicationState) => state.credits.count);
     const lessons = useSelector((state: ApplicationState) => state.lessons);
     const role = useSelector((state: ApplicationState) => state.login.role);
     const scroller = useRef(null);
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const styles = useStyles(theme);
-    const sharedStyles = useSharedStyles(theme);
-    const listStyles = useListStyles(theme);
-    const formStyles = useFormStyles(theme);
-    const flexStyles = useFlexStyles(theme);
+    const theme = useAppTheme();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     const roleError =
         role === 'anonymous'
@@ -116,12 +86,12 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
     const previousPendingStatus = usePrevious(lessons.redeemPending);
 
     const clearAllFields = useCallback(() => {
-        setFO('');
-        setDTL('');
+        setFOVideo('');
+        setDTLVideo('');
         setNotes('');
         setUseNotes(false);
         setUploadProgress(0);
-    }, [setFO, setDTL, setNotes, setUseNotes, setUploadProgress]);
+    }, [setFOVideo, setDTLVideo, setNotes, setUseNotes, setUploadProgress]);
 
     useEffect(() => {
         // let timeout = 0;
@@ -134,6 +104,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                     Alert.alert(
                         'Success!',
                         'Your lesson request was submitted successfully. We are working on your analysis.',
+                        // @ts-ignore
                         [{ text: 'OK', onPress: (): void => navigation.navigate(ROUTES.LESSONS) }],
                         { cancelable: false }
                     );
@@ -218,6 +189,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
         data.append('notes', notes);
 
         dispatch(
+            // @ts-ignore
             submitLesson(data, (event: ProgressEvent) => {
                 setUploadProgress((event.loaded / event.total) * 100);
             })
@@ -226,17 +198,24 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
 
     const setVideoURI = useCallback(
         async (swing: 'fo' | 'dtl', uri: string): Promise<void> => {
+            let sizeMB: number = 0;
+            let platformURI: string = uri;
+            if (Platform.OS === 'android' && uri[0] === '/') {
+                platformURI = `file://${uri}`;
+                platformURI = platformURI.replace(/%/g, '%25');
+            }
             try {
-                const stats = await RNFS.stat(uri);
-                if (stats.size > 50 * 1024 * 1024) {
+                const stats = await RNFS.stat(platformURI);
+                sizeMB = stats.size / (1024 * 1024);
+                if (sizeMB > 50) {
                     Alert.alert(
-                        `The video you have selected is too large (${(stats.size / (1024 * 1024)).toFixed(
+                        `The video you have selected is too large (${sizeMB.toFixed(
                             1
-                        )} MB). The maximum allowable file size is 50MB.`
+                        )} MB). The maximum allowable file size is 50 MB.`
                     );
                     return;
                 }
-            } catch (err) {
+            } catch (err: any) {
                 void Logger.logError({
                     code: 'SUB450',
                     description: 'Error while reading local file size. ',
@@ -246,9 +225,11 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
             }
 
             if (swing === 'fo') {
-                setFO(uri);
+                setFOVideo(platformURI);
+                setVideoSize((v) => ({ ...v, fo: sizeMB }));
             } else if (swing === 'dtl') {
-                setDTL(uri);
+                setDTLVideo(platformURI);
+                setVideoSize((v) => ({ ...v, dtl: sizeMB }));
             } else {
                 void Logger.logError({
                     code: 'SUB500',
@@ -256,122 +237,115 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                 });
             }
         },
-        [setFO, setDTL]
-    );
-
-    const showPickerMenu = useCallback(
-        (swing: 'fo' | 'dtl'): void => {
-            ImagePicker.showImagePicker(
-                {
-                    title: undefined,
-                    takePhotoButtonTitle: undefined,
-                    chooseFromLibraryButtonTitle: 'Choose From Library',
-                    customButtons: [{ name: 'record', title: 'Record a New Video' }],
-                    videoQuality: 'high',
-                    mediaType: 'video',
-                    durationLimit: 10,
-                    storageOptions: {
-                        skipBackup: true,
-                        path: 'images',
-                    },
-                },
-                (response) => {
-                    if (response.didCancel) {
-                        /*do nothing*/
-                    } else if (response.error) {
-                        Alert.alert('There was an error choosing a video. Try again later.');
-                    } else if (response.customButton === 'record') {
-                        navigation.push(ROUTES.RECORD, {
-                            swing,
-                            onReturn: (uri: string) => setVideoURI(swing, uri),
-                        });
-                    } else {
-                        void setVideoURI(swing, response.uri);
-                    }
-                }
-            );
-        },
-        [setVideoURI, navigation]
+        [setFOVideo, setDTLVideo]
     );
 
     return (
-        <CollapsibleHeaderLayout
-            title={'Submit Your Swing'}
-            subtitle={'Request a personalized lesson'}
-            backgroundImage={bg}
-            navigation={navigation}
-        >
+        <>
+            <Header
+                title={'Submit Your Swing'}
+                subtitle={'Request a personalized lesson'}
+                backgroundImage={bg}
+                navigation={navigation}
+                {...headerProps}
+            />
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView
+                    {...scrollProps}
+                    contentContainerStyle={{
+                        ...contentProps.contentContainerStyle,
+                        paddingHorizontal: theme.spacing.md,
+                    }}
                     keyboardShouldPersistTaps={'always'}
-                    contentContainerStyle={flexStyles.paddingHorizontal}
                     ref={scroller}
                 >
-                    <ErrorBox show={roleError !== ''} error={roleError} style={formStyles.errorBox} />
+                    <ErrorBox show={roleError !== ''} error={roleError} style={{ marginTop: theme.spacing.md }} />
                     <ErrorBox
                         show={lessons.pending.length > 0}
                         error={
                             'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.'
                         }
-                        style={formStyles.errorBox}
+                        style={{ marginTop: theme.spacing.md }}
                     />
                     <ErrorBox
                         show={roleError.length === 0 && lessons.pending.length === 0 && credits < 1}
                         error={"You don't have any credits left. Head over to the Order page to get more."}
-                        style={formStyles.errorBox}
+                        style={{ marginTop: theme.spacing.md }}
                     />
-                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0 }]}>
-                        <Subheading style={listStyles.heading}>{'Your Swing Videos'}</Subheading>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        {!foVideo ? (
-                            <SEVideoPlaceholder
-                                title={'Face-On'}
-                                icon={<Image source={fo} resizeMethod={'resize'} style={sharedStyles.image} />}
-                                editIcon={
-                                    <MatIcon
-                                        name={'add-a-photo'}
-                                        color={theme.colors.accent}
-                                        size={theme.sizes.small}
-                                    />
-                                }
-                                onPress={(): void => showPickerMenu('fo')}
-                            />
-                        ) : (
-                            <SEVideo editable source={foVideo} onEdit={(): void => showPickerMenu('fo')} />
-                        )}
-                        {!dtlVideo ? (
-                            <SEVideoPlaceholder
-                                title={'Down-the-Line'}
-                                icon={<Image source={dtl} resizeMethod={'resize'} style={sharedStyles.image} />}
-                                editIcon={
-                                    <MatIcon
-                                        name={'add-a-photo'}
-                                        color={theme.colors.accent}
-                                        size={theme.sizes.small}
-                                    />
-                                }
-                                onPress={(): void => showPickerMenu('dtl')}
-                            />
-                        ) : (
-                            <SEVideo
+
+                    <SectionHeader title={'Your Swing Videos'} style={{ marginTop: theme.spacing.md }} />
+                    <Stack direction={'row'} justify={'space-between'}>
+                        <Stack align={'center'}>
+                            <SwingVideo
+                                navigation={navigation}
+                                type={'fo'}
+                                source={foVideo ? { uri: foVideo } : undefined}
                                 editable
-                                source={dtlVideo}
-                                style={{ marginLeft: theme.spaces.medium }}
-                                onEdit={(): void => showPickerMenu('dtl')}
+                                PlaceholderProps={{
+                                    backgroundImage: fo,
+                                }}
+                                onSourceChange={(src) => {
+                                    void setVideoURI('fo', src.uri || '');
+                                }}
                             />
-                        )}
-                    </View>
-                    <View style={[sharedStyles.sectionHeader, { marginHorizontal: 0, marginTop: theme.spaces.jumbo }]}>
-                        <Subheading style={listStyles.heading}>{'Special Requests / Comments'}</Subheading>
-                    </View>
+                            {!!videoSize.fo && (
+                                <Paragraph style={{ fontSize: 10 }}>{`${videoSize.fo.toFixed(1)} MB`}</Paragraph>
+                            )}
+                        </Stack>
+                        <Stack align={'center'}>
+                            <SwingVideo
+                                navigation={navigation}
+                                type={'dtl'}
+                                source={dtlVideo ? { uri: dtlVideo } : undefined}
+                                editable
+                                PlaceholderProps={{
+                                    backgroundImage: dtl,
+                                }}
+                                onSourceChange={(src) => {
+                                    void setVideoURI('dtl', src.uri || '');
+                                }}
+                            />
+                            {!!videoSize.dtl && (
+                                <Paragraph style={{ fontSize: 10 }}>{`${videoSize.dtl.toFixed(1)} MB`}</Paragraph>
+                            )}
+                        </Stack>
+                    </Stack>
+
+                    <Stack
+                        style={{
+                            marginTop: theme.spacing.sm,
+                            padding: theme.spacing.md,
+                            borderWidth: 1,
+                            borderRadius: theme.roundness,
+                            borderColor: theme.colors.outline,
+                            backgroundColor: theme.colors.primaryContainer,
+                        }}
+                    >
+                        <Typography variant={'bodySmall'} color={'primary'}>
+                            <Typography fontWeight={'semiBold'}>{`TIP: `}</Typography>
+                            {`Avoid slo-mo videos to stay below the file size limit.`}
+                        </Typography>
+                    </Stack>
+
+                    <SectionHeader title={'Special Requests / Comments'} style={{ marginTop: theme.spacing.xl }} />
                     {!useNotes && (
                         <TouchableOpacity
                             activeOpacity={0.8}
-                            style={[formStyles.dashed, styles.dashButton]}
+                            style={[
+                                {
+                                    borderWidth: 1,
+                                    borderRadius: theme.roundness,
+                                    borderStyle: 'dashed',
+                                    backgroundColor: theme.colors.surface,
+                                    padding: theme.spacing.md,
+                                    minHeight: 2 * theme.size.xl,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                },
+                            ]}
                             onPress={(): void => setUseNotes(true)}
                         >
-                            <MatIcon name={'add-circle'} color={theme.colors.accent} size={24} />
+                            <MatIcon name={'add-circle'} color={theme.colors.onPrimaryContainer} size={theme.size.md} />
                         </TouchableOpacity>
                     )}
                     {useNotes && (
@@ -393,18 +367,20 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                 returnKeyType={'done'}
                                 spellCheck
                                 textAlignVertical={'top'}
-                                underlineColorAndroid={transparent}
+                                underlineColorAndroid={'transparent'}
                                 value={notes}
+                                style={{
+                                    minHeight: 2 * theme.size.xl,
+                                }}
                                 placeholder={'e.g., Help me with my slice!'}
-                                style={[formStyles.active]}
                             />
-                            <Caption style={{ alignSelf: 'flex-end', marginTop: theme.spaces.small }}>{`${
+                            <Typography style={{ alignSelf: 'flex-end', marginTop: theme.spacing.sm }}>{`${
                                 500 - notes.length
-                            } Characters Left`}</Caption>
+                            } Characters Left`}</Typography>
                         </>
                     )}
                     <SEButton
-                        style={[formStyles.formField, canSubmit() ? {} : { opacity: 0.6 }]}
+                        style={[{ marginTop: theme.spacing.md }, canSubmit() ? {} : { opacity: 0.6 }]}
                         title={'SUBMIT'}
                         onPress={canSubmit() ? (): void => dispatchSubmitLesson() : undefined}
                     />
@@ -412,6 +388,6 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
             </KeyboardAvoidingView>
             {lessons.redeemPending && <UploadProgressModal progress={uploadProgress} visible={lessons.redeemPending} />}
             <SubmitTutorial />
-        </CollapsibleHeaderLayout>
+        </>
     );
 };

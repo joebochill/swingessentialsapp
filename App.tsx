@@ -1,106 +1,84 @@
 import React, { useEffect } from 'react';
 
-// Components
-import { StatusBar } from 'react-native';
-import { ThemeProvider } from 'react-native-paper';
-import MainNavigator from './src/navigation/MainNavigator';
-import { RNIAPCallbacks } from './src/screens/lessons';
-import SplashScreen from 'react-native-splash-screen';
+import BootSplash from 'react-native-bootsplash';
+import { useCameraPermission, useMicrophonePermission } from 'react-native-vision-camera';
+
+// Navigation
+import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
+import MainNavigator, { RootStackParamList } from './src/navigation/MainNavigator';
 
 // Redux
 import { Provider } from 'react-redux';
 import { loadInitialData } from './src/redux/actions';
+import { store } from './src/redux/store';
 
 // Utilities
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { theme } from './src/styles/theme';
+import { PaperProvider } from 'react-native-paper';
+import { SETheme } from './src/theme';
+import { withIAPContext } from 'react-native-iap';
+import { ROUTES } from './src/constants/routes';
 
-// Redux
-import { store } from './src/redux/store';
+const linkingConfig: LinkingOptions<RootStackParamList> = {
+    prefixes: ['https://www.swingessentials.com'],
+    config: {
+        screens: {
+            [ROUTES.APP_GROUP]: {
+                screens: {
+                    [ROUTES.REGISTER]: 'register/:code?',
+                    [ROUTES.LESSONS]: 'lessons',
+                },
+            },
+        },
+    },
+};
 
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-declare global {
-    /* eslint-disable-next-line @typescript-eslint/no-namespace */
-    namespace ReactNativePaper {
-        interface ThemeColors {
-            // primary: string;
-            // background: string;
-            // surface: string;
-            // accent: string;
-            // error: string;
-            // text: string;
-            // placeholder: string;
-            onPrimary: string;
-            dark: string;
-            light: string;
-        }
-        // interface ThemeFont {
-        //     fontWeight: 'normal'
-        //     | 'bold'
-        //     | '100'
-        //     | '200'
-        //     | '300'
-        //     | '400'
-        //     | '500'
-        //     | '600'
-        //     | '700'
-        //     | '800'
-        //     | '900';
-        // }
-        interface ThemeFonts {
-            semiBold: ThemeFont;
-        }
+// TODO: Support dark mode
+function App(): React.JSX.Element {
+    const { hasPermission: hasVideoPermission, requestPermission: requestVideoPermission } = useCameraPermission();
+    const { hasPermission: hasMicrophonePermission, requestPermission: requestMicrophonePermission } =
+        useMicrophonePermission();
 
-        interface Theme {
-            sizes: {
-                xSmall: number;
-                small: number;
-                medium: number;
-                large: number;
-                xLarge: number;
-                jumbo: number;
-            };
-            spaces: {
-                xSmall: number;
-                small: number;
-                medium: number;
-                large: number;
-                xLarge: number;
-                jumbo: number;
-            };
-            fontSizes: {
-                10: number;
-                12: number;
-                14: number;
-                16: number;
-                18: number;
-                20: number;
-                24: number;
-                34: number;
-                48: number;
-                60: number;
-                96: number;
-            };
-        }
-    }
-}
-/* eslint-enable @typescript-eslint/consistent-type-definitions */
-
-export const App: React.FC = () => {
-    useEffect((): void => {
-        SplashScreen.hide();
-        StatusBar.setBarStyle('light-content', true);
-        store.dispatch(loadInitialData());
+    // Initialize redux store data
+    useEffect(() => {
+        void store.dispatch(loadInitialData());
     }, []);
+
+    // Check / request app permissions
+    useEffect((): void => {
+        const checkPermissions = async (): Promise<void> => {
+            if (!hasVideoPermission) {
+                const result = await requestVideoPermission();
+                if (!result) {
+                    // TODO: Tell them to give permission in settings
+                }
+            }
+            if (!hasMicrophonePermission) {
+                const result = await requestMicrophonePermission();
+                if (!result) {
+                    // TODO: Tell them to give permission in settings
+                }
+            }
+        };
+        void checkPermissions();
+    }, [hasMicrophonePermission, hasVideoPermission, requestMicrophonePermission, requestVideoPermission]);
 
     return (
         <Provider store={store}>
             <SafeAreaProvider>
-                <ThemeProvider theme={theme}>
-                    <RNIAPCallbacks />
-                    <MainNavigator enableURLHandling={false} />
-                </ThemeProvider>
+                <NavigationContainer
+                    onReady={() => {
+                        void BootSplash.hide({ fade: true });
+                    }}
+                    linking={linkingConfig}
+                >
+                    <PaperProvider theme={SETheme}>
+                        {/* <RNIAPCallbacks /> */}
+                        <MainNavigator /* enableURLHandling={false}*/ />
+                    </PaperProvider>
+                </NavigationContainer>
             </SafeAreaProvider>
         </Provider>
     );
-};
+}
+export default withIAPContext(App);
