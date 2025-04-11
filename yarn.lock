@@ -1779,10 +1779,10 @@
     prompts "^2.4.2"
     semver "^7.5.2"
 
-"@react-native-community/datetimepicker@^7.6.2":
-  version "7.6.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-7.6.2.tgz#9bba92dc8088b54331f89bbf89134836f0d4c067"
-  integrity sha512-ogZnvCmNG/lGHhEQypqz/mPymiIWD5jv6uKczg/l/aWgiKs1RDPQH1abh+R0I26aKoXmgamJJPuXKeC5eRWtZg==
+"@react-native-community/datetimepicker@^8.0.0":
+  version "8.3.0"
+  resolved "https://pkgs.dev.azure.com/hexagonmi/_packaging/nexus-public/npm/registry/@react-native-community/datetimepicker/-/datetimepicker-8.3.0.tgz#d734a77ae5fdf9585ea2eba0d2b5cf47404c0a09"
+  integrity sha1-1zSneuX9+Vheouug0rXPR0BMCgk=
   dependencies:
     invariant "^2.2.4"
 
@@ -6384,6 +6384,11 @@ react-native-bootsplash@^5.3.0:
     ts-dedent "^2.2.0"
     xml-formatter "^3.6.0"
 
+react-native-device-info@^14.0.4:
+  version "14.0.4"
+  resolved "https://pkgs.dev.azure.com/hexagonmi/_packaging/nexus-public/npm/registry/react-native-device-info/-/react-native-device-info-14.0.4.tgz#56b24ace9ff29a66bdfc667209086421ed6cfdce"
+  integrity sha1-VrJKzp/ymma9/GZyCQhkIe1s/c4=
+
 react-native-fs@^2.20.0:
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.20.0.tgz#05a9362b473bfc0910772c0acbb73a78dbc810f6"
@@ -6430,10 +6435,10 @@ react-native-mail@^6.1.1:
   resolved "https://registry.yarnpkg.com/react-native-mail/-/react-native-mail-6.1.1.tgz#f1b1f8034c84d2510a93e4a2a795f0db5a13595e"
   integrity sha512-pTs180wwyh7hN/iyTC9SfOX579U4YhDlHOLxi47IGvhPJENqO/QFdBq+wWKxyhNqdQuVSy+LoeIxLreWnIeYmg==
 
-react-native-modal-datetime-picker@^17.1.0:
-  version "17.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-17.1.0.tgz#74291bf92b830be285752f437841f52885c90e0b"
-  integrity sha512-jfTwfaCLtBffYbQ+pOGFLM+J5HmUh3vb9rT0JrrQPjxzecdc8pNYreB1c96+mVuq8bDCvaCdIeuEsslTqLJL0Q==
+react-native-modal-datetime-picker@^18.0.0:
+  version "18.0.0"
+  resolved "https://pkgs.dev.azure.com/hexagonmi/_packaging/nexus-public/npm/registry/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-18.0.0.tgz#0555b2c9ab34318629a251f250de68a0e3b3980d"
+  integrity sha1-BVWyyas0MYYpolHyUN5ooOOzmA0=
   dependencies:
     prop-types "^15.7.2"
 
