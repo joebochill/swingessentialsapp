@@ -1,3 +1,19 @@
+NEW TODOS:
+
+- Migrate Homepage
+- Migrate login / biometric
+- Migrate other pages
+
+
+- Convert fixed url links to environments
+- Update to flat eslint v9
+
+
+
+
+
+
+
 Remaining Work:
 
 - Update the documentation / Readme

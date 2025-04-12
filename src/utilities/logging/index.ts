@@ -1,8 +1,8 @@
 import { LOG_FILE, ERROR_FILE, ERROR_LIMIT, LOG_LIMIT } from '../../constants';
 import { getDate, getTime } from '../general';
-import { sendLogReport } from '../../redux/actions/ExtraActions';
+// import { sendLogReport } from '../../redux/actions/ExtraActions';
 import Mailer from 'react-native-mail';
-import { store } from '../../redux/store';
+// import { store } from '../../redux/store';
 import { Platform, Alert } from 'react-native';
 
 const RNFS = require('react-native-fs');
@@ -75,8 +75,7 @@ export class Logger {
     private static async _autoSendEmail(type: LogType): Promise<void> {
         if (SENDING) return;
         const currentErrors = await this.readMessages(type);
-        // @ts-ignore
-        store.dispatch(sendLogReport(currentErrors, type));
+        // store.dispatch(sendLogReport(currentErrors, type));
     }
     public static async sendEmail(type: LogType, onDone: () => void = (): void => {}, username = ''): Promise<void> {
         const currentLogs = await this.readMessages(type);

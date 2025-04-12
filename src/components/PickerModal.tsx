@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 import Modal, { ModalProps } from 'react-native-modal';
 import { useAppTheme } from '../theme';
-import { ListItem } from '.';
+import { ListItem } from './ListItem';
 
 type PickerMenuOption = {
     label: string;

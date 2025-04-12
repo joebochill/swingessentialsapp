@@ -48,26 +48,26 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Swing Essentials needs access to your microphone to capture audio in your swing videos.</string>
+	<string>Swing Essentials needs access to your microphone to capture audio in your swing
+			videos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Swing Essentials needs access to your photo library to save swing videos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Swing Essentials needs access to your photo library to upload swing videos.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
 		<string>SFCompactDisplay-Black.otf</string>
 		<string>SFCompactDisplay-Bold.otf</string>
 		<string>SFCompactDisplay-Regular.otf</string>
 		<string>SFCompactDisplay-Semibold.otf</string>
 		<string>SFCompactDisplay-Thin.otf</string>
+		<string>MaterialIcons.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>armv7</string>
+		<string>armv64</string>
 	</array>
 	<key>UIRequiresFullScreen</key>
 	<true/>

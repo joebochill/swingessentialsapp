@@ -1,19 +1,18 @@
 import React from 'react';
-import { IconProps as RNIconProps } from 'react-native-vector-icons/Icon';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { IconProps as RNIconProps } from '@react-native-vector-icons/common';
+import MaterialIcon from '@react-native-vector-icons/material-icons';
 import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { useAppTheme } from '../theme';
 
-export type IconProps = RNIconProps & {
-    family?: 'material' | 'material-community';
+export type MaterialIconName = React.ComponentProps<typeof MaterialIcon>['name'];
+export type IconProps = RNIconProps<MaterialIconName> & {
     onPress?: () => void;
     containerStyle?: TouchableOpacityProps['style'];
 };
 
 export const Icon: React.FC<IconProps> = (props) => {
     const theme = useAppTheme();
-    const { family = 'material', onPress, containerStyle, size = theme.size.md, ...other } = props;
+    const { onPress, containerStyle, size = theme.size.md, ...other } = props;
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -23,11 +22,7 @@ export const Icon: React.FC<IconProps> = (props) => {
             ]}
             disabled={!onPress}
         >
-            {family === 'material-community' ? (
-                <MaterialCommunityIcon size={size} {...other} />
-            ) : (
-                <MaterialIcon size={size} {...other} />
-            )}
+            <MaterialIcon size={size} {...other} />
         </TouchableOpacity>
     );
 };

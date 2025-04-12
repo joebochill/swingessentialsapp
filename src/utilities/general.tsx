@@ -1,5 +1,5 @@
+import { UserRole } from '../redux/slices/authSlice';
 import { atob } from './base64';
-import { UserRole } from '../__types__';
 
 export const MONTHS = [
     'January',

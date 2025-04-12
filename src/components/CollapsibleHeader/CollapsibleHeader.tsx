@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { JSX, useCallback } from 'react';
 import { Animated, ImageSourcePropType, SafeAreaView, View, ViewProps } from 'react-native';
-import { Icon, IconProps } from '..';
+import { Icon, IconProps } from '../Icon';
 import { COLLAPSED_HEIGHT, EXPANDED_HEIGHT } from './useCollapsibleHeader';
 import { useAppTheme } from '../../theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

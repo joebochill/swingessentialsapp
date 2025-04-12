@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import { MD3Theme, Text, TextProps, useTheme } from 'react-native-paper';
 import { VariantProp } from 'react-native-paper/lib/typescript/components/Typography/types';
 import { extraBoldType, lightType, regularType, semiBoldType } from '../../theme/typography/fontConfig';

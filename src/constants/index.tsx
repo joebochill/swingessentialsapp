@@ -1,6 +1,8 @@
 import { width } from '../utilities/dimensions';
 
-export const APP_VERSION = '4.0.0';
+// Get the app version from package.json
+import { version } from '../../package.json';
+export const APP_VERSION = version;
 export const ASYNC_PREFIX = '@SwingEssentials:';
 export const ERROR_FILE = 'error_log.txt';
 export const LOG_FILE = 'message_log.txt';
@@ -13,6 +15,7 @@ export const BASEURL_DEV = 'https://www.swingessentials.com/dev_apis/swingessent
 export const BASEURL_PROD = 'https://www.swingessentials.com/apis/swingessentials.php';
 
 export const BASEURL = BASEURL_PROD;
+export const BASE_API_URL = 'http://localhost:3000';
 export const AUTH = 'Message';
 
 export const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;

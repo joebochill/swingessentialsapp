@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 import { Alert, Platform, StatusBar } from 'react-native';
 import topology from '../../images/topology_20.png';
-import { ApplicationState, NavType } from '../../__types__';
+import { NavType } from '../../__types__';
 import { ROUTES } from '../../constants/routes';
-import { requestLogout } from '../../redux/actions';
+// import { requestLogout } from '../../redux/actions';
 import { CollapsibleHeader, CollapsibleHeaderProps } from './CollapsibleHeader';
-import { IconProps } from '..';
+import { IconProps } from '../Icon';
 import { COLLAPSED_HEIGHT } from '.';
 
 export type HeaderProps = CollapsibleHeaderProps & {
@@ -29,8 +29,8 @@ export const Header: React.FC<HeaderProps> = (props) => {
         ...other
     } = props;
 
-    const token = useSelector((state: ApplicationState) => state.login.token);
-    const dispatch = useDispatch();
+    const token = '12345'; // useSelector((state: ApplicationState) => state.login.token);
+    // const dispatch = useDispatch();
 
     useEffect(() => {
         StatusBar.setBarStyle('light-content');
@@ -44,15 +44,13 @@ export const Header: React.FC<HeaderProps> = (props) => {
         ? [
               token
                   ? {
-                        family: 'material-community',
-                        name: 'logout-variant',
+                        name: 'logout',
                         onPress: (): void => {
                             Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
                                 {
                                     text: 'Sign Out',
                                     onPress: (): void => {
-                                        // @ts-ignore
-                                        dispatch(requestLogout());
+                                        // dispatch(requestLogout());
                                     },
                                 },
                                 { text: 'Cancel' },
