@@ -1,38 +1,37 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { ComponentRef, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCompare } from '../../utilities';
 
 // Components
 import { Image, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import MatIcon from '@react-native-vector-icons/material-icons';
 
 // Utilities
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
 import { Logger } from '../../utilities/logging';
-
-// Types
-// import { NavigationInjectedProps } from '@react-navigation/native';
-import { ApplicationState } from '../../__types__';
-
 // Styles
 import { TextInput, Switch } from 'react-native-paper';
 import { height } from '../../utilities/dimensions';
 import logo from '../../images/logo-big.png';
 
-// SE Components
-import { SEButton, ErrorBox, BackgroundImage, Typography, Stack } from '../../components';
-
 // Constants
 import { ROUTES } from '../../constants/routes';
 
-// Actions
-import { requestLogin } from '../../redux/actions';
-import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/MainNavigator';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/core';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { BackgroundImage } from '../../components/BackgroundImage';
+import { Stack } from '../../components/layout';
+import { Typography } from '../../components/typography';
+import { ErrorBox } from '../../components/feedback';
+import { SEButton } from '../../components/SEButton';
+import { RootState } from '../../redux/store';
+import { useLoginMutation } from '../../redux/apiServices/authService';
+import { StyledTextInput } from '../../components/inputs/StyledTextInput';
 
 type BiometryState = {
     available: boolean;
@@ -57,7 +56,8 @@ const initialCredentials: CredentialsState = {
     savedCredentials: undefined,
 };
 
-export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (props) => {
+export const Login: React.FC = () => {
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
 
@@ -66,16 +66,14 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
     const [password, setPassword] = useState('');
     const [remember, setRemember] = useState(false);
     const [useBiometry, setUseBiometry] = useState(false);
-    const [error, setError] = useState(false);
+    const [missingDataError, setMissingDataError] = useState(false);
     const [touchFail, setTouchFail] = useState('');
     const [biometry, setBiometry] = useState(initialBiometry);
     const [credentials, setCredentials] = useState(initialCredentials);
 
-    // Redux State
-    const pending = useSelector((state: ApplicationState) => state.login.pending);
-    const token = useSelector((state: ApplicationState) => state.login.token);
-    const failures = useSelector((state: ApplicationState) => state.login.failCount);
-    const networkFailure = useSelector((state: ApplicationState) => state.login.networkError);
+    const [login, { isSuccess: loggedIn, isLoading: pending, isError }] = useLoginMutation();
+    const failures = useSelector((state: RootState) => state.auth.loginFailures);
+    const token = useSelector((state: RootState) => state.auth.token);
     const failuresChanged = useCompare(failures);
     const dispatch = useDispatch();
     // Refs
@@ -101,7 +99,6 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
             }
         };
         void loadSavedSettings();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -111,7 +108,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                 const biometricType = await TouchID.isSupported();
                 setBiometry({
                     ...biometry,
-                    // @ts-ignore
+                    // @ts-expect-error isSupported can return a boolean on some devices instead of a string
                     type: biometricType === true ? 'Fingerprint' : biometricType,
                     available: true,
                 });
@@ -120,7 +117,6 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
             }
         };
         void touchCheck();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -155,14 +151,14 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
             }
         };
         void loadKeychainCredentials();
-    }, [token, error, remember]);
+    }, [token, missingDataError, remember]);
 
     useEffect(() => {
         // handle successful login
         if (token) {
-            props.navigation.pop();
+            navigation.pop();
         }
-    }, [token, props.navigation]);
+    }, [token, navigation]);
 
     useEffect(() => {
         // handle login failure
@@ -178,12 +174,11 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
     const onLogin = useCallback(
         (user: string, pass: string) => {
             if (!user || !pass) {
-                setError(true);
+                setMissingDataError(true);
                 return;
             }
-            setError(false);
-            // @ts-ignore
-            dispatch(requestLogin({ username: user, password: pass }, remember, useBiometry));
+            setMissingDataError(false);
+            login({ username: user, password: pass, remember, useBiometry });
         },
         [dispatch, useBiometry, remember]
     );
@@ -232,7 +227,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
     }, [token, useBiometry, biometry.available, credentials.stored, showBiometricLogin]);
 
     return (
-        <BackgroundImage style={{ backgroundColor: theme.colors.primary }}>
+        <BackgroundImage>
             <KeyboardAvoidingView style={[{ flex: 1 }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView
                     style={{ flex: 1 }}
@@ -246,7 +241,6 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                 >
                     {/* LOGO */}
                     <View style={{ width: '100%', maxWidth: 500 }}>
-                        {/* @ts-ignore */}
                         <Image
                             source={logo}
                             resizeMethod="resize"
@@ -260,7 +254,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
 
                         {/* Username Field */}
                         <Stack>
-                            <TextInput
+                            <StyledTextInput
                                 autoCorrect={false}
                                 autoCapitalize={'none'}
                                 editable={!pending}
@@ -268,7 +262,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                                 onChangeText={(val: string): void => setUsername(val)}
                                 onSubmitEditing={(): void => {
                                     if (passField.current) {
-                                        // @ts-ignore
+                                        // @ts-expect-error passField is a ref to a TextInput
                                         passField.current.focus();
                                     }
                                 }}
@@ -292,17 +286,15 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                                         name={'fingerprint'}
                                         size={theme.size.md}
                                         color={theme.colors.onPrimaryContainer}
-                                        // @ts-ignore
-                                        underlayColor={'transparent'}
-                                        // @ts-ignore
-                                        onPress={(): void => showBiometricLogin()}
+                                        // underlayColor={'transparent'}
+                                        onPress={async (): Promise<void> => await showBiometricLogin()}
                                     />
                                 </View>
                             )}
                         </Stack>
 
                         {/* Password Field */}
-                        <TextInput
+                        <StyledTextInput
                             autoCapitalize={'none'}
                             editable={!pending}
                             label={'Password'}
@@ -314,7 +306,9 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                             secureTextEntry
                             underlineColorAndroid={'transparent'}
                             value={password}
-                            style={{ marginTop: theme.spacing.md }}
+                            style={{
+                                marginTop: theme.spacing.md,
+                            }}
                         />
 
                         {/* Remember Me Row */}
@@ -338,8 +332,13 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                                             setUsername('');
                                         }
                                     }}
-                                    ios_backgroundColor={theme.colors.primaryContainer}
-                                    trackColor={{ false: theme.colors.outline, true: theme.colors.onPrimaryContainer }}
+                                    ios_backgroundColor={
+                                        theme.dark ? theme.colors.background : theme.colors.primaryContainer
+                                    }
+                                    trackColor={{
+                                        false: theme.dark ? theme.colors.background : theme.colors.primaryContainer,
+                                        true: theme.colors.onPrimaryContainer,
+                                    }}
                                 />
                             </Stack>
                             {biometry.available && (
@@ -354,9 +353,11 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                                             setUseBiometry(val);
                                             void AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
                                         }}
-                                        ios_backgroundColor={theme.colors.primaryContainer}
+                                        ios_backgroundColor={
+                                            theme.dark ? theme.colors.background : theme.colors.primaryContainer
+                                        }
                                         trackColor={{
-                                            false: theme.colors.outline,
+                                            false: theme.dark ? theme.colors.background : theme.colors.primaryContainer,
                                             true: theme.colors.onPrimaryContainer,
                                         }}
                                     />
@@ -365,37 +366,42 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                         </Stack>
 
                         {/* Error Messages */}
-                        <ErrorBox
-                            show={failures > 0 || error}
-                            error={'The username / password you entered was not correct.'}
-                            style={{ marginTop: theme.spacing.md }}
-                        />
-                        <ErrorBox
-                            show={networkFailure}
-                            error={
-                                'We were unable to process your login request. Check your network connection and try again.'
-                            }
-                            style={{ marginTop: theme.spacing.md }}
-                        />
-                        <ErrorBox
-                            show={touchFail.length > 0 && failures <= 0}
-                            error={touchFail}
-                            style={{ marginTop: theme.spacing.md }}
-                        />
+                        {!loggedIn && (
+                            <>
+                                <ErrorBox
+                                    show={(failures > 0 || missingDataError) && !pending}
+                                    error={'The username / password you entered was not correct.'}
+                                    style={{ marginTop: theme.spacing.md }}
+                                />
+                                <ErrorBox
+                                    show={isError && failures <= 0 && !missingDataError && !pending}
+                                    error={
+                                        'We were unable to process your login request. Check your network connection and try again.'
+                                    }
+                                    style={{ marginTop: theme.spacing.md }}
+                                />
+                                <ErrorBox
+                                    show={touchFail.length > 0 && failures <= 0}
+                                    error={touchFail}
+                                    style={{ marginTop: theme.spacing.md }}
+                                />
+                            </>
+                        )}
 
                         {/* Log In Buttons */}
                         <Stack
                             direction={'row'}
                             align={'center'}
-                            space={theme.spacing.sm}
+                            gap={theme.spacing.sm}
                             style={{ marginTop: theme.spacing.md }}
                         >
                             <SEButton
-                                dark
                                 title={'Sign In'}
-                                buttonColor={theme.colors.secondary}
+                                buttonColor={theme.dark ? undefined : theme.colors.secondary}
                                 loading={pending}
-                                style={{ flex: 1 }}
+                                style={{
+                                    flex: 1,
+                                }}
                                 onPress={(): void => onLogin(username, password)}
                             />
                             <SEButton
@@ -404,7 +410,7 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                                 labelStyle={{ color: theme.colors.onPrimary }}
                                 style={{ flex: 0 }}
                                 title="CANCEL"
-                                onPress={(): void => props.navigation.pop()}
+                                onPress={(): void => navigation.pop()}
                             />
                         </Stack>
 
@@ -419,15 +425,13 @@ export const Login: React.FC<StackScreenProps<RootStackParamList, 'Login'>> = (p
                                 mode={'text'}
                                 labelStyle={{ color: theme.colors.onPrimary }}
                                 title="Forgot Password?"
-                                // @ts-ignore
-                                onPress={(): void => props.navigation.push(ROUTES.RESET_PASSWORD)}
+                                onPress={(): void => navigation.push(ROUTES.RESET_PASSWORD)}
                             />
                             <SEButton
                                 mode={'text'}
                                 labelStyle={{ color: theme.colors.onPrimary }}
                                 title="Need an Account?"
-                                // @ts-ignore
-                                onPress={(): void => props.navigation.push(ROUTES.REGISTER)}
+                                onPress={(): void => navigation.push(ROUTES.REGISTER)}
                             />
                         </Stack>
                     </View>

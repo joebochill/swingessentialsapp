@@ -17,6 +17,11 @@ export type CollapsibleHeaderProps = Pick<ViewProps, 'style'> & {
      */
     backgroundImage?: ImageSourcePropType;
 
+    /**
+     * A color to blend with the background image in the header
+     */
+    backgroundColor?: string;
+
     /** Icon to show to the left of the title, primarily used to trigger the menu / drawer */
     navigationIcon?: IconProps;
 
@@ -45,6 +50,7 @@ export const CollapsibleHeader: React.FC<CollapsibleHeaderProps> = (props) => {
         subtitle,
         navigationIcon,
         actionItems = [],
+        backgroundColor = theme.dark ? theme.colors.secondary : theme.colors.primary,
         backgroundImage,
         scrollPosition = new Animated.Value(0),
         content,
@@ -88,7 +94,7 @@ export const CollapsibleHeader: React.FC<CollapsibleHeaderProps> = (props) => {
         <Animated.View
             style={{
                 width: '100%',
-                backgroundColor: theme.colors.primary,
+                backgroundColor,
                 shadowColor: 'rgba(0, 0, 0, 0.3)',
                 shadowOffset: {
                     width: 0,

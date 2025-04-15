@@ -7,13 +7,12 @@ import { Provider } from 'react-redux';
 
 // Utilities
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { PaperProvider } from 'react-native-paper';
-import { SETheme } from './src/theme';
 import { withIAPContext } from 'react-native-iap';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { MainNavigation } from './src/navigation/MainNavigation';
 import { store } from './src/redux/store';
 import { initializeData } from './src/redux/thunks';
+import { ThemeProvider } from './src/theme/ThemeProvider';
 
 function App(): React.JSX.Element {
     const { hasPermission: hasVideoPermission, requestPermission: requestVideoPermission } = useCameraPermission();
@@ -48,12 +47,13 @@ function App(): React.JSX.Element {
         <Provider store={store}>
             <GestureHandlerRootView>
                 <SafeAreaProvider>
-                    <PaperProvider theme={SETheme}>
+                    <ThemeProvider>
                         <MainNavigation />
-                    </PaperProvider>
+                    </ThemeProvider>
                 </SafeAreaProvider>
             </GestureHandlerRootView>
         </Provider>
     );
 }
+
 export default withIAPContext(App);

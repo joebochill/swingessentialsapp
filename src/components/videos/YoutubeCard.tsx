@@ -4,15 +4,16 @@ import DeviceInfo from 'react-native-device-info';
 
 // Components
 import { View, TouchableOpacity, ViewProps, Platform } from 'react-native';
-import { Paragraph, Stack, Typography } from '..';
 import YoutubePlayer, { YoutubeIframeRef } from 'react-native-youtube-iframe';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import MatIcon from '@react-native-vector-icons/material-icons';
 import Modal from 'react-native-modal';
 
 // Styles
 import { width as deviceWidth, aspectHeight } from '../../utilities/dimensions';
 import { useAppTheme } from '../../theme';
 import { Logger } from '../../utilities/logging';
+import { Stack } from '../layout';
+import { Paragraph, Typography } from '../typography';
 
 type YoutubeCardHeaderProps = {
     title?: string;
@@ -66,7 +67,7 @@ export type YoutubeCardProps = {
 
 export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
     const theme = useAppTheme();
-    const width = deviceWidth - 2 * theme.spacing.md;
+    const width = deviceWidth;
     const { videoWidth = width, headerTitle, headerSubtitle, video, onExpand, style } = props;
     const [videoReady, setVideoReady] = useState(false);
     const [playing, setPlaying] = useState(false);
@@ -104,8 +105,11 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                         },
                         elevation: 1,
                         flex: 1,
-                        backgroundColor: theme.colors.surface,
+                        borderWidth: 1,
+                        borderColor: theme.colors.outline,
+                        backgroundColor: theme.colors.background,
                         borderRadius: theme.roundness,
+                        overflow: 'hidden',
                     },
                     ...(Array.isArray(style) ? style : [style]),
                 ]}
@@ -131,7 +135,8 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                         webViewProps={{
                             androidLayerType: 'hardware',
                         }}
-                        onError={(e): void => {
+                        //TODO fix any
+                        onError={(e: any): void => {
                             void Logger.logError({
                                 code: 'YTB-001',
                                 description: `Youtube player encountered an error.`,
@@ -163,7 +168,7 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                             bottom: 58,
                             // backgroundColor: 'rgba(255,0,0,0.35)',
                         }}
-                    ></TouchableOpacity>
+                    />
                     {/* CC And Settings Button Blocker */}
                     {hasPlayed && (
                         <TouchableOpacity

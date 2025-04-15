@@ -1,42 +1,26 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { usePrevious } from '../../utilities';
 import { useSelector, useDispatch } from 'react-redux';
-
-// Components
 import { Platform, KeyboardAvoidingView, ScrollView, TouchableOpacity, Alert, Keyboard } from 'react-native';
-import {
-    SEButton,
-    ErrorBox,
-    UploadProgressModal,
-    SubmitTutorial,
-    SectionHeader,
-    Stack,
-    Typography,
-} from '../../components';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
-
-// Styles
+import MatIcon from '@react-native-vector-icons/material-icons';
 import { Paragraph, TextInput } from 'react-native-paper';
 import bg from '../../images/banners/submit.jpg';
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
-
-// Constants
 import { ROUTES } from '../../constants/routes';
-
-// Types
-import { ApplicationState } from '../../__types__';
-
-// Redux
-import { submitLesson } from '../../redux/actions';
-
-// Utilities
 import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../../components/videos/SwingVideo';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { useNavigation } from '@react-navigation/core';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { ErrorBox, UploadProgressModal } from '../../components/feedback';
+import { SectionHeader, Stack } from '../../components/layout';
+import { Typography } from '../../components/typography/Typography';
+import { SEButton } from '../../components/SEButton';
+import { SubmitTutorial } from '../../components/tutorials';
+import { StyledTextInput } from '../../components/inputs/StyledTextInput';
 
 const RNFS = require('react-native-fs');
 
@@ -60,17 +44,17 @@ const getErrorMessage = (code: number | null): string => {
     }
 };
 
-export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = (props) => {
-    const { navigation } = props;
+export const Submit: React.FC = () => {
+    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
     const [foVideo, setFOVideo] = useState('');
     const [dtlVideo, setDTLVideo] = useState('');
     const [useNotes, setUseNotes] = useState(false);
     const [notes, setNotes] = useState('');
     const [videoSize, setVideoSize] = useState({ fo: 0, dtl: 0 });
     const [uploadProgress, setUploadProgress] = useState(0);
-    const credits = useSelector((state: ApplicationState) => state.credits.count);
-    const lessons = useSelector((state: ApplicationState) => state.lessons);
-    const role = useSelector((state: ApplicationState) => state.login.role);
+    const credits = 0; //useSelector((state: ApplicationState) => state.credits.count);
+    const lessons = {} as any; //useSelector((state: ApplicationState) => state.lessons);
+    const role: string = ''; //useSelector((state: ApplicationState) => state.login.role);
     const scroller = useRef(null);
     const dispatch = useDispatch();
     const theme = useAppTheme();
@@ -103,10 +87,9 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                 /*timeout = */ setTimeout(() => {
                     Alert.alert(
                         'Success!',
-                        'Your lesson request was submitted successfully. We are working on your analysis.',
-                        // @ts-ignore
-                        [{ text: 'OK', onPress: (): void => navigation.navigate(ROUTES.LESSONS) }],
-                        { cancelable: false }
+                        'Your lesson request was submitted successfully. We are working on your analysis.'
+                        // [{ text: 'OK', onPress: (): void => navigation.navigate(ROUTES.LESSONS) }],
+                        // { cancelable: false }
                     );
                 }, 700);
                 // return () => clearTimeout(timeout);
@@ -188,12 +171,11 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
         });
         data.append('notes', notes);
 
-        dispatch(
-            // @ts-ignore
-            submitLesson(data, (event: ProgressEvent) => {
-                setUploadProgress((event.loaded / event.total) * 100);
-            })
-        );
+        // dispatch(
+        //     submitLesson(data, (event: ProgressEvent) => {
+        //         setUploadProgress((event.loaded / event.total) * 100);
+        //     })
+        // );
     }, [role, credits, lessons.pending.length, foVideo, dtlVideo, notes, dispatch]);
 
     const setVideoURI = useCallback(
@@ -277,7 +259,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                     <Stack direction={'row'} justify={'space-between'}>
                         <Stack align={'center'}>
                             <SwingVideo
-                                navigation={navigation}
+                                // navigation={navigation}
                                 type={'fo'}
                                 source={foVideo ? { uri: foVideo } : undefined}
                                 editable
@@ -294,7 +276,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                         </Stack>
                         <Stack align={'center'}>
                             <SwingVideo
-                                navigation={navigation}
+                                // navigation={navigation}
                                 type={'dtl'}
                                 source={dtlVideo ? { uri: dtlVideo } : undefined}
                                 editable
@@ -350,7 +332,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                     )}
                     {useNotes && (
                         <>
-                            <TextInput
+                            <StyledTextInput
                                 autoCapitalize={'sentences'}
                                 autoFocus
                                 blurOnSubmit={true}
@@ -360,8 +342,7 @@ export const Submit: React.FC<StackScreenProps<RootStackParamList, 'Submit'>> = 
                                 onChangeText={(val): void => setNotes(val)}
                                 onFocus={(): void => {
                                     if (scroller.current) {
-                                        // @ts-ignore
-                                        scroller.current.scrollTo({ x: 0, y: 350, animated: true });
+                                        // scroller.current.scrollTo({ x: 0, y: 350, animated: true });
                                     }
                                 }}
                                 returnKeyType={'done'}

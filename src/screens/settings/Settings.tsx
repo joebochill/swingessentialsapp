@@ -1,34 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-// Components
 import { View, Image, RefreshControl, ScrollView, TouchableHighlight, Keyboard } from 'react-native';
-import { Typography, SEButton, Stack, SectionHeader, ListItem } from '../../components';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import MatIcon from '@react-native-vector-icons/material-icons';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-
-// Constants
 import { ROUTES } from '../../constants/routes';
-
-// Styles
 import { TextInput, IconButton } from 'react-native-paper';
-
-// Types
-import { ApplicationState, Average } from '../../__types__';
-// Redux
-import { loadSettings } from '../../redux/actions/SettingsActions';
 import { StackScreenProps } from '@react-navigation/stack';
 import { getJSDate, getLongDate } from '../../utilities';
-import { setUserData, loadUserInfo, setUserAvatar } from '../../redux/actions/user-data-actions';
 import { width, height } from '../../utilities/dimensions';
-import { RootStackParamList } from '../../navigation/MainNavigator';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { format } from 'date-fns';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
 import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ScoreRange } from '../../redux/apiServices/userDetailsService';
+import { useNavigation } from '@react-navigation/core';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { SectionHeader, Stack } from '../../components/layout';
+import { SEButton } from '../../components/SEButton';
+import { ListItem } from '../../components/ListItem';
+import { Typography } from '../../components/typography';
+import { StyledTextInput } from '../../components/inputs/StyledTextInput';
 
 const objectsEqual = (a: Record<string, unknown>, b: Record<string, unknown>): boolean => {
     // Create arrays of property names
@@ -56,7 +50,7 @@ const objectsEqual = (a: Record<string, unknown>, b: Record<string, unknown>): b
     return true;
 };
 
-const mapAverageToLabel = (avg: Average | undefined): string => {
+const mapAverageToLabel = (avg: ScoreRange | undefined): string => {
     switch (parseInt(avg || '', 10)) {
         case 60:
             return 'Under 70';
@@ -75,17 +69,18 @@ const mapAverageToLabel = (avg: Average | undefined): string => {
     }
 };
 
-export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>> = (props) => {
-    const settings = useSelector((state: ApplicationState) => state.settings);
+export const Settings: React.FC = () => {
+    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
+    const settings = {} as any; //useSelector((state: ApplicationState) => state.settings);
     const { lessons, marketing, newsletter, reminders } = settings.notifications || {
         lessons: true,
         marketing: true,
         newsletter: true,
         reminders: true,
     };
-    const token = useSelector((state: ApplicationState) => state.login.token);
-    const userData = useSelector((state: ApplicationState) => state.userData);
-    const role = useSelector((state: ApplicationState) => state.login.role);
+    const token: string = ''; //useSelector((state: ApplicationState) => state.login.token);
+    const userData = {} as any; //useSelector((state: ApplicationState) => state.userData);
+    const role: string = ''; //useSelector((state: ApplicationState) => state.login.role);
 
     const dispatch = useDispatch();
     const theme = useAppTheme();
@@ -100,11 +95,11 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
         settings.avatar ? `${userData.username}/${settings.avatar}.png` : 'blank.png'
     }`;
 
-    useEffect(() => {
-        if (!token) {
-            props.navigation.pop();
-        }
-    }, [props.navigation, token]);
+    // useEffect(() => {
+    //     if (!token) {
+    //         navigation.pop();
+    //     }
+    // }, [navigation, token]);
 
     useEffect(() => {
         setPersonal(userData);
@@ -124,7 +119,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                 title={userData.username}
                 subtitle={memberString}
                 mainAction={'back'}
-                navigation={props.navigation}
+                navigation={navigation}
                 fixed
             />
             <ScrollView
@@ -140,10 +135,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                     <RefreshControl
                         refreshing={settings.loading}
                         onRefresh={(): void => {
-                            // @ts-ignore
-                            dispatch(loadSettings());
-                            // @ts-ignore
-                            dispatch(loadUserInfo());
+                            // dispatch(loadSettings());
+                            // dispatch(loadUserInfo());
                         }}
                     />
                 }
@@ -161,14 +154,12 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 includeBase64: true,
                             })
                                 .then((image) => {
-                                    dispatch(
-                                        // @ts-ignore
-                                        setUserAvatar({
-                                            useAvatar: 1,
-                                            // @ts-ignore
-                                            avatar: image.data,
-                                        })
-                                    );
+                                    // dispatch(
+                                    // setUserAvatar({
+                                    //     useAvatar: 1,
+                                    //     avatar: image.data,
+                                    // })
+                                    // );
                                 })
                                 .catch((/*err*/): void => {
                                     // do nothing (canceled image picker)
@@ -209,13 +200,12 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 right: 0,
                             }}
                             onPress={(): void => {
-                                dispatch(
-                                    // @ts-ignore
-                                    setUserAvatar({
-                                        useAvatar: 0,
-                                        avatar: '',
-                                    })
-                                );
+                                // dispatch(
+                                // setUserAvatar({
+                                //     useAvatar: 0,
+                                //     avatar: '',
+                                // })
+                                // );
                             }}
                         />
                     )}
@@ -351,8 +341,8 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                 )}
                 {/* Write Mode */}
                 {editAbout && (
-                    <Stack space={theme.spacing.sm}>
-                        <TextInput
+                    <Stack gap={theme.spacing.sm}>
+                        <StyledTextInput
                             label={'First Name'}
                             value={personal.firstName}
                             autoCorrect={false}
@@ -365,7 +355,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             returnKeyType={'done'}
                             scrollEnabled={false}
                         />
-                        <TextInput
+                        <StyledTextInput
                             label={'Last Name'}
                             value={personal.lastName}
                             autoCorrect={false}
@@ -378,7 +368,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             returnKeyType={'done'}
                             scrollEnabled={false}
                         />
-                        <TextInput
+                        <StyledTextInput
                             label={'Location'}
                             value={personal.location}
                             placeholder={'e.g., Denver, CO'}
@@ -393,7 +383,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             scrollEnabled={false}
                         />
                         <Stack>
-                            <TextInput
+                            <StyledTextInput
                                 label={'Date of Birth'}
                                 value={personal.birthday}
                                 placeholder={'MM/DD/YYYY'}
@@ -420,7 +410,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 onCancel={(): void => setShowDatePicker(false)}
                             />
                         </Stack>
-                        <TextInput
+                        <StyledTextInput
                             editable={false}
                             label={'Email Address'}
                             value={personal.email}
@@ -445,12 +435,12 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                                 { label: '150+', value: '150' },
                             ]}
                             onValueChange={(value: string): void => {
-                                setPersonal({ ...personal, average: value as Average });
+                                setPersonal({ ...personal, average: value as ScoreRange });
                             }}
                             value={personal.average}
                             useNativeAndroidPickerStyle={false}
                         >
-                            <TextInput
+                            <StyledTextInput
                                 editable={false}
                                 label={'Avg. Score (18 Holes)'}
                                 underlineColorAndroid={'transparent'}
@@ -463,7 +453,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             />
                         </RNPickerSelect>
 
-                        <TextInput
+                        <StyledTextInput
                             label={'Golf Goals'}
                             multiline
                             value={personal.goals}
@@ -485,8 +475,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                             <SEButton
                                 title={'Save Changes'}
                                 onPress={(): void => {
-                                    // @ts-ignore
-                                    dispatch(setUserData(personal));
+                                    // dispatch(setUserData(personal));
                                     setEditAbout(false);
                                 }}
                             />
@@ -501,8 +490,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                     topDivider
                     bottomDivider
                     style={{ marginHorizontal: -1 * theme.spacing.md }}
-                    // @ts-ignore
-                    onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
+                    // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
                     right={({ style, ...rightProps }): JSX.Element => (
                         <Stack direction={'row'} align={'center'} style={[style, { marginRight: 0 }]} {...rightProps}>
                             <Typography>
@@ -525,8 +513,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         titleEllipsizeMode={'tail'}
                         topDivider
                         bottomDivider
-                        // @ts-ignore
-                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'duration' })}
+                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'duration' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -548,8 +535,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         title={'Recording Delay'}
                         titleEllipsizeMode={'tail'}
                         bottomDivider
-                        // @ts-ignore
-                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'delay' })}
+                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'delay' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -571,8 +557,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         title={'Stance Overlay'}
                         titleEllipsizeMode={'tail'}
                         bottomDivider
-                        // @ts-ignore
-                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'overlay' })}
+                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'overlay' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -599,8 +584,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         bottomDivider
                         title={'Lessons'}
                         titleEllipsizeMode={'tail'}
-                        // @ts-ignore
-                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'lessons' })}
+                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'lessons' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -622,8 +606,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         bottomDivider
                         title={'Marketing'}
                         titleEllipsizeMode={'tail'}
-                        // @ts-ignore
-                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'marketing' })}
+                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'marketing' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -645,8 +628,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         bottomDivider
                         title={'Newsletters'}
                         titleEllipsizeMode={'tail'}
-                        // @ts-ignore
-                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'newsletter' })}
+                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'newsletter' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -668,8 +650,7 @@ export const Settings: React.FC<StackScreenProps<RootStackParamList, 'Settings'>
                         bottomDivider
                         title={'Reminders'}
                         titleEllipsizeMode={'tail'}
-                        // @ts-ignore
-                        onPress={(): void => props.navigation.navigate(ROUTES.SETTING, { setting: 'reminders' })}
+                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'reminders' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}

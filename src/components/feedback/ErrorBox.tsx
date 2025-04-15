@@ -1,8 +1,8 @@
 import React from 'react';
 // Components
 import { TextProps } from 'react-native';
-import { Typography } from '../../components';
 import { useAppTheme } from '../../theme';
+import { Typography } from '../typography';
 
 type ErrorBoxProps = TextProps & {
     show?: boolean;

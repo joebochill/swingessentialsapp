@@ -1,21 +1,20 @@
-import React from 'react';
+import React, { JSX } from 'react';
 
 // Components
 import { View, Image } from 'react-native';
-import { Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
-import Carousel from 'react-native-snap-carousel';
+// import Carousel from 'react-native-snap-carousel';
 // Styles
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
-import { ApplicationState } from '../../__types__';
-import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 import { useAppTheme } from '../../theme';
+import { Stack } from '../layout';
+import { Typography } from '../typography';
 
 export const LessonTutorial: React.FC = () => {
-    const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
+    const showTutorial = { tutorial_lesson: false }; //useSelector((state: ApplicationState) => state.tutorials);
     const theme = useAppTheme();
     const dispatch = useDispatch();
 
@@ -50,17 +49,16 @@ export const LessonTutorial: React.FC = () => {
         <TutorialModal
             visible={showTutorial.tutorial_lesson}
             onClose={(): void => {
-                // @ts-ignore
-                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]));
+                // dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]));
             }}
         >
             <View>
-                <Carousel
+                {/* <Carousel
                     data={slides}
                     renderItem={({ index }: { index: number }): JSX.Element => slides[index]}
                     sliderWidth={width - 2 * theme.spacing.md}
                     itemWidth={width - 2 * theme.spacing.md}
-                />
+                /> */}
                 <SEButton
                     dark
                     mode={'contained'}
@@ -69,8 +67,7 @@ export const LessonTutorial: React.FC = () => {
                     title="GOT IT"
                     style={{ marginTop: theme.spacing.xl }}
                     onPress={(): void => {
-                        // @ts-ignore
-                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]));
+                        // dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]));
                     }}
                 />
             </View>

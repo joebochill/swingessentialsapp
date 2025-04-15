@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
 import { Alert, Platform, StatusBar } from 'react-native';
 import topology from '../../images/topology_20.png';
 import { NavType } from '../../__types__';
 import { ROUTES } from '../../constants/routes';
-// import { requestLogout } from '../../redux/actions';
 import { CollapsibleHeader, CollapsibleHeaderProps } from './CollapsibleHeader';
 import { IconProps } from '../Icon';
 import { COLLAPSED_HEIGHT } from '.';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { useLogoutMutation } from '../../redux/apiServices/authService';
 
 export type HeaderProps = CollapsibleHeaderProps & {
     mainAction?: NavType;
@@ -29,8 +30,8 @@ export const Header: React.FC<HeaderProps> = (props) => {
         ...other
     } = props;
 
-    const token = '12345'; // useSelector((state: ApplicationState) => state.login.token);
-    // const dispatch = useDispatch();
+    const token = useSelector((state: RootState) => state.auth.token);
+    const [logout] = useLogoutMutation();
 
     useEffect(() => {
         StatusBar.setBarStyle('light-content');
@@ -50,7 +51,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
                                 {
                                     text: 'Sign Out',
                                     onPress: (): void => {
-                                        // dispatch(requestLogout());
+                                        logout();
                                     },
                                 },
                                 { text: 'Cancel' },

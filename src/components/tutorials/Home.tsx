@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 
 // Components
 import { View } from 'react-native';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import { Stack, Typography } from '../';
+import MatIcon from '@react-native-vector-icons/material-icons';
+// import { Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './Tutorial';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+// import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 // Styles
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
-import { ApplicationState } from '../../__types__';
-import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 import { useAppTheme } from '../../theme';
+import { Stack } from '../layout';
+import { Typography } from '../typography';
 
 export const HomeTutorial: React.FC = () => {
     const [activePanel, setActivePanel] = useState(0);
     const [showButton, setShowButton] = useState(false);
-    const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
+    const showTutorial = { tutorial_home: false }; //useSelector((state: ApplicationState) => state.tutorials);
     const theme = useAppTheme();
     const dispatch = useDispatch();
 
@@ -61,12 +61,11 @@ export const HomeTutorial: React.FC = () => {
         <TutorialModal
             visible={showTutorial.tutorial_home}
             onClose={(): void => {
-                // @ts-ignore
-                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]));
+                // dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]));
             }}
         >
             <View>
-                <Carousel
+                {/* <Carousel
                     data={slides}
                     renderItem={({ index }: { index: number }): JSX.Element => slides[index]}
                     sliderWidth={width - 2 * theme.spacing.md}
@@ -77,8 +76,8 @@ export const HomeTutorial: React.FC = () => {
                             setShowButton(true);
                         }
                     }}
-                />
-                <Pagination
+                /> */}
+                {/* <Pagination
                     dotsLength={slides.length}
                     activeDotIndex={activePanel}
                     dotStyle={{
@@ -90,7 +89,7 @@ export const HomeTutorial: React.FC = () => {
                     }}
                     inactiveDotOpacity={0.5}
                     inactiveDotScale={0.8}
-                />
+                /> */}
                 <SEButton
                     dark
                     mode={'contained'}
@@ -100,8 +99,7 @@ export const HomeTutorial: React.FC = () => {
                     buttonColor={theme.colors.secondary}
                     style={{ opacity: showButton ? 1 : 0 }}
                     onPress={(): void => {
-                        // @ts-ignore
-                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]));
+                        // dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.HOME]));
                     }}
                 />
             </View>

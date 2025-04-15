@@ -5,10 +5,13 @@ import { clearToken, incrementLoginFailures, UserRole } from '../slices/authSlic
 import { storeToken } from './utils/storeToken';
 import { clearProtectedDetails, initializeData } from '../thunks';
 import { prepareHeaders } from './utils/prepareHeaders';
+import * as Keychain from 'react-native-keychain';
 
 export type Credentials = {
     username: string;
     password: string;
+    remember?: boolean;
+    useBiometry?: boolean;
 };
 
 const authApi = createApi({
@@ -26,13 +29,22 @@ const authApi = createApi({
                     [AUTH]: `Basic ${btoa(credentials.username)}.${btoa(credentials.password)}`,
                 },
             }),
-            async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
                     const { meta } = await queryFulfilled;
                     storeToken(meta, dispatch);
+                    if (arg.useBiometry) {
+                        void Keychain.setGenericPassword(arg.username, arg.password);
+                    } else {
+                        void Keychain.resetGenericPassword();
+                    }
+                    if (arg.remember) {
+                        void AsyncStorage.setItem(`${ASYNC_PREFIX}lastUser`, arg.username || '');
+                    }
                     dispatch(initializeData());
                 } catch (error) {
                     console.error('Login failed:', error);
+                    void Keychain.resetGenericPassword();
                     dispatch(incrementLoginFailures());
                 }
             },

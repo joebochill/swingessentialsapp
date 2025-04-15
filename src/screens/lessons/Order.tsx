@@ -1,56 +1,42 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, JSX } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { Alert, ScrollView, RefreshControl, Platform } from 'react-native';
-import { Typography, ErrorBox, SEButton, OrderTutorial, SectionHeader, ListItem, Stack } from '../../components';
 import { requestPurchase, useIAP, ErrorCode } from 'react-native-iap';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import MatIcon from '@react-native-vector-icons/material-icons';
 
 // Styles
 import bg from '../../images/banners/order.jpg';
 
-// Redux
-import { loadCredits, loadPackages } from '../../redux/actions';
-
 // Constants
 import { ROUTES } from '../../constants/routes';
-
-// Types
-import { ApplicationState } from '../../__types__';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { useNavigation } from '@react-navigation/core';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { ErrorBox } from '../../components/feedback';
+import { SectionHeader, Stack } from '../../components/layout';
+import { Typography } from '../../components/typography';
+import { ListItem } from '../../components/ListItem';
+import { SEButton } from '../../components/SEButton';
+import { OrderTutorial } from '../../components/tutorials';
 
-export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (props) => {
-    const packages = useSelector((state: ApplicationState) => state.packages.list);
-    const credits = useSelector((state: ApplicationState) => state.credits);
-    const packagesProcessing = useSelector((state: ApplicationState) => state.packages.loading);
-    const role = useSelector((state: ApplicationState) => state.login.role);
+export const Order: React.FC = () => {
+    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
+    const packages: any[] = []; //useSelector((state: ApplicationState) => state.packages.list);
+    const credits = {} as any; //useSelector((state: ApplicationState) => state.credits);
+    const packagesProcessing = false; //useSelector((state: ApplicationState) => state.packages.loading);
+    const role: string = ''; //useSelector((state: ApplicationState) => state.login.role);
     const dispatch = useDispatch();
     const theme = useAppTheme();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
-    const {
-        connected,
-        products,
-        // promotedProductsIOS,
-        // subscriptions,
-        // purchaseHistories,
-        // availablePurchases,
-        // currentPurchase,
-        // currentPurchaseError,
-        // initConnectionError,
-        // finishTransaction,
-        getProducts,
-        // getSubscriptions,
-        // getAvailablePurchases,
-        // getPurchaseHistories,
-    } = useIAP();
+    const { connected, products, getProducts } = useIAP();
 
     const syncedPackages = packages.map((p) => ({
         ...p,
@@ -94,14 +80,13 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 {
                     text: 'Submit Your Swing Now',
                     onPress: (): void => {
-                        // @ts-ignore
-                        props.navigation.navigate(ROUTES.SUBMIT);
+                        // navigation.navigate(ROUTES.SUBMIT);
                     },
                 },
                 { text: 'Later' },
             ]);
         }
-    }, [credits.success, props.navigation]);
+    }, [credits.success, navigation]);
 
     const onPurchase = useCallback(
         async (sku: string, shortcode: string) => {
@@ -144,7 +129,7 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                 title={'Order More Lessons'}
                 subtitle={'Multiple packages available'}
                 backgroundImage={bg}
-                navigation={props.navigation}
+                navigation={navigation}
                 {...headerProps}
             />
             <ScrollView
@@ -154,10 +139,8 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                     <RefreshControl
                         refreshing={credits.inProgress}
                         onRefresh={(): void => {
-                            // @ts-ignore
-                            dispatch(loadCredits());
-                            // @ts-ignore
-                            dispatch(loadPackages());
+                            // dispatch(loadCredits());
+                            // dispatch(loadPackages());
                         }}
                         progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
@@ -204,11 +187,11 @@ export const Order: React.FC<StackScreenProps<RootStackParamList, 'Order'>> = (p
                             titleNumberOfLines={2}
                             titleEllipsizeMode={'tail'}
                             onPress={(): void => setSelected(index)}
-                            right={({ style, ...rightProps }): JSX.Element => (
+                            right={({ /*style,*/ ...rightProps }): JSX.Element => (
                                 <Stack
                                     direction={'row'}
                                     align={'center'}
-                                    style={[{ marginRight: -1 * theme.spacing.md }, style]}
+                                    style={[{ marginRight: -1 * theme.spacing.md } /*style*/]}
                                     {...rightProps}
                                 >
                                     <Typography variant={'labelMedium'}>{item.localPrice ?? '--'}</Typography>

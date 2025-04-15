@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { BASE_API_URL } from '../../constants';
 import { prepareHeaders } from './utils/prepareHeaders';
 
@@ -25,12 +25,13 @@ export type Level2UserDetailsApiResponse = Level1UserDetailsApiResponse & {
     notify_newsletter: 0 | 1;
     notify_reminders: 0 | 1;
 };
-export type Level3UserDetailsApiResponse = Level2UserDetailsApiResponse & {
+export type UserAppSettings = {
     handed: 'left' | 'right';
     camera_delay: number;
     camera_duration: number;
     camera_overlay: 0 | 1;
 };
+export type Level3UserDetailsApiResponse = Level2UserDetailsApiResponse & UserAppSettings;
 
 export const BLANK_USER: Level2UserDetailsApiResponse = {
     username: '',
@@ -59,17 +60,13 @@ export const userDetailsApi = createApi({
     }),
     tagTypes: ['userDetails'],
     endpoints: (builder) => ({
-        getUserDetails: builder.query<Level2UserDetailsApiResponse, void>({
+        getUserDetails: builder.query<Level3UserDetailsApiResponse, void>({
             providesTags: ['userDetails'],
             query: () => ({
                 url: `user`,
                 method: 'GET',
-                params: { detailLevel: 2 },
+                params: { detailLevel: 3 },
             }),
-        }),
-        getUserDetailsById: builder.query<Level1UserDetailsApiResponse, string>({
-            providesTags: ['userDetails'],
-            query: (id) => `user/${id}?detailLevel=1`,
         }),
         updateUserDetails: builder.mutation<boolean, Partial<Level2UserDetailsApiResponse>>({
             query: (body) => ({
@@ -79,17 +76,9 @@ export const userDetailsApi = createApi({
             }),
             invalidatesTags: ['userDetails'],
         }),
-        searchUsers: builder.mutation<Omit<BasicUserDetailsApiResponse, 'avatar'>[], string>({
-            query: (search) => `user/search?q=${search}`,
-        }),
     }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {
-    useGetUserDetailsQuery,
-    useUpdateUserDetailsMutation,
-    useGetUserDetailsByIdQuery,
-    useSearchUsersMutation,
-} = userDetailsApi;
+export const { useGetUserDetailsQuery, useUpdateUserDetailsMutation } = userDetailsApi;

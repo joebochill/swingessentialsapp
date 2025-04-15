@@ -22,6 +22,7 @@ import { initializeData } from '../redux/thunks';
 import { AppDispatch } from '../redux/store';
 import { useLogoutMutation } from '../redux/apiServices/authService';
 import { MaterialIconName } from '../components/Icon';
+import { TokenModal } from '../components/feedback';
 
 export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
     const theme = useAppTheme();
@@ -37,18 +38,19 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
         help: new Animated.Value(-1 * DRAWER_WIDTH),
     });
 
-    const { data: user = BLANK_USER } = useGetUserDetailsQuery();
     const token = useSelector((state: RootState) => state.auth.token);
+    const { data: user = BLANK_USER } = useGetUserDetailsQuery(undefined, { skip: !token });
+
     const [appState, setAppState] = useState(AppState.currentState);
 
     const { navigation } = props;
     const [logout] = useLogoutMutation();
 
-    const userString = user.username || 'Welcome!';
-    const nameString = user.first && user.last ? `${user.first} ${user.last}` : 'New User';
-    const memberString = `Joined ${user.joined ? getLongDate(user.joined * 1000) : getLongDate(Date.now())}`;
+    const userString = token && user.username ? user.username : 'Welcome!';
+    const nameString = user?.first && user?.last ? `${user.first} ${user.last}` : 'New User';
+    const memberString = `Joined ${user?.joined ? getLongDate(user.joined * 1000) : getLongDate(Date.now())}`;
     const avatarURL = `https://www.swingessentials.com/images/profiles/${
-        user.avatar ? `${user.username}/${user.avatar}.png` : 'blank.png'
+        user?.avatar ? `${user.username}/${user.avatar}.png` : 'blank.png'
     }`;
 
     const scaleByHeight = useCallback(
@@ -128,6 +130,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                     handleScroll(e);
                     scrollProps.onScroll?.(e);
                 }}
+                style={{ backgroundColor: theme.colors.surface }}
             >
                 <Stack direction={'row'}>
                     {NavigationItems.map((panel, ind) => {
@@ -222,7 +225,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                                                               <MatIcon
                                                                   name={'chevron-right'}
                                                                   size={theme.size.sm}
-                                                                  color={theme.colors.primary}
+                                                                  color={theme.colors.onPrimaryContainer}
                                                                   style={{
                                                                       marginRight: -1 * theme.spacing.sm,
                                                                   }}
@@ -242,6 +245,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             <Header
                 title={''}
                 navigation={navigation}
+                backgroundColor={theme.dark ? theme.colors.surface : undefined}
                 mainAction={'none'}
                 content={
                     <Stack
@@ -296,7 +300,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                                                 height: '100%',
                                                 resizeMode: 'contain',
                                             }}
-                                            source={user.avatar ? { uri: avatarURL } : se}
+                                            source={user?.avatar ? { uri: avatarURL } : se}
                                         />
                                     </Animated.View>
                                 </Pressable>
@@ -370,8 +374,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                 }
                 {...headerProps}
             />
-            {/* TODO */}
-            {/* <TokenModal /> */}
+            <TokenModal />
         </>
     );
 };

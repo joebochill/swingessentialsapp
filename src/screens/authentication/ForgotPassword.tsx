@@ -1,54 +1,51 @@
 import React, { useState, useCallback } from 'react';
-
-// Components
 import { Platform, ScrollView, KeyboardAvoidingView } from 'react-native';
-import { Typography, SEButton, BackgroundImage, Stack } from '../../components';
-
-// Styles
 import { height } from '../../utilities/dimensions';
-import { TextInput } from 'react-native-paper';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
-
-// Redux
-import { requestPasswordReset } from '../../redux/actions';
+import MatIcon from '@react-native-vector-icons/material-icons';
 import { useDispatch } from 'react-redux';
-
-// Constants
 import { EMAIL_REGEX } from '../../constants';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
+import { useNavigation } from '@react-navigation/core';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { Stack } from '../../components/layout';
+import { BackgroundImage } from '../../components/BackgroundImage';
+import { Typography } from '../../components/typography';
+import { SEButton } from '../../components/SEButton';
+import { StyledTextInput } from '../../components/inputs/StyledTextInput';
+import { useSendResetPasswordEmailMutation } from '../../redux/apiServices/authService';
 
-export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'ResetPassword'>> = (props) => {
-    const { navigation } = props;
+export const ForgotPassword: React.FC = () => {
+    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
     const [email, setEmail] = useState('');
     const [complete, setComplete] = useState(false);
     const dispatch = useDispatch();
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
+    const [sendResetPasswordEmail] = useSendResetPasswordEmailMutation();
 
     const sendPasswordReset = useCallback(() => {
         if (EMAIL_REGEX.test(email)) {
-            // @ts-ignore
-            dispatch(requestPasswordReset({ email }));
+            sendResetPasswordEmail(email);
             setComplete(true);
         }
     }, [email, dispatch, setComplete]);
 
     return (
-        <Stack style={{ flex: 1, backgroundColor: theme.colors.primary }}>
+        <Stack style={{ flex: 1 }}>
             <Header
                 title={'Forgot Password'}
                 subtitle={'Request a reset'}
                 mainAction={'back'}
                 showAuth={false}
                 navigation={navigation}
+                backgroundColor={theme.dark ? theme.colors.surface : undefined}
                 fixed
             />
-            <BackgroundImage style={{ paddingTop: 0, backgroundColor: theme.colors.primary }}>
+            <BackgroundImage style={{ paddingTop: 0 }}>
                 <KeyboardAvoidingView
                     style={[
                         {
@@ -68,13 +65,13 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
                             ]}
                             keyboardShouldPersistTaps={'always'}
                         >
-                            <Stack space={theme.spacing.md}>
+                            <Stack gap={theme.spacing.md}>
                                 <Typography variant={'bodyLarge'} color={'onPrimary'}>
                                     {
                                         'Enter the email address you used to register for your account below and we will send you instructions for resetting your password.'
                                     }
                                 </Typography>
-                                <TextInput
+                                <StyledTextInput
                                     autoCorrect={false}
                                     autoCapitalize={'none'}
                                     keyboardType={'email-address'}
@@ -86,11 +83,10 @@ export const ForgotPassword: React.FC<StackScreenProps<RootStackParamList, 'Rese
                                     value={email}
                                 />
                                 <SEButton
-                                    dark
-                                    buttonColor={theme.colors.secondary}
+                                    buttonColor={theme.dark ? undefined : theme.colors.secondary}
                                     title={'REQUEST RESET'}
                                     onPress={EMAIL_REGEX.test(email) ? (): void => sendPasswordReset() : undefined}
-                                    style={[EMAIL_REGEX.test(email) ? {} : { opacity: 0.6 }]}
+                                    style={[EMAIL_REGEX.test(email) ? {} : { opacity: 0.6, borderWidth: 0 }]}
                                 />
                             </Stack>
                         </ScrollView>

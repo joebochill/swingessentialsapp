@@ -1,7 +1,7 @@
 // /* eslint-disable @typescript-eslint/naming-convention */
-// export type HandednessType = 'right' | 'left';
-// export type CameraType = 'front' | 'back';
-// export type SwingType = 'dtl' | 'fo';
+export type Handedness = 'right' | 'left';
+export type CameraType = 'front' | 'back';
+export type SwingType = 'dtl' | 'fo';
 // export type UserRole = 'administrator' | 'anonymous' | 'customer' | 'pending';
 export type NavType = 'menu' | 'back' | 'none';
 // export type LessonType = 'in-person' | 'single';

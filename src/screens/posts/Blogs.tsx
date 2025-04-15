@@ -1,25 +1,17 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// Components
 import { View, SectionList, RefreshControl } from 'react-native';
-import { ListItem, SectionHeader } from '../../components';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
-
-// Constants
+import MatIcon from '@react-native-vector-icons/material-icons';
 import { ROUTES } from '../../constants/routes';
-// Styles
 import bg from '../../images/banners/19th.jpg';
-
-// Utilities
 import { makeGroups } from '../../utilities';
-// Redux
-import { loadBlogs } from '../../redux/actions';
-// Types
-import { ApplicationState } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { useCollapsibleHeader, Header } from '../../components/CollapsibleHeader';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { useNavigation } from '@react-navigation/core';
+import { SectionHeader } from '../../components/layout';
+import { ListItem } from '../../components/ListItem';
 
 type Blog = {
     id: number;
@@ -28,8 +20,9 @@ type Blog = {
     title: string;
 };
 
-export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (props) => {
-    const blogs = useSelector((state: ApplicationState) => state.blogs);
+export const Blogs: React.FC = () => {
+    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
+    const blogs = {} as any; //useSelector((state: ApplicationState) => state.blogs);
     const sections = makeGroups(blogs.blogList, (blog: Blog) => new Date(blog.date).getUTCFullYear().toString());
     const dispatch = useDispatch();
     const theme = useAppTheme();
@@ -41,7 +34,7 @@ export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (p
                 title={'The 19th Hole'}
                 subtitle={'Stories from the field'}
                 backgroundImage={bg}
-                navigation={props.navigation}
+                navigation={navigation}
                 {...headerProps}
             />
             <SectionList
@@ -67,8 +60,7 @@ export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (p
                     <RefreshControl
                         refreshing={blogs.loading}
                         onRefresh={(): void => {
-                            // @ts-ignore
-                            dispatch(loadBlogs());
+                            // dispatch(loadBlogs());
                         }}
                         progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
@@ -80,8 +72,7 @@ export const Blogs: React.FC<StackScreenProps<RootStackParamList, 'Blogs'>> = (p
                         title={item.title}
                         titleNumberOfLines={2}
                         titleEllipsizeMode={'tail'}
-                        // @ts-ignore
-                        onPress={(): void => props.navigation.push(ROUTES.BLOG, { blog: item })}
+                        // onPress={(): void => navigation.push(ROUTES.BLOG, { blog: item })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[style]} {...rightProps}>
                                 <MatIcon

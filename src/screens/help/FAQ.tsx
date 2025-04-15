@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { Platform, RefreshControl, ScrollView } from 'react-native';
-import { Paragraph, SectionHeader, Stack, YoutubeCard } from '../../components';
 
 // Styles
 import { width } from '../../utilities/dimensions';
@@ -11,30 +10,25 @@ import { width } from '../../utilities/dimensions';
 // Utilities
 import { splitParagraphs } from '../../utilities';
 
-// Types
-import { ApplicationState } from '../../__types__';
-
-// Redux
-import { loadFAQ } from '../../redux/actions';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { useNavigation } from '@react-navigation/core';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { SectionHeader, Stack } from '../../components/layout';
+import { Paragraph } from '../../components/typography';
+import { YoutubeCard } from '../../components/videos';
 
-export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props) => {
-    const faqState = useSelector((state: ApplicationState) => state.faq);
+export const FAQ: React.FC = () => {
+    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
+    const faqState = {} as any; //useSelector((state: ApplicationState) => state.faq);
     const dispatch = useDispatch();
     const theme = useAppTheme();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     return (
         <>
-            <Header
-                title={'FAQ'}
-                subtitle={'Answers to common questions'}
-                navigation={props.navigation}
-                {...headerProps}
-            />
+            <Header title={'FAQ'} subtitle={'Answers to common questions'} navigation={navigation} {...headerProps} />
             <ScrollView
                 {...scrollProps}
                 contentContainerStyle={contentProps.contentContainerStyle}
@@ -42,21 +36,20 @@ export const FAQ: React.FC<StackScreenProps<RootStackParamList, 'FAQ'>> = (props
                     <RefreshControl
                         refreshing={faqState.loading}
                         onRefresh={(): void => {
-                            // @ts-ignore
-                            dispatch(loadFAQ());
+                            // dispatch(loadFAQ());
                         }}
                         progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
                 }
             >
                 <Stack
-                    space={theme.spacing.xxl}
+                    gap={theme.spacing.xxl}
                     style={{ paddingHorizontal: theme.spacing.md, marginTop: theme.spacing.md }}
                 >
-                    {faqState.questions.map((faq, ind) => (
+                    {faqState.questions.map((faq: any, ind: number) => (
                         <Stack key={`FAQ_${ind}`}>
                             <SectionHeader title={faq.question} />
-                            <Stack space={theme.spacing.md}>
+                            <Stack gap={theme.spacing.md}>
                                 {splitParagraphs(
                                     !faq.platform_specific
                                         ? faq.answer

@@ -1,29 +1,27 @@
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
-import { Typography } from '../';
-import { SEButton, Stack } from '..';
+// import { Typography } from '../';
+// import { SEButton, Stack } from '..';
 import { TutorialModal } from '.';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
+// import Carousel, { Pagination } from 'react-native-snap-carousel';
+import MatIcon from '@react-native-vector-icons/material-icons';
 // Styles
 import { width } from '../../utilities/dimensions';
-
-// Redux
-import { ApplicationState } from '../../__types__';
-import { tutorialViewed } from '../../redux/actions';
-// Constants
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 import { RecordButton } from '../videos';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../videos/SwingVideo';
+import { Stack } from '../layout';
+import { Typography } from '../typography';
+import { SEButton } from '../SEButton';
 
 export const SubmitTutorial: React.FC = () => {
     const [activePanel, setActivePanel] = useState(0);
     const [showButton, setShowButton] = useState(false);
-    const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
+    const showTutorial = { tutorial_submit_swing: false }; //useSelector((state: ApplicationState) => state.tutorials);
     const theme = useAppTheme();
     const dispatch = useDispatch();
 
@@ -92,12 +90,11 @@ export const SubmitTutorial: React.FC = () => {
         <TutorialModal
             visible={showTutorial.tutorial_submit_swing}
             onClose={(): void => {
-                // @ts-ignore
-                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]));
+                // dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]));
             }}
         >
             <View>
-                <Carousel
+                {/* <Carousel
                     data={slides}
                     renderItem={({ index }: { index: number }): JSX.Element => slides[index]}
                     sliderWidth={width - 2 * theme.spacing.md}
@@ -108,8 +105,8 @@ export const SubmitTutorial: React.FC = () => {
                             setShowButton(true);
                         }
                     }}
-                />
-                <Pagination
+                /> */}
+                {/* <Pagination
                     dotsLength={slides.length}
                     activeDotIndex={activePanel}
                     dotStyle={{
@@ -121,7 +118,7 @@ export const SubmitTutorial: React.FC = () => {
                     }}
                     inactiveDotOpacity={0.5}
                     inactiveDotScale={0.8}
-                />
+                /> */}
                 <SEButton
                     dark
                     mode={'contained'}
@@ -131,8 +128,7 @@ export const SubmitTutorial: React.FC = () => {
                     buttonColor={theme.colors.secondary}
                     style={{ opacity: showButton ? 1 : 0 }}
                     onPress={(): void => {
-                        // @ts-ignore
-                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]));
+                        // dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]));
                     }}
                 />
             </View>

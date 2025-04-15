@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ViewProps } from 'react-native';
-import { Stack, Typography } from '..';
 import { useAppTheme } from '../../theme';
+import { Stack } from '../layout';
+import { Typography } from '../typography';
 
 export type CountDownProps = ViewProps & {
     startValue: number;

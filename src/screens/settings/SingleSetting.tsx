@@ -1,18 +1,20 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, JSX } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Typography, Stack, ListItem } from '../../components';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import { SettingsState, ApplicationState, NotificationSettings } from '../../__types__';
+import MatIcon from '@react-native-vector-icons/material-icons';
 import { StackScreenProps } from '@react-navigation/stack';
-import { putSettings } from '../../redux/actions/SettingsActions';
-import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
+import { RootStackParamList, SettingsStackParamList } from '../../navigation/MainNavigation';
+import { useNavigation, useRoute } from '@react-navigation/core';
+import { UserAppSettings } from '../../redux/apiServices/userDetailsService';
+import { Stack } from '../../components/layout';
+import { ListItem } from '../../components/ListItem';
+import { Typography } from '../../components/typography';
 
 type SettingType = {
-    name: Exclude<keyof SettingsState, 'loading' | 'notifications'> | keyof SettingsState['notifications'];
+    name: any; //Exclude<keyof SettingsState, 'loading' | 'notifications'> | keyof SettingsState['notifications'];
     label: string;
     description: string;
     values: number[] | string[] | boolean[];
@@ -75,20 +77,21 @@ const caseSame = (val1: string | number, val2: string | number): boolean => {
     return val1 === val2;
 };
 
-export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'SingleSetting'>> = (props) => {
-    const { navigation, route } = props;
-    const settings = useSelector((state: ApplicationState) => state.settings);
-    const token = useSelector((state: ApplicationState) => state.login.token);
-    const { setting: currentSettingName } = route.params;
+export const SingleSetting: React.FC = () => {
+    const navigation = useNavigation<StackScreenProps<SettingsStackParamList>>();
+    const route = useRoute();
+    const settings = {} as any; //useSelector((state: ApplicationState) => state.settings);
+    const token: string = ''; //useSelector((state: ApplicationState) => state.login.token);
+    const { setting: currentSettingName } = { setting: '' }; //route.params;
     const dispatch = useDispatch();
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
 
     const [value, setValue] = useState(() => {
         if (Object.keys(settings.notifications).includes(currentSettingName)) {
-            return settings.notifications[currentSettingName as keyof NotificationSettings];
+            return settings.notifications[currentSettingName as keyof UserAppSettings];
         }
-        return settings[currentSettingName as Exclude<keyof SettingsState, 'loading' | 'notifications'>];
+        return settings[currentSettingName as any /*Exclude<keyof SettingsState, 'loading' | 'notifications'>*/];
     });
 
     const updateSetting = useCallback(() => {
@@ -109,30 +112,28 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
                     key = 'notify_new_lessons';
                     break;
             }
-            dispatch(
-                // @ts-ignore
-                putSettings({
-                    [key]: value,
-                })
-            );
+            // dispatch(
+            //     putSettings({
+            //         [key]: value,
+            //     })
+            // );
         } else {
-            dispatch(
-                // @ts-ignore
-                putSettings({
-                    [currentSettingName]: value,
-                })
-            );
+            // dispatch(
+            //     putSettings({
+            //         [currentSettingName]: value,
+            //     })
+            // );
         }
     }, [dispatch, currentSettingName, value, settings.notifications]);
 
     useEffect(() => {
         if (!token) {
-            navigation.pop();
+            // navigation.pop();
         }
     }, [navigation, token]);
 
     if (!currentSettingName) {
-        navigation.pop();
+        // navigation.pop();
         return null;
     }
     const currentSetting: SettingType = SETTINGS.filter((setting) => setting.name === currentSettingName)[0];
@@ -169,15 +170,14 @@ export const SingleSetting: React.FC<StackScreenProps<RootStackParamList, 'Singl
                         onPress={(): void => setValue(val)}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
-                                {/* @ts-ignore */}
-                                {caseSame(value, val) && (
+                                {/* {caseSame(value, val) && (
                                     <MatIcon
                                         name={'check'}
                                         size={theme.size.md}
                                         color={theme.colors.primary}
                                         style={{ marginRight: -1 * theme.spacing.md }}
                                     />
-                                )}
+                                )} */}
                             </Stack>
                         )}
                     />

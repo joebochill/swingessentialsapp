@@ -8,21 +8,22 @@ import {
     ImageBackground,
     Alert,
 } from 'react-native';
-import Video, { VideoProperties } from 'react-native-video';
+import Video /*{ VideoProperties }*/ from 'react-native-video';
 
 // Styles
 import { width as deviceWidth, aspectWidth } from '../../utilities/dimensions';
 import { ActivityIndicator } from 'react-native-paper';
 import { useAppTheme } from '../../theme';
-import { Icon, IconProps, SectionHeader } from '..';
 import { PickerModal } from '../PickerModal';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/MainNavigator';
 import { ROUTES } from '../../constants/routes';
 
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
+import { Icon, IconProps } from '../Icon';
+import { SectionHeader } from '../layout';
+import { RootStackParamList } from '../../navigation/MainNavigation';
 
 type SwingVideoPlaceholderProps = {
     type?: 'fo' | 'dtl';
@@ -55,7 +56,7 @@ type SwingVideoProps = Omit<TouchableOpacityProps, 'onPress'> & {
     navigation?: StackNavigationProp<RootStackParamList>;
     width?: number;
     height?: number;
-    source?: VideoProperties['source'];
+    source?: any; //VideoProperties['source'];
     onSourceChange?: (source: Asset) => void;
     editable?: boolean;
     loading?: boolean;
@@ -131,7 +132,8 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                 {...other}
             >
                 {!source ? (
-                    <SwingVideoPlaceholder {...placeholderProps} />
+                    // TODO
+                    <SwingVideoPlaceholder {...(placeholderProps as any)} />
                 ) : (
                     <Video
                         source={source}
@@ -142,8 +144,7 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         paused={!videoPlaying}
                         onLoad={(): void => {
                             setVideoReady(true);
-                            // @ts-ignore
-                            if (videoRef.current && Platform.OS === 'android') videoRef.current.seek(0);
+                            // if (videoRef.current && Platform.OS === 'android') videoRef.current.seek(0);
                         }}
                         onEnd={(): void => setVideoPlaying(false)}
                         onReadyForDisplay={() => setVideoReady(true)}
@@ -241,13 +242,12 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         label: 'Record a New Video',
                         onPress: (): void => {
                             setShowPicker(false);
-                            // @ts-ignore
-                            navigation?.push(ROUTES.RECORD, {
-                                swing: type,
-                                onReturn: (uri: string) => {
-                                    void onSourceChange?.({ uri });
-                                },
-                            });
+                            // navigation?.push(ROUTES.RECORD, {
+                            //     swing: type,
+                            //     onReturn: (uri: string) => {
+                            //         void onSourceChange?.({ uri });
+                            //     },
+                            // });
                         },
                     },
                     { label: 'Cancel', onPress: (): void => setShowPicker(false) },

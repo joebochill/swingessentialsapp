@@ -1,11 +1,9 @@
 import React, { useState, useRef, RefObject, useCallback, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { usePrevious } from '../../utilities';
+import { useSelector } from 'react-redux';
 
 // Components
 import {
     ActivityIndicator,
-    Alert,
     Keyboard,
     KeyboardAvoidingView,
     KeyboardType,
@@ -16,57 +14,43 @@ import {
     TextInputSubmitEditingEventData,
     View,
 } from 'react-native';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
+import MatIcon from '@react-native-vector-icons/material-icons';
 import { TextInput } from 'react-native-paper';
-import { ErrorBox, SEButton, BackgroundImage, Typography, Stack } from '../../components';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
-
-// Types
-import { StackScreenProps } from '@react-navigation/stack';
-import { ApplicationState } from '../../__types__';
-
-// Utilities
 import { height } from '../../utilities/dimensions';
-
-// Redux
-import { checkUsernameAvailability, checkEmailAvailability, createAccount, verifyEmail } from '../../redux/actions';
-
-// Constants
 import { EMAIL_REGEX } from '../../constants';
 import { ROUTES } from '../../constants/routes';
-import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import { Stack } from '../../components/layout';
+import { BackgroundImage } from '../../components/BackgroundImage';
+import { ErrorBox } from '../../components/feedback';
+import { SEButton } from '../../components/SEButton';
+import { StyledTextInput } from '../../components/inputs/StyledTextInput';
+import {
+    useCheckEmailAvailabilityMutation,
+    useCheckUsernameAvailabilityMutation,
+    useCreateNewUserAccountMutation,
+    UserRegistrationDetails,
+    useVerifyUserEmailMutation,
+} from '../../redux/apiServices/registrationService';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { RootState } from '../../redux/store';
+import { Typography } from '../../components/typography';
+import { Picker } from '@react-native-picker/picker';
+import { Icon } from '../../components/Icon';
 
-const getRegistrationErrorMessage = (code: number): string => {
-    switch (code) {
-        case 400302:
-            return 'Oops! Your verification link is invalid. Please check your registration email and try again. If you continue to have problems, please contact us.';
-        case 400303:
-            return 'Your verification link has expired. You will need to re-register.';
-        case 400304:
-        case -1:
-            return 'Your your email address has already been verified. Sign in to view your account.';
-        default:
-            return `Unknown Error: ${code}`;
-    }
-};
-
-type RegistrationKeys = {
-    email: string;
-    username: string;
-    password: string;
-    heard: string;
-};
-const defaultKeys: RegistrationKeys = {
+const defaultKeys: UserRegistrationDetails = {
     email: '',
     username: '',
     password: '',
-    heard: '',
+    acquisition: '',
 };
-type RegistrationKey = keyof RegistrationKeys;
+type RegistrationKey = keyof UserRegistrationDetails;
 
 type RegistrationProperty = {
     property: RegistrationKey;
@@ -83,21 +67,22 @@ type RegistrationProperty = {
     items?: Item[];
 };
 
-const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (props) => {
-    const { navigation } = props;
-    const { code } = props.route.params;
-    const token = useSelector((state: ApplicationState) => state.login.token);
-    const verification = useSelector((state: ApplicationState) => state.registration);
-    const dispatch = useDispatch();
+const VerifyForm: React.FC = () => {
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const route = useRoute<RouteProp<RootStackParamList, 'REGISTER'>>();
+    const { code } = route.params ?? {};
+
+    const token = useSelector((state: RootState) => state.auth.token);
+    const [verifyUserEmail, { isLoading, error, isUninitialized, isSuccess }] = useVerifyUserEmailMutation();
+
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
 
     useEffect(() => {
         if (code) {
-            // @ts-ignore
-            dispatch(verifyEmail(code));
+            verifyUserEmail(code);
         }
-    }, [code, dispatch]);
+    }, [code]);
 
     return (
         <Stack style={[{ flex: 1 }]}>
@@ -107,9 +92,10 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
                 mainAction={'back'}
                 showAuth={false}
                 navigation={navigation}
+                backgroundColor={theme.dark ? theme.colors.surface : undefined}
                 fixed
             />
-            <BackgroundImage style={{ backgroundColor: theme.colors.primary }}>
+            <BackgroundImage>
                 <Stack
                     justify={'center'}
                     style={[
@@ -120,7 +106,7 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
                         },
                     ]}
                 >
-                    {verification.pending && (
+                    {isLoading && (
                         <>
                             <ActivityIndicator size={'large'} color={theme.colors.onPrimary} />
                             <Typography variant={'bodyLarge'} align={'center'} color={'onPrimary'}>
@@ -128,31 +114,38 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
                             </Typography>
                         </>
                     )}
-                    {!verification.pending && (
+                    {!isUninitialized && !isLoading && isSuccess && (
                         <>
                             <MatIcon
-                                name={verification.emailVerified ? 'check-circle' : 'error'}
+                                name={'check-circle'}
                                 size={theme.size.xxl}
                                 color={theme.colors.onPrimary}
                                 style={{ alignSelf: 'center' }}
                             />
                             <Typography variant={'bodyLarge'} color={'onPrimary'} align={'center'}>
-                                {verification.emailVerified
-                                    ? `Your email address has been confirmed. ${
-                                          token ? "Let's get started!" : 'Please sign in to view your account.'
-                                      }`
-                                    : getRegistrationErrorMessage(verification.error)}
+                                {`Your email address has been confirmed. ${
+                                    token ? "Let's get started!" : 'Please sign in to view your account.'
+                                }`}
                             </Typography>
-                            {verification.emailVerified && (
-                                <SEButton
-                                    dark
-                                    buttonColor={theme.colors.secondary}
-                                    title={token ? 'GET STARTED' : 'SIGN IN'}
-                                    // @ts-ignore
-                                    onPress={(): void => navigation.replace(ROUTES.LOGIN)}
-                                    style={{ marginTop: theme.spacing.md }}
-                                />
-                            )}
+                            <SEButton
+                                buttonColor={theme.colors.secondary}
+                                title={token ? 'GET STARTED' : 'SIGN IN'}
+                                onPress={(): void => navigation.replace(ROUTES.LOGIN)}
+                                style={{ marginTop: theme.spacing.md }}
+                            />
+                        </>
+                    )}
+                    {!isUninitialized && !isLoading && error && (
+                        <>
+                            <MatIcon
+                                name={'error'}
+                                size={theme.size.xxl}
+                                color={theme.colors.onPrimary}
+                                style={{ alignSelf: 'center' }}
+                            />
+                            <Typography variant={'bodyLarge'} color={'onPrimary'} align={'center'}>
+                                {error as string}
+                            </Typography>
                         </>
                     )}
                 </Stack>
@@ -161,55 +154,63 @@ const VerifyForm: React.FC<StackScreenProps<RootStackParamList, 'Verify'>> = (pr
     );
 };
 
-const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> = (props) => {
-    const { navigation } = props;
+const RegisterForm: React.FC = () => {
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
+    const scroller = useRef(null);
+
+    const [checkUsernameAvailability, { data: usernameAvailable, reset: resetUsernameCheck }] =
+        useCheckUsernameAvailabilityMutation();
+    const [checkEmailAvailability, { data: emailAvailable, reset: resetEmailCheck }] =
+        useCheckEmailAvailabilityMutation();
+    const [
+        createNewUserAccount,
+        { isSuccess: registeredSuccessfully, isUninitialized, isLoading, reset: resetRegistration },
+    ] = useCreateNewUserAccountMutation();
 
     const [fields, setFields] = useState(defaultKeys);
     const [showPassword, setShowPassword] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const emailRef = useRef(null);
     const userRef = useRef(null);
     const passRef = useRef(null);
-    // const [activeField, setActiveField] = useState<RegistrationKey | null>(null);
 
-    const scroller = useRef(null);
+    const usernameTaken = fields.username !== '' && usernameAvailable === false;
+    const emailTaken = fields.email !== '' && emailAvailable === false;
 
     const refs = [userRef, emailRef, passRef];
-    const registration = useSelector((state: ApplicationState) => state.registration);
-    const previousPendingState = usePrevious(registration.pending);
 
-    const dispatch = useDispatch();
+    const resetForm = useCallback(() => {
+        setFields(defaultKeys);
+        setShowPassword(false);
+        setErrorMessage('');
+    }, []);
 
     // Select the first field on load
     useEffect(() => {
         if (userRef && userRef.current) {
-            // @ts-ignore
+            // @ts-expect-error we know userRef isn't null inside this block
             userRef.current.focus();
         }
     }, []);
 
     useEffect(() => {
-        // Registration finished
-        if (previousPendingState && !registration.pending) {
-            if (registration.success) {
-                // Successful
-                Alert.alert(
-                    'Success!',
-                    "We've received your registration request. Check your email to confirm your email address.",
-                    [{ text: 'OK' }]
-                );
-                // @ts-ignore
-                props.navigation.goBack(ROUTES.LOGIN);
-            } else {
-                Alert.alert(
-                    'Oops:',
-                    'Your account registration has failed. Please try again later and contact us if the problem continues.',
-                    [{ text: 'OK' }]
-                );
-            }
+        if (isUninitialized || isLoading) {
+            return;
         }
-    }, [previousPendingState, props.navigation, registration]);
+        if (!registeredSuccessfully) {
+            setErrorMessage(
+                'Your account registration has failed. Please try again later and contact us if the problem continues.'
+            );
+        } else if (registeredSuccessfully) {
+            navigation.replace(ROUTES.HOME);
+            resetForm();
+            resetEmailCheck();
+            resetUsernameCheck();
+            resetRegistration();
+        }
+    }, [registeredSuccessfully, isUninitialized, isLoading, resetForm]);
 
     const canSubmit = useCallback((): boolean => {
         const keys: RegistrationKey[] = Object.keys(fields) as RegistrationKey[];
@@ -221,38 +222,34 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
         if (!EMAIL_REGEX.test(fields.email)) {
             return false;
         }
-        if (!registration.emailAvailable) {
+        if (emailTaken || usernameTaken) {
             return false;
         }
         return true;
-    }, [fields, registration]);
+    }, [fields, emailTaken, usernameTaken]);
 
     const submitRegistration = useCallback((): void => {
         if (!canSubmit()) {
             return;
         }
-        dispatch(
-            // @ts-ignore
-            createAccount({
-                ...fields,
-                platform: Platform.OS,
-            })
-        );
-    }, [canSubmit, dispatch, fields]);
+        createNewUserAccount(fields);
+    }, [canSubmit, fields]);
 
     const regProperties: RegistrationProperty[] = [
         {
             property: 'username',
             label: 'Username',
-            errorMessage: !registration.userAvailable ? 'Username is already registered' : '',
+            errorMessage: usernameTaken ? 'Username is already registered' : '',
             onChange: (value: string): void => {
                 setFields({
                     ...fields,
-                    username: value.replace(/[^A-Z0-9-_.$#@!+]/gi, '').substr(0, 32),
+                    username: value.replace(/[^A-Z0-9-_.$#@!+]/gi, '').substring(0, 32),
                 });
+                resetUsernameCheck();
             },
-            // @ts-ignore
-            onBlur: (): void => dispatch(checkUsernameAvailability(fields.username)),
+            onBlur: (): void => {
+                if (fields.username) checkUsernameAvailability(fields.username);
+            },
         },
         {
             property: 'email',
@@ -261,26 +258,28 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
             errorMessage:
                 fields.email.length > 0 && !EMAIL_REGEX.test(fields.email)
                     ? 'Invalid Email Address'
-                    : !registration.emailAvailable
+                    : emailTaken
                     ? 'Email address is already registered'
                     : '',
             onChange: (value): void => {
                 setFields({
                     ...fields,
-                    email: value.substr(0, 128),
+                    email: value.substring(0, 128),
                 });
+                resetEmailCheck();
             },
-            // @ts-ignore
-            onBlur: (): void => dispatch(checkEmailAvailability(fields.email)),
+            onBlur: (): void => {
+                if (fields.email) checkEmailAvailability(fields.email);
+            },
         },
         {
             property: 'password',
             label: 'Password',
-            secure: !showPassword, //true,
+            secure: !showPassword,
             onSubmit: (): void => Keyboard.dismiss(),
         },
         {
-            property: 'heard',
+            property: 'acquisition',
             type: 'select',
             label: 'How did you hear about us?',
             items: [
@@ -304,9 +303,10 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                 mainAction={'back'}
                 showAuth={false}
                 navigation={navigation}
+                backgroundColor={theme.dark ? theme.colors.surface : undefined}
                 fixed
             />
-            <BackgroundImage style={{ backgroundColor: theme.colors.primary }}>
+            <BackgroundImage>
                 <KeyboardAvoidingView
                     style={[
                         {
@@ -321,21 +321,20 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                         contentContainerStyle={[{ padding: theme.spacing.md, paddingBottom: height * 0.5 }]}
                         keyboardShouldPersistTaps={'always'}
                     >
-                        <Stack space={theme.spacing.md}>
+                        <Stack gap={theme.spacing.md}>
                             {regProperties.map((field: RegistrationProperty, index: number) => (
                                 <Stack key={`registration_property_${field.property}`}>
                                     {field.type === 'select' ? (
                                         <RNPickerSelect
                                             ref={refs[index]}
-                                            disabled={registration.pending}
+                                            disabled={isLoading}
+                                            darkTheme={theme.dark}
                                             placeholder={{
                                                 label: 'Choose One...',
                                                 value: '',
                                                 color: 'rgba(0,0,0,0.25)',
                                             }}
                                             items={field.items || []}
-                                            // onOpen={(): void => setActiveField(field.property)}
-                                            // onClose={(): void => setActiveField(null)}
                                             onValueChange={
                                                 field.onChange
                                                     ? field.onChange
@@ -344,46 +343,45 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                                                               ...fields,
                                                               [field.property]: value
                                                                   .replace(/[^A-Z- .]/gi, '')
-                                                                  .substr(0, 32),
+                                                                  .substring(0, 32),
                                                           });
                                                       }
                                             }
+                                            onOpen={() => {
+                                                console.log('open');
+                                            }}
+                                            // @ts-expect-error this is a workaround for a bug in RNPickerSelect with new architecture
+                                            style={{ inputIOSContainer: { pointerEvents: 'none' } }}
                                             value={fields[field.property]}
                                             useNativeAndroidPickerStyle={false}
                                         >
-                                            <TextInput
+                                            <StyledTextInput
                                                 editable={false}
-                                                // style={[
-                                                //     index > 0 ? formStyles.formField : {},
-                                                //     activeField === field.property || fields[field.property].length > 0
-                                                //         ? formStyles.active
-                                                //         : formStyles.inactive,
-                                                // ]}
                                                 label={field.label}
                                                 underlineColorAndroid={'transparent'}
                                                 value={fields[field.property]}
+                                                right={
+                                                    <TextInput.Icon
+                                                        icon={'keyboard-arrow-down'}
+                                                        size={24}
+                                                        color={theme.colors.onPrimaryContainer}
+                                                    />
+                                                }
                                             />
                                         </RNPickerSelect>
                                     ) : (
                                         <View>
-                                            <TextInput
+                                            <StyledTextInput
                                                 ref={refs[index]}
                                                 secureTextEntry={field.secure}
                                                 autoCorrect={false}
                                                 autoCapitalize={'none'}
-                                                // style={[
-                                                //     activeField === field.property || fields[field.property].length > 0
-                                                //         ? formStyles.active
-                                                //         : formStyles.inactive,
-                                                // ]}
-                                                // onFocus={(): void => setActiveField(field.property)}
                                                 onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>): void => {
-                                                    // setActiveField(null);
                                                     if (field.onBlur) {
                                                         field.onBlur(e);
                                                     }
                                                 }}
-                                                editable={!registration.pending}
+                                                editable={!isLoading}
                                                 error={
                                                     field.errorMessage !== undefined && field.errorMessage.length > 0
                                                 }
@@ -406,35 +404,25 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                                                         ? field.onSubmit
                                                         : (): void => {
                                                               if (refs[(index + 1) % refs.length].current) {
-                                                                  // @ts-ignore
+                                                                  // @ts-expect-error we know refs aren't null inside this block
                                                                   refs[(index + 1) % refs.length].current.focus();
                                                               }
                                                           }
+                                                }
+                                                right={
+                                                    field.property === 'password' ? (
+                                                        <TextInput.Icon
+                                                            icon={field.secure ? 'visibility' : 'visibility-off'}
+                                                            size={theme.size.md}
+                                                            color={theme.colors.onPrimaryContainer}
+                                                            onPress={(): void => setShowPassword(!showPassword)}
+                                                        />
+                                                    ) : undefined
                                                 }
                                                 returnKeyType={'next'}
                                                 underlineColorAndroid={'transparent'}
                                                 value={fields[field.property]}
                                             />
-                                            {field.property === 'password' && (
-                                                <View
-                                                    style={{
-                                                        position: 'absolute',
-                                                        right: theme.spacing.md,
-                                                        bottom: 0,
-                                                        height: '100%',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                    }}
-                                                >
-                                                    <MatIcon
-                                                        name={field.secure ? 'visibility' : 'visibility-off'}
-                                                        size={theme.size.md}
-                                                        color={theme.colors.onPrimaryContainer}
-                                                        // underlayColor={'transparent'}
-                                                        onPress={(): void => setShowPassword(!showPassword)}
-                                                    />
-                                                </View>
-                                            )}
                                         </View>
                                     )}
                                     <ErrorBox
@@ -446,22 +434,24 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
                             ))}
                         </Stack>
                         <SEButton
-                            dark
-                            buttonColor={theme.colors.secondary}
-                            title={!registration.pending ? 'SUBMIT' : 'SUBMITTING'}
-                            loading={registration.pending}
+                            buttonColor={theme.dark ? undefined : theme.colors.secondary}
+                            title={!isLoading ? 'SUBMIT' : 'SUBMITTING'}
+                            loading={isLoading}
                             onPress={
-                                canSubmit() && !registration.pending
+                                canSubmit() && !isLoading
                                     ? (): void => {
                                           submitRegistration();
                                           if (scroller.current) {
-                                              // @ts-ignore
+                                              // @ts-expect-error we know scroller isn't null inside this block
                                               scroller.current.scrollTo({ x: 0, y: 0, animated: true });
                                           }
                                       }
                                     : undefined
                             }
-                            style={[{ marginTop: theme.spacing.md }, canSubmit() ? {} : { opacity: 0.6 }]}
+                            style={[
+                                { marginTop: theme.spacing.md },
+                                canSubmit() ? {} : { opacity: 0.6, borderWidth: 0 },
+                            ]}
                         />
                     </ScrollView>
                 </KeyboardAvoidingView>
@@ -470,11 +460,8 @@ const RegisterForm: React.FC<StackScreenProps<RootStackParamList, 'Register'>> =
     );
 };
 
-type VerifyStackProps = StackScreenProps<RootStackParamList, 'Verify'>;
-type RegisterStackProps = StackScreenProps<RootStackParamList, 'Register'>;
-export const Register: React.FC<RegisterStackProps | VerifyStackProps> = (props) =>
-    props.route.params && props.route.params.code ? (
-        <VerifyForm {...(props as VerifyStackProps)} />
-    ) : (
-        <RegisterForm {...(props as RegisterStackProps)} />
-    );
+export const Register: React.FC = () => {
+    const route = useRoute<RouteProp<RootStackParamList, 'REGISTER'>>();
+
+    return route.params && route.params.code ? <VerifyForm /> : <RegisterForm />;
+};

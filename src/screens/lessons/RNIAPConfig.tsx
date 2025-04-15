@@ -11,29 +11,12 @@ import {
 } from 'react-native-iap';
 import { Logger } from '../../utilities/logging';
 import { useDispatch, useSelector } from 'react-redux';
-import { ApplicationState } from '../../__types__';
-import { purchaseCredits } from '../../redux/actions';
 import { Platform } from 'react-native';
 
 export const useRNIAP = (): void => {
-    const {
-        // connected,
-        // products,
-        // promotedProductsIOS,
-        // subscriptions,
-        // purchaseHistories,
-        // availablePurchases,
-        currentPurchase,
-        currentPurchaseError,
-        // initConnectionError,
-        finishTransaction,
-        // getProducts,
-        // getSubscriptions,
-        // getAvailablePurchases,
-        // getPurchaseHistories,
-    } = useIAP();
+    const { currentPurchase, currentPurchaseError, finishTransaction } = useIAP();
     const dispatch = useDispatch();
-    const packages = useSelector((state: ApplicationState) => state.packages.list);
+    const packages: any[] = []; //useSelector((state: ApplicationState) => state.packages.list);
 
     useEffect(() => {
         if (Platform.OS === 'ios') void clearProductsIOS();
@@ -69,26 +52,25 @@ export const useRNIAP = (): void => {
                 }
 
                 try {
-                    dispatch(
-                        // @ts-ignore
-                        purchaseCredits(
-                            {
-                                receipt,
-                                package: shortcode,
-                            },
-                            () => {
-                                // API call is a success
-                                void finishTransaction({ purchase, isConsumable: true });
-                            },
-                            (response: Response) => {
-                                // If purchase is already claimed in database
-                                if (parseInt(response.headers.get('Error') || '', 10) === 400607) {
-                                    void finishTransaction({ purchase, isConsumable: true });
-                                }
-                                // Else, do nothing and try again on next load
-                            }
-                        )
-                    );
+                    // dispatch(
+                    //     purchaseCredits(
+                    //         {
+                    //             receipt,
+                    //             package: shortcode,
+                    //         },
+                    //         () => {
+                    //             // API call is a success
+                    //             void finishTransaction({ purchase, isConsumable: true });
+                    //         },
+                    //         (response: Response) => {
+                    //             // If purchase is already claimed in database
+                    //             if (parseInt(response.headers.get('Error') || '', 10) === 400607) {
+                    //                 void finishTransaction({ purchase, isConsumable: true });
+                    //             }
+                    //             // Else, do nothing and try again on next load
+                    //         }
+                    //     )
+                    // );
                 } catch (ackErr) {
                     /* Do Something */
                     void Logger.logError({

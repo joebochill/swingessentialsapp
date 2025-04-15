@@ -2,13 +2,12 @@ import React from 'react';
 
 // Components
 import { View, ViewProps, TouchableOpacityProps, GestureResponderEvent, TouchableOpacity } from 'react-native';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Typography } from '../';
+import MatIcon from '@react-native-vector-icons/material-icons';
 
 // Utilities
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '../../theme';
+import { Typography } from '../typography';
 
 type RecordButtonProps = TouchableOpacityProps & {
     recording: boolean;
@@ -116,8 +115,8 @@ export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
                     </Typography>
                 )}
                 {!active && mode === 'record' && (
-                    <MaterialCommunityIcon
-                        name={'camera-switch'}
+                    <MatIcon
+                        name={'cameraswitch'}
                         size={theme.size.md}
                         // underlayColor={transparent}
                         color={theme.colors.onPrimary}

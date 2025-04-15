@@ -1,7 +1,6 @@
 import React from 'react';
 // Components
 import { ScrollView } from 'react-native';
-import { Stack, SectionHeader, Paragraph } from '../../components';
 
 // Utilities
 import { splitParagraphs, getLongDate } from '../../utilities';
@@ -9,19 +8,25 @@ import { height } from '../../utilities/dimensions';
 
 // Constants
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
 import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation, useRoute } from '@react-navigation/core';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { SectionHeader, Stack } from '../../components/layout';
+import { Paragraph } from '../../components/typography';
 
-export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBlog'>> = (props) => {
-    const { blog } = props.route.params;
+export const SingleBlog: React.FC = () => {
+    const route = useRoute();
+    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
+    // TODO
+    const { blog } = route.params as any;
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
 
     if (blog === null) {
-        props.navigation.pop();
+        // navigation.pop();
     }
     return (
         blog && (
@@ -34,7 +39,7 @@ export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBl
                     },
                 ]}
             >
-                <Header title={getLongDate(blog.date)} mainAction={'back'} navigation={props.navigation} fixed />
+                <Header title={getLongDate(blog.date)} mainAction={'back'} navigation={navigation} fixed />
                 <ScrollView
                     contentContainerStyle={[
                         {
@@ -46,7 +51,7 @@ export const SingleBlog: React.FC<StackScreenProps<RootStackParamList, 'SingleBl
                     keyboardShouldPersistTaps={'always'}
                 >
                     <SectionHeader title={blog.title} />
-                    <Stack space={theme.spacing.md}>
+                    <Stack gap={theme.spacing.md}>
                         {splitParagraphs(blog.body).map((p, ind) => (
                             <Paragraph key={`${blog.id}_p_${ind}`}>{p}</Paragraph>
                         ))}

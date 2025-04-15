@@ -17,8 +17,15 @@ export const ListItem: React.FC<ListItemProps & { bottomDivider?: boolean; topDi
                     alignItems: 'center',
                     minHeight: theme.size.xl,
                 },
-                topDivider ? { borderTopWidth: 1, borderTopColor: 'rgba(0,0,0,0.1)' } : {},
-                bottomDivider ? { borderBottomWidth: 1, borderBottomColor: 'rgba(0,0,0,0.1)' } : {},
+                topDivider
+                    ? { borderTopWidth: 1, borderTopColor: theme.dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }
+                    : {},
+                bottomDivider
+                    ? {
+                          borderBottomWidth: 1,
+                          borderBottomColor: theme.dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                      }
+                    : {},
                 // @ts-expect-error RNPaper ListItemType is buggy
                 ...(Array.isArray(style) ? style : [style]),
             ]}

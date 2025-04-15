@@ -1,0 +1,30 @@
+import React from 'react';
+import { PaperProvider } from 'react-native-paper';
+import { SEDarkTheme, SETheme } from '.';
+import { Icon, MaterialIconName } from '../components/Icon';
+import { IconProps } from 'react-native-paper/lib/typescript/components/MaterialCommunityIcon';
+
+const ThemeContext = React.createContext({
+    toggleTheme: (): void => {},
+});
+export const useToggleTheme = (): { toggleTheme: () => void } => {
+    const context = React.useContext(ThemeContext);
+    if (!context) {
+        throw new Error('useTheme must be used within a ThemeProvider');
+    }
+    return context;
+};
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
+    const toggleTheme = () => {
+        setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    };
+    const customIcon = (props: IconProps) => <Icon {...props} name={props.name as MaterialIconName} />;
+    return (
+        <ThemeContext.Provider value={{ toggleTheme }}>
+            <PaperProvider theme={theme === 'light' ? SETheme : SEDarkTheme} settings={{ icon: customIcon }}>
+                {children}
+            </PaperProvider>
+        </ThemeContext.Provider>
+    );
+};

@@ -1,10 +1,11 @@
 import React from 'react';
 // Components
 import { ActivityIndicator, Modal, ModalProps, View } from 'react-native';
-import { Paragraph, SectionHeader, Stack } from '../../components';
 
 // Styles
 import { useAppTheme } from '../../theme';
+import { SectionHeader, Stack } from '../layout';
+import { Paragraph } from '../typography';
 
 type ProgressModalProps = ModalProps & {
     visible?: boolean;

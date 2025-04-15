@@ -1,9 +1,9 @@
 import React, { PropsWithChildren } from 'react';
 import { View, ScrollView, SafeAreaView } from 'react-native';
-import { SEButton } from '../';
 import Modal from 'react-native-modal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '../../theme';
+import { SEButton } from '../SEButton';
 
 type TutorialProps = {
     visible: boolean;

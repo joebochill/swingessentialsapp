@@ -1,8 +1,8 @@
 import { width } from '../utilities/dimensions';
 
 // Get the app version from package.json
-import { version } from '../../package.json';
-export const APP_VERSION = version;
+export { version as APP_VERSION } from '../../package.json';
+// export const APP_VERSION = version;
 export const ASYNC_PREFIX = '@SwingEssentials:';
 export const ERROR_FILE = 'error_log.txt';
 export const LOG_FILE = 'message_log.txt';
@@ -11,10 +11,6 @@ export const LOG_LIMIT = 24000; // characters
 
 export const DRAWER_WIDTH = 0.9 * width;
 
-export const BASEURL_DEV = 'https://www.swingessentials.com/dev_apis/swingessentials.php';
-export const BASEURL_PROD = 'https://www.swingessentials.com/apis/swingessentials.php';
-
-export const BASEURL = BASEURL_PROD;
 export const BASE_API_URL = 'http://localhost:3000';
 export const AUTH = 'Message';
 

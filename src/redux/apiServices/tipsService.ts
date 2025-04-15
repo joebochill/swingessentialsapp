@@ -22,7 +22,7 @@ export const tipsApi = createApi({
     tagTypes: ['tips', 'tip'],
     endpoints: (builder) => ({
         getTips: builder.query<TipDetailsWithYear[], void>({
-            query: () => `tips`,
+            query: () => `tips?detailLevel=1`,
             providesTags: ['tips'],
             transformResponse: (response: TipDetails[]) => {
                 return response.map((tip) => {

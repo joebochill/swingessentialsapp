@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { JSX } from 'react';
 // Components
 import { View } from 'react-native';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import { ListItem, Stack, Typography } from '../';
+import MatIcon from '@react-native-vector-icons/material-icons';
+// import { ListItem, Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
-import Carousel from 'react-native-snap-carousel';
+// import Carousel from 'react-native-snap-carousel';
 // Styles
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
-import { ApplicationState } from '../../__types__';
-import { tutorialViewed } from '../../redux/actions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 import { useAppTheme } from '../../theme';
+import { Stack } from '../layout';
+import { Typography } from '../typography';
+import { ListItem } from '../ListItem';
 
 export const OrderTutorial: React.FC = () => {
-    const packages = useSelector((state: ApplicationState) => state.packages.list);
-    const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
+    const packages: any[] = []; //useSelector((state: ApplicationState) => state.packages.list);
+    const showTutorial = { tutorial_order: false }; //useSelector((state: ApplicationState) => state.tutorials);
     const theme = useAppTheme();
     const dispatch = useDispatch();
 
@@ -76,17 +77,16 @@ export const OrderTutorial: React.FC = () => {
         <TutorialModal
             visible={showTutorial.tutorial_order}
             onClose={(): void => {
-                // @ts-ignore
-                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]));
+                // dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]));
             }}
         >
             <View>
-                <Carousel
+                {/* <Carousel
                     data={slides}
                     renderItem={({ index }): JSX.Element => slides[index]}
                     sliderWidth={width - 2 * theme.spacing.md}
                     itemWidth={width - 2 * theme.spacing.md}
-                />
+                /> */}
                 <SEButton
                     dark
                     mode={'contained'}
@@ -95,8 +95,7 @@ export const OrderTutorial: React.FC = () => {
                     title="GOT IT"
                     style={{ marginTop: theme.spacing.xl }}
                     onPress={(): void => {
-                        // @ts-ignore
-                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]));
+                        // dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]));
                     }}
                 />
             </View>

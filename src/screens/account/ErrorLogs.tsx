@@ -2,34 +2,36 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
-import { SEButton, Stack, Typography, IconProps } from '../../components';
+// import { SEButton, Stack, Typography, IconProps } from '../../components';
 
 // Utilities
 import { Logger } from '../../utilities/logging';
-
-// Types
-import { LOAD_LOGS } from '../../redux/actions/types';
-import { ApplicationState } from '../../__types__';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/MainNavigator';
 import { useAppTheme } from '../../theme';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
 import { RefreshControl, ScrollView } from 'react-native';
+import { IconProps } from '../../components/Icon';
+import { useNavigation } from '@react-navigation/core';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { Stack } from '../../components/layout';
+import { SEButton } from '../../components/SEButton';
+import { Typography } from '../../components/typography';
 
-export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> = (props) => {
+export const ErrorLogs: React.FC = () => {
+    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
     const [logs, setLogs] = useState('');
     const dispatch = useDispatch();
-    const token = useSelector((state: ApplicationState) => state.login.token);
-    const loading = useSelector((state: ApplicationState) => state.logs.loading);
-    const username = useSelector((state: ApplicationState) => state.userData.username);
+    const token = ''; //useSelector((state: ApplicationState) => state.login.token);
+    const loading = false; //useSelector((state: ApplicationState) => state.logs.loading);
+    const username = 'xxx'; //useSelector((state: ApplicationState) => state.userData.username);
     const theme = useAppTheme();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     const getLogs = useCallback(async (): Promise<void> => {
-        dispatch({ type: LOAD_LOGS.REQUEST });
-        const storedLogs = await Logger.readMessages('ERROR');
-        dispatch({ type: LOAD_LOGS.SUCCESS });
-        setLogs(storedLogs);
+        // dispatch({ type: LOAD_LOGS.REQUEST });
+        // const storedLogs = await Logger.readMessages('ERROR');
+        // dispatch({ type: LOAD_LOGS.SUCCESS });
+        // setLogs(storedLogs);
     }, [dispatch]);
 
     const sendMail = useCallback(() => {
@@ -42,11 +44,11 @@ export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> =
         );
     }, [getLogs, username]);
 
-    useEffect(() => {
-        if (!token) {
-            props.navigation.pop();
-        }
-    }, [props.navigation, token]);
+    // useEffect(() => {
+    //     if (!token) {
+    //         props.navigation.pop();
+    //     }
+    // }, [props.navigation, token]);
 
     useEffect(() => {
         void getLogs();
@@ -74,7 +76,7 @@ export const ErrorLogs: React.FC<StackScreenProps<RootStackParamList, 'Logs'>> =
                 subtitle={'What went wrong'}
                 showAuth={false}
                 actionItems={actionItems}
-                navigation={props.navigation}
+                navigation={navigation}
                 {...headerProps}
             />
             <ScrollView

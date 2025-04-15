@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
 
 // Components
 import { RefreshControl, View, ScrollView } from 'react-native';
-import { YoutubeCard, HomeTutorial, SEButton, Typography, Stack, SectionHeader } from '../../components';
-import Carousel from 'react-native-snap-carousel';
 
 // Constants
 import { ROUTES } from '../../constants/routes';
@@ -16,28 +15,52 @@ import bg from '../../images/banners/landing.jpg';
 // Utilities
 import { getLongDate } from '../../utilities';
 
-// Types
-import { ApplicationState } from '../../__types__';
-
-// Redux
-import { loadUserContent } from '../../redux/actions';
-import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/MainNavigator';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { useCollapsibleHeader } from '../../components/CollapsibleHeader';
 import { Header } from '../../components/CollapsibleHeader/Header';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { useNavigation } from '@react-navigation/native';
+import { SectionHeader, Stack } from '../../components/layout';
+import { SEButton } from '../../components/SEButton';
+import { YoutubeCard } from '../../components/videos';
+import { Typography } from '../../components/typography';
+import { HomeTutorial } from '../../components/tutorials';
+import { RootState } from '../../redux/store';
+import { useGetCreditsQuery } from '../../redux/apiServices/creditsService';
+import { useGetTipsQuery } from '../../redux/apiServices/tipsService';
+import { useGetCompletedLessonsQuery } from '../../redux/apiServices/lessonsService';
+import { useGetWelcomeVideoQuery } from '../../redux/apiServices/configurationService';
+import { loadUserData } from '../../redux/thunks';
+import { LessonCarousel } from '../../components/videos/LessonCarousel';
+import { useToggleTheme } from '../../theme/ThemeProvider';
+import { VideoCarousel } from '../../components/videos/VideoCarousel';
 
-export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (props) => {
-    const lessons = useSelector((state: ApplicationState) => state.lessons);
-    const tips = useSelector((state: ApplicationState) => state.tips);
-    const placeholder = useSelector((state: ApplicationState) => state.config.placeholder);
-    const credits = useSelector((state: ApplicationState) => state.credits);
-    const role = useSelector((state: ApplicationState) => state.login.role);
-    const dispatch = useDispatch();
+export const Home: React.FC = () => {
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const dispatch = useDispatch<AppDispatch>();
+    const { toggleTheme } = useToggleTheme();
     const theme = useAppTheme();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
-    const latestLessons = lessons.closed.length > 0 ? lessons.closed : [placeholder];
+    const token = useSelector((state: RootState) => state.auth.token);
+    const role = useSelector((state: RootState) => state.auth.role);
+
+    const {
+        data: { data: lessons = [] } = {},
+        isFetching: loadingLessons,
+        isUninitialized,
+    } = useGetCompletedLessonsQuery({ page: 1, users: '' }, { skip: !token });
+    const { data: tips = [], isFetching: loadingTips, isSuccess: haveTips } = useGetTipsQuery();
+    const { data: placeholder = { video: '', description: '' }, isFetching, error } = useGetWelcomeVideoQuery();
+
+    const {
+        data: { count: credits = 0 } = {},
+        isUninitialized: creditsUninitialized,
+        isFetching: loadingCredits,
+    } = useGetCreditsQuery(undefined, { skip: !token });
+
+    const latestLessons = lessons.length > 0 ? lessons : [placeholder];
 
     return (
         <>
@@ -46,7 +69,7 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                 title={'SWING ESSENTIALS'}
                 subtitle={'The pro in your pocket'}
                 mainAction={'menu'}
-                navigation={props.navigation}
+                navigation={navigation}
                 {...headerProps}
             />
             <ScrollView
@@ -54,23 +77,26 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                 contentContainerStyle={contentProps.contentContainerStyle}
                 refreshControl={
                     <RefreshControl
-                        refreshing={lessons.loading || credits.inProgress || tips.loading}
+                        refreshing={loadingLessons || loadingCredits || loadingTips}
                         onRefresh={(): void => {
-                            // @ts-ignore
-                            dispatch(loadUserContent());
+                            dispatch(loadUserData());
                         }}
                         progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
                 }
+                style={{
+                    backgroundColor: theme.colors.surface,
+                }}
             >
                 {/* LOGIN PANEL */}
                 {role === 'anonymous' && (
                     <Stack
                         direction={'row'}
-                        space={theme.spacing.md}
+                        gap={theme.spacing.md}
                         style={{
                             padding: theme.spacing.md,
-                            borderWidth: 1,
+                            borderBottomWidth: 1,
+                            borderTopWidth: 1,
                             borderColor: theme.colors.outline,
                             backgroundColor: theme.colors.primaryContainer,
                         }}
@@ -79,15 +105,13 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                             mode={'contained'}
                             title={'Sign Up Today'}
                             style={{ flex: 1 }}
-                            // @ts-ignore
-                            onPress={(): void => props.navigation.navigate(ROUTES.REGISTER)}
+                            onPress={(): void => navigation.navigate(ROUTES.REGISTER)}
                         />
                         <SEButton
                             mode={'contained'}
                             title={'Sign In'}
                             style={{ flex: 1 }}
-                            // @ts-ignore
-                            onPress={(): void => props.navigation.navigate(ROUTES.LOGIN)}
+                            onPress={(): void => navigation.navigate(ROUTES.LOGIN)}
                         />
                     </Stack>
                 )}
@@ -99,29 +123,14 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                         <SEButton
                             mode={'outlined'}
                             title={'View All'}
-                            // @ts-ignore
-                            onPress={(): void => props.navigation.navigate(ROUTES.LESSONS)}
+                            onPress={() => toggleTheme()}
+                            // onPress={(): void => navigation.navigate(ROUTES.LESSONS)}
                         />
                     }
                     style={{ marginTop: theme.spacing.md, marginHorizontal: theme.spacing.md }}
                 />
-                <Carousel
-                    data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)}
-                    renderItem={({ item }): JSX.Element => (
-                        <YoutubeCard
-                            headerTitle={item.request_date}
-                            headerSubtitle={role === 'administrator' ? item.username : undefined}
-                            video={item.response_video}
-                            // @ts-ignore
-                            onExpand={(): void => props.navigation.push(ROUTES.LESSON, { lesson: item })}
-                        />
-                    )}
-                    sliderWidth={width}
-                    itemWidth={width - 2 * theme.spacing.md}
-                    inactiveSlideScale={0.95}
-                    style={{ paddingBottom: theme.spacing.lg }}
-                    containerCustomStyle={{ overflow: 'visible' }}
-                />
+
+                <LessonCarousel data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)} />
 
                 {/* LESSON CREDITS */}
                 <SectionHeader
@@ -130,8 +139,7 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                         <SEButton
                             mode={'outlined'}
                             title={'Order More'}
-                            // @ts-ignore
-                            onPress={(): void => props.navigation.navigate(ROUTES.ORDER)}
+                            onPress={(): void => navigation.navigate(ROUTES.ORDER)}
                         />
                     }
                     style={{ marginTop: theme.spacing.md, marginHorizontal: theme.spacing.md }}
@@ -144,29 +152,28 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                         borderWidth: 1,
                         borderRadius: theme.roundness,
                         borderColor: theme.colors.outline,
-                        backgroundColor: theme.colors.primaryContainer,
+                        backgroundColor: theme.dark ? `${theme.colors.primary}4C` : theme.colors.primaryContainer,
                     }}
                 >
-                    <Typography variant={'displaySmall'} color={'primary'}>
-                        {credits.count}
+                    <Typography variant={'displaySmall'} color={theme.dark ? 'onPrimary' : 'primary'}>
+                        {credits}
                     </Typography>
-                    <Typography variant={'bodyLarge'} color={'primary'}>{`Credit${
-                        credits.count !== 1 ? 's' : ''
+                    <Typography variant={'bodyLarge'} color={theme.dark ? 'onPrimary' : 'primary'}>{`Credit${
+                        credits !== 1 ? 's' : ''
                     } Remaining`}</Typography>
-                    {credits.count > 0 && (
+                    {credits > 0 && (
                         <SEButton
                             mode={'outlined'}
                             title={'Submit a Swing'}
-                            icon={'publish'}
+                            icon={'upload'}
                             style={{ marginTop: theme.spacing.md }}
-                            // @ts-ignore
-                            onPress={(): void => props.navigation.navigate(ROUTES.SUBMIT)}
+                            onPress={(): void => navigation.navigate(ROUTES.SUBMIT)}
                         />
                     )}
                 </Stack>
 
                 {/* TIP OF THE MONTH */}
-                {tips.tipList.length > 0 && (
+                {tips.length > 0 && (
                     <View style={{ marginTop: theme.spacing.md }}>
                         <SectionHeader
                             title={'Tip of the Month'}
@@ -174,32 +181,17 @@ export const Home: React.FC<StackScreenProps<RootStackParamList, 'Home'>> = (pro
                                 <SEButton
                                     mode={'outlined'}
                                     title={'View All'}
-                                    // @ts-ignore
-                                    onPress={(): void => props.navigation.navigate(ROUTES.TIPS)}
+                                    onPress={(): void => navigation.navigate(ROUTES.TIPS)}
                                 />
                             }
                             style={{ marginHorizontal: theme.spacing.md }}
                         />
-                        <Carousel
-                            data={tips.tipList.slice(0, 3)}
-                            renderItem={({ item }): JSX.Element => (
-                                <YoutubeCard
-                                    headerTitle={item.title}
-                                    headerSubtitle={role === 'administrator' ? getLongDate(item.date) : ''}
-                                    video={item.video}
-                                    // @ts-ignore
-                                    onExpand={(): void => props.navigation.push(ROUTES.TIP, { tip: item })}
-                                />
-                            )}
-                            sliderWidth={width}
-                            itemWidth={width - 2 * theme.spacing.md}
-                            inactiveSlideScale={0.95}
-                            containerCustomStyle={{ overflow: 'visible' }}
-                        />
+
+                        <VideoCarousel data={tips.slice(0, 3)} />
                     </View>
                 )}
             </ScrollView>
-            <HomeTutorial />
+            {/* <HomeTutorial /> */}
         </>
     );
 };
