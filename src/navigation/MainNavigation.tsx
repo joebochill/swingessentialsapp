@@ -7,7 +7,7 @@ import { View, Text } from 'react-native';
 import BootSplash from 'react-native-bootsplash';
 import { width } from '../utilities/dimensions';
 import { DrawerContent } from './DrawerContent';
-import { ForgotPassword, Home, Lessons, Login, Register, SingleLesson } from '../screens';
+import { Blogs, ForgotPassword, Home, Lessons, Login, Register, SingleBlog, SingleLesson } from '../screens';
 
 const linkingConfig: LinkingOptions<RootDrawerParamList> = {
     prefixes: ['https://www.swingessentials.com'],
@@ -37,7 +37,7 @@ export type RootStackParamList = {
 
     [ROUTES.LESSONS]: undefined;
     [ROUTES.LESSON]: {
-        lesson: any;
+        lesson: string | number | null;
     };
 
     [ROUTES.SUBMIT]: undefined;
@@ -46,12 +46,12 @@ export type RootStackParamList = {
 
     [ROUTES.BLOGS]: undefined;
     [ROUTES.BLOG]: {
-        blog: any;
+        blog: string | number;
     };
 
     [ROUTES.TIPS]: undefined;
     [ROUTES.TIP]: {
-        tip: any;
+        tip: string | number;
     };
 
     [ROUTES.ABOUT]: undefined;
@@ -98,8 +98,8 @@ const MainStackNavigator = () => (
         <AppStack.Screen name={ROUTES.RECORD} component={Home} />
         <AppStack.Screen name={ROUTES.ORDER} component={Home} />
 
-        <AppStack.Screen name={ROUTES.BLOGS} component={Home} />
-        <AppStack.Screen name={ROUTES.BLOG} component={Home} />
+        <AppStack.Screen name={ROUTES.BLOGS} component={Blogs} />
+        <AppStack.Screen name={ROUTES.BLOG} component={SingleBlog} />
 
         <AppStack.Screen name={ROUTES.TIPS} component={Home} />
         <AppStack.Screen name={ROUTES.TIP} component={Home} />

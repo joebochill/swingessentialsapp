@@ -1,13 +1,28 @@
 NEW TODOS:
 
-- Migrate Homepage
-- Migrate login / biometric
-- Migrate other pages
+- Migrate pages
+    - Submit
+    - Record
+    - Order
+    - tips
+    - tip
+    - ABOUT
+    - FAQ
+    - PROS
+    - LOGS
+    - Settings
+    - Setting
+- Integrate Tutorials
+- Check out console LOGS
+- Reconfigure error logging
+- Sign Out is not clearing lessons
+
+
 
 
 - Convert fixed url links to environments
 - Update to flat eslint v9
-
+- Check deep links
 
 
 

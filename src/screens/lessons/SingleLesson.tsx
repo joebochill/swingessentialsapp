@@ -43,15 +43,14 @@ export const SingleLesson: React.FC = () => {
     const { lesson: lessonURL } = route.params;
 
     const token = useSelector((state: RootState) => state.auth.token);
-    const role = useSelector((state: RootState) => state.auth.role);
     const isAdmin = useSelector((state: RootState) => state.auth.admin);
 
-    const { data: placeholder = { video: '', description: '' }, isFetching, error } = useGetWelcomeVideoQuery();
+    const { data: placeholder = { video: '', description: '' } } = useGetWelcomeVideoQuery();
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
 
-    const { data: { details: lessonDetails } = {}, isError } = useGetLessonByIdQuery(
-        { id: lessonURL, users: '' },
+    const { data: { details: lessonDetails } = {} } = useGetLessonByIdQuery(
+        { id: lessonURL as string | number, users: '' },
         {
             skip: !lessonURL,
         }
@@ -161,6 +160,7 @@ export const SingleLesson: React.FC = () => {
                 subtitle={'Welcome Lesson'}
                 mainAction={'back'}
                 navigation={navigation}
+                backgroundColor={theme.dark ? theme.colors.surface : undefined}
                 fixed
             />
             <ScrollView

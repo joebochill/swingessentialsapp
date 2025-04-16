@@ -1,35 +1,35 @@
 import React from 'react';
-// Components
 import { ScrollView } from 'react-native';
-
-// Utilities
 import { splitParagraphs, getLongDate } from '../../utilities';
 import { height } from '../../utilities/dimensions';
-
-// Constants
-import { StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
 import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/core';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/MainNavigation';
 import { SectionHeader, Stack } from '../../components/layout';
-import { Paragraph } from '../../components/typography';
+import { Paragraph, Typography } from '../../components/typography';
+import { useGetBlogByIdQuery } from '../../redux/apiServices/blogsService';
+import { ActivityIndicator } from 'react-native-paper';
 
 export const SingleBlog: React.FC = () => {
-    const route = useRoute();
-    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
-    // TODO
-    const { blog } = route.params as any;
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const route = useRoute<RouteProp<RootStackParamList, 'BLOG'>>();
+    const { blog: blogID } = route.params;
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
 
-    if (blog === null) {
-        // navigation.pop();
+    const { data: blogDetails, isFetching } = useGetBlogByIdQuery(blogID ?? 0, {
+        skip: blogID === null,
+    });
+
+    if (blogID === null) {
+        navigation.pop();
     }
     return (
-        blog && (
+        blogID && (
             <Stack
                 style={[
                     {
@@ -39,7 +39,12 @@ export const SingleBlog: React.FC = () => {
                     },
                 ]}
             >
-                <Header title={getLongDate(blog.date)} mainAction={'back'} navigation={navigation} fixed />
+                <Header
+                    title={blogDetails ? getLongDate(blogDetails.date) : ''}
+                    mainAction={'back'}
+                    navigation={navigation}
+                    fixed
+                />
                 <ScrollView
                     contentContainerStyle={[
                         {
@@ -50,12 +55,24 @@ export const SingleBlog: React.FC = () => {
                     ]}
                     keyboardShouldPersistTaps={'always'}
                 >
-                    <SectionHeader title={blog.title} />
-                    <Stack gap={theme.spacing.md}>
-                        {splitParagraphs(blog.body).map((p, ind) => (
-                            <Paragraph key={`${blog.id}_p_${ind}`}>{p}</Paragraph>
-                        ))}
-                    </Stack>
+                    {blogDetails && (
+                        <>
+                            <SectionHeader title={blogDetails.title} />
+                            <Stack gap={theme.spacing.md}>
+                                {splitParagraphs(blogDetails.body).map((p, ind) => (
+                                    <Paragraph key={`${blogDetails.id}_p_${ind}`}>{p}</Paragraph>
+                                ))}
+                            </Stack>
+                        </>
+                    )}
+                    {isFetching && (
+                        <>
+                            <ActivityIndicator size={'large'} color={theme.colors.onSurface} />
+                            <Typography variant={'bodyLarge'} align={'center'} color={'onSurface'}>
+                                Loading post...
+                            </Typography>
+                        </>
+                    )}
                 </ScrollView>
             </Stack>
         )

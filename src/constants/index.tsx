@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { width } from '../utilities/dimensions';
 
 // Get the app version from package.json
@@ -11,7 +12,7 @@ export const LOG_LIMIT = 24000; // characters
 
 export const DRAWER_WIDTH = 0.9 * width;
 
-export const BASE_API_URL = 'http://localhost:3000';
+export const BASE_API_URL = Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
 export const AUTH = 'Message';
 
 export const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
