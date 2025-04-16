@@ -55,7 +55,7 @@ export const lessonsApi = createApi({
     tagTypes: ['lessons', 'pendingLessons', 'lessonDetails'],
     endpoints: (builder) => ({
         getCompletedLessons: builder.query<LessonsResponse, { page: number; users: string }>({
-            query: ({ page, users }) => `lessons?page=${page}&pageSize=8${users ? `&users=${users}` : ''}`,
+            query: ({ page, users }) => `lessons?page=${page}&pageSize=20${users ? `&users=${users}` : ''}`,
             providesTags: ['lessons'],
         }),
         getPendingLessons: builder.query<LessonsResponse, string | undefined>({

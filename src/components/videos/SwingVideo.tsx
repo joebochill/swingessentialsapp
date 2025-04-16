@@ -118,7 +118,7 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                     },
                     source
                         ? {
-                              backgroundColor: theme.colors.primaryContainer,
+                              backgroundColor: theme.dark ? theme.colors.surface : theme.colors.primaryContainer,
                           }
                         : {
                               borderWidth: 1,
@@ -153,7 +153,11 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         playInBackground={false}
                         playWhenInactive={false}
                         ignoreSilentSwitch={'ignore'}
-                        style={{ height: '100%', width: '100%', backgroundColor: theme.colors.primaryContainer }}
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                            backgroundColor: theme.dark ? theme.colors.surface : theme.colors.primaryContainer,
+                        }}
                     />
                 )}
                 {((source && !videoReady) || loading || processing) && (

@@ -1,20 +1,9 @@
 import React, { JSX } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
-
-// Components
 import { RefreshControl, View, ScrollView } from 'react-native';
-
-// Constants
 import { ROUTES } from '../../constants/routes';
-
-// Styles
-import { width } from '../../utilities/dimensions';
 import bg from '../../images/banners/landing.jpg';
-
-// Utilities
-import { getLongDate } from '../../utilities';
-
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { useCollapsibleHeader } from '../../components/CollapsibleHeader';
@@ -23,7 +12,6 @@ import { RootStackParamList } from '../../navigation/MainNavigation';
 import { useNavigation } from '@react-navigation/native';
 import { SectionHeader, Stack } from '../../components/layout';
 import { SEButton } from '../../components/SEButton';
-import { YoutubeCard } from '../../components/videos';
 import { Typography } from '../../components/typography';
 import { HomeTutorial } from '../../components/tutorials';
 import { RootState } from '../../redux/store';
@@ -33,13 +21,11 @@ import { useGetCompletedLessonsQuery } from '../../redux/apiServices/lessonsServ
 import { useGetWelcomeVideoQuery } from '../../redux/apiServices/configurationService';
 import { loadUserData } from '../../redux/thunks';
 import { LessonCarousel } from '../../components/videos/LessonCarousel';
-import { useToggleTheme } from '../../theme/ThemeProvider';
 import { VideoCarousel } from '../../components/videos/VideoCarousel';
 
 export const Home: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const dispatch = useDispatch<AppDispatch>();
-    const { toggleTheme } = useToggleTheme();
     const theme = useAppTheme();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
@@ -85,7 +71,7 @@ export const Home: React.FC = () => {
                     />
                 }
                 style={{
-                    backgroundColor: theme.colors.surface,
+                    backgroundColor: theme.colors.background,
                 }}
             >
                 {/* LOGIN PANEL */}
@@ -98,7 +84,7 @@ export const Home: React.FC = () => {
                             borderBottomWidth: 1,
                             borderTopWidth: 1,
                             borderColor: theme.colors.outline,
-                            backgroundColor: theme.colors.primaryContainer,
+                            backgroundColor: theme.colors.surface,
                         }}
                     >
                         <SEButton
@@ -123,8 +109,7 @@ export const Home: React.FC = () => {
                         <SEButton
                             mode={'outlined'}
                             title={'View All'}
-                            onPress={() => toggleTheme()}
-                            // onPress={(): void => navigation.navigate(ROUTES.LESSONS)}
+                            onPress={(): void => navigation.navigate(ROUTES.LESSONS)}
                         />
                     }
                     style={{ marginTop: theme.spacing.md, marginHorizontal: theme.spacing.md }}

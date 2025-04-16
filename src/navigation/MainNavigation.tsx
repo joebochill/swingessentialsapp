@@ -1,13 +1,13 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator, StackScreenProps } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute, LinkingOptions, NavigationContainer } from '@react-navigation/native';
 import { ROUTES } from '../constants/routes';
 import { View, Text } from 'react-native';
 import BootSplash from 'react-native-bootsplash';
 import { width } from '../utilities/dimensions';
 import { DrawerContent } from './DrawerContent';
-import { ForgotPassword, Home, Login, Register } from '../screens';
+import { ForgotPassword, Home, Lessons, Login, Register, SingleLesson } from '../screens';
 
 const linkingConfig: LinkingOptions<RootDrawerParamList> = {
     prefixes: ['https://www.swingessentials.com'],
@@ -22,13 +22,6 @@ const linkingConfig: LinkingOptions<RootDrawerParamList> = {
         },
     },
 };
-
-// Placeholder components for each route
-const PlaceholderScreen = ({ name }: { name: string }) => (
-    <View>
-        <Text>{`${name} Screen`}</Text>
-    </View>
-);
 
 // Define types for Stack Navigator
 export type RootStackParamList = {
@@ -88,15 +81,18 @@ const AppStack = createStackNavigator<RootStackParamList>();
 const SettingsStack = createStackNavigator<SettingsStackParamList>();
 
 const MainStackNavigator = () => (
-    <AppStack.Navigator initialRouteName={ROUTES.HOME} screenOptions={{ headerShown: false }}>
+    <AppStack.Navigator
+        initialRouteName={ROUTES.HOME}
+        screenOptions={{ headerShown: false, cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
+    >
         <AppStack.Screen name={ROUTES.LOGIN} component={Login} />
         <AppStack.Screen name={ROUTES.REGISTER} component={Register} />
         <AppStack.Screen name={ROUTES.RESET_PASSWORD} component={ForgotPassword} />
 
         <AppStack.Screen name={ROUTES.HOME} component={Home} />
 
-        <AppStack.Screen name={ROUTES.LESSONS} component={Home} />
-        <AppStack.Screen name={ROUTES.LESSON} component={Home} />
+        <AppStack.Screen name={ROUTES.LESSONS} component={Lessons} />
+        <AppStack.Screen name={ROUTES.LESSON} component={SingleLesson} />
 
         <AppStack.Screen name={ROUTES.SUBMIT} component={Home} />
         <AppStack.Screen name={ROUTES.RECORD} component={Home} />

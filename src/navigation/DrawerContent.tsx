@@ -23,9 +23,11 @@ import { AppDispatch } from '../redux/store';
 import { useLogoutMutation } from '../redux/apiServices/authService';
 import { MaterialIconName } from '../components/Icon';
 import { TokenModal } from '../components/feedback';
+import { useToggleTheme } from '../theme/ThemeProvider';
 
 export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
     const theme = useAppTheme();
+    const { toggleTheme } = useToggleTheme();
 
     const dispatch: AppDispatch = useDispatch();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
@@ -247,12 +249,18 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                 navigation={navigation}
                 backgroundColor={theme.dark ? theme.colors.surface : undefined}
                 mainAction={'none'}
+                actionItems={[
+                    {
+                        name: theme.dark ? 'dark-mode' : 'light-mode',
+                        onPress: (): void => toggleTheme(),
+                    },
+                ]}
                 content={
                     <Stack
                         justify={'flex-end'}
                         style={{
                             flex: 1,
-                            marginRight: -1 * theme.size.md - theme.spacing.xs,
+                            marginRight: -2 * theme.size.md - 3 * theme.spacing.sm - theme.spacing.xs,
                         }}
                     >
                         <Animated.View
