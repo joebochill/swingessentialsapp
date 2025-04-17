@@ -34,8 +34,7 @@ export const Tips: React.FC = () => {
     const sections = Object.entries(tipsByYear).map(([year, tips]) => ({
         bucketName: year,
         data: tips,
-    }));    
-    
+    }));
 
     return (
         <>

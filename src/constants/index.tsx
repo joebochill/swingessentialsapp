@@ -12,6 +12,7 @@ export const LOG_LIMIT = 24000; // characters
 
 export const DRAWER_WIDTH = 0.9 * width;
 
+export const BASE_URL = Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
 export const BASE_API_URL = Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
 export const AUTH = 'Message';
 

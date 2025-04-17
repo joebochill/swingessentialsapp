@@ -6,11 +6,28 @@ import { ROUTES } from '../constants/routes';
 import BootSplash from 'react-native-bootsplash';
 import { width } from '../utilities/dimensions';
 import { DrawerContent } from './DrawerContent';
-import { About, Blogs, FAQ, ForgotPassword, Home, Lessons, Login, Register, SingleBlog, SingleLesson, SingleTip, Tips } from '../screens';
+import {
+    About,
+    Blogs,
+    FAQ,
+    ForgotPassword,
+    Home,
+    Lessons,
+    Login,
+    Register,
+    Settings,
+    SingleBlog,
+    SingleLesson,
+    SingleSetting,
+    SingleTip,
+    Tips,
+} from '../screens';
 import { Pros } from '../screens/help/Pros';
+import { UserAppSettings, UserNotificationSettings } from '../redux/apiServices/userDetailsService';
+import { BASE_URL } from '../constants';
 
 const linkingConfig: LinkingOptions<RootDrawerParamList> = {
-    prefixes: ['https://www.swingessentials.com'],
+    prefixes: [BASE_URL],
     config: {
         screens: {
             APP: {
@@ -66,7 +83,7 @@ export type RootStackParamList = {
 export type SettingsStackParamList = {
     [ROUTES.SETTINGS]: undefined;
     [ROUTES.SETTING]: {
-        setting: any;
+        setting: keyof UserAppSettings | keyof UserNotificationSettings;
     };
 };
 
@@ -94,7 +111,7 @@ const MainStackNavigator = () => (
         <AppStack.Screen name={ROUTES.LESSONS} component={Lessons} />
         <AppStack.Screen name={ROUTES.LESSON} component={SingleLesson} />
 
-        <AppStack.Screen name={ROUTES.SUBMIT} component={Home} /> 
+        <AppStack.Screen name={ROUTES.SUBMIT} component={Home} />
         <AppStack.Screen name={ROUTES.RECORD} component={Home} />
         <AppStack.Screen name={ROUTES.ORDER} component={Home} />
 
@@ -117,8 +134,8 @@ const MainStackNavigator = () => (
 
 const SettingsStackNavigator = () => (
     <SettingsStack.Navigator initialRouteName={ROUTES.SETTINGS} screenOptions={{ headerShown: false }}>
-        <SettingsStack.Screen name={ROUTES.SETTINGS} component={Home} />
-        <SettingsStack.Screen name={ROUTES.SETTING} component={Home} />
+        <SettingsStack.Screen name={ROUTES.SETTINGS} component={Settings} />
+        <SettingsStack.Screen name={ROUTES.SETTING} component={SingleSetting} />
     </SettingsStack.Navigator>
 );
 

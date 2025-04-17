@@ -347,9 +347,6 @@ const RegisterForm: React.FC = () => {
                                                           });
                                                       }
                                             }
-                                            onOpen={() => {
-                                                console.log('open');
-                                            }}
                                             // @ts-expect-error this is a workaround for a bug in RNPickerSelect with new architecture
                                             style={{ inputIOSContainer: { pointerEvents: 'none' } }}
                                             value={fields[field.property]}

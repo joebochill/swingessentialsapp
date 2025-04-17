@@ -2,11 +2,9 @@ import React, { useState, useCallback, useEffect, JSX } from 'react';
 import { Animated, AppState, AppStateStatus, Image, Alert, ScrollView, Pressable } from 'react-native';
 import { NavigationItems } from './navigationConfig';
 import MatIcon from '@react-native-vector-icons/material-icons';
-// import { Typography, TokenModal, Stack, ListItem } from '../components';
-import { APP_VERSION, DRAWER_WIDTH } from '../constants';
+import { APP_VERSION, BASE_URL, DRAWER_WIDTH } from '../constants';
 import { ROUTES } from '../constants/routes';
 import { List } from 'react-native-paper';
-import { getLongDate } from '../utilities';
 import se from '../images/logo-small.png';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { useAppTheme } from '../theme';
@@ -24,6 +22,7 @@ import { useLogoutMutation } from '../redux/apiServices/authService';
 import { MaterialIconName } from '../components/Icon';
 import { TokenModal } from '../components/feedback';
 import { useToggleTheme } from '../theme/ThemeProvider';
+import { format } from 'date-fns';
 
 export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
     const theme = useAppTheme();
@@ -50,8 +49,10 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
 
     const userString = token && user.username ? user.username : 'Welcome!';
     const nameString = user?.first && user?.last ? `${user.first} ${user.last}` : 'New User';
-    const memberString = `Joined ${user?.joined ? getLongDate(user.joined * 1000) : getLongDate(Date.now())}`;
-    const avatarURL = `https://www.swingessentials.com/images/profiles/${
+    const memberString = `Joined ${
+        user.joined ? format(new Date(user.joined * 1000), 'MMMM yyyy') : format(new Date(), 'MMMM yyyy')
+    }`;
+    const avatarURL = `${BASE_URL}/images/profiles/${
         user?.avatar ? `${user.username}/${user.avatar}.png` : 'blank.png'
     }`;
 
@@ -293,7 +294,9 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                                             {
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
-                                                backgroundColor: theme.colors.primaryContainer,
+                                                backgroundColor: theme.dark
+                                                    ? theme.colors.primary
+                                                    : theme.colors.primaryContainer,
                                                 height: scaleByHeight(80, 0),
                                                 width: scaleByHeight(80, 0),
                                                 borderRadius: scaleByHeight(80 / 2, 0),

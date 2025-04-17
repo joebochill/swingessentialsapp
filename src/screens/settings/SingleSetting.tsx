@@ -1,142 +1,58 @@
 import React, { useState, useCallback, useEffect, JSX } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import MatIcon from '@react-native-vector-icons/material-icons';
-import { StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
-import { RootStackParamList, SettingsStackParamList } from '../../navigation/MainNavigation';
-import { useNavigation, useRoute } from '@react-navigation/core';
-import { UserAppSettings } from '../../redux/apiServices/userDetailsService';
+import { SettingsStackParamList } from '../../navigation/MainNavigation';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import {
+    BLANK_USER,
+    useGetUserDetailsQuery,
+    UserAppSettings,
+    useUpdateUserDetailsMutation,
+} from '../../redux/apiServices/userDetailsService';
 import { Stack } from '../../components/layout';
 import { ListItem } from '../../components/ListItem';
 import { Typography } from '../../components/typography';
-
-type SettingType = {
-    name: any; //Exclude<keyof SettingsState, 'loading' | 'notifications'> | keyof SettingsState['notifications'];
-    label: string;
-    description: string;
-    values: number[] | string[] | boolean[];
-};
-const SETTINGS: SettingType[] = [
-    {
-        name: 'handedness',
-        label: 'Swing Handedness',
-        description: 'Your dominant hand for golfing',
-        values: ['Right', 'Left'],
-    },
-    {
-        name: 'duration',
-        label: 'Recording Duration',
-        description: 'How long to record for each swing',
-        values: [5, 8, 10],
-    },
-    {
-        name: 'delay',
-        label: 'Recording Delay',
-        description: 'How long to wait between pressing record and the start of the recording',
-        values: [0, 5, 10],
-    },
-    {
-        name: 'overlay',
-        label: 'Stance Overlay',
-        description:
-            'The Stance Overlay shows a semi-transparent image of how you should stand while recording your swing',
-        values: [true, false],
-    },
-    {
-        name: 'lessons',
-        label: 'Lesson Emails',
-        description: 'Receive emails whenever your swing analysis has been posted or updated.',
-        values: [true, false],
-    },
-    {
-        name: 'marketing',
-        label: 'Marketing Emails',
-        description: 'Receive emails about upcoming sales, events, etc.',
-        values: [true, false],
-    },
-    {
-        name: 'newsletter',
-        label: 'Newsletter Emails',
-        description: 'Receive emails about news, tips, or other goings on.',
-        values: [true, false],
-    },
-    {
-        name: 'reminders',
-        label: 'Reminder Emails',
-        description: 'Receive emails about things you might have missed.',
-        values: [true, false],
-    },
-];
-const caseSame = (val1: string | number, val2: string | number): boolean => {
-    if (typeof val1 === 'string' && typeof val2 === 'string') {
-        return val1.toLowerCase() === val2.toLowerCase();
-    }
-    return val1 === val2;
-};
+import { RootState } from '../../redux/store';
+import { SETTINGS, SettingType } from './shared';
 
 export const SingleSetting: React.FC = () => {
-    const navigation = useNavigation<StackScreenProps<SettingsStackParamList>>();
-    const route = useRoute();
-    const settings = {} as any; //useSelector((state: ApplicationState) => state.settings);
-    const token: string = ''; //useSelector((state: ApplicationState) => state.login.token);
-    const { setting: currentSettingName } = { setting: '' }; //route.params;
-    const dispatch = useDispatch();
+    const navigation = useNavigation<StackNavigationProp<SettingsStackParamList>>();
+    const route = useRoute<RouteProp<SettingsStackParamList, 'SETTING'>>();
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
+    const token = useSelector((state: RootState) => state.auth.token);
+    const { data: user = BLANK_USER, isSuccess: hasUserData, isFetching, refetch } = useGetUserDetailsQuery();
+    const [updateUserDetails] = useUpdateUserDetailsMutation();
 
     const [value, setValue] = useState(() => {
-        if (Object.keys(settings.notifications).includes(currentSettingName)) {
-            return settings.notifications[currentSettingName as keyof UserAppSettings];
-        }
-        return settings[currentSettingName as any /*Exclude<keyof SettingsState, 'loading' | 'notifications'>*/];
+        return user[route.params.setting as keyof UserAppSettings];
     });
 
     const updateSetting = useCallback(() => {
-        if (Object.keys(settings.notifications).includes(currentSettingName)) {
-            let key = 'lessons';
-            switch (currentSettingName) {
-                case 'marketing':
-                    key = 'notify_marketing';
-                    break;
-                case 'newsletter':
-                    key = 'notify_newsletter';
-                    break;
-                case 'reminders':
-                    key = 'notify_reminders';
-                    break;
-                case 'lessons':
-                default:
-                    key = 'notify_new_lessons';
-                    break;
-            }
-            // dispatch(
-            //     putSettings({
-            //         [key]: value,
-            //     })
-            // );
-        } else {
-            // dispatch(
-            //     putSettings({
-            //         [currentSettingName]: value,
-            //     })
-            // );
-        }
-    }, [dispatch, currentSettingName, value, settings.notifications]);
+        updateUserDetails({
+            [route.params.setting]: typeof value === 'string' ? value.toLowerCase() : value,
+        });
+    }, [route.params.setting, value, updateUserDetails, refetch]);
 
     useEffect(() => {
         if (!token) {
-            // navigation.pop();
+            navigation.pop();
         }
     }, [navigation, token]);
 
-    if (!currentSettingName) {
-        // navigation.pop();
+    if (!route.params.setting) {
+        navigation.pop();
         return null;
     }
-    const currentSetting: SettingType = SETTINGS.filter((setting) => setting.name === currentSettingName)[0];
+
+    const currentSetting: SettingType = SETTINGS.find(
+        (setting) => setting.name === route.params.setting
+    ) as SettingType;
 
     return (
         <Stack
@@ -155,6 +71,7 @@ export const SingleSetting: React.FC = () => {
                 showAuth={false}
                 onNavigate={(): void => updateSetting()}
                 navigation={navigation}
+                backgroundColor={theme.dark ? theme.colors.surface : undefined}
                 fixed
             />
             <Stack style={{ marginTop: theme.spacing.md }}>
@@ -163,21 +80,20 @@ export const SingleSetting: React.FC = () => {
                         key={`option_${index}`}
                         topDivider={index === 0}
                         bottomDivider
-                        title={`${typeof val === 'boolean' ? (val ? 'On' : 'Off') : val}${
-                            typeof val === 'number' ? 's' : ''
-                        }`}
+                        title={currentSetting.labels ? currentSetting.labels[index] : currentSetting.values[index]}
                         titleEllipsizeMode={'tail'}
+                        // @ts-expect-error we know val will be of the correct type here
                         onPress={(): void => setValue(val)}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
-                                {/* {caseSame(value, val) && (
+                                {value === val && (
                                     <MatIcon
                                         name={'check'}
                                         size={theme.size.md}
-                                        color={theme.colors.primary}
+                                        color={theme.colors.onPrimaryContainer}
                                         style={{ marginRight: -1 * theme.spacing.md }}
                                     />
-                                )} */}
+                                )}
                             </Stack>
                         )}
                     />

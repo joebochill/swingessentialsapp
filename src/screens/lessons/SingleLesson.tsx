@@ -36,6 +36,7 @@ import {
     useMarkLessonViewedMutation,
 } from '../../redux/apiServices/lessonsService';
 import { format } from 'date-fns';
+import { BASE_URL } from '../../constants';
 
 export const SingleLesson: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -119,13 +120,13 @@ export const SingleLesson: React.FC = () => {
                             <SwingVideo
                                 type={'fo'}
                                 source={{
-                                    uri: `https://www.swingessentials.com/video_links/${lessonDetails.request_url}/${lessonDetails.fo_swing}`,
+                                    uri: `${BASE_URL}/video_links/${lessonDetails.request_url}/${lessonDetails.fo_swing}`,
                                 }}
                             />
                             <SwingVideo
                                 type={'dtl'}
                                 source={{
-                                    uri: `https://www.swingessentials.com/video_links/${lessonDetails.request_url}/${lessonDetails.dtl_swing}`,
+                                    uri: `${BASE_URL}/video_links/${lessonDetails.request_url}/${lessonDetails.dtl_swing}`,
                                 }}
                             />
                         </Stack>

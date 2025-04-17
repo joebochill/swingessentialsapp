@@ -14,6 +14,7 @@ import { RootStackParamList } from '../../navigation/MainNavigation';
 import { ProBio, useGetProsQuery } from '../../redux/apiServices/prosService';
 import { Stack } from '../../components/layout';
 import { Paragraph, Typography } from '../../components/typography';
+import { BASE_URL } from '../../constants';
 
 export const Pros: React.FC = () => {
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
@@ -59,7 +60,7 @@ export const Pros: React.FC = () => {
                                     source={{
                                         uri: pro.image.startsWith('http')
                                             ? pro.image
-                                            : `https://www.swingessentials.com/images/pros/${pro.image}`,
+                                            : `${BASE_URL}/images/pros/${pro.image}`,
                                     }}
                                     style={{ width: '100%', height: '100%' }}
                                 />

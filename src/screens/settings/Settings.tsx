@@ -1,28 +1,35 @@
 import React, { JSX, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { View, Image, RefreshControl, ScrollView, TouchableHighlight, Keyboard } from 'react-native';
-import MatIcon from '@react-native-vector-icons/material-icons';
-import ImagePicker from 'react-native-image-crop-picker';
+import { View, Image as RNImage, RefreshControl, ScrollView, TouchableHighlight, Keyboard } from 'react-native';
+import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import { ROUTES } from '../../constants/routes';
-import { TextInput, IconButton } from 'react-native-paper';
-import { StackScreenProps } from '@react-navigation/stack';
-import { getJSDate, getLongDate } from '../../utilities';
+import { IconButton } from 'react-native-paper';
 import { width, height } from '../../utilities/dimensions';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
 import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScoreRange } from '../../redux/apiServices/userDetailsService';
+import {
+    BLANK_USER,
+    Level3UserDetailsApiResponse,
+    ScoreRange,
+    useGetUserDetailsQuery,
+    useUpdateUserDetailsMutation,
+} from '../../redux/apiServices/userDetailsService';
 import { useNavigation } from '@react-navigation/core';
-import { RootStackParamList } from '../../navigation/MainNavigation';
+import { RootStackParamList, SettingsStackParamList } from '../../navigation/MainNavigation';
 import { SectionHeader, Stack } from '../../components/layout';
 import { SEButton } from '../../components/SEButton';
 import { ListItem } from '../../components/ListItem';
 import { Typography } from '../../components/typography';
 import { StyledTextInput } from '../../components/inputs/StyledTextInput';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { Icon } from '../../components/Icon';
+import { ROUTES } from '../../constants/routes';
+import { BASE_URL } from '../../constants';
 
 const objectsEqual = (a: Record<string, unknown>, b: Record<string, unknown>): boolean => {
     // Create arrays of property names
@@ -70,40 +77,42 @@ const mapAverageToLabel = (avg: ScoreRange | undefined): string => {
 };
 
 export const Settings: React.FC = () => {
-    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
-    const settings = {} as any; //useSelector((state: ApplicationState) => state.settings);
-    const { lessons, marketing, newsletter, reminders } = settings.notifications || {
-        lessons: true,
-        marketing: true,
-        newsletter: true,
-        reminders: true,
-    };
-    const token: string = ''; //useSelector((state: ApplicationState) => state.login.token);
-    const userData = {} as any; //useSelector((state: ApplicationState) => state.userData);
-    const role: string = ''; //useSelector((state: ApplicationState) => state.login.role);
-
-    const dispatch = useDispatch();
+    const navigation = useNavigation<StackNavigationProp<SettingsStackParamList>>();
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
 
+    const { data: user = BLANK_USER, isSuccess: hasUserData, isFetching, refetch } = useGetUserDetailsQuery();
+    const [updateUserDetails] = useUpdateUserDetailsMutation();
+    const {
+        notify_new_lesson: lessons,
+        notify_marketing: marketing,
+        notify_newsletter: newsletter,
+        notify_reminders: reminders,
+    } = user;
+
+    const token = useSelector((state: RootState) => state.auth.token);
+    const role = useSelector((state: RootState) => state.auth.role);
+
     const [editAbout, setEditAbout] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);
-    const [personal, setPersonal] = useState(userData);
+    const [personal, setPersonal] = useState(user);
 
-    const memberString = `Joined ${userData.joined ? getLongDate(userData.joined * 1000) : getLongDate(Date.now())}`;
-    const avatarURL = `https://www.swingessentials.com/images/profiles/${
-        settings.avatar ? `${userData.username}/${settings.avatar}.png` : 'blank.png'
+    const memberString = `Joined ${
+        user.joined ? format(new Date(user.joined * 1000), 'MMMM yyyy') : format(new Date(), 'MMMM yyyy')
+    }`;
+    const avatarURL = `${BASE_URL}/images/profiles/${
+        user.avatar ? `${user.username}/${user.avatar}.png` : 'blank.png'
     }`;
 
-    // useEffect(() => {
-    //     if (!token) {
-    //         navigation.pop();
-    //     }
-    // }, [navigation, token]);
+    useEffect(() => {
+        if (!token) {
+            navigation.pop();
+        }
+    }, [navigation, token]);
 
     useEffect(() => {
-        setPersonal(userData);
-    }, [userData, setPersonal]);
+        setPersonal(user);
+    }, [user, setPersonal]);
 
     return (
         <Stack
@@ -116,9 +125,10 @@ export const Settings: React.FC = () => {
             ]}
         >
             <Header
-                title={userData.username}
+                title={user.username}
                 subtitle={memberString}
                 mainAction={'back'}
+                backgroundColor={theme.dark ? theme.colors.surface : undefined}
                 navigation={navigation}
                 fixed
             />
@@ -133,10 +143,9 @@ export const Settings: React.FC = () => {
                 keyboardShouldPersistTaps={'always'}
                 refreshControl={
                     <RefreshControl
-                        refreshing={settings.loading}
+                        refreshing={isFetching}
                         onRefresh={(): void => {
-                            // dispatch(loadSettings());
-                            // dispatch(loadUserInfo());
+                            refetch();
                         }}
                     />
                 }
@@ -154,12 +163,11 @@ export const Settings: React.FC = () => {
                                 includeBase64: true,
                             })
                                 .then((image) => {
-                                    // dispatch(
-                                    // setUserAvatar({
-                                    //     useAvatar: 1,
-                                    //     avatar: image.data,
-                                    // })
-                                    // );
+                                    if (image) {
+                                        updateUserDetails({
+                                            avatar: (image as Image).data ?? '',
+                                        });
+                                    }
                                 })
                                 .catch((/*err*/): void => {
                                     // do nothing (canceled image picker)
@@ -173,22 +181,22 @@ export const Settings: React.FC = () => {
                             alignSelf: 'center',
                             borderRadius: width / 4,
                             overflow: 'hidden',
-                            backgroundColor: theme.colors.primaryContainer,
+                            backgroundColor: theme.dark ? theme.colors.surface : theme.colors.primaryContainer,
                         }}
                     >
-                        <>
-                            <Image source={{ uri: avatarURL }} style={{ width: '100%', height: '100%' }} />
+                        <View>
+                            <RNImage source={{ uri: avatarURL }} style={{ width: '100%', height: '100%' }} />
                             <View style={{ position: 'absolute', bottom: 0, width: '100%', alignItems: 'center' }}>
                                 <IconButton
                                     mode={'contained'}
-                                    icon="pencil"
+                                    icon="edit"
                                     iconColor={theme.colors.onPrimary}
                                     containerColor={'rgba(0,0,0,0.5)'}
                                 />
                             </View>
-                        </>
+                        </View>
                     </TouchableHighlight>
-                    {settings.avatar !== '' && (
+                    {user.avatar !== '' && (
                         <IconButton
                             icon="close"
                             mode={'contained'}
@@ -200,12 +208,9 @@ export const Settings: React.FC = () => {
                                 right: 0,
                             }}
                             onPress={(): void => {
-                                // dispatch(
-                                // setUserAvatar({
-                                //     useAvatar: 0,
-                                //     avatar: '',
-                                // })
-                                // );
+                                updateUserDetails({
+                                    avatar: '',
+                                });
                             }}
                         />
                     )}
@@ -220,7 +225,7 @@ export const Settings: React.FC = () => {
                             title={editAbout ? 'Cancel' : 'Edit'}
                             onPress={(): void => {
                                 setEditAbout(!editAbout);
-                                setPersonal(userData);
+                                setPersonal(user);
                             }}
                         />
                     }
@@ -240,7 +245,7 @@ export const Settings: React.FC = () => {
                                     style={[style, { marginRight: 0 }]}
                                     {...rightProps}
                                 >
-                                    <Typography>{userData.firstName}</Typography>
+                                    <Typography>{user.first}</Typography>
                                 </Stack>
                             )}
                         />
@@ -255,7 +260,7 @@ export const Settings: React.FC = () => {
                                     style={[style, { marginRight: 0 }]}
                                     {...rightProps}
                                 >
-                                    <Typography>{userData.lastName}</Typography>
+                                    <Typography>{user.last}</Typography>
                                 </Stack>
                             )}
                         />
@@ -270,7 +275,7 @@ export const Settings: React.FC = () => {
                                     style={[style, { marginRight: 0 }]}
                                     {...rightProps}
                                 >
-                                    <Typography>{userData.location}</Typography>
+                                    <Typography>{user.location}</Typography>
                                 </Stack>
                             )}
                         />
@@ -285,7 +290,11 @@ export const Settings: React.FC = () => {
                                     style={[style, { marginRight: 0 }]}
                                     {...rightProps}
                                 >
-                                    <Typography>{userData.birthday || '--'}</Typography>
+                                    <Typography>
+                                        {user.birthday
+                                            ? format(parse(user.birthday, 'yyyy-MM-dd', new Date()), 'dd-MMM-yyyy')
+                                            : '--'}
+                                    </Typography>
                                 </Stack>
                             )}
                         />
@@ -302,7 +311,7 @@ export const Settings: React.FC = () => {
                                     style={[style, { marginRight: 0 }]}
                                     {...rightProps}
                                 >
-                                    <Typography>{userData.email}</Typography>
+                                    <Typography>{user.email}</Typography>
                                 </Stack>
                             )}
                         />
@@ -317,7 +326,7 @@ export const Settings: React.FC = () => {
                                     style={[style, { marginRight: 0 }]}
                                     {...rightProps}
                                 >
-                                    <Typography>{mapAverageToLabel(userData.average)}</Typography>
+                                    <Typography>{mapAverageToLabel(user.average)}</Typography>
                                 </Stack>
                             )}
                         />
@@ -333,7 +342,7 @@ export const Settings: React.FC = () => {
                                     style={[style, { marginRight: 0 }]}
                                     {...rightProps}
                                 >
-                                    <Typography>{`${(userData.goals || '').substr(0, 18)}...`}</Typography>
+                                    <Typography>{`${(user.goals || '').substring(0, 18)}...`}</Typography>
                                 </Stack>
                             )}
                         />
@@ -344,27 +353,27 @@ export const Settings: React.FC = () => {
                     <Stack gap={theme.spacing.sm}>
                         <StyledTextInput
                             label={'First Name'}
-                            value={personal.firstName}
+                            value={personal.first}
                             autoCorrect={false}
                             autoCapitalize={'none'}
-                            onChangeText={(value: string): void => setPersonal({ ...personal, firstName: value })}
+                            onChangeText={(value: string): void => setPersonal({ ...personal, first: value })}
                             underlineColorAndroid={'transparent'}
                             multiline
                             numberOfLines={1}
-                            blurOnSubmit={true}
+                            submitBehavior={'blurAndSubmit'}
                             returnKeyType={'done'}
                             scrollEnabled={false}
                         />
                         <StyledTextInput
                             label={'Last Name'}
-                            value={personal.lastName}
+                            value={personal.last}
                             autoCorrect={false}
                             autoCapitalize={'none'}
-                            onChangeText={(value: string): void => setPersonal({ ...personal, lastName: value })}
+                            onChangeText={(value: string): void => setPersonal({ ...personal, last: value })}
                             underlineColorAndroid={'transparent'}
                             multiline
                             numberOfLines={1}
-                            blurOnSubmit={true}
+                            submitBehavior={'blurAndSubmit'}
                             returnKeyType={'done'}
                             scrollEnabled={false}
                         />
@@ -378,7 +387,7 @@ export const Settings: React.FC = () => {
                             underlineColorAndroid={'transparent'}
                             multiline
                             numberOfLines={1}
-                            blurOnSubmit={true}
+                            submitBehavior={'blurAndSubmit'}
                             returnKeyType={'done'}
                             scrollEnabled={false}
                         />
@@ -396,16 +405,19 @@ export const Settings: React.FC = () => {
                                 underlineColorAndroid={'transparent'}
                                 multiline
                                 numberOfLines={1}
-                                blurOnSubmit={true}
+                                submitBehavior={'blurAndSubmit'}
                                 returnKeyType={'done'}
                                 scrollEnabled={false}
                             />
                             <DateTimePicker
-                                date={getJSDate(personal.birthday)}
+                                date={
+                                    personal.birthday ? parse(personal.birthday, 'yyyy-MM-dd', new Date()) : new Date()
+                                }
                                 isVisible={showDatePicker}
+                                pickerComponentStyleIOS={{ height: 300 }}
                                 onConfirm={(date): void => {
                                     setShowDatePicker(false);
-                                    setPersonal({ ...personal, birthday: format(new Date(date), 'MM/dd/yyyy') });
+                                    setPersonal({ ...personal, birthday: format(new Date(date), 'yyyy-MM-dd') });
                                 }}
                                 onCancel={(): void => setShowDatePicker(false)}
                             />
@@ -420,11 +432,12 @@ export const Settings: React.FC = () => {
                             underlineColorAndroid={'transparent'}
                             multiline
                             numberOfLines={1}
-                            blurOnSubmit={true}
+                            submitBehavior={'blurAndSubmit'}
                             returnKeyType={'done'}
                             scrollEnabled={false}
                         />
                         <RNPickerSelect
+                            darkTheme={theme.dark}
                             placeholder={{ label: 'Choose One...', value: '', color: theme.colors.primary }}
                             items={[
                                 { label: 'Under 70', value: '60' },
@@ -437,6 +450,8 @@ export const Settings: React.FC = () => {
                             onValueChange={(value: string): void => {
                                 setPersonal({ ...personal, average: value as ScoreRange });
                             }}
+                            // @ts-expect-error this is a workaround for a bug in RNPickerSelect with new architecture
+                            style={{ inputIOSContainer: { pointerEvents: 'none' } }}
                             value={personal.average}
                             useNativeAndroidPickerStyle={false}
                         >
@@ -447,7 +462,7 @@ export const Settings: React.FC = () => {
                                 value={mapAverageToLabel(personal.average)}
                                 multiline
                                 numberOfLines={1}
-                                blurOnSubmit={true}
+                                submitBehavior={'blurAndSubmit'}
                                 returnKeyType={'done'}
                                 scrollEnabled={false}
                             />
@@ -460,7 +475,7 @@ export const Settings: React.FC = () => {
                             placeholder={'I want to be the next Tiger Woods...'}
                             autoCorrect={false}
                             autoCapitalize={'sentences'}
-                            blurOnSubmit={true}
+                            submitBehavior={'blurAndSubmit'}
                             maxLength={255}
                             returnKeyType={'done'}
                             spellCheck
@@ -471,11 +486,31 @@ export const Settings: React.FC = () => {
                         <Typography style={{ alignSelf: 'flex-end', marginTop: theme.spacing.sm }}>{`${
                             255 - (personal.goals || '').length
                         } Characters Left`}</Typography>
-                        {!objectsEqual(personal, userData) && (
+                        {!objectsEqual(personal, user) && (
                             <SEButton
                                 title={'Save Changes'}
                                 onPress={(): void => {
-                                    // dispatch(setUserData(personal));
+                                    const newChanges: Partial<Level3UserDetailsApiResponse> = {};
+                                    if (personal.first !== user.first) newChanges.first = personal.first;
+                                    if (personal.last !== user.last) newChanges.last = personal.last;
+                                    if (personal.location !== user.location) newChanges.location = personal.location;
+                                    if (personal.goals !== user.goals) newChanges.goals = personal.goals;
+                                    if (personal.average !== user.average)
+                                        newChanges.average = personal.average as ScoreRange;
+                                    if (personal.birthday !== user.birthday) newChanges.birthday = personal.birthday;
+                                    if (personal.email !== user.email) newChanges.email = personal.email;
+                                    if (personal.notify_new_lesson !== lessons)
+                                        newChanges.notify_new_lesson = personal.notify_new_lesson;
+                                    if (personal.notify_marketing !== marketing)
+                                        newChanges.notify_marketing = personal.notify_marketing;
+                                    if (personal.notify_newsletter !== newsletter)
+                                        newChanges.notify_newsletter = personal.notify_newsletter;
+                                    if (personal.notify_reminders !== reminders)
+                                        newChanges.notify_reminders = personal.notify_reminders;
+
+                                    if (Object.keys(newChanges).length > 0) {
+                                        updateUserDetails(newChanges);
+                                    }
                                     setEditAbout(false);
                                 }}
                             />
@@ -490,13 +525,11 @@ export const Settings: React.FC = () => {
                     topDivider
                     bottomDivider
                     style={{ marginHorizontal: -1 * theme.spacing.md }}
-                    // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'handedness' })}
+                    onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'handed' })}
                     right={({ style, ...rightProps }): JSX.Element => (
                         <Stack direction={'row'} align={'center'} style={[style, { marginRight: 0 }]} {...rightProps}>
-                            <Typography>
-                                {settings.handedness.charAt(0).toUpperCase() + settings.handedness.substring(1)}
-                            </Typography>
-                            <MatIcon
+                            <Typography>{user.handed.charAt(0).toUpperCase() + user.handed.substring(1)}</Typography>
+                            <Icon
                                 name={'chevron-right'}
                                 size={theme.size.md}
                                 color={theme.colors.primary}
@@ -513,7 +546,7 @@ export const Settings: React.FC = () => {
                         titleEllipsizeMode={'tail'}
                         topDivider
                         bottomDivider
-                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'duration' })}
+                        onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'camera_duration' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -521,8 +554,8 @@ export const Settings: React.FC = () => {
                                 style={[style, { marginRight: 0 }]}
                                 {...rightProps}
                             >
-                                <Typography>{`${settings.duration}s`}</Typography>
-                                <MatIcon
+                                <Typography>{`${user.camera_duration}s`}</Typography>
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.primary}
@@ -535,7 +568,7 @@ export const Settings: React.FC = () => {
                         title={'Recording Delay'}
                         titleEllipsizeMode={'tail'}
                         bottomDivider
-                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'delay' })}
+                        onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'camera_delay' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -543,8 +576,8 @@ export const Settings: React.FC = () => {
                                 style={[style, { marginRight: 0 }]}
                                 {...rightProps}
                             >
-                                <Typography>{`${settings.delay}s`}</Typography>
-                                <MatIcon
+                                <Typography>{user.camera_delay === 0 ? `Off` : `${user.camera_delay}s`}</Typography>
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.primary}
@@ -557,7 +590,7 @@ export const Settings: React.FC = () => {
                         title={'Stance Overlay'}
                         titleEllipsizeMode={'tail'}
                         bottomDivider
-                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'overlay' })}
+                        onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'camera_overlay' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -565,8 +598,8 @@ export const Settings: React.FC = () => {
                                 style={[style, { marginRight: 0 }]}
                                 {...rightProps}
                             >
-                                <Typography>{`${settings.overlay ? 'On' : 'Off'}`}</Typography>
-                                <MatIcon
+                                <Typography>{`${user.camera_overlay ? 'On' : 'Off'}`}</Typography>
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.primary}
@@ -584,7 +617,7 @@ export const Settings: React.FC = () => {
                         bottomDivider
                         title={'Lessons'}
                         titleEllipsizeMode={'tail'}
-                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'lessons' })}
+                        onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'notify_new_lesson' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -593,7 +626,7 @@ export const Settings: React.FC = () => {
                                 {...rightProps}
                             >
                                 <Typography>{`${lessons ? 'On' : 'Off'}`}</Typography>
-                                <MatIcon
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.primary}
@@ -606,7 +639,7 @@ export const Settings: React.FC = () => {
                         bottomDivider
                         title={'Marketing'}
                         titleEllipsizeMode={'tail'}
-                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'marketing' })}
+                        onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'notify_marketing' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -615,7 +648,7 @@ export const Settings: React.FC = () => {
                                 {...rightProps}
                             >
                                 <Typography>{`${marketing ? 'On' : 'Off'}`}</Typography>
-                                <MatIcon
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.primary}
@@ -628,7 +661,7 @@ export const Settings: React.FC = () => {
                         bottomDivider
                         title={'Newsletters'}
                         titleEllipsizeMode={'tail'}
-                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'newsletter' })}
+                        onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'notify_newsletter' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -637,7 +670,7 @@ export const Settings: React.FC = () => {
                                 {...rightProps}
                             >
                                 <Typography>{`${newsletter ? 'On' : 'Off'}`}</Typography>
-                                <MatIcon
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.primary}
@@ -650,7 +683,7 @@ export const Settings: React.FC = () => {
                         bottomDivider
                         title={'Reminders'}
                         titleEllipsizeMode={'tail'}
-                        // onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'reminders' })}
+                        onPress={(): void => navigation.navigate(ROUTES.SETTING, { setting: 'notify_reminders' })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack
                                 direction={'row'}
@@ -659,7 +692,7 @@ export const Settings: React.FC = () => {
                                 {...rightProps}
                             >
                                 <Typography>{`${reminders ? 'On' : 'Off'}`}</Typography>
-                                <MatIcon
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.primary}

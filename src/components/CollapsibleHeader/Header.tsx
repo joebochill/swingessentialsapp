@@ -60,7 +60,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
                     }
                   : {
                         name: 'person',
-                        onPress: (): void => navigationProp.navigate({ name: ROUTES.LOGIN, key: ROUTES.LOGIN }),
+                        onPress: (): void => navigationProp.navigate('APP', { screen: ROUTES.LOGIN }),
                     },
           ]
         : [];

@@ -4,11 +4,6 @@ NEW TODOS:
     - Submit
     - Record
     - Order
-    - tips
-    - tip
-    - ABOUT
-    - FAQ
-    - PROS
     - LOGS
     - Settings
     - Setting
@@ -23,8 +18,9 @@ NEW TODOS:
 - Convert fixed url links to environments
 - Update to flat eslint v9
 - Check deep links
-
-
+- Switch out all hardcoded urls with BASE_URL
+- Loading/refreshing lessons after log out / log in and vice versa
+- Get rid of getLongDate
 
 
 

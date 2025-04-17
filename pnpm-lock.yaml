@@ -12,8 +12,8 @@ importers:
         specifier: ^2.1.2
         version: 2.1.2(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))
       '@react-native-community/datetimepicker':
-        specifier: ^8.3.0
-        version: 8.3.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
+        specifier: ^7.6.2
+        version: 7.7.0
       '@react-native-community/hooks':
         specifier: ^100.1.0
         version: 100.1.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
@@ -81,8 +81,8 @@ importers:
         specifier: 14.0.0-rc.1
         version: 14.0.0-rc.1(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
       react-native-modal-datetime-picker:
-        specifier: ^18.0.0
-        version: 18.0.0(@react-native-community/datetimepicker@8.3.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0))(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))
+        specifier: ^17.1.0
+        version: 17.1.0(@react-native-community/datetimepicker@7.7.0)(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))
       react-native-paper:
         specifier: ^5.13.1
         version: 5.13.1(react-native-safe-area-context@5.3.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0))(react-native-vector-icons@10.2.0)(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
@@ -1120,18 +1120,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@react-native-community/datetimepicker@8.3.0':
-    resolution: {integrity: sha1-1zSneuX9+Vheouug0rXPR0BMCgk=}
-    peerDependencies:
-      expo: '>=50.0.0'
-      react: '*'
-      react-native: '*'
-      react-native-windows: '*'
-    peerDependenciesMeta:
-      expo:
-        optional: true
-      react-native-windows:
-        optional: true
+  '@react-native-community/datetimepicker@7.7.0':
+    resolution: {integrity: sha1-DQFisENMezWIP4xa+EbzXiPQRew=}
 
   '@react-native-community/hooks@100.1.0':
     resolution: {integrity: sha1-NM+p6Ya4Sour/mZ9w+xJeVSu+PE=}
@@ -3669,8 +3659,8 @@ packages:
   react-native-mail@6.1.1:
     resolution: {integrity: sha1-8bH4A0yE0lEKk+Sip5Xw21oTWV4=}
 
-  react-native-modal-datetime-picker@18.0.0:
-    resolution: {integrity: sha1-BVWyyas0MYYpolHyUN5ooOOzmA0=}
+  react-native-modal-datetime-picker@17.1.0:
+    resolution: {integrity: sha1-dCkb+SuDC+KFdS9DeEH1KIXJDgs=}
     peerDependencies:
       '@react-native-community/datetimepicker': '>=6.7.0'
       react-native: '>=0.65.0'
@@ -5906,11 +5896,9 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@react-native-community/datetimepicker@8.3.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)':
+  '@react-native-community/datetimepicker@7.7.0':
     dependencies:
       invariant: 2.2.4
-      react: 19.0.0
-      react-native: 0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0)
 
   '@react-native-community/hooks@100.1.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)':
     dependencies:
@@ -9075,9 +9063,9 @@ snapshots:
 
   react-native-mail@6.1.1: {}
 
-  react-native-modal-datetime-picker@18.0.0(@react-native-community/datetimepicker@8.3.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0))(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0)):
+  react-native-modal-datetime-picker@17.1.0(@react-native-community/datetimepicker@7.7.0)(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0)):
     dependencies:
-      '@react-native-community/datetimepicker': 8.3.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
+      '@react-native-community/datetimepicker': 7.7.0
       prop-types: 15.8.1
       react-native: 0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0)
 
