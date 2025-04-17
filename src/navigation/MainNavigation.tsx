@@ -6,7 +6,7 @@ import { ROUTES } from '../constants/routes';
 import BootSplash from 'react-native-bootsplash';
 import { width } from '../utilities/dimensions';
 import { DrawerContent } from './DrawerContent';
-import { Blogs, ForgotPassword, Home, Lessons, Login, Register, SingleBlog, SingleLesson, SingleTip, Tips } from '../screens';
+import { About, Blogs, ForgotPassword, Home, Lessons, Login, Register, SingleBlog, SingleLesson, SingleTip, Tips } from '../screens';
 
 const linkingConfig: LinkingOptions<RootDrawerParamList> = {
     prefixes: ['https://www.swingessentials.com'],
@@ -103,7 +103,7 @@ const MainStackNavigator = () => (
         <AppStack.Screen name={ROUTES.TIPS} component={Tips} />
         <AppStack.Screen name={ROUTES.TIP} component={SingleTip} />
 
-        <AppStack.Screen name={ROUTES.ABOUT} component={Home} />
+        <AppStack.Screen name={ROUTES.ABOUT} component={About} />
         <AppStack.Screen name={ROUTES.FAQ} component={Home} />
 
         <AppStack.Screen name={ROUTES.PROS} component={Home} />

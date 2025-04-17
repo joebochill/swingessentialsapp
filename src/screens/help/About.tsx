@@ -1,7 +1,5 @@
 import * as React from 'react';
-
-// Styles
-import { StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
 import { ScrollView } from 'react-native';
@@ -9,16 +7,28 @@ import { RootStackParamList } from '../../navigation/MainNavigation';
 import { useNavigation } from '@react-navigation/core';
 import { SectionHeader, Stack } from '../../components/layout';
 import { Paragraph, Typography } from '../../components/typography';
+import { useGetTestimonialsQuery } from '../../redux/apiServices/testimonialsService';
 
 export const About: React.FC = () => {
-    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const theme = useAppTheme();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
+    const { data: testimonials } = useGetTestimonialsQuery();
 
     return (
         <>
-            <Header title={'About'} subtitle={'What is SwingEssentials®?'} navigation={navigation} {...headerProps} />
-            <ScrollView {...scrollProps} contentContainerStyle={contentProps.contentContainerStyle}>
+            <Header
+                title={'About'}
+                subtitle={'What is SwingEssentials®?'}
+                navigation={navigation}
+                backgroundColor={theme.dark ? theme.colors.surface : undefined}
+                {...headerProps}
+            />
+            <ScrollView
+                {...scrollProps}
+                style={{ backgroundColor: theme.colors.background }}
+                contentContainerStyle={contentProps.contentContainerStyle}
+            >
                 <Stack style={{ paddingHorizontal: theme.spacing.md, marginTop: theme.spacing.md }}>
                     <SectionHeader title={'Lessons on Your Schedule'} />
                     <Paragraph>{`Swing Essentials® provides you with affordable, individualized one-on-one lessons from a PGA-certified golf pro from the comfort and convenience of your home.`}</Paragraph>
@@ -33,15 +43,29 @@ export const About: React.FC = () => {
                     <SectionHeader title={'Why Swing Essentials®'} style={{ marginTop: theme.spacing.xxl }} />
                     <Paragraph>{`Swing Essentials® offers a true one-on-one experience. Our PGA-certified professional puts a personal touch on each and every lesson, giving you the confidence to know that your lesson is just for you. But don 't take our word for it - hear what our customers have to say.`}</Paragraph>
 
-                    <SectionHeader title={'Testimonials'} style={{ marginTop: theme.spacing.xxl }} />
-                    <Stack gap={theme.spacing.md}>
-                        <Paragraph>{`"Thanks for the great work this last year. After working with you, I've lowered my handicap by three and a half!"`}</Paragraph>
-                        <Typography variant={'bodyLarge'} fontWeight={'semiBold'}>{`- David A.`}</Typography>
-                        <Paragraph>{`"I sent my swing in to Swing Essentials® and I'm playing so much better - it's easily taken four to five shots off my game. I strongly recommend it!"`}</Paragraph>
-                        <Typography variant={'bodyLarge'} fontWeight={'semiBold'}>{`- Dean L.`}</Typography>
-                        <Paragraph>{`"Thanks to you, I have been playing my best golf. It's all finally clicking now!"`}</Paragraph>
-                        <Typography variant={'bodyLarge'} fontWeight={'semiBold'}>{`- Will M.`}</Typography>
-                    </Stack>
+                    {testimonials && (
+                        <>
+                            <SectionHeader title={'Testimonials'} style={{ marginTop: theme.spacing.xxl }} />
+                            <Stack gap={theme.spacing.md}>
+                                {testimonials.map((testimonial, index) => {
+                                    const joinedNumber = testimonial.joined ? parseInt(testimonial.joined, 10) : 0;
+                                    const joinedString =
+                                        joinedNumber > 0 ? new Date(joinedNumber * 1000).getFullYear().toString() : '';
+                                    return (
+                                        <Stack key={`testimonial_${index}`} gap={theme.spacing.xs}>
+                                            <Paragraph>{`"${testimonial.review}"`}</Paragraph>
+
+                                            <Typography variant={'bodyLarge'} fontWeight={'semiBold'}>
+                                                {`- ${[testimonial.first, testimonial.last].join(' ')}${
+                                                    joinedString ? ` (member since ${joinedString})` : ''
+                                                }`}
+                                            </Typography>
+                                        </Stack>
+                                    );
+                                })}
+                            </Stack>
+                        </>
+                    )}
                 </Stack>
             </ScrollView>
         </>

@@ -1,8 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_API_URL } from '../../constants';
 import { prepareHeaders } from './utils/prepareHeaders';
-import { Testimonial } from '../../__types__';
 
+type Testimonial = {
+    username: string;
+    first: string;
+    last: string;
+    location: string;
+    joined: string;
+    review: string;
+};
 type TestimonialsApiResponse = Testimonial[];
 
 export const testimonialsApi = createApi({
