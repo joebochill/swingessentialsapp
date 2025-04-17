@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_API_URL } from '../../constants';
 import { prepareHeaders } from './utils/prepareHeaders';
 
-type ProBio = {
+export type ProBio = {
     id: string;
     name: string;
     title: string;

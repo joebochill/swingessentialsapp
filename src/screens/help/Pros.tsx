@@ -2,37 +2,44 @@ import * as React from 'react';
 
 // Components
 import { Image, TouchableHighlight, View, ScrollView } from 'react-native';
-import { Paragraph, Spacer, Stack, Typography } from '../../components';
 
 // Styles
-import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/MainNavigator';
-import { useSelector } from 'react-redux';
-import { ApplicationState, Pro } from '../../__types__';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { width } from '../../utilities/dimensions';
 import { splitParagraphs } from '../../utilities';
 import { useAppTheme } from '../../theme';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
+import { useNavigation } from '@react-navigation/core';
+import { RootStackParamList } from '../../navigation/MainNavigation';
+import { ProBio, useGetProsQuery } from '../../redux/apiServices/prosService';
+import { Stack } from '../../components/layout';
+import { Paragraph, Typography } from '../../components/typography';
 
-export const Pros: React.FC<StackScreenProps<RootStackParamList, 'About'>> = (props) => {
-    const theme = useAppTheme();
-    const prosList = useSelector((state: ApplicationState) => state.pros.prosList);
+export const Pros: React.FC = () => {
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const theme = useAppTheme();
+    const { data: pros = [], isLoading } = useGetProsQuery();
 
     return (
         <>
             <Header
                 title={'Meet Our Pros'}
                 subtitle={'The folks behind the magic'}
-                navigation={props.navigation}
+                navigation={navigation}
+                backgroundColor={theme.dark ? theme.colors.surface : undefined}
                 {...headerProps}
             />
-            <ScrollView {...scrollProps} contentContainerStyle={contentProps.contentContainerStyle}>
+            <ScrollView
+                {...scrollProps}
+                style={{ backgroundColor: theme.colors.background }}
+                contentContainerStyle={contentProps.contentContainerStyle}
+            >
                 <Stack
-                    space={theme.spacing.xxl}
+                    gap={theme.spacing.xxl}
                     style={{ paddingHorizontal: theme.spacing.md, marginTop: theme.spacing.xl }}
                 >
-                    {prosList.map((pro: Pro) => (
+                    {pros.map((pro: ProBio) => (
                         <View key={`pro_${pro.id}`}>
                             <TouchableHighlight
                                 underlayColor={theme.colors.onPrimary}
@@ -60,7 +67,7 @@ export const Pros: React.FC<StackScreenProps<RootStackParamList, 'About'>> = (pr
                             <Typography
                                 variant={'bodyLarge'}
                                 fontWeight={'semiBold'}
-                                color={'primary'}
+                                color={'onPrimaryContainer'}
                                 style={{
                                     textAlign: 'center',
                                     marginTop: theme.spacing.sm,
@@ -72,7 +79,7 @@ export const Pros: React.FC<StackScreenProps<RootStackParamList, 'About'>> = (pr
                                 <Typography
                                     variant={'bodyLarge'}
                                     fontWeight={'light'}
-                                    color={'primary'}
+                                    color={'onPrimaryContainer'}
                                     style={{
                                         textAlign: 'center',
                                         lineHeight: 16,
@@ -81,8 +88,7 @@ export const Pros: React.FC<StackScreenProps<RootStackParamList, 'About'>> = (pr
                                     {pro.title}
                                 </Typography>
                             ) : null}
-                            <Spacer size={theme.spacing.md} />
-                            <Stack space={theme.spacing.md}>
+                            <Stack gap={theme.spacing.md} style={{ marginTop: theme.spacing.md }}>
                                 {splitParagraphs(pro.bio).map((p, ind) => (
                                     <Paragraph key={`${pro.id}_p_${ind}`}>{p}</Paragraph>
                                 ))}
