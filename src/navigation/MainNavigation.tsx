@@ -3,11 +3,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { CardStyleInterpolators, createStackNavigator, StackScreenProps } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute, LinkingOptions, NavigationContainer } from '@react-navigation/native';
 import { ROUTES } from '../constants/routes';
-import { View, Text } from 'react-native';
 import BootSplash from 'react-native-bootsplash';
 import { width } from '../utilities/dimensions';
 import { DrawerContent } from './DrawerContent';
-import { Blogs, ForgotPassword, Home, Lessons, Login, Register, SingleBlog, SingleLesson } from '../screens';
+import { Blogs, ForgotPassword, Home, Lessons, Login, Register, SingleBlog, SingleLesson, SingleTip, Tips } from '../screens';
 
 const linkingConfig: LinkingOptions<RootDrawerParamList> = {
     prefixes: ['https://www.swingessentials.com'],
@@ -94,15 +93,15 @@ const MainStackNavigator = () => (
         <AppStack.Screen name={ROUTES.LESSONS} component={Lessons} />
         <AppStack.Screen name={ROUTES.LESSON} component={SingleLesson} />
 
-        <AppStack.Screen name={ROUTES.SUBMIT} component={Home} />
+        <AppStack.Screen name={ROUTES.SUBMIT} component={Home} /> 
         <AppStack.Screen name={ROUTES.RECORD} component={Home} />
         <AppStack.Screen name={ROUTES.ORDER} component={Home} />
 
         <AppStack.Screen name={ROUTES.BLOGS} component={Blogs} />
         <AppStack.Screen name={ROUTES.BLOG} component={SingleBlog} />
 
-        <AppStack.Screen name={ROUTES.TIPS} component={Home} />
-        <AppStack.Screen name={ROUTES.TIP} component={Home} />
+        <AppStack.Screen name={ROUTES.TIPS} component={Tips} />
+        <AppStack.Screen name={ROUTES.TIP} component={SingleTip} />
 
         <AppStack.Screen name={ROUTES.ABOUT} component={Home} />
         <AppStack.Screen name={ROUTES.FAQ} component={Home} />

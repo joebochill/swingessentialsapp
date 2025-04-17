@@ -18,12 +18,12 @@ export const LessonCard: React.FC<{ lessonURL: string }> = ({ lessonURL }) => {
             skip: !lessonURL,
         }
     );
-    return (
+    return lessonDetails ? (
         <YoutubeCard
             headerTitle={format(new Date(lessonDetails?.request_date || Date.now()), 'yyyy-MM-dd')}
             headerSubtitle={role === 'administrator' ? lessonDetails?.username : undefined}
             video={lessonDetails?.response_video}
-            onExpand={(): void => navigation.push(ROUTES.LESSON, { lesson: lessonDetails })}
+            onExpand={(): void => navigation.push(ROUTES.LESSON, { lesson: lessonDetails.request_url })}
         />
-    );
+    ) : null;
 };

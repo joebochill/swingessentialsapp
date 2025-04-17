@@ -1,11 +1,8 @@
-import React, { JSX } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { JSX, useMemo } from 'react';
 import { View, SectionList, RefreshControl } from 'react-native';
 import MatIcon from '@react-native-vector-icons/material-icons';
-import { ROUTES } from '../../constants/routes';
 import bg from '../../images/banners/tips.jpg';
-import { makeGroups } from '../../utilities';
-import { StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { useCollapsibleHeader } from '../../components/CollapsibleHeader';
 import { Header } from '../../components/CollapsibleHeader/Header';
@@ -13,22 +10,32 @@ import { RootStackParamList } from '../../navigation/MainNavigation';
 import { useNavigation } from '@react-navigation/core';
 import { SectionHeader } from '../../components/layout';
 import { ListItem } from '../../components/ListItem';
-
-type Tip = {
-    id: number;
-    date: string;
-    comments: string;
-    title: string;
-    video: string;
-};
+import { TipDetailsWithYear, useGetTipsQuery } from '../../redux/apiServices/tipsService';
+import { ROUTES } from '../../constants/routes';
 
 export const Tips: React.FC = () => {
-    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
-    const tips = {} as any; //useSelector((state: ApplicationState) => state.tips);
-    const sections = makeGroups(tips.tipList, (tip: Tip) => new Date(tip.date).getUTCFullYear().toString());
-    const dispatch = useDispatch();
-    const theme = useAppTheme();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
+    const theme = useAppTheme();
+    const { data: tips = [], isFetching, isSuccess: haveTips, refetch } = useGetTipsQuery();
+
+    // group the tips by year
+    const tipsByYear = useMemo(() => {
+        return tips.reduce((acc, blog) => {
+            const year = blog.year;
+            if (!acc[year]) {
+                acc[year] = [];
+            }
+            acc[year].push(blog);
+            return acc;
+        }, {} as Record<number, TipDetailsWithYear[]>);
+    }, [tips]);
+
+    const sections = Object.entries(tipsByYear).map(([year, tips]) => ({
+        bucketName: year,
+        data: tips,
+    }));    
+    
 
     return (
         <>
@@ -39,8 +46,9 @@ export const Tips: React.FC = () => {
                 navigation={navigation}
                 {...headerProps}
             />
-            <SectionList
+            <SectionList<TipDetailsWithYear>
                 {...scrollProps}
+                style={{ backgroundColor: theme.colors.background }}
                 contentContainerStyle={contentProps.contentContainerStyle}
                 renderSectionHeader={({ section: { bucketName } }): JSX.Element => (
                     <SectionHeader
@@ -60,9 +68,9 @@ export const Tips: React.FC = () => {
                 }
                 refreshControl={
                     <RefreshControl
-                        refreshing={tips.loading}
+                        refreshing={isFetching}
                         onRefresh={(): void => {
-                            // dispatch(loadTips());
+                            refetch();
                         }}
                         progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
@@ -74,13 +82,13 @@ export const Tips: React.FC = () => {
                         title={item.title}
                         titleNumberOfLines={2}
                         titleEllipsizeMode={'tail'}
-                        // onPress={(): void => navigation.push(ROUTES.TIP, { tip: item })}
+                        onPress={(): void => navigation.push(ROUTES.TIP, { tip: item.id })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[style]} {...rightProps}>
                                 <MatIcon
                                     name={'chevron-right'}
                                     size={theme.size.md}
-                                    color={theme.colors.primary}
+                                    color={theme.colors.onPrimaryContainer}
                                     style={{ marginRight: -1 * theme.spacing.md }}
                                 />
                             </View>

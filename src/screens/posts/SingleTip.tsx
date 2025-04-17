@@ -1,35 +1,37 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ActivityIndicator, ScrollView } from 'react-native';
 import { height } from '../../utilities/dimensions';
-
-// Utilities
 import { splitParagraphs, getLongDate } from '../../utilities';
-// Constants
 import { Paragraph } from 'react-native-paper';
-import { StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
 import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/core';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/MainNavigation';
 import { SectionHeader, Stack } from '../../components/layout';
 import { YoutubeCard } from '../../components/videos';
+import { useGetTipByIdQuery } from '../../redux/apiServices/tipsService';
+import { Typography } from '../../components/typography';
 
 export const SingleTip: React.FC = () => {
-    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
-    const route = useRoute();
-    // TODO
-    const { tip } = route.params as any;
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const route = useRoute<RouteProp<RootStackParamList, 'TIP'>>();
+    const { tip: tipID } = route.params;
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
 
-    if (tip === null) {
-        // navigation.pop();
+    const { data: tipDetails, isFetching } = useGetTipByIdQuery(tipID ?? 0, {
+        skip: tipID === null,
+    });
+
+    if (tipID === null) {
+        navigation.pop();
     }
 
     return (
-        tip && (
+        tipID && (
             <Stack
                 style={[
                     {
@@ -39,7 +41,13 @@ export const SingleTip: React.FC = () => {
                     },
                 ]}
             >
-                <Header title={getLongDate(tip.date)} mainAction={'back'} navigation={navigation} fixed />
+                <Header
+                    title={tipDetails ? getLongDate(tipDetails.date) : ''}
+                    mainAction={'back'}
+                    navigation={navigation}
+                    backgroundColor={theme.dark ? theme.colors.surface : undefined}
+                    fixed
+                />
                 <ScrollView
                     contentContainerStyle={[
                         {
@@ -50,14 +58,26 @@ export const SingleTip: React.FC = () => {
                     ]}
                     keyboardShouldPersistTaps={'always'}
                 >
-                    <SectionHeader title={tip.title} />
-                    <YoutubeCard video={tip.video} />
-                    <SectionHeader title={'Summary'} style={{ marginTop: theme.spacing.xl }} />
-                    <Stack gap={theme.spacing.md}>
-                        {splitParagraphs(tip.comments).map((p, ind) => (
-                            <Paragraph key={`${tip.id}_p_${ind}`}>{p}</Paragraph>
-                        ))}
-                    </Stack>
+                    {tipDetails && (
+                        <>
+                            <SectionHeader title={tipDetails.title} />
+                            <YoutubeCard video={tipDetails.video} />
+                            <SectionHeader title={'Summary'} style={{ marginTop: theme.spacing.xl }} />
+                            <Stack gap={theme.spacing.md}>
+                                {splitParagraphs(tipDetails.comments).map((p, ind) => (
+                                    <Paragraph key={`${tipDetails.id}_p_${ind}`}>{p}</Paragraph>
+                                ))}
+                            </Stack>
+                        </>
+                    )}
+                    {isFetching && (
+                        <>
+                            <ActivityIndicator size={'large'} color={theme.colors.onSurface} />
+                            <Typography variant={'bodyLarge'} align={'center'} color={'onSurface'}>
+                                Loading post...
+                            </Typography>
+                        </>
+                    )}
                 </ScrollView>
             </Stack>
         )

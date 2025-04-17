@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, ActivityIndicator } from 'react-native';
 import { splitParagraphs, getLongDate } from '../../utilities';
 import { height } from '../../utilities/dimensions';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -12,7 +12,6 @@ import { RootStackParamList } from '../../navigation/MainNavigation';
 import { SectionHeader, Stack } from '../../components/layout';
 import { Paragraph, Typography } from '../../components/typography';
 import { useGetBlogByIdQuery } from '../../redux/apiServices/blogsService';
-import { ActivityIndicator } from 'react-native-paper';
 
 export const SingleBlog: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -43,6 +42,7 @@ export const SingleBlog: React.FC = () => {
                     title={blogDetails ? getLongDate(blogDetails.date) : ''}
                     mainAction={'back'}
                     navigation={navigation}
+                    backgroundColor={theme.dark ? theme.colors.surface : undefined}
                     fixed
                 />
                 <ScrollView
