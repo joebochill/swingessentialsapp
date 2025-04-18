@@ -104,9 +104,6 @@ importers:
       react-native-screens:
         specifier: ^4.10.0
         version: 4.10.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
-      react-native-snap-carousel:
-        specifier: ^3.9.1
-        version: 3.9.1(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
       react-native-svg:
         specifier: ^15.11.2
         version: 15.11.2(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0)
@@ -1918,10 +1915,6 @@ packages:
   core-js-compat@3.41.0:
     resolution: {integrity: sha1-TN/OlfOajyd1m2Z89pPZbl3aPRc=}
 
-  core-js@1.2.7:
-    resolution: {integrity: sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=}
-    deprecated: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
-
   cosmiconfig@5.2.1:
     resolution: {integrity: sha1-BA9yaAnFked6F8CjYmykW08Wixo=}
     engines: {node: '>=4'}
@@ -2118,9 +2111,6 @@ packages:
   encodeurl@2.0.0:
     resolution: {integrity: sha1-e46omAd9fkCdOsRUdOo46vCFelg=}
     engines: {node: '>= 0.8'}
-
-  encoding@0.1.13:
-    resolution: {integrity: sha1-VldK/deR9UqOmyeFwFgqLSYhD6k=}
 
   end-of-stream@1.4.4:
     resolution: {integrity: sha1-WuZKX0UFe682JuwU2gyl5LJDHrA=}
@@ -2359,9 +2349,6 @@ packages:
   fb-watchman@2.0.2:
     resolution: {integrity: sha1-6VJO5rXHfp5QAa8PhfOtu4YjJVw=}
 
-  fbjs@0.8.18:
-    resolution: {integrity: sha1-mDXgrduayi7/Uylc15yhz8fJZio=}
-
   file-entry-cache@6.0.1:
     resolution: {integrity: sha1-IRst2WWcsDlLBz5zI6w8kz1SICc=}
     engines: {node: ^10.12.0 || >=12.0.0}
@@ -2580,10 +2567,6 @@ packages:
     resolution: {integrity: sha1-3JH8ukLk0G5Kuu0zs+ejwC9RTqA=}
     engines: {node: '>=10.17.0'}
 
-  iconv-lite@0.6.3:
-    resolution: {integrity: sha1-pS+AvzjaGVLrXGgXkHGYcaGnJQE=}
-    engines: {node: '>=0.10.0'}
-
   ieee754@1.2.1:
     resolution: {integrity: sha1-jrehCmP/8l0VpXsAFYbRd9Gw01I=}
 
@@ -2747,10 +2730,6 @@ packages:
     resolution: {integrity: sha1-m2eES9m38ka6BwjDqT40Jpx3T28=}
     engines: {node: '>= 0.4'}
 
-  is-stream@1.1.0:
-    resolution: {integrity: sha1-EtSj3U5o4Lec6428hBc66A2RykQ=}
-    engines: {node: '>=0.10.0'}
-
   is-stream@2.0.1:
     resolution: {integrity: sha1-+sHj1TuXrVqdCunO8jifWBClwHc=}
     engines: {node: '>=8'}
@@ -2800,9 +2779,6 @@ packages:
   isobject@3.0.1:
     resolution: {integrity: sha1-TkMekrEalzFjaqH5yNHMvP2reN8=}
     engines: {node: '>=0.10.0'}
-
-  isomorphic-fetch@2.2.1:
-    resolution: {integrity: sha1-YRrhrPFPXoH3KVB0coGf6XM1WKk=}
 
   istanbul-lib-coverage@3.2.2:
     resolution: {integrity: sha1-LRZsSwZE1Do58Ev2wu3R5YXzF1Y=}
@@ -3292,9 +3268,6 @@ packages:
   node-addon-api@6.1.0:
     resolution: {integrity: sha1-rIRwA05Y5n0MbxIEoYrmmV2cDXY=}
 
-  node-fetch@1.7.3:
-    resolution: {integrity: sha1-mA9vcthSEaU0fGsrwYxbhMPrR+8=}
-
   node-forge@1.3.1:
     resolution: {integrity: sha1-vo2iryQ7JBfV9kancGY6krfp3tM=}
     engines: {node: '>= 6.13.0'}
@@ -3525,9 +3498,6 @@ packages:
     resolution: {integrity: sha1-ykLHWDEPNlv6caC9oKgHFgt3aBI=}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  promise@7.3.1:
-    resolution: {integrity: sha1-BktyYCsY+Q8pGSuLG8QY/9Hr078=}
-
   promise@8.3.0:
     resolution: {integrity: sha1-jLMz0e3rYe8jhp+7ik6gJ5q2Dgo=}
 
@@ -3565,9 +3535,6 @@ packages:
   rc@1.2.8:
     resolution: {integrity: sha1-zZJL9SAKB1uDwYjNa54hG3/A0+0=}
     hasBin: true
-
-  react-addons-shallow-compare@15.6.2:
-    resolution: {integrity: sha1-GYoAuR/DdiPbZKKP0XtZa6NicC8=}
 
   react-devtools-core@6.1.1:
     resolution: {integrity: sha1-fax0dz0DknMTTDYPi2XPT2x5XEk=}
@@ -3715,12 +3682,6 @@ packages:
     resolution: {integrity: sha1-QGNK6tWQxrcDTe1qn5JGXR1hGQY=}
     peerDependencies:
       react: '*'
-      react-native: '*'
-
-  react-native-snap-carousel@3.9.1:
-    resolution: {integrity: sha1-b9m9iDlUbCxgQ6QdIDWvvG/gRD4=}
-    peerDependencies:
-      react: '>=15.0.0'
       react-native: '*'
 
   react-native-svg@15.11.2:
@@ -3936,9 +3897,6 @@ packages:
     resolution: {integrity: sha1-f4fftnoxUHguqvGFg/9dFxGsEME=}
     engines: {node: '>= 0.4'}
 
-  safer-buffer@2.1.2:
-    resolution: {integrity: sha1-RPoWGwGHuVSd2Eu5GAL5vYOFzWo=}
-
   sax@1.4.1:
     resolution: {integrity: sha1-RMyJiDd/EmME07P8EBDHM7kp7w8=}
 
@@ -3988,9 +3946,6 @@ packages:
   set-proto@1.0.0:
     resolution: {integrity: sha1-B2Dbz/MLLX6AH9bhmYPlbaM3Vl4=}
     engines: {node: '>= 0.4'}
-
-  setimmediate@1.0.5:
-    resolution: {integrity: sha1-KQy7Iy4waULX1+qbg3Mqt4VvgoU=}
 
   setprototypeof@1.2.0:
     resolution: {integrity: sha1-ZsmiSnP5/CjL5msJ/tPTPcrxtCQ=}
@@ -4317,10 +4272,6 @@ packages:
   typescript@5.0.4:
     resolution: {integrity: sha1-shf9IBGb1hqU1AESdOCrNpBY2js=}
     engines: {node: '>=12.20'}
-    hasBin: true
-
-  ua-parser-js@0.7.40:
-    resolution: {integrity: sha1-yH2Dt7slgi7Ppjl6DaWQOTTqFWI=}
     hasBin: true
 
   unbox-primitive@1.1.0:
@@ -6939,8 +6890,6 @@ snapshots:
     dependencies:
       browserslist: 4.24.4
 
-  core-js@1.2.7: {}
-
   cosmiconfig@5.2.1:
     dependencies:
       import-fresh: 2.0.0
@@ -7122,10 +7071,6 @@ snapshots:
   encodeurl@1.0.2: {}
 
   encodeurl@2.0.0: {}
-
-  encoding@0.1.13:
-    dependencies:
-      iconv-lite: 0.6.3
 
   end-of-stream@1.4.4:
     dependencies:
@@ -7458,16 +7403,6 @@ snapshots:
     dependencies:
       bser: 2.1.1
 
-  fbjs@0.8.18:
-    dependencies:
-      core-js: 1.2.7
-      isomorphic-fetch: 2.2.1
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      promise: 7.3.1
-      setimmediate: 1.0.5
-      ua-parser-js: 0.7.40
-
   file-entry-cache@6.0.1:
     dependencies:
       flat-cache: 3.2.0
@@ -7701,10 +7636,6 @@ snapshots:
 
   human-signals@2.1.0: {}
 
-  iconv-lite@0.6.3:
-    dependencies:
-      safer-buffer: 2.1.2
-
   ieee754@1.2.1: {}
 
   ignore@5.3.2: {}
@@ -7854,8 +7785,6 @@ snapshots:
     dependencies:
       call-bound: 1.0.4
 
-  is-stream@1.1.0: {}
-
   is-stream@2.0.1: {}
 
   is-string@1.1.1:
@@ -7897,11 +7826,6 @@ snapshots:
   isexe@2.0.0: {}
 
   isobject@3.0.1: {}
-
-  isomorphic-fetch@2.2.1:
-    dependencies:
-      node-fetch: 1.7.3
-      whatwg-fetch: 3.6.20
 
   istanbul-lib-coverage@3.2.2: {}
 
@@ -8678,11 +8602,6 @@ snapshots:
 
   node-addon-api@6.1.0: {}
 
-  node-fetch@1.7.3:
-    dependencies:
-      encoding: 0.1.13
-      is-stream: 1.1.0
-
   node-forge@1.3.1: {}
 
   node-html-parser@6.1.13:
@@ -8919,10 +8838,6 @@ snapshots:
       ansi-styles: 5.2.0
       react-is: 18.3.1
 
-  promise@7.3.1:
-    dependencies:
-      asap: 2.0.6
-
   promise@8.3.0:
     dependencies:
       asap: 2.0.6
@@ -8968,11 +8883,6 @@ snapshots:
       ini: 1.3.8
       minimist: 1.2.8
       strip-json-comments: 2.0.1
-
-  react-addons-shallow-compare@15.6.2:
-    dependencies:
-      fbjs: 0.8.18
-      object-assign: 4.1.1
 
   react-devtools-core@6.1.1:
     dependencies:
@@ -9137,13 +9047,6 @@ snapshots:
       react-freeze: 1.0.4(react@19.0.0)
       react-native: 0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0)
       warn-once: 0.1.1
-
-  react-native-snap-carousel@3.9.1(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0):
-    dependencies:
-      prop-types: 15.8.1
-      react: 19.0.0
-      react-addons-shallow-compare: 15.6.2
-      react-native: 0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0)
 
   react-native-svg@15.11.2(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.0.4))(@types/react@19.1.1)(react@19.0.0))(react@19.0.0):
     dependencies:
@@ -9392,8 +9295,6 @@ snapshots:
       es-errors: 1.3.0
       is-regex: 1.2.1
 
-  safer-buffer@2.1.2: {}
-
   sax@1.4.1: {}
 
   scheduler@0.25.0: {}
@@ -9461,8 +9362,6 @@ snapshots:
       dunder-proto: 1.0.1
       es-errors: 1.3.0
       es-object-atoms: 1.1.1
-
-  setimmediate@1.0.5: {}
 
   setprototypeof@1.2.0: {}
 
@@ -9830,8 +9729,6 @@ snapshots:
       reflect.getprototypeof: 1.0.10
 
   typescript@5.0.4: {}
-
-  ua-parser-js@0.7.40: {}
 
   unbox-primitive@1.1.0:
     dependencies:

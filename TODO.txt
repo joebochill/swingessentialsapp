@@ -2,13 +2,9 @@
 
 - Verify Orders and Submission on a real device
 - Off-screen youtube videos don't load when scrolled in
-- remove console LOGS
-- Fix any TODO comments
-- Log Future Enhancements section below as GH ISSUES
+- Fix any TODO comments (registration, IAP)
+
 - Verify/Test previous issue list below
-- Remove all unused functions, files, types(getLongDate -> format)
-- Update file organization
-    - Reorganize constants - routes to routing folder, rename index to config
 - Add a network/back-end connectivity check/banner
 - Add fallback video hardcoded for placeholder lesson?
 - Update the Readme
@@ -32,6 +28,7 @@ Test Scenarios: [XX] = Both platforms tested [X] iOS only tested
 [__]  Choose Video from Camera Roll
 [__]  Load Packages
 [__]  Order New Packages
+      [__] DB Entries are updated correctly
 [__]  Log In
 [__]  Log Out
 [__]  Biometric login
@@ -41,39 +38,3 @@ Test Scenarios: [XX] = Both platforms tested [X] iOS only tested
 [__]  Validator on exiting username/others
 [__]  Deep linking
 [__]  Automatic Logout
-
-
-ISSUES IDENTIFIED
-- Sign in/out (especially out) is very slow/laggy
-- IOS receipts not getting logged in DB
-- ANDROID: Registration Deep Links are not working
-- Purchases work, but they are SLOW (sandbox only issue I hope)
-- Order screen prices are reversed
-
-
-SPORADIC ISSUES:
-- Contact Us cancel button doesn't close
-- (sporadic) refresh indicators getting stuck open
-- Navigating back to login from register crashes the application
-- Youtube videos don't load on cellular
-- Sometimes youtube videos show white screen without spinner (replicated latest 2-23)
-- Fix long delay when clicking purchase button (sandbox only maybe)
-- changing profile photo works but is slow
-- changing settings works but is slow
-
-
-
-Future Enhancements
-
-- Better error messages when no network
-- Local caching of data (lessons, tips, blogs)
-- Unit tests
-- App Banners on web
-- Error logging as SQLite DB
-- Remote announcements/messages via API
-- Order History API
-- Order History Screen
-- Contact Us Screen
-- Loading/Empty states
-- Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
-- Move to ESLint flat config / v9 when@react-native/eslint-config support it
