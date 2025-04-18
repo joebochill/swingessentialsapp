@@ -2,6 +2,7 @@ import React, { useState, useRef, RefObject, useCallback, useEffect } from 'reac
 import { useSelector } from 'react-redux';
 import {
     ActivityIndicator,
+    Alert,
     Keyboard,
     KeyboardAvoidingView,
     KeyboardType,
@@ -162,7 +163,7 @@ const RegisterForm: React.FC = () => {
         useCheckEmailAvailabilityMutation();
     const [
         createNewUserAccount,
-        { isSuccess: registeredSuccessfully, isUninitialized, isLoading, reset: resetRegistration },
+        { isSuccess: registeredSuccessfully, isLoading, isError, error, reset: resetRegistration },
     ] = useCreateNewUserAccountMutation();
 
     const [fields, setFields] = useState(defaultKeys);
@@ -189,29 +190,28 @@ const RegisterForm: React.FC = () => {
         }
     }, []);
 
+    // Error
     useEffect(() => {
-        if (isUninitialized || isLoading) {
-            return;
+        if (isError) {
+            const errorMessage = (error as { data: { message: string } })?.data.message ?? '';
+            Alert.alert(
+                'Oops',
+                `An error occurred during your registration: ${errorMessage}. Please try again later or contact us if the problem persists.`,
+                [{ text: 'OK', onPress: () => resetRegistration() }]
+            );
         }
-        if (!registeredSuccessfully) {
-            // TODO Handle failed registration?
-        } else if (registeredSuccessfully) {
+    }, [isError, error, resetRegistration]);
+
+    // Success
+    useEffect(() => {
+        if (registeredSuccessfully) {
             navigation.replace(ROUTES.HOME);
             resetForm();
             resetEmailCheck();
             resetUsernameCheck();
             resetRegistration();
         }
-    }, [
-        registeredSuccessfully,
-        isUninitialized,
-        isLoading,
-        resetForm,
-        navigation,
-        resetEmailCheck,
-        resetUsernameCheck,
-        resetRegistration,
-    ]);
+    }, [registeredSuccessfully, navigation]);
 
     const canSubmit = useCallback((): boolean => {
         const keys: RegistrationKey[] = Object.keys(fields) as RegistrationKey[];

@@ -2,14 +2,8 @@
 
 - Verify Orders and Submission on a real device
 - Off-screen youtube videos don't load when scrolled in
-- Fix any TODO comments (registration, IAP)
-
-- Verify/Test previous issue list below
-- Add a network/back-end connectivity check/banner
-- Add fallback video hardcoded for placeholder lesson?
-- Update the Readme
+- Fix any TODO comments (IAP)
 - Publish new API version
-
 
 Test Scenarios: [XX] = Both platforms tested [X] iOS only tested
 

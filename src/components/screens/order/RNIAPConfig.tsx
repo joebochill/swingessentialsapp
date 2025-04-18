@@ -50,6 +50,9 @@ export const useRNIAP = (): void => {
 
     useEffect(() => {
         if (captureError) {
+            const err = error as { status: number; data: string };
+            LOG.error(`Failed to capture mobile order (${err?.status}): ${err?.data}`, { zone: 'IAP' });
+            LOG.error(err.toString(), { zone: 'IAP' });
             // TODO
             // If purchase is already claimed in database
             // if (parseInt(response.headers.get('Error') || '', 10) === 400607) {
