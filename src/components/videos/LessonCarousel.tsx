@@ -11,7 +11,7 @@ import { format } from 'date-fns';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigation';
 import { useNavigation } from '@react-navigation/core';
-import { ROUTES } from '../../constants/routes';
+import { ROUTES } from '../../navigation/routeConfig';
 
 type LessonCarouselProps = {
     data: (LessonBasicDetails | WelcomeVideo)[];

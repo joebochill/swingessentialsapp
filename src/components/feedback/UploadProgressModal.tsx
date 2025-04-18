@@ -4,7 +4,8 @@ import { ActivityIndicator, Modal, ModalProps, View } from 'react-native';
 
 // Styles
 import { useAppTheme } from '../../theme';
-import { SectionHeader, Stack } from '../layout';
+import { SectionHeader } from '../typography/SectionHeader';
+import { Stack } from '../layout/Stack';
 import { Paragraph } from '../typography';
 
 type ProgressModalProps = ModalProps & {

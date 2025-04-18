@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ASYNC_PREFIX, AUTH, BASE_API_URL } from '../../constants';
+import { ASYNC_PREFIX, AUTH, BASE_API_URL } from '../../_config';
 import { prepareHeaders } from './utils/prepareHeaders';
 
 export type LessonBasicDetails = {

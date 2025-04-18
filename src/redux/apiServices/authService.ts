@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ASYNC_PREFIX, AUTH, BASE_API_URL } from '../../constants';
+import { ASYNC_PREFIX, AUTH, BASE_API_URL } from '../../_config';
 import { clearToken, incrementLoginFailures, UserRole } from '../slices/authSlice';
 import { storeToken } from './utils/storeToken';
 import { clearProtectedDetails, initializeData } from '../thunks';
 import { prepareHeaders } from './utils/prepareHeaders';
 import * as Keychain from 'react-native-keychain';
-import { LOG } from '../../utilities/logs';
+import { LOG } from '../../logger';
 
 export type Credentials = {
     username: string;

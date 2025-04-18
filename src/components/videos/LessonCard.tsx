@@ -5,7 +5,7 @@ import { RootState } from '../../redux/store';
 import { useNavigation } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigation';
-import { ROUTES } from '../../constants/routes';
+import { ROUTES } from '../../navigation/routeConfig';
 import { format } from 'date-fns';
 
 export const LessonCard: React.FC<{ lessonURL: string }> = ({ lessonURL }) => {

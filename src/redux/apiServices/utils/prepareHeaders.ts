@@ -1,6 +1,6 @@
-import { ASYNC_PREFIX, AUTH } from '../../../constants';
+import { ASYNC_PREFIX, AUTH } from '../../../_config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LOG } from '../../../utilities/logs';
+import { LOG } from '../../../logger';
 
 export const prepareHeaders = async (headers: Headers) => {
     try {

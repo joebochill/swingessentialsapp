@@ -2,10 +2,12 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute, LinkingOptions, NavigationContainer } from '@react-navigation/native';
-import { ROUTES } from '../constants/routes';
+import { ROUTES } from './routeConfig';
 import BootSplash from 'react-native-bootsplash';
 import { width } from '../utilities/dimensions';
 import { DrawerContent } from './DrawerContent';
+import { UserAppSettings, UserNotificationSettings } from '../redux/apiServices/userDetailsService';
+import { BASE_URL } from '../_config';
 import {
     About,
     Blogs,
@@ -16,6 +18,7 @@ import {
     Lessons,
     Login,
     Order,
+    Pros,
     Record,
     Register,
     Settings,
@@ -25,10 +28,7 @@ import {
     SingleTip,
     Submit,
     Tips,
-} from '../screens';
-import { Pros } from '../screens/help/Pros';
-import { UserAppSettings, UserNotificationSettings } from '../redux/apiServices/userDetailsService';
-import { BASE_URL } from '../constants';
+} from '../components/screens';
 
 const linkingConfig: LinkingOptions<RootDrawerParamList> = {
     prefixes: [BASE_URL],

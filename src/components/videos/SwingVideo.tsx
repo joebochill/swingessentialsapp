@@ -14,17 +14,17 @@ import Video, { ReactVideoSourceProperties } from 'react-native-video';
 import { width as deviceWidth, aspectWidth } from '../../utilities/dimensions';
 import { ActivityIndicator } from 'react-native-paper';
 import { useAppTheme } from '../../theme';
-import { PickerModal } from '../PickerModal';
+import { PickerModal } from '../inputs/PickerModal';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ROUTES } from '../../constants/routes';
+import { ROUTES } from '../../navigation/routeConfig';
 
-import dtl from '../../images/down-the-line.png';
-import fo from '../../images/face-on.png';
-import dtlDark from '../../images/down-the-line-dark.png';
-import foDark from '../../images/face-on-dark.png';
-import { Icon, IconProps } from '../Icon';
-import { SectionHeader } from '../layout';
+import dtl from '../../assets/images/down-the-line.png';
+import fo from '../../assets/images/face-on.png';
+import dtlDark from '../../assets/images/down-the-line-dark.png';
+import foDark from '../../assets/images/face-on-dark.png';
+import { Icon, IconProps } from '../common/Icon';
+import { SectionHeader } from '../typography/SectionHeader';
 import { RootStackParamList } from '../../navigation/MainNavigation';
 
 type SwingVideoPlaceholderProps = {
@@ -149,8 +149,8 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         paused={!videoPlaying}
                         onLoad={(): void => {
                             setVideoReady(true);
-                            // @ts-expect-error we know seek exists even though the ref is incorrectly typed
                             if (videoRef.current && Platform.OS === 'android') {
+                                // @ts-expect-error we know seek exists even though the ref is incorrectly typed
                                 videoRef.current.seek(0);
                             }
                         }}

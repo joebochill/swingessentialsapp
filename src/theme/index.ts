@@ -1,5 +1,5 @@
 import { configureFonts, MD3DarkTheme, MD3LightTheme, useTheme } from 'react-native-paper';
-import { fontConfig } from './typography/fontConfig';
+import { fontConfig } from './fontConfig';
 
 const purple = {
     0: '#000',

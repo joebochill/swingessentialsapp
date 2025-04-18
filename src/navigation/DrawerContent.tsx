@@ -1,16 +1,21 @@
 import React, { useState, useCallback, useEffect, JSX } from 'react';
 import { Animated, AppState, AppStateStatus, Image, Alert, ScrollView, Pressable } from 'react-native';
 import { NavigationItems } from './navigationConfig';
-import { APP_VERSION, BASE_URL, DRAWER_WIDTH } from '../constants';
-import { ROUTES } from '../constants/routes';
+import { APP_VERSION, BASE_URL, DRAWER_WIDTH } from '../_config';
+import { ROUTES } from './routeConfig';
 import { List } from 'react-native-paper';
-import se from '../images/logo-small.png';
+import se from '../assets/images/logo-small.png';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { useAppTheme } from '../theme';
-import { lightType, semiBoldType } from '../theme/typography/fontConfig';
-import { COLLAPSED_HEIGHT, EXPANDED_HEIGHT, Header, useCollapsibleHeader } from '../components/CollapsibleHeader';
+import { lightType, semiBoldType } from '../theme/fontConfig';
+import {
+    COLLAPSED_HEIGHT,
+    EXPANDED_HEIGHT,
+    Header,
+    useCollapsibleHeader,
+} from '../components/layout/CollapsibleHeader';
 import { Stack } from '../components/layout/Stack';
-import { ListItem } from '../components/ListItem';
+import { ListItem } from '../components/common/ListItem';
 import { Typography } from '../components/typography';
 import { BLANK_USER, useGetUserDetailsQuery } from '../redux/apiServices/userDetailsService';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,11 +23,11 @@ import { RootState } from '../redux/store';
 import { initializeData } from '../redux/thunks';
 import { AppDispatch } from '../redux/store';
 import { useLogoutMutation } from '../redux/apiServices/authService';
-import { Icon, MaterialIconName } from '../components/Icon';
-import { TokenModal } from '../components/feedback';
+import { Icon, MaterialIconName } from '../components/common/Icon';
+import { TokenModal } from '../components/auth/TokenModal';
 import { useToggleTheme } from '../theme/ThemeProvider';
 import { format } from 'date-fns';
-import { useAutoLogging } from '../utilities/logs';
+import { useAutoLogging } from '../logger';
 
 export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
     useAutoLogging();
@@ -53,7 +58,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
     const memberString = `Joined ${
         user.joined ? format(new Date(user.joined * 1000), 'MMMM yyyy') : format(new Date(), 'MMMM yyyy')
     }`;
-    const avatarURL = `${BASE_URL}/images/profiles/${
+    const avatarURL = `${BASE_URL}/assets/images/profiles/${
         user?.avatar ? `${user.username}/${user.avatar}.png` : 'blank.png'
     }`;
 

@@ -3,7 +3,7 @@ import { View, ScrollView, SafeAreaView } from 'react-native';
 import Modal from 'react-native-modal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '../../theme';
-import { SEButton } from '../SEButton';
+import { SEButton } from '../common/SEButton';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import { width } from '../../utilities/dimensions';
 import { useSharedValue } from 'react-native-reanimated';

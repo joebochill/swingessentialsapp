@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_API_URL } from '../../constants';
+import { BASE_API_URL } from '../../_config';
 import { prepareHeaders } from './utils/prepareHeaders';
 import { storeToken } from './utils/storeToken';
-import { LOG } from '../../utilities/logs';
+import { LOG } from '../../logger';
 
 export type UserRegistrationDetails = {
     username: string;

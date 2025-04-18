@@ -1,7 +1,7 @@
 import React, { JSX } from 'react';
 import { MD3Theme, Text, TextProps, useTheme } from 'react-native-paper';
 import { VariantProp } from 'react-native-paper/lib/typescript/components/Typography/types';
-import { extraBoldType, lightType, regularType, semiBoldType } from '../../theme/typography/fontConfig';
+import { extraBoldType, lightType, regularType, semiBoldType } from '../../theme/fontConfig';
 import { TextStyle } from 'react-native';
 
 type FontWeight = 'bold' | 'regular' | 'light' | 'semiBold' | 'extraBold';

@@ -1,30 +1,31 @@
 import React, { JSX, useEffect, useState } from 'react';
 import { SectionList, LayoutChangeEvent } from 'react-native';
 import { TutorialCarousel, TutorialModal } from './';
-import { TUTORIAL_KEYS } from '../../constants';
-import { getLongDate, getDate } from '../../utilities';
+import { TUTORIAL_KEYS } from '../../_config';
 import { useAppTheme } from '../../theme';
-import { SectionHeader, Stack } from '../layout';
+import { SectionHeader } from '../typography/SectionHeader';
+import { Stack } from '../layout/Stack';
 import { Typography } from '../typography';
-import { ListItem } from '../ListItem';
-import { Icon } from '../Icon';
-import { newTutorialAvailable, setTutorialWatched } from '../../utilities/tutorials';
+import { ListItem } from '../common/ListItem';
+import { Icon } from '../common/Icon';
+import { newTutorialAvailable, setTutorialWatched } from './tutorialsUtilities';
+import { format } from 'date-fns';
 
 export const LessonsTutorial: React.FC = () => {
     const [showTutorial, setShowTutorial] = useState(false);
     const [carouselHeight, setCarouselHeight] = useState<number>(0);
     const theme = useAppTheme();
-
+    const today = Date.now();
     const sections = [
         {
-            bucketName: getLongDate(Date.now()),
+            bucketName: format(new Date(today), 'MMMM yyyy'),
             data: [
                 {
-                    date: getDate(Date.now()),
+                    date: format(new Date(today), 'yyyy-MM-dd'),
                     new: true,
                 },
                 {
-                    date: getDate(Date.now() - 24 * 60 * 60 * 1000),
+                    date: format(new Date(today - 24 * 60 * 60 * 1000), 'yyyy-MM-dd'),
                     new: false,
                 },
             ],

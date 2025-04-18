@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { PaperProvider } from 'react-native-paper';
 import { SEDarkTheme, SETheme } from '.';
-import { Icon, MaterialIconName } from '../components/Icon';
+import { Icon, MaterialIconName } from '../components/common/Icon';
 import { IconProps } from 'react-native-paper/lib/typescript/components/MaterialCommunityIcon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ASYNC_PREFIX } from '../constants';
+import { ASYNC_PREFIX } from '../_config';
 import { useColorScheme } from 'react-native';
 
 const ThemeContext = React.createContext({

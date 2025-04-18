@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, LayoutChangeEvent } from 'react-native';
 import { TutorialCarousel, TutorialModal } from './Tutorial';
 import { useAppTheme } from '../../theme';
-import { Stack } from '../layout';
+import { Stack } from '../layout/Stack';
 import { Typography } from '../typography';
-import { Icon } from '../Icon';
-import { newTutorialAvailable, setTutorialWatched } from '../../utilities/tutorials';
-import { TUTORIAL_KEYS } from '../../constants';
+import { Icon } from '../common/Icon';
+import { newTutorialAvailable, setTutorialWatched } from './tutorialsUtilities';
+import { TUTORIAL_KEYS } from '../../_config';
 
 export const HomeTutorial: React.FC = () => {
     const [showTutorial, setShowTutorial] = useState(false);

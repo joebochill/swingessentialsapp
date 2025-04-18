@@ -1,14 +1,14 @@
 import React, { JSX, useEffect, useState } from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import { TutorialCarousel, TutorialModal } from './';
-import { TUTORIAL_KEYS } from '../../constants';
+import { TUTORIAL_KEYS } from '../../_config';
 import { useAppTheme } from '../../theme';
-import { Stack } from '../layout';
+import { Stack } from '../layout/Stack';
 import { Typography } from '../typography';
-import { ListItem } from '../ListItem';
-import { Icon } from '../Icon';
+import { ListItem } from '../common/ListItem';
+import { Icon } from '../common/Icon';
 import { useGetPackagesQuery } from '../../redux/apiServices/packagesService';
-import { newTutorialAvailable, setTutorialWatched } from '../../utilities/tutorials';
+import { newTutorialAvailable, setTutorialWatched } from './tutorialsUtilities';
 
 export const OrderTutorial: React.FC = () => {
     const { data: packages = [] } = useGetPackagesQuery();

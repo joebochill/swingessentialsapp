@@ -1,14 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { userDetailsApi } from '../apiServices/userDetailsService';
-import { ASYNC_PREFIX } from '../../constants';
+import { ASYNC_PREFIX } from '../../_config';
 import { initialize, setToken } from '../slices/authSlice';
 import { tipsApi } from '../apiServices/tipsService';
 import { lessonsApi } from '../apiServices/lessonsService';
 import { blogsApi } from '../apiServices/blogsService';
 import { creditsApi } from '../apiServices/creditsService';
 import { packagesApi } from '../apiServices/packagesService';
-import { LOG } from '../../utilities/logs';
+import { LOG } from '../../logger';
 
 export const loadUserData = createAsyncThunk('auth/loadUserData', async (_, { dispatch }) => {
     try {

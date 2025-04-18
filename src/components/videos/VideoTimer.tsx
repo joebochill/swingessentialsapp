@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, ViewProps } from 'react-native';
 import { useAppTheme } from '../../theme';
-import { Stack } from '../layout';
+import { Stack } from '../layout/Stack';
 import { Typography } from '../typography';
 
 export type VideoTimerProps = ViewProps & {

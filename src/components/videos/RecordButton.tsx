@@ -3,7 +3,7 @@ import { View, ViewProps, TouchableOpacityProps, GestureResponderEvent, Touchabl
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '../../theme';
 import { Typography } from '../typography';
-import { Icon } from '../Icon';
+import { Icon } from '../common/Icon';
 
 type RecordButtonProps = TouchableOpacityProps & {
     recording: boolean;

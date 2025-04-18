@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
-import { ROUTES } from '../constants/routes';
+import { ROUTES } from './routeConfig';
 import Mailer from 'react-native-mail';
-import { LOG } from '../utilities/logs';
+import { LOG } from '../logger';
 
 type RouteGroup = {
     name: string;

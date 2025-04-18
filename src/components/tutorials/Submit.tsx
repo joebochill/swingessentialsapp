@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import { TutorialCarousel, TutorialModal } from '.';
-import { TUTORIAL_KEYS } from '../../constants';
+import { TUTORIAL_KEYS } from '../../_config';
 import { RecordButton } from '../videos';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../videos/SwingVideo';
-import { Stack } from '../layout';
+import { Stack } from '../layout/Stack';
 import { Typography } from '../typography';
-import { Icon } from '../Icon';
-import { newTutorialAvailable, setTutorialWatched } from '../../utilities/tutorials';
+import { Icon } from '../common/Icon';
+import { newTutorialAvailable, setTutorialWatched } from './tutorialsUtilities';
 
 export const SubmitTutorial: React.FC = () => {
     const [showTutorial, setShowTutorial] = useState(false);

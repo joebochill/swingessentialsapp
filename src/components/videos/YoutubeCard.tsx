@@ -6,10 +6,10 @@ import YoutubePlayer, { YoutubeIframeRef } from 'react-native-youtube-iframe';
 import Modal from 'react-native-modal';
 import { width as deviceWidth, aspectHeight } from '../../utilities/dimensions';
 import { useAppTheme } from '../../theme';
-import { Stack } from '../layout';
+import { Stack } from '../layout/Stack';
 import { Paragraph, Typography } from '../typography';
-import { Icon } from '../Icon';
-import { LOG } from '../../utilities/logs';
+import { Icon } from '../common/Icon';
+import { LOG } from '../../logger';
 
 type YoutubeCardHeaderProps = {
     title?: string;

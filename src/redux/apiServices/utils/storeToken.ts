@@ -1,10 +1,10 @@
 import { FetchBaseQueryMeta } from '@reduxjs/toolkit/query';
-import { ASYNC_PREFIX } from '../../../constants';
+import { ASYNC_PREFIX } from '../../../_config';
 import { setToken } from '../../slices/authSlice';
 import { loadUserData } from '../../thunks';
 import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LOG } from '../../../utilities/logs';
+import { LOG } from '../../../logger';
 
 export const storeToken = async (
     meta: FetchBaseQueryMeta | undefined,

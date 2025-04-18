@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { getUserRole } from '../../utilities/general';
 
 export type UserRole = 'administrator' | 'anonymous' | 'customer' | 'pending';
 
@@ -26,7 +25,10 @@ export const authSlice = createSlice({
     reducers: {
         setToken: (state, action: PayloadAction<string | null>) => {
             state.token = action.payload;
-            const role = getUserRole(action.payload || '');
+            let role: UserRole = 'anonymous';
+            if (action.payload) {
+                role = JSON.parse(atob(action.payload.split('.')[1])).role;
+            }
             state.role = role;
             state.admin = role === 'administrator';
             state.loginFailures = 0;
