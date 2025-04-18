@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Platform, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { height } from '../../utilities/dimensions';
-import { useDispatch } from 'react-redux';
 import { EMAIL_REGEX } from '../../constants';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
@@ -22,7 +21,6 @@ export const ForgotPassword: React.FC = () => {
     const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
     const [email, setEmail] = useState('');
     const [complete, setComplete] = useState(false);
-    const dispatch = useDispatch();
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
     const [sendResetPasswordEmail] = useSendResetPasswordEmailMutation();
@@ -32,7 +30,7 @@ export const ForgotPassword: React.FC = () => {
             sendResetPasswordEmail(email);
             setComplete(true);
         }
-    }, [email, dispatch, setComplete]);
+    }, [email, setComplete, sendResetPasswordEmail]);
 
     return (
         <Stack style={{ flex: 1 }}>

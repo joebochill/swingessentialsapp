@@ -31,7 +31,9 @@ export const setTutorialWatched = async (tutorialKey: keyof typeof TUTORIALS): P
 
 export const newTutorialAvailable = async (tutorialKey: keyof typeof TUTORIALS): Promise<boolean> => {
     const lastTutorialWatched = await AsyncStorage.getItem(`${ASYNC_PREFIX}${tutorialKey}`);
-    if (!lastTutorialWatched) return true;
+    if (!lastTutorialWatched) {
+        return true;
+    }
 
     const tutorialRequiredAt = TUTORIAL_VERSIONS[tutorialKey];
 
@@ -47,8 +49,12 @@ export const isVersionGreater = (source: string, target: string): boolean => {
     for (let i = 0; i < Math.max(sourceVersion.length, targetVersion.length); i++) {
         const num1 = sourceVersion[i] || 0; // Default to 0 if index is out of bounds
         const num2 = targetVersion[i] || 0;
-        if (num1 > num2) return true;
-        if (num1 < num2) return false;
+        if (num1 > num2) {
+            return true;
+        }
+        if (num1 < num2) {
+            return false;
+        }
     }
     return false; // Versions are equal
 };

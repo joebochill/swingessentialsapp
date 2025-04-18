@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
@@ -11,7 +11,6 @@ import { Stack } from '../../components/layout';
 import { SEButton } from '../../components/SEButton';
 import { Typography } from '../../components/typography';
 import { RootState } from '../../redux/store';
-import { BLANK_USER, useGetUserDetailsQuery } from '../../redux/apiServices/userDetailsService';
 import { clearErrorLog, LOG, readErrorLog } from '../../utilities/logs';
 import { useSendMobileLogsMutation } from '../../redux/apiServices/logsService';
 
@@ -19,10 +18,8 @@ export const ErrorLogs: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const [logs, setLogs] = useState('');
     const [loading, setLoading] = useState(false);
-    const dispatch = useDispatch();
     const token = useSelector((state: RootState) => state.auth.token);
-    const { data: user = BLANK_USER, isSuccess: hasUserData, isFetching, refetch } = useGetUserDetailsQuery();
-    const [sendLogs, { isLoading, isError, isSuccess }] = useSendMobileLogsMutation();
+    const [sendLogs, { isLoading }] = useSendMobileLogsMutation();
     const theme = useAppTheme();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
@@ -31,20 +28,17 @@ export const ErrorLogs: React.FC = () => {
         const storedLogs = await readErrorLog();
         setLogs(storedLogs);
         setLoading(false);
-    }, [dispatch]);
+    }, []);
 
     const sendMail = useCallback(async () => {
-        if (!hasUserData) {
-            return;
-        }
         try {
-            const logs = await readErrorLog();
-            await sendLogs({ data: logs }).unwrap(); // Unwrap the mutation
+            const logsData = await readErrorLog();
+            await sendLogs({ data: logsData }).unwrap(); // Unwrap the mutation
             clearErrorLog();
             Alert.alert(
                 'Error Report Sent',
                 'Your error report has been submitted successfully. Thank you for helping us improve the app!',
-                [{ text: 'DONE', onPress: () => void getLogs() }]
+                [{ text: 'DONE', onPress: () => getLogs() }]
             );
         } catch (error) {
             Alert.alert(
@@ -54,7 +48,7 @@ export const ErrorLogs: React.FC = () => {
             );
             LOG.error(`Failed to send logs: ${error}`, { zone: 'LOGS' });
         }
-    }, [getLogs, hasUserData, user.username]);
+    }, [getLogs, sendLogs]);
 
     useEffect(() => {
         if (!token) {
@@ -63,14 +57,14 @@ export const ErrorLogs: React.FC = () => {
     }, [navigation, token]);
 
     useEffect(() => {
-        void getLogs();
+        getLogs();
     }, [getLogs]);
 
     const actionItems: IconProps[] = [
         {
             name: 'refresh',
             onPress: (): void => {
-                void getLogs();
+                getLogs();
             },
         },
     ];
@@ -100,7 +94,7 @@ export const ErrorLogs: React.FC = () => {
                     <RefreshControl
                         refreshing={loading || isLoading}
                         onRefresh={(): void => {
-                            void getLogs();
+                            getLogs();
                         }}
                         progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />

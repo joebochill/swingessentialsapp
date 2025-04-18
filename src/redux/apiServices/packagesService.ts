@@ -3,6 +3,7 @@ import { BASE_API_URL } from '../../constants';
 import { prepareHeaders } from './utils/prepareHeaders';
 import { creditsApi } from './creditsService';
 import { Platform } from 'react-native';
+import { LOG } from '../../utilities/logs';
 
 export type Level0PackageDetails = {
     id: number;
@@ -25,7 +26,7 @@ export const packagesApi = createApi({
     tagTypes: ['packages', 'discounts'],
     endpoints: (builder) => ({
         getPackages: builder.query<Level1PackageDetails[], void>({
-            query: () => `packages?detailLevel=1`,
+            query: () => 'packages?detailLevel=1',
             providesTags: ['packages'],
         }),
         captureMobileOrder: builder.mutation<void, { orderId: string; packageId: number }>({
@@ -42,7 +43,7 @@ export const packagesApi = createApi({
                     await queryFulfilled;
                     dispatch(creditsApi.util.invalidateTags(['credits']));
                 } catch (error) {
-                    console.error('Error capturing Mobile order:', error);
+                    LOG.error(`Error capturing order: ${error}`, { zone: 'ORDR' });
                 }
             },
         }),

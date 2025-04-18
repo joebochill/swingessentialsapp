@@ -21,7 +21,7 @@ export const faqApi = createApi({
     }),
     endpoints: (builder) => ({
         getFAQs: builder.query<FAQApiResponse, void>({
-            query: () => `faqs`,
+            query: () => 'faqs',
         }),
     }),
 });

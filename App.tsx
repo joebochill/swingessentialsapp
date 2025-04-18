@@ -21,7 +21,7 @@ function App(): React.JSX.Element {
 
     // Initialize redux store data
     useEffect(() => {
-        void store.dispatch(initializeData());
+        store.dispatch(initializeData());
     }, []);
 
     // Check / request app permissions
@@ -40,7 +40,7 @@ function App(): React.JSX.Element {
                 }
             }
         };
-        void checkPermissions();
+        checkPermissions();
     }, [hasMicrophonePermission, hasVideoPermission, requestMicrophonePermission, requestVideoPermission]);
 
     return (

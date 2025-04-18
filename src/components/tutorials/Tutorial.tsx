@@ -7,7 +7,6 @@ import { SEButton } from '../SEButton';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import { width } from '../../utilities/dimensions';
 import { useSharedValue } from 'react-native-reanimated';
-import { setTutorialWatched } from '../../utilities/tutorials';
 
 type TutorialProps = {
     visible: boolean;
@@ -99,7 +98,7 @@ export const TutorialCarousel: React.FC<{ slides: JSX.Element[]; height: number;
                     data={slides}
                     dotStyle={{
                         borderRadius: 100,
-                        backgroundColor: `rgba(255,255,255,0.35)`,
+                        backgroundColor: 'rgba(255,255,255,0.35)',
                     }}
                     activeDotStyle={{
                         borderRadius: 100,

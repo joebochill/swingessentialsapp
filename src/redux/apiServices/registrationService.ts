@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_API_URL } from '../../constants';
 import { prepareHeaders } from './utils/prepareHeaders';
 import { storeToken } from './utils/storeToken';
+import { LOG } from '../../utilities/logs';
 
 export type UserRegistrationDetails = {
     username: string;
@@ -48,7 +49,7 @@ const registrationApi = createApi({
                     const { meta } = await queryFulfilled;
                     storeToken(meta, dispatch);
                 } catch (error) {
-                    console.error('Registration failed:', error);
+                    LOG.error(`Registration failed: ${error}`, { zone: 'REGI' });
                 }
             },
         }),

@@ -1,16 +1,8 @@
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-// Components
 import { Platform, RefreshControl, ScrollView } from 'react-native';
-
-// Styles
 import { width } from '../../utilities/dimensions';
-
-// Utilities
 import { splitParagraphs } from '../../utilities';
-
-import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
 import { useNavigation } from '@react-navigation/core';

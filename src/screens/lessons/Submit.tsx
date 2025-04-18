@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { Platform, KeyboardAvoidingView, ScrollView, TouchableOpacity, Alert, Keyboard, View } from 'react-native';
+import { Platform, KeyboardAvoidingView, ScrollView, TouchableOpacity, Alert, Keyboard } from 'react-native';
 import { Paragraph } from 'react-native-paper';
 import bg from '../../images/banners/submit.jpg';
 import { ROUTES } from '../../constants/routes';
@@ -33,16 +33,8 @@ export const Submit: React.FC = () => {
     const token = useSelector((state: RootState) => state.auth.token);
     const role = useSelector((state: RootState) => state.auth.role);
 
-    const {
-        data: { count: credits = 0 } = {},
-        isUninitialized: creditsUninitialized,
-        isFetching: loadingCredits,
-    } = useGetCreditsQuery(undefined, { skip: !token });
-    const {
-        data: { data: pendingLessons = [] } = {},
-        isFetching: loadingPending,
-        isSuccess: lessonsLoaded,
-    } = useGetPendingLessonsQuery('');
+    const { data: { count: credits = 0 } = {} } = useGetCreditsQuery(undefined, { skip: !token });
+    const { data: { data: pendingLessons = [] } = {}, isSuccess: lessonsLoaded } = useGetPendingLessonsQuery('');
     const [redeemLesson, { isSuccess, isError, error, isLoading: redeeming }] = useAddLessonRequestMutation();
 
     const [foVideo, setFOVideo] = useState('');
@@ -81,7 +73,7 @@ export const Submit: React.FC = () => {
             }, 700);
             return () => clearTimeout(timeout);
         }
-    }, [isSuccess, clearAllFields]);
+    }, [isSuccess, clearAllFields, navigation]);
 
     useEffect(() => {
         let timeout: NodeJS.Timeout;
@@ -110,19 +102,19 @@ export const Submit: React.FC = () => {
     const submitLesson = useCallback(() => {
         Keyboard.dismiss();
         if (role !== 'customer' && role !== 'administrator') {
-            LOG.error(`Unverified users cannot submit lessons`, { zone: 'LESS' });
+            LOG.error('Unverified users cannot submit lessons', { zone: 'LESS' });
             return;
         }
         if (pendingLessons.length > 0) {
-            LOG.error(`You may not submit a new lesson with a current lesson pending`, { zone: 'LESS' });
+            LOG.error('You may not submit a new lesson with a current lesson pending', { zone: 'LESS' });
             return;
         }
         if (credits < 1) {
-            LOG.error(`You may not submit a new lesson without any credits`, { zone: 'LESS' });
+            LOG.error('You may not submit a new lesson without any credits', { zone: 'LESS' });
             return;
         }
         if (!foVideo || !dtlVideo) {
-            LOG.error(`Missing required video in lesson submission`, { zone: 'LESS' });
+            LOG.error('Missing required video in lesson submission', { zone: 'LESS' });
             return;
         }
         const data = new FormData();
@@ -144,7 +136,7 @@ export const Submit: React.FC = () => {
                 setUploadProgress((event.loaded / event.total) * 100);
             },
         });
-    }, [role, pendingLessons, credits, foVideo, dtlVideo, notes]);
+    }, [role, pendingLessons, credits, foVideo, dtlVideo, notes, redeemLesson]);
 
     const setVideoURI = useCallback(
         async (swing: 'fo' | 'dtl', uri: string): Promise<void> => {
@@ -225,7 +217,7 @@ export const Submit: React.FC = () => {
                                 source={foVideo ? { uri: foVideo } : undefined}
                                 editable
                                 onSourceChange={(src) => {
-                                    void setVideoURI('fo', src.uri || '');
+                                    setVideoURI('fo', src.uri || '');
                                 }}
                             />
                             {!!videoSize.fo && (
@@ -239,7 +231,7 @@ export const Submit: React.FC = () => {
                                 source={dtlVideo ? { uri: dtlVideo } : undefined}
                                 editable
                                 onSourceChange={(src) => {
-                                    void setVideoURI('dtl', src.uri || '');
+                                    setVideoURI('dtl', src.uri || '');
                                 }}
                             />
                             {!!videoSize.dtl && (
@@ -259,8 +251,8 @@ export const Submit: React.FC = () => {
                         }}
                     >
                         <Typography variant={'bodySmall'} color={theme.dark ? 'onPrimary' : 'onPrimaryContainer'}>
-                            <Typography fontWeight={'semiBold'}>{`TIP: `}</Typography>
-                            {`Avoid slo-mo videos to stay below the file size limit.`}
+                            <Typography fontWeight={'semiBold'}>{'TIP: '}</Typography>
+                            {'Avoid slo-mo videos to stay below the file size limit.'}
                         </Typography>
                     </Stack>
 

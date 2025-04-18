@@ -20,7 +20,7 @@ export const Pros: React.FC = () => {
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const theme = useAppTheme();
-    const { data: pros = [], isLoading } = useGetProsQuery();
+    const { data: pros = [] } = useGetProsQuery();
 
     return (
         <>

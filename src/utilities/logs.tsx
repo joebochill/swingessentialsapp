@@ -58,7 +58,7 @@ export const useAutoLogging = (): void => {
 
     useEffect(() => {
         if (isSuccess) {
-            void clearErrorLog();
+            clearErrorLog();
             reset();
             LAST_SENT = Date.now() / 1000;
         } else if (isError) {
@@ -68,7 +68,7 @@ export const useAutoLogging = (): void => {
             reset();
             LAST_SENT = Date.now() / 1000;
         }
-    }, [isSuccess, isError]);
+    }, [isSuccess, isError, reset]);
 
     useEffect(() => {
         // Don't send logs if the last sent time is less than 4 hours
@@ -89,5 +89,6 @@ export const useAutoLogging = (): void => {
             }
         };
         checkFileSize();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 };

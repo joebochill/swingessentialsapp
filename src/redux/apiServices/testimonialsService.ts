@@ -20,7 +20,7 @@ export const testimonialsApi = createApi({
     }),
     endpoints: (builder) => ({
         getTestimonials: builder.query<TestimonialsApiResponse, void>({
-            query: () => `testimonials?limit=5`,
+            query: () => 'testimonials?limit=5',
         }),
     }),
 });

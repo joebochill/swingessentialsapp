@@ -16,7 +16,7 @@ export const Blogs: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
     const theme = useAppTheme();
-    const { data: blogs = [], isFetching, isSuccess: haveBlogs, refetch } = useGetBlogsQuery();
+    const { data: blogs = [], isFetching, refetch } = useGetBlogsQuery();
 
     // group the blogs by year
     const blogsByYear = useMemo(() => {
@@ -30,9 +30,9 @@ export const Blogs: React.FC = () => {
         }, {} as Record<number, BlogDetailsWithYear[]>);
     }, [blogs]);
 
-    const sections = Object.entries(blogsByYear).map(([year, blogs]) => ({
+    const sections = Object.entries(blogsByYear).map(([year, blogsData]) => ({
         bucketName: year,
-        data: blogs,
+        data: blogsData,
     }));
 
     return (

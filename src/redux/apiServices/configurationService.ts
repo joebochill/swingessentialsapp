@@ -15,7 +15,7 @@ export const configurationApi = createApi({
     }),
     endpoints: (builder) => ({
         getWelcomeVideo: builder.query<WelcomeVideo, void>({
-            query: () => `configuration/welcome-video`,
+            query: () => 'configuration/welcome-video',
         }),
     }),
 });

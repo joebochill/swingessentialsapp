@@ -22,12 +22,12 @@ export const prosApi = createApi({
     tagTypes: ['pros'],
     endpoints: (builder) => ({
         getPros: builder.query<ProBiosAPIResponse, void>({
-            query: () => `pros`,
+            query: () => 'pros',
             providesTags: ['pros'],
         }),
         addPro: builder.mutation<void, Omit<ProBio, 'id'>>({
             query: (newProBio) => ({
-                url: `pros`,
+                url: 'pros',
                 method: 'POST',
                 body: newProBio,
             }),

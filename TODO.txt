@@ -1,56 +1,46 @@
-NEW TODOS:
 
+
+- Verify Orders and Submission on a real device
+- Off-screen youtube videos don't load when scrolled in
 - remove console LOGS
-
-- Data not getting properly set/cleared when logging in/out (tips, lessons, credits, etc.)
-
-
-
-
-- Update to flat eslint v9
-- Check deep links
-- Get rid of getLongDate
-- Removed all unused functions, files, types
+- Fix any TODO comments
+- Log Future Enhancements section below as GH ISSUES
+- Verify/Test previous issue list below
+- Remove all unused functions, files, types(getLongDate -> format)
+- Update file organization
+    - Reorganize constants - routes to routing folder, rename index to config
 - Add a network/back-end connectivity check/banner
 - Add fallback video hardcoded for placeholder lesson?
-- Reorganize constants - routes to routing folder, rename index to config
-
-
-
-
-
-Remaining Work:
-
-- Update the documentation / Readme
-- Check all TODO comments
+- Update the Readme
+- Publish new API version
 
 
 Test Scenarios: [XX] = Both platforms tested [X] iOS only tested
 
-XX  Change Every Setting
-XX  Change Profile Image
-XX  Contact
-XX  Send Error Report
-XX  View Lessons
-XX  Play Lessons
-X   Submit New Swing
-XX  Record a Video
-XX  Video Timing settings
-XX  Video overlay settings
-XX  Video duration settings
-XX  Video uses flash correctly
-XX  Choose Video from Camera Roll
-XX  Load Packages
-X   Order New Packages
-XX  Log In
-XX  Log Out
-X-  Biometric login
-XX  Remember Username functionality
-X   Submit Registration
-X   Complete Registration / Validate Email
-XX  Validator on exiting username/others
-X   Deep linking
-XX  Automatic Logout
+[__]  Change Every Setting
+[__]  Change Profile Image
+[__]  Contact
+[__]  Send Error Report
+[__]  View Lessons
+[__]  Play Lessons
+[__]  Submit New Swing
+[__]  Record a Video
+[__]  Video Timing settings
+[__]  Video overlay settings
+[__]  Video duration settings
+[__]  Video uses flash correctly
+[__]  Choose Video from Camera Roll
+[__]  Load Packages
+[__]  Order New Packages
+[__]  Log In
+[__]  Log Out
+[__]  Biometric login
+[__]  Remember Username functionality
+[__]  Submit Registration
+[__]  Complete Registration / Validate Email
+[__]  Validator on exiting username/others
+[__]  Deep linking
+[__]  Automatic Logout
 
 
 ISSUES IDENTIFIED
@@ -71,9 +61,10 @@ SPORADIC ISSUES:
 - changing profile photo works but is slow
 - changing settings works but is slow
 
+
+
 Future Enhancements
 
-- Update Redux to use toolkit
 - Better error messages when no network
 - Local caching of data (lessons, tips, blogs)
 - Unit tests
@@ -85,4 +76,4 @@ Future Enhancements
 - Contact Us Screen
 - Loading/Empty states
 - Clean up application storage after recording/picking videos : https://github.com/itinance/react-native-fs
-- Convert back-end to NodeJS
+- Move to ESLint flat config / v9 when@react-native/eslint-config support it

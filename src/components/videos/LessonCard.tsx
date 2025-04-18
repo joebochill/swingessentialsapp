@@ -12,7 +12,7 @@ export const LessonCard: React.FC<{ lessonURL: string }> = ({ lessonURL }) => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const role = useSelector((state: RootState) => state.auth.role);
 
-    const { data: { details: lessonDetails } = {}, isError } = useGetLessonByIdQuery(
+    const { data: { details: lessonDetails } = {} } = useGetLessonByIdQuery(
         { id: lessonURL, users: '' },
         {
             skip: !lessonURL,

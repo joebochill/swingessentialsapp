@@ -65,7 +65,7 @@ export const Record: React.FC = () => {
         { fps: 60 },
     ]);
 
-    const { data: user = BLANK_USER, isSuccess: hasUserData, isFetching, refetch } = useGetUserDetailsQuery();
+    const { data: user = BLANK_USER } = useGetUserDetailsQuery();
     const token = useSelector((state: RootState) => state.auth.token);
 
     const [recordingMode, setRecordingMode] = useState(true);
@@ -81,20 +81,22 @@ export const Record: React.FC = () => {
         setShowCountDown(false); // hide the countdown timer (if you stop before recording started)
 
         if (!camera || !camera.current) {
-            LOG.error(`No camera object was found [end recording].`, { zone: 'REC' });
+            LOG.error('No camera object was found [end recording].', { zone: 'REC' });
             return;
         }
         if (isRecording) {
             await camera?.current?.stopRecording();
         }
         setIsRecording(false);
-        if (autoEndTimeout.current) clearTimeout(autoEndTimeout.current);
+        if (autoEndTimeout.current) {
+            clearTimeout(autoEndTimeout.current);
+        }
     }, [isRecording, camera]);
 
     const startRecording = useCallback(() => {
         setShowCountDown(false);
         if (!camera || !camera.current || !cameraInitialized) {
-            LOG.error(`No camera object was found [start recording].`, { zone: 'REC' });
+            LOG.error('No camera object was found [start recording].', { zone: 'REC' });
             setIsRecording(false);
             return;
         }
@@ -111,7 +113,7 @@ export const Record: React.FC = () => {
             },
         });
         autoEndTimeout.current = setTimeout(() => {
-            void endRecording();
+            endRecording();
         }, user.camera_duration * 1000);
     }, [camera, user.camera_duration, cameraInitialized, endRecording]);
 
@@ -148,8 +150,10 @@ export const Record: React.FC = () => {
             onEnd={(): void => setIsPlaying(false)}
             onLoad={(): void => {
                 setPreviewReady(true);
-                // @ts-expect-error we know seek exists even though the ref is not strongly typed
-                if (videoRef.current && Platform.OS === 'android') videoRef.current.seek(0);
+                if (videoRef.current && Platform.OS === 'android') {
+                    // @ts-expect-error we know seek exists even though the ref is not strongly typed
+                    videoRef.current.seek(0);
+                }
             }}
             resizeMode="contain"
             repeat={Platform.OS === 'ios'}
@@ -240,7 +244,7 @@ export const Record: React.FC = () => {
                                   setShowCountDown(true);
                                   setIsRecording(true);
                               } else {
-                                  void endRecording();
+                                  endRecording();
                               }
                           }
                         : (): void => {

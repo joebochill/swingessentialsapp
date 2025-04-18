@@ -18,7 +18,7 @@ import {
     useUpdateUserDetailsMutation,
 } from '../../redux/apiServices/userDetailsService';
 import { useNavigation } from '@react-navigation/core';
-import { RootStackParamList, SettingsStackParamList } from '../../navigation/MainNavigation';
+import { SettingsStackParamList } from '../../navigation/MainNavigation';
 import { SectionHeader, Stack } from '../../components/layout';
 import { SEButton } from '../../components/SEButton';
 import { ListItem } from '../../components/ListItem';
@@ -81,7 +81,7 @@ export const Settings: React.FC = () => {
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
 
-    const { data: user = BLANK_USER, isSuccess: hasUserData, isFetching, refetch } = useGetUserDetailsQuery();
+    const { data: user = BLANK_USER, isFetching, refetch } = useGetUserDetailsQuery();
     const [updateUserDetails] = useUpdateUserDetailsMutation();
     const {
         notify_new_lesson: lessons,
@@ -300,7 +300,7 @@ export const Settings: React.FC = () => {
                         />
                         <ListItem
                             topDivider
-                            title={`Email Address`}
+                            title={'Email Address'}
                             description={role === 'pending' ? 'unverified' : undefined}
                             titleEllipsizeMode={'tail'}
                             descriptionStyle={{ marginLeft: -8 }}
@@ -491,22 +491,39 @@ export const Settings: React.FC = () => {
                                 title={'Save Changes'}
                                 onPress={(): void => {
                                     const newChanges: Partial<Level3UserDetailsApiResponse> = {};
-                                    if (personal.first !== user.first) newChanges.first = personal.first;
-                                    if (personal.last !== user.last) newChanges.last = personal.last;
-                                    if (personal.location !== user.location) newChanges.location = personal.location;
-                                    if (personal.goals !== user.goals) newChanges.goals = personal.goals;
-                                    if (personal.average !== user.average)
+                                    if (personal.first !== user.first) {
+                                        newChanges.first = personal.first;
+                                    }
+                                    if (personal.last !== user.last) {
+                                        newChanges.last = personal.last;
+                                    }
+                                    if (personal.location !== user.location) {
+                                        newChanges.location = personal.location;
+                                    }
+                                    if (personal.goals !== user.goals) {
+                                        newChanges.goals = personal.goals;
+                                    }
+                                    if (personal.average !== user.average) {
                                         newChanges.average = personal.average as ScoreRange;
-                                    if (personal.birthday !== user.birthday) newChanges.birthday = personal.birthday;
-                                    if (personal.email !== user.email) newChanges.email = personal.email;
-                                    if (personal.notify_new_lesson !== lessons)
+                                    }
+                                    if (personal.birthday !== user.birthday) {
+                                        newChanges.birthday = personal.birthday;
+                                    }
+                                    if (personal.email !== user.email) {
+                                        newChanges.email = personal.email;
+                                    }
+                                    if (personal.notify_new_lesson !== lessons) {
                                         newChanges.notify_new_lesson = personal.notify_new_lesson;
-                                    if (personal.notify_marketing !== marketing)
+                                    }
+                                    if (personal.notify_marketing !== marketing) {
                                         newChanges.notify_marketing = personal.notify_marketing;
-                                    if (personal.notify_newsletter !== newsletter)
+                                    }
+                                    if (personal.notify_newsletter !== newsletter) {
                                         newChanges.notify_newsletter = personal.notify_newsletter;
-                                    if (personal.notify_reminders !== reminders)
+                                    }
+                                    if (personal.notify_reminders !== reminders) {
                                         newChanges.notify_reminders = personal.notify_reminders;
+                                    }
 
                                     if (Object.keys(newChanges).length > 0) {
                                         updateUserDetails(newChanges);
@@ -576,7 +593,7 @@ export const Settings: React.FC = () => {
                                 style={[style, { marginRight: 0 }]}
                                 {...rightProps}
                             >
-                                <Typography>{user.camera_delay === 0 ? `Off` : `${user.camera_delay}s`}</Typography>
+                                <Typography>{user.camera_delay === 0 ? 'Off' : `${user.camera_delay}s`}</Typography>
                                 <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}

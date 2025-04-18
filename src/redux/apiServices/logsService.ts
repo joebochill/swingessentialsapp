@@ -12,7 +12,7 @@ export const logsApi = createApi({
     endpoints: (builder) => ({
         sendMobileLogs: builder.mutation<void, { data: string }>({
             query: (args) => ({
-                url: `logs/send-mobile`,
+                url: 'logs/send-mobile',
                 method: 'POST',
                 body: {
                     data: args.data,

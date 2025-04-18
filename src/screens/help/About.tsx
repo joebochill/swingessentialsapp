@@ -31,17 +31,37 @@ export const About: React.FC = () => {
             >
                 <Stack style={{ paddingHorizontal: theme.spacing.md, marginTop: theme.spacing.md }}>
                     <SectionHeader title={'Lessons on Your Schedule'} />
-                    <Paragraph>{`Swing Essentials® provides you with affordable, individualized one-on-one lessons from a PGA-certified golf pro from the comfort and convenience of your home.`}</Paragraph>
+                    <Paragraph>
+                        {
+                            'Swing Essentials® provides you with affordable, individualized one-on-one lessons from a PGA-certified golf pro from the comfort and convenience of your home.'
+                        }
+                    </Paragraph>
 
                     <SectionHeader title={'How it works'} style={{ marginTop: theme.spacing.xxl }} />
                     <Stack gap={theme.spacing.md}>
-                        <Paragraph>{`1) Open the Swing Essentials® app and snap a short video of your swing using your camera.`}</Paragraph>
-                        <Paragraph>{`2) Preview your swing and when you're ready, submit your videos for professional analysis.`}</Paragraph>
-                        <Paragraph>{`3) Within 48 hours, you will receive a personalized video highlighting what you're doing well plus areas of your swing that could be improved.`}</Paragraph>
+                        <Paragraph>
+                            {
+                                '1) Open the Swing Essentials® app and snap a short video of your swing using your camera.'
+                            }
+                        </Paragraph>
+                        <Paragraph>
+                            {
+                                "2) Preview your swing and when you're ready, submit your videos for professional analysis."
+                            }
+                        </Paragraph>
+                        <Paragraph>
+                            {
+                                "3) Within 48 hours, you will receive a personalized video highlighting what you're doing well plus areas of your swing that could be improved."
+                            }
+                        </Paragraph>
                     </Stack>
 
                     <SectionHeader title={'Why Swing Essentials®'} style={{ marginTop: theme.spacing.xxl }} />
-                    <Paragraph>{`Swing Essentials® offers a true one-on-one experience. Our PGA-certified professional puts a personal touch on each and every lesson, giving you the confidence to know that your lesson is just for you. But don 't take our word for it - hear what our customers have to say.`}</Paragraph>
+                    <Paragraph>
+                        {
+                            "Swing Essentials® offers a true one-on-one experience. Our PGA-certified professional puts a personal touch on each and every lesson, giving you the confidence to know that your lesson is just for you. But don 't take our word for it - hear what our customers have to say."
+                        }
+                    </Paragraph>
 
                     {testimonials && (
                         <>

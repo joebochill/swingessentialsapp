@@ -37,7 +37,7 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
-                ignoredActions: [`logsApi/executeMutation/fulfilled`],
+                ignoredActions: ['logsApi/executeMutation/fulfilled'],
             },
         }).concat(
             blogsApi.middleware,

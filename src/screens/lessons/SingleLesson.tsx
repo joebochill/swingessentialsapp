@@ -1,21 +1,9 @@
-import React, { JSX, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-// Components
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Platform, ScrollView } from 'react-native';
-// import Carousel from 'react-native-snap-carousel';
-
-// Styles
 import { width, height } from '../../utilities/dimensions';
-
-// Utilities
-import { splitParagraphs, getLongDate } from '../../utilities';
-
-// Constants
-import { ROUTES } from '../../constants/routes';
-
-// Actions
-import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { splitParagraphs } from '../../utilities';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../../components/videos/SwingVideo';
 import { Header } from '../../components/CollapsibleHeader/Header';
@@ -29,12 +17,7 @@ import { Paragraph } from '../../components/typography';
 import { LessonTutorial } from '../../components/tutorials';
 import { RootState } from '../../redux/store';
 import { useGetWelcomeVideoQuery } from '../../redux/apiServices/configurationService';
-import {
-    FullLessonDetails,
-    LessonBasicDetails,
-    useGetLessonByIdQuery,
-    useMarkLessonViewedMutation,
-} from '../../redux/apiServices/lessonsService';
+import { useGetLessonByIdQuery, useMarkLessonViewedMutation } from '../../redux/apiServices/lessonsService';
 import { format } from 'date-fns';
 import { BASE_URL } from '../../constants';
 

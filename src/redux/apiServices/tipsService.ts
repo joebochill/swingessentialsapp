@@ -22,7 +22,7 @@ export const tipsApi = createApi({
     tagTypes: ['tips', 'tip'],
     endpoints: (builder) => ({
         getTips: builder.query<TipDetailsWithYear[], void>({
-            query: () => `tips?detailLevel=1`,
+            query: () => 'tips?detailLevel=1',
             providesTags: ['tips'],
             transformResponse: (response: TipDetails[]) => {
                 return response.map((tip) => {
@@ -39,7 +39,7 @@ export const tipsApi = createApi({
         }),
         addTip: builder.mutation<void, Omit<TipDetails, 'id'>>({
             query: (newTip) => ({
-                url: `tips`,
+                url: 'tips',
                 method: 'POST',
                 body: newTip,
             }),

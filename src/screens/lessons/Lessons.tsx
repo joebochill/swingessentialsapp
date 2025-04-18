@@ -44,11 +44,8 @@ export const Lessons: React.FC = () => {
     // Lesson Data
     const [page, setPage] = useState(1);
     const [completedLessons, setCompletedLessons] = useState<LessonBasicDetails[]>([]);
-    const {
-        data: { data: loadedLessons = [], totalPages = 0 } = {},
-        isFetching: loadingMore,
-        isUninitialized,
-    } = useGetCompletedLessonsQuery({ page, users: '' });
+    const { data: { data: loadedLessons = [], totalPages = 0 } = {}, isFetching: loadingMore } =
+        useGetCompletedLessonsQuery({ page, users: '' });
 
     const { data: { data: pendingLessons = [] } = {}, isFetching: loadingPending } = useGetPendingLessonsQuery('');
 

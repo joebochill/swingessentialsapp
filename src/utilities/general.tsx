@@ -1,5 +1,4 @@
 import { UserRole } from '../redux/slices/authSlice';
-import { atob } from './base64';
 
 export const MONTHS = [
     'January',
@@ -63,7 +62,9 @@ export function getLongDate(unix: string | number | Date): string {
 }
 
 export function getJSDate(dateString: string | undefined): Date {
-    if (!dateString) return new Date(Date.now());
+    if (!dateString) {
+        return new Date(Date.now());
+    }
     const dateSegments = dateString.split('/');
     return new Date(parseInt(dateSegments[2], 10), parseInt(dateSegments[0], 10) - 1, parseInt(dateSegments[1], 10));
 }

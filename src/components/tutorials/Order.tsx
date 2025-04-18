@@ -11,7 +11,7 @@ import { useGetPackagesQuery } from '../../redux/apiServices/packagesService';
 import { newTutorialAvailable, setTutorialWatched } from '../../utilities/tutorials';
 
 export const OrderTutorial: React.FC = () => {
-    const { data: packages = [], isLoading: loadingPackages, refetch: refetchPackages } = useGetPackagesQuery();
+    const { data: packages = [] } = useGetPackagesQuery();
     const [showTutorial, setShowTutorial] = useState(false);
     const [carouselHeight, setCarouselHeight] = useState<number>(0);
     const theme = useAppTheme();

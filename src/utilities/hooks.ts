@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 
-/* eslint-disable-next-line @typescript-eslint/ban-types */
 export const usePrevious: <T extends {}>(value: T) => any = <T extends {}>(value: T) => {
     const ref = useRef<T>();
     useEffect(() => {

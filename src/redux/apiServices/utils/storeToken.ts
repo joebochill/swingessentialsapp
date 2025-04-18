@@ -4,10 +4,11 @@ import { setToken } from '../../slices/authSlice';
 import { loadUserData } from '../../thunks';
 import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LOG } from '../../../utilities/logs';
 
 export const storeToken = async (
     meta: FetchBaseQueryMeta | undefined,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     dispatch: ThunkDispatch<any, any, UnknownAction>,
     shouldLoadUserData: boolean = true
 ) => {
@@ -16,9 +17,11 @@ export const storeToken = async (
         try {
             await AsyncStorage.setItem(`${ASYNC_PREFIX}token`, token);
             dispatch(setToken(token));
-            if (shouldLoadUserData) dispatch(loadUserData());
+            if (shouldLoadUserData) {
+                dispatch(loadUserData());
+            }
         } catch (error) {
-            console.error('Error storing token in AsyncStorage:', error);
+            LOG.error(`Error storing token in AsyncStorage: ${error}`, { zone: 'AUTH' });
         }
     }
 };

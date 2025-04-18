@@ -83,7 +83,7 @@ export const lessonsApi = createApi({
         }),
         addInPersonLesson: builder.mutation<void, InPersonLesson>({
             query: (newLesson) => ({
-                url: `lessons/in-person`,
+                url: 'lessons/in-person',
                 method: 'POST',
                 body: newLesson,
             }),
@@ -98,7 +98,7 @@ export const lessonsApi = createApi({
             invalidatesTags: ['lessons', 'lessonDetails'],
         }),
         addLessonRequest: builder.mutation<void, { data: FormData; progressCallback: (e: ProgressEvent) => void }>({
-            queryFn: async (args, api, extraOptions, baseQuery) => {
+            queryFn: async (args) => {
                 try {
                     const { data, progressCallback } = args;
 

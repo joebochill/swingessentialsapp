@@ -21,7 +21,7 @@ export const blogsApi = createApi({
     tagTypes: ['blogs', 'blog'],
     endpoints: (builder) => ({
         getBlogs: builder.query<BlogDetailsWithYear[], void>({
-            query: () => `blogs`,
+            query: () => 'blogs',
             providesTags: ['blogs'],
             transformResponse: (response: BlogDetails[]) => {
                 return response.map((blog) => {
@@ -38,7 +38,7 @@ export const blogsApi = createApi({
         }),
         addBlog: builder.mutation<void, Omit<BlogDetails, 'id'>>({
             query: (newBlog) => ({
-                url: `blogs`,
+                url: 'blogs',
                 method: 'POST',
                 body: newBlog,
             }),

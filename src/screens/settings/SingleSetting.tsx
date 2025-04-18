@@ -26,7 +26,7 @@ export const SingleSetting: React.FC = () => {
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
     const token = useSelector((state: RootState) => state.auth.token);
-    const { data: user = BLANK_USER, isSuccess: hasUserData, isFetching, refetch } = useGetUserDetailsQuery();
+    const { data: user = BLANK_USER } = useGetUserDetailsQuery();
     const [updateUserDetails] = useUpdateUserDetailsMutation();
 
     const [value, setValue] = useState(() => {
@@ -37,7 +37,7 @@ export const SingleSetting: React.FC = () => {
         updateUserDetails({
             [route.params.setting]: typeof value === 'string' ? value.toLowerCase() : value,
         });
-    }, [route.params.setting, value, updateUserDetails, refetch]);
+    }, [route.params.setting, value, updateUserDetails]);
 
     useEffect(() => {
         if (!token) {

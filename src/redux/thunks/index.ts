@@ -8,6 +8,7 @@ import { lessonsApi } from '../apiServices/lessonsService';
 import { blogsApi } from '../apiServices/blogsService';
 import { creditsApi } from '../apiServices/creditsService';
 import { packagesApi } from '../apiServices/packagesService';
+import { LOG } from '../../utilities/logs';
 
 export const loadUserData = createAsyncThunk('auth/loadUserData', async (_, { dispatch }) => {
     try {
@@ -15,7 +16,7 @@ export const loadUserData = createAsyncThunk('auth/loadUserData', async (_, { di
         dispatch(lessonsApi.endpoints.getCompletedLessons.initiate({ page: 1, users: '' }));
         dispatch(creditsApi.endpoints.getCredits.initiate());
     } catch (error) {
-        console.error('Error loading data after login:', error);
+        LOG.error(`Error loading user details: ${error}`, { zone: 'AUTH' });
     }
 });
 
@@ -34,7 +35,7 @@ export const initializeData = createAsyncThunk('app/initializeData', async (_, {
         dispatch(blogsApi.util.invalidateTags(['blogs', 'blog']));
         dispatch(blogsApi.endpoints.getBlogs.initiate());
     } catch (error) {
-        console.error('Error loading user data:', error);
+        LOG.error(`Error initializing data: ${error}`, { zone: 'AUTH' });
     }
 });
 
@@ -47,6 +48,6 @@ export const clearProtectedDetails = createAsyncThunk('app/clearProtectedDetails
         dispatch(creditsApi.util.resetApiState());
         dispatch(packagesApi.util.resetApiState());
     } catch (error) {
-        console.error('Error clearing protected details:', error);
+        LOG.error(`Error clearing protected details: ${error}`, { zone: 'AUTH' });
     }
 });

@@ -27,13 +27,9 @@ export const Order: React.FC = () => {
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     const role = useSelector((state: RootState) => state.auth.role);
-    const { data: packages = [], isLoading: loadingPackages, refetch: refetchPackages } = useGetPackagesQuery();
+    const { data: packages = [], refetch: refetchPackages } = useGetPackagesQuery();
 
-    const {
-        data: { count: credits = 0 } = {},
-        isLoading: loadingCredits,
-        refetch: refetchCredits,
-    } = useGetCreditsQuery();
+    const { data: { count: credits = 0 } = {}, refetch: refetchCredits } = useGetCreditsQuery();
     const orderReference = useSelector((state: RootState) => state.order.activeOrderID) ?? '';
     const { isSuccess, isLoading: capturing } = useSelector(selectCaptureMobileOrderState(orderReference));
 
@@ -41,7 +37,7 @@ export const Order: React.FC = () => {
 
     const syncedPackages = packages.map((p) => ({
         ...p,
-        localPrice: products.find((product) => product.productId === p.app_sku)?.localizedPrice ?? `--`,
+        localPrice: products.find((product) => product.productId === p.app_sku)?.localizedPrice ?? '--',
     }));
 
     const [selected, setSelected] = useState(-1);
@@ -61,13 +57,13 @@ export const Order: React.FC = () => {
                 for (let i = 0; i < packages.length; i++) {
                     skus.push(packages[i].app_sku);
                 }
-                void getProducts({ skus }); // await?
+                getProducts({ skus }); // await?
                 setSelected(0);
             } catch (err: any) {
                 LOG.error(`Error loading IAP products: ${err}`, { zone: 'IAP' });
             }
         }
-    }, [getProducts, packages.length, connected]);
+    }, [getProducts, packages, connected]);
 
     // Purchase Completed
     useEffect(() => {
@@ -209,7 +205,7 @@ export const Order: React.FC = () => {
                     onPress={
                         roleError.length === 0 && packages.length > 0 && !capturing
                             ? (): void => {
-                                  void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
+                                  onPurchase(packages[selected].app_sku, packages[selected].shortcode);
                               }
                             : undefined
                     }

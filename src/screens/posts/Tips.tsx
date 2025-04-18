@@ -17,7 +17,7 @@ export const Tips: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
     const theme = useAppTheme();
-    const { data: tips = [], isFetching, isSuccess: haveTips, refetch } = useGetTipsQuery();
+    const { data: tips = [], isFetching, refetch } = useGetTipsQuery();
 
     // group the tips by year
     const tipsByYear = useMemo(() => {
@@ -31,9 +31,9 @@ export const Tips: React.FC = () => {
         }, {} as Record<number, TipDetailsWithYear[]>);
     }, [tips]);
 
-    const sections = Object.entries(tipsByYear).map(([year, tips]) => ({
+    const sections = Object.entries(tipsByYear).map(([year, tipsData]) => ({
         bucketName: year,
-        data: tips,
+        data: tipsData,
     }));
 
     return (

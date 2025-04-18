@@ -11,7 +11,7 @@ export const creditsApi = createApi({
     tagTypes: ['credits'],
     endpoints: (builder) => ({
         getCredits: builder.query<{ count: number }, void>({
-            query: () => `credits`,
+            query: () => 'credits',
             providesTags: ['credits'],
         }),
     }),

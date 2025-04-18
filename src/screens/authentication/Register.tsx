@@ -1,7 +1,5 @@
 import React, { useState, useRef, RefObject, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-
-// Components
 import {
     ActivityIndicator,
     Keyboard,
@@ -40,7 +38,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/MainNavigation';
 import { RootState } from '../../redux/store';
 import { Typography } from '../../components/typography';
-import { Picker } from '@react-native-picker/picker';
 import { Icon } from '../../components/Icon';
 
 const defaultKeys: UserRegistrationDetails = {
@@ -81,7 +78,7 @@ const VerifyForm: React.FC = () => {
         if (code) {
             verifyUserEmail(code);
         }
-    }, [code]);
+    }, [code, verifyUserEmail]);
 
     return (
         <Stack style={[{ flex: 1 }]}>
@@ -170,7 +167,6 @@ const RegisterForm: React.FC = () => {
 
     const [fields, setFields] = useState(defaultKeys);
     const [showPassword, setShowPassword] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
     const emailRef = useRef(null);
     const userRef = useRef(null);
     const passRef = useRef(null);
@@ -183,7 +179,6 @@ const RegisterForm: React.FC = () => {
     const resetForm = useCallback(() => {
         setFields(defaultKeys);
         setShowPassword(false);
-        setErrorMessage('');
     }, []);
 
     // Select the first field on load
@@ -199,9 +194,7 @@ const RegisterForm: React.FC = () => {
             return;
         }
         if (!registeredSuccessfully) {
-            setErrorMessage(
-                'Your account registration has failed. Please try again later and contact us if the problem continues.'
-            );
+            // TODO Handle failed registration?
         } else if (registeredSuccessfully) {
             navigation.replace(ROUTES.HOME);
             resetForm();
@@ -209,7 +202,16 @@ const RegisterForm: React.FC = () => {
             resetUsernameCheck();
             resetRegistration();
         }
-    }, [registeredSuccessfully, isUninitialized, isLoading, resetForm]);
+    }, [
+        registeredSuccessfully,
+        isUninitialized,
+        isLoading,
+        resetForm,
+        navigation,
+        resetEmailCheck,
+        resetUsernameCheck,
+        resetRegistration,
+    ]);
 
     const canSubmit = useCallback((): boolean => {
         const keys: RegistrationKey[] = Object.keys(fields) as RegistrationKey[];
@@ -232,7 +234,7 @@ const RegisterForm: React.FC = () => {
             return;
         }
         createNewUserAccount(fields);
-    }, [canSubmit, fields]);
+    }, [canSubmit, fields, createNewUserAccount]);
 
     const regProperties: RegistrationProperty[] = [
         {
@@ -247,7 +249,9 @@ const RegisterForm: React.FC = () => {
                 resetUsernameCheck();
             },
             onBlur: (): void => {
-                if (fields.username) checkUsernameAvailability(fields.username);
+                if (fields.username) {
+                    checkUsernameAvailability(fields.username);
+                }
             },
         },
         {
@@ -268,7 +272,9 @@ const RegisterForm: React.FC = () => {
                 resetEmailCheck();
             },
             onBlur: (): void => {
-                if (fields.email) checkEmailAvailability(fields.email);
+                if (fields.email) {
+                    checkEmailAvailability(fields.email);
+                }
             },
         },
         {

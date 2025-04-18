@@ -32,19 +32,16 @@ export const Home: React.FC = () => {
     const token = useSelector((state: RootState) => state.auth.token);
     const role = useSelector((state: RootState) => state.auth.role);
 
-    const {
-        data: { data: lessons = [] } = {},
-        isFetching: loadingLessons,
-        isUninitialized,
-    } = useGetCompletedLessonsQuery({ page: 1, users: '' }, { skip: !token });
-    const { data: tips = [], isFetching: loadingTips, isSuccess: haveTips } = useGetTipsQuery();
-    const { data: placeholder = { video: '', description: '' }, isFetching, error } = useGetWelcomeVideoQuery();
+    const { data: { data: lessons = [] } = {}, isFetching: loadingLessons } = useGetCompletedLessonsQuery(
+        { page: 1, users: '' },
+        { skip: !token }
+    );
+    const { data: tips = [], isFetching: loadingTips } = useGetTipsQuery();
+    const { data: placeholder = { video: '', description: '' } } = useGetWelcomeVideoQuery();
 
-    const {
-        data: { count: credits = 0 } = {},
-        isUninitialized: creditsUninitialized,
-        isFetching: loadingCredits,
-    } = useGetCreditsQuery(undefined, { skip: !token });
+    const { data: { count: credits = 0 } = {}, isFetching: loadingCredits } = useGetCreditsQuery(undefined, {
+        skip: !token,
+    });
 
     const latestLessons = lessons.length > 0 ? lessons : [placeholder];
 

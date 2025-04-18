@@ -150,7 +150,9 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         onLoad={(): void => {
                             setVideoReady(true);
                             // @ts-expect-error we know seek exists even though the ref is incorrectly typed
-                            if (videoRef.current && Platform.OS === 'android') videoRef.current.seek(0);
+                            if (videoRef.current && Platform.OS === 'android') {
+                                videoRef.current.seek(0);
+                            }
                         }}
                         onEnd={(): void => setVideoPlaying(false)}
                         onReadyForDisplay={() => setVideoReady(true)}
@@ -240,9 +242,9 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                                 setShowPicker(false);
                             } else {
                                 if (result.assets && result.assets.length > 0) {
-                                    void onSourceChange?.(result.assets[0]);
+                                    onSourceChange?.(result.assets[0]);
                                 } else {
-                                    Alert.alert(`There was no video selected. Try again later.`);
+                                    Alert.alert('There was no video selected. Try again later.');
                                 }
                                 setShowPicker(false);
                             }
@@ -255,7 +257,7 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                             navigation?.push(ROUTES.RECORD, {
                                 swing: type,
                                 onReturn: (uri: string) => {
-                                    void onSourceChange?.({ uri });
+                                    onSourceChange?.({ uri });
                                 },
                             });
                         },

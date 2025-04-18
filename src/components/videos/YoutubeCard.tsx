@@ -164,7 +164,9 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                         <TouchableOpacity
                             activeOpacity={1}
                             onPress={() => {
-                                if (hasPlayed) setShowSettingsWarning(true);
+                                if (hasPlayed) {
+                                    setShowSettingsWarning(true);
+                                }
                             }}
                             style={{
                                 position: 'absolute',
@@ -181,7 +183,9 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                         <TouchableOpacity
                             activeOpacity={1}
                             onPress={() => {
-                                if (hasPlayed) setShowSettingsWarning(true);
+                                if (hasPlayed) {
+                                    setShowSettingsWarning(true);
+                                }
                             }}
                             style={{
                                 position: 'absolute',
@@ -215,12 +219,12 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                     style={[
                         {
                             borderRadius: theme.roundness,
-                            backgroundColor: '#1f1f1f',
+                            backgroundColor: theme.colors.surface,
                             padding: theme.spacing.lg,
                         },
                     ]}
                 >
-                    <Paragraph style={{ color: 'white', textAlign: 'center' }}>
+                    <Paragraph style={{ color: theme.colors.onSurface, textAlign: 'center' }}>
                         To change video playback settings, open in full-screen mode.
                     </Paragraph>
                 </TouchableOpacity>

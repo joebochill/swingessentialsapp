@@ -5,7 +5,8 @@
     "scripts": {
         "android": "react-native run-android",
         "ios": "react-native run-ios --simulator=\"iPhone 16 Pro\"",
-        "lint": "eslint .",
+        "lint": "eslint \"./**/**.{ts,tsx,js,jsx}\"",
+        "lint:fix": "eslint \"./**/**.{ts,tsx,js,jsx}\" --fix",
         "pods": "cd ios && pod install && cd ..",
         "prettier": "prettier \"./**/**.{ts,tsx,js,jsx,json,css,scss,html}\" --write",
         "prettier:check": "prettier \"./**/**.{ts,tsx,js,jsx,json,css,scss,html}\" --check",

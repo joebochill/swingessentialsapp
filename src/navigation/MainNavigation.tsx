@@ -1,6 +1,6 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { CardStyleInterpolators, createStackNavigator, StackScreenProps } from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute, LinkingOptions, NavigationContainer } from '@react-navigation/native';
 import { ROUTES } from '../constants/routes';
 import BootSplash from 'react-native-bootsplash';
@@ -149,7 +149,7 @@ const SettingsStackNavigator = () => (
 export const MainNavigation = () => (
     <NavigationContainer
         onReady={() => {
-            void BootSplash.hide({ fade: true });
+            BootSplash.hide({ fade: true });
         }}
         linking={linkingConfig}
     >

@@ -18,20 +18,21 @@ import { LOG } from '../../utilities/logs';
 export const useRNIAP = (): void => {
     const dispatch = useDispatch();
     const { currentPurchase, currentPurchaseError, finishTransaction } = useIAP();
-    const [captureMobileOrder, { isSuccess, isError: captureError, error, isLoading: capturing }] =
-        useCaptureMobileOrderMutation();
-    const { data: packages = [], isLoading: loadingPackages, refetch: refetchPackages } = useGetPackagesQuery();
+    const [captureMobileOrder, { isSuccess, isError: captureError, error }] = useCaptureMobileOrderMutation();
+    const { data: packages = [] } = useGetPackagesQuery();
 
     const [purchase, setPurchase] = useState<Purchase | null>(null);
 
     useEffect(() => {
-        if (Platform.OS === 'ios') void clearProductsIOS();
+        if (Platform.OS === 'ios') {
+            clearProductsIOS();
+        }
     }, []);
 
     // listen for IAP errors
     useEffect(() => {
-        const subscription = purchaseErrorListener((error: PurchaseError) => {
-            LOG.error(`Failed to complete in-app purchase (${error.code}): ${error.message}`, { zone: 'IAP' });
+        const subscription = purchaseErrorListener((err: PurchaseError) => {
+            LOG.error(`Failed to complete in-app purchase (${err.code}): ${err.message}`, { zone: 'IAP' });
         });
         return (): void => {
             subscription.remove();
@@ -41,11 +42,11 @@ export const useRNIAP = (): void => {
     useEffect(() => {
         if (isSuccess && purchase) {
             // API call is a success
-            void finishTransaction({ purchase, isConsumable: true });
+            finishTransaction({ purchase, isConsumable: true });
             dispatch(clearActiveOrderID());
             setPurchase(null);
         }
-    }, [isSuccess, purchase]);
+    }, [isSuccess, purchase, dispatch, finishTransaction]);
 
     useEffect(() => {
         if (captureError) {
@@ -70,11 +71,11 @@ export const useRNIAP = (): void => {
                 dispatch(setActiveOrderID((result.meta as { requestId: string }).requestId));
             }
         };
-        const subscription = purchaseUpdatedListener((purchase: Purchase) => {
-            const receipt = purchase.transactionReceipt;
+        const subscription = purchaseUpdatedListener((pur: Purchase) => {
+            const receipt = pur.transactionReceipt;
 
             if (receipt) {
-                const paidPackage = packages.filter((pack) => pack.app_sku === purchase.productId);
+                const paidPackage = packages.filter((pack) => pack.app_sku === pur.productId);
                 const shortcode = paidPackage.length > 0 ? paidPackage[0].shortcode : '';
 
                 // if the code is not specified
@@ -112,7 +113,7 @@ export const useRNIAP = (): void => {
 
     useEffect(() => {
         // ... listen to currentPurchase, to check if the purchase went through
-        LOG.info(`Current purchase changed`, {
+        LOG.info('Current purchase changed', {
             zone: 'IAP',
             productID: currentPurchase?.productId,
             verification: currentPurchase?.verificationResultIOS,

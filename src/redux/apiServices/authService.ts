@@ -6,6 +6,7 @@ import { storeToken } from './utils/storeToken';
 import { clearProtectedDetails, initializeData } from '../thunks';
 import { prepareHeaders } from './utils/prepareHeaders';
 import * as Keychain from 'react-native-keychain';
+import { LOG } from '../../utilities/logs';
 
 export type Credentials = {
     username: string;
@@ -34,17 +35,18 @@ const authApi = createApi({
                     const { meta } = await queryFulfilled;
                     storeToken(meta, dispatch);
                     if (arg.useBiometry) {
-                        void Keychain.setGenericPassword(arg.username, arg.password);
+                        Keychain.setGenericPassword(arg.username, arg.password);
                     } else {
-                        void Keychain.resetGenericPassword();
+                        Keychain.resetGenericPassword();
                     }
                     if (arg.remember) {
-                        void AsyncStorage.setItem(`${ASYNC_PREFIX}lastUser`, arg.username || '');
+                        AsyncStorage.setItem(`${ASYNC_PREFIX}lastUser`, arg.username || '');
                     }
                     dispatch(initializeData());
                 } catch (error) {
-                    console.error('Login failed:', error);
-                    void Keychain.resetGenericPassword();
+                    LOG.error(`Login failed: ${error}`, { zone: 'AUTH' });
+
+                    Keychain.resetGenericPassword();
                     dispatch(incrementLoginFailures());
                 }
             },
@@ -58,11 +60,11 @@ const authApi = createApi({
                 try {
                     await queryFulfilled;
                 } catch (error) {
-                    console.error('Logout failed:', error);
+                    LOG.error(`Logout failed: ${error}`, { zone: 'AUTH' });
                 } finally {
-                    dispatch(clearToken());
-                    await AsyncStorage.removeItem(`${ASYNC_PREFIX}token`);
                     dispatch(clearProtectedDetails());
+                    await AsyncStorage.removeItem(`${ASYNC_PREFIX}token`);
+                    dispatch(clearToken());
                 }
             },
         }),
@@ -85,7 +87,7 @@ const authApi = createApi({
                     const { meta } = await queryFulfilled;
                     storeToken(meta, dispatch, false);
                 } catch (error) {
-                    console.error('Refresh token failed:', error);
+                    LOG.error(`Refreshing token failed: ${error}`, { zone: 'AUTH' });
                 }
             },
         }),
@@ -142,11 +144,11 @@ const authApi = createApi({
                     const { meta } = await queryFulfilled;
                     storeToken(meta, dispatch);
                 } catch (error) {
-                    console.error('Reset Password failed:', error);
+                    LOG.error(`Reset password failed: ${error}`, { zone: 'AUTH' });
                 }
             },
             transformErrorResponse: () => {
-                return `Failed to change your password. Please try again later. If the problem persists, please contact us.`;
+                return 'Failed to change your password. Please try again later. If the problem persists, please contact us.';
             },
         }),
 
@@ -161,7 +163,7 @@ const authApi = createApi({
                     const { meta } = await queryFulfilled;
                     storeToken(meta, dispatch);
                 } catch (error) {
-                    console.error('Change Password failed:', error);
+                    LOG.error(`Change password failed: ${error}`, { zone: 'AUTH' });
                 }
             },
         }),

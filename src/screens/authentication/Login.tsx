@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useCompare } from '../../utilities';
 import { Image, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -67,7 +67,6 @@ export const Login: React.FC = () => {
     const failures = useSelector((state: RootState) => state.auth.loginFailures);
     const token = useSelector((state: RootState) => state.auth.token);
     const failuresChanged = useCompare(failures);
-    const dispatch = useDispatch();
     // Refs
     const passField = useRef(null);
 
@@ -85,7 +84,8 @@ export const Login: React.FC = () => {
                 LOG.error(`Failed to load stored auth settings: ${err}`, { zone: 'AUTH' });
             }
         };
-        void loadSavedSettings();
+        loadSavedSettings();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -103,7 +103,8 @@ export const Login: React.FC = () => {
                 setBiometry({ ...biometry, available: false });
             }
         };
-        void touchCheck();
+        touchCheck();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -132,7 +133,7 @@ export const Login: React.FC = () => {
                 LOG.error(`Failed to load stored credentials: ${err}`, { zone: 'AUTH' });
             }
         };
-        void loadKeychainCredentials();
+        loadKeychainCredentials();
     }, [token, missingDataError, remember]);
 
     useEffect(() => {
@@ -148,7 +149,7 @@ export const Login: React.FC = () => {
             setPassword('');
             if (failures > 0) {
                 setCredentials({ ...credentials, stored: false });
-                void Keychain.resetGenericPassword();
+                Keychain.resetGenericPassword();
             }
         }
     }, [failuresChanged, failures, credentials]);
@@ -162,7 +163,7 @@ export const Login: React.FC = () => {
             setMissingDataError(false);
             login({ username: user, password: pass, remember, useBiometry });
         },
-        [dispatch, useBiometry, remember]
+        [useBiometry, remember, login]
     );
 
     const showBiometricLogin = useCallback(async () => {
@@ -204,7 +205,7 @@ export const Login: React.FC = () => {
     useEffect(() => {
         // Show biometric login on load
         if (!token && useBiometry && biometry.available && credentials.stored) {
-            void showBiometricLogin();
+            showBiometricLogin();
         }
     }, [token, useBiometry, biometry.available, credentials.stored, showBiometricLogin]);
 
@@ -308,9 +309,9 @@ export const Login: React.FC = () => {
                                     value={remember}
                                     onValueChange={(val: boolean): void => {
                                         setRemember(val);
-                                        void AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
+                                        AsyncStorage.setItem('@SwingEssentials:saveUser', val ? 'yes' : 'no');
                                         if (!val) {
-                                            void AsyncStorage.removeItem('@SwingEssentials:lastUser');
+                                            AsyncStorage.removeItem('@SwingEssentials:lastUser');
                                             setUsername('');
                                         }
                                     }}
@@ -333,7 +334,7 @@ export const Login: React.FC = () => {
                                         value={useBiometry}
                                         onValueChange={(val: boolean): void => {
                                             setUseBiometry(val);
-                                            void AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
+                                            AsyncStorage.setItem('@SwingEssentials:useTouch', val ? 'yes' : 'no');
                                         }}
                                         ios_backgroundColor={
                                             theme.dark ? theme.colors.background : theme.colors.primaryContainer

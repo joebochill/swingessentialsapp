@@ -68,14 +68,14 @@ export const userDetailsApi = createApi({
         getUserDetails: builder.query<Level3UserDetailsApiResponse, void>({
             providesTags: ['userDetails'],
             query: () => ({
-                url: `user`,
+                url: 'user',
                 method: 'GET',
                 params: { detailLevel: 3 },
             }),
         }),
         updateUserDetails: builder.mutation<boolean, Partial<Level3UserDetailsApiResponse>>({
             query: (body) => ({
-                url: `user`,
+                url: 'user',
                 method: 'PATCH',
                 body,
             }),
