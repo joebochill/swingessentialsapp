@@ -1,19 +1,15 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 import DeviceInfo from 'react-native-device-info';
-
-// Components
 import { View, TouchableOpacity, ViewProps, Platform } from 'react-native';
 import YoutubePlayer, { YoutubeIframeRef } from 'react-native-youtube-iframe';
 import Modal from 'react-native-modal';
-
-// Styles
 import { width as deviceWidth, aspectHeight } from '../../utilities/dimensions';
 import { useAppTheme } from '../../theme';
-import { Logger } from '../../utilities/logging';
 import { Stack } from '../layout';
 import { Paragraph, Typography } from '../typography';
 import { Icon } from '../Icon';
+import { LOG } from '../../utilities/logs';
 
 type YoutubeCardHeaderProps = {
     title?: string;
@@ -135,14 +131,8 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                         webViewProps={{
                             androidLayerType: 'hardware',
                         }}
-                        //TODO fix any
-                        onError={(e: any): void => {
-                            void Logger.logError({
-                                code: 'YTB-001',
-                                description: `Youtube player encountered an error.`,
-                                rawErrorCode: '000',
-                                rawErrorMessage: e,
-                            });
+                        onError={(e: string): void => {
+                            LOG.error(`Youtube player encountered an error: ${e}`, { zone: 'YTB' });
                         }}
                         initialPlayerParams={{
                             modestbranding: true,

@@ -22,8 +22,10 @@ import { Icon, MaterialIconName } from '../components/Icon';
 import { TokenModal } from '../components/feedback';
 import { useToggleTheme } from '../theme/ThemeProvider';
 import { format } from 'date-fns';
+import { useAutoLogging } from '../utilities/logs';
 
 export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
+    useAutoLogging();
     const theme = useAppTheme();
     const { toggleTheme } = useToggleTheme();
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Purchase,
     PurchaseError,
@@ -9,14 +9,20 @@ import {
     purchaseUpdatedListener,
     useIAP,
 } from 'react-native-iap';
-import { Logger } from '../../utilities/logging';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Platform } from 'react-native';
+import { useCaptureMobileOrderMutation, useGetPackagesQuery } from '../../redux/apiServices/packagesService';
+import { clearActiveOrderID, setActiveOrderID } from '../../redux/slices/ordersSlice';
+import { LOG } from '../../utilities/logs';
 
 export const useRNIAP = (): void => {
-    const { currentPurchase, currentPurchaseError, finishTransaction } = useIAP();
     const dispatch = useDispatch();
-    const packages: any[] = []; //useSelector((state: ApplicationState) => state.packages.list);
+    const { currentPurchase, currentPurchaseError, finishTransaction } = useIAP();
+    const [captureMobileOrder, { isSuccess, isError: captureError, error, isLoading: capturing }] =
+        useCaptureMobileOrderMutation();
+    const { data: packages = [], isLoading: loadingPackages, refetch: refetchPackages } = useGetPackagesQuery();
+
+    const [purchase, setPurchase] = useState<Purchase | null>(null);
 
     useEffect(() => {
         if (Platform.OS === 'ios') void clearProductsIOS();
@@ -25,20 +31,45 @@ export const useRNIAP = (): void => {
     // listen for IAP errors
     useEffect(() => {
         const subscription = purchaseErrorListener((error: PurchaseError) => {
-            void Logger.logError({
-                code: 'IAP200',
-                description: 'Failed to complete in-app purchase.',
-                rawErrorCode: error.code,
-                rawErrorMessage: error.message,
-            });
+            LOG.error(`Failed to complete in-app purchase (${error.code}): ${error.message}`, { zone: 'IAP' });
         });
         return (): void => {
             subscription.remove();
         };
     }, []);
 
+    useEffect(() => {
+        if (isSuccess && purchase) {
+            // API call is a success
+            void finishTransaction({ purchase, isConsumable: true });
+            dispatch(clearActiveOrderID());
+            setPurchase(null);
+        }
+    }, [isSuccess, purchase]);
+
+    useEffect(() => {
+        if (captureError) {
+            // TODO
+            // If purchase is already claimed in database
+            // if (parseInt(response.headers.get('Error') || '', 10) === 400607) {
+            //     void finishTransaction({ purchase, isConsumable: true });
+            // }
+            // Else, do nothing and try again on next load
+        }
+    }, [captureError, error]);
+
     // listen for IAP purchase updates
     useEffect(() => {
+        const handleCompleteOrder = async (receipt: string, packageId: number) => {
+            const result = await captureMobileOrder({
+                orderId: receipt,
+                packageId,
+            });
+            if ('meta' in result) {
+                // store the requestID so it can be tracked on orders screen
+                dispatch(setActiveOrderID((result.meta as { requestId: string }).requestId));
+            }
+        };
         const subscription = purchaseUpdatedListener((purchase: Purchase) => {
             const receipt = purchase.transactionReceipt;
 
@@ -52,40 +83,15 @@ export const useRNIAP = (): void => {
                 }
 
                 try {
-                    // dispatch(
-                    //     purchaseCredits(
-                    //         {
-                    //             receipt,
-                    //             package: shortcode,
-                    //         },
-                    //         () => {
-                    //             // API call is a success
-                    //             void finishTransaction({ purchase, isConsumable: true });
-                    //         },
-                    //         (response: Response) => {
-                    //             // If purchase is already claimed in database
-                    //             if (parseInt(response.headers.get('Error') || '', 10) === 400607) {
-                    //                 void finishTransaction({ purchase, isConsumable: true });
-                    //             }
-                    //             // Else, do nothing and try again on next load
-                    //         }
-                    //     )
-                    // );
+                    setPurchase(purchase);
+                    handleCompleteOrder(receipt, paidPackage[0].id);
                 } catch (ackErr) {
                     /* Do Something */
-                    void Logger.logError({
-                        code: 'IAP888',
-                        description: 'IAP Exception.',
-                        rawErrorMessage: JSON.stringify(ackErr),
-                    });
+                    LOG.error(`IAP encountered an exception: ${JSON.stringify(ackErr)}`, { zone: 'IAP' });
                 }
             } else {
                 // Retry / conclude the purchase is fraudulent, etc...
-                void Logger.logError({
-                    code: 'IAP999',
-                    description: 'Invalid purchase detected.',
-                    rawErrorMessage: receipt,
-                });
+                LOG.error(`Invalid purchase detected: ${receipt}`, { zone: 'IAP' });
             }
         });
 
@@ -96,21 +102,20 @@ export const useRNIAP = (): void => {
 
     useEffect(() => {
         // ... listen to currentPurchaseError, to check if any error happened
-        void Logger.logError({
-            code: 'IAP221',
-            description: 'Purchase Error',
-            rawErrorCode: currentPurchaseError?.code,
-            rawErrorMessage: currentPurchaseError?.message,
-        });
+        if (currentPurchaseError) {
+            LOG.error(
+                `Failed to complete in-app purchase (${currentPurchaseError.code}): ${currentPurchaseError.message}`,
+                { zone: 'IAP' }
+            );
+        }
     }, [currentPurchaseError]);
 
     useEffect(() => {
         // ... listen to currentPurchase, to check if the purchase went through
-        void Logger.logError({
-            code: 'IAP222',
-            description: 'Current Purchase Change',
-            rawErrorCode: currentPurchase?.productId,
-            rawErrorMessage: currentPurchase?.verificationResultIOS,
+        LOG.info(`Current purchase changed`, {
+            zone: 'IAP',
+            productID: currentPurchase?.productId,
+            verification: currentPurchase?.verificationResultIOS,
         });
         // if(!currentPurchase) return;
     }, [currentPurchase]);

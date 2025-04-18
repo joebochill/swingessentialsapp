@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import { ROUTES } from '../constants/routes';
 import Mailer from 'react-native-mail';
-import { Logger } from '../utilities/logging';
+import { LOG } from '../utilities/logs';
 
 type RouteGroup = {
     name: string;
@@ -100,11 +100,7 @@ export const helpNavigationItems: RouteGroup = {
                         if (error && error === 'canceled') {
                             // Do nothing
                         } else if (error) {
-                            void Logger.logError({
-                                code: 'CON100',
-                                description: 'Error sending error logs',
-                                rawErrorMessage: error,
-                            });
+                            LOG.error(`Error sending feedback email: ${error}`, { zone: 'MAIL' });
                         } else if (event && event === 'sent') {
                             // message sent successfully
                             Alert.alert(
@@ -114,11 +110,7 @@ export const helpNavigationItems: RouteGroup = {
                         } else if (event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')) {
                             // do nothing
                         } else if (event) {
-                            void Logger.logError({
-                                code: 'CON900',
-                                description: 'Error sending feedback email. ',
-                                rawErrorMessage: event,
-                            });
+                            LOG.error(`Unknown event while sending feedback email: ${event}`, { zone: 'MAIL' });
                         }
                     }
                 );

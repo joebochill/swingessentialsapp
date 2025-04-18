@@ -4,7 +4,6 @@ import { Platform, KeyboardAvoidingView, ScrollView, TouchableOpacity, Alert, Ke
 import { Paragraph } from 'react-native-paper';
 import bg from '../../images/banners/submit.jpg';
 import { ROUTES } from '../../constants/routes';
-import { Logger } from '../../utilities/logging';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../../components/videos/SwingVideo';
@@ -23,6 +22,7 @@ import { useGetCreditsQuery } from '../../redux/apiServices/creditsService';
 import { RootState } from '../../redux/store';
 import { useAddLessonRequestMutation, useGetPendingLessonsQuery } from '../../redux/apiServices/lessonsService';
 import { Icon } from '../../components/Icon';
+import { LOG } from '../../utilities/logs';
 
 export const Submit: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -87,13 +87,8 @@ export const Submit: React.FC = () => {
         let timeout: NodeJS.Timeout;
         if (isError) {
             const err = error as { data: { message: string } };
-            void Logger.logError({
-                code: 'SUB100',
-                description: 'Failed to submit lesson.',
-                rawErrorCode: err.data.message,
-            });
+            LOG.error(`Failed to submit lesson: ${err.data.message}`, { zone: 'LESS' });
             setUploadProgress(0);
-            console.log(error);
             timeout = setTimeout(() => {
                 Alert.alert('Oops:', err.data.message as string, [{ text: 'OK' }]);
             }, 700);
@@ -115,31 +110,19 @@ export const Submit: React.FC = () => {
     const submitLesson = useCallback(() => {
         Keyboard.dismiss();
         if (role !== 'customer' && role !== 'administrator') {
-            void Logger.logError({
-                code: 'SUB200',
-                description: 'Unverified users cannot submit lessons.',
-            });
+            LOG.error(`Unverified users cannot submit lessons`, { zone: 'LESS' });
             return;
         }
         if (pendingLessons.length > 0) {
-            void Logger.logError({
-                code: 'SUB300',
-                description: 'You may not submit a new lesson with a current lesson pending.',
-            });
+            LOG.error(`You may not submit a new lesson with a current lesson pending`, { zone: 'LESS' });
             return;
         }
         if (credits < 1) {
-            void Logger.logError({
-                code: 'SUB350',
-                description: 'You may not submit a new lesson without any credits.',
-            });
+            LOG.error(`You may not submit a new lesson without any credits`, { zone: 'LESS' });
             return;
         }
         if (!foVideo || !dtlVideo) {
-            void Logger.logError({
-                code: 'SUB400',
-                description: 'Missing required video in lesson submission.',
-            });
+            LOG.error(`Missing required video in lesson submission`, { zone: 'LESS' });
             return;
         }
         const data = new FormData();
@@ -183,12 +166,7 @@ export const Submit: React.FC = () => {
                     return;
                 }
             } catch (err: any) {
-                void Logger.logError({
-                    code: 'SUB450',
-                    description: 'Error while reading local file size. ',
-                    rawErrorCode: err.code,
-                    rawErrorMessage: err.message,
-                });
+                LOG.error(`Error while reading local file size: ${err.message}`, { zone: 'SUB' });
             }
 
             if (swing === 'fo') {
@@ -198,10 +176,7 @@ export const Submit: React.FC = () => {
                 setDTLVideo(platformURI);
                 setVideoSize((v) => ({ ...v, dtl: sizeMB }));
             } else {
-                void Logger.logError({
-                    code: 'SUB500',
-                    description: 'Invalid video type selection.',
-                });
+                LOG.error(`Invalid video type selection: ${swing}`, { zone: 'SUB' });
             }
         },
         [setFOVideo, setDTLVideo]

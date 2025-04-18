@@ -9,11 +9,13 @@ import { DrawerContent } from './DrawerContent';
 import {
     About,
     Blogs,
+    ErrorLogs,
     FAQ,
     ForgotPassword,
     Home,
     Lessons,
     Login,
+    Order,
     Record,
     Register,
     Settings,
@@ -118,7 +120,7 @@ const MainStackNavigator = () => (
 
         <AppStack.Screen name={ROUTES.SUBMIT} component={Submit} />
         <AppStack.Screen name={ROUTES.RECORD} component={Record} />
-        <AppStack.Screen name={ROUTES.ORDER} component={Home} />
+        <AppStack.Screen name={ROUTES.ORDER} component={Order} />
 
         <AppStack.Screen name={ROUTES.BLOGS} component={Blogs} />
         <AppStack.Screen name={ROUTES.BLOG} component={SingleBlog} />
@@ -131,7 +133,7 @@ const MainStackNavigator = () => (
 
         <AppStack.Screen name={ROUTES.PROS} component={Pros} />
 
-        <AppStack.Screen name={ROUTES.LOGS} component={Home} />
+        <AppStack.Screen name={ROUTES.LOGS} component={ErrorLogs} />
 
         <AppStack.Screen name={ROUTES.SETTINGS_GROUP} component={SettingsStackNavigator} />
     </AppStack.Navigator>

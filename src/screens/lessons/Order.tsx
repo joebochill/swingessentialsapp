@@ -1,19 +1,10 @@
 import React, { useEffect, useState, useCallback, JSX } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-// Components
+import { useSelector } from 'react-redux';
 import { Alert, ScrollView, RefreshControl, Platform } from 'react-native';
 import { requestPurchase, useIAP, ErrorCode } from 'react-native-iap';
-
-// Styles
 import bg from '../../images/banners/order.jpg';
-
-// Constants
 import { ROUTES } from '../../constants/routes';
-
-// Utilities
-import { Logger } from '../../utilities/logging';
-import { StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
 import { useNavigation } from '@react-navigation/core';
@@ -25,16 +16,26 @@ import { ListItem } from '../../components/ListItem';
 import { SEButton } from '../../components/SEButton';
 import { OrderTutorial } from '../../components/tutorials';
 import { Icon } from '../../components/Icon';
+import { selectCaptureMobileOrderState, useGetPackagesQuery } from '../../redux/apiServices/packagesService';
+import { useGetCreditsQuery } from '../../redux/apiServices/creditsService';
+import { RootState } from '../../redux/store';
+import { LOG } from '../../utilities/logs';
 
 export const Order: React.FC = () => {
-    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
-    const packages: any[] = []; //useSelector((state: ApplicationState) => state.packages.list);
-    const credits = {} as any; //useSelector((state: ApplicationState) => state.credits);
-    const packagesProcessing = false; //useSelector((state: ApplicationState) => state.packages.loading);
-    const role: string = ''; //useSelector((state: ApplicationState) => state.login.role);
-    const dispatch = useDispatch();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const theme = useAppTheme();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
+
+    const role = useSelector((state: RootState) => state.auth.role);
+    const { data: packages = [], isLoading: loadingPackages, refetch: refetchPackages } = useGetPackagesQuery();
+
+    const {
+        data: { count: credits = 0 } = {},
+        isLoading: loadingCredits,
+        refetch: refetchCredits,
+    } = useGetCreditsQuery();
+    const orderReference = useSelector((state: RootState) => state.order.activeOrderID) ?? '';
+    const { isSuccess, isLoading: capturing } = useSelector(selectCaptureMobileOrderState(orderReference));
 
     const { connected, products, getProducts } = useIAP();
 
@@ -54,7 +55,7 @@ export const Order: React.FC = () => {
 
     // Load the products from IAP
     useEffect(() => {
-        if (packages && connected) {
+        if (packages.length > 0 && connected) {
             try {
                 const skus: string[] = [];
                 for (let i = 0; i < packages.length; i++) {
@@ -63,30 +64,25 @@ export const Order: React.FC = () => {
                 void getProducts({ skus }); // await?
                 setSelected(0);
             } catch (err: any) {
-                void Logger.logError({
-                    code: 'IAP100',
-                    description: 'Failed to load in-app purchases.',
-                    rawErrorCode: err.code,
-                    rawErrorMessage: err.message,
-                });
+                LOG.error(`Error loading IAP products: ${err}`, { zone: 'IAP' });
             }
         }
-    }, [getProducts, packages, connected]);
+    }, [getProducts, packages.length, connected]);
 
     // Purchase Completed
     useEffect(() => {
-        if (credits.success) {
+        if (isSuccess) {
             Alert.alert('Purchase Complete', 'Your order has finished processing. Thank you for your purchase!', [
                 {
                     text: 'Submit Your Swing Now',
                     onPress: (): void => {
-                        // navigation.navigate(ROUTES.SUBMIT);
+                        navigation.navigate(ROUTES.SUBMIT);
                     },
                 },
                 { text: 'Later' },
             ]);
         }
-    }, [credits.success, navigation]);
+    }, [isSuccess, navigation]);
 
     const onPurchase = useCallback(
         async (sku: string, shortcode: string) => {
@@ -110,12 +106,7 @@ export const Order: React.FC = () => {
                 );
             } catch (error: any) {
                 if (error.code !== ErrorCode.E_USER_CANCELLED) {
-                    void Logger.logError({
-                        code: 'IAP200',
-                        description: 'Failed to request in-app purchase.',
-                        rawErrorCode: error.code,
-                        rawErrorMessage: error.message,
-                    });
+                    LOG.error(`Failed to request in-app purchase: ${error}`, { zone: 'IAP' });
                 }
             }
             // Purchase response is handled in RNIAPCallbacks.tsx
@@ -134,13 +125,14 @@ export const Order: React.FC = () => {
             />
             <ScrollView
                 {...scrollProps}
+                style={{ backgroundColor: theme.colors.background }}
                 contentContainerStyle={contentProps.contentContainerStyle}
                 refreshControl={
                     <RefreshControl
-                        refreshing={credits.inProgress}
+                        refreshing={capturing}
                         onRefresh={(): void => {
-                            // dispatch(loadCredits());
-                            // dispatch(loadPackages());
+                            refetchCredits();
+                            refetchPackages();
                         }}
                         progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
@@ -161,14 +153,14 @@ export const Order: React.FC = () => {
                             borderWidth: 1,
                             borderRadius: theme.roundness,
                             borderColor: theme.colors.outline,
-                            backgroundColor: theme.colors.primaryContainer,
+                            backgroundColor: theme.dark ? `${theme.colors.primary}4C` : theme.colors.primaryContainer,
                         }}
                     >
-                        <Typography variant={'displaySmall'} color={'primary'}>
-                            {credits.count}
+                        <Typography variant={'displaySmall'} color={theme.dark ? 'onPrimary' : 'primary'}>
+                            {credits}
                         </Typography>
-                        <Typography variant={'bodyLarge'} color={'primary'}>{`Credit${
-                            credits.count !== 1 ? 's' : ''
+                        <Typography variant={'bodyLarge'} color={theme.dark ? 'onPrimary' : 'primary'}>{`Credit${
+                            credits !== 1 ? 's' : ''
                         } Remaining`}</Typography>
                     </Stack>
                 )}
@@ -187,11 +179,11 @@ export const Order: React.FC = () => {
                             titleNumberOfLines={2}
                             titleEllipsizeMode={'tail'}
                             onPress={(): void => setSelected(index)}
-                            right={({ /*style,*/ ...rightProps }): JSX.Element => (
+                            right={({ style, ...rightProps }): JSX.Element => (
                                 <Stack
                                     direction={'row'}
                                     align={'center'}
-                                    style={[{ marginRight: -1 * theme.spacing.md } /*style*/]}
+                                    style={[{ marginRight: -1 * theme.spacing.md }, style]}
                                     {...rightProps}
                                 >
                                     <Typography variant={'labelMedium'}>{item.localPrice ?? '--'}</Typography>
@@ -199,7 +191,7 @@ export const Order: React.FC = () => {
                                         <Icon
                                             name={'check'}
                                             size={theme.size.md}
-                                            color={theme.colors.primary}
+                                            color={theme.colors.onPrimaryContainer}
                                             style={{ marginLeft: theme.spacing.sm }}
                                         />
                                     )}
@@ -211,11 +203,11 @@ export const Order: React.FC = () => {
                 <SEButton
                     style={[
                         { margin: theme.spacing.md },
-                        roleError.length === 0 && !packagesProcessing && !credits.inProgress ? {} : { opacity: 0.6 },
+                        roleError.length === 0 && packages.length > 0 && !capturing ? {} : { opacity: 0.6 },
                     ]}
                     title={'PURCHASE'}
                     onPress={
-                        roleError.length === 0 && !packagesProcessing && !credits.inProgress
+                        roleError.length === 0 && packages.length > 0 && !capturing
                             ? (): void => {
                                   void onPurchase(packages[selected].app_sku, packages[selected].shortcode);
                               }

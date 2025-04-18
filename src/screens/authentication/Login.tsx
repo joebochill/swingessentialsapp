@@ -1,24 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCompare } from '../../utilities';
-
-// Components
 import { Image, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-
-// Utilities
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
-import { Logger } from '../../utilities/logging';
-// Styles
 import { Switch } from 'react-native-paper';
 import { height } from '../../utilities/dimensions';
 import logo from '../../images/logo-big.png';
-
-// Constants
 import { ROUTES } from '../../constants/routes';
-
-import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
@@ -32,6 +23,7 @@ import { RootState } from '../../redux/store';
 import { useLoginMutation } from '../../redux/apiServices/authService';
 import { StyledTextInput } from '../../components/inputs/StyledTextInput';
 import { Icon } from '../../components/Icon';
+import { LOG } from '../../utilities/logs';
 
 type BiometryState = {
     available: boolean;
@@ -90,12 +82,7 @@ export const Login: React.FC = () => {
                 setRemember(save === 'yes');
                 setUseBiometry(use === 'yes');
             } catch (err: any) {
-                void Logger.logError({
-                    code: 'LGN100',
-                    description: 'Failed to load stored settings.',
-                    rawErrorCode: err.code,
-                    rawErrorMessage: err.message,
-                });
+                LOG.error(`Failed to load stored auth settings: ${err}`, { zone: 'AUTH' });
             }
         };
         void loadSavedSettings();
@@ -142,12 +129,7 @@ export const Login: React.FC = () => {
                     }));
                 }
             } catch (err: any) {
-                void Logger.logError({
-                    code: 'LGN200',
-                    description: 'Failed to load stored credentials.',
-                    rawErrorCode: err.code,
-                    rawErrorMessage: err.message,
-                });
+                LOG.error(`Failed to load stored credentials: ${err}`, { zone: 'AUTH' });
             }
         };
         void loadKeychainCredentials();

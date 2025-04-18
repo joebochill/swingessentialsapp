@@ -1,7 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-
-// Components
 import {
     Image,
     Platform,
@@ -13,14 +11,11 @@ import {
     ImageSourcePropType,
 } from 'react-native';
 import Video from 'react-native-video';
-
-// Overlay images
 import faceonLH from '../../images/overlay-fo-lh.png';
 import faceonRH from '../../images/overlay-fo-rh.png';
 import downthelineLH from '../../images/overlay-dtl-lh.png';
 import downthelineRH from '../../images/overlay-dtl-rh.png';
 import { ROUTES } from '../../constants/routes';
-import { Logger } from '../../utilities/logging';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { Camera, CameraDevice, useCameraDevice, useCameraFormat } from 'react-native-vision-camera';
@@ -35,6 +30,7 @@ import { CountDown, VideoControls, VideoTimer } from '../../components/videos';
 import { Icon } from '../../components/Icon';
 import { BLANK_USER, useGetUserDetailsQuery } from '../../redux/apiServices/userDetailsService';
 import { RootState } from '../../redux/store';
+import { LOG } from '../../utilities/logs';
 
 const getOverlayImage = (swing: SwingType, handedness: Handedness, camera: CameraType): ImageSourcePropType => {
     const options: ImageSourcePropType[] = swing === 'dtl' ? [downthelineRH, downthelineLH] : [faceonRH, faceonLH];
@@ -85,10 +81,7 @@ export const Record: React.FC = () => {
         setShowCountDown(false); // hide the countdown timer (if you stop before recording started)
 
         if (!camera || !camera.current) {
-            void Logger.logError({
-                code: 'REC200',
-                description: 'No camera object was found.',
-            });
+            LOG.error(`No camera object was found [end recording].`, { zone: 'REC' });
             return;
         }
         if (isRecording) {
@@ -101,10 +94,7 @@ export const Record: React.FC = () => {
     const startRecording = useCallback(() => {
         setShowCountDown(false);
         if (!camera || !camera.current || !cameraInitialized) {
-            void Logger.logError({
-                code: 'REC100',
-                description: 'No camera object was found/initialized.',
-            });
+            LOG.error(`No camera object was found [start recording].`, { zone: 'REC' });
             setIsRecording(false);
             return;
         }
@@ -117,10 +107,7 @@ export const Record: React.FC = () => {
             },
             onRecordingError: (error) => {
                 setRecordedVideo('');
-                void Logger.logError({
-                    code: 'REC200',
-                    description: `Recording error: ${error.message}`,
-                });
+                LOG.error(`Recording error: ${error.message}`, { zone: 'REC' });
             },
         });
         autoEndTimeout.current = setTimeout(() => {
@@ -183,7 +170,7 @@ export const Record: React.FC = () => {
                     style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
                 />
             )}
-            {recordingMode && user.camera_overlay && (
+            {recordingMode && Boolean(user.camera_overlay) && (
                 <Stack
                     align={'center'}
                     justify={'center'}

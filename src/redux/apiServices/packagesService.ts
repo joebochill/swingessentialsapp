@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_API_URL } from '../../constants';
 import { prepareHeaders } from './utils/prepareHeaders';
 import { creditsApi } from './creditsService';
+import { Platform } from 'react-native';
 
 export type Level0PackageDetails = {
     id: number;
@@ -14,20 +15,7 @@ export type Level0PackageDetails = {
 export type Level1PackageDetails = Level0PackageDetails & {
     app_sku: string;
 };
-export type Discount = {
-    type: 'amount' | 'percent';
-    value: string;
-    code: string;
-};
-export type FullDiscount = {
-    id: number;
-    code: string;
-    description: string;
-    type: 'percent' | 'amount';
-    value: string;
-    expires: number;
-    quantity: number;
-};
+
 export const packagesApi = createApi({
     reducerPath: 'packagesApi',
     baseQuery: fetchBaseQuery({
@@ -36,117 +24,31 @@ export const packagesApi = createApi({
     }),
     tagTypes: ['packages', 'discounts'],
     endpoints: (builder) => ({
-        getPackages: builder.query<Level0PackageDetails[], void>({
-            query: () => `packages`,
+        getPackages: builder.query<Level1PackageDetails[], void>({
+            query: () => `packages?detailLevel=1`,
             providesTags: ['packages'],
         }),
-        getDiscounts: builder.query<FullDiscount[], void>({
-            query: () => `packages/discounts`,
-            providesTags: ['discounts'],
-        }),
-        getDiscount: builder.mutation<Discount, string>({
-            query: (code) => `packages/discounts/${code}`,
-        }),
-        addDiscount: builder.mutation<void, Omit<FullDiscount, 'id'>>({
-            query: (newDiscount) => ({
-                url: `packages/discounts`,
-                method: 'POST',
-                body: newDiscount,
-            }),
-            invalidatesTags: ['discounts'],
-        }),
-        updateDiscount: builder.mutation<void, FullDiscount>({
-            query: (updatedDiscount) => ({
-                url: `packages/discounts/${updatedDiscount.id}`,
-                method: 'PATCH',
-                body: updatedDiscount,
-            }),
-            invalidatesTags: ['discounts'],
-        }),
-        removeDiscount: builder.mutation<void, { id: string | number }>({
-            query: (deletedDiscount) => ({
-                url: `packages/discounts/${deletedDiscount.id}`,
-                method: 'DELETE',
-            }),
-            invalidatesTags: ['discounts'],
-        }),
-        addPackage: builder.mutation<void, Omit<Level1PackageDetails, 'id'>>({
-            query: (newPackage) => ({
-                url: `packages`,
-                method: 'POST',
-                body: newPackage,
-            }),
-            invalidatesTags: ['packages'],
-        }),
-        updatePackage: builder.mutation<void, Level1PackageDetails>({
-            query: (updatedPackage) => ({
-                url: `packages/${updatedPackage.id}`,
-                method: 'PATCH',
-                body: updatedPackage,
-            }),
-            invalidatesTags: ['packages'],
-        }),
-        removePackage: builder.mutation<void, { id: string | number }>({
-            query: (deletedPackage) => ({
-                url: `packages/${deletedPackage.id}`,
-                method: 'DELETE',
-            }),
-            invalidatesTags: ['packages'],
-        }),
-        createPayPalOrder: builder.mutation<{ id: string }, { packageId: number; coupon: string; total: number }>({
+        captureMobileOrder: builder.mutation<void, { orderId: string; packageId: number }>({
             query: (body) => ({
-                url: `packages/order`,
+                url: `packages/order/${body.orderId}/capture-mobile`,
                 method: 'POST',
-                body: body,
-            }),
-        }),
-        capturePayPalOrder: builder.mutation<
-            void,
-            { orderId: string; packageId: number; coupon?: string; total: number }
-        >({
-            query: (body) => ({
-                url: `packages/order/${body.orderId}/capture`,
-                method: 'POST',
-                body,
+                body: {
+                    ...body,
+                    platform: Platform.OS,
+                },
             }),
             onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
                 try {
                     await queryFulfilled;
                     dispatch(creditsApi.util.invalidateTags(['credits']));
                 } catch (error) {
-                    console.error('Error capturing PayPal order:', error);
-                }
-            },
-        }),
-        captureFreeOrder: builder.mutation<void, { packageId: number; coupon?: string; total: number }>({
-            query: (body) => ({
-                url: `packages/order/capture-free`,
-                method: 'POST',
-                body,
-            }),
-            onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
-                try {
-                    await queryFulfilled;
-                    dispatch(creditsApi.util.invalidateTags(['credits']));
-                } catch (error) {
-                    console.error('Error capturing free order:', error);
+                    console.error('Error capturing Mobile order:', error);
                 }
             },
         }),
     }),
 });
 
-export const {
-    useGetPackagesQuery,
-    useAddPackageMutation,
-    useUpdatePackageMutation,
-    useRemovePackageMutation,
-    useGetDiscountMutation,
-    useGetDiscountsQuery,
-    useCreatePayPalOrderMutation,
-    useCapturePayPalOrderMutation,
-    useCaptureFreeOrderMutation,
-    useAddDiscountMutation,
-    useUpdateDiscountMutation,
-    useRemoveDiscountMutation,
-} = packagesApi;
+export const { useGetPackagesQuery, useCaptureMobileOrderMutation } = packagesApi;
+export const selectCaptureMobileOrderState = (requestId: string) =>
+    packagesApi.endpoints.captureMobileOrder.select(requestId);

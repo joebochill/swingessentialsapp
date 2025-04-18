@@ -2,7 +2,6 @@ NEW TODOS:
 
 - Migrate pages
     - Order
-    - LOGS
 - Integrate Tutorials
 - Check out console LOGS
 - Reconfigure error logging
@@ -18,6 +17,8 @@ NEW TODOS:
 - Loading/refreshing lessons after log out / log in and vice versa
 - Get rid of getLongDate
 - Removed all unused functions, files, types
+- Add a network/back-end connectivity check/banner
+
 
 
 
