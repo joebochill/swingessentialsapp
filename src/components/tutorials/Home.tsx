@@ -1,20 +1,13 @@
-import React, { JSX, useState } from 'react';
-
-// Components
+import React, { useState } from 'react';
 import { View } from 'react-native';
-import MatIcon from '@react-native-vector-icons/material-icons';
-// import { Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './Tutorial';
-// import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-// Styles
-import { width } from '../../utilities/dimensions';
-import { useSelector, useDispatch } from 'react-redux';
-import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
+import { useDispatch } from 'react-redux';
 import { useAppTheme } from '../../theme';
 import { Stack } from '../layout';
 import { Typography } from '../typography';
+import { Icon } from '../Icon';
 
 export const HomeTutorial: React.FC = () => {
     const [activePanel, setActivePanel] = useState(0);
@@ -53,7 +46,7 @@ export const HomeTutorial: React.FC = () => {
             >
                 {'You can sign in or register for an account by clicking the account icon in the header.'}
             </Typography>
-            <MatIcon name="person" color={'white'} size={theme.size.xl} style={{ marginVertical: theme.spacing.lg }} />
+            <Icon name="person" color={'white'} size={theme.size.xl} style={{ marginVertical: theme.spacing.lg }} />
         </Stack>,
     ];
 

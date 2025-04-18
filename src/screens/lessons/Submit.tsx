@@ -1,15 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { usePrevious } from '../../utilities';
-import { useSelector, useDispatch } from 'react-redux';
-import { Platform, KeyboardAvoidingView, ScrollView, TouchableOpacity, Alert, Keyboard } from 'react-native';
-import MatIcon from '@react-native-vector-icons/material-icons';
-import { Paragraph, TextInput } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+import { Platform, KeyboardAvoidingView, ScrollView, TouchableOpacity, Alert, Keyboard, View } from 'react-native';
+import { Paragraph } from 'react-native-paper';
 import bg from '../../images/banners/submit.jpg';
-import dtl from '../../images/down-the-line.png';
-import fo from '../../images/face-on.png';
 import { ROUTES } from '../../constants/routes';
 import { Logger } from '../../utilities/logging';
-import { StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../../components/videos/SwingVideo';
 import { Header, useCollapsibleHeader } from '../../components/CollapsibleHeader';
@@ -22,43 +18,39 @@ import { SEButton } from '../../components/SEButton';
 import { SubmitTutorial } from '../../components/tutorials';
 import { StyledTextInput } from '../../components/inputs/StyledTextInput';
 
-const RNFS = require('react-native-fs');
-
-const getErrorMessage = (code: number | null): string => {
-    switch (code) {
-        // Missing or corrupt video
-        case 400701:
-            return 'One or more of the videos are missing or corrupted. If this error persists, please contact us.';
-
-        // Size too large
-        case 400702:
-            return 'The videos you have submitted are too large. Please edit the videos to be smaller and/or avoid the use of slow-motion video. If this error persists, please contact us.';
-
-        // Invalid video format
-        case 400703:
-            return 'The videos you have submitted are in an unsupported format. We support .mov, .mp4, and .mpeg files. If you continue to see this error, please contact us.';
-
-        // Unknown
-        default:
-            return 'There was an unexpected error while submitting your swing videos. Please try again later or contact us if the problem persists.';
-    }
-};
+import RNFS from 'react-native-fs';
+import { useGetCreditsQuery } from '../../redux/apiServices/creditsService';
+import { RootState } from '../../redux/store';
+import { useAddLessonRequestMutation, useGetPendingLessonsQuery } from '../../redux/apiServices/lessonsService';
+import { Icon } from '../../components/Icon';
 
 export const Submit: React.FC = () => {
-    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const theme = useAppTheme();
+    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
+    const scroller = useRef<ScrollView>(null);
+
+    const token = useSelector((state: RootState) => state.auth.token);
+    const role = useSelector((state: RootState) => state.auth.role);
+
+    const {
+        data: { count: credits = 0 } = {},
+        isUninitialized: creditsUninitialized,
+        isFetching: loadingCredits,
+    } = useGetCreditsQuery(undefined, { skip: !token });
+    const {
+        data: { data: pendingLessons = [] } = {},
+        isFetching: loadingPending,
+        isSuccess: lessonsLoaded,
+    } = useGetPendingLessonsQuery('');
+    const [redeemLesson, { isSuccess, isError, error, isLoading: redeeming }] = useAddLessonRequestMutation();
+
     const [foVideo, setFOVideo] = useState('');
     const [dtlVideo, setDTLVideo] = useState('');
     const [useNotes, setUseNotes] = useState(false);
     const [notes, setNotes] = useState('');
     const [videoSize, setVideoSize] = useState({ fo: 0, dtl: 0 });
     const [uploadProgress, setUploadProgress] = useState(0);
-    const credits = 0; //useSelector((state: ApplicationState) => state.credits.count);
-    const lessons = {} as any; //useSelector((state: ApplicationState) => state.lessons);
-    const role: string = ''; //useSelector((state: ApplicationState) => state.login.role);
-    const scroller = useRef(null);
-    const dispatch = useDispatch();
-    const theme = useAppTheme();
-    const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     const roleError =
         role === 'anonymous'
@@ -66,8 +58,6 @@ export const Submit: React.FC = () => {
             : role === 'pending'
             ? 'You must validate your email address before you can submit lessons'
             : '';
-
-    const previousPendingStatus = usePrevious(lessons.redeemPending);
 
     const clearAllFields = useCallback(() => {
         setFOVideo('');
@@ -78,57 +68,51 @@ export const Submit: React.FC = () => {
     }, [setFOVideo, setDTLVideo, setNotes, setUseNotes, setUploadProgress]);
 
     useEffect(() => {
-        // let timeout = 0;
-        // Submission finished
-        if (previousPendingStatus && !lessons.redeemPending) {
-            if (lessons.redeemSuccess) {
-                // Successful redeem
-                clearAllFields();
-                /*timeout = */ setTimeout(() => {
-                    Alert.alert(
-                        'Success!',
-                        'Your lesson request was submitted successfully. We are working on your analysis.'
-                        // [{ text: 'OK', onPress: (): void => navigation.navigate(ROUTES.LESSONS) }],
-                        // { cancelable: false }
-                    );
-                }, 700);
-                // return () => clearTimeout(timeout);
-            } else {
-                // Fail redeem
-                void Logger.logError({
-                    code: 'SUB100',
-                    description: 'Failed to submit lesson.',
-                    rawErrorCode: lessons.redeemError,
-                });
-                // 400701 means files were stripped for size
-                // 400702 too large
-                setUploadProgress(0);
-                /*timeout = */ setTimeout(() => {
-                    Alert.alert('Oops:', getErrorMessage(lessons.redeemError), [{ text: 'OK' }]);
-                }, 700);
-                // return () => clearTimeout(timeout);
-            }
+        let timeout: NodeJS.Timeout;
+        if (isSuccess) {
+            clearAllFields();
+            timeout = setTimeout(() => {
+                Alert.alert(
+                    'Success!',
+                    'Your lesson request was submitted successfully. We are working on your analysis.',
+                    [{ text: 'OK', onPress: (): void => navigation.navigate(ROUTES.LESSONS) }],
+                    { cancelable: false }
+                );
+            }, 700);
+            return () => clearTimeout(timeout);
         }
-    }, [
-        lessons.redeemPending,
-        previousPendingStatus,
-        lessons.redeemError,
-        lessons.redeemSuccess,
-        clearAllFields,
-        navigation,
-    ]);
+    }, [isSuccess, clearAllFields]);
+
+    useEffect(() => {
+        let timeout: NodeJS.Timeout;
+        if (isError) {
+            const err = error as { data: { message: string } };
+            void Logger.logError({
+                code: 'SUB100',
+                description: 'Failed to submit lesson.',
+                rawErrorCode: err.data.message,
+            });
+            setUploadProgress(0);
+            console.log(error);
+            timeout = setTimeout(() => {
+                Alert.alert('Oops:', err.data.message as string, [{ text: 'OK' }]);
+            }, 700);
+            return () => clearTimeout(timeout);
+        }
+    }, [isError, error]);
 
     const canSubmit = useCallback(
         () =>
             roleError.length === 0 &&
-            !lessons.redeemPending &&
+            !redeeming &&
             foVideo !== '' &&
             dtlVideo !== '' &&
-            lessons.pending.length <= 0,
-        [roleError, lessons, foVideo, dtlVideo]
+            lessonsLoaded &&
+            pendingLessons.length <= 0,
+        [roleError, redeeming, foVideo, dtlVideo, lessonsLoaded, pendingLessons]
     );
 
-    const dispatchSubmitLesson = useCallback(() => {
+    const submitLesson = useCallback(() => {
         Keyboard.dismiss();
         if (role !== 'customer' && role !== 'administrator') {
             void Logger.logError({
@@ -137,7 +121,7 @@ export const Submit: React.FC = () => {
             });
             return;
         }
-        if (lessons.pending.length > 0) {
+        if (pendingLessons.length > 0) {
             void Logger.logError({
                 code: 'SUB300',
                 description: 'You may not submit a new lesson with a current lesson pending.',
@@ -171,12 +155,13 @@ export const Submit: React.FC = () => {
         });
         data.append('notes', notes);
 
-        // dispatch(
-        //     submitLesson(data, (event: ProgressEvent) => {
-        //         setUploadProgress((event.loaded / event.total) * 100);
-        //     })
-        // );
-    }, [role, credits, lessons.pending.length, foVideo, dtlVideo, notes, dispatch]);
+        redeemLesson({
+            data,
+            progressCallback: (event: ProgressEvent) => {
+                setUploadProgress((event.loaded / event.total) * 100);
+            },
+        });
+    }, [role, pendingLessons, credits, foVideo, dtlVideo, notes]);
 
     const setVideoURI = useCallback(
         async (swing: 'fo' | 'dtl', uri: string): Promise<void> => {
@@ -234,6 +219,7 @@ export const Submit: React.FC = () => {
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <ScrollView
                     {...scrollProps}
+                    style={{ backgroundColor: theme.colors.background }}
                     contentContainerStyle={{
                         ...contentProps.contentContainerStyle,
                         paddingHorizontal: theme.spacing.md,
@@ -243,14 +229,14 @@ export const Submit: React.FC = () => {
                 >
                     <ErrorBox show={roleError !== ''} error={roleError} style={{ marginTop: theme.spacing.md }} />
                     <ErrorBox
-                        show={lessons.pending.length > 0}
+                        show={pendingLessons.length > 0}
                         error={
                             'You already have a swing analysis in progress. Please wait for that analysis to finish before submitting a new swing. We guarantee a 48-hour turnaround on all lessons.'
                         }
                         style={{ marginTop: theme.spacing.md }}
                     />
                     <ErrorBox
-                        show={roleError.length === 0 && lessons.pending.length === 0 && credits < 1}
+                        show={roleError.length === 0 && pendingLessons.length === 0 && credits < 1}
                         error={"You don't have any credits left. Head over to the Order page to get more."}
                         style={{ marginTop: theme.spacing.md }}
                     />
@@ -259,13 +245,10 @@ export const Submit: React.FC = () => {
                     <Stack direction={'row'} justify={'space-between'}>
                         <Stack align={'center'}>
                             <SwingVideo
-                                // navigation={navigation}
+                                navigation={navigation}
                                 type={'fo'}
                                 source={foVideo ? { uri: foVideo } : undefined}
                                 editable
-                                PlaceholderProps={{
-                                    backgroundImage: fo,
-                                }}
                                 onSourceChange={(src) => {
                                     void setVideoURI('fo', src.uri || '');
                                 }}
@@ -276,13 +259,10 @@ export const Submit: React.FC = () => {
                         </Stack>
                         <Stack align={'center'}>
                             <SwingVideo
-                                // navigation={navigation}
+                                navigation={navigation}
                                 type={'dtl'}
                                 source={dtlVideo ? { uri: dtlVideo } : undefined}
                                 editable
-                                PlaceholderProps={{
-                                    backgroundImage: dtl,
-                                }}
                                 onSourceChange={(src) => {
                                     void setVideoURI('dtl', src.uri || '');
                                 }}
@@ -300,10 +280,10 @@ export const Submit: React.FC = () => {
                             borderWidth: 1,
                             borderRadius: theme.roundness,
                             borderColor: theme.colors.outline,
-                            backgroundColor: theme.colors.primaryContainer,
+                            backgroundColor: theme.dark ? `${theme.colors.primary}4C` : theme.colors.primaryContainer,
                         }}
                     >
-                        <Typography variant={'bodySmall'} color={'primary'}>
+                        <Typography variant={'bodySmall'} color={theme.dark ? 'onPrimary' : 'onPrimaryContainer'}>
                             <Typography fontWeight={'semiBold'}>{`TIP: `}</Typography>
                             {`Avoid slo-mo videos to stay below the file size limit.`}
                         </Typography>
@@ -318,7 +298,10 @@ export const Submit: React.FC = () => {
                                     borderWidth: 1,
                                     borderRadius: theme.roundness,
                                     borderStyle: 'dashed',
-                                    backgroundColor: theme.colors.surface,
+                                    borderColor: theme.colors.outline,
+                                    backgroundColor: theme.dark
+                                        ? `${theme.colors.primary}4C`
+                                        : theme.colors.primaryContainer,
                                     padding: theme.spacing.md,
                                     minHeight: 2 * theme.size.xl,
                                     alignItems: 'center',
@@ -327,7 +310,11 @@ export const Submit: React.FC = () => {
                             ]}
                             onPress={(): void => setUseNotes(true)}
                         >
-                            <MatIcon name={'add-circle'} color={theme.colors.onPrimaryContainer} size={theme.size.md} />
+                            <Icon
+                                name={'add-circle'}
+                                color={theme.dark ? theme.colors.onPrimary : theme.colors.onPrimaryContainer}
+                                size={theme.size.md}
+                            />
                         </TouchableOpacity>
                     )}
                     {useNotes && (
@@ -335,14 +322,14 @@ export const Submit: React.FC = () => {
                             <StyledTextInput
                                 autoCapitalize={'sentences'}
                                 autoFocus
-                                blurOnSubmit={true}
-                                editable={!lessons.redeemPending}
+                                submitBehavior={'blurAndSubmit'}
+                                editable={!redeeming}
                                 maxLength={500}
                                 multiline
                                 onChangeText={(val): void => setNotes(val)}
                                 onFocus={(): void => {
                                     if (scroller.current) {
-                                        // scroller.current.scrollTo({ x: 0, y: 350, animated: true });
+                                        scroller.current.scrollTo({ x: 0, y: 350, animated: true });
                                     }
                                 }}
                                 returnKeyType={'done'}
@@ -352,6 +339,7 @@ export const Submit: React.FC = () => {
                                 value={notes}
                                 style={{
                                     minHeight: 2 * theme.size.xl,
+                                    backgroundColor: theme.colors.surface,
                                 }}
                                 placeholder={'e.g., Help me with my slice!'}
                             />
@@ -363,11 +351,11 @@ export const Submit: React.FC = () => {
                     <SEButton
                         style={[{ marginTop: theme.spacing.md }, canSubmit() ? {} : { opacity: 0.6 }]}
                         title={'SUBMIT'}
-                        onPress={canSubmit() ? (): void => dispatchSubmitLesson() : undefined}
+                        onPress={canSubmit() ? (): void => submitLesson() : undefined}
                     />
                 </ScrollView>
             </KeyboardAvoidingView>
-            {lessons.redeemPending && <UploadProgressModal progress={uploadProgress} visible={lessons.redeemPending} />}
+            {redeeming && <UploadProgressModal progress={uploadProgress} visible={redeeming} />}
             <SubmitTutorial />
         </>
     );

@@ -1,7 +1,6 @@
 import React, { JSX, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RefreshControl, SectionList } from 'react-native';
-import MatIcon from '@react-native-vector-icons/material-icons';
 import bg from '../../images/banners/lessons.jpg';
 import { ROUTES } from '../../constants/routes';
 import { getLongDate, makeGroups } from '../../utilities';
@@ -22,6 +21,7 @@ import {
 } from '../../redux/apiServices/lessonsService';
 import { RootState } from '../../redux/store';
 import { format } from 'date-fns';
+import { Icon } from '../../components/Icon';
 
 type Lesson = {
     request_id: number;
@@ -132,7 +132,7 @@ export const Lessons: React.FC = () => {
                                 <Typography variant={'labelMedium'} style={{ marginRight: theme.spacing.sm }}>
                                     NEW
                                 </Typography>
-                                <MatIcon
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.onPrimaryContainer}
@@ -174,7 +174,7 @@ export const Lessons: React.FC = () => {
                                             NEW
                                         </Typography>
                                     )}
-                                    <MatIcon
+                                    <Icon
                                         name={'chevron-right'}
                                         size={theme.size.md}
                                         color={theme.colors.onPrimaryContainer}

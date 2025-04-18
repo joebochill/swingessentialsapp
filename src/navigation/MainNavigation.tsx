@@ -14,12 +14,14 @@ import {
     Home,
     Lessons,
     Login,
+    Record,
     Register,
     Settings,
     SingleBlog,
     SingleLesson,
     SingleSetting,
     SingleTip,
+    Submit,
     Tips,
 } from '../screens';
 import { Pros } from '../screens/help/Pros';
@@ -58,7 +60,10 @@ export type RootStackParamList = {
     };
 
     [ROUTES.SUBMIT]: undefined;
-    [ROUTES.RECORD]: undefined;
+    [ROUTES.RECORD]: {
+        onReturn: (uri: string) => void;
+        swing: 'fo' | 'dtl';
+    };
     [ROUTES.ORDER]: undefined;
 
     [ROUTES.BLOGS]: undefined;
@@ -111,8 +116,8 @@ const MainStackNavigator = () => (
         <AppStack.Screen name={ROUTES.LESSONS} component={Lessons} />
         <AppStack.Screen name={ROUTES.LESSON} component={SingleLesson} />
 
-        <AppStack.Screen name={ROUTES.SUBMIT} component={Home} />
-        <AppStack.Screen name={ROUTES.RECORD} component={Home} />
+        <AppStack.Screen name={ROUTES.SUBMIT} component={Submit} />
+        <AppStack.Screen name={ROUTES.RECORD} component={Record} />
         <AppStack.Screen name={ROUTES.ORDER} component={Home} />
 
         <AppStack.Screen name={ROUTES.BLOGS} component={Blogs} />

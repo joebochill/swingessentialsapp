@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect, JSX } from 'react';
 import { Animated, AppState, AppStateStatus, Image, Alert, ScrollView, Pressable } from 'react-native';
 import { NavigationItems } from './navigationConfig';
-import MatIcon from '@react-native-vector-icons/material-icons';
 import { APP_VERSION, BASE_URL, DRAWER_WIDTH } from '../constants';
 import { ROUTES } from '../constants/routes';
 import { List } from 'react-native-paper';
@@ -19,7 +18,7 @@ import { RootState } from '../redux/store';
 import { initializeData } from '../redux/thunks';
 import { AppDispatch } from '../redux/store';
 import { useLogoutMutation } from '../redux/apiServices/authService';
-import { MaterialIconName } from '../components/Icon';
+import { Icon, MaterialIconName } from '../components/Icon';
 import { TokenModal } from '../components/feedback';
 import { useToggleTheme } from '../theme/ThemeProvider';
 import { format } from 'date-fns';
@@ -175,7 +174,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                                             left={(): JSX.Element => (
                                                 <List.Icon
                                                     icon={({ size, color }): JSX.Element => (
-                                                        <MatIcon
+                                                        <Icon
                                                             name={item.icon as MaterialIconName}
                                                             size={size}
                                                             color={color}
@@ -225,7 +224,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                                                               style={[style]}
                                                               {...rightProps}
                                                           >
-                                                              <MatIcon
+                                                              <Icon
                                                                   name={'chevron-right'}
                                                                   size={theme.size.sm}
                                                                   color={theme.colors.onPrimaryContainer}

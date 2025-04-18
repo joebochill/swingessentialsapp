@@ -5,7 +5,6 @@ import DeviceInfo from 'react-native-device-info';
 // Components
 import { View, TouchableOpacity, ViewProps, Platform } from 'react-native';
 import YoutubePlayer, { YoutubeIframeRef } from 'react-native-youtube-iframe';
-import MatIcon from '@react-native-vector-icons/material-icons';
 import Modal from 'react-native-modal';
 
 // Styles
@@ -14,6 +13,7 @@ import { useAppTheme } from '../../theme';
 import { Logger } from '../../utilities/logging';
 import { Stack } from '../layout';
 import { Paragraph, Typography } from '../typography';
+import { Icon } from '../Icon';
 
 type YoutubeCardHeaderProps = {
     title?: string;
@@ -50,7 +50,7 @@ export const YoutubeCardHeader: React.FC<YoutubeCardHeaderProps> = (props) => {
             </Stack>
             {onExpand && (
                 <TouchableOpacity onPress={onExpand} style={{ marginLeft: theme.spacing.sm }}>
-                    <MatIcon name={'open-in-new'} color={theme.colors.onPrimary} size={theme.size.sm} />
+                    <Icon name={'open-in-new'} color={theme.colors.onPrimary} size={theme.size.sm} />
                 </TouchableOpacity>
             )}
         </Stack>

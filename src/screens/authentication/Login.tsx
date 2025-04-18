@@ -1,10 +1,9 @@
-import React, { ComponentRef, RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCompare } from '../../utilities';
 
 // Components
 import { Image, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
-import MatIcon from '@react-native-vector-icons/material-icons';
 
 // Utilities
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,7 +11,7 @@ import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
 import { Logger } from '../../utilities/logging';
 // Styles
-import { TextInput, Switch } from 'react-native-paper';
+import { Switch } from 'react-native-paper';
 import { height } from '../../utilities/dimensions';
 import logo from '../../images/logo-big.png';
 
@@ -32,6 +31,7 @@ import { SEButton } from '../../components/SEButton';
 import { RootState } from '../../redux/store';
 import { useLoginMutation } from '../../redux/apiServices/authService';
 import { StyledTextInput } from '../../components/inputs/StyledTextInput';
+import { Icon } from '../../components/Icon';
 
 type BiometryState = {
     available: boolean;
@@ -282,7 +282,7 @@ export const Login: React.FC = () => {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    <MatIcon
+                                    <Icon
                                         name={'fingerprint'}
                                         size={theme.size.md}
                                         color={theme.colors.onPrimaryContainer}

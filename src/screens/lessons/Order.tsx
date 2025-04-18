@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 // Components
 import { Alert, ScrollView, RefreshControl, Platform } from 'react-native';
 import { requestPurchase, useIAP, ErrorCode } from 'react-native-iap';
-import MatIcon from '@react-native-vector-icons/material-icons';
 
 // Styles
 import bg from '../../images/banners/order.jpg';
@@ -25,6 +24,7 @@ import { Typography } from '../../components/typography';
 import { ListItem } from '../../components/ListItem';
 import { SEButton } from '../../components/SEButton';
 import { OrderTutorial } from '../../components/tutorials';
+import { Icon } from '../../components/Icon';
 
 export const Order: React.FC = () => {
     const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
@@ -196,7 +196,7 @@ export const Order: React.FC = () => {
                                 >
                                     <Typography variant={'labelMedium'}>{item.localPrice ?? '--'}</Typography>
                                     {selected === index && (
-                                        <MatIcon
+                                        <Icon
                                             name={'check'}
                                             size={theme.size.md}
                                             color={theme.colors.primary}

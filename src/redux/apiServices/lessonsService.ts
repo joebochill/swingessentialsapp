@@ -98,32 +98,49 @@ export const lessonsApi = createApi({
             invalidatesTags: ['lessons', 'lessonDetails'],
         }),
         addLessonRequest: builder.mutation<void, { data: FormData; progressCallback: (e: ProgressEvent) => void }>({
-            queryFn: async (args) => {
-                const { data, progressCallback } = args;
+            queryFn: async (args, api, extraOptions, baseQuery) => {
+                try {
+                    const { data, progressCallback } = args;
 
-                return new Promise(async (resolve, reject) => {
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('POST', `${BASE_API_URL}/lessons/redeem`);
+                    const result = await new Promise<{ data: any }>((resolve, reject) => {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', `${BASE_API_URL}/lessons/redeem`);
 
-                    // Retrieve the token from AsyncStorage
-                    const token = await AsyncStorage.getItem(`${ASYNC_PREFIX}token`);
-                    if (token) {
-                        xhr.setRequestHeader(AUTH, `Bearer ${token}`);
-                    }
+                        // Retrieve the token from AsyncStorage
+                        AsyncStorage.getItem(`${ASYNC_PREFIX}token`).then((token) => {
+                            if (token) {
+                                xhr.setRequestHeader(AUTH, `Bearer ${token}`);
+                            }
 
-                    xhr.upload.onprogress = progressCallback;
+                            xhr.upload.onprogress = progressCallback;
 
-                    xhr.onload = () => {
-                        if (xhr.status >= 200 && xhr.status < 300) {
-                            resolve({ data: JSON.parse(xhr.responseText) });
-                        } else {
-                            reject({ error: xhr.statusText });
-                        }
+                            xhr.onload = () => {
+                                if (xhr.status >= 200 && xhr.status < 300) {
+                                    resolve({ data: JSON.parse(xhr.responseText) });
+                                } else {
+                                    reject({
+                                        status: xhr.status,
+                                        statusText: xhr.statusText,
+                                        response: JSON.parse(xhr.responseText),
+                                    });
+                                }
+                            };
+
+                            xhr.onerror = () => reject({ error: xhr.statusText });
+                            xhr.send(data);
+                        });
+                    });
+
+                    return { data: result.data };
+                } catch (error: unknown) {
+                    const err = error as { status: number; statusText: string; response: { message: string } };
+                    return {
+                        error: {
+                            status: err.status,
+                            data: { message: err.response.message || 'An unknown error occurred' },
+                        },
                     };
-
-                    xhr.onerror = () => reject({ error: xhr.statusText });
-                    xhr.send(data);
-                });
+                }
             },
             invalidatesTags: ['lessons'],
         }),

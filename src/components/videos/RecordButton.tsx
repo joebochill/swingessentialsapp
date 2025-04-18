@@ -1,13 +1,9 @@
 import React from 'react';
-
-// Components
 import { View, ViewProps, TouchableOpacityProps, GestureResponderEvent, TouchableOpacity } from 'react-native';
-import MatIcon from '@react-native-vector-icons/material-icons';
-
-// Utilities
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppTheme } from '../../theme';
 import { Typography } from '../typography';
+import { Icon } from '../Icon';
 
 type RecordButtonProps = TouchableOpacityProps & {
     recording: boolean;
@@ -98,7 +94,7 @@ export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
                 )}
             </TouchableOpacity>
             {mode === 'play' && (
-                <MatIcon
+                <Icon
                     name={active ? 'pause' : 'play-arrow'}
                     size={theme.size.xl}
                     // underlayColor={transparent}
@@ -115,8 +111,8 @@ export const VideoControls: React.FC<VideoControlRowProps> = (props) => {
                     </Typography>
                 )}
                 {!active && mode === 'record' && (
-                    <MatIcon
-                        name={'cameraswitch'}
+                    <Icon
+                        name={'flip-camera-ios'}
                         size={theme.size.md}
                         // underlayColor={transparent}
                         color={theme.colors.onPrimary}

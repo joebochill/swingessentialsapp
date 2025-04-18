@@ -1,14 +1,7 @@
 import React, { JSX, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-// Components
 import { View } from 'react-native';
-// import { Typography } from '../';
-// import { SEButton, Stack } from '..';
 import { TutorialModal } from '.';
-// import Carousel, { Pagination } from 'react-native-snap-carousel';
-import MatIcon from '@react-native-vector-icons/material-icons';
-// Styles
 import { width } from '../../utilities/dimensions';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
 import { RecordButton } from '../videos';
@@ -17,6 +10,7 @@ import { SwingVideo } from '../videos/SwingVideo';
 import { Stack } from '../layout';
 import { Typography } from '../typography';
 import { SEButton } from '../SEButton';
+import { Icon } from '../Icon';
 
 export const SubmitTutorial: React.FC = () => {
     const [activePanel, setActivePanel] = useState(0);
@@ -77,7 +71,7 @@ export const SubmitTutorial: React.FC = () => {
             >
                 {'You can adjust your settings for recording length and delay by clicking the settings icon.'}
             </Typography>
-            <MatIcon
+            <Icon
                 name="settings"
                 color={theme.colors.onPrimary}
                 size={theme.size.xl}

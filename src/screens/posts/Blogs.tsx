@@ -1,6 +1,5 @@
 import React, { JSX, useMemo } from 'react';
 import { View, SectionList, RefreshControl } from 'react-native';
-import MatIcon from '@react-native-vector-icons/material-icons';
 import { ROUTES } from '../../constants/routes';
 import bg from '../../images/banners/19th.jpg';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -11,6 +10,7 @@ import { useNavigation } from '@react-navigation/core';
 import { SectionHeader } from '../../components/layout';
 import { ListItem } from '../../components/ListItem';
 import { BlogDetailsWithYear, useGetBlogsQuery } from '../../redux/apiServices/blogsService';
+import { Icon } from '../../components/Icon';
 
 export const Blogs: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -83,7 +83,7 @@ export const Blogs: React.FC = () => {
                         onPress={(): void => navigation.push(ROUTES.BLOG, { blog: item.id })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[style]} {...rightProps}>
-                                <MatIcon
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.onPrimaryContainer}

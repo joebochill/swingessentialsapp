@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect, JSX } from 'react';
 import { useSelector } from 'react-redux';
-import MatIcon from '@react-native-vector-icons/material-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
 import { Header } from '../../components/CollapsibleHeader/Header';
@@ -19,6 +18,7 @@ import { ListItem } from '../../components/ListItem';
 import { Typography } from '../../components/typography';
 import { RootState } from '../../redux/store';
 import { SETTINGS, SettingType } from './shared';
+import { Icon } from '../../components/Icon';
 
 export const SingleSetting: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<SettingsStackParamList>>();
@@ -87,7 +87,7 @@ export const SingleSetting: React.FC = () => {
                         right={({ style, ...rightProps }): JSX.Element => (
                             <Stack direction={'row'} align={'center'} style={[style]} {...rightProps}>
                                 {value === val && (
-                                    <MatIcon
+                                    <Icon
                                         name={'check'}
                                         size={theme.size.md}
                                         color={theme.colors.onPrimaryContainer}

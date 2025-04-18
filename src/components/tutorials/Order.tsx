@@ -1,12 +1,7 @@
 import React, { JSX } from 'react';
-// Components
 import { View } from 'react-native';
-import MatIcon from '@react-native-vector-icons/material-icons';
-// import { ListItem, Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
-// import Carousel from 'react-native-snap-carousel';
-// Styles
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
@@ -14,6 +9,7 @@ import { useAppTheme } from '../../theme';
 import { Stack } from '../layout';
 import { Typography } from '../typography';
 import { ListItem } from '../ListItem';
+import { Icon } from '../Icon';
 
 export const OrderTutorial: React.FC = () => {
     const packages: any[] = []; //useSelector((state: ApplicationState) => state.packages.list);
@@ -58,7 +54,7 @@ export const OrderTutorial: React.FC = () => {
                                     {packages.length > 0 ? `$${item.price}` : '--'}
                                 </Typography>
                                 {index === 0 && (
-                                    <MatIcon
+                                    <Icon
                                         name={'check'}
                                         size={theme.size.md}
                                         color={theme.colors.primary}

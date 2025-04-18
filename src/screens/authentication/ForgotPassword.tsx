@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Platform, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { height } from '../../utilities/dimensions';
-import MatIcon from '@react-native-vector-icons/material-icons';
 import { useDispatch } from 'react-redux';
 import { EMAIL_REGEX } from '../../constants';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -17,6 +16,7 @@ import { Typography } from '../../components/typography';
 import { SEButton } from '../../components/SEButton';
 import { StyledTextInput } from '../../components/inputs/StyledTextInput';
 import { useSendResetPasswordEmailMutation } from '../../redux/apiServices/authService';
+import { Icon } from '../../components/Icon';
 
 export const ForgotPassword: React.FC = () => {
     const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
@@ -93,7 +93,7 @@ export const ForgotPassword: React.FC = () => {
                     )}
                     {complete && (
                         <Stack align={'center'} justify={'center'} style={[{ flex: 1, padding: theme.spacing.md }]}>
-                            <MatIcon name={'check-circle'} size={theme.size.xxl} color={theme.colors.onPrimary} />
+                            <Icon name={'check-circle'} size={theme.size.xxl} color={theme.colors.onPrimary} />
                             <Typography variant={'bodyLarge'} color={'onPrimary'} align={'center'}>
                                 {'Your password reset request was received. Check your email for further instructions.'}
                             </Typography>

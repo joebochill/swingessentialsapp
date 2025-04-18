@@ -1,6 +1,5 @@
 import React, { JSX, useMemo } from 'react';
 import { View, SectionList, RefreshControl } from 'react-native';
-import MatIcon from '@react-native-vector-icons/material-icons';
 import bg from '../../images/banners/tips.jpg';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
@@ -12,6 +11,7 @@ import { SectionHeader } from '../../components/layout';
 import { ListItem } from '../../components/ListItem';
 import { TipDetailsWithYear, useGetTipsQuery } from '../../redux/apiServices/tipsService';
 import { ROUTES } from '../../constants/routes';
+import { Icon } from '../../components/Icon';
 
 export const Tips: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -84,7 +84,7 @@ export const Tips: React.FC = () => {
                         onPress={(): void => navigation.push(ROUTES.TIP, { tip: item.id })}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[style]} {...rightProps}>
-                                <MatIcon
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.onPrimaryContainer}

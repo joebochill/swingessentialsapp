@@ -8,7 +8,7 @@ import {
     ImageBackground,
     Alert,
 } from 'react-native';
-import Video /*{ VideoProperties }*/ from 'react-native-video';
+import Video, { ReactVideoSourceProperties } from 'react-native-video';
 
 // Styles
 import { width as deviceWidth, aspectWidth } from '../../utilities/dimensions';
@@ -21,6 +21,8 @@ import { ROUTES } from '../../constants/routes';
 
 import dtl from '../../images/down-the-line.png';
 import fo from '../../images/face-on.png';
+import dtlDark from '../../images/down-the-line-dark.png';
+import foDark from '../../images/face-on-dark.png';
 import { Icon, IconProps } from '../Icon';
 import { SectionHeader } from '../layout';
 import { RootStackParamList } from '../../navigation/MainNavigation';
@@ -35,6 +37,7 @@ type SwingVideoPlaceholderProps = {
 export const SwingVideoPlaceholder: React.FC<SwingVideoPlaceholderProps> = (props) => {
     const theme = useAppTheme();
     const { title, type, backgroundImage, editIcon } = props;
+
     return (
         <ImageBackground
             style={{ flex: 1, alignItems: 'center', justifyContent: 'space-between', paddingBottom: theme.spacing.md }}
@@ -44,10 +47,13 @@ export const SwingVideoPlaceholder: React.FC<SwingVideoPlaceholderProps> = (prop
                 resizeMode: 'contain',
             }}
             resizeMethod={'resize'}
-            source={backgroundImage ?? (type === 'fo' ? fo : type === 'dtl' ? dtl : undefined)}
+            source={
+                backgroundImage ??
+                (type === 'fo' ? (theme.dark ? foDark : fo) : type === 'dtl' ? (theme.dark ? dtlDark : dtl) : undefined)
+            }
         >
             <SectionHeader title={title ?? type === 'fo' ? 'Face-On' : type === 'dtl' ? 'Down-the-Line' : ''} />
-            {editIcon && <Icon {...editIcon} />}
+            {editIcon && <Icon color={'onPrimary'} {...editIcon} />}
         </ImageBackground>
     );
 };
@@ -56,7 +62,7 @@ type SwingVideoProps = Omit<TouchableOpacityProps, 'onPress'> & {
     navigation?: StackNavigationProp<RootStackParamList>;
     width?: number;
     height?: number;
-    source?: any; //VideoProperties['source'];
+    source?: ReactVideoSourceProperties;
     onSourceChange?: (source: Asset) => void;
     editable?: boolean;
     loading?: boolean;
@@ -91,7 +97,7 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
         type,
         editIcon: {
             name: 'add-a-photo',
-            color: theme.colors.onPrimaryContainer,
+            color: theme.dark ? theme.colors.onPrimary : theme.colors.onPrimaryContainer,
             size: theme.size.md,
         },
         ...PlaceholderProps,
@@ -123,8 +129,8 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         : {
                               borderWidth: 1,
                               borderStyle: 'dashed',
-                              borderColor: theme.colors.primary,
-                              backgroundColor: theme.colors.surface,
+                              borderColor: theme.colors.outline,
+                              backgroundColor: theme.dark ? `${theme.colors.primary}4C` : theme.colors.primaryContainer,
                           },
                     ...(Array.isArray(style) ? style : [style]),
                 ]}
@@ -132,8 +138,7 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                 {...other}
             >
                 {!source ? (
-                    // TODO
-                    <SwingVideoPlaceholder {...(placeholderProps as any)} />
+                    !processing && <SwingVideoPlaceholder {...(placeholderProps as any)} />
                 ) : (
                     <Video
                         source={source}
@@ -144,7 +149,8 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         paused={!videoPlaying}
                         onLoad={(): void => {
                             setVideoReady(true);
-                            // if (videoRef.current && Platform.OS === 'android') videoRef.current.seek(0);
+                            // @ts-expect-error we know seek exists even though the ref is incorrectly typed
+                            if (videoRef.current && Platform.OS === 'android') videoRef.current.seek(0);
                         }}
                         onEnd={(): void => setVideoPlaying(false)}
                         onReadyForDisplay={() => setVideoReady(true)}
@@ -246,12 +252,12 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         label: 'Record a New Video',
                         onPress: (): void => {
                             setShowPicker(false);
-                            // navigation?.push(ROUTES.RECORD, {
-                            //     swing: type,
-                            //     onReturn: (uri: string) => {
-                            //         void onSourceChange?.({ uri });
-                            //     },
-                            // });
+                            navigation?.push(ROUTES.RECORD, {
+                                swing: type,
+                                onReturn: (uri: string) => {
+                                    void onSourceChange?.({ uri });
+                                },
+                            });
                         },
                     },
                     { label: 'Cancel', onPress: (): void => setShowPicker(false) },

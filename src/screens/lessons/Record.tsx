@@ -20,17 +20,11 @@ import faceonRH from '../../images/overlay-fo-rh.png';
 import downthelineLH from '../../images/overlay-dtl-lh.png';
 import downthelineRH from '../../images/overlay-dtl-rh.png';
 import { ROUTES } from '../../constants/routes';
-import MatIcon from '@react-native-vector-icons/material-icons';
 import { Logger } from '../../utilities/logging';
-import { StackScreenProps } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../theme';
-import {
-    Camera,
-    CameraDevice,
-    useCameraDevice,
-    /*useCameraDevices,*/ useCameraFormat,
-} from 'react-native-vision-camera';
-import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
+import { Camera, CameraDevice, useCameraDevice, useCameraFormat } from 'react-native-vision-camera';
+import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks';
 import { COLLAPSED_HEIGHT } from '../../components/CollapsibleHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -38,8 +32,9 @@ import { CameraType, Handedness, SwingType } from '../../__types__';
 import { RootStackParamList } from '../../navigation/MainNavigation';
 import { Stack } from '../../components/layout';
 import { CountDown, VideoControls, VideoTimer } from '../../components/videos';
-
-// const DESIRED_RATIO = '16:9';
+import { Icon } from '../../components/Icon';
+import { BLANK_USER, useGetUserDetailsQuery } from '../../redux/apiServices/userDetailsService';
+import { RootState } from '../../redux/store';
 
 const getOverlayImage = (swing: SwingType, handedness: Handedness, camera: CameraType): ImageSourcePropType => {
     const options: ImageSourcePropType[] = swing === 'dtl' ? [downthelineRH, downthelineLH] : [faceonRH, faceonLH];
@@ -52,13 +47,12 @@ const getOverlayImage = (swing: SwingType, handedness: Handedness, camera: Camer
 };
 
 export const Record: React.FC = () => {
-    const navigation = useNavigation<StackScreenProps<RootStackParamList>>();
-    const route = useRoute();
-    // const cameraRef = useRef(null);
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const route = useRoute<RouteProp<RootStackParamList, 'RECORD'>>();
     const videoRef = useRef(null);
     const theme = useAppTheme();
     const insets = useSafeAreaInsets();
-    const { onReturn, swing } = route.params as any;
+    const { onReturn, swing } = route.params;
     const backCamera = useCameraDevice('back');
     const frontCamera = useCameraDevice('front');
     const isScreenFocused = useIsFocused();
@@ -75,8 +69,8 @@ export const Record: React.FC = () => {
         { fps: 60 },
     ]);
 
-    const settings = {} as any; //useSelector((state: ApplicationState) => state.settings);
-    const token: string = ''; //useSelector((state: ApplicationState) => state.login.token);
+    const { data: user = BLANK_USER, isSuccess: hasUserData, isFetching, refetch } = useGetUserDetailsQuery();
+    const token = useSelector((state: RootState) => state.auth.token);
 
     const [recordingMode, setRecordingMode] = useState(true);
     const [showCountDown, setShowCountDown] = useState(false);
@@ -131,8 +125,8 @@ export const Record: React.FC = () => {
         });
         autoEndTimeout.current = setTimeout(() => {
             void endRecording();
-        }, settings.duration * 1000);
-    }, [camera, settings, cameraInitialized, endRecording]);
+        }, user.camera_duration * 1000);
+    }, [camera, user.camera_duration, cameraInitialized, endRecording]);
 
     const VideoRecorder = cameraDevices[activeCameraIndex] && (
         <Camera
@@ -166,9 +160,9 @@ export const Record: React.FC = () => {
             paused={!isPlaying}
             onEnd={(): void => setIsPlaying(false)}
             onLoad={(): void => {
-                // TODO: this was added for Android after iOS release
                 setPreviewReady(true);
-                // if (videoRef.current && Platform.OS === 'android') videoRef.current.seek(0);
+                // @ts-expect-error we know seek exists even though the ref is not strongly typed
+                if (videoRef.current && Platform.OS === 'android') videoRef.current.seek(0);
             }}
             resizeMode="contain"
             repeat={Platform.OS === 'ios'}
@@ -182,15 +176,14 @@ export const Record: React.FC = () => {
         <View style={{ flex: 1, alignItems: 'stretch', backgroundColor: 'rgba(0,0,0,0.5)' }}>
             {recordingMode && VideoRecorder}
             {!recordingMode && VideoPlayer}
-            {!recordingMode &&
-                !previewReady && ( // TODO: this was added after the iOS release
-                    <ActivityIndicator
-                        size={theme.size.xl}
-                        color={theme.colors.onPrimary}
-                        style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
-                    />
-                )}
-            {recordingMode && settings.overlay && (
+            {!recordingMode && !previewReady && (
+                <ActivityIndicator
+                    size={theme.size.xl}
+                    color={theme.colors.onPrimary}
+                    style={{ position: 'absolute', height: '100%', width: '100%', top: 0, left: 0 }}
+                />
+            )}
+            {recordingMode && user.camera_overlay && (
                 <Stack
                     align={'center'}
                     justify={'center'}
@@ -207,7 +200,7 @@ export const Record: React.FC = () => {
                     <Image
                         resizeMethod="resize"
                         style={{ height: '100%', width: '100%', opacity: 0.35, resizeMode: 'contain' }}
-                        source={getOverlayImage(swing, settings.handedness, activeCameraIndex === 0 ? 'back' : 'front')}
+                        source={getOverlayImage(swing, user.handed, activeCameraIndex === 0 ? 'back' : 'front')}
                     />
                 </Stack>
             )}
@@ -239,14 +232,8 @@ export const Record: React.FC = () => {
                             {isRecording && !showCountDown && <VideoTimer visible={isRecording} />}
                             {recordingMode && !isRecording && token && (
                                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                    <TouchableOpacity
-                                    // onPress={(): void => navigation.push(ROUTES.SETTINGS_GROUP)}
-                                    >
-                                        <MatIcon
-                                            name={'settings'}
-                                            size={theme.size.md}
-                                            color={theme.colors.onPrimary}
-                                        />
+                                    <TouchableOpacity onPress={(): void => navigation.push(ROUTES.SETTINGS_GROUP)}>
+                                        <Icon name={'settings'} size={theme.size.md} color={theme.colors.onPrimary} />
                                     </TouchableOpacity>
                                 </View>
                             )}
@@ -254,7 +241,7 @@ export const Record: React.FC = () => {
                     </SafeAreaView>
                 </View>
             )}
-            {showCountDown && <CountDown startValue={settings.delay} onFinish={(): void => startRecording()} />}
+            {showCountDown && <CountDown startValue={user.camera_delay} onFinish={(): void => startRecording()} />}
             <VideoControls
                 mode={recordingMode ? 'record' : 'play'}
                 active={isRecording || isPlaying}
@@ -274,16 +261,15 @@ export const Record: React.FC = () => {
                               setIsPlaying(!isPlaying);
                           }
                 }
-                onBack={() => {}}
-                // onBack={
-                //     recordingMode
-                //         ? (): void => navigation.pop() // Cancel
-                //         : (): void => {
-                //               // Retake
-                //               setRecordingMode(true);
-                //               setRecordedVideo('');
-                //           }
-                // }
+                onBack={
+                    recordingMode
+                        ? (): void => navigation.pop() // Cancel
+                        : (): void => {
+                              // Retake
+                              setRecordingMode(true);
+                              setRecordedVideo('');
+                          }
+                }
                 onNext={
                     recordingMode
                         ? (): void => {
@@ -295,7 +281,7 @@ export const Record: React.FC = () => {
                               // Use-Video
                               onReturn(recordedVideo);
                               setPreviewReady(false);
-                              //   navigation.pop();
+                              navigation.pop();
                           }
                 }
             />

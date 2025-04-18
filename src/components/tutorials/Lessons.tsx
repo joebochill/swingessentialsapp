@@ -1,10 +1,7 @@
 import React, { JSX } from 'react';
 import { View, SectionList } from 'react-native';
-// import { ListItem, SectionHeader, Stack, Typography } from '../';
 import { SEButton } from '../SEButton';
 import { TutorialModal } from './';
-// import Carousel from 'react-native-snap-carousel';
-import MatIcon from '@react-native-vector-icons/material-icons';
 import { width } from '../../utilities/dimensions';
 import { useSelector, useDispatch } from 'react-redux';
 import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
@@ -13,6 +10,7 @@ import { useAppTheme } from '../../theme';
 import { SectionHeader, Stack } from '../layout';
 import { Typography } from '../typography';
 import { ListItem } from '../ListItem';
+import { Icon } from '../Icon';
 
 export const LessonsTutorial: React.FC = () => {
     const showTutorial = { tutorial_lessons: false, tutorial_lesson_list: false }; //useSelector((state: ApplicationState) => state.tutorials);
@@ -77,7 +75,7 @@ export const LessonsTutorial: React.FC = () => {
                                         NEW
                                     </Typography>
                                 )}
-                                <MatIcon
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.primary}

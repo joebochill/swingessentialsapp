@@ -14,7 +14,6 @@ import {
     TextInputSubmitEditingEventData,
     View,
 } from 'react-native';
-import MatIcon from '@react-native-vector-icons/material-icons';
 import { TextInput } from 'react-native-paper';
 import RNPickerSelect, { Item } from 'react-native-picker-select';
 import { height } from '../../utilities/dimensions';
@@ -116,7 +115,7 @@ const VerifyForm: React.FC = () => {
                     )}
                     {!isUninitialized && !isLoading && isSuccess && (
                         <>
-                            <MatIcon
+                            <Icon
                                 name={'check-circle'}
                                 size={theme.size.xxl}
                                 color={theme.colors.onPrimary}
@@ -137,7 +136,7 @@ const VerifyForm: React.FC = () => {
                     )}
                     {!isUninitialized && !isLoading && error && (
                         <>
-                            <MatIcon
+                            <Icon
                                 name={'error'}
                                 size={theme.size.xxl}
                                 color={theme.colors.onPrimary}
