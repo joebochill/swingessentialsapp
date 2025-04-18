@@ -5,9 +5,7 @@ import { width } from '../utilities/dimensions';
 export { version as APP_VERSION } from '../../package.json';
 export const ASYNC_PREFIX = '@SwingEssentials:';
 export const ERROR_FILE = 'error_log.txt';
-// export const LOG_FILE = 'message_log.txt';
-// export const ERROR_LIMIT = 8000; // characters
-export const LOG_LIMIT = 24000; // characters
+export const ERROR_FILE_SIZE_LIMIT = 24000; // bytes
 
 export const DRAWER_WIDTH = 0.9 * width;
 

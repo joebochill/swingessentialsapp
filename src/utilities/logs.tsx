@@ -2,7 +2,7 @@ import { logger, fileAsyncTransport } from 'react-native-logs';
 import { InteractionManager } from 'react-native';
 import * as RNFS from 'react-native-fs';
 import { formatISO } from 'date-fns';
-import { ERROR_FILE, LOG_LIMIT } from '../constants';
+import { ERROR_FILE, ERROR_FILE_SIZE_LIMIT } from '../constants';
 import { useEffect } from 'react';
 import { useSendMobileLogsMutation } from '../redux/apiServices/logsService';
 
@@ -81,7 +81,7 @@ export const useAutoLogging = (): void => {
             if (fileExists) {
                 const stats = await RNFS.stat(ERROR_PATH);
                 // if the file size is greater than the limit, send the logs to the server
-                if (stats.size > LOG_LIMIT) {
+                if (stats.size > ERROR_FILE_SIZE_LIMIT) {
                     sendLogs({
                         data: await RNFS.readFile(ERROR_PATH, 'utf8'),
                     });

@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { RefreshControl, View, ScrollView } from 'react-native';
@@ -176,7 +176,7 @@ export const Home: React.FC = () => {
                     </View>
                 )}
             </ScrollView>
-            {/* <HomeTutorial /> */}
+            <HomeTutorial />
         </>
     );
 };

@@ -1,23 +1,19 @@
 NEW TODOS:
 
-- Migrate pages
-    - Order
-- Integrate Tutorials
-- Check out console LOGS
-- Reconfigure error logging
-- Sign Out is not clearing lessons
+- remove console LOGS
+
+- Data not getting properly set/cleared when logging in/out (tips, lessons, credits, etc.)
 
 
 
 
-- Convert fixed url links to environments
 - Update to flat eslint v9
 - Check deep links
-- Switch out all hardcoded urls with BASE_URL
-- Loading/refreshing lessons after log out / log in and vice versa
 - Get rid of getLongDate
 - Removed all unused functions, files, types
 - Add a network/back-end connectivity check/banner
+- Add fallback video hardcoded for placeholder lesson?
+- Reorganize constants - routes to routing folder, rename index to config
 
 
 

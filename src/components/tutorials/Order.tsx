@@ -1,24 +1,31 @@
-import React, { JSX } from 'react';
-import { View } from 'react-native';
-import { SEButton } from '../SEButton';
-import { TutorialModal } from './';
-import { width } from '../../utilities/dimensions';
-import { useSelector, useDispatch } from 'react-redux';
-import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
+import React, { JSX, useEffect, useState } from 'react';
+import { LayoutChangeEvent } from 'react-native';
+import { TutorialCarousel, TutorialModal } from './';
+import { TUTORIAL_KEYS } from '../../constants';
 import { useAppTheme } from '../../theme';
 import { Stack } from '../layout';
 import { Typography } from '../typography';
 import { ListItem } from '../ListItem';
 import { Icon } from '../Icon';
+import { useGetPackagesQuery } from '../../redux/apiServices/packagesService';
+import { newTutorialAvailable, setTutorialWatched } from '../../utilities/tutorials';
 
 export const OrderTutorial: React.FC = () => {
-    const packages: any[] = []; //useSelector((state: ApplicationState) => state.packages.list);
-    const showTutorial = { tutorial_order: false }; //useSelector((state: ApplicationState) => state.tutorials);
+    const { data: packages = [], isLoading: loadingPackages, refetch: refetchPackages } = useGetPackagesQuery();
+    const [showTutorial, setShowTutorial] = useState(false);
+    const [carouselHeight, setCarouselHeight] = useState<number>(0);
     const theme = useAppTheme();
-    const dispatch = useDispatch();
 
     const slides = [
-        <Stack key={1}>
+        <Stack
+            key={1}
+            onLayout={(event: LayoutChangeEvent) => {
+                const { height } = event.nativeEvent.layout;
+                if (height > carouselHeight) {
+                    setCarouselHeight(height); // Update height dynamically
+                }
+            }}
+        >
             <Typography variant={'displaySmall'} fontWeight={'semiBold'} color={'onPrimary'} align={'center'}>
                 {'Lesson Packages'}
             </Typography>
@@ -57,7 +64,7 @@ export const OrderTutorial: React.FC = () => {
                                     <Icon
                                         name={'check'}
                                         size={theme.size.md}
-                                        color={theme.colors.primary}
+                                        color={theme.colors.onPrimaryContainer}
                                         style={{ marginLeft: theme.spacing.sm }}
                                     />
                                 )}
@@ -69,32 +76,30 @@ export const OrderTutorial: React.FC = () => {
         </Stack>,
     ];
 
+    useEffect(() => {
+        const checkTutorialAvailability = async () => {
+            const isAvailable = await newTutorialAvailable(TUTORIAL_KEYS.ORDER);
+            setShowTutorial(isAvailable);
+        };
+        checkTutorialAvailability();
+    }, []);
+
     return (
         <TutorialModal
-            visible={showTutorial.tutorial_order}
+            visible={showTutorial}
             onClose={(): void => {
-                // dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]));
+                setTutorialWatched(TUTORIAL_KEYS.ORDER);
+                setShowTutorial(false);
             }}
         >
-            <View>
-                {/* <Carousel
-                    data={slides}
-                    renderItem={({ index }): JSX.Element => slides[index]}
-                    sliderWidth={width - 2 * theme.spacing.md}
-                    itemWidth={width - 2 * theme.spacing.md}
-                /> */}
-                <SEButton
-                    dark
-                    mode={'contained'}
-                    uppercase
-                    buttonColor={theme.colors.secondary}
-                    title="GOT IT"
-                    style={{ marginTop: theme.spacing.xl }}
-                    onPress={(): void => {
-                        // dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.ORDER]));
-                    }}
-                />
-            </View>
+            <TutorialCarousel
+                slides={slides}
+                height={carouselHeight || 200} // Fallback to a default height if not calculated yet
+                onClose={(): void => {
+                    setTutorialWatched(TUTORIAL_KEYS.ORDER);
+                    setShowTutorial(false);
+                }}
+            />
         </TutorialModal>
     );
 };
