@@ -57,7 +57,7 @@ export const Pros: React.FC = () => {
                                     source={{
                                         uri: pro.image.startsWith('http')
                                             ? pro.image
-                                            : `${BASE_URL}/../assets/images/pros/${pro.image}`,
+                                            : `${BASE_URL}/images/pros/${pro.image}`,
                                     }}
                                     style={{ width: '100%', height: '100%' }}
                                 />

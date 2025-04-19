@@ -18,6 +18,7 @@ export const LessonCard: React.FC<{ lessonURL: string }> = ({ lessonURL }) => {
             skip: !lessonURL,
         }
     );
+
     return lessonDetails ? (
         <YoutubeCard
             headerTitle={format(new Date(lessonDetails?.request_date || Date.now()), 'yyyy-MM-dd')}

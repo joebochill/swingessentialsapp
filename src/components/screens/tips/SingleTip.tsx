@@ -15,7 +15,7 @@ import { Stack } from '../../layout/Stack';
 import { YoutubeCard } from '../../videos';
 import { useGetTipByIdQuery } from '../../../redux/apiServices/tipsService';
 import { Typography } from '../../typography';
-import { format, parse } from 'date-fns';
+import { format, isValid } from 'date-fns';
 
 export const SingleTip: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -44,7 +44,11 @@ export const SingleTip: React.FC = () => {
                 ]}
             >
                 <Header
-                    title={tipDetails ? format(parse(tipDetails.date, 'yyyy-MM-dd', new Date()), 'MMMM yyyy') : ''}
+                    title={
+                        tipDetails && isValid(new Date(tipDetails.date))
+                            ? format(new Date(tipDetails.date), 'MMMM yyyy')
+                            : ''
+                    }
                     mainAction={'back'}
                     navigation={navigation}
                     backgroundColor={theme.dark ? theme.colors.surface : undefined}

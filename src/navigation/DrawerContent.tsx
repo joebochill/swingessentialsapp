@@ -58,7 +58,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
     const memberString = `Joined ${
         user.joined ? format(new Date(user.joined * 1000), 'MMMM yyyy') : format(new Date(), 'MMMM yyyy')
     }`;
-    const avatarURL = `${BASE_URL}/assets/images/profiles/${
+    const avatarURL = `${BASE_URL}/images/profiles/${
         user?.avatar ? `${user.username}/${user.avatar}.png` : 'blank.png'
     }`;
 

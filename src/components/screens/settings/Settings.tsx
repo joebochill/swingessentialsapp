@@ -5,7 +5,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { IconButton } from 'react-native-paper';
 import { width, height } from '../../../utilities/dimensions';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { format, parse } from 'date-fns';
+import { format, isValid, parse } from 'date-fns';
 import { useAppTheme } from '../../../theme';
 import { Header } from '../../layout/CollapsibleHeader/Header';
 import { COLLAPSED_HEIGHT } from '../../layout/CollapsibleHeader';
@@ -101,7 +101,7 @@ export const Settings: React.FC = () => {
     const memberString = `Joined ${
         user.joined ? format(new Date(user.joined * 1000), 'MMMM yyyy') : format(new Date(), 'MMMM yyyy')
     }`;
-    const avatarURL = `${BASE_URL}/../assets/images/profiles/${
+    const avatarURL = `${BASE_URL}/images/profiles/${
         user.avatar ? `${user.username}/${user.avatar}.png` : 'blank.png'
     }`;
 
@@ -292,8 +292,8 @@ export const Settings: React.FC = () => {
                                     {...rightProps}
                                 >
                                     <Typography>
-                                        {user.birthday
-                                            ? format(parse(user.birthday, 'yyyy-MM-dd', new Date()), 'dd-MMM-yyyy')
+                                        {user.birthday && isValid(new Date(user.birthday))
+                                            ? format(new Date(user.birthday), 'dd-MMM-yyyy')
                                             : '--'}
                                     </Typography>
                                 </Stack>
@@ -395,7 +395,7 @@ export const Settings: React.FC = () => {
                         <Stack>
                             <StyledTextInput
                                 label={'Date of Birth'}
-                                value={personal.birthday}
+                                value={format(new Date(personal.birthday), 'dd-MMM-yyyy')}
                                 placeholder={'MM/DD/YYYY'}
                                 autoCorrect={false}
                                 autoCapitalize={'none'}
@@ -411,9 +411,7 @@ export const Settings: React.FC = () => {
                                 scrollEnabled={false}
                             />
                             <DateTimePicker
-                                date={
-                                    personal.birthday ? parse(personal.birthday, 'yyyy-MM-dd', new Date()) : new Date()
-                                }
+                                date={personal.birthday ? new Date(personal.birthday) : new Date()}
                                 isVisible={showDatePicker}
                                 pickerComponentStyleIOS={{ height: 300 }}
                                 onConfirm={(date): void => {

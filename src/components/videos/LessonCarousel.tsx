@@ -21,6 +21,7 @@ export const LessonCarousel: React.FC<LessonCarouselProps> = (props) => {
     const progress = useSharedValue<number>(0);
     const theme = useAppTheme();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const scaleMarginOffset = ((aspectHeight(width) + theme.size.xl) * 0.08) / 2;
 
     return (
         <Carousel<LessonBasicDetails | WelcomeVideo>
@@ -30,11 +31,13 @@ export const LessonCarousel: React.FC<LessonCarouselProps> = (props) => {
             width={width}
             style={{
                 width: width,
+                marginVertical: -scaleMarginOffset,
             }}
             mode="parallax"
             modeConfig={{
                 parallaxScrollingScale: 0.92,
-                parallaxScrollingOffset: 40,
+                parallaxAdjacentItemScale: 0.8,
+                parallaxScrollingOffset: 48,
             }}
             onConfigurePanGesture={(gestureChain) => {
                 gestureChain.activeOffsetX([-10, 10]);

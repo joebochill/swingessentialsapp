@@ -20,7 +20,7 @@ export const SEButton: React.FC<SEButtonProps> = (props) => {
             style={[
                 mode === 'outlined'
                     ? {
-                          borderColor: theme.colors.onSurface,
+                          borderColor: theme.colors.outline,
                       }
                     : theme.dark && mode === 'contained'
                     ? {

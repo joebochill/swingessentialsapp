@@ -34,6 +34,8 @@ export const initializeData = createAsyncThunk('app/initializeData', async (_, {
         dispatch(tipsApi.endpoints.getTips.initiate());
         dispatch(blogsApi.util.invalidateTags(['blogs', 'blog']));
         dispatch(blogsApi.endpoints.getBlogs.initiate());
+        dispatch(packagesApi.util.invalidateTags(['packages']));
+        dispatch(packagesApi.endpoints.getPackages.initiate());
     } catch (error) {
         LOG.error(`Error initializing data: ${error}`, { zone: 'AUTH' });
     }
@@ -46,7 +48,6 @@ export const clearProtectedDetails = createAsyncThunk('app/clearProtectedDetails
         dispatch(tipsApi.util.resetApiState());
         dispatch(blogsApi.util.resetApiState());
         dispatch(creditsApi.util.resetApiState());
-        dispatch(packagesApi.util.resetApiState());
     } catch (error) {
         LOG.error(`Error clearing protected details: ${error}`, { zone: 'AUTH' });
     }

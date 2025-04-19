@@ -7,6 +7,7 @@ import { clearProtectedDetails, initializeData } from '../thunks';
 import { prepareHeaders } from './utils/prepareHeaders';
 import * as Keychain from 'react-native-keychain';
 import { LOG } from '../../logger';
+import { getErrorMessage } from './utils/parseError';
 
 export type Credentials = {
     username: string;
@@ -44,7 +45,7 @@ const authApi = createApi({
                     }
                     dispatch(initializeData());
                 } catch (error) {
-                    LOG.error(`Login failed: ${error}`, { zone: 'AUTH' });
+                    LOG.error(`Login failed: ${getErrorMessage(error)}`, { zone: 'AUTH' });
 
                     Keychain.resetGenericPassword();
                     dispatch(incrementLoginFailures());
@@ -60,7 +61,7 @@ const authApi = createApi({
                 try {
                     await queryFulfilled;
                 } catch (error) {
-                    LOG.error(`Logout failed: ${error}`, { zone: 'AUTH' });
+                    LOG.error(`Logout failed: ${getErrorMessage(error)}`, { zone: 'AUTH' });
                 } finally {
                     dispatch(clearProtectedDetails());
                     await AsyncStorage.removeItem(`${ASYNC_PREFIX}token`);
@@ -87,7 +88,7 @@ const authApi = createApi({
                     const { meta } = await queryFulfilled;
                     storeToken(meta, dispatch, false);
                 } catch (error) {
-                    LOG.error(`Refreshing token failed: ${error}`, { zone: 'AUTH' });
+                    LOG.error(`Refreshing token failed: ${getErrorMessage(error)}`, { zone: 'AUTH' });
                 }
             },
         }),
@@ -144,7 +145,7 @@ const authApi = createApi({
                     const { meta } = await queryFulfilled;
                     storeToken(meta, dispatch);
                 } catch (error) {
-                    LOG.error(`Reset password failed: ${error}`, { zone: 'AUTH' });
+                    LOG.error(`Reset password failed: ${getErrorMessage(error)}`, { zone: 'AUTH' });
                 }
             },
             transformErrorResponse: () => {
@@ -163,7 +164,7 @@ const authApi = createApi({
                     const { meta } = await queryFulfilled;
                     storeToken(meta, dispatch);
                 } catch (error) {
-                    LOG.error(`Change password failed: ${error}`, { zone: 'AUTH' });
+                    LOG.error(`Change password failed: ${getErrorMessage(error)}`, { zone: 'AUTH' });
                 }
             },
         }),

@@ -3,6 +3,7 @@ import { BASE_API_URL } from '../../_config';
 import { prepareHeaders } from './utils/prepareHeaders';
 import { storeToken } from './utils/storeToken';
 import { LOG } from '../../logger';
+import { getErrorMessage } from './utils/parseError';
 
 export type UserRegistrationDetails = {
     username: string;
@@ -49,7 +50,7 @@ const registrationApi = createApi({
                     const { meta } = await queryFulfilled;
                     storeToken(meta, dispatch);
                 } catch (error) {
-                    LOG.error(`Registration failed: ${error}`, { zone: 'REGI' });
+                    LOG.error(`Registration failed: ${getErrorMessage(error)}`, { zone: 'REGI' });
                 }
             },
         }),

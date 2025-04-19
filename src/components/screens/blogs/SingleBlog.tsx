@@ -13,7 +13,7 @@ import { SectionHeader } from '../../typography/SectionHeader';
 import { Stack } from '../../layout/Stack';
 import { Paragraph, Typography } from '../../typography';
 import { useGetBlogByIdQuery } from '../../../redux/apiServices/blogsService';
-import { format, parse } from 'date-fns';
+import { format, isValid } from 'date-fns';
 
 export const SingleBlog: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -41,7 +41,11 @@ export const SingleBlog: React.FC = () => {
                 ]}
             >
                 <Header
-                    title={blogDetails ? format(parse(blogDetails.date, 'yyyy-MM-dd', new Date()), 'MMMM yyyy') : ''}
+                    title={
+                        blogDetails && isValid(new Date(blogDetails.date))
+                            ? format(new Date(blogDetails.date), 'MMMM yyyy')
+                            : ''
+                    }
                     mainAction={'back'}
                     navigation={navigation}
                     backgroundColor={theme.dark ? theme.colors.surface : undefined}

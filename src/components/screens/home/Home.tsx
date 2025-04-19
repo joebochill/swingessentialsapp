@@ -110,7 +110,10 @@ export const Home: React.FC = () => {
                             onPress={(): void => navigation.navigate(ROUTES.LESSONS)}
                         />
                     }
-                    style={{ marginTop: theme.spacing.md, marginHorizontal: theme.spacing.md }}
+                    style={{
+                        marginTop: theme.spacing.md,
+                        marginHorizontal: theme.spacing.md,
+                    }}
                 />
 
                 <LessonCarousel data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)} />
@@ -125,7 +128,7 @@ export const Home: React.FC = () => {
                             onPress={(): void => navigation.navigate(ROUTES.ORDER)}
                         />
                     }
-                    style={{ marginTop: theme.spacing.md, marginHorizontal: theme.spacing.md }}
+                    style={{ marginTop: theme.spacing.xxl, marginHorizontal: theme.spacing.md }}
                 />
                 <Stack
                     align={'center'}
@@ -148,7 +151,6 @@ export const Home: React.FC = () => {
                         <SEButton
                             mode={'outlined'}
                             title={'Submit a Swing'}
-                            icon={'upload'}
                             style={{ marginTop: theme.spacing.md }}
                             onPress={(): void => navigation.navigate(ROUTES.SUBMIT)}
                         />
@@ -157,7 +159,7 @@ export const Home: React.FC = () => {
 
                 {/* TIP OF THE MONTH */}
                 {tips.length > 0 && (
-                    <View style={{ marginTop: theme.spacing.md }}>
+                    <View style={{ marginTop: theme.spacing.xxl }}>
                         <SectionHeader
                             title={'Tip of the Month'}
                             action={

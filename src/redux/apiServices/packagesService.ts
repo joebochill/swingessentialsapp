@@ -4,6 +4,7 @@ import { prepareHeaders } from './utils/prepareHeaders';
 import { creditsApi } from './creditsService';
 import { Platform } from 'react-native';
 import { LOG } from '../../logger';
+import { getErrorMessage } from './utils/parseError';
 
 export type Level0PackageDetails = {
     id: number;
@@ -23,7 +24,7 @@ export const packagesApi = createApi({
         baseUrl: BASE_API_URL,
         prepareHeaders,
     }),
-    tagTypes: ['packages', 'discounts'],
+    tagTypes: ['packages'],
     endpoints: (builder) => ({
         getPackages: builder.query<Level1PackageDetails[], void>({
             query: () => 'packages?detailLevel=1',
@@ -43,7 +44,7 @@ export const packagesApi = createApi({
                     await queryFulfilled;
                     dispatch(creditsApi.util.invalidateTags(['credits']));
                 } catch (error) {
-                    LOG.error(`Error capturing order: ${error}`, { zone: 'ORDR' });
+                    LOG.error(`Error capturing order: ${getErrorMessage(error)}`, { zone: 'ORDR' });
                 }
             },
         }),

@@ -228,7 +228,7 @@ export const Login: React.FC = () => {
                             source={logo}
                             resizeMethod="resize"
                             style={{
-                                height: 60,
+                                height: 80,
                                 width: '100%',
                                 resizeMode: 'contain',
                                 marginBottom: theme.spacing.md,
@@ -236,7 +236,7 @@ export const Login: React.FC = () => {
                         />
 
                         {/* Username Field */}
-                        <Stack>
+                        <Stack style={{ marginTop: theme.spacing.sm }}>
                             <StyledTextInput
                                 autoCorrect={false}
                                 autoCapitalize={'none'}
@@ -299,7 +299,7 @@ export const Login: React.FC = () => {
                             direction={'row'}
                             align={'center'}
                             justify={'space-between'}
-                            style={{ marginTop: theme.spacing.md }}
+                            style={{ marginTop: theme.spacing.lg }}
                         >
                             <Stack direction={'row'} align={'center'}>
                                 <Typography style={{ marginRight: theme.spacing.sm }} color={'onPrimary'}>
@@ -376,7 +376,7 @@ export const Login: React.FC = () => {
                             direction={'row'}
                             align={'center'}
                             gap={theme.spacing.sm}
-                            style={{ marginTop: theme.spacing.md }}
+                            style={{ marginTop: theme.spacing.lg }}
                         >
                             <SEButton
                                 title={'Sign In'}
@@ -402,7 +402,7 @@ export const Login: React.FC = () => {
                             direction={'row'}
                             align={'center'}
                             justify={'space-between'}
-                            style={{ marginTop: theme.spacing.xs }}
+                            style={{ marginTop: theme.spacing.md }}
                         >
                             <SEButton
                                 mode={'text'}
