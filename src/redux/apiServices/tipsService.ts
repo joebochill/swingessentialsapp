@@ -37,31 +37,7 @@ export const tipsApi = createApi({
             query: (id) => `tips/${id}`,
             providesTags: ['tip'],
         }),
-        addTip: builder.mutation<void, Omit<TipDetails, 'id'>>({
-            query: (newTip) => ({
-                url: 'tips',
-                method: 'POST',
-                body: newTip,
-            }),
-            invalidatesTags: ['tips'],
-        }),
-        updateTip: builder.mutation<void, TipDetails>({
-            query: (updatedTip) => ({
-                url: `tips/${updatedTip.id}`,
-                method: 'PATCH',
-                body: updatedTip,
-            }),
-            invalidatesTags: ['tips', 'tip'],
-        }),
-        removeTip: builder.mutation<void, { id: string | number }>({
-            query: (deletedTip) => ({
-                url: `tips/${deletedTip.id}`,
-                method: 'DELETE',
-            }),
-            invalidatesTags: ['tips', 'tip'],
-        }),
     }),
 });
 
-export const { useGetTipsQuery, useGetTipByIdQuery, useAddTipMutation, useUpdateTipMutation, useRemoveTipMutation } =
-    tipsApi;
+export const { useGetTipsQuery, useGetTipByIdQuery } = tipsApi;

@@ -11,7 +11,6 @@ export type ProBio = {
     imagePosition?: string;
     imageSize?: string;
 };
-type ProBiosAPIResponse = ProBio[];
 
 export const prosApi = createApi({
     reducerPath: 'prosApi',
@@ -21,34 +20,11 @@ export const prosApi = createApi({
     }),
     tagTypes: ['pros'],
     endpoints: (builder) => ({
-        getPros: builder.query<ProBiosAPIResponse, void>({
+        getPros: builder.query<ProBio[], void>({
             query: () => 'pros',
             providesTags: ['pros'],
-        }),
-        addPro: builder.mutation<void, Omit<ProBio, 'id'>>({
-            query: (newProBio) => ({
-                url: 'pros',
-                method: 'POST',
-                body: newProBio,
-            }),
-            invalidatesTags: ['pros'],
-        }),
-        updatePro: builder.mutation<void, ProBio>({
-            query: (updatedProBio) => ({
-                url: `pros/${updatedProBio.id}`,
-                method: 'PATCH',
-                body: updatedProBio,
-            }),
-            invalidatesTags: ['pros'],
-        }),
-        removePro: builder.mutation<void, { id: string }>({
-            query: (deletedBio) => ({
-                url: `pros/${deletedBio.id}`,
-                method: 'DELETE',
-            }),
-            invalidatesTags: ['pros'],
         }),
     }),
 });
 
-export const { useGetProsQuery, useAddProMutation, useUpdateProMutation, useRemoveProMutation } = prosApi;
+export const { useGetProsQuery } = prosApi;

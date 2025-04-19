@@ -100,74 +100,6 @@ const authApi = createApi({
                 headers: new Headers(),
             }),
         }),
-        verifyResetPasswordCode: builder.mutation<{ username: string; auth: string }, string>({
-            query: (resetPasswordKey) => ({
-                url: 'auth/password/reset/verify',
-                method: 'POST',
-                body: {
-                    resetPasswordKey,
-                },
-                headers: new Headers(),
-            }),
-            transformErrorResponse: (response: { status: number; data: { code: number; error: string } }) => {
-                const { code } = response.data;
-                let message = '';
-
-                switch (code) {
-                    case 400300:
-                        message =
-                            'Oops! Your reset password link is invalid or may have already been used. Please check the link in your email and try again. If you continue to have problems, please contact us.';
-                        break;
-                    case 400301:
-                        message = 'Your reset password link has expired. You will need to re-request a password reset.';
-                        break;
-                    case -1:
-                    default:
-                        message = `Unknown Error: ${code || ''}`;
-                }
-                return message;
-            },
-        }),
-
-        resetPassword: builder.mutation<boolean, { password: string; token: string }>({
-            query: ({ password, token }) => ({
-                url: 'auth/password/reset',
-                method: 'PATCH',
-                headers: {
-                    [AUTH]: `Bearer ${token}`,
-                },
-                body: {
-                    password,
-                },
-            }),
-            async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-                try {
-                    const { meta } = await queryFulfilled;
-                    storeToken(meta, dispatch);
-                } catch (error) {
-                    LOG.error(`Reset password failed: ${getErrorMessage(error)}`, { zone: 'AUTH' });
-                }
-            },
-            transformErrorResponse: () => {
-                return 'Failed to change your password. Please try again later. If the problem persists, please contact us.';
-            },
-        }),
-
-        changePassword: builder.mutation<void, { oldPassword: string; newPassword: string }>({
-            query: (credentials) => ({
-                url: 'auth/password',
-                method: 'PATCH',
-                body: credentials,
-            }),
-            async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-                try {
-                    const { meta } = await queryFulfilled;
-                    storeToken(meta, dispatch);
-                } catch (error) {
-                    LOG.error(`Change password failed: ${getErrorMessage(error)}`, { zone: 'AUTH' });
-                }
-            },
-        }),
     }),
 });
 
@@ -177,8 +109,5 @@ export const {
     useLogoutMutation,
     useGetRoleMutation,
     useSendResetPasswordEmailMutation,
-    useVerifyResetPasswordCodeMutation,
-    useResetPasswordMutation,
-    useChangePasswordMutation,
 } = authApi;
 export default authApi;
