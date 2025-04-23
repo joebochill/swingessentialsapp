@@ -12,7 +12,6 @@ export * from './lessons/SingleLesson';
 export * from './lessons/Submit';
 export * from './lessons/Record';
 export * from './order/Order';
-export * from './order/RNIAPConfig';
 export * from './pros/Pros';
 export * from './settings/Settings';
 export * from './settings/SingleSetting';

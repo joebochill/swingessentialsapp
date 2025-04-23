@@ -30,10 +30,12 @@ export const Blogs: React.FC = () => {
         }, {} as Record<number, BlogDetailsWithYear[]>);
     }, [blogs]);
 
-    const sections = Object.entries(blogsByYear).map(([year, blogsData]) => ({
-        bucketName: year,
-        data: blogsData,
-    }));
+    const sections = Object.entries(blogsByYear)
+        .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA)) // Sort by year descending
+        .map(([year, blogsData]) => ({
+            bucketName: year,
+            data: blogsData,
+        }));
 
     return (
         <>

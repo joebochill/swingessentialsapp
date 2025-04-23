@@ -31,10 +31,12 @@ export const Tips: React.FC = () => {
         }, {} as Record<number, TipDetailsWithYear[]>);
     }, [tips]);
 
-    const sections = Object.entries(tipsByYear).map(([year, tipsData]) => ({
-        bucketName: year,
-        data: tipsData,
-    }));
+    const sections = Object.entries(tipsByYear)
+        .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA)) // Sort by year descending
+        .map(([year, tipsData]) => ({
+            bucketName: year,
+            data: tipsData,
+        }));
 
     return (
         <>
