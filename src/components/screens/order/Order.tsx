@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, JSX } from 'react';
 import { useSelector } from 'react-redux';
-import { Alert, ScrollView, RefreshControl, Platform } from 'react-native';
-import { requestPurchase, useIAP, ErrorCode } from 'react-native-iap';
+import { Alert, ScrollView, RefreshControl } from 'react-native';
+import { ErrorCode } from 'react-native-iap';
 import bg from '../../../assets/images/banners/order.jpg';
 import { ROUTES } from '../../../navigation/routeConfig';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -17,10 +17,11 @@ import { ListItem } from '../../common/ListItem';
 import { SEButton } from '../../common/SEButton';
 import { OrderTutorial } from '../../tutorials';
 import { Icon } from '../../common/Icon';
-import { selectCaptureMobileOrderState, useGetPackagesQuery } from '../../../redux/apiServices/packagesService';
 import { useGetCreditsQuery } from '../../../redux/apiServices/creditsService';
 import { RootState } from '../../../redux/store';
 import { LOG } from '../../../logger';
+import { useInAppPurchases } from './useInAppPurchases';
+import { getErrorMessage } from '../../../redux/apiServices/utils/parseError';
 
 export const Order: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -28,18 +29,9 @@ export const Order: React.FC = () => {
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
 
     const role = useSelector((state: RootState) => state.auth.role);
-    const { data: packages = [], refetch: refetchPackages } = useGetPackagesQuery();
 
     const { data: { count: credits = 0 } = {}, refetch: refetchCredits } = useGetCreditsQuery();
-    const orderReference = useSelector((state: RootState) => state.order.activeOrderID) ?? '';
-    const { isSuccess, isLoading: capturing } = useSelector(selectCaptureMobileOrderState(orderReference));
-
-    const { connected, products, getProducts } = useIAP();
-
-    const syncedPackages = packages.map((p) => ({
-        ...p,
-        localPrice: products.find((product) => product.productId === p.app_sku)?.localizedPrice ?? '--',
-    }));
+    const { products, requestPurchase, isLoading, isSuccess, isError, error, refetchPackages } = useInAppPurchases();
 
     const [selected, setSelected] = useState(-1);
 
@@ -50,23 +42,13 @@ export const Order: React.FC = () => {
             ? 'You must validate your email address before you can purchase lessons'
             : '';
 
-    // Load the products from IAP
     useEffect(() => {
-        if (packages.length > 0 && connected) {
-            try {
-                const skus: string[] = [];
-                for (let i = 0; i < packages.length; i++) {
-                    skus.push(packages[i].app_sku);
-                }
-                getProducts({ skus }); // await?
-                setSelected(0);
-            } catch (err: any) {
-                LOG.error(`Error loading IAP products: ${err}`, { zone: 'IAP' });
-            }
+        if (products.length > 0) {
+            setSelected(0);
         }
-    }, [getProducts, packages, connected]);
+    }, [products]);
 
-    // Purchase Completed
+    // Purchase Completed and Captured
     useEffect(() => {
         if (isSuccess) {
             Alert.alert('Purchase Complete', 'Your order has finished processing. Thank you for your purchase!', [
@@ -81,34 +63,39 @@ export const Order: React.FC = () => {
         }
     }, [isSuccess, navigation]);
 
+    // Order Capture failed
+    useEffect(() => {
+        if (isError) {
+            if (error) {
+                Alert.alert('Purchase Failed', getErrorMessage(error), [
+                    {
+                        text: 'OK',
+                    },
+                ]);
+            }
+        }
+    }, [isError, error]);
+
     const onPurchase = useCallback(
         async (sku: string, shortcode: string) => {
             if (roleError.length > 0) {
-                // logLocalError('137: Purchase request not sent: ' + this.state.error);
                 return;
             }
             if (role !== 'customer' && role !== 'administrator') {
-                // logLocalError('137XX: Purchase request not sent: ' + this.state.error);
                 return;
             }
             if (!sku || !shortcode) {
-                // logLocalError('138: Purchase: missing data');
                 return;
             }
             try {
-                await requestPurchase(
-                    Platform.OS === 'android'
-                        ? { skus: [sku] }
-                        : { sku, andDangerouslyFinishTransactionAutomaticallyIOS: false }
-                );
-            } catch (error: any) {
-                if (error.code !== ErrorCode.E_USER_CANCELLED) {
-                    LOG.error(`Failed to request in-app purchase: ${error}`, { zone: 'IAP' });
+                requestPurchase(sku);
+            } catch (err: any) {
+                if (err.code !== ErrorCode.E_USER_CANCELLED) {
+                    LOG.error(`Failed to request in-app purchase: ${err}`, { zone: 'IAP' });
                 }
             }
-            // Purchase response is handled in RNIAPCallbacks.tsx
         },
-        [role, roleError.length]
+        [role, roleError.length, requestPurchase]
     );
 
     return (
@@ -126,7 +113,7 @@ export const Order: React.FC = () => {
                 contentContainerStyle={contentProps.contentContainerStyle}
                 refreshControl={
                     <RefreshControl
-                        refreshing={capturing}
+                        refreshing={isLoading}
                         onRefresh={(): void => {
                             refetchCredits();
                             refetchPackages();
@@ -166,7 +153,7 @@ export const Order: React.FC = () => {
                     style={{ marginTop: theme.spacing.xl, marginHorizontal: theme.spacing.md }}
                 />
                 <Stack>
-                    {syncedPackages.map((item, index) => (
+                    {products.map((item, index) => (
                         <ListItem
                             key={index}
                             bottomDivider
@@ -180,10 +167,10 @@ export const Order: React.FC = () => {
                                 <Stack
                                     direction={'row'}
                                     align={'center'}
-                                    style={[{ marginRight: -1 * theme.spacing.md }, style]}
+                                    style={[{ marginRight: -1 * theme.spacing.sm }, style]}
                                     {...rightProps}
                                 >
-                                    <Typography variant={'labelMedium'}>{item.localPrice ?? '--'}</Typography>
+                                    <Typography variant={'labelMedium'}>{item.localizedPrice ?? '--'}</Typography>
                                     {selected === index && (
                                         <Icon
                                             name={'check'}
@@ -200,13 +187,13 @@ export const Order: React.FC = () => {
                 <SEButton
                     style={[
                         { margin: theme.spacing.md },
-                        roleError.length === 0 && packages.length > 0 && !capturing ? {} : { opacity: 0.6 },
+                        roleError.length === 0 && products.length > 0 && !isLoading ? {} : { opacity: 0.6 },
                     ]}
                     title={'PURCHASE'}
                     onPress={
-                        roleError.length === 0 && packages.length > 0 && !capturing
+                        roleError.length === 0 && products.length > 0 && !isLoading
                             ? (): void => {
-                                  onPurchase(packages[selected].app_sku, packages[selected].shortcode);
+                                  onPurchase(products[selected].app_sku, products[selected].shortcode);
                               }
                             : undefined
                     }

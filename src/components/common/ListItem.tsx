@@ -12,7 +12,8 @@ export const ListItem: React.FC<ListItemProps & { bottomDivider?: boolean; topDi
             style={[
                 {
                     backgroundColor: theme.colors.surface,
-                    paddingHorizontal: theme.spacing.md,
+                    paddingLeft: theme.spacing.md,
+                    paddingRight: theme.spacing.md,
                     flexDirection: 'row',
                     alignItems: 'center',
                     minHeight: theme.size.xl,

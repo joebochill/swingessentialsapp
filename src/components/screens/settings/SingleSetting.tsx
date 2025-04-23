@@ -91,7 +91,7 @@ export const SingleSetting: React.FC = () => {
                                         name={'check'}
                                         size={theme.size.md}
                                         color={theme.colors.onPrimaryContainer}
-                                        style={{ marginRight: -1 * theme.spacing.md }}
+                                        style={{ marginRight: -1 * theme.spacing.sm }}
                                     />
                                 )}
                             </Stack>

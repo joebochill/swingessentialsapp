@@ -146,33 +146,35 @@ const SettingsStackNavigator = () => (
     </SettingsStack.Navigator>
 );
 
-export const MainNavigation = () => (
-    <NavigationContainer
-        onReady={() => {
-            BootSplash.hide({ fade: true });
-        }}
-        linking={linkingConfig}
-    >
-        <Drawer.Navigator
-            initialRouteName={'APP'}
-            screenOptions={{
-                headerShown: false,
-                drawerType: 'slide',
-                drawerStyle: {
-                    width: width * 0.9,
-                },
+export const MainNavigation = () => {
+    return (
+        <NavigationContainer
+            onReady={() => {
+                BootSplash.hide({ fade: true });
             }}
-            drawerContent={(props) => <DrawerContent {...props} />}
+            linking={linkingConfig}
         >
-            <Drawer.Screen
-                name="APP"
-                component={MainStackNavigator}
-                options={({ route }) => ({
-                    swipeEnabled: ![ROUTES.LOGIN, ROUTES.RESET_PASSWORD, ROUTES.REGISTER].includes(
-                        (getFocusedRouteNameFromRoute(route) as 'LOGIN' | 'REGISTER' | 'RESET_PASSWORD') || ''
-                    ),
-                })}
-            />
-        </Drawer.Navigator>
-    </NavigationContainer>
-);
+            <Drawer.Navigator
+                initialRouteName={'APP'}
+                screenOptions={{
+                    headerShown: false,
+                    drawerType: 'slide',
+                    drawerStyle: {
+                        width: width * 0.9,
+                    },
+                }}
+                drawerContent={(props) => <DrawerContent {...props} />}
+            >
+                <Drawer.Screen
+                    name="APP"
+                    component={MainStackNavigator}
+                    options={({ route }) => ({
+                        swipeEnabled: ![ROUTES.LOGIN, ROUTES.RESET_PASSWORD, ROUTES.REGISTER].includes(
+                            (getFocusedRouteNameFromRoute(route) as 'LOGIN' | 'REGISTER' | 'RESET_PASSWORD') || ''
+                        ),
+                    })}
+                />
+            </Drawer.Navigator>
+        </NavigationContainer>
+    );
+};

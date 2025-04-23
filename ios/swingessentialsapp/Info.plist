@@ -45,8 +45,6 @@
 	<string>Swing Essentials needs access to your camera to record new swing videos.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Swing Essentials would like to use Touch/FaceID to sign in to your account.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Swing Essentials needs access to your microphone to capture audio in your swing
 			videos.</string>
@@ -66,9 +64,7 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv64</string>
-	</array>
+	<array/>
 	<key>UIRequiresFullScreen</key>
 	<true/>
 	<key>UIStatusBarStyle</key>

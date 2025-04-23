@@ -32,7 +32,7 @@ export const packagesApi = createApi({
         }),
         captureMobileOrder: builder.mutation<void, { orderId: string; packageId: number }>({
             query: (body) => ({
-                url: `packages/order/${body.orderId}/capture-mobile`,
+                url: `packages/order/mobile-capture`,
                 method: 'POST',
                 body: {
                     ...body,
@@ -52,5 +52,3 @@ export const packagesApi = createApi({
 });
 
 export const { useGetPackagesQuery, useCaptureMobileOrderMutation } = packagesApi;
-export const selectCaptureMobileOrderState = (requestId: string) =>
-    packagesApi.endpoints.captureMobileOrder.select(requestId);

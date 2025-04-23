@@ -23,6 +23,7 @@ export const VideoCarousel: React.FC<VideoCarouselProps> = (props) => {
 
     return (
         <Carousel<BasicVideo>
+            key={data.length}
             data={data}
             height={aspectHeight(width) + theme.size.xl}
             loop={false}
@@ -38,7 +39,7 @@ export const VideoCarousel: React.FC<VideoCarouselProps> = (props) => {
                 parallaxScrollingOffset: 48,
             }}
             onConfigurePanGesture={(gestureChain) => {
-                gestureChain.activeOffsetX([-10, 10]);
+                gestureChain.activeOffsetX([-30, 30]);
             }}
             onProgressChange={progress}
             renderItem={({ item }) => (

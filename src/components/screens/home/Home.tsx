@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../redux/store';
 import { RefreshControl, View, ScrollView } from 'react-native';
@@ -44,7 +44,17 @@ export const Home: React.FC = () => {
         skip: !token,
     });
 
-    const latestLessons = lessons.length > 0 ? lessons : [placeholder];
+    const latestLessons = useMemo(() => {
+        return lessons.length > 0 ? lessons : [placeholder];
+    }, [lessons, placeholder]);
+
+    const slicedLessons = useMemo(() => {
+        return latestLessons.slice(0, role === 'administrator' ? 25 : 5);
+    }, [latestLessons, role]);
+
+    const slicedTips = useMemo(() => {
+        return tips.slice(0, 5);
+    }, [tips]);
 
     return (
         <>
@@ -116,7 +126,7 @@ export const Home: React.FC = () => {
                     }}
                 />
 
-                <LessonCarousel data={latestLessons.slice(0, role === 'administrator' ? 5 : 3)} />
+                <LessonCarousel data={slicedLessons} />
 
                 {/* LESSON CREDITS */}
                 <SectionHeader
@@ -172,7 +182,7 @@ export const Home: React.FC = () => {
                             style={{ marginHorizontal: theme.spacing.md }}
                         />
 
-                        <VideoCarousel data={tips.slice(0, 3)} />
+                        <VideoCarousel data={slicedTips} />
                     </View>
                 )}
             </ScrollView>

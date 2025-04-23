@@ -25,6 +25,7 @@ export const LessonCarousel: React.FC<LessonCarouselProps> = (props) => {
 
     return (
         <Carousel<LessonBasicDetails | WelcomeVideo>
+            key={data.length}
             data={data}
             height={aspectHeight(width) + theme.size.xl}
             loop={false}
@@ -40,7 +41,7 @@ export const LessonCarousel: React.FC<LessonCarouselProps> = (props) => {
                 parallaxScrollingOffset: 48,
             }}
             onConfigurePanGesture={(gestureChain) => {
-                gestureChain.activeOffsetX([-10, 10]);
+                gestureChain.activeOffsetX([-30, 30]);
             }}
             onProgressChange={progress}
             renderItem={({ item }) =>

@@ -211,7 +211,7 @@ const RegisterForm: React.FC = () => {
             resetUsernameCheck();
             resetRegistration();
         }
-    }, [registeredSuccessfully, navigation]);
+    }, [registeredSuccessfully, navigation, resetEmailCheck, resetForm, resetUsernameCheck, resetRegistration]);
 
     const canSubmit = useCallback((): boolean => {
         const keys: RegistrationKey[] = Object.keys(fields) as RegistrationKey[];

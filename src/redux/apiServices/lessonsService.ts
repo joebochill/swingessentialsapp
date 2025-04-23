@@ -31,21 +31,6 @@ export type FullLessonDetailsResponse = {
     page: number;
 };
 
-export type LessonResponse = {
-    lesson_id: number;
-    response_video: string;
-    response_notes: string;
-    response_status: 'good' | 'rejected' | '';
-};
-
-export type InPersonLesson = {
-    request_date: string;
-    response_video: string;
-    response_notes: string;
-    response_status: 'good' | 'rejected' | '';
-    username: string;
-};
-
 export const lessonsApi = createApi({
     reducerPath: 'lessonsApi',
     baseQuery: fetchBaseQuery({
@@ -70,30 +55,6 @@ export const lessonsApi = createApi({
             query: (id) => ({
                 url: `lessons/${id}/viewed`,
                 method: 'PATCH',
-            }),
-            invalidatesTags: ['lessons', 'lessonDetails'],
-        }),
-        addLessonResponse: builder.mutation<void, LessonResponse>({
-            query: (newLesson) => ({
-                url: `lessons/${newLesson.lesson_id}/respond`,
-                method: 'POST',
-                body: newLesson,
-            }),
-            invalidatesTags: ['lessons', 'lessonDetails'],
-        }),
-        addInPersonLesson: builder.mutation<void, InPersonLesson>({
-            query: (newLesson) => ({
-                url: 'lessons/in-person',
-                method: 'POST',
-                body: newLesson,
-            }),
-            invalidatesTags: ['lessons'],
-        }),
-        updateLessonResponse: builder.mutation<void, LessonResponse>({
-            query: (updatedLesson) => ({
-                url: `lessons/${updatedLesson.lesson_id}`,
-                method: 'PUT',
-                body: updatedLesson,
             }),
             invalidatesTags: ['lessons', 'lessonDetails'],
         }),
@@ -152,8 +113,5 @@ export const {
     useGetPendingLessonsQuery,
     useGetLessonByIdQuery,
     useMarkLessonViewedMutation,
-    useAddInPersonLessonMutation,
-    useAddLessonResponseMutation,
-    useUpdateLessonResponseMutation,
     useAddLessonRequestMutation,
 } = lessonsApi;

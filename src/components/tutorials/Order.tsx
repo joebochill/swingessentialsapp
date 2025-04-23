@@ -54,7 +54,7 @@ export const OrderTutorial: React.FC = () => {
                             <Stack
                                 direction={'row'}
                                 align={'center'}
-                                style={[{ marginRight: -1 * theme.spacing.md }, style]}
+                                style={[style, { marginRight: -1 * theme.spacing.sm }]}
                                 {...rightProps}
                             >
                                 <Typography variant={'labelMedium'}>

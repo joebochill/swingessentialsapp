@@ -7,6 +7,7 @@ import {
     TouchableOpacityProps,
     ImageBackground,
     Alert,
+    View,
 } from 'react-native';
 import Video, { ReactVideoSourceProperties } from 'react-native-video';
 
@@ -182,19 +183,25 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                     />
                 )}
                 {videoReady && !loading && !processing && (
-                    <Icon
-                        name={'play-arrow'}
-                        size={theme.size.xl}
-                        color={theme.colors.onPrimary}
+                    <View
                         style={{
+                            position: 'absolute',
                             height: '100%',
                             width: '100%',
-                            textAlign: 'center',
-                            lineHeight: height,
-                            position: 'absolute',
-                            opacity: videoPlaying ? 0 : 1,
+                            top: 0,
+                            left: 0,
+                            justifyContent: 'center',
                         }}
-                    />
+                    >
+                        <Icon
+                            name={'play-circle'}
+                            size={theme.size.xxl}
+                            color={theme.colors.onPrimary}
+                            style={{
+                                opacity: videoPlaying ? 0 : 1,
+                            }}
+                        />
+                    </View>
                 )}
                 {source && !videoPlaying && editable && !processing && (
                     <TouchableOpacity

@@ -36,23 +36,11 @@ export const TokenModal: React.FC<ModalProps> = (props) => {
     const [engageCountdown, setEngageCountdown] = useState(false);
     const [updateRate, setUpdateRate] = useState(1);
 
-    // const updateRefreshRate = useCallback(() => {
-    //     if (timeRemaining <= 3 * 60) {
-    //         setUpdateRate(1);
-    //     } else if (timeRemaining <= 10 * 60) {
-    //         setUpdateRate(1 * 60);
-    //     } else if (timeRemaining <= 20 * 60) {
-    //         setUpdateRate(5 * 60);
-    //     } else {
-    //         setUpdateRate(30 * 60);
-    //     }
-    // }, [timeRemaining]);
-
     const updateRefreshRate = useCallback(() => {
-        if (timeRemaining <= 1 * 60) {
+        if (timeRemaining <= 3 * 60) {
             setUpdateRate(1);
         } else if (timeRemaining <= 10 * 60) {
-            setUpdateRate(5);
+            setUpdateRate(1 * 60);
         } else if (timeRemaining <= 20 * 60) {
             setUpdateRate(5 * 60);
         } else {
@@ -114,7 +102,7 @@ export const TokenModal: React.FC<ModalProps> = (props) => {
             transparent={true}
             onRequestClose={(): void => {}}
             onDismiss={(): void => {}}
-            visible={token !== null && timeRemaining <= 0.25 * 60 && timeRemaining > 0}
+            visible={token !== null && timeRemaining <= 3 * 60 && timeRemaining > 0}
             {...other}
         >
             <Stack

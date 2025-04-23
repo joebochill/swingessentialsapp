@@ -7,6 +7,7 @@ import TouchID from 'react-native-touch-id';
 import { Switch } from 'react-native-paper';
 import { height } from '../../../utilities/dimensions';
 import logo from '../../../assets/images/logo-big.png';
+import pga from '../../../assets/images/pga.png';
 import { ROUTES } from '../../../navigation/routeConfig';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../../theme';
@@ -212,6 +213,18 @@ export const Login: React.FC = () => {
     return (
         <BackgroundImage>
             <KeyboardAvoidingView style={[{ flex: 1 }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+                <Image
+                    source={pga}
+                    resizeMethod="resize"
+                    style={{
+                        height: 100,
+                        position: 'absolute',
+                        width: '100%',
+                        resizeMode: 'contain',
+                        bottom: 48,
+                        opacity: 0.75,
+                    }}
+                />
                 <ScrollView
                     style={{ flex: 1 }}
                     contentContainerStyle={{
@@ -228,7 +241,7 @@ export const Login: React.FC = () => {
                             source={logo}
                             resizeMethod="resize"
                             style={{
-                                height: 80,
+                                height: 100,
                                 width: '100%',
                                 resizeMode: 'contain',
                                 marginBottom: theme.spacing.md,

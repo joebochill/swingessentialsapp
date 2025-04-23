@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { blogsApi } from './apiServices/blogsService';
 import authApi from './apiServices/authService';
 import authReducer from './slices/authSlice';
-import orderReducer from './slices/ordersSlice';
 import { userDetailsApi } from './apiServices/userDetailsService';
 import { testimonialsApi } from './apiServices/testimonialsService';
 import { prosApi } from './apiServices/prosService';
@@ -32,7 +31,6 @@ export const store = configureStore({
         [faqApi.reducerPath]: faqApi.reducer,
 
         auth: authReducer,
-        order: orderReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

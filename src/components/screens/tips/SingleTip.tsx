@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, ScrollView } from 'react-native';
-import { height } from '../../../utilities/dimensions';
+import { height, width } from '../../../utilities/dimensions';
 import { splitParagraphs } from '../../../utilities/text';
 import { Paragraph } from 'react-native-paper';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -31,6 +31,8 @@ export const SingleTip: React.FC = () => {
     if (tipID === null) {
         navigation.pop();
     }
+
+    const videoWidth = width - 2 * theme.spacing.md;
 
     return (
         tipID && (
@@ -67,7 +69,7 @@ export const SingleTip: React.FC = () => {
                     {tipDetails && (
                         <>
                             <SectionHeader title={tipDetails.title} />
-                            <YoutubeCard video={tipDetails.video} />
+                            <YoutubeCard video={tipDetails.video} videoWidth={videoWidth} />
                             <SectionHeader title={'Summary'} style={{ marginTop: theme.spacing.xl }} />
                             <Stack gap={theme.spacing.md}>
                                 {splitParagraphs(tipDetails.comments).map((p, ind) => (

@@ -86,7 +86,7 @@ export const LessonsTutorial: React.FC = () => {
                                     name={'chevron-right'}
                                     size={theme.size.md}
                                     color={theme.colors.onPrimaryContainer}
-                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                    style={{ marginRight: -1 * theme.spacing.sm }}
                                 />
                             </Stack>
                         )}
