@@ -212,7 +212,7 @@ export const Login: React.FC = () => {
 
     return (
         <BackgroundImage>
-            <KeyboardAvoidingView style={[{ flex: 1 }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+            <KeyboardAvoidingView style={[{ flex: 1 }]} behavior={'padding'}>
                 <Image
                     source={pga}
                     resizeMethod="resize"
@@ -236,7 +236,7 @@ export const Login: React.FC = () => {
                     keyboardShouldPersistTaps={'always'}
                 >
                     {/* LOGO */}
-                    <View style={{ width: '100%', maxWidth: 500 }}>
+                    <View style={{ width: '100%', maxWidth: 500, paddingVertical: 100 }}>
                         <Image
                             source={logo}
                             resizeMethod="resize"

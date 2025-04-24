@@ -260,7 +260,7 @@ export const Submit: React.FC = () => {
                         >
                             {'TIP:'}
                         </Typography>
-                        <Typography variant={'bodySmall'}>
+                        <Typography variant={'bodySmall'} style={{ textAlign: 'center' }}>
                             {'Avoid slo-mo videos to stay below the file size limit.'}
                         </Typography>
                     </Stack>
