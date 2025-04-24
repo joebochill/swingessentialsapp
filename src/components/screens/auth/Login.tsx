@@ -228,7 +228,7 @@ export const Login: React.FC = () => {
                 <ScrollView
                     style={{ flex: 1 }}
                     contentContainerStyle={{
-                        minHeight: height - insets.top,
+                        minHeight: height,
                         alignItems: 'center',
                         justifyContent: 'center',
                         paddingHorizontal: theme.spacing.md,
@@ -236,7 +236,7 @@ export const Login: React.FC = () => {
                     keyboardShouldPersistTaps={'always'}
                 >
                     {/* LOGO */}
-                    <View style={{ width: '100%', maxWidth: 500, paddingVertical: 100 }}>
+                    <View style={{ width: '100%', maxWidth: 500 }}>
                         <Image
                             source={logo}
                             resizeMethod="resize"

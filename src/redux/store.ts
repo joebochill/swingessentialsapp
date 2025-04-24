@@ -13,6 +13,7 @@ import { creditsApi } from './apiServices/creditsService';
 import { configurationApi } from './apiServices/configurationService';
 import { logsApi } from './apiServices/logsService';
 import { faqApi } from './apiServices/faqService';
+import { connectivityApi } from './apiServices/connectivityService';
 
 export const store = configureStore({
     reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
         [packagesApi.reducerPath]: packagesApi.reducer,
         [creditsApi.reducerPath]: creditsApi.reducer,
         [configurationApi.reducerPath]: configurationApi.reducer,
+        [connectivityApi.reducerPath]: connectivityApi.reducer,
         [logsApi.reducerPath]: logsApi.reducer,
         [faqApi.reducerPath]: faqApi.reducer,
 
@@ -49,6 +51,7 @@ export const store = configureStore({
             packagesApi.middleware,
             creditsApi.middleware,
             configurationApi.middleware,
+            connectivityApi.middleware,
             logsApi.middleware,
             faqApi.middleware
         ),

@@ -28,6 +28,7 @@ import { TokenModal } from '../components/auth/TokenModal';
 import { useToggleTheme } from '../theme/ThemeProvider';
 import { format } from 'date-fns';
 import { useAutoLogging } from '../logger';
+import { ConnectivityModal } from '../components/feedback/ConnectivityModal';
 
 export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
     useAutoLogging();
@@ -392,6 +393,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                 {...headerProps}
             />
             <TokenModal />
+            <ConnectivityModal />
         </>
     );
 };

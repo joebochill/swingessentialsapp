@@ -1261,7 +1261,7 @@ PODS:
     - Yoga
   - react-native-mail (6.1.1):
     - React-Core
-  - react-native-safe-area-context (5.3.0):
+  - react-native-safe-area-context (5.4.0):
     - React-Core
   - react-native-vector-icons (11.0.0):
     - DoubleConversion
@@ -1284,7 +1284,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-video (6.12.0):
+  - react-native-video (6.13.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1297,7 +1297,7 @@ PODS:
     - React-featureflags
     - React-graphics
     - React-ImageManager
-    - react-native-video/Video (= 6.12.0)
+    - react-native-video/Video (= 6.13.0)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-rendererdebug
@@ -1306,7 +1306,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-video/Video (6.12.0):
+  - react-native-video/Video (6.13.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1635,7 +1635,7 @@ PODS:
     - React-logger (= 0.78.2)
     - React-perflogger (= 0.78.2)
     - React-utils (= 0.78.2)
-  - RNBootSplash (6.3.4):
+  - RNBootSplash (6.3.5):
     - React-Core
   - RNCAsyncStorage (2.1.2):
     - React-Core
@@ -1700,7 +1700,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNReanimated (3.17.3):
+  - RNReanimated (3.17.4):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1722,10 +1722,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated (= 3.17.3)
-    - RNReanimated/worklets (= 3.17.3)
+    - RNReanimated/reanimated (= 3.17.4)
+    - RNReanimated/worklets (= 3.17.4)
     - Yoga
-  - RNReanimated/reanimated (3.17.3):
+  - RNReanimated/reanimated (3.17.4):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1747,9 +1747,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated/apple (= 3.17.3)
+    - RNReanimated/reanimated/apple (= 3.17.4)
     - Yoga
-  - RNReanimated/reanimated/apple (3.17.3):
+  - RNReanimated/reanimated/apple (3.17.4):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1772,7 +1772,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNReanimated/worklets (3.17.3):
+  - RNReanimated/worklets (3.17.4):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1794,9 +1794,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/worklets/apple (= 3.17.3)
+    - RNReanimated/worklets/apple (= 3.17.4)
     - Yoga
-  - RNReanimated/worklets/apple (3.17.3):
+  - RNReanimated/worklets/apple (3.17.4):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2168,9 +2168,9 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 6a39463c32ce831c4c2aa8469273114d894b6be9
   react-native-image-picker: 02103d18c612bd41a8d8198eb4dfebfb3d9ee7eb
   react-native-mail: 6e83813066984b26403d3fdfe79ac7bb31857e3c
-  react-native-safe-area-context: fdb0a66feac038cb6eb1edafcf2ccee2b5cf0284
+  react-native-safe-area-context: 9d72abf6d8473da73033b597090a80b709c0b2f1
   react-native-vector-icons: c86b7c1b29cd4063b41494abc19ae73d4d6d9a62
-  react-native-video: 8551ba23f09db25a15c4f51d7203a41c2257231d
+  react-native-video: eb861d67a71dfef1bbf6086a811af5f338b13781
   react-native-webview: 079eca50edf657503318b66687dadfb903731aa8
   React-NativeModulesApple: fd0545efbb7f936f78edd15a6564a72d2c34bb32
   React-perflogger: 5f8fa36a8e168fb355efe72099efe77213bc2ac6
@@ -2200,7 +2200,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 4893bde33952f997a323eb1a1ee87a72764018ff
   ReactCodegen: 99ea3536c05be3c18d0c517acb56b5a6d726fc7b
   ReactCommon: 865ebe76504a95e115b6229dd00a31e56d2d4bfe
-  RNBootSplash: c7b7beb415eed621671ccf17c8c0e7888c84243b
+  RNBootSplash: b17b845a5f1670af0cb0c7142a80e9e60909ea66
   RNCAsyncStorage: b9f5f78da5d16a853fe3dc22e8268d932fc45a83
   RNCPicker: 68cada0778c2ec65d200a3ae4b44739a0396d333
   RNDateTimePicker: 590f2000e4272050b98689cee6c8abc66c25bb22
@@ -2210,7 +2210,7 @@ SPEC CHECKSUMS:
   RNIap: f94647b3a3dbd5fa08ad7ed847eb588aa5fe95fe
   RNImageCropPicker: b0afedeefd8655254a15c34103718455fde6ce59
   RNKeychain: 8024819eb861575c8e1bdcfc6e02c2b947ed16f7
-  RNReanimated: d5f5a6e3757a8c11899ff425b4b9ba93eb521076
+  RNReanimated: 1ac50aefea693b00ddcc4f221dc81eaeb0b5ef8a
   RNScreens: cfb34cc4609bb92bd4fad6583be815075705a912
   RNSVG: 4c63b12b7b5761063bca4f20dd228f6a8370f614
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748

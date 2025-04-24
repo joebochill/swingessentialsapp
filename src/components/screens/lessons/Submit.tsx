@@ -46,6 +46,8 @@ export const Submit: React.FC = () => {
     const [videoSize, setVideoSize] = useState({ fo: 0, dtl: 0 });
     const [uploadProgress, setUploadProgress] = useState(0);
 
+    const showTip = !foVideo || !dtlVideo;
+
     const roleError =
         role === 'anonymous'
             ? 'You must be signed in to submit lessons.'
@@ -242,28 +244,30 @@ export const Submit: React.FC = () => {
                         </Stack>
                     </Stack>
 
-                    <Stack
-                        align={'center'}
-                        style={{
-                            marginTop: theme.spacing.sm,
-                            padding: theme.spacing.lg,
-                            borderWidth: 1,
-                            borderRadius: theme.roundness,
-                            borderColor: theme.colors.outline,
-                        }}
-                        gap={theme.spacing.sm}
-                    >
-                        <Typography
-                            variant={'titleLarge'}
-                            fontWeight={'semiBold'}
-                            style={{ lineHeight: theme.fonts.titleLarge.fontSize }}
+                    {showTip && (
+                        <Stack
+                            align={'center'}
+                            style={{
+                                marginTop: theme.spacing.sm,
+                                padding: theme.spacing.lg,
+                                borderWidth: 1,
+                                borderRadius: theme.roundness,
+                                borderColor: theme.colors.outline,
+                            }}
+                            gap={theme.spacing.sm}
                         >
-                            {'TIP:'}
-                        </Typography>
-                        <Typography variant={'bodySmall'} style={{ textAlign: 'center' }}>
-                            {'Avoid slo-mo videos to stay below the file size limit.'}
-                        </Typography>
-                    </Stack>
+                            <Typography
+                                variant={'titleLarge'}
+                                fontWeight={'semiBold'}
+                                style={{ lineHeight: theme.fonts.titleLarge.fontSize }}
+                            >
+                                {'TIP:'}
+                            </Typography>
+                            <Typography variant={'bodySmall'} style={{ textAlign: 'center' }}>
+                                {'Avoid slo-mo videos to stay below the file size limit.'}
+                            </Typography>
+                        </Stack>
+                    )}
 
                     <SectionHeader title={'Special Requests / Comments'} style={{ marginTop: theme.spacing.xl }} />
                     {!useNotes && (

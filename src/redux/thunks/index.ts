@@ -13,7 +13,9 @@ import { LOG } from '../../logger';
 export const loadUserData = createAsyncThunk('auth/loadUserData', async (_, { dispatch }) => {
     try {
         dispatch(userDetailsApi.util.invalidateTags(['userDetails']));
+        dispatch(lessonsApi.util.invalidateTags(['lessons']));
         dispatch(lessonsApi.endpoints.getCompletedLessons.initiate({ page: 1, users: '' }));
+        dispatch(creditsApi.util.invalidateTags(['credits']));
         dispatch(creditsApi.endpoints.getCredits.initiate());
     } catch (error) {
         LOG.error(`Error loading user details: ${error}`, { zone: 'AUTH' });

@@ -2,7 +2,14 @@
 - Publish new API version to prod
 - Android video settings not scrollable
 Manually reload datas on pull to refresh
-Android fo video preview lost after going into record for dtl
+ - Lessons
+ - Order
+ - Submit
+ - Tips
+ - Blogs
+ - Settings
+
+
 
 
 Test Scenarios: [XX] = Both platforms tested [X] iOS only tested
