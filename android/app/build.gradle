@@ -83,7 +83,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 74
-        versionName "4.1.0"
+        versionName "5.0.0"
         missingDimensionStrategy "store", "play"
     }
     signingConfigs {

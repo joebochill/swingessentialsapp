@@ -2,6 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ASYNC_PREFIX, AUTH, BASE_API_URL } from '../../_config';
 import { prepareHeaders } from './utils/prepareHeaders';
+import { store } from '../store';
+import { creditsApi } from './creditsService';
 
 export type LessonBasicDetails = {
     request_date: string;
@@ -91,6 +93,8 @@ export const lessonsApi = createApi({
                             xhr.send(data);
                         });
                     });
+
+                    store.dispatch(creditsApi.util.invalidateTags(['credits']));
 
                     return { data: result.data };
                 } catch (error: unknown) {

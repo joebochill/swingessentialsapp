@@ -1,9 +1,7 @@
-
-
 - Verify Orders and Submission on a real device
-- Off-screen youtube videos don't load when scrolled in
-- Fix any TODO comments (IAP)
-- Publish new API version
+- Publish new API version to prod
+- Android video settings not scrollable
+
 
 Test Scenarios: [XX] = Both platforms tested [X] iOS only tested
 

@@ -243,17 +243,24 @@ export const Submit: React.FC = () => {
                     </Stack>
 
                     <Stack
+                        align={'center'}
                         style={{
                             marginTop: theme.spacing.sm,
-                            padding: theme.spacing.md,
+                            padding: theme.spacing.lg,
                             borderWidth: 1,
                             borderRadius: theme.roundness,
                             borderColor: theme.colors.outline,
-                            backgroundColor: theme.dark ? `${theme.colors.primary}4C` : theme.colors.primaryContainer,
                         }}
+                        gap={theme.spacing.sm}
                     >
-                        <Typography variant={'bodySmall'} color={theme.dark ? 'onPrimary' : 'onPrimaryContainer'}>
-                            <Typography fontWeight={'semiBold'}>{'TIP: '}</Typography>
+                        <Typography
+                            variant={'titleLarge'}
+                            fontWeight={'semiBold'}
+                            style={{ lineHeight: theme.fonts.titleLarge.fontSize }}
+                        >
+                            {'TIP:'}
+                        </Typography>
+                        <Typography variant={'bodySmall'}>
                             {'Avoid slo-mo videos to stay below the file size limit.'}
                         </Typography>
                     </Stack>

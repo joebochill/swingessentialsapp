@@ -1,80 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>swingessentialsapp</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<false/>
-		<key>NSAllowsLocalNetworking</key>
-		<true/>
-		<key>NSExceptionDomains</key>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>en</string>
+		<key>CFBundleDisplayName</key>
+		<string>swingessentialsapp</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>$(PRODUCT_NAME)</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(MARKETING_VERSION)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleVersion</key>
+		<string>$(CURRENT_PROJECT_VERSION)</string>
+		<key>LSRequiresIPhoneOS</key>
+		<true />
+		<key>NSAppTransportSecurity</key>
 		<dict>
-			<key>localhost</key>
+			<key>NSAllowsArbitraryLoads</key>
+			<false />
+			<key>NSAllowsLocalNetworking</key>
+			<true />
+			<key>NSExceptionDomains</key>
 			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
+				<key>localhost</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true />
+					<key>NSIncludesSubdomains</key>
+					<true />
+				</dict>
 			</dict>
 		</dict>
-	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Swing Essentials needs access to your camera to record new swing videos.</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Swing Essentials would like to use Touch/FaceID to sign in to your account.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Swing Essentials needs access to your microphone to capture audio in your swing
+		<key>NSCameraUsageDescription</key>
+		<string>Swing Essentials needs access to your camera to record new swing videos.</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>Swing Essentials would like to use Touch/FaceID to sign in to your account.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Swing Essentials needs access to your microphone to capture audio in your swing
 			videos.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Swing Essentials needs access to your photo library to save swing videos.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Swing Essentials needs access to your photo library to upload swing videos.</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>SFCompactDisplay-Black.otf</string>
-		<string>SFCompactDisplay-Bold.otf</string>
-		<string>SFCompactDisplay-Regular.otf</string>
-		<string>SFCompactDisplay-Semibold.otf</string>
-		<string>SFCompactDisplay-Thin.otf</string>
-		<string>MaterialIcons.ttf</string>
-	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen.storyboard</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array/>
-	<key>UIRequiresFullScreen</key>
-	<true/>
-	<key>UIStatusBarStyle</key>
-	<string></string>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-</dict>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>Swing Essentials needs access to your photo library to save swing videos.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Swing Essentials needs access to your photo library to upload swing videos.</string>
+		<key>ITSAppUsesNonExemptEncryption</key>
+		<string>NO</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Some advanced camera features take advantage of your location</string>
+		<key>UIAppFonts</key>
+		<array>
+			<string>SFCompactDisplay-Black.otf</string>
+			<string>SFCompactDisplay-Bold.otf</string>
+			<string>SFCompactDisplay-Regular.otf</string>
+			<string>SFCompactDisplay-Semibold.otf</string>
+			<string>SFCompactDisplay-Thin.otf</string>
+			<string>MaterialIcons.ttf</string>
+		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen.storyboard</string>
+		<key>UIRequiredDeviceCapabilities</key>
+		<array />
+		<key>UIRequiresFullScreen</key>
+		<true />
+		<key>UIStatusBarStyle</key>
+		<string></string>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		</array>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false />
+	</dict>
 </plist>

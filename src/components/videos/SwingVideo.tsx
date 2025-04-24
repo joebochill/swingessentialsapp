@@ -121,7 +121,6 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                         width,
                         height,
                         borderRadius: theme.roundness,
-                        overflow: 'hidden',
                     },
                     source
                         ? {
@@ -138,37 +137,46 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
                 onPress={handlePress}
                 {...other}
             >
-                {!source ? (
-                    !processing && <SwingVideoPlaceholder {...(placeholderProps as any)} />
-                ) : (
-                    <Video
-                        source={source}
-                        ref={videoRef}
-                        rate={1.0}
-                        volume={1.0}
-                        muted={false}
-                        paused={!videoPlaying}
-                        onLoad={(): void => {
-                            setVideoReady(true);
-                            if (videoRef.current && Platform.OS === 'android') {
-                                // @ts-expect-error we know seek exists even though the ref is incorrectly typed
-                                videoRef.current.seek(0);
-                            }
-                        }}
-                        onEnd={(): void => setVideoPlaying(false)}
-                        onReadyForDisplay={() => setVideoReady(true)}
-                        resizeMode="contain"
-                        repeat={Platform.OS === 'ios'}
-                        playInBackground={false}
-                        playWhenInactive={false}
-                        ignoreSilentSwitch={'ignore'}
-                        style={{
-                            height: '100%',
-                            width: '100%',
-                            backgroundColor: theme.dark ? theme.colors.surface : theme.colors.primaryContainer,
-                        }}
-                    />
-                )}
+                <View
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: theme.roundness,
+                        overflow: 'hidden', // Apply overflow:hidden here
+                    }}
+                >
+                    {!source ? (
+                        !processing && <SwingVideoPlaceholder {...(placeholderProps as any)} />
+                    ) : (
+                        <Video
+                            source={source}
+                            ref={videoRef}
+                            rate={1.0}
+                            volume={1.0}
+                            muted={false}
+                            paused={!videoPlaying}
+                            onLoad={(): void => {
+                                setVideoReady(true);
+                                if (videoRef.current && Platform.OS === 'android') {
+                                    // @ts-expect-error we know seek exists even though the ref is incorrectly typed
+                                    videoRef.current.seek(0);
+                                }
+                            }}
+                            onEnd={(): void => setVideoPlaying(false)}
+                            onReadyForDisplay={() => setVideoReady(true)}
+                            resizeMode="contain"
+                            repeat={Platform.OS === 'ios'}
+                            playInBackground={false}
+                            playWhenInactive={false}
+                            ignoreSilentSwitch={'ignore'}
+                            style={{
+                                height: '100%',
+                                width: '100%',
+                                backgroundColor: theme.dark ? theme.colors.surface : theme.colors.primaryContainer,
+                            }}
+                        />
+                    )}
+                </View>
                 {((source && !videoReady) || loading || processing) && (
                     <ActivityIndicator
                         size={theme.size.xl}
