@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, ViewProps } from 'react-native';
-import { Stack, Typography } from '..';
 import { useAppTheme } from '../../theme';
+import { Stack } from '../layout/Stack';
+import { Typography } from '../typography';
 
 export type VideoTimerProps = ViewProps & {
     visible: boolean;
@@ -22,15 +23,21 @@ export const VideoTimer: React.FC<VideoTimerProps> = (props) => {
             const now = Date.now();
             setStartTime(now);
             setCurrentTime(now);
-            if (intervalRef.current) clearInterval(intervalRef.current);
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
             intervalRef.current = setInterval(() => {
                 setCurrentTime(Date.now());
             }, 10);
         } else {
-            if (intervalRef.current) clearInterval(intervalRef.current);
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
         }
         return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
         };
     }, [visible]);
 
@@ -59,6 +66,7 @@ export const VideoTimer: React.FC<VideoTimerProps> = (props) => {
                         height: 5,
                         width: 5,
                         borderRadius: 5,
+
                         backgroundColor: 'red',
                     }}
                 />

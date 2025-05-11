@@ -1,0 +1,157 @@
+import { Alert } from 'react-native';
+import { ROUTES } from './routeConfig';
+import Mailer from 'react-native-mail';
+import { LOG } from '../logger';
+
+type RouteGroup = {
+    name: string;
+    data: Route[];
+};
+type Route = {
+    title: string;
+    icon: string;
+    route?: string;
+    screen?: string;
+    iconType?: string;
+    nested?: boolean;
+    private?: boolean;
+    activatePanel?: number;
+    onPress?: () => void;
+};
+
+export const mainNavigationItems: RouteGroup = {
+    name: 'main',
+    data: [
+        {
+            title: 'Home',
+            icon: 'home',
+            route: ROUTES.HOME,
+        },
+        {
+            title: 'Your Profile',
+            icon: 'person',
+            private: true,
+            route: ROUTES.SETTINGS_GROUP,
+            screen: ROUTES.SETTINGS,
+        },
+        {
+            title: 'Your Lessons',
+            icon: 'subscriptions',
+            route: ROUTES.LESSONS,
+        },
+        {
+            title: 'Submit Your Swing',
+            icon: 'videocam',
+            route: ROUTES.SUBMIT,
+        },
+        {
+            title: 'Order More',
+            icon: 'shopping-cart',
+            route: ROUTES.ORDER,
+        },
+        {
+            title: 'Meet Our Pros',
+            icon: 'face',
+            route: ROUTES.PROS,
+        },
+        {
+            title: 'Tip of the Month',
+            icon: 'today',
+            route: ROUTES.TIPS,
+        },
+        {
+            title: 'The 19th Hole',
+            icon: 'local-bar',
+            route: ROUTES.BLOGS,
+        },
+        {
+            title: 'Help',
+            icon: 'help',
+            nested: true,
+            activatePanel: 2,
+        },
+    ],
+};
+
+export const helpNavigationItems: RouteGroup = {
+    name: 'help',
+    data: [
+        {
+            title: 'About',
+            icon: 'info',
+            route: ROUTES.ABOUT,
+        },
+        {
+            title: 'FAQ',
+            icon: 'help',
+            route: ROUTES.FAQ,
+        },
+        {
+            title: 'Contact Us',
+            icon: 'mail',
+            onPress: (): void => {
+                Mailer.mail(
+                    {
+                        subject: 'Swing Essentials App Feedback',
+                        recipients: ['info@swingessentials.com'],
+                        isHTML: true,
+                    },
+                    (error, event) => {
+                        if (error && error === 'canceled') {
+                            // Do nothing
+                        } else if (error) {
+                            LOG.error(`Error sending feedback email: ${error}`, { zone: 'MAIL' });
+                        } else if (event && event === 'sent') {
+                            // message sent successfully
+                            Alert.alert(
+                                'Message Sent',
+                                'Your message has been sent successfully. Thank you for helping us improve the app!'
+                            );
+                        } else if (event && (event === 'canceled' || event === 'cancelled' || event === 'cancel')) {
+                            // do nothing
+                        } else if (event) {
+                            LOG.error(`Unknown event while sending feedback email: ${event}`, { zone: 'MAIL' });
+                        }
+                    }
+                );
+            },
+        },
+        {
+            title: 'Error Logs',
+            icon: 'report-problem',
+            private: true,
+            route: ROUTES.LOGS,
+        },
+        {
+            title: 'Back',
+            icon: 'arrow-back',
+            activatePanel: 0,
+        },
+    ],
+};
+
+export const accountNavigationItems: RouteGroup = {
+    name: 'account',
+    data: [
+        {
+            title: 'My Profile',
+            icon: 'person',
+            private: true,
+            route: ROUTES.SETTINGS,
+        },
+        {
+            title: 'Settings',
+            icon: 'settings',
+            private: true,
+            route: ROUTES.SETTINGS,
+        },
+
+        {
+            title: 'Back',
+            icon: 'arrow-back',
+            activatePanel: 0,
+        },
+    ],
+};
+
+export const NavigationItems = [mainNavigationItems, accountNavigationItems, helpNavigationItems];
