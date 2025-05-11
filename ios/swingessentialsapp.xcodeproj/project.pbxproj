@@ -10,6 +10,7 @@
 		0C80B921A6F3F58F76C31292 /* libPods-swingessentialsapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-swingessentialsapp.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2535D6682B6AE2430021E5D9 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2535D6672B6AE2430021E5D9 /* BootSplash.storyboard */; };
+		255A2D4E2DBB42C6007D1CEC /* libReact-RCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 255A2D4D2DBB42C6007D1CEC /* libReact-RCTLinking.a */; };
 		2572B0002B653F33009D1DE2 /* SFCompactDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2572AFFB2B653F33009D1DE2 /* SFCompactDisplay-Bold.otf */; };
 		2572B0012B653F33009D1DE2 /* SFCompactDisplay-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2572AFFC2B653F33009D1DE2 /* SFCompactDisplay-Thin.otf */; };
 		2572B0022B653F33009D1DE2 /* SFCompactDisplay-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2572AFFD2B653F33009D1DE2 /* SFCompactDisplay-Semibold.otf */; };
@@ -26,6 +27,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = swingessentialsapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = swingessentialsapp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		2535D6672B6AE2430021E5D9 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = swingessentialsapp/BootSplash.storyboard; sourceTree = "<group>"; };
+		255A2D4D2DBB42C6007D1CEC /* libReact-RCTLinking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTLinking.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2572AFFB2B653F33009D1DE2 /* SFCompactDisplay-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFCompactDisplay-Bold.otf"; path = "../assets/fonts/SFCompactDisplay-Bold.otf"; sourceTree = "<group>"; };
 		2572AFFC2B653F33009D1DE2 /* SFCompactDisplay-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFCompactDisplay-Thin.otf"; path = "../assets/fonts/SFCompactDisplay-Thin.otf"; sourceTree = "<group>"; };
 		2572AFFD2B653F33009D1DE2 /* SFCompactDisplay-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFCompactDisplay-Semibold.otf"; path = "../assets/fonts/SFCompactDisplay-Semibold.otf"; sourceTree = "<group>"; };
@@ -44,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				255A2D4E2DBB42C6007D1CEC /* libReact-RCTLinking.a in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-swingessentialsapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,6 +70,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				255A2D4D2DBB42C6007D1CEC /* libReact-RCTLinking.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-swingessentialsapp.a */,
 			);
@@ -215,9 +219,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -254,9 +262,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-swingessentialsapp/Pods-swingessentialsapp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -287,7 +299,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = U4XC42DW6S;
 				ENABLE_BITCODE = NO;
@@ -330,7 +342,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = U4XC42DW6S;
 				INFOPLIST_FILE = swingessentialsapp/Info.plist;
@@ -430,10 +442,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -502,10 +511,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

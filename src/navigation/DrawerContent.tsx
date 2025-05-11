@@ -316,7 +316,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                                             style={{
                                                 width: '100%',
                                                 height: '100%',
-                                                resizeMode: 'contain',
+                                                resizeMode: 'cover',
                                             }}
                                             source={user?.avatar ? { uri: avatarURL } : se}
                                         />

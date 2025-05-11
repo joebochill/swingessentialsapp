@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Image, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { Image, KeyboardAvoidingView, ScrollView, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
@@ -11,7 +11,6 @@ import pga from '../../../assets/images/pga.png';
 import { ROUTES } from '../../../navigation/routeConfig';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppTheme } from '../../../theme';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../../navigation/MainNavigation';
 import { BackgroundImage } from '../../common/BackgroundImage';
@@ -52,7 +51,6 @@ const initialCredentials: CredentialsState = {
 export const Login: React.FC = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const theme = useAppTheme();
-    const insets = useSafeAreaInsets();
 
     // Local Component State
     const [username, setUsername] = useState('');

@@ -51,6 +51,7 @@ export const ConnectivityModal: React.FC<ModalProps> = (props) => {
 
     useEffect(() => {
         checkConnection();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -62,7 +63,7 @@ export const ConnectivityModal: React.FC<ModalProps> = (props) => {
         if (!wasSuccess && isSuccess) {
             dispatch(initializeData());
         }
-    }, [isSuccess, wasSuccess]);
+    }, [isSuccess, wasSuccess, dispatch]);
 
     return (
         <Modal

@@ -1,5 +1,13 @@
 import React, { JSX, useCallback, useEffect, useState } from 'react';
-import { View, Image as RNImage, RefreshControl, ScrollView, TouchableHighlight, Keyboard } from 'react-native';
+import {
+    View,
+    Image as RNImage,
+    RefreshControl,
+    ScrollView,
+    TouchableHighlight,
+    Keyboard,
+    Platform,
+} from 'react-native';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { ActivityIndicator, IconButton } from 'react-native-paper';
@@ -205,7 +213,8 @@ export const Settings: React.FC = () => {
                             ImagePicker.openPicker({
                                 width: 200,
                                 height: 200,
-                                cropping: true,
+                                // TODO: waiting for fix from library author to support Android 16 edge-to-edge
+                                cropping: Platform.OS === 'ios',
                                 cropperCircleOverlay: true,
                                 includeBase64: true,
                             })
@@ -494,7 +503,11 @@ export const Settings: React.FC = () => {
                         />
                         <RNPickerSelect
                             darkTheme={theme.dark}
-                            placeholder={{ label: 'Choose One...', value: '', color: theme.colors.primary }}
+                            placeholder={{
+                                label: 'Choose One...',
+                                value: '',
+                                color: theme.dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.25)',
+                            }}
                             items={[
                                 { label: 'Under 70', value: '60' },
                                 { label: '70-79', value: '70' },
@@ -506,7 +519,6 @@ export const Settings: React.FC = () => {
                             onValueChange={(value: string): void => {
                                 setPersonal({ ...personal, average: value as ScoreRange });
                             }}
-                            // @ts-expect-error this is a workaround for a bug in RNPickerSelect with new architecture
                             style={{ inputIOSContainer: { pointerEvents: 'none' } }}
                             value={personal.average}
                             useNativeAndroidPickerStyle={false}

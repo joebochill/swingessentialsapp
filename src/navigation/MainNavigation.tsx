@@ -7,7 +7,6 @@ import BootSplash from 'react-native-bootsplash';
 import { width } from '../utilities/dimensions';
 import { DrawerContent } from './DrawerContent';
 import { UserAppSettings, UserNotificationSettings } from '../redux/apiServices/userDetailsService';
-import { BASE_URL } from '../_config';
 import {
     About,
     Blogs,
@@ -31,7 +30,7 @@ import {
 } from '../components/screens';
 
 const linkingConfig: LinkingOptions<RootDrawerParamList> = {
-    prefixes: [BASE_URL],
+    prefixes: ['https://www.swingessentials.com', 'http://www.swingessentials.com'],
     config: {
         screens: {
             APP: {

@@ -121,7 +121,7 @@ const VerifyForm: React.FC = () => {
                             />
                             <Typography variant={'bodyLarge'} color={'onPrimary'} align={'center'}>
                                 {`Your email address has been confirmed. ${
-                                    token ? "Let's get started!" : 'Please sign in to view your account.'
+                                    token ? `Let's get started!` : `Please sign in to view your account.`
                                 }`}
                             </Typography>
                             <SEButton
@@ -337,7 +337,7 @@ const RegisterForm: React.FC = () => {
                                             placeholder={{
                                                 label: 'Choose One...',
                                                 value: '',
-                                                color: 'rgba(0,0,0,0.25)',
+                                                color: theme.dark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.25)',
                                             }}
                                             items={field.items || []}
                                             onValueChange={
@@ -352,7 +352,6 @@ const RegisterForm: React.FC = () => {
                                                           });
                                                       }
                                             }
-                                            // @ts-expect-error this is a workaround for a bug in RNPickerSelect with new architecture
                                             style={{ inputIOSContainer: { pointerEvents: 'none' } }}
                                             value={fields[field.property]}
                                             useNativeAndroidPickerStyle={false}

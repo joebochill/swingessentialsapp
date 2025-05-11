@@ -30,10 +30,17 @@ export const Lessons: React.FC = () => {
     // Lesson Data
     const [page, setPage] = useState(1);
     const [completedLessons, setCompletedLessons] = useState<LessonBasicDetails[]>([]);
-    const { data: { data: loadedLessons = [], totalPages = 0 } = {}, isFetching: loadingMore } =
-        useGetCompletedLessonsQuery({ page, users: '' });
+    const {
+        data: { data: loadedLessons = [], totalPages = 0 } = {},
+        isFetching: loadingMore,
+        refetch: refetchCompleted,
+    } = useGetCompletedLessonsQuery({ page, users: '' });
 
-    const { data: { data: pendingLessons = [] } = {}, isFetching: loadingPending } = useGetPendingLessonsQuery('');
+    const {
+        data: { data: pendingLessons = [] } = {},
+        isFetching: loadingPending,
+        refetch: refetchPending,
+    } = useGetPendingLessonsQuery('');
 
     const allLessons = useMemo(() => {
         return [...pendingLessons, ...completedLessons];
@@ -88,7 +95,7 @@ export const Lessons: React.FC = () => {
         <>
             <CollapsibleHeader
                 title={'Your Lessons'}
-                subtitle={"See how far you've come"}
+                subtitle={`See how far you've come`}
                 backgroundImage={bg}
                 navigationIcon={{
                     name: 'arrow-back',
@@ -109,7 +116,14 @@ export const Lessons: React.FC = () => {
                 refreshControl={
                     <RefreshControl
                         refreshing={loadingMore || loadingPending}
-                        onRefresh={handleLoadMore}
+                        onRefresh={async () => {
+                            setPage(1);
+                            refetchPending();
+                            const result = await refetchCompleted().unwrap();
+                            if (result.data) {
+                                setCompletedLessons(result.data);
+                            }
+                        }}
                         progressViewOffset={contentProps.contentContainerStyle.paddingTop}
                     />
                 }

@@ -2,14 +2,14 @@ import React, { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 import { View, TouchableOpacity, ViewProps } from 'react-native';
 import YoutubePlayer, { YoutubeIframeRef } from 'react-native-youtube-iframe';
-import Modal from 'react-native-modal';
 import { width as deviceWidth, aspectHeight } from '../../utilities/dimensions';
 import { useAppTheme } from '../../theme';
 import { Stack } from '../layout/Stack';
-import { Paragraph, Typography } from '../typography';
+import { Typography } from '../typography';
 import { Icon } from '../common/Icon';
 import { LOG } from '../../logger';
 import { Image } from 'react-native';
+import { useFocusEffect } from '@react-navigation/core';
 
 type YoutubeCardHeaderProps = {
     title?: string;
@@ -67,9 +67,7 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
     const { videoWidth = width, headerTitle, headerSubtitle, video, onExpand, style } = props;
     const [showVideo, setShowVideo] = useState(false);
     const [videoReady, setVideoReady] = useState(false);
-    const [playing, setPlaying] = useState(true);
-    const [showSettingsWarning, setShowSettingsWarning] = useState(false);
-    // const [hasPlayed, setHasPlayed] = useState(false);
+    const [playing, setPlaying] = useState(false);
 
     const playerRef = useRef<YoutubeIframeRef>(null);
 
@@ -89,6 +87,17 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                 return;
         }
     }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            return () => {
+                // Screen is unfocused, reset the video
+                setPlaying(false);
+                setVideoReady(false);
+                setShowVideo(false);
+            };
+        }, [])
+    );
 
     return (
         <>
@@ -123,7 +132,13 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                         <YoutubeCardHeader title={headerTitle} subtitle={headerSubtitle} onExpand={onExpand} />
                     )}
                     {!showVideo && (
-                        <TouchableOpacity activeOpacity={1} onPress={() => setShowVideo(true)}>
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => {
+                                setShowVideo(true);
+                                setPlaying(true);
+                            }}
+                        >
                             <Image
                                 source={{ uri: `https://img.youtube.com/vi/${video}/maxresdefault.jpg` }}
                                 style={{
@@ -238,36 +253,6 @@ export const YoutubeCard: React.FC<YoutubeCardProps> = (props) => {
                     )}
                 </Stack>
             </View>
-            <Modal
-                animationIn="slideInUp"
-                animationOut={'slideOutDown'}
-                backdropColor={'rgba(0,0,0,0.35)'}
-                onBackdropPress={(): void => {
-                    setShowSettingsWarning(false);
-                }}
-                onDismiss={(): void => {
-                    setShowSettingsWarning(false);
-                }}
-                isVisible={showSettingsWarning}
-            >
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={async () => {
-                        setShowSettingsWarning(false);
-                    }}
-                    style={[
-                        {
-                            borderRadius: theme.roundness,
-                            backgroundColor: theme.colors.surface,
-                            padding: theme.spacing.lg,
-                        },
-                    ]}
-                >
-                    <Paragraph style={{ color: theme.colors.onSurface, textAlign: 'center' }}>
-                        To change video playback settings, open in full-screen mode.
-                    </Paragraph>
-                </TouchableOpacity>
-            </Modal>
         </>
     );
 };

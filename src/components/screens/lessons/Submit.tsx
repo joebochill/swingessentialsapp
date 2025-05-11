@@ -208,7 +208,7 @@ export const Submit: React.FC = () => {
                     />
                     <ErrorBox
                         show={roleError.length === 0 && pendingLessons.length === 0 && credits < 1}
-                        error={"You don't have any credits left. Head over to the Order page to get more."}
+                        error={`You don't have any credits left. Head over to the Order page to get more.`}
                         style={{ marginTop: theme.spacing.md }}
                     />
 

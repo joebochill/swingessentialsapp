@@ -16,11 +16,11 @@ export const DRAWER_WIDTH = 0.9 * width;
 // export const BASE_URL = Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
 // export const BASE_API_URL = Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000';
 // STAGING
-export const BASE_URL = 'https://staging.swingessentials.com';
-export const BASE_API_URL = 'https://staging.swingessentials.com/api/v2';
+// export const BASE_URL = 'https://staging.swingessentials.com';
+// export const BASE_API_URL = 'https://staging.swingessentials.com/api/v2';
 // PRODUCTION
-// export const BASE_URL = 'https://www.swingessentials.com';
-// export const BASE_API_URL = 'https://www.swingessentials.com/api/v2';
+export const BASE_URL = 'https://www.swingessentials.com';
+export const BASE_API_URL = 'https://www.swingessentials.com/api/v2';
 export const AUTH = 'Message';
 
 export const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;

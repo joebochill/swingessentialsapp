@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 // Components
 import {
     TouchableOpacity,
@@ -111,6 +111,13 @@ export const SwingVideo: React.FC<SwingVideoProps> = (props) => {
             setShowPicker(true);
         }
     }, [source, videoReady]);
+
+    useEffect(() => {
+        if (!source) {
+            setVideoPlaying(false);
+            setVideoReady(false);
+        }
+    }, [source]);
 
     return (
         <>
