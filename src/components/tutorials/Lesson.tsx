@@ -1,26 +1,29 @@
-import React from 'react';
-
-// Components
-import { View, Image } from 'react-native';
-import { Stack, Typography } from '../';
-import { SEButton } from '../SEButton';
-import { TutorialModal } from './';
-import Carousel from 'react-native-snap-carousel';
-// Styles
+import React, { useEffect, useState } from 'react';
+import { Image, LayoutChangeEvent } from 'react-native';
+import { TutorialCarousel, TutorialModal } from './';
 import { width } from '../../utilities/dimensions';
-import { useSelector, useDispatch } from 'react-redux';
-import { ApplicationState } from '../../__types__';
-import { tutorialViewed } from '../../redux/actions';
-import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
+import { TUTORIAL_KEYS } from '../../_config';
 import { useAppTheme } from '../../theme';
+import { Stack } from '../layout/Stack';
+import { Typography } from '../typography';
+import { newTutorialAvailable, setTutorialWatched } from './tutorialsUtilities';
 
 export const LessonTutorial: React.FC = () => {
-    const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
+    const [showTutorial, setShowTutorial] = useState(false);
+    const [carouselHeight, setCarouselHeight] = useState<number>(0);
     const theme = useAppTheme();
-    const dispatch = useDispatch();
 
     const slides = [
-        <Stack key={1} align={'center'}>
+        <Stack
+            key={1}
+            align={'center'}
+            onLayout={(event: LayoutChangeEvent) => {
+                const { height } = event.nativeEvent.layout;
+                if (height > carouselHeight) {
+                    setCarouselHeight(height); // Update height dynamically
+                }
+            }}
+        >
             <Typography variant={'displaySmall'} fontWeight={'semiBold'} color={'onPrimary'} align={'center'}>
                 {'Swing Analysis'}
             </Typography>
@@ -46,34 +49,30 @@ export const LessonTutorial: React.FC = () => {
         </Stack>,
     ];
 
+    useEffect(() => {
+        const checkTutorialAvailability = async () => {
+            const isAvailable = await newTutorialAvailable(TUTORIAL_KEYS.LESSON);
+            setShowTutorial(isAvailable);
+        };
+        checkTutorialAvailability();
+    }, []);
+
     return (
         <TutorialModal
-            visible={showTutorial.tutorial_lesson}
+            visible={showTutorial}
             onClose={(): void => {
-                // @ts-ignore
-                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]));
+                setTutorialWatched(TUTORIAL_KEYS.LESSON);
+                setShowTutorial(false);
             }}
         >
-            <View>
-                <Carousel
-                    data={slides}
-                    renderItem={({ index }: { index: number }): JSX.Element => slides[index]}
-                    sliderWidth={width - 2 * theme.spacing.md}
-                    itemWidth={width - 2 * theme.spacing.md}
-                />
-                <SEButton
-                    dark
-                    mode={'contained'}
-                    uppercase
-                    buttonColor={theme.colors.secondary}
-                    title="GOT IT"
-                    style={{ marginTop: theme.spacing.xl }}
-                    onPress={(): void => {
-                        // @ts-ignore
-                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON]));
-                    }}
-                />
-            </View>
+            <TutorialCarousel
+                slides={slides}
+                height={carouselHeight || 200} // Fallback to a default height if not calculated yet
+                onClose={(): void => {
+                    setTutorialWatched(TUTORIAL_KEYS.LESSON);
+                    setShowTutorial(false);
+                }}
+            />
         </TutorialModal>
     );
 };

@@ -1,61 +1,14 @@
 module.exports = {
-    parser: '@typescript-eslint/parser',
-    extends: ['@brightlayer-ui/eslint-config/tsx'],
-    plugins: ['react-hooks'],
+    root: true,
+    extends: '@react-native',
     rules: {
-        'no-shadow': 'off',
-        '@typescript-eslint/no-shadow': ['error'],
-        'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
-        'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
-        'react/display-name': 'off',
-        '@typescript-eslint/naming-convention': [
-            'error',
-            {
-                selector: 'default',
-                format: ['camelCase', 'PascalCase'],
-            },
-            {
-                selector: 'variable',
-                format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
-            },
-            {
-                selector: 'property',
-                format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
-            },
-            {
-                selector: 'property',
-                format: null,
-                modifiers: ['requiresQuotes'],
-            },
-            {
-                selector: 'enumMember',
-                format: ['UPPER_CASE'],
-            },
-            {
-                selector: 'parameter',
-                format: ['camelCase'],
-                leadingUnderscore: 'allow',
-            },
-            {
-                selector: 'memberLike',
-                modifiers: ['private'],
-                format: ['camelCase'],
-                leadingUnderscore: 'require',
-            },
-            {
-                selector: 'typeLike',
-                format: ['PascalCase'],
-            },
-            {
-                selector: 'import',
-                format: ['camelCase', 'PascalCase'],
-            },
-        ],
-    },
-    parserOptions: {
-        project: './tsconfig.json',
-    },
-    env: {
-        browser: true,
+        // 'react-hooks/exhaustive-deps': 'off', // Disable exhaustive-deps for React Native
+        quotes: ['error', 'single', { allowTemplateLiterals: true }],
+        'no-console': 'warn', // Warn on console logs (common in React Native debugging)
+        'react/no-unstable-nested-components': 'off',
+        'react-native/no-unused-styles': 'error', // React Native specific rule
+        'react-native/split-platform-components': 'warn', // Warn if platform-specific files aren't split
+        'react-native/no-inline-styles': 'off', // Warn against inline styles
+        'react-native/no-color-literals': 'off', // Warn against hardcoded colors
     },
 };

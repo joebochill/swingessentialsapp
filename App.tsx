@@ -1,39 +1,19 @@
 import React, { useEffect } from 'react';
 
-import BootSplash from 'react-native-bootsplash';
 import { useCameraPermission, useMicrophonePermission } from 'react-native-vision-camera';
-
-// Navigation
-import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
-import MainNavigator, { RootStackParamList } from './src/navigation/MainNavigator';
 
 // Redux
 import { Provider } from 'react-redux';
-import { loadInitialData } from './src/redux/actions';
-import { store } from './src/redux/store';
 
 // Utilities
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { PaperProvider } from 'react-native-paper';
-import { SETheme } from './src/theme';
 import { withIAPContext } from 'react-native-iap';
-import { ROUTES } from './src/constants/routes';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { MainNavigation } from './src/navigation/MainNavigation';
+import { store } from './src/redux/store';
+import { initializeData } from './src/redux/thunks';
+import { ThemeProvider } from './src/theme/ThemeProvider';
 
-const linkingConfig: LinkingOptions<RootStackParamList> = {
-    prefixes: ['https://www.swingessentials.com'],
-    config: {
-        screens: {
-            [ROUTES.APP_GROUP]: {
-                screens: {
-                    [ROUTES.REGISTER]: 'register/:code?',
-                    [ROUTES.LESSONS]: 'lessons',
-                },
-            },
-        },
-    },
-};
-
-// TODO: Support dark mode
 function App(): React.JSX.Element {
     const { hasPermission: hasVideoPermission, requestPermission: requestVideoPermission } = useCameraPermission();
     const { hasPermission: hasMicrophonePermission, requestPermission: requestMicrophonePermission } =
@@ -41,7 +21,7 @@ function App(): React.JSX.Element {
 
     // Initialize redux store data
     useEffect(() => {
-        void store.dispatch(loadInitialData());
+        store.dispatch(initializeData());
     }, []);
 
     // Check / request app permissions
@@ -60,25 +40,20 @@ function App(): React.JSX.Element {
                 }
             }
         };
-        void checkPermissions();
+        checkPermissions();
     }, [hasMicrophonePermission, hasVideoPermission, requestMicrophonePermission, requestVideoPermission]);
 
     return (
         <Provider store={store}>
-            <SafeAreaProvider>
-                <NavigationContainer
-                    onReady={() => {
-                        void BootSplash.hide({ fade: true });
-                    }}
-                    linking={linkingConfig}
-                >
-                    <PaperProvider theme={SETheme}>
-                        {/* <RNIAPCallbacks /> */}
-                        <MainNavigator /* enableURLHandling={false}*/ />
-                    </PaperProvider>
-                </NavigationContainer>
-            </SafeAreaProvider>
+            <GestureHandlerRootView>
+                <SafeAreaProvider>
+                    <ThemeProvider>
+                        <MainNavigation />
+                    </ThemeProvider>
+                </SafeAreaProvider>
+            </GestureHandlerRootView>
         </Provider>
     );
 }
+
 export default withIAPContext(App);

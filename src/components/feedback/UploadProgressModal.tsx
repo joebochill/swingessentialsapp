@@ -1,10 +1,12 @@
 import React from 'react';
 // Components
 import { ActivityIndicator, Modal, ModalProps, View } from 'react-native';
-import { Paragraph, SectionHeader, Stack } from '../../components';
 
 // Styles
 import { useAppTheme } from '../../theme';
+import { SectionHeader } from '../typography/SectionHeader';
+import { Stack } from '../layout/Stack';
+import { Paragraph } from '../typography';
 
 type ProgressModalProps = ModalProps & {
     visible?: boolean;
@@ -20,8 +22,8 @@ export const UploadProgressModal: React.FC<ProgressModalProps> = (props) => {
                 justify={'center'}
                 style={{
                     flex: 1,
+                    backgroundColor: theme.dark ? 'rgba(255,255,255,0.20)' : 'rgba(255,255,255,0.75)',
                     padding: theme.spacing.md,
-                    backgroundColor: 'rgba(255,255,255,0.75)',
                 }}
             >
                 <View
@@ -30,7 +32,7 @@ export const UploadProgressModal: React.FC<ProgressModalProps> = (props) => {
                             borderWidth: 1,
                             borderRadius: theme.roundness,
                             borderColor: theme.colors.primary,
-                            backgroundColor: theme.colors.primaryContainer,
+                            backgroundColor: theme.dark ? theme.colors.surface : theme.colors.primaryContainer,
                             padding: theme.spacing.md,
                         },
                     ]}

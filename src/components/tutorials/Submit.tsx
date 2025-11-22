@@ -1,34 +1,30 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-// Components
-import { View } from 'react-native';
-import { Typography } from '../';
-import { SEButton, Stack } from '..';
-import { TutorialModal } from '.';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
-// Styles
-import { width } from '../../utilities/dimensions';
-
-// Redux
-import { ApplicationState } from '../../__types__';
-import { tutorialViewed } from '../../redux/actions';
-// Constants
-import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
+import React, { useEffect, useState } from 'react';
+import { LayoutChangeEvent } from 'react-native';
+import { TutorialCarousel, TutorialModal } from '.';
+import { TUTORIAL_KEYS } from '../../_config';
 import { RecordButton } from '../videos';
 import { useAppTheme } from '../../theme';
 import { SwingVideo } from '../videos/SwingVideo';
+import { Stack } from '../layout/Stack';
+import { Typography } from '../typography';
+import { Icon } from '../common/Icon';
+import { newTutorialAvailable, setTutorialWatched } from './tutorialsUtilities';
 
 export const SubmitTutorial: React.FC = () => {
-    const [activePanel, setActivePanel] = useState(0);
-    const [showButton, setShowButton] = useState(false);
-    const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
+    const [showTutorial, setShowTutorial] = useState(false);
+    const [carouselHeight, setCarouselHeight] = useState<number>(0);
     const theme = useAppTheme();
-    const dispatch = useDispatch();
 
     const slides = [
-        <Stack key={1}>
+        <Stack
+            key={1}
+            onLayout={(event: LayoutChangeEvent) => {
+                const { height } = event.nativeEvent.layout;
+                if (height > carouselHeight) {
+                    setCarouselHeight(height); // Update height dynamically
+                }
+            }}
+        >
             <Typography variant={'displaySmall'} fontWeight={'semiBold'} color={'onPrimary'} align={'center'}>
                 {'Submitting Your Swing'}
             </Typography>
@@ -48,7 +44,15 @@ export const SubmitTutorial: React.FC = () => {
                 <SwingVideo type={'dtl'} disabled />
             </Stack>
         </Stack>,
-        <Stack key={2}>
+        <Stack
+            key={2}
+            onLayout={(event: LayoutChangeEvent) => {
+                const { height } = event.nativeEvent.layout;
+                if (height > carouselHeight) {
+                    setCarouselHeight(height); // Update height dynamically
+                }
+            }}
+        >
             <Typography variant={'displaySmall'} fontWeight={'semiBold'} color={'onPrimary'} align={'center'}>
                 {'Using the Camera'}
             </Typography>
@@ -79,7 +83,7 @@ export const SubmitTutorial: React.FC = () => {
             >
                 {'You can adjust your settings for recording length and delay by clicking the settings icon.'}
             </Typography>
-            <MatIcon
+            <Icon
                 name="settings"
                 color={theme.colors.onPrimary}
                 size={theme.size.xl}
@@ -88,54 +92,30 @@ export const SubmitTutorial: React.FC = () => {
         </Stack>,
     ];
 
+    useEffect(() => {
+        const checkTutorialAvailability = async () => {
+            const isAvailable = await newTutorialAvailable(TUTORIAL_KEYS.SUBMIT_SWING);
+            setShowTutorial(isAvailable);
+        };
+        checkTutorialAvailability();
+    }, []);
+
     return (
         <TutorialModal
-            visible={showTutorial.tutorial_submit_swing}
+            visible={showTutorial}
             onClose={(): void => {
-                // @ts-ignore
-                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]));
+                setTutorialWatched(TUTORIAL_KEYS.SUBMIT_SWING);
+                setShowTutorial(false);
             }}
         >
-            <View>
-                <Carousel
-                    data={slides}
-                    renderItem={({ index }: { index: number }): JSX.Element => slides[index]}
-                    sliderWidth={width - 2 * theme.spacing.md}
-                    itemWidth={width - 2 * theme.spacing.md}
-                    onSnapToItem={(index): void => {
-                        setActivePanel(index);
-                        if (index === slides.length - 1) {
-                            setShowButton(true);
-                        }
-                    }}
-                />
-                <Pagination
-                    dotsLength={slides.length}
-                    activeDotIndex={activePanel}
-                    dotStyle={{
-                        width: 10,
-                        height: 10,
-                        borderRadius: 10,
-                        marginHorizontal: 0,
-                        backgroundColor: 'rgba(255,255,255,0.9)',
-                    }}
-                    inactiveDotOpacity={0.5}
-                    inactiveDotScale={0.8}
-                />
-                <SEButton
-                    dark
-                    mode={'contained'}
-                    uppercase
-                    title={'Got It'}
-                    disabled={!showButton}
-                    buttonColor={theme.colors.secondary}
-                    style={{ opacity: showButton ? 1 : 0 }}
-                    onPress={(): void => {
-                        // @ts-ignore
-                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.SUBMIT_SWING]));
-                    }}
-                />
-            </View>
+            <TutorialCarousel
+                slides={slides}
+                height={carouselHeight || 200} // Fallback to a default height if not calculated yet
+                onClose={(): void => {
+                    setTutorialWatched(TUTORIAL_KEYS.SUBMIT_SWING);
+                    setShowTutorial(false);
+                }}
+            />
         </TutorialModal>
     );
 };

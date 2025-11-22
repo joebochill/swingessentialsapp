@@ -1,33 +1,31 @@
-import React from 'react';
-import { View, SectionList } from 'react-native';
-import { ListItem, SectionHeader, Stack, Typography } from '../';
-import { SEButton } from '../SEButton';
-import { TutorialModal } from './';
-import Carousel from 'react-native-snap-carousel';
-import MatIcon from 'react-native-vector-icons/MaterialIcons';
-import { width } from '../../utilities/dimensions';
-import { useSelector, useDispatch } from 'react-redux';
-import { ApplicationState } from '../../__types__';
-import { tutorialViewed } from '../../redux/actions';
-import { TUTORIALS, TUTORIAL_KEYS } from '../../constants';
-import { getLongDate, getDate } from '../../utilities';
+import React, { JSX, useEffect, useState } from 'react';
+import { SectionList, LayoutChangeEvent } from 'react-native';
+import { TutorialCarousel, TutorialModal } from './';
+import { TUTORIAL_KEYS } from '../../_config';
 import { useAppTheme } from '../../theme';
+import { SectionHeader } from '../typography/SectionHeader';
+import { Stack } from '../layout/Stack';
+import { Typography } from '../typography';
+import { ListItem } from '../common/ListItem';
+import { Icon } from '../common/Icon';
+import { newTutorialAvailable, setTutorialWatched } from './tutorialsUtilities';
+import { format } from 'date-fns';
 
 export const LessonsTutorial: React.FC = () => {
-    const showTutorial = useSelector((state: ApplicationState) => state.tutorials);
+    const [showTutorial, setShowTutorial] = useState(false);
+    const [carouselHeight, setCarouselHeight] = useState<number>(0);
     const theme = useAppTheme();
-    const dispatch = useDispatch();
-
+    const today = Date.now();
     const sections = [
         {
-            bucketName: getLongDate(Date.now()),
+            bucketName: format(new Date(today), 'MMMM yyyy'),
             data: [
                 {
-                    date: getDate(Date.now()),
+                    date: format(new Date(today), 'yyyy-MM-dd'),
                     new: true,
                 },
                 {
-                    date: getDate(Date.now() - 24 * 60 * 60 * 1000),
+                    date: format(new Date(today - 24 * 60 * 60 * 1000), 'yyyy-MM-dd'),
                     new: false,
                 },
             ],
@@ -35,7 +33,15 @@ export const LessonsTutorial: React.FC = () => {
     ];
 
     const slides = [
-        <Stack key={1}>
+        <Stack
+            key={1}
+            onLayout={(event: LayoutChangeEvent) => {
+                const { height } = event.nativeEvent.layout;
+                if (height > carouselHeight) {
+                    setCarouselHeight(height); // Update height dynamically
+                }
+            }}
+        >
             <Typography variant={'displaySmall'} fontWeight={'semiBold'} color={'onPrimary'} align={'center'}>
                 {'Your Lessons'}
             </Typography>
@@ -76,11 +82,11 @@ export const LessonsTutorial: React.FC = () => {
                                         NEW
                                     </Typography>
                                 )}
-                                <MatIcon
+                                <Icon
                                     name={'chevron-right'}
                                     size={theme.size.md}
-                                    color={theme.colors.primary}
-                                    style={{ marginRight: -1 * theme.spacing.md }}
+                                    color={theme.colors.onPrimaryContainer}
+                                    style={{ marginRight: -1 * theme.spacing.sm }}
                                 />
                             </Stack>
                         )}
@@ -91,34 +97,30 @@ export const LessonsTutorial: React.FC = () => {
         </Stack>,
     ];
 
+    useEffect(() => {
+        const checkTutorialAvailability = async () => {
+            const isAvailable = await newTutorialAvailable(TUTORIAL_KEYS.LESSON_LIST);
+            setShowTutorial(isAvailable);
+        };
+        checkTutorialAvailability();
+    }, []);
+
     return (
         <TutorialModal
-            visible={showTutorial.tutorial_lesson_list}
+            visible={showTutorial}
             onClose={(): void => {
-                // @ts-ignore
-                dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]));
+                setTutorialWatched(TUTORIAL_KEYS.LESSON_LIST);
+                setShowTutorial(false);
             }}
         >
-            <View>
-                <Carousel
-                    data={slides}
-                    renderItem={({ index }): JSX.Element => slides[index]}
-                    sliderWidth={width - 2 * theme.spacing.md}
-                    itemWidth={width - 2 * theme.spacing.md}
-                />
-                <SEButton
-                    dark
-                    mode={'contained'}
-                    uppercase
-                    buttonColor={theme.colors.secondary}
-                    title="GOT IT"
-                    style={{ marginTop: theme.spacing.xl }}
-                    onPress={(): void => {
-                        // @ts-ignore
-                        dispatch(tutorialViewed(TUTORIALS[TUTORIAL_KEYS.LESSON_LIST]));
-                    }}
-                />
-            </View>
+            <TutorialCarousel
+                slides={slides}
+                height={carouselHeight || 200} // Fallback to a default height if not calculated yet
+                onClose={(): void => {
+                    setTutorialWatched(TUTORIAL_KEYS.LESSON_LIST);
+                    setShowTutorial(false);
+                }}
+            />
         </TutorialModal>
     );
 };
