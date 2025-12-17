@@ -1,0 +1,44 @@
+Validate in TestFlight
+[ ] Verify deep links work
+
+BEFORE PUSHING CODE TO GITHUB
+[ ] Securely reference credentials and passwords through absolute paths and environment variables
+
+VERIFY FUNCTIONALITY:
+
+A/I
+[✅][✅] Register
+[✅][✅] Verify Email
+[❌][❌] Registration Deep Link (ios not working on staging)
+[✅][✅] Login
+[⚠️][✅] Biometric Login
+[✅][✅] Forgot Password
+[✅][✅] Order 1
+[✅][✅] Order 5
+[✅][✅] Tutorials
+[✅][✅] Permissions Prompts (both themes)
+[✅][✅] Record Video // TEST WITH ZERO DELAY TO PREVENT TORCH FLASH
+[✅][✅] Camera Roll
+[✅][✅] Submit
+[❌][❌] Lesson Deep Link
+[✅][✅] Lessons
+[✅][✅] Lesson Details
+[✅][✅] Default Lesson
+[✅][✅] Tips / Tip
+[✅][✅] Blogs / Blog
+[✅][✅] Meet the Pros
+[✅][✅] About
+[✅][✅] FAQ
+[✅][✅] Contact Us
+[✅][✅] Error Log
+[✅][✅] Profile
+[✅][✅] Update Avatar
+[✅][✅] Update Camera Settings
+[✅][✅] Update Subscription Settings
+[✅][✅] Update Profile Information
+[✅][✅] Dark Mode
+⚠️
+
+- Latest Lesson on Home is Showing a blank video (placeholder) sometimes
+- Usage description strings (info.plist)
+- Update the Readme

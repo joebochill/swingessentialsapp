@@ -1,4 +1,132 @@
 {
-    "name": "swingessentialsapp",
-    "displayName": "Swing Essentials"
+    "expo": {
+        "name": "swingessentialsapp",
+        "slug": "swingessentialsapp",
+        "version": "6.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/images/app-icon/1024.png",
+        "scheme": "swingessentialsapp",
+        "userInterfaceStyle": "automatic",
+        "newArchEnabled": true,
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.swingessentials.app",
+            "infoPlist": {
+                "ITSAppUsesNonExemptEncryption": false
+            },
+            "associatedDomains": ["applinks:www.swingessentials.com"],
+            "buildNumber": "1"
+        },
+        "android": {
+            "edgeToEdgeEnabled": true,
+            "predictiveBackGestureEnabled": false,
+            "package": "com.swingessentials.app",
+            "versionCode": 81,
+            "adaptiveIcon": {
+                "backgroundColor": "#ffffff",
+                "foregroundImage": "./assets/images/app-icon/android.png"
+            },
+            "intentFilters": [
+                {
+                    "action": "VIEW",
+                    "data": {
+                        "scheme": "https",
+                        "host": "www.swingessentials.com",
+                        "pathPrefix": "/lessons"
+                    },
+                    "category": ["BROWSABLE", "DEFAULT"]
+                },
+                {
+                    "action": "VIEW",
+                    "data": {
+                        "scheme": "https",
+                        "host": "www.swingessentials.com",
+                        "pathPrefix": "/register"
+                    },
+                    "category": ["BROWSABLE", "DEFAULT"]
+                }
+            ]
+        },
+        "web": {
+            "output": "static",
+            "favicon": "./assets/images/favicon.png"
+        },
+        "plugins": [
+            "expo-router",
+            [
+                "expo-splash-screen",
+                {
+                    "image": "./assets/images/splash-screen/splash-text.png",
+                    "resizeMode": "contain",
+                    "imageWidth": 350,
+                    "backgroundColor": "#4F4C81",
+                    "android": {
+                        "image": "./assets/images/splash-screen/splash-icon.png",
+                        "imageWidth": 100,
+                        "resizeMode": "native"
+                    }
+                }
+            ],
+            [
+                "expo-video",
+                {
+                    "supportsBackgroundPlayback": false,
+                    "supportsPictureInPicture": false
+                }
+            ],
+            [
+                "expo-font",
+                {
+                    "fonts": [
+                        "./assets/fonts/SFCompactDisplay-Black.otf",
+                        "./assets/fonts/SFCompactDisplay-Bold.otf",
+                        "./assets/fonts/SFCompactDisplay-Regular.otf",
+                        "./assets/fonts/SFCompactDisplay-Semibold.otf",
+                        "./assets/fonts/SFCompactDisplay-Thin.otf"
+                    ]
+                }
+            ],
+            [
+                "expo-iap",
+                {
+                    "expo-build-properties": {
+                        "android": {
+                            "kotlinVersion": "2.2.0"
+                        }
+                    }
+                }
+            ],
+            [
+                "expo-camera",
+                {
+                    "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+                    "recordAudioAndroid": false
+                }
+            ],
+            [
+                "expo-image-picker",
+                {
+                    "photosPermission": "The app accesses your photos to let you share them with your friends."
+                }
+            ],
+            "expo-secure-store",
+            [
+                "expo-local-authentication",
+                {
+                    "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+                }
+            ],
+            "expo-web-browser"
+        ],
+        "experiments": {
+            "typedRoutes": true,
+            "reactCompiler": true
+        },
+        "extra": {
+            "router": {},
+            "eas": {
+                "projectId": "f8bb1320-fa92-4912-a208-e80a80fe2e96"
+            }
+        }
+    }
 }
