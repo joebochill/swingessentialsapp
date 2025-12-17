@@ -1,9 +1,6 @@
 Validate in TestFlight
 [ ] Verify deep links work
 
-BEFORE PUSHING CODE TO GITHUB
-[ ] Securely reference credentials and passwords through absolute paths and environment variables
-
 VERIFY FUNCTIONALITY:
 
 A/I
@@ -40,5 +37,3 @@ A/I
 ⚠️
 
 - Latest Lesson on Home is Showing a blank video (placeholder) sometimes
-- Usage description strings (info.plist)
-- Update the Readme
