@@ -103,7 +103,7 @@ export default function LessonsPage() {
                 actionItems={[
                     {
                         name: 'add-circle',
-                        onPress: () => router.push('/(screens)/(submit)'),
+                        onPress: () => router.push('/(drawer)/(screens)/(submit)'),
                     },
                 ]}
                 {...headerProps}

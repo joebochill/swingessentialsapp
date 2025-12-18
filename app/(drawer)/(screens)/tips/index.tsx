@@ -11,7 +11,6 @@ import React, { JSX, useMemo } from 'react';
 import { RefreshControl, SectionList, View } from 'react-native';
 
 export default function TipsScreen() {
-    // const navigation = useNavigation();
     const router = useRouter();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
     const theme = useAppTheme();
@@ -88,7 +87,7 @@ export default function TipsScreen() {
                         titleNumberOfLines={2}
                         titleEllipsizeMode={'tail'}
                         onPress={(): void => {
-                            router.push({ pathname: '/[id]', params: { id: item.id } });
+                            router.push({ pathname: '/(drawer)/(screens)/tips/[id]', params: { id: item.id } });
                         }}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[style]} {...rightProps}>

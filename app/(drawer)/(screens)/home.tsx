@@ -186,7 +186,7 @@ export default function HomeScreen() {
                             title={'Submit a Swing'}
                             style={{ marginTop: theme.spacing.md }}
                             onPress={(): void => {
-                                router.push('/(screens)/(submit)');
+                                router.push('/(drawer)/(screens)/(submit)');
                             }}
                         />
                     )}
@@ -202,7 +202,7 @@ export default function HomeScreen() {
                                     mode={'outlined'}
                                     title={'View All'}
                                     onPress={(): void => {
-                                        router.push('/(screens)/tips');
+                                        router.push('/(drawer)/(screens)/tips');
                                     }}
                                 />
                             }

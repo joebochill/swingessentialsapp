@@ -1,6 +1,3 @@
-import React, { JSX, useMemo } from 'react';
-import { RefreshControl, SectionList, View } from 'react-native';
-// import { StackNavigationProp } from "@react-navigation/stack";
 import bg from '@/assets/images/banners/19th.jpg';
 import { Icon } from '@/components/common/Icon';
 import { ListItem } from '@/components/common/ListItem';
@@ -10,9 +7,10 @@ import { SectionHeader } from '@/components/typography/SectionHeader';
 import { BlogDetailsWithYear, useGetBlogsQuery } from '@/redux/apiServices/blogsService';
 import { useAppTheme } from '@/theme';
 import { useRouter } from 'expo-router';
+import React, { JSX, useMemo } from 'react';
+import { RefreshControl, SectionList, View } from 'react-native';
 
 export default function BlogsScreen() {
-    // const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const router = useRouter();
     const { scrollProps, headerProps, contentProps } = useCollapsibleHeader();
     const theme = useAppTheme();
