@@ -383,7 +383,7 @@ export default function LoginScreen() {
                                 labelStyle={{ color: theme.colors.onPrimary }}
                                 title="Need an Account?"
                                 onPress={(): void => {
-                                    router.push('/(auth)/(register)');
+                                    router.push('/(auth)/register');
                                 }}
                             />
                         </Stack>

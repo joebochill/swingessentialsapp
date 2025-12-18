@@ -23,7 +23,7 @@ export const LessonCard: React.FC<{ lessonURL: string }> = ({ lessonURL }) => {
             video={lessonDetails?.response_video}
             onExpand={(): void => {
                 router.push({
-                    pathname: '/(drawer)/(screens)/(lessons)/[id]',
+                    pathname: '/(drawer)/(screens)/lessons/[id]',
                     params: { id: lessonDetails.request_url },
                 });
             }}

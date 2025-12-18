@@ -24,18 +24,18 @@ export const mainNavigationItems: RouteGroup = {
         {
             title: 'Home',
             icon: 'home',
-            route: '/(drawer)/(screens)',
+            route: '/(drawer)/(screens)/home',
         },
         {
             title: 'Your Profile',
             icon: 'person',
             private: true,
-            route: '/(drawer)/(screens)/(settings)',
+            route: '/(drawer)/(screens)/settings',
         },
         {
             title: 'Your Lessons',
             icon: 'subscriptions',
-            route: '/(drawer)/(screens)/(lessons)',
+            route: '/(drawer)/(screens)/lessons',
         },
         {
             title: 'Submit Your Swing',
@@ -55,12 +55,12 @@ export const mainNavigationItems: RouteGroup = {
         {
             title: 'Tip of the Month',
             icon: 'today',
-            route: '/(drawer)/(screens)/(tips)',
+            route: '/(drawer)/(screens)/tips',
         },
         {
             title: 'The 19th Hole',
             icon: 'local-bar',
-            route: '/(drawer)/(screens)/(blogs)',
+            route: '/(drawer)/(screens)/19th-hole',
         },
         {
             title: 'Help',

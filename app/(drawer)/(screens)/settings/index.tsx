@@ -575,7 +575,7 @@ export default function ProfileScreen() {
                     style={{ marginHorizontal: -1 * theme.spacing.md }}
                     onPress={(): void =>
                         router.push({
-                            pathname: '/[setting-name]',
+                            pathname: '/(drawer)/(screens)/settings/[setting-name]',
                             params: { 'setting-name': 'handed' },
                         })
                     }
@@ -601,7 +601,7 @@ export default function ProfileScreen() {
                         bottomDivider
                         onPress={(): void =>
                             router.push({
-                                pathname: '/[setting-name]',
+                                pathname: '/(drawer)/(screens)/settings/[setting-name]',
                                 params: { 'setting-name': 'camera_duration' },
                             })
                         }
@@ -628,7 +628,7 @@ export default function ProfileScreen() {
                         bottomDivider
                         onPress={(): void =>
                             router.push({
-                                pathname: '/[setting-name]',
+                                pathname: '/(drawer)/(screens)/settings/[setting-name]',
                                 params: { 'setting-name': 'camera_delay' },
                             })
                         }
@@ -655,7 +655,7 @@ export default function ProfileScreen() {
                         bottomDivider
                         onPress={(): void =>
                             router.push({
-                                pathname: '/[setting-name]',
+                                pathname: '/(drawer)/(screens)/settings/[setting-name]',
                                 params: { 'setting-name': 'camera_overlay' },
                             })
                         }
@@ -687,7 +687,7 @@ export default function ProfileScreen() {
                         titleEllipsizeMode={'tail'}
                         onPress={(): void =>
                             router.push({
-                                pathname: '/[setting-name]',
+                                pathname: '/(drawer)/(screens)/settings/[setting-name]',
                                 params: { 'setting-name': 'notify_new_lesson' },
                             })
                         }
@@ -714,7 +714,7 @@ export default function ProfileScreen() {
                         titleEllipsizeMode={'tail'}
                         onPress={(): void =>
                             router.push({
-                                pathname: '/[setting-name]',
+                                pathname: '/(drawer)/(screens)/settings/[setting-name]',
                                 params: { 'setting-name': 'notify_marketing' },
                             })
                         }
@@ -741,7 +741,7 @@ export default function ProfileScreen() {
                         titleEllipsizeMode={'tail'}
                         onPress={(): void =>
                             router.push({
-                                pathname: '/[setting-name]',
+                                pathname: '/(drawer)/(screens)/settings/[setting-name]',
                                 params: { 'setting-name': 'notify_newsletter' },
                             })
                         }
@@ -768,7 +768,7 @@ export default function ProfileScreen() {
                         titleEllipsizeMode={'tail'}
                         onPress={(): void =>
                             router.push({
-                                pathname: '/[setting-name]',
+                                pathname: '/(drawer)/(screens)/settings/[setting-name]',
                                 params: { 'setting-name': 'notify_reminders' },
                             })
                         }

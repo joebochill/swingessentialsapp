@@ -294,7 +294,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                                         token
                                             ? () => {
                                                   props.navigation.closeDrawer();
-                                                  router.push('/(drawer)/(screens)/(settings)');
+                                                  router.push('/(drawer)/(screens)/settings');
                                               }
                                             : undefined
                                     }

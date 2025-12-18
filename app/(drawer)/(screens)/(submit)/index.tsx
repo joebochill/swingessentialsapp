@@ -79,7 +79,7 @@ export default function SubmitScreen() {
                         {
                             text: 'OK',
                             onPress: (): void => {
-                                router.push('/(lessons)');
+                                router.push('/lessons');
                             },
                         },
                     ],

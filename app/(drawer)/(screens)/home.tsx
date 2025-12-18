@@ -111,7 +111,7 @@ export default function HomeScreen() {
                             title={'Sign Up Today'}
                             style={{ flex: 1 }}
                             onPress={(): void => {
-                                router.push('/(auth)/(register)');
+                                router.push('/(auth)/register');
                             }}
                         />
                         <SEButton
@@ -133,7 +133,7 @@ export default function HomeScreen() {
                             mode={'outlined'}
                             title={'View All'}
                             onPress={(): void => {
-                                router.push('/(lessons)');
+                                router.push('/lessons');
                             }}
                         />
                     }
@@ -202,7 +202,7 @@ export default function HomeScreen() {
                                     mode={'outlined'}
                                     title={'View All'}
                                     onPress={(): void => {
-                                        router.push('/(screens)/(tips)');
+                                        router.push('/(screens)/tips');
                                     }}
                                 />
                             }

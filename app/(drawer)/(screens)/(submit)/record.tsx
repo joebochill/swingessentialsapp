@@ -279,7 +279,7 @@ export default function RecordScreen() {
                                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                     <Pressable
                                         onPress={(): void => {
-                                            router.push('/(settings)');
+                                            router.push('/(drawer)/(screens)/settings');
                                         }}
                                         style={({ pressed }) => ({ opacity: pressed ? 0.7 : 1 })}
                                     >

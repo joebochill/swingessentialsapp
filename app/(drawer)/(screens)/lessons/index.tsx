@@ -148,7 +148,7 @@ export default function LessonsPage() {
                         style={{ marginTop: theme.spacing.xxl }}
                         onPress={(): void =>
                             router.push({
-                                pathname: '/(drawer)/(screens)/(lessons)/placeholder',
+                                pathname: '/(drawer)/(screens)/lessons/placeholder',
                             })
                         }
                         right={({ style, ...rightProps }): JSX.Element => (
@@ -192,7 +192,7 @@ export default function LessonsPage() {
                             }
                             onPress={(): void =>
                                 router.push({
-                                    pathname: '/(drawer)/(screens)/(lessons)/[id]',
+                                    pathname: '/(drawer)/(screens)/lessons/[id]',
                                     params: { id: item.request_url },
                                 })
                             }

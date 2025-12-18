@@ -49,7 +49,7 @@ export const LessonCarousel: React.FC<LessonCarouselProps> = (props) => {
                         video={(item as WelcomeVideo).video}
                         headerTitle={format(new Date(), 'yyyy-MM-dd')}
                         onExpand={() => {
-                            router.push({ pathname: '/(drawer)/(screens)/(lessons)' });
+                            router.push({ pathname: '/(drawer)/(screens)/lessons' });
                         }}
                     />
                 )

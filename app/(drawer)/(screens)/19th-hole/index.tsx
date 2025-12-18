@@ -89,7 +89,7 @@ export default function BlogsScreen() {
                         title={item.title}
                         titleNumberOfLines={2}
                         titleEllipsizeMode={'tail'}
-                        onPress={(): void => router.push(`/${item.id}`)}
+                        onPress={(): void => router.push(`/(drawer)/(screens)/19th-hole/${item.id}`)}
                         right={({ style, ...rightProps }): JSX.Element => (
                             <View style={[style]} {...rightProps}>
                                 <Icon
